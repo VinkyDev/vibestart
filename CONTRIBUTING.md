@@ -43,6 +43,17 @@ vp run deps update hono     # only matching pins and the pins that follow them
 
 `update` stops at the first failing step and leaves the moved pins in the working tree.
 
+## Releasing the CLI
+
+`vibestart-cli` is published only by `.github/workflows/release.yml`. Do not run `npm publish` from a machine: it publishes `package.json` as written, and `catalog:` dependencies then reach the registry unresolved (this shipped once as an uninstallable `0.1.0-beta.0`).
+
+1. Set `version` in `apps/cli/package.json` and merge it to `main` with `vp run ready` passing.
+2. Push a tag that equals the version: `git tag -a v0.1.0-beta.2 -m v0.1.0-beta.2 && git push origin v0.1.0-beta.2`.
+3. The workflow runs `vp run ready`, packs with pnpm, and publishes through npm trusted publishing, with provenance and no token or one-time password. A prerelease suffix goes to the `beta` dist-tag, anything else to `latest`.
+4. It then installs the published version with `npx` and `pnpm dlx`, and creates the GitHub release with generated notes.
+
+Never move or delete a pushed tag, and never force-push `main`; fix a bad release with a new version and `npm deprecate` on the bad one. One-time setup: on npmjs.com, open `vibestart-cli` → Settings → Trusted publisher and add GitHub repository `VinkyDev/vibestart`, workflow `release.yml`.
+
 ## Pull requests
 
 - Keep a change focused, and carry it through every layer it touches.

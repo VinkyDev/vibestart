@@ -1,0 +1,58 @@
+name: Release
+
+# Push a tag `vX.Y.Z` or `vX.Y.Z-beta.N` that matches apps/cli/package.json. npm authenticates this
+# workflow through trusted publishing (npmjs.com → vibestart-cli → Settings → Trusted publisher:
+# VinkyDev/vibestart, workflow `release.yml`), so no token or one-time password is involved.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - run: vp install
+      - name: Tag matches the package version
+        run: test "v$(node -p "require('./apps/cli/package.json').version")" = "$VERSION"
+      - run: vp run ready
+      # `vp pm pack` is pnpm's pack: it replaces `catalog:` and `workspace:`, which `npm publish` would not.
+      - name: Pack
+        working-directory: apps/cli
+        run: |
+          vp pack
+          vp pm pack --pack-destination "$RUNNER_TEMP/pack"
+      # A version with a prerelease suffix goes to `beta`, so `latest` only ever moves to a stable release.
+      - name: Publish
+        run: |
+          case "$VERSION" in *-*) tag=beta ;; *) tag=latest ;; esac
+          npm publish "$RUNNER_TEMP"/pack/*.tgz --tag "$tag" --access public
+      # npm processes a new version for a few minutes before it resolves.
+      - name: Install what was published
+        working-directory: ${{ runner.temp }}
+        run: |
+          version="${VERSION#v}"
+          for attempt in $(seq 1 20); do
+            npx --yes "vibestart-cli@$version" --version && break
+            test "$attempt" -lt 20 && sleep 15
+          done
+          test "$(npx --yes "vibestart-cli@$version" --version)" = "$version"
+          test "$(vp dlx "vibestart-cli@$version" --version)" = "$version"
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          case "$VERSION" in *-*) flag=--prerelease ;; *) flag= ;; esac
+          gh release create "$VERSION" --verify-tag --title "$VERSION" --generate-notes $flag
