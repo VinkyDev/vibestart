@@ -1,0 +1,41 @@
+---
+title: Automation and exit codes
+description: Call the CLI from scripts and CI and handle structured operation results.
+---
+
+## Non-interactive usage [#non-interactive]
+
+```sh
+npx vibestart-cli doctor --cwd my-app --offline --json
+npx vibestart-cli upgrade --cwd my-app --dry-run --json
+npx vibestart-cli upgrade --cwd my-app --yes --json
+```
+
+`--json` emits one JSON object without interactive prompts. Maintenance writes also require `--yes`. The `ok` field agrees with whether the exit code is zero.
+
+A successful preview means a plan was prepared. `needs-install` means files were written but installation and validation are unfinished. Neither indicates that application tests passed.
+
+## Maintenance flags [#options]
+
+| Flag              | Commands             | Purpose                                         |
+| ----------------- | -------------------- | ----------------------------------------------- |
+| `--cwd`, `--json` | Maintenance commands | Project directory and output format             |
+| `--yes`           | Write operations     | Confirm the plan                                |
+| `--dry-run`       | add, upgrade, adopt  | Preview without writing                         |
+| `--no-install`    | add, upgrade         | Defer installation and checks                   |
+| `--full-check`    | add, upgrade         | Run the complete ready task                     |
+| `--offline`       | doctor               | Skip remote release lookup                      |
+| `--check`, `--to` | upgrade              | Check updates or select an exact target release |
+
+`--no-install` and `--full-check` are mutually exclusive. See [creating projects](/docs/cli/create#json) for creation flags and JSON fields.
+
+## Exit codes [#exit-codes]
+
+| Code  | Maintenance meaning                                                          |
+| ----- | ---------------------------------------------------------------------------- |
+| `0`   | Successful check or preview, no changes, or explicitly deferred installation |
+| `1`   | Failure, conflict, or an update found by `upgrade --check`                   |
+| `2`   | Invalid arguments                                                            |
+| `130` | User cancellation                                                            |
+
+Creation commands use `0` for success, `1` for failure, and `130` for cancellation. Scripts should inspect both the exit code and JSON state. A successful preview alone is not sufficient to deploy.

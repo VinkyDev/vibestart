@@ -1,0 +1,47 @@
+---
+title: Choosing a stack
+description: The technologies vibestart offers, how they fit together, and which to choose for common kinds of applications.
+---
+
+A stack is one choice for each part of the application. The map lists every technology vibestart can generate, grouped by the part it fills. Select one to read what it does and when to use it.
+
+<StackMap />
+
+## By kind of application [#by-use]
+
+If you are unsure where to start, find the row closest to what you are building:
+
+| You are building                         | Consider                                | Because                                                            |
+| ---------------------------------------- | --------------------------------------- | ------------------------------------------------------------------ |
+| An internal tool or dashboard            | TanStack Router SPA, Hono, oRPC, SQLite | Simple to host, with a typed API and no separate database service  |
+| A product whose pages must be searchable | Next.js or TanStack Start               | Pages render on the server, so their content arrives with the HTML |
+| An API for other clients                 | No frontend, Hono, OpenAPI              | Standard REST endpoints, with generated documentation              |
+| A desktop application                    | TanStack Router SPA, Electron           | Electron packages the single-page app as a desktop window          |
+| An app with many concurrent writers      | PostgreSQL rather than SQLite           | A separate database service built for concurrent access            |
+
+Otherwise, start from the recommended stack the CLI proposes.
+
+<Callout type="warn" title="Choose before you build">
+  The framework, backend, API, database, and authentication shape the whole
+  project and are fixed at creation. Later, `add` can introduce only Knip,
+  Ultracite, and Docker.
+</Callout>
+
+## Compatibility [#combinations]
+
+Some choices depend on others:
+
+- Electron requires the TanStack Router single-page app.
+- A framework server requires Next.js or TanStack Start.
+- OpenAPI requires Hono.
+- The Bun runtime applies to Hono only.
+
+The studio and the CLI apply these rules as you choose. When a choice conflicts with an earlier one, they explain why and suggest the smallest change that resolves it.
+
+## Integration principles [#principles]
+
+Integrations use only open-source tools that are the current standard, or are clearly becoming it, and that are maintained, fully typed, and clear in their responsibilities. Each one must work in local development and pass verification together with every technology it can be combined with.
+
+When a better tool becomes the standard, the template moves to it in a later release and removes the tool it replaces, with no compatibility option left behind. Linting and formatting, for example, use Oxlint and Oxfmt; ESLint and Prettier are not offered. The full criteria are in [Why vibestart](/docs/why#modern).
+
+For exact dependency versions, see the catalog and lockfile of a generated project.

@@ -1,0 +1,62 @@
+{
+  "name": "vibestart-cli",
+  "version": "0.1.0-beta.1",
+  "description": "Create a verified full-stack TypeScript project from a stack you compose",
+  "keywords": [
+    "create",
+    "scaffold",
+    "stack",
+    "vite-plus"
+  ],
+  "homepage": "https://github.com/VinkyDev/vibestart#readme",
+  "bugs": {
+    "url": "https://github.com/VinkyDev/vibestart/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VinkyDev/vibestart.git",
+    "directory": "apps/cli"
+  },
+  "bin": {
+    "vibestart": "dist/cli.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "exports": {
+    ".": "./dist/cli.mjs"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "beta"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "oxfmt": "catalog:"
+  },
+  "devDependencies": {
+    "@clack/prompts": "catalog:",
+    "@types/node": "catalog:",
+    "@vibestart/config": "workspace:*",
+    "@vibestart/core": "workspace:*",
+    "@vibestart/integrations": "workspace:*",
+    "citty": "catalog:",
+    "execa": "catalog:",
+    "jsonc-parser": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "zod": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

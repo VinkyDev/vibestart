@@ -1,0 +1,94 @@
+---
+title: 术语表
+description: 文档中常用术语的解释。
+---
+
+本页解释文档中直接使用、未另作说明的术语。每个条目都附有链接，指向详细介绍该主题的页面。
+
+## API [#api]
+
+应用程序编程接口，即服务器向客户端提供的一组操作，每个操作都有确定的输入、输出和错误。在生成的项目中，前端只通过 API 与后端通信。详见[后端与 API](/docs/stack/backend)。
+
+## 认证与授权 [#auth]
+
+认证（Authentication）确认用户是谁，通常通过登录完成；授权（Authorization）决定该用户可以做什么，例如只能读取自己的待办。前者由 Better Auth 负责，后者由应用的 API 执行。详见[身份与权限](/docs/concepts#auth)。
+
+## Catalog（版本目录） [#catalog]
+
+workspace 中所有包共用的一份依赖版本清单。各包通过 `catalog:` 引用其中的版本，而不是各自填写版本号，因此升级依赖只需修改一处。详见[依赖版本](/docs/project#catalog)。
+
+## 编码 Agent [#agent]
+
+能够在项目中读写代码、执行命令的 AI 工具，例如 Claude Code 和 Codex。生成的项目包含 `AGENTS.md` 来引导它工作。详见[与编码 Agent 协作](/docs/develop#agent)。
+
+## 镜像与容器 [#docker]
+
+镜像（Image）将应用和运行所需的一切打包在一起；容器（Container）是镜像运行起来的实例。Docker 负责构建镜像和运行容器。详见[交付](/docs/stack/delivery#docker)。
+
+## 端到端测试（E2E） [#e2e]
+
+在真实浏览器中执行完整流程的测试，例如注册后创建一条待办，一次性覆盖应用的所有部分。生成的项目使用 Playwright。详见[测试工具](/docs/stack/testing#playwright)。
+
+## 环境变量 [#env]
+
+从代码外部提供给程序的配置，例如数据库地址或密钥。项目在 `.env.example` 中列出所需的环境变量。详见[环境变量](/docs/project#env)。
+
+## 水合（Hydration） [#hydration]
+
+JavaScript 接管服务器已经渲染好的 HTML，使页面能够响应点击和输入的过程。详见[前端](/docs/stack/frontend#choose)。
+
+## 集成测试 [#integration-test]
+
+把应用的一部分与它所依赖的真实组件放在一起运行的测试。在生成的项目中，集成测试经由真实的输入校验与权限检查调用 API，连接真实数据库，检查接口所承诺的内容：接受哪些输入、返回哪些数据、出错时的错误码，以及谁可以调用。详见[测试与验证](/docs/testing#layers)。
+
+## Lint（代码检查） [#lint]
+
+在不运行代码的情况下，自动发现源码中可能的错误和不一致写法的检查。`vp check` 会同时执行 lint、格式检查和类型检查。详见[工具链](/docs/stack/toolchain#oxc)。
+
+## 锁文件（Lockfile） [#lockfile]
+
+记录每个已安装依赖确切版本的文件，保证每台机器安装的依赖完全一致。根据包管理器不同，文件为 `pnpm-lock.yaml` 或 `bun.lock`，应与代码一起提交。
+
+## 迁移（Migration） [#migration]
+
+将数据库从一个结构版本变更到下一个版本的 SQL 文件。迁移根据表结构的变化生成，提交到仓库后按顺序应用到每个数据库。详见 [Drizzle](/docs/stack/data#drizzle)。
+
+## Monorepo 与 workspace [#workspace]
+
+Monorepo 指在一个仓库中维护多个应用和包；包管理器将它们链接为一个 workspace，使包之间可以直接相互引用。详见[项目结构](/docs/project)。
+
+## ORM [#orm]
+
+对象关系映射（Object-Relational Mapping）库，让你用应用本身的语言定义数据表、编写查询，而无需直接编写 SQL。生成的项目使用 Drizzle。详见 [Drizzle](/docs/stack/data#drizzle)。
+
+## 包管理器 [#package-manager]
+
+安装项目依赖、链接 workspace 的工具，例如 pnpm 和 Bun。在生成的项目中，`vp install` 会调用项目所用的包管理器。详见[工具链](/docs/stack/toolchain#pnpm)。
+
+## 运行时（Runtime） [#runtime]
+
+在浏览器之外执行 JavaScript 的程序，例如 Node.js 和 Bun。Hono 服务运行在创建项目时所选的运行时上。详见 [Hono 运行时](/docs/stack/backend#hono-runtime)。
+
+## Schema（结构定义） [#schema]
+
+对数据形态的描述。数据库 schema 定义表和字段；用 Zod 编写的校验 schema 定义哪些输入是合法的。详见 [API 与数据](/docs/concepts#data)。
+
+## 服务端渲染（SSR） [#ssr]
+
+每次请求时在服务器上将页面渲染为 HTML，使内容随首次响应一同到达。Next.js 和 TanStack Start 采用服务端渲染。详见[渲染与路由](/docs/concepts#rendering)。
+
+## 会话（Session） [#session]
+
+用户已登录的凭证，保存在服务端，在浏览器中通过 Cookie 标识。每个请求都会携带这个 Cookie，服务端据此知道请求来自谁。详见 [Better Auth](/docs/stack/data#better-auth)。
+
+## 单页应用（SPA） [#spa]
+
+首次加载后，由浏览器中的 JavaScript 渲染页面的应用，可以作为静态文件部署。详见[渲染与路由](/docs/concepts#rendering)。
+
+## 类型检查 [#type-checking]
+
+在不运行代码的情况下，确认各处对值的使用与其 TypeScript 类型一致。类型错误意味着某处代码传入或期望了结构不对的数据。`vp check` 包含类型检查。
+
+## 输入校验 [#validation]
+
+在运行时使用外部数据（例如请求输入或环境变量）之前，先检查它是否合法。生成的项目使用 Zod 进行校验。详见 [Zod](/docs/stack/backend#zod)。

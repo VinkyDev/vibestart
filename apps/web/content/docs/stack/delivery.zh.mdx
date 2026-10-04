@@ -1,0 +1,35 @@
+---
+title: 交付
+description: 使用 Docker 部署应用，或将 Web 界面打包为 Electron 桌面应用。
+---
+
+交付决定完成的应用以什么形式到达用户：作为容器运行在服务器上，或作为用户安装的桌面应用。两者均为可选项，Docker 也可以在项目创建后添加。
+
+## Docker [#docker]
+
+<Tech href="https://docs.docker.com" icon="docker" />
+
+选择 Docker 后，项目包含生产 Dockerfile、Compose 配置和忽略文件。多阶段构建将依赖安装、应用构建和运行环境分开，最终镜像包含应用运行所需的产物。
+
+生成方式随技术栈调整：静态站点由 Web 服务器提供资源，SSR 应用运行服务端构建产物，Hono 使用所选的 Node.js 或 Bun 运行时。数据库文件和数据库服务的数据目录使用持久化存储。
+
+在部署环境配置密钥与数据库地址后，使用项目生成的 Compose 配置启动服务。已有项目可通过 [`npx vibestart-cli add docker`](/docs/cli/add) 添加部署配置。
+
+<ImageBuild
+  steps={[
+    { text: "Dockerfile 描述应用的构建与运行环境。" },
+    { text: "构建镜像，将运行所需的产物复制到最终阶段。" },
+    { text: "从镜像启动容器，并映射应用端口。" },
+    { text: "同一镜像可用于多个实例；状态共享与流量分配需另行配置。" },
+  ]}
+/>
+
+## Electron [#electron]
+
+<Tech href="https://www.electronjs.org" icon="electron" />
+
+Electron 将单页应用放入桌面窗口，页面代码与 Web 应用共享。`apps/desktop` 包含主进程、preload 和打包配置；`packages/electron` 定义进程间通信的通道、载荷 schema 与类型。
+
+生成配置启用 `contextIsolation` 和 `sandbox`，关闭页面的 `nodeIntegration`。IPC 校验消息来源，外部链接交由系统浏览器打开。打包后的应用通过 `https://app.localhost` 加载页面，并在需要时代理 API 请求。
+
+Electron 使用单页应用前端，通过 electron-builder 生成分发包。

@@ -1,0 +1,26 @@
+---
+title: Add capabilities
+description: Introduce code tools or Docker deployment configuration to an existing project.
+---
+
+```sh
+npx vibestart-cli add --list
+npx vibestart-cli add knip ultracite docker --dry-run
+npx vibestart-cli add knip ultracite docker --yes
+```
+
+Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks; Docker adds deployment configuration. Adding capabilities preserves the package manager and application runtime.
+
+## Preview and apply [#apply]
+
+`--dry-run` displays file and configuration changes without writing. Apply with `--yes`, or confirm the plan in a terminal.
+
+If the baseline differs from the running CLI’s template release, [upgrade](/docs/cli/upgrade) first. Existing capabilities are not added twice.
+
+## Installation and checks [#checks]
+
+By default, the command installs once, then runs `vp check`, selected Knip checks, and an existing `unit` test project. `--full-check` runs the complete `vp run ready` instead.
+
+`--no-install` writes files and retains the operation as `needs-install`. Use [recover](/docs/cli/recover) to finish installation and validation. These flags cannot be combined.
+
+Adding Ultracite may require changes to existing application code to satisfy new rules. A failed check retains the operation; fix the code before resuming. Adding capabilities does not migrate databases automatically.

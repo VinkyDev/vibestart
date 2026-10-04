@@ -1,0 +1,26 @@
+{
+  "name": "@my-app/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main/index.js",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "build": "vp build --config vite.main.config.ts && vp build --config vite.preload.config.ts",
+    "package": "vp run --filter @my-app/web build && node scripts/copy-renderer.ts && vp run build && electron-builder --config electron-builder.yml",
+    "dev": "vp run build && node scripts/dev.ts"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "@types/node": "catalog:",
+    "electron": "catalog:",
+    "electron-builder": "catalog:",
+    "es-toolkit": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "zod": "catalog:"
+  }
+}

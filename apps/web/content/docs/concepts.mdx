@@ -1,0 +1,84 @@
+---
+title: How a full-stack app works
+description: The parts of a web application, what each one is responsible for, and how a request travels between them.
+---
+
+This page explains the ideas behind a generated project for readers new to full-stack development. If you are already familiar with them, continue to [Project structure](/docs/project).
+
+## Three parts [#parts]
+
+Most web applications consist of three parts:
+
+- **Frontend**: the pages users see and interact with. It runs in the browser, on the user's device.
+- **Backend**: a server that receives requests, applies the application's rules, and reads and writes data. It runs on a machine you control.
+- **Database**: where data is kept between requests and across restarts.
+
+The frontend and backend communicate through an **API**: a defined set of operations, each with its input, its output, and the errors it can return. Because anything in the browser can be inspected or modified by the user, the backend is where rules are enforced.
+
+## Following a request [#request-flow]
+
+Take a signed-in user creating a todo. The request passes through each part in turn:
+
+<Journey
+  steps={[
+    {
+      from: "browser",
+      to: "server",
+      text: "The page sends a create request through the API client, along with the user's session.",
+      code: "POST /rpc/todos/create",
+    },
+    {
+      at: "server",
+      text: "The server reads the session to identify the user, then validates the input.",
+      code: "z.object({ title: z.string().trim().min(1).max(200) })",
+    },
+    {
+      from: "server",
+      to: "database",
+      text: "The query stores the todo together with the current user's ID.",
+      code: "INSERT INTO todos (title, user_id) VALUES (…) ",
+    },
+    {
+      from: "server",
+      to: "browser",
+      text: "The API returns the new todo, and the page refreshes the queries that depend on it.",
+      code: "200 OK",
+    },
+  ]}
+/>
+
+<Callout type="warn" title="Validate on the server">
+  Checks in the browser give users faster feedback, but they can be bypassed.
+  The server validates every request on its own, and secrets and database
+  connections never leave the server.
+</Callout>
+
+## Rendering and routing [#rendering]
+
+Rendering turns data into the HTML a browser displays. A single-page application (SPA) renders in the browser: the server sends JavaScript, which then builds the page. Server-side rendering (SSR) builds the HTML on the server, so content arrives with the first response, and the browser takes over interaction afterwards.
+
+Routing maps URLs to pages and handles parameters such as `/todos/42`. vibestart offers a TanStack Router SPA, TanStack Start, and Next.js; [Frontend](/docs/stack/frontend) compares them.
+
+## APIs and data [#data]
+
+An API describes what clients can ask the server to do. vibestart offers oRPC, which shares TypeScript types between server and client, and OpenAPI, which describes standard REST endpoints for clients in any language.
+
+The database stores data in tables. Drizzle defines those tables in TypeScript and builds typed queries. When a table changes, a **migration** records the change as SQL, so that every database, from your laptop to production, can apply it in the same order. See [Backend and API](/docs/stack/backend) and [Data and authentication](/docs/stack/data).
+
+## Identity and permissions [#auth]
+
+Authentication establishes who is making a request; authorization decides what they may access. Better Auth handles sign-up, sign-in, and sessions. Authorization remains part of the application: each query that reads or writes user data is limited to the current user.
+
+For example, listing todos filters by the user ID from the session. Protecting a route in the frontend only sends anonymous visitors to the sign-in page; the API check is what actually protects the data.
+
+## Development and production [#deployment]
+
+During development, `vp run dev` starts the frontend and backend, reloads them as you edit, and forwards API requests from the page to the server. A production build compiles the application into files that run without development tools.
+
+Docker packages the built application and its runtime into an image that runs the same way on any machine. Compose describes how several services, such as the application and its database, start together. See [Delivery](/docs/stack/delivery).
+
+## Next steps [#next]
+
+- [Project structure](/docs/project) shows where each of these parts lives in a generated project.
+- [Developing features](/docs/develop) follows one change through all of them.
+- The [glossary](/docs/glossary) defines the terms used throughout the docs.

@@ -1,0 +1,60 @@
+---
+title: Testing and verification
+description: What the generated tests cover, the principles they follow, and what a verification record means.
+---
+
+Tests in a generated project describe behavior that users and API clients can observe. Their expected results come from requirements and the API contract, not from the current implementation, so they fail when behavior breaks and keep passing when the code is merely reorganized.
+
+## Three layers of tests [#layers]
+
+Each layer drives a different amount of the running application. Select a layer to see what it covers:
+
+<TestScope
+  text={{
+    e2e: "End-to-end tests drive a real browser through complete workflows, across pages, the API, and the database.",
+    integration:
+      "Integration tests call the API inside the test process, through its real validation and authorization, against a real database.",
+    unit: "Unit tests check logic with branches of its own, with no network or database involved.",
+  }}
+/>
+
+| Layer       | Covers                                       | Example                                                     |
+| ----------- | -------------------------------------------- | ----------------------------------------------------------- |
+| End-to-end  | Complete workflows in a browser              | Sign up, create a todo, and find it again after a reload    |
+| Integration | API input, output, authorization, and errors | Reject anonymous requests and keep each user's data private |
+| Unit        | Self-contained branching logic               | Pricing, permission rules, parsers, and state transitions   |
+
+Which layers a project includes depends on its stack. A static site has browser tests; an API with a database adds integration tests for every operation; authentication adds tests for sessions and isolation between users.
+
+## Why not more unit tests [#tradeoffs]
+
+Unit tests written in bulk by an agent tend to mock every dependency of a function and assert how many times something was called. They multiply the amount of code, rarely catch a real defect, and fail on every refactor. A generated project therefore concentrates its tests in two places: end-to-end tests confirm that the product works, and integration tests confirm that every API operation handles input, permissions, and errors correctly. Unit tests are kept for code with real branching logic.
+
+The number of tests is not the goal. A test is worth keeping if it fails when the behavior it describes breaks. For a side-by-side demonstration, see [Why vibestart](/docs/why#testing).
+
+## Principles [#principles]
+
+- **Use the real thing.** Integration tests call the API through its real validation and authorization, against a real database, and end-to-end tests drive a real browser against the running server. A stand-in is acceptable only for an external service the project does not run, and a test then pins the requests and responses it imitates.
+- **Test access from both sides.** Every protected operation is tested with an anonymous caller and with a different signed-in user.
+- **Reproduce a bug before fixing it.** Start a fix with a test that fails because of the bug, then change the code until it passes.
+- **Test behavior, not implementation.** A test should fail when the behavior it names breaks, and survive refactoring that preserves that behavior.
+
+## Running tests [#running]
+
+While developing, run the narrowest set that covers your change, such as a single file or `vp test --changed`. Before committing, run `vp run ready` for every check, test, and the production build. [Testing tools](/docs/stack/testing) covers the commands, the isolated test environment, and how to investigate failures.
+
+## Verification records [#verification]
+
+Before each release, every supported combination is generated with its default add-ons, installed, and run through `vp run ready`. A passing run produces a verification record containing:
+
+- a fingerprint of every generated file;
+- the operating system, architecture, and Node.js version it ran on;
+- when it ran, and how long it took.
+
+The studio shows the record for the stack you compose, and the CLI reports it at the end of `create` (or in the `verification` field with `--json`). The fingerprint ties the record to one exact output: if the files differ, as with a combination that has no record at this version or with add-ons beyond the defaults, no record applies.
+
+<Callout title="What a record covers">
+  A record shows that the project as generated passed. It says nothing about
+  later changes to code, dependencies, or deployment settings; after those, your
+  own `vp run ready` is what counts.
+</Callout>

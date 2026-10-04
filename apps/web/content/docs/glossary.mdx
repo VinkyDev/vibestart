@@ -1,0 +1,94 @@
+---
+title: Glossary
+description: Definitions of the terms used throughout the docs.
+---
+
+This glossary explains terms the docs use without stopping to define them. Each entry links to where the topic is covered in more depth.
+
+## API [#api]
+
+Application programming interface: the operations a server offers to clients, each with defined input, output, and errors. In a generated project, the frontend talks to the backend only through its API. See [Backend and API](/docs/stack/backend).
+
+## Authentication and authorization [#auth]
+
+Authentication establishes who a user is, usually by signing in. Authorization decides what that user may do, such as reading only their own todos. Better Auth handles the first; the application's API enforces the second. See [Identity and permissions](/docs/concepts#auth).
+
+## Catalog [#catalog]
+
+A single list of dependency versions shared by every package in a workspace. Packages refer to it with `catalog:` instead of naming a version, so a dependency is upgraded in one place. See [Dependency versions](/docs/project#catalog).
+
+## Coding agent [#agent]
+
+An AI tool, such as Claude Code or Codex, that reads and writes code in your project and runs commands. Generated projects include an `AGENTS.md` to guide it. See [Working with a coding agent](/docs/develop#agent).
+
+## Container and image [#docker]
+
+An image packages an application together with everything it needs to run. A container is a running instance of an image. Docker builds images and runs containers. See [Delivery](/docs/stack/delivery#docker).
+
+## End-to-end test [#e2e]
+
+A test that drives a real browser through a complete workflow, such as signing up and creating a todo, exercising every part of the application at once. Generated projects use Playwright. See [Testing tools](/docs/stack/testing#playwright).
+
+## Environment variable [#env]
+
+A setting supplied to a program from outside its code, such as a database address or a secret key. Projects describe the variables they need in `.env.example`. See [Environment variables](/docs/project#env).
+
+## Hydration [#hydration]
+
+The step in which JavaScript attaches to HTML that the server already rendered, making the page respond to clicks and input. See [Frontend](/docs/stack/frontend#choose).
+
+## Integration test [#integration-test]
+
+A test that runs one part of the application together with the real parts it depends on. In a generated project, integration tests call the API through its validation and authorization, against a real database, and check what it promises: accepted input, returned data, error codes, and who may call it. See [Testing and verification](/docs/testing#layers).
+
+## Lint [#lint]
+
+Automated checks that find likely mistakes and inconsistent style in source code without running it. `vp check` runs lint together with formatting and type checks. See [Toolchain](/docs/stack/toolchain#oxc).
+
+## Lockfile [#lockfile]
+
+A file recording the exact version of every installed dependency, so that every machine installs the same set. It is `pnpm-lock.yaml` or `bun.lock`, depending on the package manager. Commit it with the code.
+
+## Migration [#migration]
+
+A SQL file that moves a database from one version of its schema to the next. Migrations are generated from schema changes, committed, and applied in order to every database. See [Drizzle](/docs/stack/data#drizzle).
+
+## Monorepo and workspace [#workspace]
+
+A monorepo keeps several applications and packages in one repository. The package manager links them as a workspace, so one package can import another directly. See [Project structure](/docs/project).
+
+## ORM [#orm]
+
+Object-relational mapper: a library for defining tables and writing queries in the application's own language instead of raw SQL. Generated projects use Drizzle. See [Drizzle](/docs/stack/data#drizzle).
+
+## Package manager [#package-manager]
+
+The tool that installs a project's dependencies and links its workspace, such as pnpm or Bun. In generated projects, `vp install` calls the one the project uses. See [Toolchain](/docs/stack/toolchain#pnpm).
+
+## Runtime [#runtime]
+
+The program that executes JavaScript outside the browser, such as Node.js or Bun. The Hono server runs on the runtime chosen at creation. See [Hono runtime](/docs/stack/backend#hono-runtime).
+
+## Schema [#schema]
+
+A description of the shape of data. A database schema defines tables and columns; a validation schema, written with Zod, defines what input is acceptable. See [APIs and data](/docs/concepts#data).
+
+## Server-side rendering (SSR) [#ssr]
+
+Rendering pages to HTML on the server for each request, so content arrives with the first response. Next.js and TanStack Start render on the server. See [Rendering and routing](/docs/concepts#rendering).
+
+## Session [#session]
+
+The record that a user has signed in, kept on the server and identified by a cookie in the browser. Each request carries the cookie, so the server knows who is asking. See [Better Auth](/docs/stack/data#better-auth).
+
+## Single-page application (SPA) [#spa]
+
+An application whose pages are rendered in the browser by JavaScript, after the first load. It can be served as static files. See [Rendering and routing](/docs/concepts#rendering).
+
+## Type checking [#type-checking]
+
+Analysis that confirms values are used consistently with their TypeScript types, without running the code. A type error means some code passes or expects the wrong shape of data. `vp check` includes it.
+
+## Validation [#validation]
+
+Checking data from outside the program, such as request input or environment variables, at runtime before using it. Generated projects validate with Zod. See [Zod](/docs/stack/backend#zod).

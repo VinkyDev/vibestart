@@ -1,0 +1,64 @@
+---
+title: 工具链
+description: Vite+、TypeScript、包管理器、运行时和可选的代码检查。
+---
+
+工具链是开发项目时使用的工具，而不是用户运行的部分，包括 `vp` 命令、TypeScript、包管理器和代码检查。所有组合共用同一套工具链。
+
+## Vite+ [#vite-plus]
+
+<Tech href="https://viteplus.dev" icon="vite-plus" />
+
+Vite+ 提供开发、构建、测试、lint、格式检查、类型检查和任务编排。生成项目使用 `vp` 作为工具入口，并在配置中声明跨包任务。
+
+`vp check`、`vp test` 是内置命令；`vp run dev`、`vp run ready` 调用项目任务。开发整个应用时使用 `vp run dev`，以启动该技术栈需要的服务。
+
+## TypeScript [#typescript]
+
+<Tech href="https://www.typescriptlang.org" icon="typescript" />
+
+项目启用严格模式，并通过共享配置包统一各 workspace 的编译规则。TypeScript 用于应用代码、表结构、接口和配置。类型推导与运行时校验的分工见[为什么选择 vibestart](/docs/why#typescript)。
+
+## pnpm [#pnpm]
+
+<Tech href="https://pnpm.io" icon="pnpm" />
+
+pnpm 是默认包管理器，提供 workspace 与依赖隔离。依赖版本集中在 `pnpm-workspace.yaml` 的 catalog 中，各包通过 `catalog:` 引用，锁文件为 `pnpm-lock.yaml`。
+
+## Bun [#bun]
+
+<Tech href="https://bun.sh" icon="bun" />
+
+Bun 可作为包管理器，也可作为 Hono 的运行时，两项选择相互独立。选择 Bun 包管理器时，workspace 与 catalog 位于根 `package.json`，锁文件为 `bun.lock`。
+
+两种包管理器均通过 `vp install` 安装依赖。选择 Bun 运行时后，Hono 使用 Bun 启动；前端框架和工具链仍使用其既有运行方式。示例见[创建项目](/docs/cli/create#runtime)。
+
+## Oxlint 与 Oxfmt [#oxc]
+
+<Tech href="https://oxc.rs" icon="oxc" />
+
+Vite+ 内置 Oxlint 和 Oxfmt。Oxlint 检查代码规则与类型相关问题，Oxfmt 统一格式。`vp check` 报告问题，`vp check --fix` 应用可自动修复的变更；仍需根据诊断处理无法自动修复的问题。
+
+## Ultracite [#ultracite]
+
+<Tech href="https://www.ultracite.ai" icon="ultracite" />
+
+Ultracite 是默认选中的扩展能力，为 lint 与格式化提供预设。框架规则根据技术栈启用，包括 React、Next.js、TanStack、Vitest 和 shadcn 的相关规则。
+
+取消 Ultracite 后，项目仍保留 Vite+ 的基础检查、类型检查、测试与构建。
+
+## Knip [#knip]
+
+<Tech href="https://knip.dev" icon="knip" />
+
+Knip 检查未使用的文件、导出、依赖和 catalog 条目，默认接入 `vp run ready`。也可以独立运行 `vp run knip`。
+
+Knip 自动识别 workspace、包入口和支持的工具配置。仅在自动发现不足时生成额外配置，例如 Electron 的主进程与 preload 构建入口。没有 `knip.jsonc` 不代表未启用 Knip；应查看依赖和项目任务。
+
+扩展能力可在创建时选择，已有项目可使用 [`add`](/docs/cli/add) 接入。
+
+## Node.js [#node]
+
+<Tech href="https://nodejs.org" icon="node" />
+
+Node.js 是默认应用运行时，也是工具链使用的运行时。项目通过 `.node-version` 固定版本，由 Vite+ 管理。运行环境与类型依赖随模板版本统一维护。

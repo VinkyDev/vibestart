@@ -1,0 +1,74 @@
+---
+title: Project structure
+description: How a generated project is organized, and where each kind of change belongs.
+---
+
+A generated project is a workspace: deployable applications under `apps/`, and the code they share under `packages/`. The example below uses a single-page app, Hono, oRPC, SQLite, and Better Auth; other combinations add or remove directories to match their choices.
+
+```text title="my-app/"
+apps/
+  web/                 Pages, routes, and web tests
+  server/              Hono service, environment, database connection
+packages/
+  api/                 API procedures: validation, authorization, handlers
+  db/                  Table schemas and migrations
+  auth/                Better Auth configuration
+  ui/                  Shared components and theme
+  config/              Shared TypeScript settings
+.vibestart/            Template baseline and maintenance state
+AGENTS.md              Development conventions
+vibestart.jsonc        The project's technology choices
+vite.config.ts         Checks and project tasks
+```
+
+## Applications and packages [#request-flow]
+
+Each directory under `apps/` is something you run or deploy. Packages under `packages/` hold code that more than one application uses, or that has a single clear responsibility, such as the database schema.
+
+With Hono, the API runs in `apps/server`. With a framework server, Next.js or TanStack Start mounts the same API procedures through its own routes, and there is no `apps/server`. In development, the web app reaches the API through a proxy on the same origin, so session cookies work without extra configuration. See [How a full-stack app works](/docs/concepts#request-flow) for the path a request takes.
+
+## Where changes belong [#where]
+
+For the example stack above:
+
+| To change                    | Edit                                                                               |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| A page or route              | `apps/web/src/routes/`; pages for signed-in users go under `_authenticated/`       |
+| An API operation             | A router in `packages/api/src/routers/`, registered in `packages/api/src/index.ts` |
+| A table                      | `packages/db/src/schema/`, then generate a migration                               |
+| A server setting             | `apps/server/src/env.ts` and `apps/server/.env.example`                            |
+| A shared component           | `packages/ui`                                                                      |
+| Browser or integration tests | `apps/web/tests/e2e/` or `packages/api/tests/integration/`                         |
+
+`AGENTS.md` lists the exact locations for your combination, along with the steps each kind of change requires.
+
+## Development conventions [#agents-md]
+
+`AGENTS.md` is generated for the selected stack. It describes directory responsibilities, how to change the API and the database schema, which tests each change needs, and the definition of done. Keep it current as the project grows: it is the first file a coding agent reads, and the one new contributors should read too.
+
+## Project recipe [#blueprint]
+
+`vibestart.jsonc` records the stack, add-ons, package manager, and release channel the project was created with. `packageManager` and `stack.runtime` are separate: one names the installation tool, the other the application runtime. To create another project with the same choices, pass the file to `--recipe`; see [Recipes](/docs/cli/create#recipe).
+
+## Dependency versions [#catalog]
+
+pnpm projects declare their workspaces and a catalog of shared versions in `pnpm-workspace.yaml`; Bun projects declare them in the root `package.json`. Packages refer to catalog versions with `catalog:`, so each dependency has one version across the workspace. The lockfile records exactly what was installed.
+
+## Environment variables [#env]
+
+`.env.example` lists the settings an application needs. The CLI copies it to `.env` and generates the authentication secret. Servers validate their environment at startup and stop with a clear error if a value is missing.
+
+<Callout type="warn">
+  `.env` files contain secrets and are excluded from Git. Commit changes to
+  `.env.example` instead, without real values.
+</Callout>
+
+## Maintenance baseline [#baseline]
+
+`.vibestart/state.json` and `.vibestart/base.json` record where the project came from and the template files it started with. Upgrades use them to tell template changes apart from your own edits. Commit both files, and do not edit them by hand. See [Upgrade a project](/docs/cli/upgrade).
+
+## Project tasks [#scripts]
+
+`vp run dev` starts the application, `vp run build` builds it, and `vp run ready` runs every check, test, and the build. Database, Knip, and browser test tasks appear when the matching capabilities are selected.
+
+`vp <command>` runs a command built into Vite+, such as `vp check` or `vp test`. `vp run <task>` runs a task defined by the project, in a `package.json` script or in `vite.config.ts`.

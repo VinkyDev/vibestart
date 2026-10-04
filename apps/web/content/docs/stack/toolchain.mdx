@@ -1,0 +1,64 @@
+---
+title: Toolchain
+description: Vite+, TypeScript, package managers, runtimes, and optional code checks.
+---
+
+The toolchain is what you use to develop the project, as opposed to what its users run: the `vp` command, TypeScript, the package manager, and the code checks. Every combination shares it.
+
+## Vite+ [#vite-plus]
+
+<Tech href="https://viteplus.dev" icon="vite-plus" />
+
+Vite+ provides development, builds, testing, lint, formatting, type checks, and task orchestration. Generated projects use `vp` as their tool entry point and declare cross-package tasks in configuration.
+
+`vp check` and `vp test` are built-in commands. `vp run dev` and `vp run ready` call project tasks. Use `vp run dev` to start the services required by the whole application.
+
+## TypeScript [#typescript]
+
+<Tech href="https://www.typescriptlang.org" icon="typescript" />
+
+Projects enable strict mode and share compiler settings through a configuration package. Application code, schemas, APIs, and configuration use TypeScript. See [Why vibestart](/docs/why#typescript) for the roles of type inference and runtime validation.
+
+## pnpm [#pnpm]
+
+<Tech href="https://pnpm.io" icon="pnpm" />
+
+pnpm is the default package manager, providing workspaces and dependency isolation. Versions live in the `pnpm-workspace.yaml` catalog; packages reference them with `catalog:`. The lockfile is `pnpm-lock.yaml`.
+
+## Bun [#bun]
+
+<Tech href="https://bun.sh" icon="bun" />
+
+Bun can be selected independently as a package manager and as the Hono runtime. With the Bun package manager, workspaces and the catalog live in the root `package.json`, and the lockfile is `bun.lock`.
+
+Both package managers install through `vp install`. Selecting the Bun runtime changes how Hono starts; frontend frameworks and tools retain their existing runtime behavior. See [creating projects](/docs/cli/create#runtime).
+
+## Oxlint and Oxfmt [#oxc]
+
+<Tech href="https://oxc.rs" icon="oxc" />
+
+Vite+ includes Oxlint and Oxfmt. Oxlint checks code rules and type-aware issues; Oxfmt formats source. `vp check` reports problems, and `vp check --fix` applies available automatic fixes. Remaining diagnostics require code changes.
+
+## Ultracite [#ultracite]
+
+<Tech href="https://www.ultracite.ai" icon="ultracite" />
+
+Ultracite is a default-selected extension supplying lint and formatting presets. Framework rules follow the selected stack, including relevant React, Next.js, TanStack, Vitest, and shadcn rules.
+
+Omitting Ultracite preserves Vite+ base checks, type checks, tests, and builds.
+
+## Knip [#knip]
+
+<Tech href="https://knip.dev" icon="knip" />
+
+Knip checks unused files, exports, dependencies, and catalog entries. It joins `vp run ready` by default and can be run separately with `vp run knip`.
+
+Knip discovers workspaces, package entry points, and supported tool configuration. Additional configuration is generated only where discovery needs assistance, such as Electron main and preload build entries. The absence of `knip.jsonc` does not mean Knip is disabled; inspect dependencies and project tasks.
+
+Choose extensions during creation or introduce them later with [`add`](/docs/cli/add).
+
+## Node.js [#node]
+
+<Tech href="https://nodejs.org" icon="node" />
+
+Node.js is the default application runtime and the toolchain runtime. `.node-version` pins the version managed by Vite+. Runtime versions and corresponding type dependencies are maintained with the template release.

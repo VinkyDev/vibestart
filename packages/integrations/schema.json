@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "addons": {
+      "default": ["knip", "ultracite"],
+      "type": "array",
+      "items": { "type": "string", "enum": ["knip", "ultracite"] }
+    },
+    "channel": { "type": "string", "enum": ["recommended"] },
+    "packageManager": { "type": "string", "enum": ["pnpm", "bun"] },
+    "stack": {
+      "type": "object",
+      "properties": {
+        "toolchain": { "type": "string", "enum": ["vite-plus"] },
+        "frontend": { "type": "string", "enum": ["react"] },
+        "framework": {
+          "type": "string",
+          "enum": ["spa", "tanstack-start", "next"]
+        },
+        "router": { "type": "string", "enum": ["tanstack-router"] },
+        "backend": { "type": "string", "enum": ["hono", "self"] },
+        "api": { "type": "string", "enum": ["orpc", "openapi"] },
+        "database": { "type": "string", "enum": ["postgres", "sqlite"] },
+        "orm": { "type": "string", "enum": ["drizzle"] },
+        "auth": { "type": "string", "enum": ["better-auth"] },
+        "ui": { "type": "string", "enum": ["shadcn"] },
+        "desktop": { "type": "string", "enum": ["electron"] },
+        "runtime": { "type": "string", "enum": ["node", "bun"] },
+        "deployment": { "type": "string", "enum": ["docker"] },
+        "testing": { "type": "string", "enum": ["vitest-playwright"] }
+      },
+      "required": ["toolchain", "testing"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["channel", "stack"],
+  "additionalProperties": false
+}

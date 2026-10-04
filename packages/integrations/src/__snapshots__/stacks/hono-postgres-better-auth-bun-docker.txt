@@ -1,0 +1,863 @@
+# setup
+vp install  # writes pnpm-lock.yaml
+vp run db:generate --name init  # writes packages/db/src/migrations/**
+
+# .dockerignore (docker)
+.git
+.vibestart
+**/node_modules
+**/dist
+**/coverage
+**/.vitest
+**/*.tsbuildinfo
+**/*.local
+**/*.log
+**/.env
+**/.env.*
+!**/.env.example
+
+# .gitattributes (vite-plus)
+* text=auto eol=lf
+
+# .gitignore (vite-plus)
+node_modules
+dist
+coverage
+.vitest
+*.tsbuildinfo
+*.local
+*.log
+
+.env
+.env.*
+!.env.example
+
+.DS_Store
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# .node-version (vite-plus)
+24.21.0
+
+# .vscode/extensions.json (vite-plus)
+{
+  "recommendations": ["VoidZero.vite-plus-extension-pack"]
+}
+
+# .vscode/settings.json (vite-plus)
+{
+  "npm.scriptRunner": "vp",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+  "oxc.disableNestedConfig": true,
+  "oxc.fmt.disableNestedConfig": true,
+  "files.readonlyInclude": {
+    "packages/db/src/migrations/**": true
+  }
+}
+
+# AGENTS.md (vite-plus)
+<!--VITE PLUS START-->
+
+# Using Vite+, the Unified Toolchain for the Web
+
+This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
+
+Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
+
+## Built-in Commands vs Scripts
+
+`vp <name>` runs a built-in command. `vp run <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `vp dev` and `vp run dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `vp run <name>` when the project defines a script or task with that name.
+
+## Tool Versions
+
+Run `vp toolchain` to show versions and relationships in the active Vite+
+release. Add a tool name to select part of the graph. For example, run
+`vp toolchain vite`. Use `--global` to ignore the local `vite-plus` package. Use
+`vp why <package>` to show the package-manager dependency graph.
+
+## Review Checklist
+
+- [ ] Run `vp install` after pulling remote changes and before getting started.
+- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
+- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
+
+<!--VITE PLUS END-->
+
+# Project
+
+The architecture this project was created with is recorded in `vibestart.jsonc`.
+
+## Code
+
+Converge on the simplest durable design that meets current requirements. Land it directly, unless a verified external constraint forces a staged path. The change you land is the design that stays.
+
+- Fix the root cause at the abstraction that owns it. Carry the change through every layer it touches, and leave unrelated areas intact.
+- Open with a tracer bullet: the smallest end-to-end slice that works. Grow it in complete layers, and add only what current requirements need.
+- Use the fewest concepts, paths, configuration options, and extension points those requirements need. Add indirection for a use case that exists now.
+- One representation, one execution path. Update every in-repository consumer to the final interface, and remove the obsolete API, schema, implementation, configuration, tests, and documentation in the same change. The core path is that final interface alone: no adapter, deprecated alias, dual read or write, fallback, feature flag, or migration layer beside it.
+- A compatibility path exists only for a verified external constraint: a deployed consumer, a public contract, persisted production data, or a staged rollout. An assumed consumer is not a constraint. Isolate the path, name the condition that removes it, and let the final state shape the core. When production state cannot change atomically, ship an explicit, reversible migration with a defined end.
+- Let small units and precise names carry the meaning. A comment states a why the code cannot: an external constraint, counterintuitive behavior, an invariant, or a tradeoff. Delete a comment that restates the code or has gone stale.
+- Carry precise types across input, internal, and output boundaries. Validate untrusted data before use, and make invalid states unrepresentable so later code does not re-check them. Type unknown data as `unknown` and narrow it with a schema or a type guard. `any` is not a type in this repo. Back every type assertion and non-null assertion with a runtime check or a stated invariant.
+- Lint serves the design. When a rule's concern applies, fix the code. When a rule misfires on the idiom a library documents, keep the idiom and turn the rule off for that library's files in a `lint.overrides` entry in `vite.config.ts`, with a comment naming the idiom.
+- Before writing a helper or adding a package, read the dependencies already in the repo, their docs, and their types. Prefer one of those. Otherwise add one mature, widely used, maintained library when it lowers total complexity or raises reliability, at the latest stable version this toolchain accepts, and follow its current docs. One library per capability. Keep a few lines of domain logic inline when they are smaller than a new dependency.
+
+## Map
+
+| Path              | Owns                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `apps/server`     | Hono on Bun: `env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`, the routes, including `/api/health` |
+| `packages/db`     | Drizzle schema (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`       |
+| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                           |
+| `packages/config` | Shared TypeScript presets                                                                                                 |
+
+`vp run dev` serves the server on :3000. Routes are registered on `app` in `src/app.ts`; `GET /api/health` checks PostgreSQL.
+
+## Conventions
+
+- **Environment.** Declare every server variable in `apps/server/src/env.ts` and add it to `apps/server/.env.example`. Code reads `env`. Bun loads `.env` in development; production gets the variables from the platform.
+- **Schema.** Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as Zod. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated. The Better Auth tables in `schema/auth.ts` match the fields Better Auth expects; read its docs before adding a plugin.
+- **Authorization.** A server route that reads or writes user data gets the session with `auth.api.getSession({ headers })`, answers 401 without one, and scopes every query by the session's user id. Each new protected route is tested as an anonymous caller and as another user.
+- **Proxy.** Better Auth rate-limits by client IP. Behind a reverse proxy, set `advanced.ipAddress` in `packages/auth` to the header that proxy sets. With no proxy, leave forwarding headers untrusted.
+- **Generated.** `packages/db/src/migrations/**` is tool output. Leave it unchanged.
+- **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
+- **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.
+- **Ultracite.** Run `vp check` to apply the Ultracite lint and formatting presets, including framework rules and anti-slop checks for AI-written code. Fix the reported code instead of disabling the rules.
+
+## Tests
+
+Types, Zod at every procedure boundary, database constraints, lint, and CI catch whole classes of bugs before a test runs. When one of those can enforce a rule, enforce it there too.
+
+Write what "working" means before the implementation: acceptance criteria, the procedure's input, output, and error contract, and the invariants. The expected value comes from that specification.
+
+| Layer | Location                                                             | Runs against | Write it for                                                                             |
+| ----- | -------------------------------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------- |
+| Unit  | `*.test.ts` beside the code in `apps/server/src` or `packages/*/src` | Node, no I/O | Branching logic: pricing, permissions, state machines, parsers, calculations, edge cases |
+
+A test fails when the behavior it names is broken. For important logic, break the code on purpose and confirm a test fails. A bug fix starts from a test that reproduces the bug and fails.
+
+While iterating, run the narrowest set that covers the change: `vp test --project unit`, `vp test --changed`, or a single file.
+
+## Done
+
+The change is done when every modified path works end to end, every rule in this file holds in every modified file, and `vp run ready` passes.
+
+# Dockerfile (docker)
+# syntax=docker/dockerfile:1
+
+FROM ghcr.io/voidzero-dev/vite-plus:1.0.0 AS build
+WORKDIR /app
+
+COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
+COPY --chown=vp:vp apps/server/package.json apps/server/
+COPY --chown=vp:vp packages/auth/package.json packages/auth/
+COPY --chown=vp:vp packages/config/package.json packages/config/
+COPY --chown=vp:vp packages/db/package.json packages/db/
+RUN vp install --frozen-lockfile
+
+COPY --chown=vp:vp . .
+RUN vp run build
+RUN cp "$(vp env which node | head -1)" /tmp/node
+
+FROM oven/bun:1.4.2-slim AS runtime
+WORKDIR /app
+ENV NODE_ENV=production PORT=3000
+
+COPY --from=build /tmp/node /usr/local/bin/node
+COPY --from=build /app/apps/server/dist ./dist
+
+USER nobody
+EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+CMD ["bun", "dist/index.mjs"]
+
+# README.md (vite-plus)
+# my-app
+
+Hono · PostgreSQL · Drizzle · Better Auth · Bun · Docker, on [Vite+](https://viteplus.dev).
+
+| Layer     | Choice                                                         |
+| --------- | -------------------------------------------------------------- |
+| Backend   | Hono on Bun                                                    |
+| Database  | PostgreSQL 18, Drizzle ORM v1                                  |
+| Auth      | Better Auth, email and password, sessions in PostgreSQL        |
+| Deploy    | Docker: one self-contained image, no `node_modules` at runtime |
+| Toolchain | Vite+ (`vp`): dev, build, test, lint, format, type check       |
+
+## Getting started
+
+```sh
+vp install
+docker compose up -d db   # or point DATABASE_URL at any Postgres
+vp run db:migrate
+vp run dev
+```
+
+The server listens on http://localhost:3000, with its health at http://localhost:3000/api/health.
+
+## Commands
+
+```sh
+vp check       # format, lint, type check
+vp run knip    # unused files, exports, dependencies, and catalog entries
+vp test        # unit tests (Vitest)
+vp run ready   # check + knip + test + production build
+```
+
+Hono requires Bun 1.4.2 or newer on PATH. Install it from https://bun.sh before running the server or its tests. Vite+ and full-stack web frameworks continue to run on Node.js.
+
+## Database
+
+Edit a table in `packages/db/src/schema/`, then:
+
+```sh
+vp run db:generate   # writes a migration to packages/db/src/migrations/
+vp run db:migrate    # applies it
+```
+
+## Production
+
+```sh
+BETTER_AUTH_SECRET=$(openssl rand -base64 32) docker compose up --build
+```
+
+This starts PostgreSQL, runs migrations once, then serves the API on http://localhost:3000.
+
+The image runs two entry points from the same build:
+
+- `bun dist/migrate.mjs` applies pending migrations and exits;
+- `bun dist/index.mjs` serves `/api/health` and `/api/auth`.
+
+Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUTH_SECRET`; the server also reads `PORT` (default `3000`).
+
+# apps/server/.env.example (hono)
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3000
+
+# apps/server/package.json (core)
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "vp pack",
+    "start": "bun dist/index.mjs",
+    "db:migrate": "bun src/migrate.ts"
+  },
+  "dependencies": {
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/server/src/app.ts (hono)
+import { sql } from "drizzle-orm";
+import { Hono } from "hono";
+import type { Context } from "hono";
+import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
+
+import { auth, db } from "#src/context.ts";
+
+const authHandler = async (c: Context) => await auth.handler(c.req.raw);
+
+const health = async (c: Context) => {
+  await db.execute(sql`select 1`);
+  return c.json({ status: "ok" });
+};
+
+export const app = new Hono()
+  .use(logger())
+  .use(secureHeaders())
+  .on(["GET", "POST"], "/api/auth/*", authHandler)
+  .get("/api/health", health);
+
+# apps/server/src/context.ts (hono)
+import { createAuth } from "@my-app/auth";
+import { createDb } from "@my-app/db";
+
+import { env } from "#src/env.ts";
+
+export const db = createDb(env.DATABASE_URL);
+
+export const auth = createAuth({
+  baseURL: env.BETTER_AUTH_URL,
+  db,
+  secret: env.BETTER_AUTH_SECRET,
+});
+
+# apps/server/src/env.ts (hono)
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  emptyStringAsUndefined: true,
+  runtimeEnv: process.env,
+  server: {
+    BETTER_AUTH_SECRET: z.string().min(32),
+    BETTER_AUTH_URL: z.url(),
+    DATABASE_URL: z.url(),
+    PORT: z.coerce.number().int().positive().default(3000),
+  },
+});
+
+# apps/server/src/index.ts (hono)
+import { once } from "node:events";
+
+import { serve } from "bun";
+
+import { app } from "#src/app.ts";
+import { db } from "#src/context.ts";
+import { env } from "#src/env.ts";
+
+const server = serve({ fetch: app.fetch, port: env.PORT });
+const { port } = server;
+console.log(`Server listening on http://localhost:${port}`);
+
+await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+await server.stop();
+await db.$client.end();
+
+# apps/server/src/migrate.ts (postgres)
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/env.ts";
+
+const db = createDb(env.DATABASE_URL);
+await migrateDatabase(db);
+await db.$client.end();
+
+# apps/server/tsconfig.json (hono)
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "compilerOptions": { "types": ["node", "bun"] },
+  "include": ["src", "vite.config.ts"]
+}
+
+# apps/server/vite.config.ts (hono)
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  pack: {
+    copy: [{ from: "../../packages/db/src/migrations", to: "dist" }],
+    deps: { alwaysBundle: [/^(?!bun(?:$|:))/u], neverBundle: [/^bun(?:$|:)/u] },
+    entry: ["src/index.ts", "src/migrate.ts"],
+  },
+});
+
+# docker-compose.yml (docker)
+name: my-app
+
+x-app: &app
+  build: .
+  image: my-app
+  environment:
+    DATABASE_URL: postgres://postgres:postgres@db:5432/my_app
+    BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+    BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: my_app
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d my_app"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+
+  migrate:
+    <<: *app
+    command: ["bun", "dist/migrate.mjs"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    <<: *app
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  db-data:
+
+# package.json (core)
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run -r build",
+    "prepare": "vp config",
+    "db:generate": "vp run --filter @my-app/db db:generate",
+    "db:migrate": "vp run --filter @my-app/server db:migrate",
+    "db:studio": "vp run --filter @my-app/db db:studio",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.8.1",
+      "onFail": "warn"
+    }
+  },
+  "engines": {
+    "bun": ">=1.4.2",
+    "node": "24.21.0",
+    "pnpm": "12.8.1"
+  }
+}
+
+# packages/auth/package.json (core)
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@my-app/db": "workspace:*",
+    "better-auth": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/src/index.ts (better-auth)
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "pg", schema }),
+    emailAndPassword: { enabled: true },
+    secret,
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/tsconfig.json (better-auth)
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src"]
+}
+
+# packages/config/package.json (core)
+{
+  "name": "@my-app/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./typescript/*.json": "./typescript/*.json"
+  }
+}
+
+# packages/config/typescript/base.json (vite-plus)
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2024",
+    "lib": ["ES2024"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "noEmit": true
+  }
+}
+
+# packages/config/typescript/node.json (vite-plus)
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}
+
+# packages/db/drizzle.config.ts (drizzle)
+import { existsSync } from "node:fs";
+
+import { defineConfig } from "drizzle-kit";
+
+const serverEnvFile = "../../apps/server/.env";
+
+if (existsSync(serverEnvFile)) {
+  process.loadEnvFile(serverEnvFile);
+}
+
+export default defineConfig({
+  dbCredentials: { url: process.env.DATABASE_URL ?? "" },
+  dialect: "postgresql",
+  out: "./src/migrations",
+  schema: "./src/schema",
+});
+
+# packages/db/package.json (core)
+{
+  "name": "@my-app/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./migrate": "./src/migrate.ts",
+    "./schema/*": "./src/schema/*.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "drizzle-orm": "catalog:",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "drizzle-kit": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/db/src/index.ts (postgres)
+import { drizzle } from "drizzle-orm/postgres-js";
+
+import { relations } from "#src/relations.ts";
+
+export const createDb = (url: string) =>
+  drizzle({
+    connection: { connection: { client_min_messages: "warning" }, url },
+    relations,
+  });
+
+export type Database = ReturnType<typeof createDb>;
+
+# packages/db/src/migrate.ts (postgres)
+import { fileURLToPath } from "node:url";
+
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+
+import type { Database } from "#src/index.ts";
+
+const migrationsFolder = fileURLToPath(new URL("migrations", import.meta.url));
+
+export const migrateDatabase = async (db: Database) => {
+  await migrate(db, { migrationsFolder });
+};
+
+# packages/db/src/relations.ts (drizzle)
+import { defineRelations } from "drizzle-orm";
+
+import { account, session, user, verification } from "#src/schema/auth.ts";
+
+export const relations = defineRelations(
+  { account, session, user, verification },
+  (r) => ({
+    account: {
+      user: r.one.user({ from: r.account.userId, to: r.user.id }),
+    },
+    session: {
+      user: r.one.user({ from: r.session.userId, to: r.user.id }),
+    },
+    user: {
+      accounts: r.many.account(),
+      sessions: r.many.session(),
+    },
+  })
+);
+
+# packages/db/src/schema/auth.ts (better-auth)
+import {
+  boolean,
+  index,
+  snakeCase,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+
+const timestamps = {
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp({ withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+};
+
+export const user = snakeCase.table("user", {
+  email: text().notNull().unique(),
+  emailVerified: boolean().notNull().default(false),
+  id: text().primaryKey(),
+  image: text(),
+  name: text().notNull(),
+  ...timestamps,
+});
+
+export const session = snakeCase.table(
+  "session",
+  {
+    expiresAt: timestamp({ withTimezone: true }).notNull(),
+    id: text().primaryKey(),
+    ipAddress: text(),
+    token: text().notNull().unique(),
+    userAgent: text(),
+    userId: text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [index("session_user_id_idx").on(table.userId)]
+);
+
+export const account = snakeCase.table(
+  "account",
+  {
+    accessToken: text(),
+    accessTokenExpiresAt: timestamp({ withTimezone: true }),
+    accountId: text().notNull(),
+    id: text().primaryKey(),
+    idToken: text(),
+    password: text(),
+    providerId: text().notNull(),
+    refreshToken: text(),
+    refreshTokenExpiresAt: timestamp({ withTimezone: true }),
+    scope: text(),
+    userId: text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [index("account_user_id_idx").on(table.userId)]
+);
+
+export const verification = snakeCase.table(
+  "verification",
+  {
+    expiresAt: timestamp({ withTimezone: true }).notNull(),
+    id: text().primaryKey(),
+    identifier: text().notNull(),
+    value: text().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("verification_identifier_idx").on(table.identifier)]
+);
+
+# packages/db/tsconfig.json (drizzle)
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src", "drizzle.config.ts"]
+}
+
+# pnpm-workspace.yaml (core)
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@types/bun": ^1.4.2
+  "@types/node": ^24.19.1
+  knip: ^6.39.0
+  typescript: ^7.0.2
+  ultracite: ^7.12.2
+  vite-plus: 1.0.0
+
+  # api
+  zod: ^4.6.5
+
+  # server
+  "@t3-oss/env-core": ^0.13.11
+  hono: ^4.13.12
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.7
+  better-auth: ^1.7.7
+
+  # db
+  drizzle-kit: 1.0.0-rc.4
+  drizzle-orm: 1.0.0-rc.4
+  postgres: ^3.4.9
+
+allowBuilds:
+  esbuild: false
+
+# tsconfig.json (vite-plus)
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["vite.config.ts"]
+}
+
+# vibestart.jsonc (core)
+{
+  "$schema": "https://vibestart.dev/schema.json",
+
+  "stack": {
+    "toolchain": "vite-plus",
+    "backend": "hono",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "runtime": "bun",
+    "deployment": "docker",
+    "testing": "vitest-playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vite.config.ts (vite-plus)
+import oxfmt from "ultracite/oxfmt";
+import antiSlop from "ultracite/oxlint/anti-slop";
+import core from "ultracite/oxlint/core";
+import vitest from "ultracite/oxlint/vitest";
+import { defineConfig } from "vite-plus";
+
+const generatedFiles = [".vibestart/**", "packages/db/src/migrations/**"];
+
+export default defineConfig({
+  fmt: {
+    ...oxfmt,
+    ignorePatterns: [...(oxfmt.ignorePatterns ?? []), ...generatedFiles],
+    proseWrap: "preserve",
+    sortImports: {
+      customGroups: [
+        {
+          elementNamePattern: ["@my-app/**"],
+          groupName: "workspace",
+        },
+      ],
+      groups: [
+        "builtin",
+        "external",
+        "workspace",
+        ["internal", "subpath"],
+        ["parent", "sibling", "index"],
+        "style",
+        "unknown",
+      ],
+      ignoreCase: true,
+      newlinesBetween: true,
+      order: "asc",
+    },
+  },
+  lint: {
+    extends: [core, vitest, antiSlop],
+    ignorePatterns: [...(core.ignorePatterns ?? []), ...generatedFiles],
+    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+    options: { typeAware: true, typeCheck: true },
+    overrides: [
+      {
+        // Hono middleware awaits `next()`, which is not a Node.js error-first callback.
+        files: ["apps/server/src/**"],
+        rules: { "node/callback-return": "off" },
+      },
+    ],
+    rules: {
+      "vite-plus/prefer-vite-plus-imports": "error",
+    },
+  },
+  staged: {
+    "*": "vp check --fix",
+  },
+  test: {
+    passWithNoTests: true,
+    projects: [
+      {
+        test: {
+          include: [
+            "apps/server/src/**/*.test.ts",
+            "packages/*/src/**/*.test.ts",
+          ],
+          name: "unit",
+        },
+      },
+    ],
+  },
+});

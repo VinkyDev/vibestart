@@ -1,0 +1,117 @@
+---
+title: Quick start
+description: Install the toolchain, create a project, and start it locally.
+---
+
+There are two ways to create a project: [describe what you want to a coding agent](#agent), or [run the CLI in a terminal](#create). Both produce the same kind of project, and both need the toolchain below.
+
+## Prerequisites [#prerequisites]
+
+Generated projects use [Vite+](https://viteplus.dev) for development, checks, tests, and builds. Its `vp` command also installs the Node.js and package-manager versions each project pins, so you do not need to manage them yourself.
+
+<Tabs group="os" items={["macOS / Linux", "Windows"]}>
+<Tab value="macOS / Linux">
+
+```sh
+curl -fsSL https://vite.plus | bash
+```
+
+</Tab>
+<Tab value="Windows">
+
+```powershell
+irm https://vite.plus/ps1 | iex
+```
+
+</Tab>
+</Tabs>
+
+A project with SQLite needs nothing else. PostgreSQL also needs Docker on your machine, or a PostgreSQL instance you can connect to.
+
+## Create with an agent [#agent]
+
+Paste the prompt below into a coding agent such as Claude Code or Codex, and replace the requirements and project name with your own. The agent reads the vibestart skill, looks up the combinations the CLI supports, chooses a stack that fits the requirements, and creates the project.
+
+```text title="Prompt"
+Run this command, read its complete output, and follow the skill:
+npx skills use VinkyDev/vibestart --skill vibestart
+
+Choose a suitable stack and use the vibestart CLI to create a project named my-app.
+Requirements: a personal expense tracker with email/password sign-in,
+private records per user, and persistent storage. Start with local development.
+```
+
+<Callout type="tip">
+  If you have already chosen a stack in the [studio](/studio), switch it to
+  **Agent** mode to copy a prompt that names exactly those choices. To keep the
+  skill in your project for later sessions, see [Agent Skills](/docs/cli/skill).
+</Callout>
+
+Once the project exists, the agent can continue with [Start the application](#run), or you can run those steps yourself.
+
+## Create in a terminal [#create]
+
+<Tabs group="pm" items={["pnpm", "npm", "bun"]}>
+<Tab value="pnpm">
+
+```sh
+pnpm dlx vibestart-cli my-app
+```
+
+</Tab>
+<Tab value="npm">
+
+```sh
+npx vibestart-cli my-app
+```
+
+</Tab>
+<Tab value="bun">
+
+```sh
+bunx vibestart-cli my-app
+```
+
+</Tab>
+</Tabs>
+
+The CLI proposes a recommended stack. Accept it, or customize the framework, backend, API, database, authentication, and delivery in turn; each step lists only the options that work with what you have already chosen. See [Choosing a stack](/docs/stack) for what each option is for.
+
+The CLI then writes the files, creates `.env` files, initializes Git, installs dependencies, runs code generation, and checks the result. The command you launch it with does not decide the project's package manager: projects use pnpm unless you choose Bun. See [Create a project](/docs/cli/create) for every flag.
+
+## Start the application [#run]
+
+Follow the `Next steps` the CLI prints. For a full-stack project with SQLite, they are usually:
+
+```sh
+cd my-app
+vp run db:migrate
+vp run dev
+```
+
+Open the address shown in the terminal. If you selected authentication, you can sign up, sign in, and add todos.
+
+<Callout title="Using PostgreSQL">
+  Before running `vp run db:migrate`, start the database with `docker compose up
+  -d db`, or set `DATABASE_URL` to an existing instance. Projects without a
+  database skip the migration.
+</Callout>
+
+## Check your work [#commands]
+
+Every project uses the same commands to check changes:
+
+| Command           | What it does                                                   |
+| ----------------- | -------------------------------------------------------------- |
+| `vp check`        | Formatting, lint, and type checks                              |
+| `vp test`         | Unit and API integration tests                                 |
+| `vp run test:e2e` | Browser end-to-end tests, in projects with a web frontend      |
+| `vp run ready`    | Every check, test, and the production build, before you commit |
+
+Before the first browser test, install Chromium by running `vp exec playwright install chromium` in `apps/web`.
+
+## Next steps [#next]
+
+- [How a full-stack app works](/docs/concepts): what the frontend, API, and database each do, if these are new to you.
+- [Project structure](/docs/project): where each kind of code lives.
+- [Developing features](/docs/develop): carry a change through every layer and confirm that it works.

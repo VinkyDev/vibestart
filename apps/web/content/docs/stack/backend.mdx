@@ -1,0 +1,49 @@
+---
+title: Backend and API
+description: Choose a server structure and an API style, and validate input where requests arrive.
+---
+
+The backend receives requests from the frontend and other clients, validates them, and reads and writes data. Two decisions shape it: where the server code runs, and what kind of API it exposes.
+
+## Server structure [#choose]
+
+| Option           | Runs as                                         | Suits                                          |
+| ---------------- | ----------------------------------------------- | ---------------------------------------------- |
+| Hono             | A separate service in `apps/server`             | APIs shared by several clients, or no frontend |
+| Framework server | Routes inside the Next.js or TanStack Start app | Pages and API deployed together as one app     |
+
+## Hono [#hono]
+
+<Tech href="https://hono.dev" icon="hono" />
+
+Hono provides routing and middleware using standard Request and Response APIs. The generated `apps/server` owns environment validation, database connections, authentication, and API mounting. Web apps reach it through a development proxy; production layout follows the selected framework.
+
+## Framework server [#self]
+
+Next.js and TanStack Start can use their own server routes. Business endpoints stay in shared packages and are mounted by framework routes. Pages and APIs run in one process without a separate `apps/server`.
+
+## oRPC [#orpc]
+
+<Tech href="https://orpc.unnoq.com" icon="orpc" />
+
+oRPC infers client types from server routes and integrates with TanStack Query and OpenAPI. Input schemas, handlers, and errors define the API contract. Callers receive parameter and response types in the editor and during type checking.
+
+## OpenAPI [#openapi]
+
+<Tech
+  href="https://hono.dev/examples/zod-openapi"
+  icon="hono"
+  paired="openapi"
+/>
+
+The OpenAPI option uses `@hono/zod-openapi` to describe REST routes, input, and responses, and generate API documentation. It suits standard HTTP APIs and clients written in other languages. This option uses a Hono backend.
+
+## Zod [#zod]
+
+<Tech href="https://zod.dev" icon="zod" />
+
+Zod validates external data before it reaches application logic and infers TypeScript types from schemas. Generated endpoints include input constraints such as title length. Environment variables are also validated at server startup.
+
+## Hono runtime [#hono-runtime]
+
+Hono uses Node.js by default and optionally Bun. The runtime controls how the service starts and is independent of the package manager. Bun does not change how frontend frameworks or test tools run. See [creating projects](/docs/cli/create#runtime) for examples.

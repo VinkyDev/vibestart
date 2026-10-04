@@ -1,0 +1,73 @@
+---
+title: Developing features
+description: Carry a change through every layer it touches, on your own or with a coding agent, and confirm that it works.
+---
+
+Most features touch more than one layer of the application. This page follows one example, adding a due date to todos, from the database to the tests, and then shows how to hand the same kind of work to a coding agent.
+
+## One change, every layer [#layers]
+
+Step through the files the change touches, in the order you would make it:
+
+<FeatureFlow
+  steps={[
+    {
+      text: "Add the column to the table schema. This is TypeScript only; the database itself has not changed yet.",
+    },
+    {
+      text: "Generate a migration from the schema change. Read the SQL it contains, then commit it along with the code.",
+    },
+    {
+      text: "Accept the new field in the API. Zod rejects malformed input before the handler runs, and the client receives the new type without a code generation step.",
+    },
+    {
+      text: "Add the field to the page. If a call passes the wrong shape, the type checker reports it before anything runs.",
+    },
+    {
+      text: "Pin the new behavior with a test, then run the full check. The change is done when vp run ready passes.",
+    },
+  ]}
+/>
+
+Working from the data outward lets each step build on the types of the one before it. Once the schema has the column, the API can use its type; once the API accepts the field, every call from the page is checked against it. Apply the migration to your local database with `vp run db:migrate` before trying the page.
+
+## Working with a coding agent [#agent]
+
+The generated `AGENTS.md` tells a coding agent where each kind of change belongs, which tests to write, and when the work is done. Many agents read it at the start of a session; if yours does not, ask it to read the file first.
+
+Describe the result you want rather than the steps, and state how to confirm it:
+
+```text title="Prompt"
+Add an optional due date to todos. Users set it when they create a todo,
+and overdue todos are listed first. Follow AGENTS.md, add the tests it
+requires, and finish only when vp run ready passes.
+```
+
+When the agent reports that it is done, review the parts that matter most:
+
+- **Migrations.** Read the generated SQL before applying it to any database that holds real data.
+- **Access to data.** Every API operation that reads or writes user data should be protected and limited to the current user.
+- **Tests.** New behavior should come with new tests. A test that was deleted or weakened deserves a question, not approval.
+- **The final check.** Run `vp run ready` yourself, or confirm in the agent's output that it passed.
+
+## Commands while you work [#commands]
+
+| Task                                       | Command              |
+| ------------------------------------------ | -------------------- |
+| Start the application                      | `vp run dev`         |
+| Generate a migration after a schema change | `vp run db:generate` |
+| Apply migrations to the local database     | `vp run db:migrate`  |
+| Format, lint, and type check               | `vp check`           |
+| Apply automatic fixes                      | `vp check --fix`     |
+| Run unit and integration tests             | `vp test`            |
+| Run a single test file                     | `vp test <file>`     |
+| Run browser tests                          | `vp run test:e2e`    |
+| Check everything before a commit           | `vp run ready`       |
+
+While iterating, run the narrowest check that covers your change. Run `vp run ready` before you commit.
+
+## When a change is done [#done]
+
+A change is done when every path it touches works end to end, the conventions in `AGENTS.md` still hold, and `vp run ready` passes. That command runs the same checks, tests, and production build that every combination passed before release, so your changes are held to the standard the project started with.
+
+See [Testing and verification](/docs/testing) for how the tests are organized and what each layer covers.

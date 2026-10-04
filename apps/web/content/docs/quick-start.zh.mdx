@@ -1,0 +1,116 @@
+---
+title: 快速开始
+description: 安装工具链、创建项目，并在本地启动。
+---
+
+创建项目有两种方式：[向编码 Agent 描述需求](#agent)，或[在终端中运行 CLI](#create)。两种方式生成的项目相同，都需要先准备下面的工具链。
+
+## 环境准备 [#prerequisites]
+
+生成的项目使用 [Vite+](https://viteplus.dev) 完成开发、检查、测试和构建。它提供的 `vp` 命令还会安装项目指定的 Node.js 和包管理器版本，无需手动管理。
+
+<Tabs group="os" items={["macOS / Linux", "Windows"]}>
+<Tab value="macOS / Linux">
+
+```sh
+curl -fsSL https://vite.plus | bash
+```
+
+</Tab>
+<Tab value="Windows">
+
+```powershell
+irm https://vite.plus/ps1 | iex
+```
+
+</Tab>
+</Tabs>
+
+使用 SQLite 的项目无需其他准备。使用 PostgreSQL 时，还需要本机安装 Docker，或有一个可以连接的 PostgreSQL 实例。
+
+## 使用 Agent 创建 [#agent]
+
+将下面的提示词粘贴到 Claude Code、Codex 等编码 Agent 中，并把需求和项目名称替换为你自己的。Agent 会读取 vibestart skill，查询 CLI 支持的组合，根据需求选择技术栈，然后创建项目。
+
+```text title="提示词"
+先执行以下命令，读取完整输出并遵循其中的 skill：
+npx skills use VinkyDev/vibestart --skill vibestart
+
+选择合适的技术栈，使用 vibestart CLI 创建名为 my-app 的项目。
+需求：个人记账 Web 应用，支持邮箱密码登录，每个用户的记录相互隔离，数据持久化存储。先在本地开发。
+```
+
+<Callout type="tip">
+  如果已经在[工作台](/studio)中选好了技术栈，可以切换到 **Agent**
+  模式，复制包含这些选择的提示词。如需在后续会话中持续使用 skill，请参阅 [Agent
+  Skills](/docs/cli/skill) 将它安装到项目中。
+</Callout>
+
+项目创建后，可以让 Agent 继续完成[启动应用](#run)中的步骤，也可以自己执行。
+
+## 在终端中创建 [#create]
+
+<Tabs group="pm" items={["pnpm", "npm", "bun"]}>
+<Tab value="pnpm">
+
+```sh
+pnpm dlx vibestart-cli my-app
+```
+
+</Tab>
+<Tab value="npm">
+
+```sh
+npx vibestart-cli my-app
+```
+
+</Tab>
+<Tab value="bun">
+
+```sh
+bunx vibestart-cli my-app
+```
+
+</Tab>
+</Tabs>
+
+CLI 会给出推荐的技术栈。你可以直接采用，也可以依次调整框架、后端、API、数据库、认证和交付方式；每一步只列出与已选内容兼容的选项。各选项的用途见[选择技术栈](/docs/stack)。
+
+随后，CLI 写入项目文件、创建 `.env` 文件、初始化 Git、安装依赖、执行代码生成，并检查生成结果。用哪个命令启动 CLI 不影响项目的包管理器：除非选择 Bun，项目默认使用 pnpm。全部参数见[创建项目](/docs/cli/create)。
+
+## 启动应用 [#run]
+
+按照 CLI 输出的 `Next steps` 操作。对于使用 SQLite 的全栈项目，通常是：
+
+```sh
+cd my-app
+vp run db:migrate
+vp run dev
+```
+
+打开终端中显示的地址。如果选择了认证，就可以注册、登录并添加待办。
+
+<Callout title="使用 PostgreSQL">
+  执行 `vp run db:migrate` 之前，先通过 `docker compose up -d db`
+  启动数据库，或将 `DATABASE_URL`
+  设置为已有实例的地址。没有数据库的项目无需迁移。
+</Callout>
+
+## 检查改动 [#commands]
+
+所有项目都使用同一组命令检查改动：
+
+| 命令              | 作用                                      |
+| ----------------- | ----------------------------------------- |
+| `vp check`        | 格式、lint 和类型检查                     |
+| `vp test`         | 单元测试和 API 集成测试                   |
+| `vp run test:e2e` | 浏览器端到端测试，适用于带 Web 前端的项目 |
+| `vp run ready`    | 全部检查、测试和生产构建，提交前运行      |
+
+首次运行浏览器测试前，在 `apps/web` 目录执行 `vp exec playwright install chromium` 安装 Chromium。
+
+## 下一步 [#next]
+
+- [全栈应用如何运行](/docs/concepts)：如果你对前端、API 和数据库还不熟悉，可以从这里了解它们各自的职责。
+- [项目结构](/docs/project)：各类代码分别放在哪里。
+- [开发新功能](/docs/develop)：把一次改动贯穿到每一层，并确认它能正常工作。

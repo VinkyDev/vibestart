@@ -1,0 +1,39 @@
+---
+title: Delivery
+description: Deploy with Docker, or package the web interface as an Electron desktop app.
+---
+
+Delivery is how the finished application reaches its users: as a container running on a server, or as a desktop app they install. Both are optional, and Docker can also be added to an existing project.
+
+## Docker [#docker]
+
+<Tech href="https://docs.docker.com" icon="docker" />
+
+Selecting Docker adds a production Dockerfile, Compose configuration, and ignore file. Multi-stage builds separate dependency installation, application builds, and the runtime. The final image contains the output needed to run the application.
+
+Output follows the selected stack: static sites use a web server, SSR applications run their server build, and Hono uses the selected Node.js or Bun runtime. Database files and service data directories use persistent storage.
+
+Configure secrets and database addresses in the deployment environment, then start services with the generated Compose configuration. Add deployment files to an existing project with [`npx vibestart-cli add docker`](/docs/cli/add).
+
+<ImageBuild
+  steps={[
+    { text: "The Dockerfile defines the build and runtime environment." },
+    {
+      text: "Build the image and copy runtime artifacts into the final stage.",
+    },
+    { text: "Start a container from the image and map the application port." },
+    {
+      text: "An image can run multiple instances; shared state and traffic routing need separate configuration.",
+    },
+  ]}
+/>
+
+## Electron [#electron]
+
+<Tech href="https://www.electronjs.org" icon="electron" />
+
+Electron wraps the SPA in a desktop window while sharing page code with the web app. `apps/desktop` contains the main process, preload, and packaging configuration. `packages/electron` defines IPC channels, payload schemas, and types.
+
+Generated settings enable `contextIsolation` and `sandbox` and disable page-level `nodeIntegration`. IPC checks message sources; external links open in the system browser. Packaged apps load pages through `https://app.localhost` and proxy API requests when needed.
+
+Electron uses the SPA frontend and electron-builder to produce distribution packages.

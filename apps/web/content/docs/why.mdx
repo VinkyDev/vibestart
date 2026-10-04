@@ -1,0 +1,142 @@
+---
+title: Why vibestart
+description: The problems vibestart addresses, what it believes, and the decisions that follow.
+---
+
+## The problem [#problems]
+
+With a coding agent, the hard part of an application is rarely the first day. It is the thirtieth: features pile up, the structure erodes, and each fix the agent makes introduces another bug.
+
+Part of the cause is the starting point. A full-stack TypeScript application needs a router, an API layer, an ORM with migrations, sessions, input validation, lint rules, tests for both the API and the browser, and a way to deploy. Each pairing has its own configuration details, and a starter that works today drifts as its dependencies move on. In a loosely configured project, nothing tells the agent where a change belongs, and nothing confirms that the result works.
+
+vibestart gives the agent, and you, a better starting point: best practices for a current, carefully chosen stack, and a codebase built so that an agent writes good code in it.
+
+## Good code begets good code [#theory]
+
+The idea behind vibestart is simple: **an agent writes better code on top of a better codebase.** This follows from how coding agents work:
+
+| An agent…                              | In a loose project                      | In a vibestart project                                          |
+| -------------------------------------- | --------------------------------------- | --------------------------------------------------------------- |
+| **imitates** the code around it        | picks up whatever habits it finds       | finds a consistent example in every file                        |
+| **follows** written rules              | improvises, because there are none      | reads `AGENTS.md`, which says where and how each change is made |
+| **relies on errors** to correct itself | learns of a mistake when a user hits it | is told within seconds by types, lint, and tests                |
+
+The third point matters most. An agent does not tire, but it does make mistakes, and it makes them with confidence. What decides the quality of the result is whether a mistake is caught at once, and reported in a form the agent can act on.
+
+Below are four mistakes agents commonly make. Choose one to see which check in a generated project stops it:
+
+<FeedbackLoop
+  mistakes={[
+    {
+      label: "Renamed a field",
+      text: "The agent renames the todo's title field to name, and misses the page that reads it.",
+      gate: "types",
+      error:
+        "apps/web/src/routes/_authenticated/todos.tsx:88:29\nerror TS2339: Property 'title' does not exist on type 'Todo'.",
+      fix: "The error names the file and the line. The agent reads todo.name instead, runs the checks again, and everything passes.",
+    },
+    {
+      label: "Forgot an await",
+      text: "After a todo changes, the agent refreshes the list without waiting for it. Now and then the page shows stale data, and the bug is hard to reproduce.",
+      gate: "lint",
+      error:
+        "apps/web/src/routes/_authenticated/todos.tsx:31:7\ntypescript(no-floating-promises): Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.",
+      fix: "A type-aware lint rule finds the promise that nothing awaits. The agent adds the await, and the bug never ships.",
+    },
+    {
+      label: "Missed a permission",
+      text: "The agent adds a 'clear completed' operation and forgets to limit it to the current user. The page looks fine.",
+      gate: "integration",
+      error:
+        "FAIL packages/api/tests/integration/todos.test.ts > clearing completed todos leaves other users' todos alone\nAssertionError: expected [] to strictly equal [ { title: \"Alice's secret\", completed: true } ]",
+      fix: "The conventions require every protected operation to be tested against a second user. Two real accounts expose the leak at once, and the agent scopes the query to the current user.",
+    },
+    {
+      label: "Broke the form",
+      text: "The agent reworks the new-todo form and turns its submit button into a plain button. Types, lint, and the API are all fine.",
+      gate: "e2e",
+      error:
+        "FAIL tests/e2e/app.e2e.ts > a new user signs up and manages todos that persist across reloads\nError: expect(locator).toBeVisible() failed\nLocator: getByText('Buy milk')",
+      fix: "The end-to-end test signs up and adds a todo in a real browser, as a person would, and nothing appears. The agent restores the submit button.",
+    },
+  ]}
+/>
+
+`vp run ready` runs these checks in order, fastest first. An agent can run it after every change and learn within seconds to minutes whether the change is correct. This is how a vibestart project keeps improving as it grows, instead of eroding.
+
+## A current stack, kept current [#modern]
+
+vibestart offers only technologies that are the current standard, or are clearly becoming it. Generated projects use TypeScript 7 with its native compiler, React 19 with the React Compiler, Drizzle ORM 1.0, Oxlint and Oxfmt rather than ESLint and Prettier, and Vite+ as a single toolchain for development, checks, tests, and builds.
+
+When a better tool becomes the standard, the template moves to it in a later release, and the tool it replaces is removed rather than kept alongside for compatibility. Every technology on offer meets the same criteria:
+
+- **Current, not legacy.** It is maintained, widely adopted, and where the ecosystem is heading.
+- **Open source, with no vendor lock-in.** The project runs on your machine and on any server. Hosted services can be connected through configuration, but none is required to start.
+- **Verifiable.** Combined with every technology it can work with, it installs, checks, tests, and builds. A technology that cannot pass verification is not offered.
+- **Suited to agents.** Complete types, clear conventions, and precise error messages. Between two equally capable tools, vibestart picks the one whose mistakes surface earlier.
+- **One library per capability.** There is no second state library or second API style to choose between. Fewer concepts leave fewer ways to go wrong, for people and agents alike.
+
+## Composed, not copied [#compose]
+
+Starters usually come as fixed templates: you pick the closest one and delete what you do not need. vibestart describes each technology as an integration, with its files, dependencies, and constraints, and composes the project from the integrations you choose. A single-page app can use a standalone Hono service; TanStack Start and Next.js can serve the API themselves; a project can also be an API alone.
+
+The studio and the CLI read the same registry of integrations. When choices conflict, such as Electron with Next.js, both explain the conflict and propose the smallest change that resolves it.
+
+## Every combination is verified [#verification]
+
+Composition is only useful if every result works. Before each release, every supported combination is generated, installed, and run through type checks, lint, tests, browser tests, and a production build. A passing run is recorded with a fingerprint of the generated files, the environment, and the time.
+
+When you create a project, the CLI matches its output against that fingerprint and reports the verification that applies. A record covers the project as generated; once you change code, dependencies, or deployment settings, your own `vp run ready` takes over. See [Testing and verification](/docs/testing#verification).
+
+## TypeScript across the stack [#typescript]
+
+vibestart generates TypeScript only, by choice:
+
+- **One language from database to button.** Pages, server, schema, validation, tests, and configuration are all TypeScript, so an agent never switches languages, and a type can travel from a table to the page that displays it.
+- **Types are the fastest feedback.** In a dynamic language, a misspelled field fails at runtime, often only when a user reaches that screen. In TypeScript, it is reported as soon as the code is written.
+- **Type safety end to end.** Drizzle defines tables in TypeScript, oRPC derives the API's types from them, and the page derives its types from the API, with no code generation step. Rename a field, and every place that uses it is reported.
+- **The language agents know best.** TypeScript and JavaScript are among the most widely used languages, and agents have seen more good code in them than in almost any other.
+
+Static types catch mistakes in your own code; runtime validation with Zod catches bad data from outside it. A generated project relies on both.
+
+## Tests that earn their place [#testing]
+
+A view has spread in the community: in the age of AI, unit tests are dead, because tests an agent writes only double the amount of code without catching real bugs. For a common kind of unit test, the criticism is fair. Asked to "add tests", an agent tends to write one per function, mock every dependency, and assert that some function was called once. Coverage looks good, every test passes while the product is broken, and every refactor breaks the tests.
+
+vibestart does not give up on testing; it puts the weight where bugs actually appear:
+
+- **End-to-end tests** cover the widest scope. They sign up, sign in, and work in a real browser, and decide whether the product works.
+- **Integration tests** cover every API operation: validation, error codes, and permissions, through the real API code and a real database.
+- **Unit tests** are reserved for logic with real branches, such as pricing, permission rules, state machines, and parsers.
+
+To see the difference, plant a real bug in the same application and run two suites against it:
+
+<TestValue />
+
+[Testing and verification](/docs/testing) describes each layer and the principles the tests follow.
+
+## Conventions in the repository [#conventions]
+
+Every project includes an `AGENTS.md` written for its stack: which directory owns what, how a request moves through the application, where a new procedure, table, or page goes, which tests a change needs, and when a change counts as done. Developers read it as documentation; coding agents read it as instructions. Codex and Cursor read `AGENTS.md` automatically; with Claude Code, reference it from `CLAUDE.md`.
+
+`vp check` enforces formatting, lint, and types. Ultracite adds lint presets for the frameworks in use, and Knip reports unused files, exports, and dependencies so the project does not accumulate dead code. Both are selected by default and can be left out.
+
+## Maintained after creation [#maintenance]
+
+Most generators stop at the first commit. vibestart records the template each project started from, so that later template releases can be merged in. `upgrade` compares the original template, your project, and the new template, and previews the result before writing anything. A conflict stops the upgrade before any file changes, and an unfinished operation can be resumed or rolled back. See the [CLI reference](/docs/cli).
+
+## Compared with a typical starter [#compare]
+
+|                  | A typical starter                    | vibestart                                                        |
+| ---------------- | ------------------------------------ | ---------------------------------------------------------------- |
+| Stack            | One fixed template, or a few options | Composed from your choices; conflicts are explained, with a fix  |
+| Does it work?    | Expected to                          | Every combination has passed checks, tests, and a build          |
+| Rules for agents | None, or a generic prompt            | An `AGENTS.md` generated for this exact stack                    |
+| Tests            | None, or an example file             | End-to-end and integration tests against a real database         |
+| After creation   | Up to you                            | Template upgrades merged into your project, with a preview first |
+
+## What vibestart does not do [#scope]
+
+- **It does not host your application.** The output is an ordinary repository that you deploy wherever you like.
+- **It does not migrate production data.** Template upgrades never touch a database; you review and apply migrations yourself.
+- **It does not hide the code.** Everything it generates is yours to read and change, and nothing at runtime depends on vibestart.

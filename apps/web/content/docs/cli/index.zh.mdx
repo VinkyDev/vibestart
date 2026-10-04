@@ -1,0 +1,91 @@
+---
+title: CLI 概览
+description: 创建项目、添加能力、检查项目状态并应用模板升级。
+---
+
+vibestart CLI 负责创建项目，以及项目创建之后的维护。它无需全局安装，通过包管理器运行即可：
+
+<Tabs group="pm" items={["pnpm", "npm", "bun"]}>
+<Tab value="pnpm">
+
+```sh
+npx vibestart-cli <命令>
+```
+
+</Tab>
+<Tab value="npm">
+
+```sh
+npx vibestart-cli <命令>
+```
+
+</Tab>
+<Tab value="bun">
+
+```sh
+bunx vibestart-cli <命令>
+```
+
+</Tab>
+</Tabs>
+
+## 命令 [#commands]
+
+| 命令                               | 用途                                     |
+| ---------------------------------- | ---------------------------------------- |
+| [`create`](/docs/cli/create)       | 创建项目，`create` 关键字可以省略        |
+| [`add`](/docs/cli/add)             | 为已有项目添加 Knip、Ultracite 或 Docker |
+| [`doctor`](/docs/cli/doctor)       | 检查配置与维护状态，不写入任何文件       |
+| [`upgrade`](/docs/cli/upgrade)     | 预览并应用模板更新                       |
+| [`recover`](/docs/cli/recover)     | 继续或回滚未完成的操作                   |
+| [`adopt`](/docs/cli/upgrade#adopt) | 为来源可确认的旧项目记录基线             |
+
+如果希望由编码 Agent 代为执行这些命令，请安装 [vibestart skill](/docs/cli/skill)。
+
+## 维护流程 [#workflow]
+
+所有修改已有项目的命令都遵循相同的步骤。在项目目录中执行：
+
+<Steps>
+<Step title="检查">
+
+`doctor` 报告项目的模板版本、存在的问题，以及是否有可用的更新。它不会写入任何文件。
+
+```sh
+npx vibestart-cli doctor --offline
+```
+
+</Step>
+<Step title="预览">
+
+`--dry-run` 根据原始模板、当前文件和目标模板生成变更计划，只展示，不写入。
+
+```sh
+npx vibestart-cli upgrade --dry-run
+```
+
+</Step>
+<Step title="应用">
+
+在终端中确认计划；没有终端的环境请传入 `--yes`。应用后会安装依赖并检查项目。
+
+```sh
+npx vibestart-cli upgrade --yes
+```
+
+</Step>
+<Step title="必要时恢复">
+
+遇到冲突或检查失败时，操作会被保留。解决问题后，通过 [`recover`](/docs/cli/recover) 继续或回滚。
+
+</Step>
+</Steps>
+
+<Callout type="warn" title="提交维护状态">
+  `.vibestart/state.json` 与 `.vibestart/base.json`
+  记录项目的来源和最初的模板。请一并提交这两个文件，不要用业务文件替换它们，升级依赖于此。
+</Callout>
+
+## 项目与输出选项 [#options]
+
+维护命令支持通过 `--cwd <项目>` 指定其他目录，通过 `--json` 输出供脚本读取的结果。全部参数和退出码见[自动化](/docs/cli/automation)。

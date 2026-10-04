@@ -1,0 +1,55 @@
+name: my-app
+
+x-app: &app
+  build: .
+  image: my-app
+  environment:
+    DATABASE_URL: postgres://postgres:postgres@db:5432/my_app
+    BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+    BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: my_app
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d my_app"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+
+  migrate:
+    <<: *app
+    command: ["node", "dist/migrate.mjs"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  server:
+    <<: *app
+    command: ["node", "dist/index.mjs"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  app:
+    <<: *app
+    environment:
+      SERVER_URL: http://server:3000
+    depends_on:
+      server:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  db-data:

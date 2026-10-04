@@ -1,0 +1,58 @@
+---
+title: 前端
+description: 选择页面的渲染方式，了解路由、数据请求和共享组件。
+---
+
+前端是运行在浏览器中的全部内容：页面、路由、数据请求和组件。首先选择框架，它决定页面在哪里渲染、应用如何部署；后续各节分别介绍每种框架以及它们共用的工具。
+
+## 渲染方式 [#choose]
+
+三种选择都基于 React，区别在于页面的渲染位置和部署方式：
+
+| 选项                    | 渲染与部署                                          | 适用场景                     |
+| ----------------------- | --------------------------------------------------- | ---------------------------- |
+| TanStack Router（Vite） | 浏览器渲染，静态资源或 Hono 提供页面                | 管理后台、工具、桌面应用     |
+| TanStack Start          | 服务端渲染，Node.js 服务                            | 使用 TanStack 路由的全栈应用 |
+| Next.js                 | App Router 与 React Server Components，Node.js 服务 | 内容网站、全栈产品           |
+
+<RenderRace />
+
+## React [#react]
+
+<Tech href="https://react.dev" icon="react" />
+
+React 用组件组织界面。生成项目包含页面、表单和共享组件，并启用 React Compiler。状态与事件处理均使用 React 的标准 API。
+
+## TanStack Router（Vite） [#spa]
+
+<Tech href="https://tanstack.com/router" icon="tanstack" paired="vite" />
+
+Vite 构建单页应用，TanStack Router 根据文件生成路由树。路径、参数和导航具有类型检查。没有后端时可以发布静态资源；搭配 Hono 时，生产环境可由 Hono 提供页面与 API。
+
+## TanStack Start [#tanstack-start]
+
+<Tech href="https://tanstack.com/start" icon="tanstack" />
+
+TanStack Start 在 TanStack Router 上提供服务端渲染、服务端路由和服务端函数。项目使用 Vite 构建，并通过 Nitro 生成服务端产物。后端可以使用框架路由，也可以选择独立的 Hono 服务。
+
+## Next.js [#next]
+
+<Tech href="https://nextjs.org" icon="next" />
+
+Next.js 项目使用 App Router 和 React Server Components。服务端组件可以读取服务端数据；交互组件通过客户端边界接入。生成配置包含 React Compiler，并使用 Next.js 自身的开发与构建命令，由项目任务统一调用。
+
+## 路由 [#tanstack-router]
+
+单页应用和 TanStack Start 使用 TanStack Router，Next.js 使用 App Router。页面位于各框架约定的路由目录中，新增页面时沿用相应框架的文件结构。
+
+## TanStack Query [#tanstack-query]
+
+<Tech href="https://tanstack.com/query" icon="tanstack" />
+
+TanStack Query 管理服务端数据的缓存、加载状态和刷新。oRPC 集成提供类型化查询选项，例如 `api.todos.list.queryOptions()`。数据写入后刷新关联查询，使界面与服务端状态保持一致。
+
+## shadcn/ui 与 Tailwind CSS [#shadcn]
+
+<Tech href="https://ui.shadcn.com" icon="shadcn" paired="tailwind" />
+
+共享组件源码位于 `packages/ui`，可以直接修改。Base UI 提供键盘交互和焦点管理，Tailwind CSS 用于样式与主题。选择 Ultracite 时，还会接入相应的 shadcn lint 规则。

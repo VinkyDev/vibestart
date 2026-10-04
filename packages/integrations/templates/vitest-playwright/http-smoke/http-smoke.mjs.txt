@@ -1,0 +1,72 @@
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { Duplex } from "node:stream";
+const require = createRequire(new URL("./apps/web/package.json", import.meta.url));
+const { closeTestHttp } = await import("./apps/web/tests/support/http.ts");
+const { Agent, setGlobalDispatcher } = require("undici");
+let qosCalls = 0;
+// The virtual socket stands in for macOS setsockopt(EINVAL); it binds/connects no real socket.
+class VirtualSocket extends Duplex {
+  connecting = false;
+  remoteAddress = "127.0.0.1";
+  remotePort = 80;
+  remoteFamily = "IPv4";
+  request = "";
+  _read() {}
+  _write(chunk, encoding, callback) {
+    this.request += chunk.toString();
+    if (this.request.includes("\r\n\r\n")) {
+      this.request = "";
+      queueMicrotask(() =>
+        this.push("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: keep-alive\r\n\r\nok"),
+      );
+    }
+    callback();
+  }
+  setNoDelay() {
+    return this;
+  }
+  setKeepAlive() {
+    return this;
+  }
+  setTimeout() {
+    return this;
+  }
+  ref() {
+    return this;
+  }
+  unref() {
+    return this;
+  }
+  setTypeOfService() {
+    qosCalls++;
+    throw Object.assign(new Error("setTypeOfService EINVAL"), { code: "EINVAL" });
+  }
+}
+const agent = new Agent({
+  connect(options, callback) {
+    queueMicrotask(() => callback(null, new VirtualSocket()));
+  },
+});
+setGlobalDispatcher(agent);
+try {
+  const response = await fetch("http://socket.invalid/");
+  assert.equal(await response.text(), "ok");
+  assert.equal(qosCalls, 0, "Default requests must not touch socket QoS");
+  const prioritized = await agent.request({
+    origin: "http://socket.invalid",
+    path: "/",
+    method: "GET",
+    typeOfService: 32,
+  });
+  assert.equal(await prioritized.body.text(), "ok");
+  assert.ok(qosCalls > 0, "Explicit QoS requests exercise the EINVAL path");
+  console.log(
+    "Undici " +
+      require("undici/package.json").version +
+      ": native fetch uses fixed dispatcher; EINVAL is contained; no listening socket.",
+  );
+} finally {
+  await agent.destroy();
+  await closeTestHttp();
+}

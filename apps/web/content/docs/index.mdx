@@ -1,0 +1,88 @@
+---
+title: Introduction
+description: What vibestart is, how it works, and where to start reading.
+---
+
+## What is vibestart? [#what]
+
+vibestart creates full-stack TypeScript applications. You choose a technology for each part of the app, such as the frontend, backend, API, database, and authentication, and vibestart generates a complete project for that combination: application code, tool configuration, tests, and the development conventions that you and a coding agent both follow.
+
+Every combination on offer is generated, installed, checked, tested, and built before release. Once the project exists, the same CLI applies later template updates without overwriting your code.
+
+## How it works [#how]
+
+<HowItWorks
+  stages={[
+    {
+      title: "Choose",
+      text: "Pick a technology for each part of the app, in the studio or the terminal. When two choices cannot work together, you see why, along with the smallest change that resolves it.",
+    },
+    {
+      title: "Generate",
+      text: "vibestart writes a workspace of applications and shared packages, installs dependencies, and runs the first checks. Sign-up, sign-in, and a todo list work end to end from the start.",
+    },
+    {
+      title: "Verify",
+      text: "Before each release, every combination passes type checks, lint, unit and integration tests, browser tests, and a production build. The record of that run ships with the CLI.",
+    },
+    {
+      title: "Maintain",
+      text: "When the template improves, upgrade compares the original template, your project, and the new template. Template files take the update; your application code stays as you wrote it.",
+    },
+  ]}
+/>
+
+## What you get [#output]
+
+A generated project is an ordinary repository with no runtime dependency on vibestart. Depending on your choices, it contains:
+
+- **A working application**: pages, an API, a database schema with migrations, and email/password sign-in, connected through a complete todo example.
+- **Types end to end**: the database schema, the API, and the pages share TypeScript types, and the server validates every input it receives.
+- **Tests of behavior**: browser tests for complete workflows, integration tests for each API operation, and unit tests for branching logic.
+- **One set of commands**: `vp run dev`, `vp check`, `vp test`, and `vp run ready` work the same way in every combination.
+- **Written conventions**: an `AGENTS.md` that states where each kind of change belongs and when a change is done.
+
+## Pick your path [#paths]
+
+These docs are written for two kinds of readers. Start with the path that fits you; both lead into the guide.
+
+<Paths>
+  <Path
+    reader="agent"
+    steps={[
+      {
+        href: "/docs/quick-start#agent",
+        title: "Create a project with an agent",
+      },
+      { href: "/docs/concepts", title: "How a full-stack app works" },
+      { href: "/docs/develop#agent", title: "Develop features with an agent" },
+      { href: "/docs/glossary", title: "Glossary" },
+    ]}
+    title="Building with an AI agent"
+  >
+    You describe what you want, and a coding agent writes most of the code. You
+    do not need to know every technology in the stack. These pages explain what
+    the agent works with and how to check its results.
+  </Path>
+  <Path
+    reader="developer"
+    steps={[
+      {
+        href: "/docs/quick-start#create",
+        title: "Create a project in the terminal",
+      },
+      { href: "/docs/why", title: "Why vibestart" },
+      { href: "/docs/stack", title: "Choosing a stack" },
+      { href: "/docs/cli", title: "CLI reference" },
+    ]}
+    title="Writing the code yourself"
+  >
+    You know TypeScript and want a stack that is already wired together and
+    stays consistent. Start in the terminal, then read why the stack is shaped
+    this way and what each part does.
+  </Path>
+</Paths>
+
+## Try it online [#studio]
+
+To see what vibestart generates before installing anything, open the [studio](/studio). It composes a stack in the browser and previews every file of the resulting project.

@@ -1,0 +1,29 @@
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "vp pack",
+    "start": "bun dist/index.mjs",
+    "db:migrate": "bun src/migrate.ts"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

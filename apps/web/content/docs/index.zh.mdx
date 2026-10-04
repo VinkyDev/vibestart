@@ -1,0 +1,81 @@
+---
+title: 简介
+description: vibestart 是什么、如何工作，以及从哪里开始阅读。
+---
+
+## vibestart 是什么？ [#what]
+
+vibestart 是一个全栈 TypeScript 应用生成器。你为应用的各个部分选择技术，包括前端、后端、API、数据库和认证方式，vibestart 会为这一组合生成完整的项目：应用代码、工具配置、测试，以及你和编码 Agent 共同遵循的开发约定。
+
+所有可选的组合在发布前都经过生成、安装、检查、测试和构建。项目创建之后，同一个 CLI 负责应用后续的模板更新，不会覆盖你编写的代码。
+
+## 工作方式 [#how]
+
+<HowItWorks
+  stages={[
+    {
+      title: "选择技术栈",
+      text: "在工作台或终端中，为应用的每个部分选择技术。两项选择无法搭配时，会说明原因，并给出改动最少的调整方案。",
+    },
+    {
+      title: "生成项目",
+      text: "vibestart 写入由应用和共享包组成的 workspace，安装依赖并执行首次检查。注册、登录和待办示例从一开始就能完整运行。",
+    },
+    {
+      title: "验证组合",
+      text: "每次发布前，所有组合都要通过类型检查、lint、单元与集成测试、浏览器测试和生产构建。验证记录随 CLI 一同发布。",
+    },
+    {
+      title: "持续维护",
+      text: "模板更新后，upgrade 会对比原始模板、你的项目和新模板：模板文件合并更新，你的业务代码保持原样。",
+    },
+  ]}
+/>
+
+## 项目包含什么 [#output]
+
+生成的项目是一个普通的代码仓库，运行时不依赖 vibestart。根据所选技术，它包含：
+
+- **可以运行的应用**：页面、API、带迁移的数据库结构和邮箱密码登录，由一个完整的待办示例串联起来。
+- **贯穿全栈的类型**：数据库结构、API 和页面共享 TypeScript 类型，服务端校验收到的每一项输入。
+- **面向行为的测试**：浏览器测试覆盖完整流程，集成测试覆盖每个接口操作，单元测试覆盖分支逻辑。
+- **统一的命令**：`vp run dev`、`vp check`、`vp test` 和 `vp run ready` 在所有组合中用法一致。
+- **成文的约定**：`AGENTS.md` 写明每类改动应该放在哪里，以及怎样才算完成。
+
+## 选择阅读路径 [#paths]
+
+本文档面向两类读者。请从适合你的路径开始，两条路径最终都会进入「指南」部分。
+
+<Paths>
+  <Path
+    reader="agent"
+    steps={[
+      { href: "/docs/quick-start#agent", title: "使用 Agent 创建项目" },
+      { href: "/docs/concepts", title: "全栈应用如何运行" },
+      { href: "/docs/develop#agent", title: "与 Agent 协作开发功能" },
+      { href: "/docs/glossary", title: "术语表" },
+    ]}
+    title="借助 AI 构建应用"
+  >
+    你用自然语言描述需求，由编码 Agent
+    编写大部分代码。你不需要了解技术栈中的每一项技术，这些页面会说明 Agent
+    在使用什么，以及如何检查它的工作结果。
+  </Path>
+  <Path
+    reader="developer"
+    steps={[
+      { href: "/docs/quick-start#create", title: "在终端中创建项目" },
+      { href: "/docs/why", title: "为什么选择 vibestart" },
+      { href: "/docs/stack", title: "选择技术栈" },
+      { href: "/docs/cli", title: "CLI 参考" },
+    ]}
+    title="自己编写代码"
+  >
+    你熟悉
+    TypeScript，希望使用一套已经接好、并能长期保持一致的技术栈。从终端开始，再了解技术栈为何如此设计，以及各部分的职责。
+  </Path>
+</Paths>
+
+## 在线体验 [#studio]
+
+如果想在安装之前先看看生成结果，可以打开[工作台](/studio)。它在浏览器中组合技术栈，并预览生成项目的每一个文件。

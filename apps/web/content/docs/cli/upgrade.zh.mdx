@@ -1,0 +1,41 @@
+---
+title: 升级项目
+description: 基于模板版本预览更新，保留项目中的业务修改。
+---
+
+```sh
+npx vibestart-cli upgrade --check
+npx vibestart-cli upgrade --dry-run
+npx vibestart-cli upgrade --yes
+```
+
+`--check` 检查是否存在更新，发现更新时退出码为 `1`。`--dry-run` 展示合并计划，不写文件。默认目标是运行中的 CLI 所携带的模板版本。
+
+## 目标版本 [#target]
+
+运行目标版本的 CLI，或使用 `--to <精确版本号>` 指定目标。目标版本由对应的 CLI 生成，确保模板与 catalog 来自同一版本。预览与应用应使用同一个精确 CLI 版本；`--to` 接受已发布的版本号，不接受 `beta` 或 `latest` 标签。
+
+## 合并范围 [#merge]
+
+升级将原始模板、当前项目文件和目标模板进行三方合并，保留可合并的 JSONC 注释、自定义脚本及配置字段。业务页面和 API 实现由项目维护；目标模板改变已有业务源码时，需要经过审查的迁移，不能直接覆盖并推进基线。
+
+默认安装依赖并执行静态检查、已选 Knip 与存在的单元测试。使用 `--full-check` 执行完整 `vp run ready`。使用 `--no-install` 延后安装时，必须通过 `recover` 完成当前操作后才能继续其他修改。
+
+维护命令不初始化、迁移或重置数据库。生产数据迁移应单独审查和执行。
+
+## 冲突 [#conflicts]
+
+正式应用遇到冲突时，项目文件不写入，候选文件保存在 `.vibestart/pending/candidates/`。审查并解决冲突标记后，执行 `npx vibestart-cli recover --yes`。预览不会创建候选文件。
+
+恢复与回滚的范围见[恢复操作](/docs/cli/recover)。
+
+## 接入旧项目 [#adopt]
+
+```sh
+npx vibestart-cli adopt --from original-snapshot.json --dry-run
+npx vibestart-cli adopt --from original-snapshot.json --yes
+```
+
+`adopt` 需要独立保存的原始生成快照，以及可确认的项目名称与技术选择。快照应符合 CLI 基线格式；普通配方或当前业务文件不能代替原始快照。
+
+该命令只建立项目来源记录，不安装依赖或运行检查。无法确认来源时，不自动推测基线。

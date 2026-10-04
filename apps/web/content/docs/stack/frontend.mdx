@@ -1,0 +1,58 @@
+---
+title: Frontend
+description: Choose how pages render, and understand routing, data fetching, and shared components.
+---
+
+The frontend is everything that runs in the browser: pages, routing, data fetching, and components. Start by choosing a framework, which decides where pages are rendered and how the app is deployed; the sections after it describe each framework and the tools they share.
+
+## Rendering options [#choose]
+
+All three options use React. They differ in where pages render and how the app is deployed:
+
+| Option                 | Rendering and deployment                                | Use cases                              |
+| ---------------------- | ------------------------------------------------------- | -------------------------------------- |
+| TanStack Router (Vite) | Browser rendering; static hosting or Hono               | Dashboards, tools, desktop apps        |
+| TanStack Start         | Server rendering; Node.js service                       | Full-stack apps using TanStack routing |
+| Next.js                | App Router and React Server Components; Node.js service | Content sites and full-stack products  |
+
+<RenderRace />
+
+## React [#react]
+
+<Tech href="https://react.dev" icon="react" />
+
+React organizes the interface into components. Generated projects include pages, forms, shared components, and React Compiler configuration. State and events use standard React APIs.
+
+## TanStack Router (Vite) [#spa]
+
+<Tech href="https://tanstack.com/router" icon="tanstack" paired="vite" />
+
+Vite builds the SPA, and TanStack Router generates a route tree from files. Paths, parameters, and navigation are type checked. Without a backend, deploy static assets. With Hono, the production service can serve both pages and APIs.
+
+## TanStack Start [#tanstack-start]
+
+<Tech href="https://tanstack.com/start" icon="tanstack" />
+
+TanStack Start adds server rendering, server routes, and server functions to TanStack Router. The project builds with Vite and produces server output through Nitro. Use framework routes or a separate Hono service for the backend.
+
+## Next.js [#next]
+
+<Tech href="https://nextjs.org" icon="next" />
+
+Next.js projects use App Router and React Server Components. Server components access server data; interactive components use a client boundary. Generated configuration includes React Compiler. Project tasks call Next.js development and build commands.
+
+## Routing [#tanstack-router]
+
+SPAs and TanStack Start use TanStack Router. Next.js uses App Router. Add pages in the route directories defined by the selected framework.
+
+## TanStack Query [#tanstack-query]
+
+<Tech href="https://tanstack.com/query" icon="tanstack" />
+
+TanStack Query manages server-data caching, loading state, and refreshes. oRPC supplies typed query options such as `api.todos.list.queryOptions()`. Refresh related queries after a write to keep the UI consistent with server state.
+
+## shadcn/ui and Tailwind CSS [#shadcn]
+
+<Tech href="https://ui.shadcn.com" icon="shadcn" paired="tailwind" />
+
+Shared component source lives in `packages/ui` and can be edited directly. Base UI handles keyboard interaction and focus management; Tailwind CSS provides styling and themes. Selecting Ultracite also enables the corresponding shadcn lint rules.

@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  ready:
+    runs-on: ubuntu-latest
+    outputs:
+      # Whether some stack's verification record no longer matches the generated output.
+      stale: ${{ steps.check.outcome == 'failure' }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - run: vp install
+      - run: vp run ready
+      - id: check
+        run: vp run stacks check
+        continue-on-error: true
+
+  # Each shard verifies its share of the stale stacks. A step that outlasts the job limit is
+  # stopped and the shard's finished records are still recorded; run the workflow again
+  # (workflow_dispatch) to continue with the stacks still unverified.
+  verify:
+    if: github.event_name != 'pull_request' && needs.ready.outputs.stale == 'true'
+    needs: ready
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        # `stacks merge --shards` in the record job counts the same shards.
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 15
+    env:
+      STACKS_POSTGRES_URL: postgres://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.2
+      - run: vp install
+      - run: npx --yes playwright@^1.63.0 install --with-deps chromium
+      - run: vp run stacks verify --jobs 2 --shard ${{ matrix.shard }}/8 --out ${{ runner.temp }}/stacks
+        timeout-minutes: 330
+      - if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: shard-${{ matrix.shard }}
+          path: packages/integrations/verification.json
+      - if: failure()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: logs-${{ matrix.shard }}
+          path: ${{ runner.temp }}/stacks/*.log
+          if-no-files-found: ignore
+
+  # The only writer of verification.json: it joins the shards' records and commits them to main.
+  record:
+    if: always() && needs.verify.result != 'skipped'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - run: vp install
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          pattern: shard-*
+          path: shards
+      - run: vp run stacks merge shards --shards 8
+      - name: Commit verification.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add packages/integrations/verification.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore: update verification.json"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - if: needs.verify.result != 'success'
+        run: exit 1

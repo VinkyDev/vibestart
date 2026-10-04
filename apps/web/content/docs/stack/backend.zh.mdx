@@ -1,0 +1,49 @@
+---
+title: 后端与 API
+description: 选择服务端结构与 API 形式，并在请求到达时校验输入。
+---
+
+后端接收来自前端和其他客户端的请求，校验后读写数据。它由两项选择决定：服务端代码运行在哪里，以及对外提供哪种形式的 API。
+
+## 服务端结构 [#choose]
+
+| 选项       | 运行方式                               | 适用场景                         |
+| ---------- | -------------------------------------- | -------------------------------- |
+| Hono       | `apps/server` 中的独立服务             | 多个客户端共用的 API，或没有前端 |
+| 框架服务端 | Next.js 或 TanStack Start 应用内的路由 | 页面与 API 作为一个应用统一部署  |
+
+## Hono [#hono]
+
+<Tech href="https://hono.dev" icon="hono" />
+
+Hono 基于 Web 标准的 Request 和 Response 提供路由与中间件。生成服务位于 `apps/server`，负责环境变量校验、数据库连接、认证和 API 挂载。Web 应用在开发时通过代理访问它，生产配置按所选框架组织页面与服务。
+
+## 框架服务端 [#self]
+
+Next.js 和 TanStack Start 可以使用各自的服务端路由。业务接口保留在共享包中，由框架路由挂载。页面与 API 使用同一进程，无需独立的 `apps/server`。
+
+## oRPC [#orpc]
+
+<Tech href="https://orpc.unnoq.com" icon="orpc" />
+
+oRPC 从服务端路由推导客户端类型，并提供 TanStack Query 集成与 OpenAPI 支持。输入 schema、处理函数和错误共同构成接口约定；调用方在编辑与类型检查时即可获得参数和返回值提示。
+
+## OpenAPI [#openapi]
+
+<Tech
+  href="https://hono.dev/examples/zod-openapi"
+  icon="hono"
+  paired="openapi"
+/>
+
+OpenAPI 选项使用 `@hono/zod-openapi` 描述 REST 路由、输入和响应，并生成接口文档。适合需要标准 HTTP 接口或供其他语言客户端调用的服务。该选项使用 Hono 后端。
+
+## Zod [#zod]
+
+<Tech href="https://zod.dev" icon="zod" />
+
+Zod 在请求进入业务逻辑前校验外部数据，并从 schema 推导 TypeScript 类型。生成接口包含标题长度等输入约束；环境变量也在服务启动时校验。
+
+## Hono 运行时 [#hono-runtime]
+
+Hono 默认使用 Node.js，也可选择 Bun。运行时决定服务的启动方式，与安装依赖的包管理器独立。选择 Bun 不会改变前端框架和测试工具的运行方式。命令示例见[创建项目](/docs/cli/create#runtime)。

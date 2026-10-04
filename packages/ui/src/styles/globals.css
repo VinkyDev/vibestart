@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/instrument-sans";
+@import "@fontsource/instrument-serif";
+@import "@fontsource/instrument-serif/latin-400-italic.css";
+@import "@fontsource-variable/noto-serif-sc";
+@import "@fontsource/dm-mono/400.css";
+@import "@fontsource/dm-mono/500.css";
+
+@source "../../../apps/**/*.{ts,tsx}";
+@source "../**/*.{ts,tsx}";
+
+@theme inline {
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: var(--font-display);
+  /* CJK faces follow Latin so both scripts take the system's own, rather than a fallback that clashes. */
+  --font-sans:
+    "Instrument Sans Variable", ui-sans-serif, system-ui, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  /* Instrument Serif has no ideographs, so Chinese falls through to Noto Serif SC (Source Han Serif),
+     a Song face that sits with a serif. Both ship sliced by unicode-range: a page loads what its text uses. */
+  --font-display:
+    "Instrument Serif", "Noto Serif SC Variable", ui-serif, Georgia, serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* One ink, and greys that lean slightly blue so nothing on the page reads as a flat default. */
+:root {
+  --background: oklch(0.968 0.003 270);
+  --foreground: oklch(0.21 0.015 270);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.21 0.015 270);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.015 270);
+  --primary: oklch(0.21 0.015 270);
+  --primary-foreground: oklch(0.985 0.002 270);
+  --secondary: oklch(0.94 0.004 270);
+  --secondary-foreground: oklch(0.21 0.015 270);
+  --muted: oklch(0.95 0.004 270);
+  --muted-foreground: oklch(0.52 0.014 270);
+  --accent: oklch(0.945 0.004 270);
+  --accent-foreground: oklch(0.21 0.015 270);
+  --destructive: oklch(0.58 0.19 25);
+  --border: oklch(0.21 0.015 270 / 8%);
+  --input: oklch(0.21 0.015 270 / 12%);
+  --ring: oklch(0.21 0.015 270 / 45%);
+  --radius: 0.75rem;
+}
+
+@theme {
+  --shadow-pop:
+    0 0 0 1px oklch(0.21 0.015 270 / 8%), 0 4px 8px oklch(0.21 0.015 270 / 5%),
+    0 24px 48px -12px oklch(0.21 0.015 270 / 22%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

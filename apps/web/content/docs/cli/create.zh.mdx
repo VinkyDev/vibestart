@@ -1,0 +1,252 @@
+---
+title: 创建项目
+description: 创建参数、包管理器、运行时、配方与输出格式。
+---
+
+```sh
+npx vibestart-cli create [目录] [选项]
+```
+
+`目录` 是项目的创建位置，目录名即项目名，默认为 `my-app`。该目录必须不存在或为空。`create` 关键字可以省略。
+
+## 交互模式 [#interactive]
+
+在终端中运行 CLI，不带任何技术栈参数：
+
+```sh
+npx vibestart-cli
+```
+
+CLI 会依次：
+
+1. 询问项目名称（未指定目录时）；
+2. 展示推荐的技术栈，以及它的兼容性和最近一次验证记录；
+3. 询问要使用的扩展和包管理器，默认项已选中；
+4. 提供 **创建** 和 **自定义** 两个选项；自定义时逐项选择，每一步只列出与之前选择兼容的选项；
+5. 写入、安装并检查项目，最后输出接下来要运行的命令。
+
+如果已通过参数指定了部分选择，CLI 只会询问尚未确定的部分。
+
+## CLI 执行的步骤 [#steps]
+
+<Steps>
+<Step title="写入文件">
+
+生成技术栈所需的全部文件。对于同一模板版本和同一组选项，输出始终相同。
+
+</Step>
+<Step title="准备环境变量">
+
+根据每个 `.env.example` 创建 `.env`，并填入随机生成的认证密钥。
+
+</Step>
+<Step title="初始化 Git">
+
+运行 `git init`，可通过 `--no-git` 跳过。
+
+</Step>
+<Step title="安装与生成">
+
+运行 `vp install`，然后执行技术栈所需的生成步骤，例如生成路由树和初始数据库迁移。未使用 Vite+ 时，改由所选的 pnpm 或 Bun 安装依赖。`--no-install` 会跳过这一步及之后的全部步骤。
+
+</Step>
+<Step title="格式化与检查">
+
+运行 `vp fmt`，再运行 `vp check` 完成格式、lint 和类型检查。可通过 `--no-check` 跳过检查。
+
+</Step>
+</Steps>
+
+结束时，CLI 会报告该组合的验证状态，例如：
+
+```text
+✓ Compatible
+✓ Verified 3 days ago: `vp run ready` passed on darwin arm64, Node 24.21.0
+```
+
+该状态来自指纹与生成输出相匹配的验证记录。记录的适用范围见[验证记录](/docs/testing#verification)。
+
+## 通过参数选择技术栈 [#kinds]
+
+每类技术对应一个参数 `--<类别> <值>`。可选的类别接受 `none`，表示不包含该项：
+
+<KindOptions />
+
+只需指定你关心的类别，其余由兼容规则确定。例如，指定 `--desktop electron` 后，前端只能是单页应用。
+
+```sh
+# Next.js 全栈应用，使用框架服务端、oRPC 和 SQLite，不含认证
+npx vibestart-cli my-app --framework next --backend self --api orpc --database sqlite --auth none
+
+# 仅 API：不含前端，使用 Hono 和 OpenAPI
+npx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none
+```
+
+表格最后一列是不进行交互时，未指定类别的取值：数据库为 SQLite，不含桌面应用和部署配置。
+
+### 不兼容的选择 [#illegal]
+
+有些组合无法成立。例如 Electron 需要单页应用，因此不能与 Next.js 搭配。CLI 会拒绝这类组合，说明原因，并列出改动最少的修正方案：
+
+```text
+These choices leave no legal stack:
+  Electron requires a single-page app, but nothing in the stack provides it.
+Change them to one of:
+  --desktop none
+  --framework spa --backend hono
+```
+
+## 包管理器与 Hono 运行时 [#runtime]
+
+这两项选择相互独立。包管理器默认为 `pnpm`，可通过 `--package-manager bun` 选择 Bun；Hono 默认运行在 `node` 上，可通过 `--runtime bun` 改为 Bun。运行时选择仅作用于 Hono，Next.js、TanStack Start、Electron、Vite+ 和 Vitest 的运行方式不变。
+
+```sh
+# 使用 pnpm 安装依赖，Bun 运行 Hono
+npx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --runtime bun
+
+# 使用 Bun 安装依赖，Node.js 运行 Hono
+bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --package-manager bun
+
+# 安装依赖和运行 Hono 均使用 Bun
+bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --package-manager bun --runtime bun
+```
+
+用于启动 CLI 的命令（`pnpm dlx`、`npx` 或 `bunx`）不决定项目的包管理器。`--package-manager` 优先于配方；两者都未指定时，采用交互中的选择或默认的 pnpm。在工作台中，包管理器在创建面板中选择，运行时在 Hono 的进程框中选择。
+
+使用 Bun 时，workspace 与 catalog 位于根目录的 `package.json`，锁文件为 `bun.lock`；使用 pnpm 时则为 `pnpm-workspace.yaml` 和 `pnpm-lock.yaml`。两者都通过 `vp install` 安装依赖。运行在 Bun 上的 Hono 开发时使用 `bun --watch`，生产环境使用 `bun dist/index.mjs`，并自动加载 `.env`。生成的项目要求 Bun 1.4.2 或更高版本。每种包管理器与运行时的组合都单独验证。
+
+## 扩展 [#addons]
+
+扩展是任何技术栈都可以包含的工具。它们不属于技术栈的任何一层，不会影响其他选择，并且可以同时选择多个。`--addons` 接受以逗号分隔的列表，或 `none`：
+
+| 扩展        | 提供的内容                                                                                                                   | 默认 |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------- | ---- |
+| `knip`      | [Knip](https://knip.dev)：`vp run knip` 报告未使用的文件、导出、依赖和 catalog 条目，`vp run ready` 在 `vp check` 之后运行它 | 是   |
+| `ultracite` | [Ultracite](https://www.ultracite.ai)：为 `vp check` 提供 lint 与格式化预设，包含所用框架的规则，以及针对 AI 生成代码的检查  | 是   |
+
+```sh
+npx vibestart-cli my-app --addons none             # 不含扩展
+npx vibestart-cli my-app --addons knip             # 仅 Knip
+npx vibestart-cli my-app --addons ultracite        # 仅 Ultracite
+npx vibestart-cli my-app --addons knip,ultracite   # 默认选择
+```
+
+未指定 `--addons` 时，CLI 在终端中会询问，否则使用默认项。验证基于默认扩展进行。不选 Knip 会移除它的任务和检查步骤；不选 Ultracite 会移除它的预设及相关依赖。无论如何选择，Vite+ 的基础检查、类型检查、测试和构建都会保留。
+
+## 配方 [#recipe]
+
+每个生成项目的根目录都有一个 `vibestart.jsonc`，记录它的技术栈和扩展。通过 `--recipe` 可以据此创建新项目：
+
+```sh
+# 使用另一个项目的目录
+npx vibestart-cli new-app --recipe ../my-app
+
+# 使用文件或 URL
+npx vibestart-cli new-app --recipe ./team-stack.jsonc
+npx vibestart-cli new-app --recipe https://example.com/vibestart.jsonc
+
+# 使用配方，但更换数据库
+npx vibestart-cli new-app --recipe ../my-app --database postgres
+```
+
+命令行参数会覆盖配方中的选择。团队可以共享同一份 `vibestart.jsonc`，让每个新项目都从相同的选择开始。
+
+## 预览与列出 [#dry-run]
+
+```sh
+npx vibestart-cli my-app --dry-run   # 列出将要写入的文件及其所属技术
+npx vibestart-cli --list             # 列出所有选项和合法组合
+npx vibestart-cli --list --json      # 同上，以 JSON 输出
+```
+
+## 选项 [#options]
+
+| 选项                            | 说明                                                  |
+| ------------------------------- | ----------------------------------------------------- |
+| `--<类别> <值>`                 | 选择一类技术，见[上表](#kinds)                        |
+| `--addons <扩展\|none>`         | 以逗号分隔的扩展列表，见[扩展](#addons)               |
+| `--package-manager <pnpm\|bun>` | 项目的包管理器，默认为 pnpm                           |
+| `--recipe <路径\|URL>`          | 从 `vibestart.jsonc` 开始，命令行参数会覆盖其中的选择 |
+| `--list`                        | 列出所有类别、选项和合法组合，然后退出                |
+| `--dry-run`                     | 解析技术栈并列出将要写入的文件，不实际写入            |
+| `--json`                        | 在标准输出打印一个 JSON 对象，不进行任何询问          |
+| `--no-interactive`              | 不进行任何询问；参数未能确定技术栈时报错              |
+| `--no-git`                      | 跳过 `git init`                                       |
+| `--no-install`                  | 只写入文件，不安装依赖，也不执行后续步骤              |
+| `--no-check`                    | 跳过最后的 `vp check`                                 |
+| `--help`、`--version`           | 显示帮助或版本                                        |
+
+在 CI 环境（`CI=true`）中，或标准输入、输出不是终端时，CLI 不会进行询问。无法识别的参数会直接报错，不会被忽略。
+
+## JSON 输出 [#json]
+
+使用 `--json` 时，CLI 在标准输出只打印一个 JSON 对象（失败时也是如此），并且不进行任何询问。脚本和编码 Agent 可以据此区分成功与失败：
+
+```sh
+npx vibestart-cli my-app --framework spa --backend hono --json
+```
+
+成功时：
+
+```json
+{
+  "ok": true,
+  "dryRun": false,
+  "project": { "directory": "/path/to/my-app", "name": "my-app" },
+  "label": "…",
+  "stack": {
+    "toolchain": "vite-plus",
+    "framework": "spa",
+    "backend": "hono",
+    "…": "…"
+  },
+  "addons": ["knip", "ultracite"],
+  "verification": {
+    "verifiedAt": "…",
+    "environment": { "os": "…", "arch": "…", "node": "…" }
+  },
+  "fileCount": 87,
+  "steps": [
+    { "run": "git init", "seconds": 0.1 },
+    { "run": "vp install", "seconds": 12.3 }
+  ],
+  "nextSteps": [{ "run": "cd my-app" }, { "run": "vp run dev" }]
+}
+```
+
+当该组合在当前版本没有验证记录，或包含默认之外的扩展时，`verification` 为 `null`。`files` 字段仅在使用 `--dry-run` 时出现。
+
+失败时：
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "illegal-stack",
+    "message": "…",
+    "violations": [],
+    "fixes": []
+  }
+}
+```
+
+### 错误码 [#errors]
+
+| `code`                | 含义                                   | 附加字段                                                   |
+| --------------------- | -------------------------------------- | ---------------------------------------------------------- |
+| `invalid-option`      | 未知参数、无效的参数值或项目名称       |                                                            |
+| `invalid-recipe`      | 无法读取配方，或配方格式错误           |                                                            |
+| `directory-not-empty` | 目标目录已存在且不为空                 | `directory`                                                |
+| `illegal-stack`       | 所做的选择无法构成合法的技术栈         | `violations`（原因）、`fixes`（以参数表示的修正方案）      |
+| `incomplete-stack`    | 不进行询问时，参数无法确定唯一的技术栈 | `stacks`（剩余组合数）、`open`（尚未确定的类别及其参数）   |
+| `step-failed`         | 安装、检查等步骤失败                   | `run`、`directory`、`exitCode`、`output`（最后 40 行输出） |
+| `cancelled`           | 询问被取消                             |                                                            |
+| `internal`            | 意外错误                               |                                                            |
+
+### 退出码 [#exit-codes]
+
+| 退出码 | 含义   |
+| ------ | ------ |
+| `0`    | 成功   |
+| `1`    | 失败   |
+| `130`  | 已取消 |

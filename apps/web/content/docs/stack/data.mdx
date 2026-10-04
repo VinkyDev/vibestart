@@ -1,0 +1,62 @@
+---
+title: Data and authentication
+description: Database options, schema migrations, and user sessions.
+---
+
+These choices decide where the application's records live and how users sign in. Sessions are stored in the same database as everything else.
+
+| Database   | Runs as                     | Suits                                                   |
+| ---------- | --------------------------- | ------------------------------------------------------- |
+| SQLite     | A file, inside the server   | Local development, prototypes, single-server deployment |
+| PostgreSQL | A separate database service | Concurrent writes, several app instances, production    |
+
+## PostgreSQL [#postgres]
+
+<Tech href="https://www.postgresql.org" icon="postgres" />
+
+PostgreSQL runs as a separate relational database service with transactions, constraints, and concurrent access. Generated projects include Compose configuration for development. Use `DATABASE_URL` to connect to an existing instance.
+
+## SQLite [#sqlite]
+
+<Tech href="https://nodejs.org/api/sqlite.html" icon="sqlite" />
+
+SQLite stores data in a single file without a separate database service, making it suitable for local development and single-host deployment. Projects use the `node:sqlite` interface, also supported by the selected Bun runtime. Persist the database directory when deploying.
+
+## Drizzle [#drizzle]
+
+<Tech href="https://orm.drizzle.team" icon="drizzle" />
+
+Drizzle defines tables and typed queries in TypeScript. Schemas and migrations live in `packages/db`. After changing a schema, generate and review the SQL migration before applying it:
+
+```sh
+vp run db:generate
+vp run db:migrate
+```
+
+Commit migration files to version control.
+
+<Callout type="warn">
+  Backing up production data and running migrations against it remain your
+  responsibility. Template upgrades never migrate a database.
+</Callout>
+
+<SchemaMigration
+  steps={[
+    { text: "The original table contains two todo records." },
+    {
+      text: "Add a nullable dueDate field to the schema; the database is unchanged.",
+    },
+    { text: "db:generate creates a SQL migration to review and commit." },
+    {
+      text: "db:migrate applies the migration, retaining records with NULL in the new field.",
+    },
+  ]}
+/>
+
+## Better Auth [#better-auth]
+
+<Tech href="https://www.better-auth.com" icon="better-auth" />
+
+Better Auth provides email/password sign-up, sign-in, and session management. Configuration lives in `packages/auth`, and sessions are stored in the selected database. Generated projects include sign-in pages, protected routes, and authentication tests.
+
+Business endpoints use the session’s user ID to scope reads and writes. Authentication establishes identity; application logic defines data access. See [Identity and permissions](/docs/concepts#auth).

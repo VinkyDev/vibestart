@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": ["golden/**", "packages/integrations/templates/**"],
+  "workspaces": {
+    "packages/integrations": {
+      "entry": ["src/stacks.ts"],
+    },
+    "apps/web": {
+      "ignore": ["src/paraglide/**"],
+      // `@shadcn/lint` resolves Tailwind from the stylesheet's own package to read this app's theme; without
+      // it the rule falls back to a grammar that knows none of the theme's keys. No source imports it.
+      "ignoreDependencies": ["tailwindcss"],
+    },
+    "apps/cli": {
+      // The bundle keeps this native binding external, so it is imported at runtime from dist, which Knip does not read.
+      "ignoreDependencies": ["oxfmt"],
+    },
+  },
+}

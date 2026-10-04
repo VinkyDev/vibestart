@@ -1,0 +1,74 @@
+---
+title: 项目结构
+description: 生成项目如何组织，以及各类改动应该放在哪里。
+---
+
+生成的项目是一个 workspace：可部署的应用位于 `apps/`，它们共用的代码位于 `packages/`。下例使用单页应用、Hono、oRPC、SQLite 和 Better Auth，其他组合会按所选技术增减目录。
+
+```text title="my-app/"
+apps/
+  web/                 页面、路由与 Web 测试
+  server/              Hono 服务、环境变量与数据库连接
+packages/
+  api/                 API 操作：输入校验、权限检查与处理逻辑
+  db/                  表结构与迁移
+  auth/                Better Auth 配置
+  ui/                  共享组件与主题
+  config/              共享 TypeScript 配置
+.vibestart/            模板基线与维护状态
+AGENTS.md              开发约定
+vibestart.jsonc        项目的技术选择
+vite.config.ts         检查配置与项目任务
+```
+
+## 应用与包 [#request-flow]
+
+`apps/` 下的每个目录都是一个可以运行或部署的应用。`packages/` 下的包存放被多个应用使用、或职责单一的代码，例如数据库表结构。
+
+选择 Hono 时，API 运行在 `apps/server` 中。选择框架服务端时，由 Next.js 或 TanStack Start 通过自身的路由挂载同样的 API 操作，项目中没有 `apps/server`。开发时，Web 应用通过同源代理访问 API，因此会话 Cookie 无需额外配置即可生效。请求的完整路径见[全栈应用如何运行](/docs/concepts#request-flow)。
+
+## 改动应该放在哪里 [#where]
+
+以上例的技术栈为准：
+
+| 要修改的内容         | 位置                                                                          |
+| -------------------- | ----------------------------------------------------------------------------- |
+| 页面或路由           | `apps/web/src/routes/`，需要登录的页面放在 `_authenticated/` 下               |
+| API 操作             | `packages/api/src/routers/` 中的路由，并在 `packages/api/src/index.ts` 中注册 |
+| 数据表               | `packages/db/src/schema/`，修改后生成迁移                                     |
+| 服务端配置           | `apps/server/src/env.ts` 与 `apps/server/.env.example`                        |
+| 共享组件             | `packages/ui`                                                                 |
+| 浏览器测试或集成测试 | `apps/web/tests/e2e/` 或 `packages/api/tests/integration/`                    |
+
+`AGENTS.md` 列出了当前组合的确切位置，以及每类改动需要完成的步骤。
+
+## 开发约定 [#agents-md]
+
+`AGENTS.md` 根据所选技术栈生成，记录目录职责、修改 API 与数据库结构的方式、每类改动需要的测试，以及完成标准。随着项目演进，请保持它与代码同步：它是编码 Agent 最先读取的文件，也是新成员应当首先阅读的文件。
+
+## 项目配方 [#blueprint]
+
+`vibestart.jsonc` 记录创建项目时的技术栈、扩展、包管理器和发布渠道。`packageManager` 与 `stack.runtime` 相互独立：前者表示安装依赖的工具，后者表示应用的运行时。如需以相同选择创建新项目，可将该文件传给 `--recipe`，详见[配方](/docs/cli/create#recipe)。
+
+## 依赖版本 [#catalog]
+
+pnpm 项目在 `pnpm-workspace.yaml` 中声明 workspace 和共享版本目录（catalog）；Bun 项目在根目录的 `package.json` 中声明。各包通过 `catalog:` 引用目录中的版本，使每个依赖在整个 workspace 中只有一个版本。锁文件记录实际安装的结果。
+
+## 环境变量 [#env]
+
+`.env.example` 列出应用需要的配置项。CLI 会将它复制为 `.env`，并生成认证密钥。服务启动时会校验环境变量，缺少必要的值时会给出明确的错误并停止。
+
+<Callout type="warn">
+  `.env` 文件包含密钥，已被 Git 忽略。新增配置项时，请修改 `.env.example`
+  并提交，不要写入真实的值。
+</Callout>
+
+## 维护基线 [#baseline]
+
+`.vibestart/state.json` 与 `.vibestart/base.json` 记录项目的来源和最初的模板文件。升级时，CLI 依靠它们区分模板的变化和你自己的修改。请一并提交这两个文件，不要手动编辑。详见[升级项目](/docs/cli/upgrade)。
+
+## 项目任务 [#scripts]
+
+`vp run dev` 启动应用，`vp run build` 构建应用，`vp run ready` 执行全部检查、测试和构建。数据库、Knip 和浏览器测试相关的任务会在选择对应能力时生成。
+
+`vp <命令>` 调用 Vite+ 的内置命令，例如 `vp check`、`vp test`；`vp run <任务>` 运行项目定义的任务，来源可以是 `package.json` 中的脚本，也可以是 `vite.config.ts` 中的配置。

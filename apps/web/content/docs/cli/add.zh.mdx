@@ -1,0 +1,26 @@
+---
+title: 添加能力
+description: 为已有项目接入扩展工具或 Docker 部署配置。
+---
+
+```sh
+npx vibestart-cli add --list
+npx vibestart-cli add knip ultracite docker --dry-run
+npx vibestart-cli add knip ultracite docker --yes
+```
+
+未指定能力时，终端中会显示多选列表。Knip 与 Ultracite 是代码检查扩展，Docker 提供部署配置。添加能力不会改变项目的包管理器和应用运行时。
+
+## 预览与应用 [#apply]
+
+`--dry-run` 展示文件与配置变更，不写入项目。确认后运行带 `--yes` 的命令，或在终端中确认计划。
+
+项目基线与运行中的 CLI 模板版本不同时，先执行 [`upgrade`](/docs/cli/upgrade)。已有能力不会重复添加。
+
+## 安装与检查 [#checks]
+
+默认安装依赖一次，然后执行 `vp check`、已选择的 Knip，以及存在的 `unit` 测试项目。`--full-check` 改为执行完整的 `vp run ready`。
+
+`--no-install` 只写文件，并将操作保留为 `needs-install`。之后运行 [`recover`](/docs/cli/recover) 完成安装和检查。这两个参数不能同时使用。
+
+接入 Ultracite 后，已有业务代码可能需要按新增规则调整。检查失败时，操作会被保留；修改代码后，通过 `recover` 继续。添加能力不会自动迁移数据库。

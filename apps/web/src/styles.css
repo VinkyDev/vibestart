@@ -1,0 +1,363 @@
+@import "@vibestart/ui/globals.css";
+
+/* Tall enough that a pane pinned below the app bar shows whole, which a phone on its side is not. */
+@custom-variant tall (@media (min-height: 48rem));
+
+/* Each part of a stack has one tint, shared by its block, its CLI flag, and the files it owns. */
+@utility tint-* {
+  --tint: --value(--tint-*);
+}
+
+/* Static, because the map's SVG gradients read the tints as variables, not through utilities.
+   Mid-tone pigments: quiet beside the white surfaces, and still told apart at a glance. */
+@theme static {
+  --tint-framework: oklch(0.64 0.12 256);
+  --tint-api: oklch(0.68 0.11 165);
+  --tint-backend: oklch(0.6 0.13 295);
+  --tint-database: oklch(0.76 0.12 78);
+  --tint-auth: oklch(0.65 0.13 8);
+  --tint-deployment: oklch(0.66 0.09 210);
+  --tint-desktop: oklch(0.7 0.12 42);
+  --tint-foundation: oklch(0.6 0.02 270);
+}
+
+@theme {
+  --color-added: oklch(0.58 0.13 155);
+  --color-removed: oklch(0.58 0.18 25);
+  --color-changed: oklch(0.64 0.13 70);
+
+  /* The height of the app bar: the bar itself, what sticky content clears, and what a full-screen page leaves below it. */
+  --spacing-header: 4rem;
+
+  /* Sizes between and beyond the default type scale: labels, code, and names in the composer. */
+  --text-micro: 0.625rem;
+  --text-micro--line-height: 1.4;
+  --text-fine: 0.6875rem;
+  --text-fine--line-height: 1.4;
+  --text-snippet: 0.8125rem;
+  --text-snippet--line-height: 1.7;
+  --text-ui: 0.9375rem;
+  --text-ui--line-height: 1.45;
+  --text-name: 1.375rem;
+  --text-name--line-height: 1.2;
+  --text-display: 2.5rem;
+  --text-display--line-height: 1.08;
+
+  /* A docs page: its title on a wide screen, its running text, and code set in that text, which a
+     monospace face would otherwise make look a size larger. */
+  --text-title: 3rem;
+  --text-title--line-height: 1.1;
+  --text-prose: 0.9375rem;
+  --text-prose--line-height: 1.85;
+  --text-code: 0.85em;
+
+  /* The landing page's three headline sizes, for the Latin serif: the opening, a section's, and the last
+     call. Chinese sets its own below. */
+  --text-headline: clamp(3.5rem, 9.5vw, 8.5rem);
+  --text-headline--line-height: 1.02;
+  --text-section: clamp(2.5rem, 5vw, 4rem);
+  --text-section--line-height: 1.1;
+  --text-finale: clamp(3rem, 8vw, 6.5rem);
+  --text-finale--line-height: 1.04;
+
+  /* Depth is a rising scale, and most things sit at its bottom: a hairline and a breath of shadow. */
+  --shadow-rest:
+    0 0 0 1px oklch(0.21 0.015 270 / 6%), 0 1px 2px oklch(0.21 0.015 270 / 4%),
+    0 6px 16px -8px oklch(0.21 0.015 270 / 10%);
+  --shadow-lift:
+    0 0 0 1px oklch(0.21 0.015 270 / 9%), 0 2px 4px oklch(0.21 0.015 270 / 4%),
+    0 16px 32px -12px oklch(0.21 0.015 270 / 16%);
+  --shadow-sheet:
+    0 0 0 1px oklch(0.21 0.015 270 / 6%), 0 2px 4px oklch(0.21 0.015 270 / 3%),
+    0 32px 64px -32px oklch(0.21 0.015 270 / 18%);
+
+  --animate-added: added 2.8s ease-out;
+  --animate-changed: changed 2.8s ease-out;
+  --animate-flash: flash 1.4s ease-out;
+  --animate-comet: comet 4.2s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+
+  /* With pathLength 1 and dashes of 0.06 in 1.16, one dash crosses the whole path. */
+  @keyframes comet {
+    from {
+      stroke-dashoffset: 0.06;
+    }
+    to {
+      stroke-dashoffset: -1.1;
+    }
+  }
+  @keyframes added {
+    from {
+      background-color: color-mix(
+        in oklch,
+        var(--color-added) 18%,
+        transparent
+      );
+    }
+  }
+  @keyframes flash {
+    from {
+      background-color: color-mix(in oklch, var(--tint) 40%, transparent);
+    }
+  }
+  @keyframes changed {
+    from {
+      background-color: color-mix(
+        in oklch,
+        var(--color-changed) 20%,
+        transparent
+      );
+    }
+  }
+}
+
+/* Ideographs fill their em box, where the condensed serif fills half of it, so a Chinese headline at the
+   Latin size weighs two or three times as much. Chinese headlines are set smaller, with open leading: the
+   opening's longer line about as wide as the English one it stands in for. */
+:root:lang(zh) {
+  --text-headline: clamp(1.875rem, 6.6vw, 4.75rem);
+  --text-headline--line-height: 1.2;
+  --text-section: clamp(2rem, 3.6vw, 3rem);
+  --text-section--line-height: 1.25;
+  --text-finale: clamp(2.5rem, 5.4vw, 4.25rem);
+  --text-finale--line-height: 1.2;
+}
+
+@utility leading-code {
+  line-height: 1.75;
+}
+
+@utility rounded-block {
+  border-radius: 18px;
+}
+
+@utility rounded-process {
+  border-radius: 24px;
+}
+
+@utility rounded-sheet {
+  border-radius: 22px;
+}
+
+@utility focus-ring {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px color-mix(in oklch, var(--tint) 70%, transparent);
+}
+
+/* Tints are mid-tone, so text in one is darkened toward the ink to stay readable on white. */
+@utility text-tint {
+  color: color-mix(in oklch, var(--tint) 55%, oklch(0.25 0.03 270));
+}
+
+@utility bg-tint {
+  background-color: var(--tint);
+}
+
+@utility bg-tint-soft {
+  background-color: color-mix(in oklch, var(--tint) 14%, transparent);
+}
+
+/* A process is a region, not a part: it stays neutral, and only its label carries the tint. */
+@utility bg-process {
+  background-color: oklch(0.21 0.015 270 / 4%);
+}
+
+/* An option being previewed: its tint rings the part it would change. A utility, not a theme shadow,
+   because a theme variable would resolve `--tint` once, on the root, where no part has set it. */
+@utility shadow-preview {
+  box-shadow:
+    0 0 0 1.5px color-mix(in oklch, var(--tint) 55%, transparent),
+    0 12px 32px -12px color-mix(in oklch, var(--tint) 45%, transparent);
+}
+
+@utility ring-tint {
+  box-shadow: 0 0 0 1.5px color-mix(in oklch, var(--tint) 55%, transparent);
+}
+
+@utility border-tint {
+  border-color: color-mix(in oklch, var(--tint) 45%, transparent);
+}
+
+/* Children that change one after another: each sets its own `--delay`. */
+@utility stagger {
+  transition-delay: var(--delay);
+}
+
+@utility comet {
+  animation-delay: var(--delay);
+}
+
+/* The stack's tints running through a word, drifting slowly, as the composer's halo glows in them. */
+@utility text-spectrum {
+  background-image: linear-gradient(
+    100deg,
+    var(--tint-framework),
+    var(--tint-backend) 30%,
+    var(--tint-auth) 55%,
+    var(--tint-desktop) 75%,
+    var(--tint-api)
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  color: transparent;
+  /* An italic leans past its box, so the box is widened to the last stroke the gradient must paint. */
+  padding-right: 0.08em;
+  margin-right: -0.08em;
+  animation: spectrum 9s ease-in-out infinite alternate;
+}
+
+@keyframes spectrum {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* A row that scrolls sideways fades at the edge it can still scroll toward, and only while it can: the fade
+   follows its own scroll, so a row that fits, or a browser without scroll timelines, shows no fade. */
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@utility scroll-fade-x {
+  scrollbar-width: none;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-start),
+    #000 calc(100% - var(--fade-end)),
+    transparent
+  );
+  @supports (animation-timeline: scroll()) {
+    animation: scroll-fade-x linear both;
+    animation-timeline: scroll(self inline);
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes scroll-fade-x {
+  from {
+    --fade-start: 0px;
+    --fade-end: 2rem;
+  }
+  8%,
+  92% {
+    --fade-start: 2rem;
+    --fade-end: 2rem;
+  }
+  to {
+    --fade-start: 2rem;
+    --fade-end: 0px;
+  }
+}
+
+/* A headline line's mask: its descenders stay inside while the line rises through it. */
+@utility line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+/* The app bar's edge appears over its first 4rem of scroll, as the page starts to pass beneath it. A
+   browser without scroll timelines keeps the bar edgeless, as it rests at the top. */
+@utility edge-on-scroll {
+  @supports (animation-timeline: scroll()) {
+    animation: edge-on-scroll linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 4rem;
+  }
+}
+
+@keyframes edge-on-scroll {
+  from {
+    box-shadow: 0 1px 0 transparent;
+  }
+  to {
+    box-shadow: 0 1px 0 var(--border);
+  }
+}
+
+@utility transition-surface {
+  transition-property: background-color, border-color, box-shadow, transform;
+  transition-duration: 300ms;
+}
+
+/* A disclosure that opens by growing its grid row from 0fr to 1fr: to the height of its content. */
+@utility transition-rows {
+  transition-property: grid-template-rows;
+}
+
+@utility tree-row {
+  padding-left: calc(8px + var(--depth) * 14px);
+}
+
+@utility tree-guide {
+  left: calc(15px + var(--level) * 14px);
+}
+
+/* A headline in either language: Latin in the display serif, ideographs in the Song face behind it. */
+@utility font-headline {
+  font-family: var(--font-display);
+  /* Both faces at their regular weight: the serif has no other, and the Song face's regular stems are as
+     light as the serif's at display sizes. The browser is never to bold the serif. */
+  font-weight: 400;
+  font-synthesis-weight: none;
+  letter-spacing: -0.025em;
+  /* Chinese breaks at spaces and punctuation, as English does between words, never inside a word. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+
+  /* Tracked tight, square characters crowd each other, so Chinese takes a little air between them. */
+  &:lang(zh) {
+    letter-spacing: 0.02em;
+  }
+
+  /* A word set apart takes the serif's italic, in either language. Its Latin capitals stand on a smaller
+     body than an ideograph, so among Chinese they are set a size up to meet the ideographs' height. */
+  & em {
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+  &:lang(zh) em {
+    font-size: 1.16em;
+    line-height: 0;
+  }
+}
+
+@layer base {
+  html {
+    /* The app bar sticks, so an anchor lands below it rather than under it. */
+    scroll-padding-top: var(--spacing-header);
+    /* Reserve the scrollbar's lane on every page, so a page that scrolls and one that fits the screen
+       share one width, and the app bar's right side stays put across navigation. */
+    scrollbar-gutter: stable;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: oklch(0.64 0.12 256 / 22%);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(0.21 0.015 270 / 16%) transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-comet,
+  .text-spectrum {
+    animation: none;
+  }
+}

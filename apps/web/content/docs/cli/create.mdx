@@ -1,0 +1,252 @@
+---
+title: Create a project
+description: Creation flags, package managers, runtimes, recipes, and output formats.
+---
+
+```sh
+npx vibestart-cli create [directory] [options]
+```
+
+`directory` is where the project is created, and its name becomes the project's name. It defaults to `my-app`, and must either not exist or be empty. The `create` keyword is optional.
+
+## Interactive mode [#interactive]
+
+Run the CLI in a terminal without any stack flags:
+
+```sh
+npx vibestart-cli
+```
+
+The CLI then:
+
+1. asks for a project name, if no directory was given;
+2. shows the recommended stack, with its compatibility and latest verification;
+3. asks which add-ons and package manager to use, with the defaults selected;
+4. offers **Create**, or **Customize** to choose each part in turn, where every step lists only the options compatible with earlier choices;
+5. writes, installs, and checks the project, then prints the commands to run next.
+
+When some flags are given, the CLI asks only about what they leave open.
+
+## What the CLI runs [#steps]
+
+<Steps>
+<Step title="Write the files">
+
+Generate every file for the stack. For a given template release and set of options, the output is always the same.
+
+</Step>
+<Step title="Prepare the environment">
+
+Create a `.env` from each `.env.example`, with a randomly generated authentication secret.
+
+</Step>
+<Step title="Initialize Git">
+
+Run `git init`. Skip it with `--no-git`.
+
+</Step>
+<Step title="Install and generate">
+
+Run `vp install`, then the stack's generation steps, such as the route tree and the first database migration. Without Vite+, the selected pnpm or Bun installs instead. `--no-install` skips this step and every step after it.
+
+</Step>
+<Step title="Format and check">
+
+Run `vp fmt`, then `vp check` for formatting, lint, and types. Skip the check with `--no-check`.
+
+</Step>
+</Steps>
+
+At the end, the CLI reports the combination's verification, for example:
+
+```text
+✓ Compatible
+✓ Verified 3 days ago: `vp run ready` passed on darwin arm64, Node 24.21.0
+```
+
+The status comes from the verification record whose fingerprint matches the generated output. See [Verification records](/docs/testing#verification) for what a record covers.
+
+## Choosing the stack with flags [#kinds]
+
+Each kind of technology has a flag, `--<kind> <value>`. An optional kind accepts `none` to leave it out:
+
+<KindOptions />
+
+Specify the kinds you care about; compatibility rules settle the rest. Choosing `--desktop electron`, for instance, leaves only the single-page app as the frontend.
+
+```sh
+# Full-stack Next.js with its own server, oRPC, SQLite, no authentication
+npx vibestart-cli my-app --framework next --backend self --api orpc --database sqlite --auth none
+
+# API only: no frontend, Hono with OpenAPI
+npx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none
+```
+
+The table's last column shows what an unspecified kind becomes when the CLI does not prompt: SQLite for the database, and no desktop app or deployment.
+
+### Incompatible choices [#illegal]
+
+Some combinations cannot work. Electron, for example, requires a single-page app, so it cannot be combined with Next.js. The CLI refuses such a combination, explains why, and lists the changes that would fix it with the fewest edits:
+
+```text
+These choices leave no legal stack:
+  Electron requires a single-page app, but nothing in the stack provides it.
+Change them to one of:
+  --desktop none
+  --framework spa --backend hono
+```
+
+## Package manager and Hono runtime [#runtime]
+
+These two choices are independent. The package manager defaults to `pnpm`; choose Bun with `--package-manager bun`. Hono runs on `node` by default; use `--runtime bun` to run its server on Bun. The runtime choice applies to Hono only: Next.js, TanStack Start, Electron, Vite+, and Vitest run as they otherwise would.
+
+```sh
+# pnpm installs, Bun runs Hono
+npx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --runtime bun
+
+# Bun installs, Node.js runs Hono
+bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --package-manager bun
+
+# Bun installs and runs Hono
+bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --package-manager bun --runtime bun
+```
+
+The command that launches the CLI (`pnpm dlx`, `npx`, or `bunx`) does not choose the project's package manager. `--package-manager` takes precedence over a recipe; without either, the interactive choice or the pnpm default applies. In the studio, the package manager is chosen in the creation panel and the runtime on Hono's process box.
+
+With Bun, workspaces and the catalog live in the root `package.json`, and the lockfile is `bun.lock`; pnpm keeps `pnpm-workspace.yaml` and `pnpm-lock.yaml`. Both install through `vp install`. Hono on Bun uses `bun --watch` in development and `bun dist/index.mjs` in production, and loads `.env` automatically. Generated projects require Bun 1.4.2 or later. Each combination of package manager and runtime is verified separately.
+
+## Add-ons [#addons]
+
+Add-ons are tools that any stack can include. They are not part of the stack's layers, so they do not affect any other choice, and several can be selected at once. `--addons` takes a comma-separated list, or `none`:
+
+| Add-on      | What it sets up                                                                                                                                             | Default |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `knip`      | [Knip](https://knip.dev): `vp run knip` reports unused files, exports, dependencies, and catalog entries, and `vp run ready` runs it after `vp check`       | Yes     |
+| `ultracite` | [Ultracite](https://www.ultracite.ai): lint and formatting presets for `vp check`, with rules for the frameworks in use and checks aimed at AI-written code | Yes     |
+
+```sh
+npx vibestart-cli my-app --addons none             # no add-ons
+npx vibestart-cli my-app --addons knip             # Knip only
+npx vibestart-cli my-app --addons ultracite        # Ultracite only
+npx vibestart-cli my-app --addons knip,ultracite   # the defaults
+```
+
+Without `--addons`, the CLI asks in a terminal and uses the defaults otherwise. Verification runs with the default add-ons. Leaving out Knip removes its task and check step; leaving out Ultracite removes its presets and their dependencies. The Vite+ baseline checks, type checks, tests, and build remain either way.
+
+## Recipes [#recipe]
+
+Every generated project has a `vibestart.jsonc` at its root, recording its stack and add-ons. `--recipe` creates a new project from it:
+
+```sh
+# From another project's directory
+npx vibestart-cli new-app --recipe ../my-app
+
+# From a file or a URL
+npx vibestart-cli new-app --recipe ./team-stack.jsonc
+npx vibestart-cli new-app --recipe https://example.com/vibestart.jsonc
+
+# From a recipe, with a different database
+npx vibestart-cli new-app --recipe ../my-app --database postgres
+```
+
+Flags override the recipe's choices. A team can share one `vibestart.jsonc` so that every new project starts from the same choices.
+
+## Preview and list [#dry-run]
+
+```sh
+npx vibestart-cli my-app --dry-run   # the files it would write, and the technology each comes from
+npx vibestart-cli --list             # every option and every legal stack
+npx vibestart-cli --list --json      # the same, as JSON
+```
+
+## Options [#options]
+
+| Option                          | Description                                                          |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `--<kind> <value>`              | Choose one kind; see [the table above](#kinds)                       |
+| `--addons <ids\|none>`          | Comma-separated add-ons; see [Add-ons](#addons)                      |
+| `--package-manager <pnpm\|bun>` | The project's package manager; pnpm by default                       |
+| `--recipe <path\|url>`          | Start from a `vibestart.jsonc`; flags override it                    |
+| `--list`                        | List every kind, its options, and every legal stack, then exit       |
+| `--dry-run`                     | Resolve the stack and list the files it would write, writing nothing |
+| `--json`                        | Print one JSON object on stdout, and never prompt                    |
+| `--no-interactive`              | Never prompt; a stack the flags leave open is an error               |
+| `--no-git`                      | Skip `git init`                                                      |
+| `--no-install`                  | Write the files only, without installing or any later step           |
+| `--no-check`                    | Skip the final `vp check`                                            |
+| `--help`, `--version`           | Show help or the version                                             |
+
+The CLI never prompts in CI (`CI=true`), or when stdin or stdout is not a terminal. An unknown flag is an error rather than being ignored.
+
+## JSON output [#json]
+
+With `--json`, the CLI prints exactly one JSON object on stdout, even when it fails, and never prompts. Scripts and coding agents can rely on it to tell success from failure:
+
+```sh
+npx vibestart-cli my-app --framework spa --backend hono --json
+```
+
+On success:
+
+```json
+{
+  "ok": true,
+  "dryRun": false,
+  "project": { "directory": "/path/to/my-app", "name": "my-app" },
+  "label": "…",
+  "stack": {
+    "toolchain": "vite-plus",
+    "framework": "spa",
+    "backend": "hono",
+    "…": "…"
+  },
+  "addons": ["knip", "ultracite"],
+  "verification": {
+    "verifiedAt": "…",
+    "environment": { "os": "…", "arch": "…", "node": "…" }
+  },
+  "fileCount": 87,
+  "steps": [
+    { "run": "git init", "seconds": 0.1 },
+    { "run": "vp install", "seconds": 12.3 }
+  ],
+  "nextSteps": [{ "run": "cd my-app" }, { "run": "vp run dev" }]
+}
+```
+
+`verification` is `null` when the combination has no record for this version, or includes add-ons beyond the defaults. `files` appears only with `--dry-run`.
+
+On failure:
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "illegal-stack",
+    "message": "…",
+    "violations": [],
+    "fixes": []
+  }
+}
+```
+
+### Error codes [#errors]
+
+| `code`                | Meaning                                                   | Additional fields                                                |
+| --------------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
+| `invalid-option`      | Unknown flag, invalid value, or invalid project name      |                                                                  |
+| `invalid-recipe`      | The recipe cannot be read, or is malformed                |                                                                  |
+| `directory-not-empty` | The target directory exists and is not empty              | `directory`                                                      |
+| `illegal-stack`       | The choices leave no legal stack                          | `violations` (reasons), `fixes` (as flags)                       |
+| `incomplete-stack`    | Without prompts, the flags leave more than one stack open | `stacks` (how many), `open` (kinds still open, with their flags) |
+| `step-failed`         | A step such as installation or checking failed            | `run`, `directory`, `exitCode`, `output` (its last 40 lines)     |
+| `cancelled`           | A prompt was cancelled                                    |                                                                  |
+| `internal`            | An unexpected error                                       |                                                                  |
+
+### Exit codes [#exit-codes]
+
+| Code  | Meaning   |
+| ----- | --------- |
+| `0`   | Success   |
+| `1`   | Failure   |
+| `130` | Cancelled |

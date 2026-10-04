@@ -1,0 +1,24 @@
+---
+title: Inspect a project
+description: Read-only checks for configuration, baseline integrity, and unfinished operations.
+---
+
+```sh
+npx vibestart-cli doctor
+npx vibestart-cli doctor --offline
+npx vibestart-cli doctor --cwd my-app --json
+```
+
+`doctor` checks baseline integrity, configuration, package-manager consistency, lockfiles, and unfinished operations. It neither modifies project files nor upgrades dependencies.
+
+Terminal output lists the project template version, findings, conflicting files, and pending template changes. Use `--json` for structured results in scripts and coding agents.
+
+By default, it queries npm’s `latest` channel, not the `beta` channel. To preview the beta template, run `npx vibestart-cli upgrade --dry-run`. `--offline` disables that query. An available release is informational and does not make the project unhealthy.
+
+## Act on findings [#results]
+
+- Unfinished operation: see [recovery](/docs/cli/recover).
+- Missing baseline: determine whether this is an older project and review the provenance requirements for [`adopt`](/docs/cli/upgrade#adopt).
+- Template update needed: inspect an [`upgrade --dry-run`](/docs/cli/upgrade) plan.
+
+`doctor` inspects maintenance state. Project tests verify application behavior.

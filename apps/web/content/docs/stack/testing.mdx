@@ -1,0 +1,46 @@
+---
+title: Testing tools
+description: Run tests, understand the isolated test environment, and investigate failures.
+---
+
+Test scope follows the selected stack. Static sites cover browser interaction; an API with a database gets integration tests for every operation. Authentication adds session and user-isolation coverage. See [Testing and verification](/docs/testing) for what each layer covers and the principles the tests follow.
+
+## Vitest and Playwright [#vitest-playwright]
+
+### Vitest [#vitest]
+
+<Tech href="https://vitest.dev" icon="vitest" />
+
+Vitest runs unit and API integration tests through `vp test`, using the project’s tool configuration. Unit tests live beside the code. Integration tests live in `packages/api/tests/integration` and call the API inside the test process through a typed client, against a real database.
+
+### Playwright [#playwright]
+
+<Tech href="https://playwright.dev" icon="playwright" />
+
+Playwright drives Chromium through complete user workflows. Tests locate elements by role and accessible name and use auto-waiting assertions. Failures retain traces for inspecting requests, page state, and actions.
+
+## Run tests [#commands]
+
+Before the first browser test, download Chromium from `apps/web`:
+
+```sh
+vp exec playwright install chromium
+```
+
+From the project root, run:
+
+```sh
+vp test
+vp run test:e2e
+vp run ready
+```
+
+`vp run ready` runs the generated checks, selected Knip task, tests, and production build. API-only projects omit browser tests. During development, filter by file, for example `vp test packages/api/tests/integration/todos.test.ts`, or by project with `vp test --project unit` or `vp test --project integration`.
+
+## Isolated environments [#infrastructure]
+
+Every test run uses databases of its own, created with the project’s migrations and removed afterward. Each integration test file gets a separate database from `createTestDatabase()` in the `db` package, so files run in parallel; authentication tests sign up a new user for each case. Integration tests start no server and open no port.
+
+End-to-end support in `apps/web/tests/support` starts the real servers once per run on port 3200, which `E2E_TEST_PORT` changes. PostgreSQL combinations require an accessible database instance: test databases are created beside the server’s `DATABASE_URL`.
+
+Start an investigation with the first failing assertion. In end-to-end tests, connection errors usually mean a test server is not ready or has exited; inspect its log before diagnosing API behavior.

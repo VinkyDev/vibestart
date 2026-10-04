@@ -1,0 +1,46 @@
+---
+title: 测试工具
+description: 运行测试，了解隔离的测试环境，并排查失败。
+---
+
+测试范围随技术栈生成：纯静态站点验证浏览器交互；带数据库的 API 为每个接口操作生成集成测试；选择认证后，进一步验证会话与用户隔离。各层覆盖的范围和测试遵循的原则，见[测试与验证](/docs/testing)。
+
+## Vitest 与 Playwright [#vitest-playwright]
+
+### Vitest [#vitest]
+
+<Tech href="https://vitest.dev" icon="vitest" />
+
+Vitest 通过 `vp test` 运行单元测试与 API 集成测试，使用项目的工具配置。单元测试位于代码旁；集成测试位于 `packages/api/tests/integration`，在测试进程内通过类型化的客户端调用 API，并连接真实数据库。
+
+### Playwright [#playwright]
+
+<Tech href="https://playwright.dev" icon="playwright" />
+
+Playwright 使用 Chromium 验证完整用户流程。测试按角色和可见名称定位元素，使用自动等待的断言。失败时保存 trace，便于检查请求、页面状态和操作过程。
+
+## 运行测试 [#commands]
+
+首次运行浏览器测试前，在 `apps/web` 下载浏览器：
+
+```sh
+vp exec playwright install chromium
+```
+
+在项目根目录运行：
+
+```sh
+vp test
+vp run test:e2e
+vp run ready
+```
+
+`vp run ready` 按生成项目的配置执行代码检查、已选的 Knip、测试与生产构建。纯 API 项目不包含浏览器测试。开发时可按文件筛选，例如 `vp test packages/api/tests/integration/todos.test.ts`，也可用 `vp test --project unit` 或 `vp test --project integration` 按项目筛选。
+
+## 隔离环境 [#infrastructure]
+
+每次测试运行都使用独立的数据库，按项目迁移创建，结束后删除。每个集成测试文件通过 `db` 包中的 `createTestDatabase()` 获得一个单独的数据库，因此文件可以并行运行；认证测试为每个用例注册新用户。集成测试不启动服务，也不占用端口。
+
+端到端测试的支持代码位于 `apps/web/tests/support`，每次运行在 3200 端口启动一次真实服务，可通过 `E2E_TEST_PORT` 修改端口。PostgreSQL 组合需要可连接的数据库实例：测试数据库创建在服务端 `DATABASE_URL` 所指向的实例中。
+
+测试失败时，先查看第一个失败断言。端到端测试中出现连接失败，通常表示测试服务未就绪或已退出，应先检查服务日志，再检查接口行为。

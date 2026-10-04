@@ -1,0 +1,57 @@
+---
+title: 数据与认证
+description: 数据库选择、表结构迁移和用户会话。
+---
+
+这些选择决定应用的数据保存在哪里，以及用户如何登录。会话与其他数据存储在同一个数据库中。
+
+| 数据库     | 运行方式             | 适用场景                       |
+| ---------- | -------------------- | ------------------------------ |
+| SQLite     | 服务进程内的单个文件 | 本地开发、原型、单机部署       |
+| PostgreSQL | 独立的数据库服务     | 并发写入、多实例部署、生产环境 |
+
+## PostgreSQL [#postgres]
+
+<Tech href="https://www.postgresql.org" icon="postgres" />
+
+PostgreSQL 是独立运行的关系型数据库，提供事务、约束和并发访问能力。生成项目包含本地开发的 Compose 配置，也可以通过 `DATABASE_URL` 连接已有实例。
+
+## SQLite [#sqlite]
+
+<Tech href="https://nodejs.org/api/sqlite.html" icon="sqlite" />
+
+SQLite 将数据库保存在单个文件中，无需独立数据库服务，适合本地开发与单机部署。项目通过 `node:sqlite` 接口访问数据；支持的 Bun 运行时提供对应兼容接口。部署时应持久化数据库文件所在目录。
+
+## Drizzle [#drizzle]
+
+<Tech href="https://orm.drizzle.team" icon="drizzle" />
+
+Drizzle 用 TypeScript 定义表结构，并构建带类型的查询。表结构和迁移位于 `packages/db`。修改表结构后，先生成 SQL 迁移并审阅，再应用到目标数据库：
+
+```sh
+vp run db:generate
+vp run db:migrate
+```
+
+迁移文件应提交到版本控制。
+
+<Callout type="warn">
+  生产数据的备份以及在生产环境执行迁移，需要由你负责。模板升级不会迁移数据库。
+</Callout>
+
+<SchemaMigration
+  steps={[
+    { text: "原始表包含两条待办记录。" },
+    { text: "在 schema 中添加可空的 dueDate 字段，尚未改变数据库。" },
+    { text: "db:generate 生成 SQL 迁移文件，审查后提交到版本控制。" },
+    { text: "db:migrate 应用迁移，保留已有记录，新字段初始为 NULL。" },
+  ]}
+/>
+
+## Better Auth [#better-auth]
+
+<Tech href="https://www.better-auth.com" icon="better-auth" />
+
+Better Auth 提供邮箱密码注册、登录与会话管理，配置位于 `packages/auth`，会话存储在所选数据库中。生成项目包含登录页面、受保护路由和认证测试。
+
+业务接口使用会话中的用户标识限制查询和写入范围。认证确认用户身份，数据访问权限仍由业务逻辑定义。详见[身份与权限](/docs/concepts#auth)。

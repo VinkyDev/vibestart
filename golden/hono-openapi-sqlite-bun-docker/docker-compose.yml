@@ -1,0 +1,24 @@
+name: my-app
+
+x-app: &app
+  build: .
+  image: my-app
+  volumes:
+    - data:/data
+
+services:
+  migrate:
+    <<: *app
+    command: ["bun", "dist/migrate.mjs"]
+
+  app:
+    <<: *app
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  data:
