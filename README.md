@@ -4,7 +4,7 @@
 
 **Compose. Verify. Ship.**
 
-Compose a full-stack TypeScript stack and get a project that has been installed, checked, tested, and built for real.
+Compose a full-stack TypeScript stack and get a cutting-edge, verified project made for AI coding agents, with type safety, lint, and tests built in.
 
 [![npm](https://img.shields.io/npm/v/vibestart-cli?label=npm&color=cb3837)](https://www.npmjs.com/package/vibestart-cli)
 [![CI](https://github.com/VinkyDev/vibestart/actions/workflows/ci.yml/badge.svg)](https://github.com/VinkyDev/vibestart/actions/workflows/ci.yml)
@@ -15,6 +15,29 @@ Compose a full-stack TypeScript stack and get a project that has been installed,
 https://github.com/user-attachments/assets/aa58d60b-4776-460b-97ee-234aa331f436
 
 </div>
+
+## Quick start
+
+### Compose it yourself
+
+Pick each layer in the [web studio](https://vibestart.net/studio) and copy the command it builds, or answer the prompts in your terminal:
+
+```sh
+npx vibestart-cli my-app
+```
+
+### Hand it to an AI agent
+
+Not sure which stack fits? Paste this prompt into Claude Code, Codex, Cursor, or any coding agent and finish the last line with what you want to build. The agent installs the [vibestart skill](skills/vibestart/SKILL.md), chooses the stack, and creates the project. The studio offers the same prompt under **Not sure? Let AI choose**.
+
+```text
+Create a project with vibestart. Install its skill first:
+npx skills add VinkyDev/vibestart --skill vibestart
+
+Then follow it to choose a stack that fits my needs and create the project.
+
+My needs:
+```
 
 ## Why VibeStart
 
@@ -32,32 +55,6 @@ With a coding agent, the hard part of an application is rarely the first day. It
 
 VibeStart does not host your application, does not migrate production data, and does not hide the code. A generated project is an ordinary repository with no runtime dependency on VibeStart.
 
-## Quick start
-
-```sh
-npx vibestart-cli my-app
-```
-
-Answer the prompts, or pass flags to skip them:
-
-```sh
-npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
-```
-
-Or compose visually in the [web studio](https://vibestart.net/studio) and copy the command.
-
-| Option                                                       | Description                                                                                                                                                    |
-| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--auth`, `--desktop`, `--deployment`, …). `none` is the empty choice of an optional kind. |
-| `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                 |
-| `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.2 or newer.                                                                                                             |
-| `--runtime <node\|bun>`                                      | Run the Hono server on Node.js (default) or Bun.                                                                                                               |
-| `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                        |
-| `--list`                                                     | List every kind, its options, and every legal stack.                                                                                                           |
-| `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                          |
-| `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                              |
-| `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                          |
-
 ## Supported stacks
 
 | Layer      | Choices                                              |
@@ -72,9 +69,29 @@ Or compose visually in the [web studio](https://vibestart.net/studio) and copy t
 | UI         | shadcn (Base UI) and Tailwind 4                      |
 | Toolchain  | Vite+, Oxlint, Knip, Vitest, Playwright, `AGENTS.md` |
 
+## CLI options
+
+Pass flags to skip the prompts:
+
+```sh
+npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
+```
+
+| Option                                                       | Description                                                                                                                                                    |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--auth`, `--desktop`, `--deployment`, …). `none` is the empty choice of an optional kind. |
+| `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                 |
+| `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.2 or newer.                                                                                                             |
+| `--runtime <node\|bun>`                                      | Run the Hono server on Node.js (default) or Bun.                                                                                                               |
+| `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                        |
+| `--list`                                                     | List every kind, its options, and every legal stack.                                                                                                           |
+| `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                          |
+| `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                              |
+| `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                          |
+
 ## Agent Skills
 
-The [vibestart skill](skills/vibestart/SKILL.md) guides coding agents through project creation, adding capabilities, template upgrades, and recovery:
+The [vibestart skill](skills/vibestart/SKILL.md) also guides an agent through adding capabilities, template upgrades, and recovery in an existing project:
 
 ```sh
 npx skills add VinkyDev/vibestart --skill vibestart

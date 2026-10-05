@@ -4,7 +4,7 @@
 
 **Compose. Verify. Ship.**
 
-自由组合全栈 TypeScript 技术栈，得到一个真正安装、检查、测试并构建通过的项目。
+自由组合全栈 TypeScript 技术栈，得到一个前沿、经过验证、为 AI 编码智能体打造的项目，内置类型安全、lint 与测试。
 
 [![npm](https://img.shields.io/npm/v/vibestart-cli?label=npm&color=cb3837)](https://www.npmjs.com/package/vibestart-cli)
 [![CI](https://github.com/VinkyDev/vibestart/actions/workflows/ci.yml/badge.svg)](https://github.com/VinkyDev/vibestart/actions/workflows/ci.yml)
@@ -15,6 +15,29 @@
 https://github.com/user-attachments/assets/6adc6f20-99ef-452f-83a7-7d0b69251906
 
 </div>
+
+## 快速开始
+
+### 自己组合
+
+在[网页工作台](https://vibestart.net/studio)中逐层选择技术，复制生成的命令；或者直接在终端按提示回答：
+
+```sh
+npx vibestart-cli my-app
+```
+
+### 交给 AI 助手
+
+不知道怎么选技术栈？把下面的提示词粘贴到 Codex、Cursor、WorkBuddy 等编码助手，在最后一行写下你想做的东西。助手会安装 [vibestart skill](skills/vibestart/SKILL.md)，替你选好技术栈并创建项目。工作台中的 **不知道怎么选？交给 AI** 提供同一段提示词。
+
+```text
+用 vibestart 创建项目。先安装它的 skill：
+npx skills add VinkyDev/vibestart --skill vibestart
+
+再按 skill 的流程，根据我的需求选择合适的技术栈并创建项目。
+
+我的需求：
+```
 
 ## 为什么选择 VibeStart
 
@@ -32,32 +55,6 @@ https://github.com/user-attachments/assets/6adc6f20-99ef-452f-83a7-7d0b69251906
 
 VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。生成的项目是普通的代码仓库，运行时不依赖 VibeStart。
 
-## 快速开始
-
-```sh
-npx vibestart-cli my-app
-```
-
-按提示回答,或用参数跳过提示:
-
-```sh
-npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
-```
-
-也可以在[网页工作台](https://vibestart.net/studio)中可视化组合，再复制命令。
-
-| 选项                                                         | 说明                                                                                                                                 |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `--<kind> <choice>`                                          | 决定某一类选择(`--framework`、`--backend`、`--api`、`--database`、`--auth`、`--desktop`、`--deployment` 等)。`none` 表示可选项留空。 |
-| `--addons <ids\|none>`                                       | 选择扩展,逗号分隔。默认启用 Knip 与 Ultracite;`none` 两者都不要。                                                                    |
-| `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.2 及以上安装依赖。                                                                                           |
-| `--runtime <node\|bun>`                                      | Hono 服务运行在 Node.js(默认)或 Bun 上。                                                                                             |
-| `--recipe <path\|url>`                                       | 从 `vibestart.jsonc` 开始;`kind` 参数优先于它。                                                                                      |
-| `--list`                                                     | 列出所有选择类别、选项与全部合法技术栈。                                                                                             |
-| `--dry-run`                                                  | 解析技术栈并列出文件,不写入磁盘。                                                                                                    |
-| `--json`                                                     | 只输出一个 JSON 对象,从不提问。失败时带有机器可读的 `code`。                                                                         |
-| `--no-interactive`、`--no-git`、`--no-install`、`--no-check` | 跳过提问、`git init`、安装与初始化、最后的 `vp check`。                                                                              |
-
 ## 支持的技术栈
 
 | 层级   | 选择                                                 |
@@ -72,15 +69,35 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | UI     | shadcn(Base UI)与 Tailwind 4                         |
 | 工具链 | Vite+、Oxlint、Knip、Vitest、Playwright、`AGENTS.md` |
 
+## CLI 选项
+
+用参数跳过提问：
+
+```sh
+npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
+```
+
+| 选项                                                         | 说明                                                                                                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `--<kind> <choice>`                                          | 决定某一类选择(`--framework`、`--backend`、`--api`、`--database`、`--auth`、`--desktop`、`--deployment` 等)。`none` 表示可选项留空。 |
+| `--addons <ids\|none>`                                       | 选择扩展,逗号分隔。默认启用 Knip 与 Ultracite;`none` 两者都不要。                                                                    |
+| `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.2 及以上安装依赖。                                                                                           |
+| `--runtime <node\|bun>`                                      | Hono 服务运行在 Node.js(默认)或 Bun 上。                                                                                             |
+| `--recipe <path\|url>`                                       | 从 `vibestart.jsonc` 开始;`kind` 参数优先于它。                                                                                      |
+| `--list`                                                     | 列出所有选择类别、选项与全部合法技术栈。                                                                                             |
+| `--dry-run`                                                  | 解析技术栈并列出文件,不写入磁盘。                                                                                                    |
+| `--json`                                                     | 只输出一个 JSON 对象,从不提问。失败时带有机器可读的 `code`。                                                                         |
+| `--no-interactive`、`--no-git`、`--no-install`、`--no-check` | 跳过提问、`git init`、安装与初始化、最后的 `vp check`。                                                                              |
+
 ## Agent Skills
 
-[vibestart skill](skills/vibestart/SKILL.md) 引导编码智能体完成创建项目、添加能力、模板升级与故障恢复:
+[vibestart skill](skills/vibestart/SKILL.md) 也引导编码智能体在已有项目中添加能力、升级模板与恢复中断的操作：
 
 ```sh
 npx skills add VinkyDev/vibestart --skill vibestart
 ```
 
-安装以项目为范围;追加 `--agent codex` 或 `--agent claude-code` 指定智能体。该 skill 不会安装 CLI,也不会升级你的应用。详见 [Agent Skills 指南](apps/web/content/docs/cli/skill.mdx)。
+安装以项目为范围；追加 `--agent codex` 或 `--agent claude-code` 指定智能体。该 skill 不会安装 CLI，也不会升级你的应用。详见 [Agent Skills 指南](apps/web/content/docs/cli/skill.mdx)。
 
 ## 文档
 
