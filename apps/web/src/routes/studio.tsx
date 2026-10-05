@@ -7,6 +7,7 @@ import { previewName } from "virtual:vibestart";
 
 import { CodeView } from "#/components/code-view.tsx";
 import { Command } from "#/components/command.tsx";
+import { AgentHandoff } from "#/components/create-agent.tsx";
 import { FileTree } from "#/components/file-tree.tsx";
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { StackList } from "#/components/topology/stack-list.tsx";
@@ -90,7 +91,12 @@ const Studio = () => {
           beside the panel while it scrolls once both fit. */}
       <main className="grid flex-1 items-start gap-3 px-3 pb-3 md:grid-cols-2 lg:grid-cols-1 lg:items-stretch xl:h-[calc(100svh-var(--spacing-header))] xl:flex-none xl:grid-cols-[minmax(0,1fr)_minmax(380px,440px)] xl:pl-0">
         <section className="md:max-lg:tall:top-header md:max-lg:tall:sticky relative flex min-h-0 flex-col lg:overflow-hidden">
-          <StackList choosing={choosing} className="lg:hidden" />
+          <StackList
+            action={<AgentHandoff />}
+            choosing={choosing}
+            className="lg:hidden"
+          />
+          <AgentHandoff className="absolute top-4 right-6 z-10 hidden lg:flex xl:right-10" />
           <AnimatePresence>
             {previewing && (
               <motion.span

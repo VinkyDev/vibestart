@@ -1,6 +1,7 @@
 import { Dialog } from "@base-ui/react/dialog";
 import { ChevronRight, Layers } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 
 import { cn } from "@vibestart/ui/lib/utils";
@@ -99,9 +100,11 @@ const Row = ({
 };
 
 export const StackList = ({
+  action,
   choosing,
   className,
 }: {
+  readonly action?: ReactNode;
   readonly choosing: Choosing;
   readonly className?: string;
 }) => {
@@ -116,12 +119,15 @@ export const StackList = ({
         className
       )}
     >
-      <h2
-        className="font-headline text-foreground px-4 pt-4.5 pb-2 text-2xl"
-        id="stack-list-title"
-      >
-        {m.studio_stack()}
-      </h2>
+      <div className="flex items-center justify-between gap-3 px-4 pt-4.5 pb-2">
+        <h2
+          className="font-headline text-foreground text-2xl"
+          id="stack-list-title"
+        >
+          {m.studio_stack()}
+        </h2>
+        {action}
+      </div>
       <ul className="divide-border/70 flex flex-col divide-y">
         {decisions.map((kind) => (
           <li key={kind}>

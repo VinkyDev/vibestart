@@ -47,17 +47,15 @@ export type CloseInputs = {};
 export type Close_FileInputs = {};
 export type Copy_CommandInputs = {};
 export type Copy_FileInputs = {};
+export type Create_Agent_AboutInputs = {};
 export type Create_Agent_CopiedInputs = {};
 export type Create_Agent_CopyInputs = {};
-export type Create_Agent_HintInputs = {};
-export type Create_Agent_PreviewInputs = {};
 export type Create_Agent_PromptInputs = {
     skill: NonNullable<unknown>;
-    command: NonNullable<unknown>;
 };
+export type Create_Agent_TitleInputs = {};
+export type Create_Agent_TriggerInputs = {};
 export type Create_ItInputs = {};
-export type Create_ModeInputs = {};
-export type Create_TerminalInputs = {};
 export type CurrentInputs = {};
 export type Deployment_ImageInputs = {
     name: NonNullable<unknown>;
@@ -1059,6 +1057,20 @@ export declare const copy_file: ((inputs?: Copy_FileInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "Copy the prompt into Claude Code, Codex, Cursor, etc., then add what you want to build. The agent picks the stack and creates the project." |
+*
+* @param {Create_Agent_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const create_agent_about: ((inputs?: Create_Agent_AboutInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_Agent_AboutInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "Prompt copied" |
 *
 * @param {Create_Agent_CopiedInputs} inputs
@@ -1087,35 +1099,7 @@ export declare const create_agent_copy: ((inputs?: Create_Agent_CopyInputs, opti
 /**
 * | output |
 * | --- |
-* | "Copy this prompt to your coding agent. It includes the stack and extensions selected here." |
-*
-* @param {Create_Agent_HintInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const create_agent_hint: ((inputs?: Create_Agent_HintInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_Agent_HintInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "Project creation prompt" |
-*
-* @param {Create_Agent_PreviewInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const create_agent_preview: ((inputs?: Create_Agent_PreviewInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_Agent_PreviewInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "Run this command, read its complete output, and follow the skill: {skill} Create the project with these selected options: {command}" |
+* | "Create a project with vibestart. Install its skill first: {skill} Then follow it to choose a stack that fits my needs and create the project. My needs:" |
 *
 * @param {Create_Agent_PromptInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1124,6 +1108,34 @@ export declare const create_agent_preview: ((inputs?: Create_Agent_PreviewInputs
 export declare const create_agent_prompt: ((inputs: Create_Agent_PromptInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_Agent_PromptInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Let an AI agent choose the stack" |
+*
+* @param {Create_Agent_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const create_agent_title: ((inputs?: Create_Agent_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_Agent_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Not sure? Let AI choose" |
+*
+* @param {Create_Agent_TriggerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const create_agent_trigger: ((inputs?: Create_Agent_TriggerInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_Agent_TriggerInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1138,34 +1150,6 @@ export declare const create_agent_prompt: ((inputs: Create_Agent_PromptInputs, o
 export declare const create_it: ((inputs?: Create_ItInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_ItInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "Creation mode" |
-*
-* @param {Create_ModeInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const create_mode: ((inputs?: Create_ModeInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_ModeInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "Terminal" |
-*
-* @param {Create_TerminalInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const create_terminal: ((inputs?: Create_TerminalInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Create_TerminalInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

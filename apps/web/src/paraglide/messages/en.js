@@ -48,14 +48,13 @@
 /** @typedef {{}} Close_FileInputs */
 /** @typedef {{}} Copy_CommandInputs */
 /** @typedef {{}} Copy_FileInputs */
+/** @typedef {{}} Create_Agent_AboutInputs */
 /** @typedef {{}} Create_Agent_CopiedInputs */
 /** @typedef {{}} Create_Agent_CopyInputs */
-/** @typedef {{}} Create_Agent_HintInputs */
-/** @typedef {{}} Create_Agent_PreviewInputs */
-/** @typedef {{ skill: NonNullable<unknown>, command: NonNullable<unknown> }} Create_Agent_PromptInputs */
+/** @typedef {{ skill: NonNullable<unknown> }} Create_Agent_PromptInputs */
+/** @typedef {{}} Create_Agent_TitleInputs */
+/** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
-/** @typedef {{}} Create_ModeInputs */
-/** @typedef {{}} Create_TerminalInputs */
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
@@ -521,6 +520,10 @@ export const copy_file = /** @type {(inputs: Copy_FileInputs) => LocalizedString
 	return /** @type {LocalizedString} */ (`Copy file`)
 };
 
+export const create_agent_about = /** @type {(inputs: Create_Agent_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Copy the prompt into Claude Code, Codex, Cursor, etc., then add what you want to build. The agent picks the stack and creates the project.`)
+};
+
 export const create_agent_copied = /** @type {(inputs: Create_Agent_CopiedInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Prompt copied`)
 };
@@ -529,32 +532,25 @@ export const create_agent_copy = /** @type {(inputs: Create_Agent_CopyInputs) =>
 	return /** @type {LocalizedString} */ (`Copy prompt`)
 };
 
-export const create_agent_hint = /** @type {(inputs: Create_Agent_HintInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Copy this prompt to your coding agent. It includes the stack and extensions selected here.`)
-};
-
-export const create_agent_preview = /** @type {(inputs: Create_Agent_PreviewInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Project creation prompt`)
-};
-
 export const create_agent_prompt = /** @type {(inputs: Create_Agent_PromptInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`Run this command, read its complete output, and follow the skill:
+	return /** @type {LocalizedString} */ (`Create a project with vibestart. Install its skill first:
 ${i?.skill}
 
-Create the project with these selected options:
-${i?.command}`)
+Then follow it to choose a stack that fits my needs and create the project.
+
+My needs:`)
+};
+
+export const create_agent_title = /** @type {(inputs: Create_Agent_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Let an AI agent choose the stack`)
+};
+
+export const create_agent_trigger = /** @type {(inputs: Create_Agent_TriggerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Not sure? Let AI choose`)
 };
 
 export const create_it = /** @type {(inputs: Create_ItInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Create`)
-};
-
-export const create_mode = /** @type {(inputs: Create_ModeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Creation mode`)
-};
-
-export const create_terminal = /** @type {(inputs: Create_TerminalInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Terminal`)
 };
 
 export const current = /** @type {(inputs: CurrentInputs) => LocalizedString} */ () => {

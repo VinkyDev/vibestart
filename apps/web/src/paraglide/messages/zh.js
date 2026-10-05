@@ -48,14 +48,13 @@
 /** @typedef {{}} Close_FileInputs */
 /** @typedef {{}} Copy_CommandInputs */
 /** @typedef {{}} Copy_FileInputs */
+/** @typedef {{}} Create_Agent_AboutInputs */
 /** @typedef {{}} Create_Agent_CopiedInputs */
 /** @typedef {{}} Create_Agent_CopyInputs */
-/** @typedef {{}} Create_Agent_HintInputs */
-/** @typedef {{}} Create_Agent_PreviewInputs */
-/** @typedef {{ skill: NonNullable<unknown>, command: NonNullable<unknown> }} Create_Agent_PromptInputs */
+/** @typedef {{ skill: NonNullable<unknown> }} Create_Agent_PromptInputs */
+/** @typedef {{}} Create_Agent_TitleInputs */
+/** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
-/** @typedef {{}} Create_ModeInputs */
-/** @typedef {{}} Create_TerminalInputs */
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
@@ -521,40 +520,37 @@ export const copy_file = /** @type {(inputs: Copy_FileInputs) => LocalizedString
 	return /** @type {LocalizedString} */ (`复制文件`)
 };
 
+export const create_agent_about = /** @type {(inputs: Create_Agent_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`把提示词粘贴到 Codex、Cursor、WorkBuddy 等助手，再写下你想做的东西，它会选好技术栈并创建项目。`)
+};
+
 export const create_agent_copied = /** @type {(inputs: Create_Agent_CopiedInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Prompt 已复制`)
+	return /** @type {LocalizedString} */ (`提示词已复制`)
 };
 
 export const create_agent_copy = /** @type {(inputs: Create_Agent_CopyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`复制 Prompt`)
-};
-
-export const create_agent_hint = /** @type {(inputs: Create_Agent_HintInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`复制给编码助手，即可按当前技术栈与扩展选择创建项目。`)
-};
-
-export const create_agent_preview = /** @type {(inputs: Create_Agent_PreviewInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`项目创建 Prompt`)
+	return /** @type {LocalizedString} */ (`复制提示词`)
 };
 
 export const create_agent_prompt = /** @type {(inputs: Create_Agent_PromptInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`先执行以下命令，读取完整输出并遵循 skill：
+	return /** @type {LocalizedString} */ (`用 vibestart 创建项目。先安装它的 skill：
 ${i?.skill}
 
-按以下配置创建项目：
-${i?.command}`)
+再按 skill 的流程，根据我的需求选择合适的技术栈并创建项目。
+
+我的需求：`)
+};
+
+export const create_agent_title = /** @type {(inputs: Create_Agent_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`交给 AI 助手来选技术栈`)
+};
+
+export const create_agent_trigger = /** @type {(inputs: Create_Agent_TriggerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`不知道怎么选？交给 AI`)
 };
 
 export const create_it = /** @type {(inputs: Create_ItInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`创建`)
-};
-
-export const create_mode = /** @type {(inputs: Create_ModeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`创建方式`)
-};
-
-export const create_terminal = /** @type {(inputs: Create_TerminalInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`终端`)
 };
 
 export const current = /** @type {(inputs: CurrentInputs) => LocalizedString} */ () => {

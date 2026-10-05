@@ -1,82 +1,66 @@
-import type { Stack } from "@vibestart/core";
+import { Sparkles } from "lucide-react";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@vibestart/ui/components/popover";
+import { cn } from "@vibestart/ui/lib/utils";
 
 import { CopyGlyph, useCopy } from "#/components/copy.tsx";
 import { repository } from "#/lib/site.ts";
-import { commandLine, decisions } from "#/lib/stack.ts";
-import type { commandWords } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
-/** Explicit choices keep the handoff independent of the CLI release's defaults. */
-export const CreateAgent = ({
-  words,
-  stack,
-  addons,
-  packageManager,
-  name,
-  onName,
-  invalid,
+const skill = `npx skills add ${repository.replace("https://github.com/", "")} --skill vibestart`;
+
+/**
+ * The way out of choosing a stack, so it sits with the choices rather than with the command they produce.
+ * The prompt names no stack and ends on an open "My needs:" line: the reader adds their own words in the
+ * agent, and the skill guides the agent to choose.
+ */
+export const AgentHandoff = ({
+  className,
 }: {
-  readonly stack: Stack;
-  readonly words: ReturnType<typeof commandWords>;
-  readonly addons: readonly string[];
-  readonly packageManager: "pnpm" | "bun";
-  readonly name: string;
-  readonly onName: (name: string) => void;
-  readonly invalid: boolean;
+  readonly className?: string;
 }) => {
   const { copied, copy } = useCopy();
-  const command = commandLine({
-    ...words,
-    flags: [
-      ...decisions.map((kind) => ({ kind, value: stack[kind] ?? "none" })),
-      { kind: "package-manager", value: packageManager },
-      { kind: "addons", value: addons.join(",") || "none" },
-    ],
-  });
-  const prompt = m.create_agent_prompt({
-    command: `${command} --json`,
-    skill: `npx skills use "${repository}" --skill "vibestart"`,
-  });
+  const prompt = m.create_agent_prompt({ skill });
 
   return (
-    <div className="flex min-w-0 flex-col gap-3">
-      <p className="text-muted-foreground text-xs leading-relaxed">
-        {m.create_agent_hint()}
-      </p>
-      <label className="flex items-center justify-between gap-3 text-xs">
-        <span className="text-muted-foreground shrink-0">
-          {m.project_name()}
+    <Popover>
+      <PopoverTrigger className={cn("group/agent", className)}>
+        <span className="bg-card text-foreground shadow-rest group-hover/agent:shadow-lift group-data-popup-open/agent:shadow-lift group-focus-visible/agent:focus-ring transition-surface flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-medium whitespace-nowrap">
+          <Sparkles className="size-3.5" strokeWidth={2} />
+          {m.create_agent_trigger()}
         </span>
-        <input
-          aria-invalid={invalid}
-          className="border-border bg-foreground/[0.04] focus-visible:ring-foreground/30 aria-invalid:border-removed min-w-0 flex-1 rounded-lg border px-3 py-2 font-mono outline-none focus-visible:ring-2"
-          onChange={(event) => {
-            onName(event.target.value);
-          }}
-          spellCheck={false}
-          value={name}
-        />
-      </label>
-      <textarea
-        aria-label={m.create_agent_preview()}
-        className="bg-foreground/[0.04] text-muted-foreground focus-visible:ring-foreground/30 max-h-64 w-full resize-none rounded-xl p-3 text-xs leading-relaxed outline-none focus-visible:ring-2"
-        readOnly
-        rows={7}
-        value={prompt}
-      />
-      <button
-        className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground/30 flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-medium transition-colors outline-none focus-visible:ring-2 disabled:opacity-40"
-        disabled={invalid}
-        onClick={() => {
-          void copy(prompt);
-        }}
-        type="button"
-      >
-        <CopyGlyph copied={copied} />
-        <span aria-live="polite">
-          {copied ? m.create_agent_copied() : m.create_agent_copy()}
-        </span>
-      </button>
-    </div>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-80" sideOffset={8}>
+        <div className="flex flex-col gap-3 p-2.5">
+          <div>
+            <PopoverTitle>{m.create_agent_title()}</PopoverTitle>
+            <div className="mt-1 text-xs leading-relaxed">
+              <PopoverDescription>{m.create_agent_about()}</PopoverDescription>
+            </div>
+          </div>
+          <p className="bg-foreground/[0.04] text-muted-foreground rounded-xl p-3 text-xs leading-relaxed whitespace-pre-line">
+            {prompt}
+          </p>
+          <button
+            className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground/30 flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-medium transition-colors outline-none focus-visible:ring-2"
+            onClick={() => {
+              void copy(prompt);
+            }}
+            type="button"
+          >
+            <CopyGlyph copied={copied} />
+            <span aria-live="polite">
+              {copied ? m.create_agent_copied() : m.create_agent_copy()}
+            </span>
+          </button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };
