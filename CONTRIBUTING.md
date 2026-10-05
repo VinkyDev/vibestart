@@ -43,6 +43,8 @@ vp run deps update hono     # only matching pins and the pins that follow them
 
 `update` stops at the first failing step and leaves the moved pins in the working tree.
 
+The `/update-deps` agent skill (`.agents/skills/update-deps`) runs this whole flow: branch, `vp run deps update`, `vp check`, and a pull request.
+
 ## Releasing the CLI
 
 `vibestart-cli` is published only by `.github/workflows/release.yml`. Do not run `npm publish` from a machine: it publishes `package.json` as written, and `catalog:` dependencies then reach the registry unresolved (this shipped once as an uninstallable `0.1.0-beta.0`).
