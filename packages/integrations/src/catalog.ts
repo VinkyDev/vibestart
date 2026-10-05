@@ -3,7 +3,7 @@ import type { Catalog } from "@vibestart/core";
 export const toolchainVersions = {
   bun: "1.4.2",
   node: "24.21.0",
-  pnpm: "12.8.1",
+  pnpm: "12.9.1",
   vitePlus: "1.0.0",
 };
 
@@ -49,7 +49,7 @@ export const catalog = {
     "@fontsource-variable/geist": "^5.3.0",
     "class-variance-authority": "^0.7.1",
     cn: "^0.4.0",
-    "lucide-react": "^1.50.0",
+    "lucide-react": "^1.52.0",
     shadcn: "^4.21.1",
     sonner: "^2.0.8",
     "tw-animate-css": "^1.4.0",
@@ -72,7 +72,7 @@ export const catalog = {
     "@hono/bun": "^1.0.0",
     "@hono/node-server": "^2.1.3",
     "@t3-oss/env-core": "^0.13.11",
-    hono: "^4.13.12",
+    hono: "^4.13.13",
   },
   auth: {
     "@better-auth/drizzle-adapter": "^1.7.7",
