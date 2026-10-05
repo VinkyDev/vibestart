@@ -28,16 +28,13 @@ npx vibestart-cli my-app
 
 ### Hand it to an AI agent
 
-Not sure which stack fits? Paste this prompt into Claude Code, Codex, Cursor, or any coding agent and finish the last line with what you want to build. The agent installs the [vibestart skill](skills/vibestart/SKILL.md), chooses the stack, and creates the project. The studio offers the same prompt under **Not sure? Let AI choose**.
+Paste this command, along with what you want to build, into Claude Code, Codex, Cursor, or any coding agent:
 
-```text
-Create a project with vibestart. Install its skill first:
+```sh
 npx skills add VinkyDev/vibestart --skill vibestart
-
-Then follow it to choose a stack that fits my needs and create the project.
-
-My needs:
 ```
+
+The agent installs the [vibestart skill](skills/vibestart/SKILL.md), chooses the stack, and creates the project. Later, ask it to add capabilities or upgrade the templates. See the [Agent Skills guide](apps/web/content/docs/cli/skill.mdx).
 
 ## Why VibeStart
 
@@ -88,16 +85,6 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                          |
 | `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                              |
 | `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                          |
-
-## Agent Skills
-
-The [vibestart skill](skills/vibestart/SKILL.md) also guides an agent through adding capabilities, template upgrades, and recovery in an existing project:
-
-```sh
-npx skills add VinkyDev/vibestart --skill vibestart
-```
-
-Installation is project-scoped; append `--agent codex` or `--agent claude-code` to pick an agent. The skill does not install the CLI or upgrade your application. See the [Agent Skills guide](apps/web/content/docs/cli/skill.mdx).
 
 ## Documentation
 

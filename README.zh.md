@@ -28,16 +28,13 @@ npx vibestart-cli my-app
 
 ### 交给 AI 助手
 
-不知道怎么选技术栈？把下面的提示词粘贴到 Codex、Cursor、WorkBuddy 等编码助手，在最后一行写下你想做的东西。助手会安装 [vibestart skill](skills/vibestart/SKILL.md)，替你选好技术栈并创建项目。工作台中的 **不知道怎么选？交给 AI** 提供同一段提示词。
+将下面的命令和你的需求一起粘贴给 Codex、Cursor、WorkBuddy 等编码助手：
 
-```text
-用 vibestart 创建项目。先安装它的 skill：
+```sh
 npx skills add VinkyDev/vibestart --skill vibestart
-
-再按 skill 的流程，根据我的需求选择合适的技术栈并创建项目。
-
-我的需求：
 ```
+
+助手会安装 [vibestart skill](skills/vibestart/SKILL.md)，选好技术栈并创建项目；之后也可以让它添加能力或升级模板。详见 [Agent Skills 指南](apps/web/content/docs/cli/skill.mdx)。
 
 ## 为什么选择 VibeStart
 
@@ -88,16 +85,6 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `--dry-run`                                                  | 解析技术栈并列出文件,不写入磁盘。                                                                                                    |
 | `--json`                                                     | 只输出一个 JSON 对象,从不提问。失败时带有机器可读的 `code`。                                                                         |
 | `--no-interactive`、`--no-git`、`--no-install`、`--no-check` | 跳过提问、`git init`、安装与初始化、最后的 `vp check`。                                                                              |
-
-## Agent Skills
-
-[vibestart skill](skills/vibestart/SKILL.md) 也引导编码智能体在已有项目中添加能力、升级模板与恢复中断的操作：
-
-```sh
-npx skills add VinkyDev/vibestart --skill vibestart
-```
-
-安装以项目为范围；追加 `--agent codex` 或 `--agent claude-code` 指定智能体。该 skill 不会安装 CLI，也不会升级你的应用。详见 [Agent Skills 指南](apps/web/content/docs/cli/skill.mdx)。
 
 ## 文档
 
