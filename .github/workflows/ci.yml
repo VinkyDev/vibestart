@@ -89,9 +89,10 @@ jobs:
         with:
           node-version-file: .node-version
           cache: true
-      - uses: oven-sh/setup-bun@v2.2.0
-        with:
-          bun-version: 1.4.2
+      - run: vp env install bun@1.4.2
+      - run: bun --version
+        env:
+          VP_BUN_VERSION: 1.4.2
       - if: runner.os == 'Windows'
         uses: ./.github/actions/setup-postgres
         id: postgres
@@ -107,6 +108,7 @@ jobs:
       - run: vp run stacks run "$BATCH"
         env:
           GH_TOKEN: ${{ github.token }}
+          VP_BUN_VERSION: 1.4.2
           BATCH: ${{ matrix.name }}
           CI_CONTAINER_IMAGE: ${{ matrix.platform == 'ubuntu-24.04' && needs.plan.outputs.image || '' }}
           STACKS_POSTGRES_URL: ${{ matrix.platform == 'ubuntu-24.04' && 'postgres://postgres:postgres@postgres:5432/postgres' || steps.postgres.outputs.connection-uri }}
