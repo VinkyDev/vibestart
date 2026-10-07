@@ -60,12 +60,12 @@ jobs:
           bun-version: 1.4.2
       - if: matrix.golden.database == 'postgres'
         id: postgres
-        uses: ikalnytskyi/action-setup-postgres@c4dda34aae1c821e3a771b68b73b13af3198a7ee # v8
-        with:
-          postgres-version: "18"
+        uses: ./.github/actions/setup-postgres
+        timeout-minutes: 15
       - run: vp install
       - if: matrix.golden.framework != null
-        run: npx --yes playwright@^1.63.0 install --with-deps chromium
+        uses: ./.github/actions/setup-playwright
+        timeout-minutes: 10
       # Verification records are shared across platforms; always run this golden on this OS.
       - run: vp run stacks verify "$STACK_PATTERN" --package-manager pnpm --force --jobs 1 --out "$STACKS_OUT"
         env:
@@ -116,7 +116,8 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: vp install
-      - run: npx --yes playwright@^1.63.0 install --with-deps chromium
+      - uses: ./.github/actions/setup-playwright
+        timeout-minutes: 10
       - run: vp run stacks verify --jobs 2 --shard ${{ matrix.shard }}/8 --out ${{ runner.temp }}/stacks
         timeout-minutes: 330
       - if: always()
