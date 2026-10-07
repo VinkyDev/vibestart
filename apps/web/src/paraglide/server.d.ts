@@ -77,7 +77,9 @@
  * // ✅ CORRECT - use original request when framework handles URL localization:
  * // paraglideMiddleware(req, () => handler.fetch(req))
  *
- * * *
+ * import { paraglideMiddleware } from './paraglide/server.js'
+ * import handler from '@tanstack/react-start/server-entry'
+ *
  * export default {
  *   fetch(req: Request): Promise<Response> {
  *     // TanStack Router handles URL rewriting via deLocalizeUrl/localizeUrl

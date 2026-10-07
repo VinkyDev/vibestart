@@ -163,7 +163,7 @@ The change is done when every modified path works end to end, every rule in this
 # Dockerfile (docker)
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/voidzero-dev/vite-plus:1.0.0 AS build
+FROM ghcr.io/voidzero-dev/vite-plus:1.1.0 AS build
 WORKDIR /app
 
 COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
@@ -925,14 +925,14 @@ catalog:
   # toolchain
   "@types/bun": ^1.4.2
   "@types/node": ^24.19.1
-  knip: ^6.39.0
+  knip: ^6.40.0
   typescript: ^7.0.2
-  ultracite: ^7.12.2
-  vite-plus: 1.0.0
+  ultracite: ^7.12.4
+  vite-plus: 1.1.0
 
   # api
   "@hono/zod-openapi": ^1.6.3
-  "@scalar/hono-api-reference": ^0.12.9
+  "@scalar/hono-api-reference": ^0.12.10
   zod: ^4.6.5
 
   # server
