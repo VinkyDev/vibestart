@@ -83,7 +83,7 @@ jobs:
           path: ${{ runner.temp }}/stacks/*.log
           if-no-files-found: ignore
 
-  # The only writer of verification.json: it joins the shards' records and commits them to main.
+  # The only writer of verification.json: it joins the shards' records and commits them to the ref that ran.
   record:
     if: always() && needs.verify.result != 'skipped'
     needs: verify
@@ -101,6 +101,10 @@ jobs:
         with:
           pattern: shard-*
           path: shards
+      # A push made while the shards ran must not conflict with the record commit.
+      - run: |
+          git fetch origin "$GITHUB_REF_NAME"
+          git reset --hard FETCH_HEAD
       - run: vp run stacks merge shards --shards 8
       - name: Commit verification.json
         run: |
@@ -109,7 +113,6 @@ jobs:
           git add packages/integrations/verification.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "chore: update verification.json"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git push origin "HEAD:$GITHUB_REF_NAME"
       - if: needs.verify.result != 'success'
         run: exit 1

@@ -91,7 +91,7 @@ Verification runs once per class of stacks that share a result:
 
 ### CI
 
-`.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them and commits `verification.json`. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
+`.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them onto the ref's current tip and commits `verification.json` to that ref. To verify a branch before merging, run the workflow on it (`gh workflow run ci.yml --ref <branch>`); the records land on the branch and reach `main` with the merge. A pull request never records. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
 
 ## Package manager and runtime
 
