@@ -33,6 +33,7 @@ export const restore = (root: string) => {
       `repos/${repository}/actions/workflows/ci.yml/runs?status=completed&per_page=30`,
       z.object({ workflow_runs: z.array(runSchema) })
     );
+    let restored = 0;
     for (const run of runs) {
       if (
         String(run.id) === process.env.GITHUB_RUN_ID ||
@@ -83,6 +84,10 @@ export const restore = (root: string) => {
           ],
           { stdio: "pipe", timeout: 120_000 }
         );
+        restored += 1;
+        if (restored === 3) {
+          break;
+        }
       } catch {
         rmSync(dir, { recursive: true, force: true });
       }

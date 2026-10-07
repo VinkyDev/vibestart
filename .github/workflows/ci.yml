@@ -18,12 +18,13 @@ permissions:
   actions: read
 
 concurrency:
-  group: ci-${{ github.head_ref || github.ref_name }}
+  group: ci-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   plan:
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
       pending: ${{ steps.plan.outputs.pending }}
@@ -46,6 +47,7 @@ jobs:
         with:
           name: verification-plan
           overwrite: true
+          retention-days: 30
           include-hidden-files: true
           path: |
             .verification/plan.json
@@ -94,6 +96,7 @@ jobs:
         with:
           name: results-${{ matrix.name }}
           overwrite: true
+          retention-days: 30
           include-hidden-files: true
           path: |
             .verification/results
@@ -103,6 +106,7 @@ jobs:
         with:
           name: logs-${{ matrix.name }}
           overwrite: true
+          retention-days: 30
           include-hidden-files: true
           if-no-files-found: ignore
           path: |
@@ -115,6 +119,7 @@ jobs:
     if: always()
     needs: [plan, verify]
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - run: test "$PLAN" = success && { test "$VERIFY" = success || test "$VERIFY" = skipped; }
         env:
@@ -146,8 +151,8 @@ jobs:
         with:
           name: verification
           overwrite: true
-          path: .verification/artifact
           retention-days: 30
+          path: .verification/artifact
       - run: test "$JOBS" = success
         env:
           JOBS: ${{ steps.jobs.outcome }}
@@ -157,6 +162,7 @@ jobs:
         with:
           name: verified-builds
           overwrite: true
+          retention-days: 30
           path: |
             apps/cli/dist
             apps/web/dist

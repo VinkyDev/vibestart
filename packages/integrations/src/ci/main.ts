@@ -277,7 +277,7 @@ const makePlan = async (force: boolean, pattern?: string, local = false) => {
   );
   const ordered = tasks.toSorted((a, b) => a.id.localeCompare(b.id));
   const cached = new Set(reused.map(({ id }) => id));
-  const batches = batchesOf(tasks.filter(({ id }) => !cached.has(id)));
+  const batches = batchesOf(ordered.filter(({ id }) => !cached.has(id)));
   const plan: Plan = {
     createdAt: new Date().toISOString(),
     tasks: ordered,
