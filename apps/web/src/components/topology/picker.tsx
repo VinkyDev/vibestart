@@ -58,7 +58,7 @@ const Row = ({
   readonly onChoose: (entry: StackEntry) => void;
   readonly onPreview: (entry: StackEntry | null) => void;
   readonly option: Outcome;
-  readonly project: Project;
+  readonly project: Project | null;
   readonly suggested: boolean;
 }) => (
   <button
@@ -109,9 +109,11 @@ const Row = ({
       {current ? (
         <span className="text-tint text-xs font-medium">{m.current()}</span>
       ) : (
-        <Suspense fallback={null}>
-          <Delta addons={addons} from={project} to={option.entry} />
-        </Suspense>
+        project !== null && (
+          <Suspense fallback={null}>
+            <Delta addons={addons} from={project} to={option.entry} />
+          </Suspense>
+        )
       )}
     </span>
   </button>
@@ -145,7 +147,7 @@ export const Picker = ({
   readonly kind: Decision;
   readonly onChoose: (entry: StackEntry) => void;
   readonly onPreview: (entry: StackEntry | null) => void;
-  readonly project: Project;
+  readonly project: Project | null;
   readonly stack: Stack;
 }) => {
   const { about, question } = roles[kind];

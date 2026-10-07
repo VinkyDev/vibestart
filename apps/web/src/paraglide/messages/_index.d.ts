@@ -230,6 +230,8 @@ export type Pillar_Types_BodyInputs = {};
 export type Pillar_Types_TitleInputs = {};
 export type Postgres_ProcessInputs = {};
 export type PreviewInputs = {};
+export type Preview_CliInputs = {};
+export type Preview_DefaultsInputs = {};
 export type PreviewingInputs = {
     label: NonNullable<unknown>;
 };
@@ -3238,6 +3240,34 @@ export declare const postgres_process: ((inputs?: Postgres_ProcessInputs, option
 export declare const preview: ((inputs?: PreviewInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<PreviewInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Generate this add-on combination with the command above to see the complete project." |
+*
+* @param {Preview_CliInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_cli: ((inputs?: Preview_CliInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_CliInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Preview with default add-ons" |
+*
+* @param {Preview_DefaultsInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_defaults: ((inputs?: Preview_DefaultsInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_DefaultsInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

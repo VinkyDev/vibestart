@@ -203,6 +203,8 @@
 /** @typedef {{}} Pillar_Types_TitleInputs */
 /** @typedef {{}} Postgres_ProcessInputs */
 /** @typedef {{}} PreviewInputs */
+/** @typedef {{}} Preview_CliInputs */
+/** @typedef {{}} Preview_DefaultsInputs */
 /** @typedef {{ label: NonNullable<unknown> }} PreviewingInputs */
 /** @typedef {{ name: NonNullable<unknown> }} ProcessInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Process_With_ApiInputs */
@@ -1157,6 +1159,14 @@ export const postgres_process = /** @type {(inputs: Postgres_ProcessInputs) => L
 
 export const preview = /** @type {(inputs: PreviewInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`预览`)
+};
+
+export const preview_cli = /** @type {(inputs: Preview_CliInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`使用上方命令生成当前扩展组合，即可查看完整项目。`)
+};
+
+export const preview_defaults = /** @type {(inputs: Preview_DefaultsInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`恢复默认扩展并预览`)
 };
 
 export const previewing = /** @type {((inputs: PreviewingInputs) => LocalizedString) & { parts: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[] }} */ (

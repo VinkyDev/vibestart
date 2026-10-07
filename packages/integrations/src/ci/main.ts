@@ -9,6 +9,7 @@ import {
   openSync,
   readdirSync,
   readFileSync,
+  renameSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -24,6 +25,7 @@ import { fingerprint } from "@vibestart/core";
 
 import { toolchainVersions } from "#/catalog.ts";
 import { restore } from "#/ci/github.ts";
+import { saveLock } from "#/ci/locks.ts";
 import type { Plan, Result, Task } from "#/ci/model.ts";
 import {
   batchesOf,
@@ -58,7 +60,9 @@ const write = (
   value: Plan | Result | Verification | z.infer<typeof reportSchema>
 ) => {
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, JSON.stringify(value));
+  const temporary = `${file}.tmp`;
+  writeFileSync(temporary, JSON.stringify(value));
+  renameSync(temporary, file);
 };
 const print = (line: string) => {
   process.stdout.write(`${line}\n`);
@@ -352,11 +356,10 @@ const execute = async (task: Task, index: number) => {
     print(`${task.id} FAIL (${seconds}s)\n${logTail(logFile)}`);
     return false;
   }
-  const lock = digest(readFileSync(path.join(dir, lockName), "utf-8"));
+  const lock = saveLock(path.join(dir, lockName), artifact);
   if (task.lock !== undefined && lock !== task.lock) {
     throw new Error(`Frozen lock changed: ${task.id}`);
   }
-  copyFileSync(path.join(dir, lockName), path.join(artifact, "locks", lock));
   const result: Result = {
     ...task,
     lock,
@@ -389,6 +392,7 @@ const resumeBatch = (plan: Plan, name: string) => {
   if (run === undefined || Number(process.env.GITHUB_RUN_ATTEMPT ?? 1) < 2) {
     return;
   }
+  mkdirSync(path.join(artifact, "locks"), { recursive: true });
   const dir = path.join(root, "resume", name);
   rmSync(dir, { recursive: true, force: true });
   try {

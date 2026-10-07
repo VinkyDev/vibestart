@@ -32,7 +32,15 @@ Push the pull request; CI automatically plans and verifies affected combinations
 - To resume after an interrupted run, rerun CI or use `gh workflow run ci.yml --ref <branch>`. Completed tasks can be reused. Add `-f force=true` to refresh dependencies and rerun everything; the weekly run does this automatically.
 - For local service verification, `vp run stacks verify '<pattern>'` uses PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`), Chromium installed with `npx playwright install chromium`, and Bun 1.4.2. Results stay in ignored `.verification/`; they are not CI evidence.
 - `vp run stacks smoke '<pattern>'` builds Hono projects and exercises real imports and in-memory HTTP handlers without listening on a port.
-- Before building a verified CLI or Studio locally, run `vp run stacks restore && vp run stacks check` with authenticated `gh`. `check` requires complete current evidence and embeds it; without an embedded report, development builds show unverified. Releases require complete evidence and retain the report as a release asset. Deploy Studio from the `verified-builds` artifact, or run the restore/check commands before your deployment build; a checkout alone contains no verification data.
+- Before building a verified CLI or Studio locally, run `vp run stacks restore && vp run stacks check` with authenticated `gh`. `check` requires complete current evidence and embeds it; without an embedded report, development builds show unverified. Releases require complete evidence and retain the report as a release asset. Cloudflare Workers Builds automatically reads the lightweight `verification-web` artifact before loading the generator.
+
+## Cloudflare builds
+
+Create a GitHub fine-grained token owned by `VinkyDev`, scoped only to `vibestart`, with **Actions: Read-only** (Metadata is automatically read-only). In Cloudflare, open the Worker → Settings → Builds → Build variables and secrets, and add it as the **Secret** `GH_TOKEN` for production and preview builds. Keep the existing build command; the Vite plugin detects `WORKERS_CI=1` and embeds the matching records before generating previews. The token and GitHub requests exist only in the build process; visitors load verification data from the site's own assets.
+
+If no complete artifact exists yet, wait for repository CI to pass and retry the Cloudflare build. Missing credentials or a damaged archive fail the build. Development builds need no token.
+
+Studio generates only the default add-ons for pnpm and Bun, with two generators at a time. Other add-on selections retain the exact CLI command and show a prompt to generate through the CLI rather than an unrelated file preview. No native formatter runs in the browser or Worker.
 
 ## Keeping dependencies current
 

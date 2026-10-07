@@ -98,7 +98,7 @@ flowchart LR
   E --> F[Immutable report + CLI / Studio builds]
 ```
 
-The planner computes runtime inputs and a harness policy digest (runner code, workflow/actions, repository lockfile and tool versions) separately for `ubuntu-24.04` and `windows-2025`, x64. Linux runs at most eight batches with two projects each concurrently; Windows at most two batches with one project at a time. Each batch prepares PostgreSQL 18, Bun and Chromium once. Linux goldens are ordinary Linux subjects, not a second matrix. Every project has an isolated directory and e2e port; tests create their own databases.
+The planner computes runtime inputs and a harness policy digest (runner code, workflow/actions, repository lockfile and tool versions) separately for `ubuntu-24.04` and `windows-2025`, x64. Linux runs at most eight batches with two projects each concurrently; Windows at most two batches with one project at a time. Each Linux batch uses a PostgreSQL 18 service container; Windows prepares PostgreSQL natively. Both prepare Bun and Chromium once. Linux goldens are ordinary Linux subjects, not a second matrix. Every project has an isolated directory and e2e port; tests create their own databases.
 
 `stacks restore` downloads immutable artifacts via explicit run IDs (at most three reports) from recent main runs and same-repository PR runs. Same-repository manual runs follow the same policy; fork evidence is never promoted to shared evidence. API failures, expired artifacts or invalid records cause cache misses. Main computes its own plan after merging; a changed input cannot inherit the PR result. No `pull_request_target` execution, write token, state branch or bot commit is involved.
 
@@ -108,7 +108,7 @@ Each executor writes a result immediately after a project passes. The report job
 
 Artifacts contain full generated output and output diffs for review, task results, resolved lockfiles, and failed-job logs/traces. They expire after 30 days; missing evidence is regenerated. Contributors commit only source and intentional golden changes.
 
-`stacks check` requires complete matching evidence and writes an ignored build input. CLI and Studio bundles embed that input and retain offline verification displays; development builds without it show unverified. Release CI blocks missing evidence and attaches the report to the GitHub release for durable provenance. The display describes the recorded dependency resolution, not a promise about later installs using version ranges.
+`stacks check` requires complete matching evidence and writes an ignored build input. CLI and Studio bundles embed that input and retain offline verification displays; development builds without it show unverified. Release CI blocks missing evidence and attaches the report to the GitHub release for durable provenance. The display describes the recorded dependency resolution, not a promise about later installs using version ranges. Cloudflare builds fetch the lightweight `verification-web` export using a read-only build secret and embed it before bundling; browsers never fetch GitHub verification data. Studio prebuilds default add-on previews only, with bounded generation, and directs custom add-on combinations to the CLI.
 
 ## Package manager and runtime
 

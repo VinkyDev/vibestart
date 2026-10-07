@@ -24,7 +24,7 @@ export interface StackSummary {
   readonly verification: StackVerification | null;
 }
 
-export const addonsKey = (addons: readonly string[]) =>
+const addonsKey = (addons: readonly string[]) =>
   addons.length === 0 ? "none" : addons.join("+");
 
 export interface StackEntry extends StackSummary {

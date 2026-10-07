@@ -64,6 +64,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    services:
+      postgres:
+        image: ${{ matrix.platform == 'ubuntu-24.04' && 'postgres:18' || '' }}
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 15
     defaults:
       run:
         shell: bash
@@ -76,7 +88,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version: 1.4.2
-      - uses: ./.github/actions/setup-postgres
+      - if: runner.os == 'Windows'
+        uses: ./.github/actions/setup-postgres
         id: postgres
         timeout-minutes: 15
       - run: vp install
@@ -90,7 +103,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           BATCH: ${{ matrix.name }}
-          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri }}
+          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri || 'postgres://postgres:postgres@localhost:5432/postgres' }}
       - if: always()
         uses: actions/upload-artifact@v7.0.1
         with:
@@ -156,6 +169,12 @@ jobs:
       - run: test "$JOBS" = success
         env:
           JOBS: ${{ steps.jobs.outcome }}
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: verification-web
+          overwrite: true
+          retention-days: 30
+          path: packages/integrations/verification/current.json
       - run: vp run --filter vibestart-cli build
       - run: vp run --filter @vibestart/web build
       - uses: actions/upload-artifact@v7.0.1

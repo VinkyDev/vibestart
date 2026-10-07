@@ -1,6 +1,11 @@
 import { minBy } from "es-toolkit/array";
 
-import type { Blueprint, PackageManager, Stack } from "@vibestart/core";
+import type {
+  Blueprint,
+  PackageManager,
+  Stack,
+  Verification,
+} from "@vibestart/core";
 import {
   defaultAddons,
   fingerprint,
@@ -74,25 +79,35 @@ export const verifiedBlueprint = (
   return blueprint;
 };
 
+const currentRecords = new Map<
+  string,
+  Promise<Verification[string] | undefined>
+>();
+
 const currentRecord = async (
   subject: Stack,
   packageManager: PackageManager
 ) => {
-  const record =
-    verification[
-      `${stackLabel(subject)}${packageManager === "bun" ? "-bun-pm" : ""}`
-    ];
-  if (record === undefined) {
-    return record;
+  const label = `${stackLabel(subject)}${packageManager === "bun" ? "-bun-pm" : ""}`;
+  let pending = currentRecords.get(label);
+  if (pending === undefined) {
+    pending = (async () => {
+      const record = verification[label];
+      if (record === undefined) {
+        return record;
+      }
+      const generation = await generate(
+        registry,
+        verifiedBlueprint(subject, packageManager),
+        { name: verifiedName }
+      );
+      return record.fingerprint === (await fingerprint(generation))
+        ? record
+        : undefined;
+    })();
+    currentRecords.set(label, pending);
   }
-  const generation = await generate(
-    registry,
-    verifiedBlueprint(subject, packageManager),
-    { name: verifiedName }
-  );
-  return record.fingerprint === (await fingerprint(generation))
-    ? record
-    : undefined;
+  return await pending;
 };
 
 /** Any default add-on subset shares the record; under Bun, the record that installed the dependencies. */

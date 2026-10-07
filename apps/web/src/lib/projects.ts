@@ -6,6 +6,12 @@ import { verifiedAddons } from "#/lib/stack.ts";
 
 const loaded = new Map<string, Promise<Project>>();
 
+export const hasPreview = (
+  entry: StackEntry,
+  addons: readonly string[],
+  packageManager: "pnpm" | "bun"
+) => Object.hasOwn(entry.projects, projectKey(addons, packageManager));
+
 export const loadProject = (
   entry: StackEntry,
   addons: readonly string[] = verifiedAddons,

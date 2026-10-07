@@ -17,7 +17,7 @@ export interface Choosing {
   readonly baseline: Stack;
   readonly addons: readonly string[];
   readonly onAddons: (addons: readonly string[]) => void;
-  readonly project: Project;
+  readonly project: Project | null;
   readonly onPreview: (entry: StackEntry | null) => void;
   readonly onChoose: (entry: StackEntry) => void;
 }

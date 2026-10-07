@@ -1,6 +1,7 @@
 import { omit } from "es-toolkit/object";
+import { limitAsync } from "es-toolkit/promise";
 
-import type { RegistryInfo } from "@vibestart/core";
+import type { RegistryInfo, Stack } from "@vibestart/core";
 import { defaultAddons, generate, legalStacks } from "@vibestart/core";
 import {
   bunSubjectOf,
@@ -11,7 +12,7 @@ import {
 } from "@vibestart/integrations";
 
 import type { Project, StackSummary } from "../src/lib/project.ts";
-import { addonsKey, projectKey } from "../src/lib/project.ts";
+import { projectKey } from "../src/lib/project.ts";
 
 /** The name the CLI gives a project when it is not asked for one. */
 export const previewName = "my-app";
@@ -32,58 +33,39 @@ export const registryInfo: RegistryInfo = {
 
 export const stackSummaries = async (): Promise<StackSummary[]> =>
   await Promise.all(
-    [...legal].map(async ([label, stack]) => {
-      const [verification, bunVerification] = await Promise.all([
-        verificationOf(stack, defaultAddons(registry)),
-        verificationOf(stack, defaultAddons(registry), "bun"),
-      ]);
-      return {
-        label,
-        stack,
-        bunVerification:
-          bunVerification === undefined
-            ? null
-            : {
-                ...bunVerification,
-                label: `${stackLabel(bunSubjectOf(stack))}-bun-pm`,
-              },
-        verification:
-          verification === undefined
-            ? null
-            : { ...verification, label: stackLabel(verifiedAs(stack)) },
-      };
-    })
+    [...legal].map(
+      limitAsync(
+        async ([label, stack]: [string, Stack]): Promise<StackSummary> => {
+          const [verification, bunVerification] = await Promise.all([
+            verificationOf(stack, defaultAddons(registry)),
+            verificationOf(stack, defaultAddons(registry), "bun"),
+          ]);
+          return {
+            label,
+            stack,
+            bunVerification:
+              bunVerification === undefined
+                ? null
+                : {
+                    ...bunVerification,
+                    label: `${stackLabel(bunSubjectOf(stack))}-bun-pm`,
+                  },
+            verification:
+              verification === undefined
+                ? null
+                : { ...verification, label: stackLabel(verifiedAs(stack)) },
+          };
+        },
+        2
+      )
+    )
   );
 
-/**
- * Every set of add-ons, by `addonsKey`. A preview is generated ahead for each, so their count doubles with
- * each add-on; past a few, previews should generate on demand instead.
- */
-const subsets = (ids: readonly string[]) => {
-  let sets: string[][] = [[]];
-  for (const id of ids.toReversed()) {
-    sets = sets.flatMap((set) => [[id, ...set], set]);
-  }
-  return sets;
-};
-
-const addonSets = new Map(
-  subsets(registry.addons.map((addon) => addon.id)).map((set) => [
-    addonsKey(set),
-    set,
-  ])
-);
-
 export const projectSets = new Map(
-  [...addonSets.values()].flatMap((addons) =>
-    (["pnpm", "bun"] as const).map(
-      (packageManager) =>
-        [
-          projectKey(addons, packageManager),
-          { addons, packageManager },
-        ] as const
-    )
-  )
+  (["pnpm", "bun"] as const).map((packageManager) => [
+    projectKey(defaultAddons(registry), packageManager),
+    { addons: defaultAddons(registry), packageManager },
+  ])
 );
 
 export const project = async (label: string, key: string): Promise<Project> => {

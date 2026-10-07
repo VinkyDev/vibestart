@@ -230,6 +230,8 @@ export type Pillar_Types_BodyInputs = {};
 export type Pillar_Types_TitleInputs = {};
 export type Postgres_ProcessInputs = {};
 export type PreviewInputs = {};
+export type Preview_CliInputs = {};
+export type Preview_DefaultsInputs = {};
 export type PreviewingInputs = {
     label: NonNullable<unknown>;
 };
@@ -590,6 +592,8 @@ export declare const pillar_types_body: (inputs: Pillar_Types_BodyInputs) => Loc
 export declare const pillar_types_title: (inputs: Pillar_Types_TitleInputs) => LocalizedString;
 export declare const postgres_process: (inputs: Postgres_ProcessInputs) => LocalizedString;
 export declare const preview: (inputs: PreviewInputs) => LocalizedString;
+export declare const preview_cli: (inputs: Preview_CliInputs) => LocalizedString;
+export declare const preview_defaults: (inputs: Preview_DefaultsInputs) => LocalizedString;
 export declare const previewing: ((inputs: PreviewingInputs) => LocalizedString) & {
     parts: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[];
 };

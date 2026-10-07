@@ -1,9 +1,12 @@
 import { ParaglideMessage } from "@inlang/paraglide-js-react";
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import { Terminal } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { previewName } from "virtual:vibestart";
+
+import { Button } from "@vibestart/ui/components/button";
 
 import { CodeView } from "#/components/code-view.tsx";
 import { Command } from "#/components/command.tsx";
@@ -16,7 +19,7 @@ import type { Focus } from "#/lib/focus.ts";
 import { FocusContext } from "#/lib/focus.ts";
 import type { StackEntry } from "#/lib/project.ts";
 import type { FileDelta } from "#/lib/projects.ts";
-import { fileDelta, loadProject } from "#/lib/projects.ts";
+import { fileDelta, hasPreview, loadProject } from "#/lib/projects.ts";
 import {
   addonsFlag,
   entryFromFlags,
@@ -50,12 +53,15 @@ const Studio = () => {
   }>({ delta: undefined, project, version: 0 });
   if (tracked.project !== project) {
     setTracked({
-      delta: fileDelta(tracked.project, project),
+      delta:
+        tracked.project !== null && project !== null
+          ? fileDelta(tracked.project, project)
+          : undefined,
       project,
       version: tracked.version + 1,
     });
   }
-  const file = project.files.find((candidate) => candidate.path === openPath);
+  const file = project?.files.find((candidate) => candidate.path === openPath);
   const previewing = preview !== null && preview.label !== entry.label;
   const choosing: Choosing = {
     baseline: entry.stack,
@@ -154,14 +160,33 @@ const Studio = () => {
             onName={setName}
             project={project}
           />
-          <FileTree
-            delta={tracked.delta}
-            deltaVersion={tracked.version}
-            name={name}
-            onOpen={setOpenPath}
-            openPath={openPath}
-            project={project}
-          />
+          {project === null ? (
+            <div className="border-border text-muted-foreground flex flex-1 flex-col items-center justify-center gap-3 border-t px-8 py-12 text-center">
+              <Terminal className="size-7" strokeWidth={1.5} />
+              <p className="text-sm leading-relaxed">{m.preview_cli()}</p>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => {
+                  void navigate({
+                    resetScroll: false,
+                    search: (previous) => ({ ...previous, addons: undefined }),
+                  });
+                }}
+              >
+                {m.preview_defaults()}
+              </Button>
+            </div>
+          ) : (
+            <FileTree
+              delta={tracked.delta}
+              deltaVersion={tracked.version}
+              name={name}
+              onOpen={setOpenPath}
+              openPath={openPath}
+              project={project}
+            />
+          )}
         </aside>
       </main>
     </FocusContext>
@@ -175,7 +200,9 @@ export const Route = createFileRoute("/studio")({
     return {
       addons: deps.addons,
       entry,
-      project: await loadProject(entry, deps.addons, deps.packageManager),
+      project: hasPreview(entry, deps.addons, deps.packageManager)
+        ? await loadProject(entry, deps.addons, deps.packageManager)
+        : null,
       packageManager: deps.packageManager,
     };
   },

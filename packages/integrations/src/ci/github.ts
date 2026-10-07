@@ -9,7 +9,7 @@ const runSchema = z.object({
   event: z.string(),
   head_branch: z.string(),
   head_sha: z.string(),
-  head_repository: z.object({ full_name: z.string() }),
+  head_repository: z.object({ full_name: z.string() }).nullable(),
 });
 
 const api = <T>(endpoint: string, schema: z.ZodType<T>): T =>
@@ -37,32 +37,16 @@ export const restore = (root: string) => {
     for (const run of runs) {
       if (
         String(run.id) === process.env.GITHUB_RUN_ID ||
-        run.head_repository.full_name !== repository
+        run.head_repository?.full_name !== repository
       ) {
         continue;
       }
       const main = run.event === "push" && run.head_branch === "main";
       const scheduled = run.event === "schedule" && run.head_branch === "main";
-      const pulls =
-        run.event === "pull_request"
-          ? api(
-              `repos/${repository}/commits/${run.head_sha}/pulls`,
-              z.array(
-                z.object({
-                  head: z.object({
-                    repo: z.object({ full_name: z.string() }).nullable(),
-                  }),
-                })
-              )
-            )
-          : [];
-      const sameRepositoryPull =
-        pulls.length > 0 &&
-        pulls.every((pull) => pull.head.repo?.full_name === repository);
       if (
         !main &&
         !scheduled &&
-        !sameRepositoryPull &&
+        run.event !== "pull_request" &&
         run.event !== "workflow_dispatch"
       ) {
         continue;

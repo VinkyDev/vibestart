@@ -60,7 +60,7 @@ export const Command = ({
   readonly entry: StackEntry;
   readonly name: string;
   readonly onName: (name: string) => void;
-  readonly project: Project;
+  readonly project: Project | null;
 }) => {
   const nameError = projectNameError(name);
   const words = commandWords(
@@ -70,11 +70,14 @@ export const Command = ({
     addons,
     packageManager
   );
-  const steps = [
-    { run: `cd ${name}` },
-    ...project.gettingStarted,
-    { run: "vp run dev" },
-  ];
+  const steps =
+    project === null
+      ? []
+      : [
+          { run: `cd ${name}` },
+          ...project.gettingStarted,
+          { run: "vp run dev" },
+        ];
 
   return (
     <section className="flex flex-col gap-4 p-5 pb-4">
