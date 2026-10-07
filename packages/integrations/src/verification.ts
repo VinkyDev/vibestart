@@ -12,12 +12,17 @@ import {
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
 
-import recorded from "../verification.json";
+const reports = import.meta.glob("../verification/current.json", {
+  eager: true,
+  import: "default",
+});
 
 /** Templates are files of a project with this name, so stacks are verified under it. */
 export const verifiedName = "my-app";
 
-export const verification = verificationSchema.parse(recorded);
+const verification = verificationSchema.parse(
+  reports["../verification/current.json"] ?? {}
+);
 
 const legal = new Map(
   legalStacks(registry).map((stack) => [stackLabel(stack), stack])

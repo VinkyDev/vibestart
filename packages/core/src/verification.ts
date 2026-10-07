@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import type { Generation } from "#/generator.ts";
 
-/** `verification.json`: each stack's last passing verification, keyed by the stack's label. */
+/** Build-time verification evidence, keyed by the canonical stack label. */
 export const verificationSchema = z.record(
   z.string(),
   z.strictObject({

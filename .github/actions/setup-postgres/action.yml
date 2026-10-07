@@ -49,3 +49,11 @@ runs:
       with:
         path: ${{ runner.temp }}/postgres-installers/postgresql${{ inputs.postgres-version }}/**/*.exe
         key: ${{ steps.cache-key.outputs.prefix }}-${{ steps.package.outputs.version }}
+    - shell: bash
+      env:
+        DATABASE_URL: ${{ steps.postgres.outputs.connection-uri }}
+        POSTGRES_VERSION: ${{ inputs.postgres-version }}
+      run: |
+        pg_isready -d "$DATABASE_URL"
+        version=$(psql "$DATABASE_URL" -Atc 'SHOW server_version_num')
+        test "$((version / 10000))" = "$POSTGRES_VERSION"

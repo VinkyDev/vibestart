@@ -52,7 +52,7 @@ Converge on the simplest durable design that meets current requirements. Land it
 | ----------------------- | ------------------------------------------------------------------------------------------------- |
 | `apps/cli`              | The `vibestart` CLI: prompts, flags, `--json`, writing the project and running its setup          |
 | `packages/core`         | Blueprint schema, resolver, and generator. Core returns a virtual file tree                       |
-| `packages/integrations` | Integrations, the catalog, templates, golden comparison, and `verification.json`                  |
+| `packages/integrations` | Integrations, the catalog, templates, golden comparison, and verification artifacts               |
 | `packages/config`       | Shared TypeScript presets: `typescript/node.json` for Node, `typescript/react.json` for a web app |
 | `golden/`               | Checked-in generated projects. Each is its own workspace and runs its own `vp check`              |
 
@@ -68,11 +68,11 @@ Converge on the simplest durable design that meets current requirements. Land it
 
 ## Tests
 
-`vp test` runs the Vitest files beside the code in `packages/core` and `packages/integrations`. Snapshots in `packages/integrations/src/__snapshots__` pin the generated tree of every verified stack, and tests compare `golden/` to that output. A stack without a deployment is verified as its Docker sibling (`deployment.test.ts`). Under Bun, `stacks verify` installs only the stacks no other stack covers (`bun-subject.test.ts`). A golden project's `vp run ready` is a local check, outside `vp test`.
+`vp test` runs Vitest beside the code, generates every canonical stack for contract checks, and compares the eight `golden/` projects byte for byte. A stack without a deployment is verified as its Docker sibling (`deployment.test.ts`); Bun installs maximal subjects (`bun-subject.test.ts`). Keep focused regression tests for changed behavior and review intentional golden diffs.
 
-Generated projects ship no GitHub Actions. `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request; on `main` it also re-verifies stale stacks in shards and a `record` job commits `verification.json` (see `docs/architecture.md`). A shard that hits the job limit keeps what it finished; run the workflow again (`workflow_dispatch`) to continue.
+Generated projects ship no GitHub Actions. Repository CI plans affected Linux subjects and Windows goldens, reuses matching evidence, and requires complete results in the `ci` check. Records, dependency locks and full-matrix output/diffs are immutable artifacts, never source commits. See `CONTRIBUTING.md` and `docs/architecture.md` for recovery and build consumption.
 
-A template change updates the snapshot and, when a golden project renders that template, the files in `golden/`. `vp run stacks verify` records a passing fingerprint in `packages/integrations/verification.json`.
+A template change updates relevant golden files with `vp run stacks goldens`. CI performs runtime verification automatically on the PR; no full-matrix snapshot update or verification-record commit is required.
 
 ## Done
 

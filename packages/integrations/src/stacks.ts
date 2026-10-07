@@ -1,188 +1,46 @@
-import { execSync, spawn } from "node:child_process";
-import { once } from "node:events";
+import { execSync } from "node:child_process";
 import {
   closeSync,
   existsSync,
   mkdirSync,
   openSync,
   readdirSync,
-  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
-import {
-  arch,
-  availableParallelism,
-  platform,
-  release,
-  tmpdir,
-  userInfo,
-} from "node:os";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { parseArgs } from "node:util";
 
-import { limitAsync } from "es-toolkit/promise";
+import type { Generation, PackageManager, Stack } from "@vibestart/core";
+import { legalStacks } from "@vibestart/core";
 
-import type {
-  Generation,
-  PackageManager,
-  Stack,
-  Verification,
-} from "@vibestart/core";
+import { verificationCommand } from "#/ci/main.ts";
 import {
-  fingerprint,
-  generate,
-  legalStacks,
-  verificationSchema,
-} from "@vibestart/core";
-
+  generateProject,
+  writeProject,
+  writeEnvFiles,
+  projectEnv,
+  postgresUrl,
+} from "#/ci/project.ts";
 import { goldenPaths, goldenRoot, goldens } from "#/goldens.ts";
-import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
-import { materializeEnvFromExamples } from "#/server-env.ts";
 import { stackLabel } from "#/stack-label.ts";
-import {
-  bunSubjects,
-  verification as recorded,
-  verifiedBlueprint,
-  verifiedName,
-  verifiedStacks,
-} from "#/verification.ts";
+import { bunSubjects, verifiedStacks } from "#/verification.ts";
 
 import httpSmoke from "../templates/testing/http-smoke/http-smoke.mjs.txt?raw";
-
-const generateProject = async (stack: Stack, packageManager?: PackageManager) =>
-  await generate(registry, verifiedBlueprint(stack, packageManager), {
-    name: verifiedName,
-  });
-
-const writeProject = (dir: string, { files }: Generation) => {
-  rmSync(dir, { force: true, recursive: true });
-  for (const file of files) {
-    mkdirSync(path.dirname(path.join(dir, file.path)), { recursive: true });
-    writeFileSync(path.join(dir, file.path), file.content);
-  }
-};
 
 const print = (line: string) => {
   process.stdout.write(`${line}\n`);
 };
 
-// A server's own `postgres` database always exists; each test run creates and drops `postgres_test_<port>` beside it.
-const postgresUrl =
-  process.env.STACKS_POSTGRES_URL ??
-  `postgres://${userInfo().username}@localhost:5432/postgres`;
-
-const writeEnvFiles = (dir: string) => {
-  materializeEnvFromExamples(dir, {
-    authSecret: "local-secret-that-is-at-least-32-characters",
-    postgresDatabaseUrl: postgresUrl,
-  });
-};
-
-// Loading the generator through Vite sets NODE_ENV=development, which breaks `next build`.
-const projectEnv = Object.fromEntries(
-  Object.entries(process.env).filter(([name]) => name !== "NODE_ENV")
-);
-
-const logTail = (logFile: string, lines = 80) =>
-  readFileSync(logFile, "utf-8").trimEnd().split("\n").slice(-lines).join("\n");
-
-const verificationPath = `${repoRoot}packages/integrations/verification.json`;
-
-type StackVerification = Verification[string];
-
-const writeVerification = async (
-  verification: ReadonlyMap<string, StackVerification>
-) => {
-  const sorted = Object.fromEntries(
-    [...verification].toSorted(([a], [b]) => a.localeCompare(b))
-  );
-  const { code } = await formatWithProjectConfig(
-    verificationPath,
-    JSON.stringify(sorted),
-    "@vibestart"
-  );
-  writeFileSync(verificationPath, code);
-};
-
-const environment = {
-  arch: arch(),
-  node: process.version,
-  os: `${platform()} ${release()}`,
-};
-
-// Each stack's e2e runner takes a port for the web app and the next for a Hono server, so stacks sit 10 ports apart.
-// From 20000 the range stays below the ephemeral ports of Linux (32768) and macOS (49152), which the operating system
-// hands to outgoing connections, and clear of the ports `fetch` refuses.
-const testPorts = (index: number) => ({
-  E2E_TEST_PORT: String(20_000 + index * 10),
-});
-
 interface StackRun {
-  force: boolean;
   generation: Generation;
-  index: number;
   label: string;
   stack: Stack;
   out: string;
-  verification: Map<string, StackVerification>;
 }
-
-const verifyStack = async ({
-  force,
-  generation,
-  index,
-  label,
-  out,
-  verification,
-}: StackRun) => {
-  const hash = await fingerprint(generation);
-  if (!force && verification.get(label)?.fingerprint === hash) {
-    print(`${label} verified at this output`);
-    return true;
-  }
-
-  const dir = path.join(out, label);
-  writeProject(dir, generation);
-  writeEnvFiles(dir);
-  const logFile = `${dir}.log`;
-  const log = openSync(logFile, "w");
-  const started = Date.now();
-  const commands = [
-    "git init -q",
-    ...generation.setup.map((command) => command.run),
-    "vp run ready",
-  ];
-  const child = spawn(commands.join(" && "), {
-    cwd: dir,
-    env: { ...projectEnv, ...testPorts(index) },
-    shell: true,
-    stdio: ["ignore", log, log],
-  });
-  await once(child, "exit");
-  closeSync(log);
-  const passed = child.exitCode === 0;
-  const seconds = Math.round((Date.now() - started) / 1000);
-  if (passed) {
-    verification.set(label, {
-      environment,
-      fingerprint: hash,
-      seconds,
-      verifiedAt: new Date().toISOString(),
-    });
-    print(`${label} PASS (${seconds}s)`);
-  } else {
-    verification.delete(label);
-    print(`${label} FAIL (${seconds}s), see ${logFile}`);
-    // On CI the log file stays on the runner, so the reason has to reach the job output.
-    print(logTail(logFile));
-  }
-  // After each stack, so an interrupted run keeps what it verified.
-  await writeVerification(verification);
-  return passed;
-};
 
 const smokeStack = ({
   generation,
@@ -348,56 +206,22 @@ const verifiedLabels = [
 const shardOf = (label: string, shards: number) =>
   verifiedLabels.indexOf(label) % shards;
 
-/** A shard answers for the labels it owns; one that left no file keeps the repository's. */
-const mergeShards = async (dir: string, shards: number) => {
-  const merged = new Map(Object.entries(recorded));
-  for (let index = 0; index < shards; index += 1) {
-    const file = path.join(dir, `shard-${index}`, "verification.json");
-    if (!existsSync(file)) {
-      print(`shard ${index} left no records`);
-      continue;
-    }
-    const shard = verificationSchema.parse(
-      JSON.parse(readFileSync(file, "utf-8"))
-    );
-    for (const label of verifiedLabels.filter(
-      (name) => shardOf(name, shards) === index
-    )) {
-      const record = shard[label];
-      if (record === undefined) {
-        merged.delete(label);
-      } else {
-        merged.set(label, record);
-      }
-    }
-  }
-  await writeVerification(merged);
-};
-
 const shardPattern = /^(?<index>\d+)\/(?<count>\d+)$/u;
 
-// A stack's `ready` runs several dev servers and a browser, so a few stacks saturate the CPU.
-const defaultJobs = Math.max(1, Math.floor(availableParallelism() / 4));
+const usage = `Usage: vp run stacks <command> [pattern] [options]
 
-const usage = `Usage: vp run stacks <command> [pattern] [--out <dir>] [--force] [--jobs <n>] [--package-manager pnpm|bun|all] [--shard <i>/<n>]
+  gen [pattern]     generate legal stacks (--out, --package-manager, --shard)
+  smoke [pattern]   run Hono checks without listening (--out, --package-manager)
+  goldens           regenerate checked-in golden projects
+  restore           download recent same-repository CI evidence with gh
+  plan              plan missing Linux subjects and Windows goldens (--force)
+  run <batch>       execute one planned batch
+  report            require every planned result and embed the matching report
+  check             require a complete, current report without executing projects
+  verify [pattern]  verify matching subjects on this machine (--force)
 
-  gen [pattern]      write each legal stack whose name matches to <out>/<name>
-  check [pattern]    compare verification records with current output; no installs, services, or writes
-  verify [pattern]   generate, install, set up, and run \`vp run ready\` in each matching stack,
-                     skipping stacks verified at their current output (--force reruns them),
-                     and records each result in packages/integrations/verification.json
-  smoke [pattern]   install Hono stacks, check, unit-test, build, and exercise modules/handlers without listening; no verification record
-  merge <dir> --shards <n>
-                     combine the verification.json each \`verify --shard <i>/<n>\` wrote to <dir>/shard-<i>/
-                     into packages/integrations/verification.json
-  goldens            regenerate golden/* from generator output
-  golden-matrix      print the golden names and stack choices as JSON for CI
-
-gen, check, and verify include both package managers by default. --package-manager narrows the matrix.
-Bun is required to install or run Bun package-manager or Hono-runtime combinations.
---shard <i>/<n> (0-based) takes every n-th stack by name, so n machines each verify a share; merge joins the shares.
-verify runs --jobs stacks at a time (default ${defaultJobs}), each on its own test ports.
-Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres).`;
+CI evidence, locks, generated output and logs live in .verification/ (ignored).
+Verification needs PostgreSQL at STACKS_POSTGRES_URL, Chromium and Bun.`;
 
 interface Selection {
   command: string;
@@ -413,18 +237,16 @@ const selectStacks = async ({
   shard,
 }: Selection) => {
   // A stack another one is verified as needs no run of its own, and Bun installs only the subjects.
-  const stacksFor = (packageManager: PackageManager) => {
+  const stacksFor = () => {
     if (command === "gen") {
       return legalStacks(registry);
     }
-    return packageManager === "bun" && ["check", "verify"].includes(command)
-      ? bunSubjects
-      : verifiedStacks;
+    return verifiedStacks;
   };
   return await Promise.all(
     managers
       .flatMap((packageManager) =>
-        stacksFor(packageManager).map((stack) => ({
+        stacksFor().map((stack) => ({
           stack,
           packageManager,
           label: `${stackLabel(stack)}${packageManager === "bun" ? "-bun-pm" : ""}`,
@@ -441,57 +263,7 @@ const selectStacks = async ({
   );
 };
 
-type Selected = Awaited<ReturnType<typeof selectStacks>>;
-
-const checkStacks = async (selected: Selected) => {
-  const results = await Promise.all(
-    selected.map(async ({ generation, label }) => {
-      const record = recorded[label];
-      const current = record?.fingerprint === (await fingerprint(generation));
-      let status = "MISSING";
-      if (record !== undefined) {
-        status = current ? "CURRENT" : "STALE";
-      }
-      print(`${label} ${status}`);
-      return current;
-    })
-  );
-  const current = results.filter(Boolean).length;
-  print(`${current} of ${selected.length} stacks verified at current output`);
-  return current === selected.length ? 0 : 1;
-};
-
-const verifyStacks = async (
-  selected: Selected,
-  { force, jobs, out }: { force: boolean; jobs: number; out: string }
-) => {
-  const labels = new Set(verifiedLabels);
-  const verified = new Map(
-    Object.entries(recorded).filter(([label]) => labels.has(label))
-  );
-  const verify = limitAsync(verifyStack, jobs);
-  const results = await Promise.all(
-    selected.map(
-      async ({ generation, label, stack }, index) =>
-        await verify({
-          force,
-          generation,
-          index,
-          label,
-          stack,
-          out,
-          verification: verified,
-        })
-    )
-  );
-  const passed = results.filter(Boolean).length;
-  print(`${passed} of ${selected.length} stacks pass`);
-  return passed === selected.length ? 0 : 1;
-};
-
 interface Options {
-  force: boolean;
-  jobs: string;
   out: string;
   "package-manager": string;
   shard: string;
@@ -516,20 +288,12 @@ const runStackCommand = async (
     print("--package-manager is pnpm, bun, or all");
     return 1;
   }
-  const jobs = Number(values.jobs);
-  if (!Number.isInteger(jobs) || jobs < 1) {
-    print(`--jobs must be a positive integer, got ${values.jobs}`);
-    return 1;
-  }
   const selected = await selectStacks({
     command,
     managers: requested === "all" ? ["pnpm", "bun"] : [requested],
     matching: pattern === undefined ? undefined : new RegExp(pattern, "u"),
     shard,
   });
-  if (command === "check") {
-    return await checkStacks(selected);
-  }
   mkdirSync(values.out, { recursive: true });
   if (command === "gen") {
     for (const { generation, label } of selected) {
@@ -544,49 +308,32 @@ const runStackCommand = async (
     );
     return results.every(Boolean) ? 0 : 1;
   }
-  return await verifyStacks(selected, {
-    force: values.force,
-    jobs,
-    out: values.out,
-  });
+  return 1;
 };
 
 export const main = async (args: readonly string[]) => {
+  if (
+    ["plan", "run", "report", "restore", "check", "verify"].includes(
+      args[0] ?? ""
+    )
+  ) {
+    return await verificationCommand(args);
+  }
   const { positionals, values } = parseArgs({
     allowPositionals: true,
     args: [...args],
     options: {
-      force: { default: false, type: "boolean" },
       "package-manager": { default: "all", type: "string" },
-      jobs: { default: String(defaultJobs), type: "string" },
       out: { default: path.join(tmpdir(), "vibestart-stacks"), type: "string" },
       shard: { default: "0/1", type: "string" },
-      shards: { type: "string" },
     },
   });
   const [command = "", pattern] = positionals;
-  if (command === "golden-matrix") {
-    print(
-      JSON.stringify(
-        Object.entries(goldens).map(([name, stack]) => ({ name, ...stack }))
-      )
-    );
-    return 0;
-  }
-  if (command === "merge") {
-    const shards = Number(values.shards);
-    if (pattern === undefined || !Number.isInteger(shards) || shards < 1) {
-      print("merge needs <dir> and --shards <n>");
-      return 1;
-    }
-    await mergeShards(pattern, shards);
-    return 0;
-  }
   if (command === "goldens") {
     await syncGoldens();
     return 0;
   }
-  if (["gen", "check", "verify", "smoke"].includes(command)) {
+  if (["gen", "smoke"].includes(command)) {
     return await runStackCommand(command, pattern, values);
   }
   print(usage);

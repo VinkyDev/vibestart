@@ -5,7 +5,7 @@
 ## Packages
 
 - `packages/core`: Blueprint schema, registry, resolver, generator, and the pure merge used by maintenance. It never touches the file system: `generate` returns a virtual file tree, so the browser and the CLI run the same resolver.
-- `packages/integrations`: every integration and add-on, the `recommended` catalog, templates, the golden comparison, and `verification.json`.
+- `packages/integrations`: every integration and add-on, the `recommended` catalog, templates, the golden comparison, and verification evidence.
 - `apps/cli`: the `vibestart` command: prompts, flags, `--json`, writing files, running setup, and project maintenance.
 - `apps/web`: the Studio, the documentation site, and the generator preview. `oxfmt` has only a native binding, so previews run the generator on the server.
 - `golden/`: checked-in generated projects. Each is its own workspace and the expected output of the comparison tests.
@@ -67,35 +67,48 @@ Generated code uses the idiom a library documents. When a lint rule misfires on 
 
 ## Verification
 
-Three gates, each pinning something different:
+Three gates cover different failure modes:
 
-- **Snapshots** (`vp test`): one file per verified stack, recording the setup commands and each file's path, owner, and content. A template change shows as a diff per stack. `vp test -u` updates them.
-- **Golden** (`vp test`): `golden/*` must match generator output byte for byte, and together they use every integration. `vp run stacks goldens` rewrites them.
-- **Verification** (`vp run stacks verify`): generate, install, run `setup`, then `vp run ready` inside the project. A pass records the output's SHA-256 fingerprint, time, and environment in `packages/integrations/verification.json`. A stack whose fingerprint still matches is skipped. `vp run stacks check` reports `CURRENT`, `STALE`, or `MISSING` without installing or writing and exits 1 on stale or missing. The CLI reads the same record, so "Verified" needs no backend service.
+- **Generation contracts** (`vp test`): generate every canonical stack and check valid paths, ownership, package manifests and setup. Focused tests cover dependency inclusion, framework glue, testing and equivalence.
+- **Golden** (`vp test`): all eight `golden/*` projects match generated output byte for byte. They remain the reviewed source baselines; `vp run stacks goldens` updates them. Full per-stack text copies live in CI artifacts instead of Git.
+- **Runtime verification**: generate, install, run setup and `vp run ready` inside each affected project. Each passing result identifies its runtime input, resolved lock, platform, image, source run, actual timestamp and full output fingerprint.
 
-The fingerprint covers generated content, not resolved dependency versions. "Verified" means it passed against the dependencies resolved at that moment; `vp run deps update` moves the pins and re-verifies what they reach.
+The public output fingerprint still covers every generated file, owner and setup command. Runtime identity omits only generated `README.md` and `AGENTS.md` content and file ownership; executable code, MDX, configuration and setup remain inputs. A documentation-only change updates the public output fingerprint while retaining the actual runtime verification date. Code comments are not stripped.
 
 ### Equivalence classes
 
 Verification runs once per class of stacks that share a result:
 
 - **Add-ons.** Each stack is verified with the default add-ons. Dropping an add-on removes only its own files, dependencies, presets, and checks (`addons.test.ts`), so the record stands for any subset of the defaults. An add-on that edits business files or the runtime must bring its own coverage.
-- **Docker.** A stack without a deployment differs from its Docker sibling by Docker's files alone (`deployment.test.ts`), so it reuses that sibling's snapshot and record.
+- **Docker.** A stack without a deployment differs from its Docker sibling by Docker's files alone (`deployment.test.ts`), so it reuses that sibling's record.
 - **Bun.** Bun and pnpm generate identical sources and tests, differing in `package.json`, `pnpm-workspace.yaml`, `Dockerfile`, and `vibestart.jsonc` (`bun.test.ts`). A Bun verification therefore checks that a dependency set installs and runs under Bun. A stack reuses the record of the Bun subject whose dependencies include its own: a stack that no other covers (`bun-subject.test.ts` proves the inclusion). A stack counts as verified under Bun only when both its own pnpm record and its subject's Bun record match.
-
-### Running at scale
-
-`verify` runs stacks concurrently (`--jobs`). Each takes its own e2e ports from 20000 through `E2E_TEST_PORT`, below the ephemeral ranges of Linux and macOS; integration tests run in process and listen on none. PostgreSQL stacks use `STACKS_POSTGRES_URL`.
-
-`verify --shard <i>/<n>` takes every n-th stack in name order. `stacks merge <dir> --shards <n>` joins the shard files: a shard answers for the stacks it owns, a stack that failed is dropped, and a shard that left no file keeps the repository's records.
 
 ### CI
 
-`.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them onto the ref's current tip and commits `verification.json` to that ref. To verify a branch before merging, run the workflow on it (`gh workflow run ci.yml --ref <branch>`); the records land on the branch and reach `main` with the merge. A pull request never records. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
+One workflow handles pull requests (the merge tree), main, manual recovery and weekly fresh verification:
 
-A golden matrix verifies every project in `goldens.ts` on Linux and Windows. `stacks golden-matrix` supplies the matrix; each job prepares its stack's services and runs full verification with `--force`, so a fingerprint from another platform cannot skip it. Golden jobs never publish verification records.
+```mermaid
+flowchart LR
+  A[Repository checks + plan] --> B[Missing Linux subjects]
+  A --> C[Missing Windows goldens]
+  A --> D[Reused evidence]
+  B --> E[ci: validate complete coverage]
+  C --> E
+  D --> E
+  E --> F[Immutable report + CLI / Studio builds]
+```
 
-The local `setup-postgres` and `setup-playwright` actions cache checksum-validated Windows installers and npm downloads, separated by platform and version/configuration identity. PostgreSQL installation gets three Chocolatey attempts, 15 seconds apart; npm retries fetches twice and Playwright uses its native browser download retries. Setup deadlines bound both actions. Database initialization and tests run once; caches never contain database clusters or test results. Browser binaries are installed normally, and Vite+ owns the pnpm cache.
+The planner computes runtime inputs and a harness policy digest (runner code, workflow/actions, repository lockfile and tool versions) separately for `ubuntu-24.04` and `windows-2025`, x64. Linux runs at most eight batches with two projects each concurrently; Windows at most two batches with one project at a time. Each batch prepares PostgreSQL 18, Bun and Chromium once. Linux goldens are ordinary Linux subjects, not a second matrix. Every project has an isolated directory and e2e port; tests create their own databases.
+
+`stacks restore` downloads immutable artifacts via explicit run IDs from recent main runs and same-repository PR runs. Same-repository manual runs follow the same policy; fork evidence is never promoted to shared evidence. API failures, expired artifacts or invalid records cause cache misses. Main computes its own plan after merging; a changed input cannot inherit the PR result. No `pull_request_target` execution, write token, state branch or bot commit is involved.
+
+A runtime result is reusable for seven days only when its platform/input and lock digest match. The lock is retained as an artifact and is used with a frozen install when the runtime changes but dependency inputs do not. Missing dependency locks resolve afresh. Forced and weekly runs resolve afresh and execute every task; successful older results cannot mask a failed fresh task. Runner images are recorded, not assumed immutable; the weekly run detects dependency and hosted-image drift.
+
+Each executor writes a result immediately after a project passes. The report job retains partial evidence even if another task failed. Missing, duplicate or mismatched planned results fail the stable `ci` check; a legitimately empty execution matrix passes through reused results. Cancellation also fails the gate. Reruns reuse completed tasks and execute the remainder. Setup download retries are bounded; test assertions are not retried by the workflow.
+
+Artifacts contain full generated output and output diffs for review, task results, resolved lockfiles, and failed-job logs/traces. They expire after 30 days; missing evidence is regenerated. Contributors commit only source and intentional golden changes.
+
+`stacks check` requires complete matching evidence and writes an ignored build input. CLI and Studio bundles embed that input and retain offline verification displays; development builds without it show unverified. Release CI blocks missing evidence and attaches the report to the GitHub release for durable provenance. The display describes the recorded dependency resolution, not a promise about later installs using version ranges.
 
 ## Package manager and runtime
 

@@ -15,7 +15,7 @@ const usage = `Usage: vp run deps [update] [pattern] [--json] [--skip-stack-veri
                      exiting 1 when one is (--json prints every pin, behind or not)
   update [pattern]   move the pins whose name matches to their targets, then refresh and verify
                      what they reach: vp install, the golden projects and their lockfiles, the
-                     stack snapshots, vp run stacks verify, and vp run ready
+                     vp run stacks verify, and vp run ready
 
   --skip-stack-verification  omit service/browser stack verification; records stay unchanged
 
@@ -90,17 +90,6 @@ const refresh = (skipStackVerification: boolean): readonly Step[] => [
   // pnpm may add exact-version release-age exceptions during install. Goldens compare pure
   // generator output; render it again while retaining the freshly resolved setup-owned lockfiles.
   { args: ["run", "stacks", "goldens"], cwd: "" },
-  {
-    args: [
-      "test",
-      "--project",
-      "@vibestart/integrations",
-      // `--update` takes an optional mode, so a bare one would read the file after it as the mode.
-      "--update=all",
-      "src/snapshot.test.ts",
-    ],
-    cwd: "",
-  },
   ...(skipStackVerification
     ? []
     : [{ args: ["run", "stacks", "verify"], cwd: "" }]),
@@ -137,7 +126,7 @@ const update = (targets: readonly Target[], skipStackVerification: boolean) => {
     }
   }
   print(
-    `\nMoved ${moving.length} pins. ${skipStackVerification ? "Repository checks passed; stack verification was skipped and verification.json was not refreshed." : "All repository and stack checks passed."}`
+    `\nMoved ${moving.length} pins. ${skipStackVerification ? "Repository checks passed; CI will verify affected stacks on the pull request." : "All repository and stack checks passed."}`
   );
   return 0;
 };

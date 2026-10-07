@@ -45,7 +45,7 @@ With a coding agent, the hard part of an application is rarely the first day. It
 - **Good code begets good code.** An agent imitates the code around it, follows written rules, and corrects itself from errors. Every project ships a consistent codebase, an `AGENTS.md` that says where and how each change is made, and checks (types, lint, tests) that report a mistake within seconds. `vp run ready` runs them all, fastest first.
 - **A current stack, kept current.** Only technologies that are the current standard or clearly becoming it: TypeScript 7, React 19 with the React Compiler, Drizzle ORM 1.0, Oxlint and Oxfmt, and [Vite+](https://viteplus.dev) as one toolchain. Open source, no vendor lock-in, one library per capability. When a better tool becomes the standard, the template moves to it and the old one is removed.
 - **Composed, not copied.** Each technology is an integration with its own files, dependencies, and constraints, and the project is composed from the integrations you choose. A combination that cannot work is refused with the reason and the smallest change that fixes it.
-- **Every combination is verified.** Before each release, every supported combination is generated, installed, type-checked, linted, tested, tested in a browser, and built. The result is recorded with a fingerprint in [`verification.json`](packages/integrations/verification.json), and the CLI shows it when it creates your project.
+- **Every combination is verified.** Before each release, every supported combination is generated, installed, type-checked, linted, tested, tested in a browser, and built. The result is recorded with a fingerprint in [CI artifacts](docs/architecture.md#ci), and the CLI shows it when it creates your project.
 - **TypeScript across the stack.** One language from database to button, with types that travel from the schema through the API to the page and no code generation step. Zod validates data from outside.
 - **Tests that earn their place.** End-to-end tests for whole workflows, integration tests for every API operation against a real database, and unit tests only for logic with real branches.
 - **Maintained after creation.** `upgrade` compares the original template, your project, and the new template, and previews the result before writing anything. Template files take the update; your application code stays as you wrote it.
@@ -96,14 +96,14 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 
 ## Repository
 
-| Path                    | Owns                                                                     |
-| ----------------------- | ------------------------------------------------------------------------ |
-| `apps/cli`              | The `vibestart` command                                                  |
-| `apps/web`              | The web studio and documentation site                                    |
-| `packages/core`         | Blueprint schema, resolver, and generator                                |
-| `packages/integrations` | Integrations, templates, the dependency catalog, and `verification.json` |
-| `packages/config`       | Shared TypeScript presets                                                |
-| `golden/`               | Checked-in generated projects, each its own workspace                    |
+| Path                    | Owns                                                                        |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `apps/cli`              | The `vibestart` command                                                     |
+| `apps/web`              | The web studio and documentation site                                       |
+| `packages/core`         | Blueprint schema, resolver, and generator                                   |
+| `packages/integrations` | Integrations, templates, the dependency catalog, and verification artifacts |
+| `packages/config`       | Shared TypeScript presets                                                   |
+| `golden/`               | Checked-in generated projects, each its own workspace                       |
 
 ## Contributing
 

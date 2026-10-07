@@ -9,7 +9,7 @@ This repository uses [Vite+](https://viteplus.dev). Install `vp`, then:
 ```sh
 vp install        # install dependencies
 vp check          # format, lint, type check
-vp test           # unit tests, snapshots, and golden comparison
+vp test           # unit tests, generation contracts, and golden comparison
 vp run knip       # unused files, exports, and dependencies
 vp run ready      # all of the above
 vp dev            # run the web Studio (from apps/web)
@@ -20,17 +20,19 @@ A change is done when `vp run ready` passes.
 ## Changing a template or an integration
 
 ```sh
-vp test -u                 # update the stack snapshots
-vp run stacks goldens      # rewrite golden/*
-vp run stacks check        # report CURRENT, STALE, or MISSING records; read-only
-vp run stacks verify       # run `vp run ready` in each affected stack and record the result
+vp run stacks goldens      # update only the representative golden projects
+vp run ready              # check source, all generation contracts, and goldens
 ```
 
-- `stacks verify` runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`) and a Chromium installed with `npx playwright install chromium`, which both browser runners launch. Bun stacks need Bun 1.4.2 or newer.
-- `stacks check` and `stacks verify` take a name pattern and `--package-manager pnpm|bun`. `check` exits 1 when a record is stale or missing and never installs or writes.
-- `vp test` and `vp run ready` do not fail on outdated fingerprints; CI refreshes `verification.json` on `main`, and `stacks verify` does it locally. To verify a branch without running it locally, run `gh workflow run ci.yml --ref <branch>`; the workflow commits the records to that branch.
-- CI verifies every golden on Linux and Windows. Add representatives in `packages/integrations/src/goldens.ts`; see [CI architecture](docs/architecture.md#ci) for verification and environment preparation.
-- `vp run stacks smoke '<pattern>'` builds Hono projects and exercises real imports and in-memory HTTP handlers without listening on a port. It never writes verification records.
+Push the pull request; CI automatically plans and verifies affected combinations. No verification records or full-matrix snapshots belong in a commit. Keep the golden diff reviewable; do not update expected output just to silence a failing test.
+
+- Linux verifies canonical pnpm stacks and maximal Bun subjects. Windows verifies the eight golden projects in two batches. A stable `ci` check requires all planned tasks to pass.
+- CI restores recent evidence, compares runtime inputs, toolchain, harness and platform, and carries the resolved dependency lock. Documentation-only generated README/AGENTS changes still appear in output diffs but do not invalidate runtime evidence. See [CI architecture](docs/architecture.md#ci).
+- The run's `verification-plan` artifact contains the plan, full generated outputs and diffs against previous evidence. `verification` contains passing results and resolved locks; failed jobs retain logs and browser traces. CI never commits records back to a branch.
+- To resume after an interrupted run, rerun CI or use `gh workflow run ci.yml --ref <branch>`. Completed tasks can be reused. Add `-f force=true` to refresh dependencies and rerun everything; the weekly run does this automatically.
+- For local service verification, `vp run stacks verify '<pattern>'` uses PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`), Chromium installed with `npx playwright install chromium`, and Bun 1.4.2. Results stay in ignored `.verification/`; they are not CI evidence.
+- `vp run stacks smoke '<pattern>'` builds Hono projects and exercises real imports and in-memory HTTP handlers without listening on a port.
+- Before building a verified CLI or Studio locally, run `vp run stacks restore && vp run stacks check` with authenticated `gh`. `check` requires complete current evidence and embeds it; without an embedded report, development builds show unverified. Releases require complete evidence and retain the report as a release asset. Deploy Studio from the `verified-builds` artifact, or run the restore/check commands before your deployment build; a checkout alone contains no verification data.
 
 ## Keeping dependencies current
 

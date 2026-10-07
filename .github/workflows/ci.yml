@@ -2,24 +2,31 @@ name: CI
 
 on:
   pull_request:
-  workflow_dispatch:
   push:
     branches: [main]
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Refresh dependencies and rerun every verification
+        type: boolean
+        default: false
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  ready:
-    runs-on: ubuntu-latest
+  plan:
+    runs-on: ubuntu-24.04
     outputs:
-      goldens: ${{ steps.matrix.outputs.goldens }}
-      # Whether some stack's verification record no longer matches the generated output.
-      stale: ${{ steps.check.outcome == 'failure' }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      pending: ${{ steps.plan.outputs.pending }}
     steps:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
@@ -28,23 +35,33 @@ jobs:
           cache: true
       - run: vp install
       - run: vp run ready
-      - id: matrix
-        run: echo "goldens=$(node packages/integrations/scripts/stacks.ts golden-matrix)" >> "$GITHUB_OUTPUT"
-      - id: check
-        run: vp run stacks check
-        continue-on-error: true
+      - run: vp run stacks restore
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - id: plan
+        run: vp run stacks plan $FORCE
+        env:
+          FORCE: ${{ (github.event_name == 'schedule' || inputs.force == true) && '--force' || '' }}
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: verification-plan
+          overwrite: true
+          include-hidden-files: true
+          path: |
+            .verification/plan.json
+            .verification/artifact
+            .verification/changes.txt
+            .verification/diffs
 
-  golden:
-    needs: ready
-    name: golden (${{ matrix.os }}, ${{ matrix.golden.name }})
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+  verify:
+    if: needs.plan.outputs.pending == 'true'
+    needs: plan
+    name: verify (${{ matrix.name }})
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 360
     strategy:
       fail-fast: false
-      max-parallel: 4
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        golden: ${{ fromJSON(needs.ready.outputs.goldens) }}
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     defaults:
       run:
         shell: bash
@@ -54,114 +71,92 @@ jobs:
         with:
           node-version-file: .node-version
           cache: true
-      - if: matrix.golden.runtime == 'bun'
-        uses: oven-sh/setup-bun@v2.2.0
-        with:
-          bun-version: 1.4.2
-      - if: matrix.golden.database == 'postgres'
-        id: postgres
-        uses: ./.github/actions/setup-postgres
-        timeout-minutes: 15
-      - run: vp install
-      - if: matrix.golden.framework != null
-        uses: ./.github/actions/setup-playwright
-        timeout-minutes: 10
-      # Verification records are shared across platforms; always run this golden on this OS.
-      - run: vp run stacks verify "$STACK_PATTERN" --package-manager pnpm --force --jobs 1 --out "$STACKS_OUT"
-        env:
-          STACK_PATTERN: ^${{ matrix.golden.name }}$
-          STACKS_OUT: ${{ runner.temp }}/stacks
-          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri }}
-      - if: failure()
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: golden-logs-${{ matrix.os }}-${{ matrix.golden.name }}
-          path: ${{ runner.temp }}/stacks/*.log
-          if-no-files-found: ignore
-
-  # Each shard verifies its share of the stale stacks. A step that outlasts the job limit is
-  # stopped and the shard's finished records are still recorded; run the workflow again
-  # (workflow_dispatch) to continue with the stacks still unverified.
-  verify:
-    if: github.event_name != 'pull_request' && needs.ready.outputs.stale == 'true'
-    needs: ready
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      matrix:
-        # `stacks merge --shards` in the record job counts the same shards.
-        shard: [0, 1, 2, 3, 4, 5, 6, 7]
-    services:
-      postgres:
-        image: postgres:18
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 2s
-          --health-timeout 5s
-          --health-retries 15
-    env:
-      STACKS_POSTGRES_URL: postgres://postgres:postgres@localhost:5432/postgres
-    steps:
-      - uses: actions/checkout@v7
-      - uses: voidzero-dev/setup-vp@v1.21.1
-        with:
-          node-version-file: .node-version
-          cache: true
       - uses: oven-sh/setup-bun@v2.2.0
         with:
           bun-version: 1.4.2
+      - uses: ./.github/actions/setup-postgres
+        id: postgres
+        timeout-minutes: 15
       - run: vp install
       - uses: ./.github/actions/setup-playwright
         timeout-minutes: 10
-      - run: vp run stacks verify --jobs 2 --shard ${{ matrix.shard }}/8 --out ${{ runner.temp }}/stacks
-        timeout-minutes: 330
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: verification-plan
+          path: .verification
+      - run: vp run stacks run "$BATCH"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BATCH: ${{ matrix.name }}
+          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri }}
       - if: always()
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: shard-${{ matrix.shard }}
-          path: packages/integrations/verification.json
+          name: results-${{ matrix.name }}
+          overwrite: true
+          include-hidden-files: true
+          path: |
+            .verification/results
+            .verification/artifact/locks
       - if: failure()
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: logs-${{ matrix.shard }}
-          path: ${{ runner.temp }}/stacks/*.log
+          name: logs-${{ matrix.name }}
+          overwrite: true
+          include-hidden-files: true
           if-no-files-found: ignore
+          path: |
+            .verification/logs
+            .verification/projects/**/test-results/**
+            .verification/projects/**/playwright-report/**
+            .verification/projects/**/.e2e/**
 
-  # The only writer of verification.json: it joins the shards' records and commits them to the ref that ran.
-  record:
-    if: always() && needs.verify.result != 'skipped'
-    needs: verify
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+  ci:
+    if: always()
+    needs: [plan, verify]
+    runs-on: ubuntu-24.04
     steps:
+      - run: test "$PLAN" = success && { test "$VERIFY" = success || test "$VERIFY" = skipped; }
+        env:
+          PLAN: ${{ needs.plan.result }}
+          VERIFY: ${{ needs.verify.result }}
+        id: jobs
+        continue-on-error: true
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
           node-version-file: .node-version
           cache: true
       - run: vp install
-      - uses: actions/download-artifact@v8.0.1
+      - if: needs.plan.result == 'success'
+        uses: actions/download-artifact@v8.0.1
         with:
-          pattern: shard-*
-          path: shards
-      # A push made while the shards ran must not conflict with the record commit.
-      - run: |
-          git fetch origin "$GITHUB_REF_NAME"
-          git reset --hard FETCH_HEAD
-      - run: vp run stacks merge shards --shards 8
-      - name: Commit verification.json
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/integrations/verification.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "chore: update verification.json"
-          git push origin "HEAD:$GITHUB_REF_NAME"
-      - if: needs.verify.result != 'success'
-        run: exit 1
+          name: verification-plan
+          path: .verification
+      - if: needs.verify.result != 'skipped' && needs.plan.result == 'success'
+        uses: actions/download-artifact@v8.0.1
+        with:
+          pattern: results-*
+          merge-multiple: true
+          path: .verification
+      - if: needs.plan.result == 'success'
+        run: vp run stacks report
+      - if: always() && needs.plan.result == 'success'
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: verification
+          overwrite: true
+          path: .verification/artifact
+          retention-days: 30
+      - run: test "$JOBS" = success
+        env:
+          JOBS: ${{ steps.jobs.outcome }}
+      - run: vp run --filter vibestart-cli build
+      - run: vp run --filter @vibestart/web build
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: verified-builds
+          overwrite: true
+          path: |
+            apps/cli/dist
+            apps/web/dist
