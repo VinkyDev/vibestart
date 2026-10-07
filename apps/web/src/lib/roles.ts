@@ -1,21 +1,35 @@
 import type { Change } from "@vibestart/core";
 
 import { kindLabel } from "#/lib/i18n.ts";
-import type { Decision } from "#/lib/stack.ts";
-import { addonOf, integrationOf, isDecision } from "#/lib/stack.ts";
+import type { Decision, OptionalDecision } from "#/lib/stack.ts";
+import {
+  addonOf,
+  integrationOf,
+  isDecision,
+  isOptionalDecision,
+} from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 export type Group = Decision | "foundation";
 
-export const roles: Record<
-  Decision,
-  {
-    readonly role: string;
-    readonly question: string;
-    readonly about: string;
-    readonly none: string;
-  }
-> = {
+interface Role {
+  readonly role: string;
+  readonly question: string;
+  readonly about: string;
+}
+
+export const roles = {
+  testing: {
+    get role() {
+      return m.kind_testing();
+    },
+    get question() {
+      return m.testing_question();
+    },
+    get about() {
+      return m.testing_about();
+    },
+  },
   runtime: {
     get role() {
       return m.kind_runtime();
@@ -128,9 +142,10 @@ export const roles: Record<
       return m.role_framework();
     },
   },
-};
+} satisfies Record<Decision, Role> &
+  Record<OptionalDecision, { readonly none: string }>;
 
-const noneNames: Record<Decision, () => string> = {
+const noneNames: Record<OptionalDecision, () => string> = {
   runtime: () => m.runtime_none(),
   api: () => m.none_api(),
   auth: () => m.none_auth(),
@@ -141,7 +156,14 @@ const noneNames: Record<Decision, () => string> = {
   framework: () => m.none_framework(),
 };
 
-export const noneName = (kind: Decision) => noneNames[kind]();
+const optional = (kind: Decision): OptionalDecision => {
+  if (!isOptionalDecision(kind)) {
+    throw new Error(`Every stack chooses a ${kind}`);
+  }
+  return kind;
+};
+
+export const noneName = (kind: Decision) => noneNames[optional(kind)]();
 
 export const changeText = ({ kind, to }: Change) => {
   if (isDecision(kind)) {
@@ -152,7 +174,7 @@ export const changeText = ({ kind, to }: Change) => {
   return `${kindLabel(kind)} → ${to === null ? m.none_token() : integrationOf(to).name}`;
 };
 
-const addLabels: Record<Decision, () => string> = {
+const addLabels: Record<OptionalDecision, () => string> = {
   runtime: () => m.runtime_none(),
   api: () => m.add_api(),
   auth: () => m.add_auth(),
@@ -163,7 +185,7 @@ const addLabels: Record<Decision, () => string> = {
   framework: () => m.add_framework(),
 };
 
-export const addLabel = (kind: Decision) => addLabels[kind]();
+export const addLabel = (kind: Decision) => addLabels[optional(kind)]();
 
 const fits = {
   bun: () => m.fit_bun(),
@@ -180,9 +202,11 @@ const fits = {
   spa: () => m.fit_spa(),
   sqlite: () => m.fit_sqlite(),
   "tanstack-start": () => m.fit_tanstack_start(),
+  e2e: () => m.desc_e2e(),
+  playwright: () => m.desc_playwright(),
 } satisfies Record<string, () => string>;
 
-const noneFits: Record<Decision, () => string> = {
+const noneFits: Record<OptionalDecision, () => string> = {
   runtime: () => m.runtime_none(),
   api: () => m.fit_none_api(),
   auth: () => m.fit_none_auth(),
@@ -197,7 +221,7 @@ const hasFit = (id: string): id is keyof typeof fits => Object.hasOwn(fits, id);
 
 export const fitOf = (kind: Decision, id: string | null): string => {
   if (id === null) {
-    return noneFits[kind]();
+    return noneFits[optional(kind)]();
   }
   if (!hasFit(id)) {
     throw new Error(`No fit for ${id}`);
@@ -251,6 +275,7 @@ export const tintClass: Record<Group, string> = {
   foundation: "tint-foundation",
   runtime: "tint-backend",
   framework: "tint-framework",
+  testing: "tint-foundation",
 };
 
 export const flagTintClass = (kind: Decision | "addons" | "package-manager") =>

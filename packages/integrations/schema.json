@@ -29,7 +29,16 @@
         "desktop": { "type": "string", "enum": ["electron"] },
         "runtime": { "type": "string", "enum": ["node", "bun"] },
         "deployment": { "type": "string", "enum": ["docker"] },
-        "testing": { "type": "string", "enum": ["vitest-playwright"] }
+        "testing": {
+          "anyOf": [
+            { "type": "string", "enum": ["playwright", "e2e"] },
+            {
+              "type": "string",
+              "enum": ["vitest-playwright", "vitest-e2e"],
+              "deprecated": true
+            }
+          ]
+        }
       },
       "required": ["toolchain", "testing"],
       "additionalProperties": false

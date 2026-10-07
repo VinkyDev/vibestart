@@ -77,6 +77,8 @@ export const listingText = ({ addons, kinds, stacks }: Listing) =>
       ),
     ]),
     "",
+    "Unit and integration tests always run on Vitest; --testing picks the runner of a web app's end-to-end tests.",
+    "",
     "Package manager (--package-manager pnpm|bun; default pnpm, independent of runtime)",
     "",
     "Extensions (--addons <id>[,<id>…] or none: tooling any stack takes or leaves)",

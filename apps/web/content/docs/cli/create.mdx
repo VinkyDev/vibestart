@@ -82,7 +82,9 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database s
 npx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none
 ```
 
-The table's last column shows what an unspecified kind becomes when the CLI does not prompt: SQLite for the database, and no desktop app or deployment.
+The table's last column shows what an unspecified kind becomes when the CLI does not prompt, such as SQLite for the database and no desktop app or deployment.
+
+Unit and integration tests always run on Vitest. `--testing` picks the runner of a web app's end-to-end tests: `playwright` for Playwright or `e2e` for TesterArmy e2e. See [Testing tools](/docs/stack/testing#e2e-tests) to compare them.
 
 ### Incompatible choices [#illegal]
 

@@ -5,26 +5,47 @@ description: Run tests, understand the isolated test environment, and investigat
 
 Test scope follows the selected stack. Static sites cover browser interaction; an API with a database gets integration tests for every operation. Authentication adds session and user-isolation coverage. See [Testing and verification](/docs/testing) for what each layer covers and the principles the tests follow.
 
-## Vitest and Playwright [#vitest-playwright]
-
-### Vitest [#vitest]
+## Unit and integration tests [#vitest]
 
 <Tech href="https://vitest.dev" icon="vitest" />
 
-Vitest runs unit and API integration tests through `vp test`, using the project’s tool configuration. Unit tests live beside the code. Integration tests live in `packages/api/tests/integration` and call the API inside the test process through a typed client, against a real database.
+Every stack runs its unit and integration tests on Vitest, through `vp test` and the project's tool configuration; there is nothing to choose. Unit tests live beside the code. Integration tests live in `packages/api/tests/integration` and call the API inside the test process through a typed client, against a real database.
+
+## End-to-end tests [#e2e-tests]
+
+End-to-end tests follow complete user journeys, such as signing in or checking out, to check that the UI, API, and stored data work together. They catch gaps between components that tests of individual modules can miss.
+
+Choose Playwright (`--testing playwright`) or TesterArmy e2e (`--testing e2e`) in the CLI or Studio. API-only stacks do not generate browser end-to-end tests.
 
 ### Playwright [#playwright]
 
 <Tech href="https://playwright.dev" icon="playwright" />
 
-Playwright drives Chromium through complete user workflows. Tests locate elements by role and accessible name and use auto-waiting assertions. Failures retain traces for inspecting requests, page state, and actions.
+**Express acceptance criteria precisely in code.** Playwright combines locators, actions, and assertions into reviewable test scripts. It waits for elements to become actionable and for assertions to pass. When a test fails, its trace lets you inspect page snapshots, network requests, and actions step by step.
+
+**Fits regression suites maintained over time.** Use it when critical flows such as authentication, checkout, or permissions have explicit expected results and you want each action and checkpoint captured in code. The framework supports Chromium, Firefox, and WebKit for cross-browser coverage; vibestart's generated configuration uses Chromium.
+
+See the [Playwright documentation](https://playwright.dev/docs/intro) for usage.
+
+### TesterArmy e2e [#e2e]
+
+<Tech href="https://e2e.tester.army" icon="e2e" />
+
+**Combine natural-language goals with scripted assertions.** An AI agent acts on the current interface with `agent.act` and judges outcomes with `agent.assert`. Tests can mix these steps with locators and explicit assertions. An `act` step verified by a later check caches its actions for replay; the agent takes over when replay cannot continue. AI judgments still call the model.
+
+**Fits teams adding user-journey coverage quickly.** For evolving interfaces and flows easier to describe as goals, let the agent explore the path while scripts pin critical acceptance criteria. `e2e explore` investigates a goal without a test file, and bundled documentation helps coding agents write and debug tests.
+
+Generated tests use scripted steps and need no model. Adding agent steps requires model configuration in `apps/web/e2e.config.ts` and a budget for model calls. The framework is before 1.0, so check API changes when upgrading. Set `E2E_TELEMETRY_DISABLED=1` to disable anonymous usage data.
+
+See the [TesterArmy e2e documentation](https://e2e.tester.army/docs) and [source on GitHub](https://github.com/tester-army/e2e).
 
 ## Run tests [#commands]
 
-Before the first browser test, download Chromium from `apps/web`:
+Before the first end-to-end test, download Chromium from `apps/web` with the project's runner:
 
 ```sh
-vp exec playwright install chromium
+vp exec playwright install chromium   # Playwright
+vp exec e2e-web install chromium      # TesterArmy e2e
 ```
 
 From the project root, run:
@@ -35,12 +56,12 @@ vp run test:e2e
 vp run ready
 ```
 
-`vp run ready` runs the generated checks, selected Knip task, tests, and production build. API-only projects omit browser tests. During development, filter by file, for example `vp test packages/api/tests/integration/todos.test.ts`, or by project with `vp test --project unit` or `vp test --project integration`.
+`vp run ready` runs the generated checks, selected Knip task, tests, and production build. API-only projects have no end-to-end tests. During development, filter by file, for example `vp test packages/api/tests/integration/todos.test.ts`, or by project with `vp test --project unit` or `vp test --project integration`.
 
 ## Isolated environments [#infrastructure]
 
 Every test run uses databases of its own, created with the project’s migrations and removed afterward. Each integration test file gets a separate database from `createTestDatabase()` in the `db` package, so files run in parallel; authentication tests sign up a new user for each case. Integration tests start no server and open no port.
 
-End-to-end support in `apps/web/tests/support` starts the real servers once per run on port 3200, which `E2E_TEST_PORT` changes. PostgreSQL combinations require an accessible database instance: test databases are created beside the server’s `DATABASE_URL`.
+End-to-end support in `apps/web/tests/support` starts the real servers once per run on port 3200, which `E2E_TEST_PORT` changes. PostgreSQL combinations require an accessible database instance: test databases are created beside the server’s `DATABASE_URL`. Playwright starts them from its global setup; TesterArmy e2e starts them as the app command in `e2e.config.ts`, which inherits only the variables the config forwards.
 
-Start an investigation with the first failing assertion. In end-to-end tests, connection errors usually mean a test server is not ready or has exited; inspect its log before diagnosing API behavior.
+Start an investigation with the first failing assertion. In end-to-end tests, connection errors usually mean a test server is not ready or has exited; inspect its log before diagnosing API behavior. Playwright prints that log with the test output and keeps failure traces in `apps/web/test-results`. TesterArmy e2e writes the log to `apps/web/.e2e/server.log` and the report and failure traces to `apps/web/.e2e`, and `vp exec e2e run --last-failed` reruns the failures.

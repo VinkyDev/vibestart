@@ -62,12 +62,14 @@
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
+/** @typedef {{}} Desc_E2eInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
 /** @typedef {{}} Desc_OpenapiInputs */
 /** @typedef {{}} Desc_OrpcInputs */
+/** @typedef {{}} Desc_PlaywrightInputs */
 /** @typedef {{}} Desc_PostgresInputs */
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
@@ -77,7 +79,6 @@
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
-/** @typedef {{}} Desc_Vitest_PlaywrightInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Desktop_ProxyInputs */
@@ -249,11 +250,13 @@
 /** @typedef {{}} Search_Placeholder_ShortInputs */
 /** @typedef {{}} Search_SearchingInputs */
 /** @typedef {{}} Studio_StackInputs */
-/** @typedef {{}} Tests_Scope_ApiInputs */
-/** @typedef {{}} Tests_Scope_Api_IntegrationInputs */
-/** @typedef {{}} Tests_Scope_StaticInputs */
-/** @typedef {{}} Tests_Scope_WebInputs */
-/** @typedef {{}} Tests_Scope_Web_IntegrationInputs */
+/** @typedef {{}} Testing_AboutInputs */
+/** @typedef {{}} Testing_NoneInputs */
+/** @typedef {{}} Testing_QuestionInputs */
+/** @typedef {{}} Tests_Layer_UnitInputs */
+/** @typedef {{}} Tests_Scope_E2e_NoneInputs */
+/** @typedef {{}} Tests_Scope_IntegrationInputs */
+/** @typedef {{}} Tests_Scope_UnitInputs */
 /** @typedef {{}} Tool_AnalyzeInputs */
 /** @typedef {{}} Tool_BuildInputs */
 /** @typedef {{}} Tool_BuiltinInputs */
@@ -581,6 +584,10 @@ export const desc_drizzle = /** @type {(inputs: Desc_DrizzleInputs) => Localized
 	return /** @type {LocalizedString} */ (`Drizzle ORM v1 with SQL migrations`)
 };
 
+export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Mix natural-language goals with scripted assertions. An AI agent explores the UI, and verified actions can replay from cache. Fits evolving interfaces and teams adding user-journey coverage quickly.`)
+};
+
 export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Desktop app around the web app, packaged with electron-builder`)
 };
@@ -603,6 +610,10 @@ export const desc_openapi = /** @type {(inputs: Desc_OpenapiInputs) => Localized
 
 export const desc_orpc = /** @type {(inputs: Desc_OrpcInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`End-to-end type-safe RPC with OpenAPI docs`)
+};
+
+export const desc_playwright = /** @type {(inputs: Desc_PlaywrightInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Control actions and assertions in code, wait automatically for elements, and inspect each step in a trace. Fits clear acceptance criteria and regression suites maintained over time.`)
 };
 
 export const desc_postgres = /** @type {(inputs: Desc_PostgresInputs) => LocalizedString} */ () => {
@@ -639,10 +650,6 @@ export const desc_tanstack_start = /** @type {(inputs: Desc_Tanstack_StartInputs
 
 export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Unified toolchain for dev, build, test, lint, and format`)
-};
-
-export const desc_vitest_playwright = /** @type {(inputs: Desc_Vitest_PlaywrightInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API integration tests and browser end-to-end tests`)
 };
 
 export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => LocalizedString} */ () => {
@@ -1017,7 +1024,7 @@ export const kind_runtime = /** @type {(inputs: Kind_RuntimeInputs) => Localized
 };
 
 export const kind_testing = /** @type {(inputs: Kind_TestingInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Testing`)
+	return /** @type {LocalizedString} */ (`End-to-end tests`)
 };
 
 export const kind_toolchain = /** @type {(inputs: Kind_ToolchainInputs) => LocalizedString} */ () => {
@@ -1353,24 +1360,32 @@ export const studio_stack = /** @type {(inputs: Studio_StackInputs) => Localized
 	return /** @type {LocalizedString} */ (`Your stack`)
 };
 
-export const tests_scope_api = /** @type {(inputs: Tests_Scope_ApiInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest runs unit tests. An API-only project has no browser end-to-end tests.`)
+export const testing_about = /** @type {(inputs: Testing_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`End-to-end tests follow complete user journeys, such as signing in or checking out, to check that the UI and backend work together.`)
 };
 
-export const tests_scope_api_integration = /** @type {(inputs: Tests_Scope_Api_IntegrationInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest runs unit tests and API integration tests against a real database. An API-only project has no browser end-to-end tests.`)
+export const testing_none = /** @type {(inputs: Testing_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`No web app`)
 };
 
-export const tests_scope_static = /** @type {(inputs: Tests_Scope_StaticInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest runs unit tests; Playwright verifies pages and browser interactions.`)
+export const testing_question = /** @type {(inputs: Testing_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Which end-to-end test runner?`)
 };
 
-export const tests_scope_web = /** @type {(inputs: Tests_Scope_WebInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest runs unit tests; Playwright verifies complete user journeys in a real browser.`)
+export const tests_layer_unit = /** @type {(inputs: Tests_Layer_UnitInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Unit & integration tests`)
 };
 
-export const tests_scope_web_integration = /** @type {(inputs: Tests_Scope_Web_IntegrationInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest runs unit tests and API integration tests against a real database; Playwright verifies complete user journeys in a real browser.`)
+export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`An API-only project has no web app, so it has no end-to-end tests.`)
+};
+
+export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Every stack runs its unit tests on Vitest. This one also runs API integration tests against a real database.`)
+};
+
+export const tests_scope_unit = /** @type {(inputs: Tests_Scope_UnitInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Every stack runs its unit tests on Vitest, beside the code.`)
 };
 
 export const tool_analyze = /** @type {(inputs: Tool_AnalyzeInputs) => LocalizedString} */ () => {

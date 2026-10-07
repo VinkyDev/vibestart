@@ -87,11 +87,13 @@ test("signing out ends the session", async ({ page }) => {
   await expect(page).toHaveURL("/login?redirect=%2Ftodos");
 });
 
-test("the theme can be switched to dark", async ({ page }) => {
+test("the dark theme survives a reload", async ({ page }) => {
   await visit(page, "/");
 
   await page.getByRole("button", { name: "Toggle theme" }).click();
   await page.getByRole("menuitemradio", { name: "Dark" }).click();
+  await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 
+  await page.reload({ waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });

@@ -5,6 +5,7 @@ import {
   Cpu,
   Database,
   KeyRound,
+  MousePointerClick,
   PanelsTopLeft,
   Plug,
   Plus,
@@ -16,6 +17,7 @@ import { cn } from "@vibestart/ui/lib/utils";
 import type { Decision } from "#/lib/stack.ts";
 
 const icons: Record<Decision, LucideIcon> = {
+  testing: MousePointerClick,
   runtime: Cpu,
   api: Plug,
   auth: KeyRound,

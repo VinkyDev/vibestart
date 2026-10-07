@@ -253,7 +253,7 @@ Open http://localhost:3000 and create an account. API docs are at http://localho
 vp check          # format, lint, type check
 vp run knip       # unused files, exports, dependencies, and catalog entries
 vp test           # unit and integration tests (Vitest)
-vp run test:e2e   # e2e tests (Playwright) in Chromium, against a real server and database
+vp run test:e2e   # end-to-end tests (Playwright) in Chromium, against a real server and database
 vp run ready      # check + knip + test + test:e2e + production build
 ```
 
@@ -524,7 +524,7 @@ export const requestCancellation = (): Plugin => ({
   }
 }
 
-# apps/web/playwright.config.ts (vitest-playwright)
+# apps/web/playwright.config.ts (playwright)
 import { defineConfig, devices } from "@playwright/test";
 
 import { e2eBaseURL } from "./tests/support/server.ts";
@@ -1413,7 +1413,7 @@ describe("dev request cancellation", () => {
   });
 });
 
-# apps/web/tests/e2e/app.e2e.ts (vitest-playwright)
+# apps/web/tests/e2e/app.e2e.ts (playwright)
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -1503,23 +1503,25 @@ test("signing out ends the session", async ({ page }) => {
   await expect(page).toHaveURL("/login?redirect=%2Ftodos");
 });
 
-test("the theme can be switched to dark", async ({ page }) => {
+test("the dark theme survives a reload", async ({ page }) => {
   await visit(page, "/");
 
   await page.getByRole("button", { name: "Toggle theme" }).click();
   await page.getByRole("menuitemradio", { name: "Dark" }).click();
+  await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 
+  await page.reload({ waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/global-setup.ts (vitest-playwright)
+# apps/web/tests/e2e/global-setup.ts (playwright)
 import { e2eBaseURL, startTestServer } from "../support/server.ts";
 
 export default async function setup() {
   return await startTestServer(e2eBaseURL);
 }
 
-# apps/web/tests/support/api.ts (vitest-playwright)
+# apps/web/tests/support/api.ts (playwright)
 import { hc, parseResponse } from "hono/client";
 
 import type { Api } from "@my-app/api";
@@ -1555,7 +1557,7 @@ export const signUp = async (email = uniqueEmail()) => {
   };
 };
 
-# apps/web/tests/support/http.ts (vitest-playwright)
+# apps/web/tests/support/http.ts (playwright)
 import { Agent, setGlobalDispatcher } from "undici";
 
 // Node 24's bundled Undici can crash on macOS socket QoS calls (nodejs/undici#5544), so tests use the catalog's fixed dispatcher.
@@ -1566,7 +1568,7 @@ export const closeTestHttp = async () => {
   await dispatcher.close();
 };
 
-# apps/web/tests/support/server.ts (vitest-playwright)
+# apps/web/tests/support/server.ts (playwright)
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1695,7 +1697,7 @@ export const startTestServer = async (baseURL: string) => {
   "compilerOptions": {
     "types": ["node", "vite/client"]
   },
-  "include": ["src", "tests", "vite.config.ts", "playwright.config.ts"]
+  "include": ["src", "tests", "*.config.ts"]
 }
 
 # apps/web/vite.config.ts (tanstack-start)
@@ -2057,7 +2059,7 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/tests/integration/todos.test.ts (vitest-playwright)
+# packages/api/tests/integration/todos.test.ts (playwright)
 import { parseResponse } from "hono/client";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -2168,7 +2170,7 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/support/api.ts (vitest-playwright)
+# packages/api/tests/support/api.ts (playwright)
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
@@ -2545,7 +2547,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/testing.ts (vitest-playwright)
+# packages/db/src/testing.ts (playwright)
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -3481,7 +3483,7 @@ peerDependencyRules:
     "ui": "shadcn",
     "runtime": "node",
     "deployment": "docker",
-    "testing": "vitest-playwright",
+    "testing": "playwright",
   },
 
   "addons": ["knip", "ultracite"],

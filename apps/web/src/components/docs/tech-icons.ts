@@ -2,6 +2,7 @@ import betterAuth from "#/assets/tech/better-auth.svg";
 import bun from "#/assets/tech/bun.svg";
 import docker from "#/assets/tech/docker.svg";
 import drizzle from "#/assets/tech/drizzle.svg";
+import e2e from "#/assets/tech/e2e.svg";
 import electron from "#/assets/tech/electron.svg";
 import hono from "#/assets/tech/hono.svg";
 import knip from "#/assets/tech/knip.svg";
@@ -30,6 +31,7 @@ export const techIcons = {
   bun,
   docker,
   drizzle,
+  e2e,
   electron,
   hono,
   knip,

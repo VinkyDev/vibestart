@@ -26,7 +26,7 @@ vp run stacks check        # report CURRENT, STALE, or MISSING records; read-onl
 vp run stacks verify       # run `vp run ready` in each affected stack and record the result
 ```
 
-- `stacks verify` runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`) and a Playwright Chromium. Bun stacks need Bun 1.4.2 or newer.
+- `stacks verify` runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`) and a Chromium installed with `npx playwright install chromium`, which both browser runners launch. Bun stacks need Bun 1.4.2 or newer.
 - `stacks check` and `stacks verify` take a name pattern and `--package-manager pnpm|bun`. `check` exits 1 when a record is stale or missing and never installs or writes.
 - `vp test` and `vp run ready` do not fail on outdated fingerprints; CI refreshes `verification.json` on `main`, and `stacks verify` does it locally. To verify a branch without running it locally, run `gh workflow run ci.yml --ref <branch>`; the workflow commits the records to that branch.
 - CI verifies every golden on Linux and Windows. Add representatives in `packages/integrations/src/goldens.ts`; see [CI architecture](docs/architecture.md#ci) for verification and environment preparation.

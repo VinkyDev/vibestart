@@ -1,5 +1,5 @@
 import { Check, CornerDownRight } from "lucide-react";
-import type { RefObject } from "react";
+import type { ReactNode, RefObject } from "react";
 import { Suspense, use } from "react";
 
 import type { Stack } from "@vibestart/core";
@@ -121,6 +121,7 @@ const unmarked: ReadonlySet<Decision> = new Set([
   "auth",
   "database",
   "desktop",
+  "testing",
 ]);
 
 const marksRecommended = (kind: Decision, id: string | null) =>
@@ -131,6 +132,7 @@ const marksRecommended = (kind: Decision, id: string | null) =>
 export const Picker = ({
   addons,
   currentRef,
+  details,
   kind,
   onChoose,
   onPreview,
@@ -139,6 +141,7 @@ export const Picker = ({
 }: {
   readonly addons: readonly string[];
   readonly currentRef: RefObject<HTMLButtonElement | null>;
+  readonly details?: ReactNode;
   readonly kind: Decision;
   readonly onChoose: (entry: StackEntry) => void;
   readonly onPreview: (entry: StackEntry | null) => void;
@@ -183,6 +186,11 @@ export const Picker = ({
             )
           );
         })}
+      {details !== undefined && (
+        <div className="border-border text-muted-foreground mx-3 mt-1 mb-2.5 flex flex-col gap-2 border-t pt-2.5 text-xs leading-relaxed">
+          {details}
+        </div>
+      )}
     </div>
   );
 };

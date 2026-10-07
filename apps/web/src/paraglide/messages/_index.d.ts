@@ -67,12 +67,14 @@ export type Desc_Better_AuthInputs = {};
 export type Desc_BunInputs = {};
 export type Desc_DockerInputs = {};
 export type Desc_DrizzleInputs = {};
+export type Desc_E2eInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_HonoInputs = {};
 export type Desc_NextInputs = {};
 export type Desc_NodeInputs = {};
 export type Desc_OpenapiInputs = {};
 export type Desc_OrpcInputs = {};
+export type Desc_PlaywrightInputs = {};
 export type Desc_PostgresInputs = {};
 export type Desc_ReactInputs = {};
 export type Desc_SelfInputs = {};
@@ -82,7 +84,6 @@ export type Desc_SqliteInputs = {};
 export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
 export type Desc_Vite_PlusInputs = {};
-export type Desc_Vitest_PlaywrightInputs = {};
 export type Desktop_DistInputs = {};
 export type Desktop_Dist_PillInputs = {};
 export type Desktop_ProxyInputs = {};
@@ -287,11 +288,13 @@ export type Search_PlaceholderInputs = {};
 export type Search_Placeholder_ShortInputs = {};
 export type Search_SearchingInputs = {};
 export type Studio_StackInputs = {};
-export type Tests_Scope_ApiInputs = {};
-export type Tests_Scope_Api_IntegrationInputs = {};
-export type Tests_Scope_StaticInputs = {};
-export type Tests_Scope_WebInputs = {};
-export type Tests_Scope_Web_IntegrationInputs = {};
+export type Testing_AboutInputs = {};
+export type Testing_NoneInputs = {};
+export type Testing_QuestionInputs = {};
+export type Tests_Layer_UnitInputs = {};
+export type Tests_Scope_E2e_NoneInputs = {};
+export type Tests_Scope_IntegrationInputs = {};
+export type Tests_Scope_UnitInputs = {};
 export type Tool_AnalyzeInputs = {};
 export type Tool_BuildInputs = {};
 export type Tool_BuiltinInputs = {};
@@ -1253,6 +1256,20 @@ export declare const desc_drizzle: ((inputs?: Desc_DrizzleInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "Mix natural-language goals with scripted assertions. An AI agent explores the UI, and verified actions can replay from cache. Fits evolving interfaces and te..." |
+*
+* @param {Desc_E2eInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_e2e: ((inputs?: Desc_E2eInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_E2eInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "Desktop app around the web app, packaged with electron-builder" |
 *
 * @param {Desc_ElectronInputs} inputs
@@ -1332,6 +1349,20 @@ export declare const desc_openapi: ((inputs?: Desc_OpenapiInputs, options?: {
 export declare const desc_orpc: ((inputs?: Desc_OrpcInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_OrpcInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Control actions and assertions in code, wait automatically for elements, and inspect each step in a trace. Fits clear acceptance criteria and regression suit..." |
+*
+* @param {Desc_PlaywrightInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_playwright: ((inputs?: Desc_PlaywrightInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_PlaywrightInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1458,20 +1489,6 @@ export declare const desc_tanstack_start: ((inputs?: Desc_Tanstack_StartInputs, 
 export declare const desc_vite_plus: ((inputs?: Desc_Vite_PlusInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Vite_PlusInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "API integration tests and browser end-to-end tests" |
-*
-* @param {Desc_Vitest_PlaywrightInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const desc_vitest_playwright: ((inputs?: Desc_Vitest_PlaywrightInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Vitest_PlaywrightInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -2736,7 +2753,7 @@ export declare const kind_runtime: ((inputs?: Kind_RuntimeInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Testing" |
+* | "End-to-end tests" |
 *
 * @param {Kind_TestingInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3894,71 +3911,99 @@ export declare const studio_stack: ((inputs?: Studio_StackInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests. An API-only project has no browser end-to-end tests." |
+* | "End-to-end tests follow complete user journeys, such as signing in or checking out, to check that the UI and backend work together." |
 *
-* @param {Tests_Scope_ApiInputs} inputs
+* @param {Testing_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export declare const tests_scope_api: ((inputs?: Tests_Scope_ApiInputs, options?: {
+export declare const testing_about: ((inputs?: Testing_AboutInputs, options?: {
     locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_ApiInputs, {
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Testing_AboutInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests and API integration tests against a real database. An API-only project has no browser end-to-end tests." |
+* | "No web app" |
 *
-* @param {Tests_Scope_Api_IntegrationInputs} inputs
+* @param {Testing_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export declare const tests_scope_api_integration: ((inputs?: Tests_Scope_Api_IntegrationInputs, options?: {
+export declare const testing_none: ((inputs?: Testing_NoneInputs, options?: {
     locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_Api_IntegrationInputs, {
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Testing_NoneInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests; Playwright verifies pages and browser interactions." |
+* | "Which end-to-end test runner?" |
 *
-* @param {Tests_Scope_StaticInputs} inputs
+* @param {Testing_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export declare const tests_scope_static: ((inputs?: Tests_Scope_StaticInputs, options?: {
+export declare const testing_question: ((inputs?: Testing_QuestionInputs, options?: {
     locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_StaticInputs, {
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Testing_QuestionInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests; Playwright verifies complete user journeys in a real browser." |
+* | "Unit & integration tests" |
 *
-* @param {Tests_Scope_WebInputs} inputs
+* @param {Tests_Layer_UnitInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export declare const tests_scope_web: ((inputs?: Tests_Scope_WebInputs, options?: {
+export declare const tests_layer_unit: ((inputs?: Tests_Layer_UnitInputs, options?: {
     locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_WebInputs, {
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Layer_UnitInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests and API integration tests against a real database; Playwright verifies complete user journeys in a real browser." |
+* | "An API-only project has no web app, so it has no end-to-end tests." |
 *
-* @param {Tests_Scope_Web_IntegrationInputs} inputs
+* @param {Tests_Scope_E2e_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export declare const tests_scope_web_integration: ((inputs?: Tests_Scope_Web_IntegrationInputs, options?: {
+export declare const tests_scope_e2e_none: ((inputs?: Tests_Scope_E2e_NoneInputs, options?: {
     locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_Web_IntegrationInputs, {
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_E2e_NoneInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Every stack runs its unit tests on Vitest. This one also runs API integration tests against a real database." |
+*
+* @param {Tests_Scope_IntegrationInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const tests_scope_integration: ((inputs?: Tests_Scope_IntegrationInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_IntegrationInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Every stack runs its unit tests on Vitest, beside the code." |
+*
+* @param {Tests_Scope_UnitInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const tests_scope_unit: ((inputs?: Tests_Scope_UnitInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_UnitInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

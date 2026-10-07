@@ -54,17 +54,19 @@ VibeStart does not host your application, does not migrate production data, and 
 
 ## Supported stacks
 
-| Layer      | Choices                                              |
-| ---------- | ---------------------------------------------------- |
-| App        | React SPA (TanStack Router), TanStack Start, Next.js |
-| Desktop    | Electron                                             |
-| Backend    | Hono, or the framework's own server                  |
-| API        | oRPC, OpenAPI, or none                               |
-| Database   | PostgreSQL or SQLite with Drizzle, or none           |
-| Auth       | Better Auth                                          |
-| Deployment | Docker                                               |
-| UI         | shadcn (Base UI) and Tailwind 4                      |
-| Toolchain  | Vite+, Oxlint, Knip, Vitest, Playwright, `AGENTS.md` |
+| Layer                    | Choices                                              |
+| ------------------------ | ---------------------------------------------------- |
+| App                      | React SPA (TanStack Router), TanStack Start, Next.js |
+| Desktop                  | Electron                                             |
+| Backend                  | Hono, or the framework's own server                  |
+| API                      | oRPC, OpenAPI, or none                               |
+| Database                 | PostgreSQL or SQLite with Drizzle, or none           |
+| Auth                     | Better Auth                                          |
+| Deployment               | Docker                                               |
+| UI                       | shadcn (Base UI) and Tailwind 4                      |
+| Unit & integration tests | Vitest                                               |
+| End-to-end tests         | Playwright or TesterArmy e2e                         |
+| Toolchain                | Vite+, Oxlint, Knip, `AGENTS.md`                     |
 
 ## CLI options
 

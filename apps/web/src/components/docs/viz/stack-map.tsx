@@ -45,7 +45,8 @@ const pages = new Map([
   ["tanstack-router", "stack/frontend"],
   ["tanstack-start", "stack/frontend"],
   ["vite-plus", "stack/toolchain"],
-  ["vitest-playwright", "stack/testing"],
+  ["playwright", "stack/testing"],
+  ["e2e", "stack/testing"],
 ]);
 
 const marks = new Map<string, TechIcon>([
@@ -67,7 +68,8 @@ const marks = new Map<string, TechIcon>([
   ["tanstack-router", "tanstack"],
   ["tanstack-start", "tanstack"],
   ["vite-plus", "vite-plus"],
-  ["vitest-playwright", "vitest"],
+  ["playwright", "playwright"],
+  ["e2e", "e2e"],
 ]);
 
 const Mark = ({ id }: { readonly id: string }) => {

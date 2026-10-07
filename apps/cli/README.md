@@ -18,7 +18,7 @@ Or compose visually in the [web studio](https://vibestart.net/studio) and copy t
 
 ## What you get
 
-- **A current stack.** React SPA, TanStack Start, or Next.js; Hono or the framework's own server; oRPC or OpenAPI; PostgreSQL or SQLite with Drizzle; Better Auth; Electron; Docker; shadcn and Tailwind 4; [Vite+](https://viteplus.dev), Oxlint, Vitest, and Playwright as one toolchain.
+- **A current stack.** React SPA, TanStack Start, or Next.js; Hono or the framework's own server; oRPC or OpenAPI; PostgreSQL or SQLite with Drizzle; Better Auth; Electron; Docker; shadcn and Tailwind 4; [Vite+](https://viteplus.dev) and Oxlint as one toolchain; Vitest for unit and integration tests, and Playwright or TesterArmy e2e for end-to-end tests.
 - **Verified combinations.** Every supported combination is generated, installed, type-checked, linted, tested, tested in a browser, and built before release. The CLI shows the result when it creates your project.
 - **Agent-ready code.** Each project ships an `AGENTS.md` and `vp run ready`, so a coding agent gets fast, specific feedback.
 - **Maintained after creation.** `vibestart upgrade` previews a merge of the newest template into your project before it writes anything.

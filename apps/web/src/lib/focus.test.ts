@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { restoreFocus } from "#/lib/focus.ts";
 
 const tool = { owner: "vite-plus" } as const;
-const next = { owner: "vitest-playwright" } as const;
+const next = { owner: "playwright" } as const;
 const group = { group: "foundation" } as const;
 
 describe("map focus transitions", () => {

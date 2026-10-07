@@ -224,7 +224,7 @@ vp run typegen    # route types for typedRoutes; dev does this automatically
 vp check          # format, lint, type check
 vp run knip       # unused files, exports, dependencies, and catalog entries
 vp test           # unit tests (Vitest)
-vp run test:e2e   # e2e tests (Playwright) in Chromium, against the dev server
+vp run test:e2e   # end-to-end tests (Playwright) in Chromium, against the dev server
 vp run ready      # typegen + check + knip + test + test:e2e + production build
 ```
 
@@ -320,7 +320,7 @@ export default nextConfig;
   }
 }
 
-# apps/web/playwright.config.ts (vitest-playwright)
+# apps/web/playwright.config.ts (playwright)
 import { defineConfig, devices } from "@playwright/test";
 
 import { e2eBaseURL } from "./tests/support/server.ts";
@@ -550,7 +550,7 @@ export const getQueryClient = () => {
   return browserQueryClient;
 };
 
-# apps/web/tests/e2e/app.e2e.ts (vitest-playwright)
+# apps/web/tests/e2e/app.e2e.ts (playwright)
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -564,23 +564,25 @@ test("the home page names the stack", async ({ page }) => {
   await expect(page.getByText("on Vite+.")).toBeVisible();
 });
 
-test("the theme can be switched to dark", async ({ page }) => {
+test("the dark theme survives a reload", async ({ page }) => {
   await visit(page, "/");
 
   await page.getByRole("button", { name: "Toggle theme" }).click();
   await page.getByRole("menuitemradio", { name: "Dark" }).click();
+  await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 
+  await page.reload({ waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/global-setup.ts (vitest-playwright)
+# apps/web/tests/e2e/global-setup.ts (playwright)
 import { e2eBaseURL, startTestServer } from "../support/server.ts";
 
 export default async function setup() {
   return await startTestServer(e2eBaseURL);
 }
 
-# apps/web/tests/support/server.ts (vitest-playwright)
+# apps/web/tests/support/server.ts (playwright)
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -682,8 +684,7 @@ export const startTestServer = async (baseURL: string) => {
     ".next/dev/types/**/*.ts",
     "src",
     "tests",
-    "next.config.ts",
-    "playwright.config.ts"
+    "*.config.ts"
   ]
 }
 
@@ -1657,7 +1658,7 @@ peerDependencyRules:
     "ui": "shadcn",
     "runtime": "node",
     "deployment": "docker",
-    "testing": "vitest-playwright",
+    "testing": "playwright",
   },
 
   "addons": ["knip", "ultracite"],

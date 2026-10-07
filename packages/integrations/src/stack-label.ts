@@ -10,6 +10,7 @@ export const stackLabel = (stack: Stack) =>
     stack.desktop,
     ...(stack.runtime === "bun" ? ["bun"] : []),
     stack.deployment,
+    ...(stack.testing === "e2e" ? ["e2e"] : []),
   ]
     .filter((id) => id !== undefined)
     .join("-");

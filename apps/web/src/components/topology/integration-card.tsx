@@ -18,6 +18,35 @@ import { groupOf, tintClass } from "#/lib/roles.ts";
 import { whyIncluded } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
+export const CardHeading = ({
+  homepage,
+  name,
+}: {
+  readonly homepage: string | undefined;
+  readonly name: string;
+}) => (
+  <div className="flex items-start justify-between gap-3">
+    <PopoverTitle className="min-w-0">
+      <span className="text-foreground flex items-center gap-2 pt-0.5 text-sm font-semibold tracking-tight">
+        <span className="bg-tint size-2 shrink-0 rounded-full" />
+        <span className="truncate">{name}</span>
+      </span>
+    </PopoverTitle>
+    {homepage !== undefined && (
+      <a
+        aria-label={m.visit_site({ name })}
+        className="text-muted-foreground hover:bg-tint-soft hover:text-tint focus-visible:focus-ring -mt-1 -mr-1.5 grid size-7 shrink-0 place-items-center rounded-full transition-colors outline-none"
+        href={homepage}
+        rel="noreferrer"
+        target="_blank"
+        title={new URL(homepage).host}
+      >
+        <ArrowUpRight className="size-4" strokeWidth={1.75} />
+      </a>
+    )}
+  </div>
+);
+
 export const IntegrationCard = ({
   children,
   className,
@@ -118,26 +147,7 @@ export const IntegrationCard = ({
             "flex flex-col gap-2 p-2.5 text-xs leading-relaxed"
           )}
         >
-          <div className="flex items-start justify-between gap-3">
-            <PopoverTitle className="min-w-0">
-              <span className="text-foreground flex items-center gap-2 pt-0.5 text-sm font-semibold tracking-tight">
-                <span className="bg-tint size-2 shrink-0 rounded-full" />
-                <span className="truncate">{integration.name}</span>
-              </span>
-            </PopoverTitle>
-            {homepage !== undefined && (
-              <a
-                aria-label={m.visit_site({ name: integration.name })}
-                className="text-muted-foreground hover:bg-tint-soft hover:text-tint focus-visible:focus-ring -mt-1 -mr-1.5 grid size-7 shrink-0 place-items-center rounded-full transition-colors outline-none"
-                href={homepage}
-                rel="noreferrer"
-                target="_blank"
-                title={new URL(homepage).host}
-              >
-                <ArrowUpRight className="size-4" strokeWidth={1.75} />
-              </a>
-            )}
-          </div>
+          <CardHeading homepage={homepage} name={integration.name} />
           <PopoverDescription>
             {"kind" in integration
               ? integrationDescription(integration)

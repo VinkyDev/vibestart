@@ -15,7 +15,6 @@ import { IntegrationCard } from "#/components/topology/integration-card.tsx";
 import { Swatch } from "#/components/topology/tile.tsx";
 import { ToolDetails } from "#/components/topology/tool-details.tsx";
 import { useFocusTarget } from "#/lib/focus.ts";
-import { list } from "#/lib/i18n.ts";
 import { m } from "#/paraglide/messages.js";
 
 export const Extensions = ({ choosing }: { readonly choosing: Choosing }) => {
@@ -53,14 +52,12 @@ export const Extensions = ({ choosing }: { readonly choosing: Choosing }) => {
           }
         }}
       >
-        <span className="group-focus-visible/extensions:focus-ring flex size-full min-w-0 items-center gap-3 rounded-2xl px-3">
+        <span className="group-focus-visible/extensions:focus-ring flex size-full min-w-0 items-center gap-2 rounded-2xl px-2.5">
           <Swatch icon={Puzzle} />
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="text-muted-foreground text-xs">{m.addons()}</span>
             <span className="text-foreground truncate text-sm font-medium">
-              {names.length === 0
-                ? m.extensions_none()
-                : list("conjunction", names)}
+              {names.length === 0 ? m.extensions_none() : names.join(" · ")}
             </span>
           </span>
           <ChevronsUpDown className="text-muted-foreground size-3.5 shrink-0 opacity-60 transition-opacity group-hover/extensions:opacity-100" />

@@ -105,10 +105,10 @@ Every project uses the same commands to check changes:
 | ----------------- | -------------------------------------------------------------- |
 | `vp check`        | Formatting, lint, and type checks                              |
 | `vp test`         | Unit and API integration tests                                 |
-| `vp run test:e2e` | Browser end-to-end tests, in projects with a web frontend      |
+| `vp run test:e2e` | End-to-end tests in a browser, in projects with a web frontend |
 | `vp run ready`    | Every check, test, and the production build, before you commit |
 
-Before the first browser test, install Chromium by running `vp exec playwright install chromium` in `apps/web`.
+Before the first end-to-end test, install Chromium in `apps/web` with the project's runner: `vp exec playwright install chromium` for Playwright, or `vp exec e2e-web install chromium` for TesterArmy e2e. The project's README shows the one it uses.
 
 ## Next steps [#next]
 
