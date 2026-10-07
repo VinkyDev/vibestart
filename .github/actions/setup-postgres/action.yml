@@ -1,0 +1,51 @@
+name: Prepare PostgreSQL
+description: Install PostgreSQL with bounded download retries and a Windows installer cache.
+inputs:
+  postgres-version:
+    description: PostgreSQL major version.
+    default: "18"
+outputs:
+  connection-uri:
+    description: Connection URI for this job's fresh database cluster.
+    value: ${{ steps.postgres.outputs.connection-uri }}
+runs:
+  using: composite
+  steps:
+    - if: runner.os == 'Windows'
+      id: cache-key
+      shell: bash
+      env:
+        CACHE_PREFIX: postgres-installers-v1-${{ runner.os }}-${{ runner.arch }}-${{ inputs.postgres-version }}-${{ hashFiles('.github/actions/setup-postgres/action.yml') }}
+      run: echo "prefix=$CACHE_PREFIX" >> "$GITHUB_OUTPUT"
+    - if: runner.os == 'Windows'
+      shell: pwsh
+      run: choco config set --name cacheLocation --value "$env:RUNNER_TEMP/postgres-installers"
+    - if: runner.os == 'Windows'
+      id: cache
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        # Cache installers only. Chocolatey checks their package checksums before reuse.
+        path: ${{ runner.temp }}/postgres-installers/postgresql${{ inputs.postgres-version }}/**/*.exe
+        key: ${{ steps.cache-key.outputs.prefix }}
+        restore-keys: ${{ steps.cache-key.outputs.prefix }}-
+    # This upstream commit bounds Chocolatey installation to three attempts, 15 seconds apart.
+    - id: postgres
+      uses: ikalnytskyi/action-setup-postgres@0f1fdf59c857aabfa61ab1a2619e9af34de678d3
+      with:
+        postgres-version: ${{ inputs.postgres-version }}
+    - if: runner.os == 'Windows'
+      id: package
+      shell: pwsh
+      env:
+        POSTGRES_VERSION: ${{ inputs.postgres-version }}
+      run: |
+        $package = & choco list --exact "postgresql$env:POSTGRES_VERSION" --limit-output
+        if ($LASTEXITCODE -ne 0 -or $package -notmatch '^postgresql\d+\|([\d.]+)$') {
+          throw "Cannot determine the installed PostgreSQL package version."
+        }
+        "version=$($Matches[1])" >> $env:GITHUB_OUTPUT
+    - if: runner.os == 'Windows' && steps.cache.outputs.cache-matched-key != format('{0}-{1}', steps.cache-key.outputs.prefix, steps.package.outputs.version)
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/postgres-installers/postgresql${{ inputs.postgres-version }}/**/*.exe
+        key: ${{ steps.cache-key.outputs.prefix }}-${{ steps.package.outputs.version }}

@@ -902,7 +902,7 @@ export const createTestDatabase = async () => {
     db,
     remove: async () => {
       db.$client.close();
-      await rm(dir, { force: true, recursive: true });
+      await rm(dir, { force: true, maxRetries: 10, recursive: true });
     },
     url,
   };

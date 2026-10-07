@@ -17,6 +17,7 @@ jobs:
   ready:
     runs-on: ubuntu-latest
     outputs:
+      goldens: ${{ steps.matrix.outputs.goldens }}
       # Whether some stack's verification record no longer matches the generated output.
       stale: ${{ steps.check.outcome == 'failure' }}
     steps:
@@ -27,9 +28,56 @@ jobs:
           cache: true
       - run: vp install
       - run: vp run ready
+      - id: matrix
+        run: echo "goldens=$(node packages/integrations/scripts/stacks.ts golden-matrix)" >> "$GITHUB_OUTPUT"
       - id: check
         run: vp run stacks check
         continue-on-error: true
+
+  golden:
+    needs: ready
+    name: golden (${{ matrix.os }}, ${{ matrix.golden.name }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        golden: ${{ fromJSON(needs.ready.outputs.goldens) }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - if: matrix.golden.runtime == 'bun'
+        uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.2
+      - if: matrix.golden.database == 'postgres'
+        id: postgres
+        uses: ./.github/actions/setup-postgres
+        timeout-minutes: 15
+      - run: vp install
+      - if: matrix.golden.framework != null
+        uses: ./.github/actions/setup-playwright
+        timeout-minutes: 10
+      # Verification records are shared across platforms; always run this golden on this OS.
+      - run: vp run stacks verify "$STACK_PATTERN" --package-manager pnpm --force --jobs 1 --out "$STACKS_OUT"
+        env:
+          STACK_PATTERN: ^${{ matrix.golden.name }}$
+          STACKS_OUT: ${{ runner.temp }}/stacks
+          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri }}
+      - if: failure()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: golden-logs-${{ matrix.os }}-${{ matrix.golden.name }}
+          path: ${{ runner.temp }}/stacks/*.log
+          if-no-files-found: ignore
 
   # Each shard verifies its share of the stale stacks. A step that outlasts the job limit is
   # stopped and the shard's finished records are still recorded; run the workflow again
@@ -68,7 +116,8 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: vp install
-      - run: npx --yes playwright@^1.63.0 install --with-deps chromium
+      - uses: ./.github/actions/setup-playwright
+        timeout-minutes: 10
       - run: vp run stacks verify --jobs 2 --shard ${{ matrix.shard }}/8 --out ${{ runner.temp }}/stacks
         timeout-minutes: 330
       - if: always()

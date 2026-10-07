@@ -122,7 +122,7 @@ const startBody = (ctx: Context) => {
 };
 
 const imports = (ctx: Context) => [
-  'import { spawn } from "node:child_process";',
+  'import { spawn, spawnSync } from "node:child_process";',
   'import type { ChildProcess } from "node:child_process";',
   'import { once } from "node:events";',
   ...(hasBackend(ctx) ? ['import { existsSync } from "node:fs";'] : []),
@@ -184,8 +184,21 @@ const stop = async (child: ChildProcess) => {
   if (child.pid === undefined || child.exitCode !== null || child.signalCode !== null) {
     return;
   }
-  const exited = once(child, "exit");
-  process.kill(-child.pid, "SIGTERM");
+  const exited = once(child, "exit", {
+    signal: process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
+      stdio: "ignore",
+      timeout: 5000,
+    });
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
   await exited;
 };
 `;

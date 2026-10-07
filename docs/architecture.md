@@ -93,6 +93,10 @@ Verification runs once per class of stacks that share a result:
 
 `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them onto the ref's current tip and commits `verification.json` to that ref. To verify a branch before merging, run the workflow on it (`gh workflow run ci.yml --ref <branch>`); the records land on the branch and reach `main` with the merge. A pull request never records. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
 
+A golden matrix verifies every project in `goldens.ts` on Linux and Windows. `stacks golden-matrix` supplies the matrix; each job prepares its stack's services and runs full verification with `--force`, so a fingerprint from another platform cannot skip it. Golden jobs never publish verification records.
+
+The local `setup-postgres` and `setup-playwright` actions cache checksum-validated Windows installers and npm downloads, separated by platform and version/configuration identity. PostgreSQL installation gets three Chocolatey attempts, 15 seconds apart; npm retries fetches twice and Playwright uses its native browser download retries. Setup deadlines bound both actions. Database initialization and tests run once; caches never contain database clusters or test results. Browser binaries are installed normally, and Vite+ owns the pnpm cache.
+
 ## Package manager and runtime
 
 `packageManager` defaults to pnpm. Core renders a pnpm workspace file or Bun workspaces with a catalog and install policy in the root manifest; Bun keeps the `catalog:` protocol and approves install scripts only through an explicit `trustedDependencies`.
@@ -102,6 +106,8 @@ The `runtime` kind adds Bun beside Node. Bun needs the Hono capability, so it is
 Hono splits `src/app.ts` (routing) from `src/index.ts` (listen and shutdown), so both runtimes load the full module graph and answer requests without binding a socket. `stacks smoke` uses that boundary and never writes records.
 
 The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown.
+
+Teardown stops server process trees before removing test databases. Windows uses bounded `taskkill` and exit waits, with direct-child termination if `taskkill` fails; a child that does not exit fails teardown. SQLite removal retries transient file locks.
 
 ## Project maintenance
 
