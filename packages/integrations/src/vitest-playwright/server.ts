@@ -185,13 +185,13 @@ const stop = async (child: ChildProcess) => {
     return;
   }
   const exited = once(child, "exit", {
-    signal: process.platform === "win32" ? AbortSignal.timeout(5_000) : undefined,
+    signal: process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
   if (process.platform === "win32") {
     // Windows has no process groups; taskkill may return non-zero for descendants that already exited.
     const result = spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
       stdio: "ignore",
-      timeout: 5_000,
+      timeout: 5000,
     });
     if (result.error || result.status !== 0) {
       child.kill();
