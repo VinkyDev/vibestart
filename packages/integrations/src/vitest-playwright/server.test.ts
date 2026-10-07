@@ -31,7 +31,6 @@ if (stopSource === undefined) {
 const code = `${stripTypeScriptTypes(stopSource)}\nstop(child);`;
 type TaskkillResult = Pick<SpawnSyncReturns<Buffer>, "status" | "error">;
 
-// Exercise generated code with OS calls replaced; no real process or port is needed.
 const harness = (platform = "win32") => {
   const child = Object.assign(new ChildProcess(), {
     pid: 1234,

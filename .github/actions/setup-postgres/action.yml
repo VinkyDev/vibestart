@@ -28,8 +28,7 @@ runs:
         path: ${{ runner.temp }}/postgres-installers/postgresql${{ inputs.postgres-version }}/**/*.exe
         key: ${{ steps.cache-key.outputs.prefix }}
         restore-keys: ${{ steps.cache-key.outputs.prefix }}-
-    # Upstream retries only Chocolatey installation: three attempts, 15 seconds apart.
-    # Database initialization and startup run once and still fail the job on error.
+    # This upstream commit bounds Chocolatey installation to three attempts, 15 seconds apart.
     - id: postgres
       uses: ikalnytskyi/action-setup-postgres@0f1fdf59c857aabfa61ab1a2619e9af34de678d3
       with:
@@ -39,17 +38,12 @@ runs:
       shell: pwsh
       env:
         POSTGRES_VERSION: ${{ inputs.postgres-version }}
-        RESTORED_CACHE: ${{ steps.cache.outputs.cache-matched-key }}
       run: |
         $package = & choco list --exact "postgresql$env:POSTGRES_VERSION" --limit-output
         if ($LASTEXITCODE -ne 0 -or $package -notmatch '^postgresql\d+\|([\d.]+)$') {
           throw "Cannot determine the installed PostgreSQL package version."
         }
-        $version = $Matches[1]
-        "version=$version" >> $env:GITHUB_OUTPUT
-        "### PostgreSQL download cache" >> $env:GITHUB_STEP_SUMMARY
-        "- Installed package: postgresql$env:POSTGRES_VERSION $version" >> $env:GITHUB_STEP_SUMMARY
-        "- Restored cache: $(if ($env:RESTORED_CACHE) { $env:RESTORED_CACHE } else { 'miss' })" >> $env:GITHUB_STEP_SUMMARY
+        "version=$($Matches[1])" >> $env:GITHUB_OUTPUT
     - if: runner.os == 'Windows' && steps.cache.outputs.cache-matched-key != format('{0}-{1}', steps.cache-key.outputs.prefix, steps.package.outputs.version)
       uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:

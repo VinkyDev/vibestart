@@ -893,7 +893,7 @@ const stop = async (child: ChildProcess) => {
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
   if (process.platform === "win32") {
-    // Windows has no process groups; taskkill may return non-zero for descendants that already exited.
+    // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
       "taskkill",
       ["/pid", String(child.pid), "/t", "/f"],
@@ -1213,13 +1213,7 @@ export const createTestDatabase = async () => {
     db,
     remove: async () => {
       db.$client.close();
-      // Windows keeps the file locked until every process that opened it has exited.
-      await rm(dir, {
-        force: true,
-        maxRetries: 10,
-        recursive: true,
-        retryDelay: 100,
-      });
+      await rm(dir, { force: true, maxRetries: 10, recursive: true });
     },
     url,
   };
