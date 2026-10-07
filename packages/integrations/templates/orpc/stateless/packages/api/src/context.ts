@@ -1,1 +1,1 @@
-export type Context = Record<never, never>;
+export type Context = Record<string, never>;

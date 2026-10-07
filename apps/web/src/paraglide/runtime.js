@@ -599,6 +599,16 @@ function normalizeTrailingSlash(url) {
     return url;
 }
 
+// Default routing does not need a matcher cache or candidate index.
+/** @param {string} pattern @param {URL} url @returns {URLPattern} */
+function getUrlPattern(pattern, url) { return new URLPattern(pattern, url.href); }
+function getRoutingConfigVersion() { return 0; }
+function currentRoutingConfigVersion() { return 0; }
+/** @param {URL} _url @returns {typeof urlPatterns} */
+function getUrlPatternCandidates(_url) { return urlPatterns; }
+/** @param {URL} _url @returns {typeof routeStrategies} */
+function getRouteStrategyCandidates(_url) { return routeStrategies; }
+
 /**
  * Matches a canonical URL while allowing configured patterns to retain their
  * existing trailing slash style.
@@ -902,6 +912,7 @@ export function extractLocaleFromNavigator() {
     return undefined;
 }
 
+let cachedLocaleConfigVersion = -1;
 /**
  * If extractLocaleFromUrl is called many times on the same page and the URL
  * hasn't changed, we don't need to recompute it every time which can get expensive.
@@ -924,7 +935,10 @@ let cachedLocale;
  */
 export function extractLocaleFromUrl(url) {
     const urlString = typeof url === "string" ? url : url.href;
-    if (cachedUrl === urlString) {
+    const configVersion = TREE_SHAKE_DEFAULT_URL_PATTERN_USED
+        ? 0
+        : getRoutingConfigVersion();
+    if (cachedUrl === urlString && cachedLocaleConfigVersion === configVersion) {
         return cachedLocale;
     }
     /** @type {Locale | undefined} */
@@ -938,9 +952,9 @@ export function extractLocaleFromUrl(url) {
     else {
         const urlObj = normalizeTrailingSlash(typeof url === "string" ? new URL(url) : new URL(url));
         // Iterate over URL patterns
-        for (const element of urlPatterns) {
+        for (const element of getUrlPatternCandidates(urlObj)) {
             for (const [locale, localizedPattern] of element.localized) {
-                const match = execUrlPattern(new URLPattern(localizedPattern, urlObj.href), urlObj);
+                const match = execUrlPattern(getUrlPattern(localizedPattern, urlObj), urlObj);
                 if (match) {
                     result = locale;
                     break;
@@ -950,6 +964,7 @@ export function extractLocaleFromUrl(url) {
                 break;
         }
     }
+    cachedLocaleConfigVersion = configVersion;
     cachedUrl = urlString;
     cachedLocale = result;
     return result;
@@ -1022,7 +1037,7 @@ export function localizeUrl(url, options) {
         ? originalUrl
         : normalizeTrailingSlash(new URL(originalUrl));
     // Iterate over URL patterns
-    for (const element of urlPatterns) {
+    for (const element of getUrlPatternCandidates(urlObj)) {
         // Most applications use a locale prefix (and sometimes a fixed domain)
         // with a trailing catch-all path. Those routes do not need URLPattern's
         // parser or matcher on every call. Keep the generic matcher below as the
@@ -1135,7 +1150,7 @@ export function deLocalizeUrl(url) {
         ? originalUrl
         : normalizeTrailingSlash(new URL(originalUrl));
     // Iterate over URL patterns
-    for (const element of urlPatterns) {
+    for (const element of getUrlPatternCandidates(urlObj)) {
         const fastPathDeLocalized = deLocalizeUrlFastPath(urlObj, element);
         if (fastPathDeLocalized !== undefined) {
             return fastPathDeLocalized;
@@ -1298,45 +1313,6 @@ export function aggregateGroups(match) {
         ...match.username.groups,
     };
 }
-/** @type {Map<string, URLPattern>} */
-const urlPatternCache = new Map();
-const URL_PATTERN_CACHE_LIMIT = 128;
-const ABSOLUTE_URL_PATTERN = /^(?:[A-Za-z][A-Za-z\d+.-]*|:[A-Za-z][A-Za-z\d_-]*):\/\//;
-/**
- * URLPattern's base URL affects relative patterns. Absolute patterns only
- * depend on the pattern itself, while root-relative patterns also depend on
- * the URL origin. Other relative patterns are deliberately not cached because
- * their semantics depend on the complete base URL.
- *
- * @param {string} pattern
- * @param {URL} url
- * @returns {URLPattern}
- */
-function getUrlPattern(pattern, url) {
-    const isAbsolutePattern = ABSOLUTE_URL_PATTERN.test(pattern);
-    const isRootRelativePattern = pattern.startsWith("/");
-    if (!isAbsolutePattern && !isRootRelativePattern) {
-        return new URLPattern(pattern, url.href);
-    }
-    const key = isAbsolutePattern
-        ? pattern
-        : JSON.stringify([url.origin, pattern]);
-    const cached = urlPatternCache.get(key);
-    if (cached !== undefined) {
-        // Refresh the entry so frequently used patterns stay in the bounded cache.
-        urlPatternCache.delete(key);
-        urlPatternCache.set(key, cached);
-        return cached;
-    }
-    const compiled = new URLPattern(pattern, url.href);
-    if (urlPatternCache.size >= URL_PATTERN_CACHE_LIMIT) {
-        const oldestKey = urlPatternCache.keys().next().value;
-        if (oldestKey !== undefined)
-            urlPatternCache.delete(oldestKey);
-    }
-    urlPatternCache.set(key, compiled);
-    return compiled;
-}
 /**
  * A small, deliberately conservative subset of URLPattern routing.
  *
@@ -1358,7 +1334,7 @@ function getUrlPattern(pattern, url) {
  *   localized: Array<{ locale: string; pattern: FastPathPattern }>;
  * }} FastPathRoute
  */
-/** @type {WeakMap<object, FastPathRoute | null>} */
+/** @type {WeakMap<object, { version: number; route: FastPathRoute | null }>} */
 const fastPathRouteCache = new WeakMap();
 /**
  * @param {URL} urlObj
@@ -1417,24 +1393,33 @@ function deLocalizeUrlFastPath(urlObj, element) {
  */
 function getFastPathRoute(element) {
     const cached = fastPathRouteCache.get(element);
-    if (cached !== undefined)
-        return cached;
+    if (cached?.version === currentRoutingConfigVersion())
+        return cached.route;
     const base = parseFastPathPattern(element.pattern);
     if (base === undefined) {
-        fastPathRouteCache.set(element, null);
+        fastPathRouteCache.set(element, {
+            version: currentRoutingConfigVersion(),
+            route: null,
+        });
         return null;
     }
     const localized = [];
     for (const [locale, pattern] of element.localized) {
         const parsed = parseFastPathPattern(pattern);
         if (parsed === undefined || parsed.pathMode !== base.pathMode) {
-            fastPathRouteCache.set(element, null);
+            fastPathRouteCache.set(element, {
+                version: currentRoutingConfigVersion(),
+                route: null,
+            });
             return null;
         }
         localized.push({ locale, pattern: parsed });
     }
     const route = { base, localized };
-    fastPathRouteCache.set(element, route);
+    fastPathRouteCache.set(element, {
+        version: currentRoutingConfigVersion(),
+        route,
+    });
     return route;
 }
 /**
@@ -1555,7 +1540,8 @@ function matchFastPathPattern(pattern, urlObj) {
         return undefined;
     }
     if (pattern.hostname !== undefined) {
-        const expectedPort = pattern.port ?? defaultPortForProtocol(pattern.protocol ?? urlObj.protocol);
+        const expectedPort = pattern.port ??
+            defaultPortForProtocol(pattern.protocol ?? urlObj.protocol);
         if (expectedPort !== urlObj.port)
             return undefined;
     }
@@ -1577,8 +1563,7 @@ function matchFastPathPattern(pattern, urlObj) {
         const suffix = urlObj.pathname.slice(prefix.length);
         if (suffix.startsWith("//"))
             return undefined;
-        if (pattern.pathMode === "segments" &&
-            !isNonEmptyPathSegments(suffix)) {
+        if (pattern.pathMode === "segments" && !isNonEmptyPathSegments(suffix)) {
             return undefined;
         }
         return suffix;
@@ -1590,7 +1575,7 @@ function matchFastPathPattern(pattern, urlObj) {
  * @returns {boolean}
  */
 function isNonEmptyPathSegments(pathname) {
-    return pathname.length > 1 && !pathname.endsWith("/") && !pathname.includes("//");
+    return (pathname.length > 1 && !pathname.endsWith("/") && !pathname.includes("//"));
 }
 /**
  * URLPattern treats the default port as empty in URL instances.
@@ -1617,8 +1602,7 @@ function applyFastPathPattern(pattern, suffix, source) {
         localized.protocol = pattern.protocol;
     if (pattern.hostname !== undefined) {
         localized.hostname = pattern.hostname;
-        localized.port =
-            pattern.port ?? defaultPortForProtocol(localized.protocol);
+        localized.port = pattern.port ?? defaultPortForProtocol(localized.protocol);
     }
     localized.pathname = joinFastPathPrefix(pattern.pathnamePrefix, suffix);
     return localized;
@@ -1636,6 +1620,7 @@ function joinFastPathPrefix(prefix, suffix) {
     return `${prefix}${suffix.startsWith("/") ? suffix : `/${suffix}`}`;
 }
 
+let cachedRouteConfigVersion = -1;
 /** @type {string | undefined} */
 let cachedRouteStrategyUrl;
 /** @type {{ match: string; strategy?: typeof strategy; exclude?: boolean } | undefined} */
@@ -1654,7 +1639,9 @@ export function findMatchingRouteStrategy(url) {
         return undefined;
     }
     const urlString = typeof url === "string" ? url : url.href;
-    if (cachedRouteStrategyUrl === urlString) {
+    const configVersion = getRoutingConfigVersion();
+    if (cachedRouteStrategyUrl === urlString &&
+        cachedRouteConfigVersion === configVersion) {
         return cachedRouteStrategy;
     }
     const publicUrl = normalizeTrailingSlash(new URL(urlString, "http://example.com"));
@@ -1664,8 +1651,8 @@ export function findMatchingRouteStrategy(url) {
         : [publicUrl, canonicalUrl];
     let match;
     for (const candidateUrl of candidateUrls) {
-        for (const routeStrategy of routeStrategies) {
-            const pattern = new URLPattern(routeStrategy.match, candidateUrl.href);
+        for (const routeStrategy of getRouteStrategyCandidates(candidateUrl)) {
+            const pattern = getUrlPattern(routeStrategy.match, candidateUrl);
             if (execUrlPattern(pattern, candidateUrl)) {
                 match = routeStrategy;
                 break;
@@ -1674,6 +1661,7 @@ export function findMatchingRouteStrategy(url) {
         if (match)
             break;
     }
+    cachedRouteConfigVersion = configVersion;
     cachedRouteStrategyUrl = urlString;
     cachedRouteStrategy = match;
     return match;
@@ -2058,10 +2046,10 @@ export function generateStaticLocalizedUrls(urls) {
         const url = normalizeTrailingSlash(new URL(originalUrl));
         // Try each URL pattern to find one that matches
         let patternFound = false;
-        for (const pattern of urlPatterns) {
+        for (const pattern of getUrlPatternCandidates(url)) {
             try {
                 // Try to match the unlocalized pattern
-                const unlocalizedMatch = execUrlPattern(new URLPattern(pattern.pattern, url.href), url);
+                const unlocalizedMatch = execUrlPattern(getUrlPattern(pattern.pattern, url), url);
                 if (!unlocalizedMatch)
                     continue;
                 patternFound = true;
@@ -2307,7 +2295,8 @@ export {};
  * @template {string} T
  *
  * @example
- *   *   m.hello({ name: 'world' }, { locale: "en" })
+ *   import { m } from './messages.js'
+ *   m.hello({ name: 'world' }, { locale: "en" })
  *
  * @typedef {(params: Record<string, never>, options: { locale: T }) => LocalizedString} MessageBundleFunction
  */

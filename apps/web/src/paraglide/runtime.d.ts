@@ -1017,7 +1017,8 @@ export type MessageBundleFunction<T extends string> = (params: Record<string, ne
  * @template {string} T
  *
  * @example
- *   *   m.hello({ name: 'world' }, { locale: "en" })
+ *   import { m } from './messages.js'
+ *   m.hello({ name: 'world' }, { locale: "en" })
  *
  * @typedef {(params: Record<string, never>, options: { locale: T }) => LocalizedString} MessageBundleFunction
  */
