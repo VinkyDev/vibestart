@@ -1018,12 +1018,23 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
-  const exited = once(child, "exit");
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5_000) : undefined,
+  });
   if (process.platform === "win32") {
     // Windows has no process groups; taskkill may return non-zero for descendants that already exited.
-    spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
-      stdio: "ignore",
-    });
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5_000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }

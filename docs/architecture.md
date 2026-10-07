@@ -105,7 +105,7 @@ Hono splits `src/app.ts` (routing) from `src/index.ts` (listen and shutdown), so
 
 The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown.
 
-Teardown stops each server's process tree with `taskkill` on Windows and a process-group signal elsewhere, then waits for the server to exit before removing its test database. SQLite directory removal retries temporary file locks while the remaining processes release their handles.
+Teardown stops each server's process tree with `taskkill` on Windows and a process-group signal elsewhere, then waits for the server to exit before removing its test database. On Windows, `taskkill` and the exit wait have five-second timeouts. If `taskkill` fails, teardown also attempts to terminate the direct child; if it still does not exit, teardown rejects instead of hanging or reporting success. SQLite directory removal retries temporary file locks while the remaining processes release their handles.
 
 ## Project maintenance
 
