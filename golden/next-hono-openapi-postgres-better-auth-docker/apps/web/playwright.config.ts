@@ -18,4 +18,5 @@ export default defineConfig({
     baseURL: e2eBaseURL,
     trace: "retain-on-failure",
   },
+  workers: ci ? 1 : undefined,
 });

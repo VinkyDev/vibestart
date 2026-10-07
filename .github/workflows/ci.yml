@@ -28,6 +28,7 @@ jobs:
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
       pending: ${{ steps.plan.outputs.pending }}
+      image: ${{ steps.plan.outputs.image }}
     steps:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
@@ -61,6 +62,9 @@ jobs:
     name: verify (${{ matrix.name }})
     runs-on: ${{ matrix.platform }}
     timeout-minutes: 360
+    container:
+      image: ${{ matrix.platform == 'ubuntu-24.04' && needs.plan.outputs.image || '' }}
+      options: --init --ipc=host
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
@@ -93,7 +97,8 @@ jobs:
         id: postgres
         timeout-minutes: 15
       - run: vp install
-      - uses: ./.github/actions/setup-playwright
+      - if: runner.os == 'Windows'
+        uses: ./.github/actions/setup-playwright
         timeout-minutes: 10
       - uses: actions/download-artifact@v8.0.1
         with:
@@ -103,7 +108,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           BATCH: ${{ matrix.name }}
-          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri || 'postgres://postgres:postgres@localhost:5432/postgres' }}
+          CI_CONTAINER_IMAGE: ${{ matrix.platform == 'ubuntu-24.04' && needs.plan.outputs.image || '' }}
+          STACKS_POSTGRES_URL: ${{ matrix.platform == 'ubuntu-24.04' && 'postgres://postgres:postgres@postgres:5432/postgres' || steps.postgres.outputs.connection-uri }}
       - if: always()
         uses: actions/upload-artifact@v7.0.1
         with:
@@ -124,9 +130,9 @@ jobs:
           if-no-files-found: ignore
           path: |
             .verification/logs
-            .verification/projects/**/test-results/**
-            .verification/projects/**/playwright-report/**
-            .verification/projects/**/.e2e/**
+            .verification/projects/*/apps/web/test-results/**
+            .verification/projects/*/apps/web/playwright-report/**
+            .verification/projects/*/apps/web/.e2e/**
 
   ci:
     if: always()

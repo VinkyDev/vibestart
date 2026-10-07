@@ -18,12 +18,13 @@ import path from "node:path";
 import { parseArgs } from "node:util";
 
 import { limitAsync } from "es-toolkit/promise";
+import { minVersion } from "semver";
 import type { z } from "zod";
 
 import type { PackageManager, Stack, Verification } from "@vibestart/core";
 import { fingerprint } from "@vibestart/core";
 
-import { toolchainVersions } from "#/catalog.ts";
+import { catalog, toolchainVersions } from "#/catalog.ts";
 import { restore } from "#/ci/github.ts";
 import { saveLock } from "#/ci/locks.ts";
 import type { Plan, Result, Task } from "#/ci/model.ts";
@@ -182,6 +183,11 @@ const makePlan = async (force: boolean, pattern?: string, local = false) => {
   if (arch() !== "x64" || (local && !["linux", "win32"].includes(platform()))) {
     throw new Error("Verification requires Linux or Windows x64");
   }
+  const browserVersion = minVersion(catalog.toolchain["@playwright/test"]);
+  if (browserVersion === null) {
+    throw new Error("Invalid Playwright catalog range");
+  }
+  const image = `mcr.microsoft.com/playwright:v${browserVersion.version}-noble`;
   const history = histories();
   const harness = policy();
   const reused: Result[] = [];
@@ -239,7 +245,13 @@ const makePlan = async (force: boolean, pattern?: string, local = false) => {
             label,
             platform: os,
             input: digest(
-              JSON.stringify({ runtime, harness, platform: os, arch: "x64" })
+              JSON.stringify({
+                runtime,
+                harness,
+                platform: os,
+                arch: "x64",
+                image: os === "ubuntu-24.04" ? image : undefined,
+              })
             ),
             dependencies,
             fingerprint: full,
@@ -296,7 +308,7 @@ const makePlan = async (force: boolean, pattern?: string, local = false) => {
   if (process.env.GITHUB_OUTPUT !== undefined) {
     appendFileSync(
       process.env.GITHUB_OUTPUT,
-      `matrix=${JSON.stringify({ include: batches })}\npending=${batches.length > 0}\n`
+      `matrix=${JSON.stringify({ include: batches })}\npending=${batches.length > 0}\nimage=${image}\n`
     );
   }
   return plan;
@@ -353,13 +365,14 @@ const execute = async (task: Task, index: number) => {
   }
   const seconds = Math.round((Date.now() - started) / 1000);
   if (child.exitCode !== 0) {
-    print(`${task.id} FAIL (${seconds}s)\n${logTail(logFile)}`);
+    print(`${task.id} FAIL (${seconds}s)\n${logTail(logFile, 200)}`);
     return false;
   }
   const lock = saveLock(path.join(dir, lockName), artifact);
   if (task.lock !== undefined && lock !== task.lock) {
     throw new Error(`Frozen lock changed: ${task.id}`);
   }
+  const containerImage = process.env.CI_CONTAINER_IMAGE;
   const result: Result = {
     ...task,
     lock,
@@ -374,7 +387,10 @@ const execute = async (task: Task, index: number) => {
       seconds,
       verifiedAt: new Date().toISOString(),
     },
-    image: process.env.ImageVersion ?? "local",
+    image:
+      containerImage === undefined || containerImage === ""
+        ? (process.env.ImageVersion ?? "local")
+        : containerImage,
     source: {
       run: process.env.GITHUB_RUN_ID ?? "local",
       attempt: process.env.GITHUB_RUN_ATTEMPT ?? "1",
