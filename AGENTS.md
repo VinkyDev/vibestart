@@ -72,6 +72,8 @@ Converge on the simplest durable design that meets current requirements. Land it
 
 Generated projects ship no GitHub Actions. `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request; on `main` it also re-verifies stale stacks in shards and a `record` job commits `verification.json` (see `docs/architecture.md`). A shard that hits the job limit keeps what it finished; run the workflow again (`workflow_dispatch`) to continue.
 
+The Windows CI job always verifies the Next.js self-hosted oRPC/SQLite/Better Auth stack, including e2e teardown, without committing its verification record.
+
 A template change updates the snapshot and, when a golden project renders that template, the files in `golden/`. `vp run stacks verify` records a passing fingerprint in `packages/integrations/verification.json`.
 
 ## Done

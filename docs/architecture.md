@@ -93,6 +93,8 @@ Verification runs once per class of stacks that share a result:
 
 `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them onto the ref's current tip and commits `verification.json` to that ref. To verify a branch before merging, run the workflow on it (`gh workflow run ci.yml --ref <branch>`); the records land on the branch and reach `main` with the merge. A pull request never records. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
 
+A separate Windows job always verifies `next-self-orpc-sqlite-better-auth-docker` with `--force`, so a matching Linux fingerprint cannot skip Windows process-tree and SQLite file-lock teardown. It runs the generated project's full `vp run ready` and uploads failure logs, but does not publish its local verification record.
+
 ## Package manager and runtime
 
 `packageManager` defaults to pnpm. Core renders a pnpm workspace file or Bun workspaces with a catalog and install policy in the root manifest; Bun keeps the `catalog:` protocol and approves install scripts only through an explicit `trustedDependencies`.
@@ -102,6 +104,8 @@ The `runtime` kind adds Bun beside Node. Bun needs the Hono capability, so it is
 Hono splits `src/app.ts` (routing) from `src/index.ts` (listen and shutdown), so both runtimes load the full module graph and answer requests without binding a socket. `stacks smoke` uses that boundary and never writes records.
 
 The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown.
+
+Teardown stops each server's process tree with `taskkill` on Windows and a process-group signal elsewhere, then waits for the server to exit before removing its test database. SQLite directory removal retries temporary file locks while the remaining processes release their handles.
 
 ## Project maintenance
 

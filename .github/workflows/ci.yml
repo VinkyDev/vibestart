@@ -31,6 +31,26 @@ jobs:
         run: vp run stacks check
         continue-on-error: true
 
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - run: vp install
+      - run: npx --yes playwright@^1.63.0 install chromium
+      # Always exercise Windows teardown, even when Linux already verified this output.
+      - run: vp run stacks verify '^next-self-orpc-sqlite-better-auth-docker$' --package-manager pnpm --force --jobs 1 --out "${{ runner.temp }}/stacks"
+      - if: failure()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: windows-stack-logs
+          path: ${{ runner.temp }}/stacks/*.log
+          if-no-files-found: ignore
+
   # Each shard verifies its share of the stale stacks. A step that outlasts the job limit is
   # stopped and the shard's finished records are still recorded; run the workflow again
   # (workflow_dispatch) to continue with the stacks still unverified.
