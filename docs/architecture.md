@@ -93,7 +93,7 @@ Verification runs once per class of stacks that share a result:
 
 `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them onto the ref's current tip and commits `verification.json` to that ref. To verify a branch before merging, run the workflow on it (`gh workflow run ci.yml --ref <branch>`); the records land on the branch and reach `main` with the merge. A pull request never records. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
 
-A separate Windows job always verifies `next-self-orpc-sqlite-better-auth-docker` with `--force`, so a matching Linux fingerprint cannot skip Windows process-tree and SQLite file-lock teardown. It runs the generated project's full `vp run ready` and uploads failure logs, but does not publish its local verification record.
+A golden matrix verifies every project defined in `goldens.ts` on Linux and Windows. `stacks golden-matrix` emits the names and stack choices as JSON, so adding a golden automatically adds it on both platforms without duplicating the list in YAML. Each job prepares PostgreSQL, Bun, and Chromium only when its stack needs them, then generates the project and runs its full `vp run ready` with `--force`; a matching fingerprint from another platform cannot skip the run. Four jobs run concurrently and a failure does not cancel the others. Failure logs include the platform and golden name, and these jobs do not publish their local verification records.
 
 ## Package manager and runtime
 

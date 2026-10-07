@@ -17,6 +17,7 @@ jobs:
   ready:
     runs-on: ubuntu-latest
     outputs:
+      goldens: ${{ steps.matrix.outputs.goldens }}
       # Whether some stack's verification record no longer matches the generated output.
       stale: ${{ steps.check.outcome == 'failure' }}
     steps:
@@ -27,27 +28,54 @@ jobs:
           cache: true
       - run: vp install
       - run: vp run ready
+      - id: matrix
+        run: echo "goldens=$(node packages/integrations/scripts/stacks.ts golden-matrix)" >> "$GITHUB_OUTPUT"
       - id: check
         run: vp run stacks check
         continue-on-error: true
 
-  windows:
-    runs-on: windows-latest
+  golden:
+    needs: ready
+    name: golden (${{ matrix.os }}, ${{ matrix.golden.name }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        golden: ${{ fromJSON(needs.ready.outputs.goldens) }}
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
           node-version-file: .node-version
           cache: true
+      - if: matrix.golden.runtime == 'bun'
+        uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.2
+      - if: matrix.golden.database == 'postgres'
+        id: postgres
+        uses: ikalnytskyi/action-setup-postgres@c4dda34aae1c821e3a771b68b73b13af3198a7ee # v8
+        with:
+          postgres-version: "18"
       - run: vp install
-      - run: npx --yes playwright@^1.63.0 install chromium
-      # Always exercise Windows teardown, even when Linux already verified this output.
-      - run: vp run stacks verify '^next-self-orpc-sqlite-better-auth-docker$' --package-manager pnpm --force --jobs 1 --out "${{ runner.temp }}/stacks"
+      - if: matrix.golden.framework != null
+        run: npx --yes playwright@^1.63.0 install --with-deps chromium
+      # Verification records are shared across platforms; always run this golden on this OS.
+      - run: vp run stacks verify "$STACK_PATTERN" --package-manager pnpm --force --jobs 1 --out "$STACKS_OUT"
+        env:
+          STACK_PATTERN: ^${{ matrix.golden.name }}$
+          STACKS_OUT: ${{ runner.temp }}/stacks
+          STACKS_POSTGRES_URL: ${{ steps.postgres.outputs.connection-uri }}
       - if: failure()
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: windows-stack-logs
+          name: golden-logs-${{ matrix.os }}-${{ matrix.golden.name }}
           path: ${{ runner.temp }}/stacks/*.log
           if-no-files-found: ignore
 

@@ -391,6 +391,7 @@ const usage = `Usage: vp run stacks <command> [pattern] [--out <dir>] [--force] 
                      combine the verification.json each \`verify --shard <i>/<n>\` wrote to <dir>/shard-<i>/
                      into packages/integrations/verification.json
   goldens            regenerate golden/* from generator output
+  golden-matrix      print the golden names and stack choices as JSON for CI
 
 gen, check, and verify include both package managers by default. --package-manager narrows the matrix.
 Bun is required to install or run Bun package-manager or Hono-runtime combinations.
@@ -564,6 +565,14 @@ export const main = async (args: readonly string[]) => {
     },
   });
   const [command = "", pattern] = positionals;
+  if (command === "golden-matrix") {
+    print(
+      JSON.stringify(
+        Object.entries(goldens).map(([name, stack]) => ({ name, ...stack }))
+      )
+    );
+    return 0;
+  }
   if (command === "merge") {
     const shards = Number(values.shards);
     if (pattern === undefined || !Number.isInteger(shards) || shards < 1) {
