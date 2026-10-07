@@ -91,12 +91,12 @@ describe("verification evidence", () => {
 
   it("rejects corrupted evidence before it can enter the cache", () => {
     expect(
-      reportSchema.safeParse({ version: 1, results: [result], failed: [] })
+      reportSchema.safeParse({ version: 2, results: [result], failed: [] })
         .success
     ).toBeTruthy();
     expect(
       reportSchema.safeParse({
-        version: 1,
+        version: 2,
         results: [
           {
             ...result,

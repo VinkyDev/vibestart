@@ -43,7 +43,7 @@ const resultSchema = taskSchema
   );
 
 export const reportSchema = z.strictObject({
-  version: z.literal(1),
+  version: z.literal(2),
   results: z.array(resultSchema),
   failed: z.array(
     z.strictObject({ id: label, input: hash, at: z.iso.datetime() })

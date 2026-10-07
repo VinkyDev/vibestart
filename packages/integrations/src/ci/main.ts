@@ -26,7 +26,7 @@ import { fingerprint } from "@vibestart/core";
 
 import { catalog, toolchainVersions } from "#/catalog.ts";
 import { restore } from "#/ci/github.ts";
-import { saveLock } from "#/ci/locks.ts";
+import { restoreLock, saveLock } from "#/ci/locks.ts";
 import type { Plan, Result, Task } from "#/ci/model.ts";
 import {
   batchesOf,
@@ -329,9 +329,10 @@ const execute = async (task: Task, index: number) => {
     if (!validLock(artifact, task.lock)) {
       throw new Error(`Invalid lock: ${task.id}`);
     }
-    copyFileSync(
+    restoreLock(
       path.join(artifact, "locks", task.lock),
-      path.join(dir, lockName)
+      dir,
+      lockName === "bun.lock" ? "bun" : "pnpm"
     );
   }
   const logFile = path.join(root, "logs", `${task.id}.log`);
@@ -503,7 +504,7 @@ const report = (plan: Plan) => {
     }
   }
   write(path.join(artifact, "report.json"), {
-    version: 1,
+    version: 2,
     results,
     failed: plan.tasks
       .filter((task) => !results.some((result) => result.id === task.id))
