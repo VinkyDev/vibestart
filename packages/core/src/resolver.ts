@@ -170,9 +170,14 @@ interface CheckedStack {
   readonly violations: readonly Violation[];
 }
 
-const checkedStacksCache = new WeakMap<RegistryInfo, readonly CheckedStack[]>();
+interface StackSpace {
+  readonly checked: readonly CheckedStack[];
+  readonly legal: readonly Stack[];
+}
 
-const checkedStacks = (registry: RegistryInfo): readonly CheckedStack[] => {
+const checkedStacksCache = new WeakMap<RegistryInfo, StackSpace>();
+
+const stackSpace = (registry: RegistryInfo): StackSpace => {
   const cached = checkedStacksCache.get(registry);
   if (cached !== undefined) {
     return cached;
@@ -181,14 +186,21 @@ const checkedStacks = (registry: RegistryInfo): readonly CheckedStack[] => {
     stack,
     violations: check(registry, stack),
   }));
-  checkedStacksCache.set(registry, checked);
-  return checked;
+  const space = {
+    checked,
+    // Every caller shares this array, so a caller that sorts or splices it fails instead of changing later results.
+    legal: Object.freeze(
+      checked
+        .filter(({ violations }) => violations.length === 0)
+        .map(({ stack }) => stack)
+    ),
+  };
+  checkedStacksCache.set(registry, space);
+  return space;
 };
 
 export const legalStacks = (registry: RegistryInfo): readonly Stack[] =>
-  checkedStacks(registry)
-    .filter(({ violations }) => violations.length === 0)
-    .map(({ stack }) => stack);
+  stackSpace(registry).legal;
 
 export const choicesOf = (registry: RegistryInfo, stack: Stack): Choices =>
   Object.fromEntries(
@@ -226,16 +238,16 @@ export const resolve = (
 ): Resolution => {
   assertOffered(registry, choices);
   const pairs = decided(choices);
-  const consistent = checkedStacks(registry).filter(({ stack }) =>
-    pairs.every(([kind, id]) => (stack[kind] ?? null) === id)
-  );
-  const stacks = consistent
-    .filter(({ violations }) => violations.length === 0)
-    .map(({ stack }) => stack);
+  const matches = (stack: Stack) =>
+    pairs.every(([kind, id]) => (stack[kind] ?? null) === id);
+  const stacks = legalStacks(registry).filter(matches);
   if (stacks.length > 0) {
     return { fixes: [], stacks, violations: [] };
   }
 
+  const consistent = stackSpace(registry).checked.filter(({ stack }) =>
+    matches(stack)
+  );
   const [closest] = consistent.toSorted(
     (a, b) => a.violations.length - b.violations.length
   );
