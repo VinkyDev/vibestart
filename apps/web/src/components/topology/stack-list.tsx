@@ -13,7 +13,7 @@ import { Tile } from "#/components/topology/tile.tsx";
 import { ease } from "#/lib/motion.ts";
 import { addLabel, groupOf, roles, tintClass } from "#/lib/roles.ts";
 import type { Decision } from "#/lib/stack.ts";
-import { chosen, decisions, selected } from "#/lib/stack.ts";
+import { chosen, decisions, e2eRunner, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const Row = ({
@@ -25,7 +25,8 @@ const Row = ({
 }) => {
   const [open, setOpen] = useState(false);
   const current = useRef<HTMLButtonElement>(null);
-  const integration = chosen(baseline, kind);
+  const integration =
+    kind === "testing" ? e2eRunner(baseline) : chosen(baseline, kind);
   return (
     <Dialog.Root
       onOpenChange={(next) => {
@@ -61,7 +62,8 @@ const Row = ({
               key={integration?.id ?? "none"}
               transition={{ duration: 0.4, ease }}
             >
-              {integration?.name ?? addLabel(kind)}
+              {integration?.name ??
+                (kind === "testing" ? m.testing_none() : addLabel(kind))}
             </motion.span>
           </AnimatePresence>
         </span>
@@ -108,9 +110,16 @@ export const StackList = ({
   readonly choosing: Choosing;
   readonly className?: string;
 }) => {
-  const foundation = selected(choosing.baseline).filter(
-    (integration) => groupOf(integration.id) === "foundation"
-  );
+  const foundation = [
+    ...selected(choosing.baseline)
+      .filter(
+        (integration) =>
+          groupOf(integration.id) === "foundation" &&
+          integration.kind !== "testing"
+      )
+      .map(({ name }) => name),
+    "Vitest",
+  ];
   return (
     <section
       aria-labelledby="stack-list-title"
@@ -142,10 +151,10 @@ export const StackList = ({
           <span className="ml-auto font-normal">{m.tool_builtin()}</span>
         </h3>
         <ul className="flex flex-wrap gap-1.5">
-          {foundation.map(({ id, name }) => (
+          {foundation.map((name) => (
             <li
               className="bg-foreground/[0.04] text-foreground rounded-full px-3 py-1 text-xs font-medium"
-              key={id}
+              key={name}
             >
               {name}
             </li>

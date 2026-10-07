@@ -75,6 +75,27 @@ describe("--list", () => {
 });
 
 describe("choosing a stack", () => {
+  it("selects e2e explicitly and keeps Playwright by default", async () => {
+    const choices = [
+      "app",
+      "--dry-run",
+      "--framework",
+      "spa",
+      "--backend",
+      "hono",
+      "--api",
+      "orpc",
+      "--auth",
+      "none",
+    ];
+    const selected = await run(...choices, "--testing", "e2e");
+    expect(selected.exitCode).toBe(0);
+    expect(selected.output).toHaveProperty("stack.testing", "e2e");
+    const defaults = await run(...choices);
+    expect(defaults.exitCode).toBe(0);
+    expect(defaults.output).toHaveProperty("stack.testing", "playwright");
+  });
+
   it("names the kinds left to decide, with their flags", async () => {
     const { exitCode, output } = await run("app", "--framework", "next");
     expect(exitCode).toBe(1);

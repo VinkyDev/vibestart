@@ -653,7 +653,7 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/tests/integration/todos.test.ts (vitest-playwright)
+# packages/api/tests/integration/todos.test.ts (playwright)
 import { parseResponse } from "hono/client";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -715,7 +715,7 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/support/api.ts (vitest-playwright)
+# packages/api/tests/support/api.ts (playwright)
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
@@ -895,7 +895,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/testing.ts (vitest-playwright)
+# packages/db/src/testing.ts (playwright)
 import { createDb } from "#src/index.ts";
 import { migrateDatabase } from "#src/migrate.ts";
 
@@ -990,7 +990,7 @@ allowBuilds:
     "orm": "drizzle",
     "runtime": "bun",
     "deployment": "docker",
-    "testing": "vitest-playwright",
+    "testing": "playwright",
   },
 
   "addons": ["knip", "ultracite"],

@@ -23,7 +23,7 @@ import { capabilityText, list } from "#/lib/i18n.ts";
 import type { StackEntry, StackVerification } from "#/lib/project.ts";
 import { m } from "#/paraglide/messages.js";
 
-export const decisions = [
+const optionalDecisions = [
   "framework",
   "backend",
   "api",
@@ -34,7 +34,14 @@ export const decisions = [
   "runtime",
 ] as const;
 
+export const decisions = [...optionalDecisions, "testing"] as const;
+
 export type Decision = (typeof decisions)[number];
+
+export type OptionalDecision = (typeof optionalDecisions)[number];
+
+export const isOptionalDecision = (kind: string): kind is OptionalDecision =>
+  optionalDecisions.some((decision) => decision === kind);
 
 export const isDecision = (kind: string): kind is Decision =>
   decisions.some((decision) => decision === kind);
@@ -69,6 +76,10 @@ export const chosen = (
   const id = stack[kind];
   return id === undefined ? undefined : integrationOf(id);
 };
+
+/** A stack without a web app keeps the default runner, which then runs no end-to-end tests. */
+export const e2eRunner = (stack: Stack): IntegrationInfo | undefined =>
+  stack.framework === undefined ? undefined : chosen(stack, "testing");
 
 export const optionsOf = (kind: string): (IntegrationInfo | null)[] => [
   ...registry.integrations.filter((integration) => integration.kind === kind),
@@ -112,6 +123,7 @@ export const searchSchema = z.object({
   desktop: flag,
   framework: flag,
   runtime: flag,
+  testing: flag,
   packageManager: z.preprocess((value) => {
     const parsed = packageManagerSchema.safeParse(value);
     return parsed.success ? parsed.data : undefined;
@@ -167,6 +179,9 @@ export const flagsOf = (stack: Stack): Flags => {
   }
   if (choices.runtime === "node") {
     choices = omit(choices, ["runtime"]);
+  }
+  if (choices.testing === "playwright") {
+    choices = omit(choices, ["testing"]);
   }
   return mapValues(choices, (id) => id ?? none);
 };

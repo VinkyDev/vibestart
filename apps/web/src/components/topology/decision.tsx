@@ -46,12 +46,14 @@ export const DecisionTrigger = ({
   children,
   choosing: { addons, baseline, onChoose, onPreview, project },
   className,
+  details,
   kind,
   side = "bottom",
 }: {
   readonly children: ReactNode;
   readonly choosing: Choosing;
   readonly className?: string;
+  readonly details?: ReactNode;
   readonly kind: Decision;
   readonly side?: "bottom" | "top" | "right" | "left";
 }) => {
@@ -91,6 +93,7 @@ export const DecisionTrigger = ({
         <Picker
           addons={addons}
           currentRef={current}
+          details={details}
           kind={kind}
           onChoose={(entry) => {
             setOpen(false);

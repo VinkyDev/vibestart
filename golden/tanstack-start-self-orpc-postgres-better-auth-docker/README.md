@@ -30,7 +30,7 @@ Open http://localhost:3000 and create an account. API docs are at http://localho
 vp check          # format, lint, type check
 vp run knip       # unused files, exports, dependencies, and catalog entries
 vp test           # unit and integration tests (Vitest)
-vp run test:e2e   # e2e tests (Playwright) in Chromium, against a real server and database
+vp run test:e2e   # end-to-end tests (Playwright) in Chromium, against a real server and database
 vp run ready      # check + knip + test + test:e2e + production build
 ```
 

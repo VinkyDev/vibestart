@@ -64,12 +64,14 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
+/** @typedef {{}} Desc_E2eInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
 /** @typedef {{}} Desc_OpenapiInputs */
 /** @typedef {{}} Desc_OrpcInputs */
+/** @typedef {{}} Desc_PlaywrightInputs */
 /** @typedef {{}} Desc_PostgresInputs */
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
@@ -79,7 +81,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
-/** @typedef {{}} Desc_Vitest_PlaywrightInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Desktop_ProxyInputs */
@@ -251,11 +252,13 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Search_Placeholder_ShortInputs */
 /** @typedef {{}} Search_SearchingInputs */
 /** @typedef {{}} Studio_StackInputs */
-/** @typedef {{}} Tests_Scope_ApiInputs */
-/** @typedef {{}} Tests_Scope_Api_IntegrationInputs */
-/** @typedef {{}} Tests_Scope_StaticInputs */
-/** @typedef {{}} Tests_Scope_WebInputs */
-/** @typedef {{}} Tests_Scope_Web_IntegrationInputs */
+/** @typedef {{}} Testing_AboutInputs */
+/** @typedef {{}} Testing_NoneInputs */
+/** @typedef {{}} Testing_QuestionInputs */
+/** @typedef {{}} Tests_Layer_UnitInputs */
+/** @typedef {{}} Tests_Scope_E2e_NoneInputs */
+/** @typedef {{}} Tests_Scope_IntegrationInputs */
+/** @typedef {{}} Tests_Scope_UnitInputs */
 /** @typedef {{}} Tool_AnalyzeInputs */
 /** @typedef {{}} Tool_BuildInputs */
 /** @typedef {{}} Tool_BuiltinInputs */
@@ -1200,6 +1203,20 @@ export const desc_drizzle = /** @type {((inputs?: Desc_DrizzleInputs, options?: 
 /**
 * | output |
 * | --- |
+* | "Mix natural-language goals with scripted assertions. An AI agent explores the UI, and verified actions can replay from cache. Fits evolving interfaces and te..." |
+*
+* @param {Desc_E2eInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_e2e = /** @type {((inputs?: Desc_E2eInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_E2eInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_e2e(inputs)
+	return __en.desc_e2e(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Desktop app around the web app, packaged with electron-builder" |
 *
 * @param {Desc_ElectronInputs} inputs
@@ -1280,6 +1297,20 @@ export const desc_orpc = /** @type {((inputs?: Desc_OrpcInputs, options?: { loca
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_orpc(inputs)
 	return __en.desc_orpc(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Control actions and assertions in code, wait automatically for elements, and inspect each step in a trace. Fits clear acceptance criteria and regression suit..." |
+*
+* @param {Desc_PlaywrightInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_playwright = /** @type {((inputs?: Desc_PlaywrightInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_PlaywrightInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_playwright(inputs)
+	return __en.desc_playwright(inputs)
 });
 /**
 * | output |
@@ -1406,20 +1437,6 @@ export const desc_vite_plus = /** @type {((inputs?: Desc_Vite_PlusInputs, option
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_vite_plus(inputs)
 	return __en.desc_vite_plus(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "API integration tests and browser end-to-end tests" |
-*
-* @param {Desc_Vitest_PlaywrightInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desc_vitest_playwright = /** @type {((inputs?: Desc_Vitest_PlaywrightInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Vitest_PlaywrightInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desc_vitest_playwright(inputs)
-	return __en.desc_vitest_playwright(inputs)
 });
 /**
 * | output |
@@ -2684,7 +2701,7 @@ export const kind_runtime = /** @type {((inputs?: Kind_RuntimeInputs, options?: 
 /**
 * | output |
 * | --- |
-* | "Testing" |
+* | "End-to-end tests" |
 *
 * @param {Kind_TestingInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3843,72 +3860,100 @@ export const studio_stack = /** @type {((inputs?: Studio_StackInputs, options?: 
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests. An API-only project has no browser end-to-end tests." |
+* | "End-to-end tests follow complete user journeys, such as signing in or checking out, to check that the UI and backend work together." |
 *
-* @param {Tests_Scope_ApiInputs} inputs
+* @param {Testing_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export const tests_scope_api = /** @type {((inputs?: Tests_Scope_ApiInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_ApiInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+export const testing_about = /** @type {((inputs?: Testing_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Testing_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.tests_scope_api(inputs)
-	return __en.tests_scope_api(inputs)
+	if (locale === "zh") return __zh.testing_about(inputs)
+	return __en.testing_about(inputs)
 });
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests and API integration tests against a real database. An API-only project has no browser end-to-end tests." |
+* | "No web app" |
 *
-* @param {Tests_Scope_Api_IntegrationInputs} inputs
+* @param {Testing_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export const tests_scope_api_integration = /** @type {((inputs?: Tests_Scope_Api_IntegrationInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_Api_IntegrationInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+export const testing_none = /** @type {((inputs?: Testing_NoneInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Testing_NoneInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.tests_scope_api_integration(inputs)
-	return __en.tests_scope_api_integration(inputs)
+	if (locale === "zh") return __zh.testing_none(inputs)
+	return __en.testing_none(inputs)
 });
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests; Playwright verifies pages and browser interactions." |
+* | "Which end-to-end test runner?" |
 *
-* @param {Tests_Scope_StaticInputs} inputs
+* @param {Testing_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export const tests_scope_static = /** @type {((inputs?: Tests_Scope_StaticInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_StaticInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+export const testing_question = /** @type {((inputs?: Testing_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Testing_QuestionInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.tests_scope_static(inputs)
-	return __en.tests_scope_static(inputs)
+	if (locale === "zh") return __zh.testing_question(inputs)
+	return __en.testing_question(inputs)
 });
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests; Playwright verifies complete user journeys in a real browser." |
+* | "Unit & integration tests" |
 *
-* @param {Tests_Scope_WebInputs} inputs
+* @param {Tests_Layer_UnitInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export const tests_scope_web = /** @type {((inputs?: Tests_Scope_WebInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_WebInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+export const tests_layer_unit = /** @type {((inputs?: Tests_Layer_UnitInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Layer_UnitInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.tests_scope_web(inputs)
-	return __en.tests_scope_web(inputs)
+	if (locale === "zh") return __zh.tests_layer_unit(inputs)
+	return __en.tests_layer_unit(inputs)
 });
 /**
 * | output |
 * | --- |
-* | "Vitest runs unit tests and API integration tests against a real database; Playwright verifies complete user journeys in a real browser." |
+* | "An API-only project has no web app, so it has no end-to-end tests." |
 *
-* @param {Tests_Scope_Web_IntegrationInputs} inputs
+* @param {Tests_Scope_E2e_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export const tests_scope_web_integration = /** @type {((inputs?: Tests_Scope_Web_IntegrationInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_Web_IntegrationInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+export const tests_scope_e2e_none = /** @type {((inputs?: Tests_Scope_E2e_NoneInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_E2e_NoneInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.tests_scope_web_integration(inputs)
-	return __en.tests_scope_web_integration(inputs)
+	if (locale === "zh") return __zh.tests_scope_e2e_none(inputs)
+	return __en.tests_scope_e2e_none(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Every stack runs its unit tests on Vitest. This one also runs API integration tests against a real database." |
+*
+* @param {Tests_Scope_IntegrationInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const tests_scope_integration = /** @type {((inputs?: Tests_Scope_IntegrationInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_IntegrationInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.tests_scope_integration(inputs)
+	return __en.tests_scope_integration(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Every stack runs its unit tests on Vitest, beside the code." |
+*
+* @param {Tests_Scope_UnitInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const tests_scope_unit = /** @type {((inputs?: Tests_Scope_UnitInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_UnitInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.tests_scope_unit(inputs)
+	return __en.tests_scope_unit(inputs)
 });
 /**
 * | output |

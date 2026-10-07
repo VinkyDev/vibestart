@@ -50,7 +50,7 @@ import {
   verifiedStacks,
 } from "#/verification.ts";
 
-import httpSmoke from "../templates/vitest-playwright/http-smoke/http-smoke.mjs.txt?raw";
+import httpSmoke from "../templates/testing/http-smoke/http-smoke.mjs.txt?raw";
 
 const generateProject = async (stack: Stack, packageManager?: PackageManager) =>
   await generate(registry, verifiedBlueprint(stack, packageManager), {

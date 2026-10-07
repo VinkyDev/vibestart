@@ -23,16 +23,33 @@ export interface Blueprint {
   readonly channel: (typeof channels)[number];
 }
 
+const kindIds = (registry: Registry, kind: string) => {
+  const integrations = integrationsOfKind(registry, kind);
+  const [first, ...rest] = integrations.map((integration) => integration.id);
+  if (first === undefined) {
+    throw new Error(`Kind "${kind}" has no integrations`);
+  }
+  const current = z.enum([first, ...rest]);
+  const renames = new Map(
+    integrations.flatMap((integration) =>
+      (integration.formerIds ?? []).map((former) => [former, integration.id])
+    )
+  );
+  const [firstFormer, ...otherFormer] = renames.keys();
+  return firstFormer === undefined
+    ? current
+    : current.or(
+        z
+          .enum([firstFormer, ...otherFormer])
+          .meta({ deprecated: true })
+          .transform((former) => renames.get(former) ?? former)
+      );
+};
+
 export const createBlueprintSchema = (registry: Registry) => {
   const stack = Object.fromEntries(
     registry.kinds.map((kind) => {
-      const [first, ...rest] = integrationsOfKind(registry, kind.id).map(
-        (integration) => integration.id
-      );
-      if (first === undefined) {
-        throw new Error(`Kind "${kind.id}" has no integrations`);
-      }
-      const ids = z.enum([first, ...rest]);
+      const ids = kindIds(registry, kind.id);
       return [kind.id, kind.optional ? ids.optional() : ids];
     })
   );

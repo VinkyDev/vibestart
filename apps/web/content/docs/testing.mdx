@@ -24,7 +24,7 @@ Each layer drives a different amount of the running application. Select a layer 
 | Integration | API input, output, authorization, and errors | Reject anonymous requests and keep each user's data private |
 | Unit        | Self-contained branching logic               | Pricing, permission rules, parsers, and state transitions   |
 
-Which layers a project includes depends on its stack. A static site has browser tests; an API with a database adds integration tests for every operation; authentication adds tests for sessions and isolation between users.
+Which layers a project includes depends on its stack. A static site has browser tests; an API with a database adds integration tests for every operation; authentication adds tests for sessions and isolation between users. Vitest runs the unit and integration tests in every project, and a web app runs its end-to-end tests with Playwright or TesterArmy e2e; [Testing tools](/docs/stack/testing#e2e-tests) compares the two.
 
 ## Why not more unit tests [#tradeoffs]
 

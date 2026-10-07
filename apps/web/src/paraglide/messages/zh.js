@@ -62,12 +62,14 @@
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
+/** @typedef {{}} Desc_E2eInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
 /** @typedef {{}} Desc_OpenapiInputs */
 /** @typedef {{}} Desc_OrpcInputs */
+/** @typedef {{}} Desc_PlaywrightInputs */
 /** @typedef {{}} Desc_PostgresInputs */
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
@@ -77,7 +79,6 @@
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
-/** @typedef {{}} Desc_Vitest_PlaywrightInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Desktop_ProxyInputs */
@@ -249,11 +250,13 @@
 /** @typedef {{}} Search_Placeholder_ShortInputs */
 /** @typedef {{}} Search_SearchingInputs */
 /** @typedef {{}} Studio_StackInputs */
-/** @typedef {{}} Tests_Scope_ApiInputs */
-/** @typedef {{}} Tests_Scope_Api_IntegrationInputs */
-/** @typedef {{}} Tests_Scope_StaticInputs */
-/** @typedef {{}} Tests_Scope_WebInputs */
-/** @typedef {{}} Tests_Scope_Web_IntegrationInputs */
+/** @typedef {{}} Testing_AboutInputs */
+/** @typedef {{}} Testing_NoneInputs */
+/** @typedef {{}} Testing_QuestionInputs */
+/** @typedef {{}} Tests_Layer_UnitInputs */
+/** @typedef {{}} Tests_Scope_E2e_NoneInputs */
+/** @typedef {{}} Tests_Scope_IntegrationInputs */
+/** @typedef {{}} Tests_Scope_UnitInputs */
 /** @typedef {{}} Tool_AnalyzeInputs */
 /** @typedef {{}} Tool_BuildInputs */
 /** @typedef {{}} Tool_BuiltinInputs */
@@ -581,6 +584,10 @@ export const desc_drizzle = /** @type {(inputs: Desc_DrizzleInputs) => Localized
 	return /** @type {LocalizedString} */ (`Drizzle ORM v1，含 SQL 迁移`)
 };
 
+export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`将自然语言目标与脚本断言组合，由 AI agent 执行探索，验证后的操作可缓存回放。适合交互变化频繁、需要快速补充用户流程测试的项目。`)
+};
+
 export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`包裹 Web 应用的桌面端，用 electron-builder 打包`)
 };
@@ -603,6 +610,10 @@ export const desc_openapi = /** @type {(inputs: Desc_OpenapiInputs) => Localized
 
 export const desc_orpc = /** @type {(inputs: Desc_OrpcInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`端到端类型安全的 RPC，附带 OpenAPI 文档`)
+};
+
+export const desc_playwright = /** @type {(inputs: Desc_PlaywrightInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`用代码精确控制操作与断言，自动等待元素就绪，通过 trace 回看每一步。适合验收规则明确、需要长期维护回归测试的项目。`)
 };
 
 export const desc_postgres = /** @type {(inputs: Desc_PostgresInputs) => LocalizedString} */ () => {
@@ -639,10 +650,6 @@ export const desc_tanstack_start = /** @type {(inputs: Desc_Tanstack_StartInputs
 
 export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`统一工具链：开发、构建、测试、检查与格式化`)
-};
-
-export const desc_vitest_playwright = /** @type {(inputs: Desc_Vitest_PlaywrightInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API 集成测试与浏览器端到端测试`)
 };
 
 export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => LocalizedString} */ () => {
@@ -1013,7 +1020,7 @@ export const kind_runtime = /** @type {(inputs: Kind_RuntimeInputs) => Localized
 };
 
 export const kind_testing = /** @type {(inputs: Kind_TestingInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`测试`)
+	return /** @type {LocalizedString} */ (`端到端测试`)
 };
 
 export const kind_toolchain = /** @type {(inputs: Kind_ToolchainInputs) => LocalizedString} */ () => {
@@ -1349,24 +1356,32 @@ export const studio_stack = /** @type {(inputs: Studio_StackInputs) => Localized
 	return /** @type {LocalizedString} */ (`你的技术栈`)
 };
 
-export const tests_scope_api = /** @type {(inputs: Tests_Scope_ApiInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest 运行单元测试；纯后端项目不生成浏览器端到端测试。`)
+export const testing_about = /** @type {(inputs: Testing_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`端到端测试模拟用户完成登录、下单等完整流程，检查页面与后端是否协同工作。`)
 };
 
-export const tests_scope_api_integration = /** @type {(inputs: Tests_Scope_Api_IntegrationInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest 运行单元测试，以及连接真实数据库的 API 集成测试；纯后端项目不生成浏览器端到端测试。`)
+export const testing_none = /** @type {(inputs: Testing_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`无 Web 应用`)
 };
 
-export const tests_scope_static = /** @type {(inputs: Tests_Scope_StaticInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest 运行单元测试；Playwright 验证页面和浏览器交互。`)
+export const testing_question = /** @type {(inputs: Testing_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`端到端测试用哪个框架？`)
 };
 
-export const tests_scope_web = /** @type {(inputs: Tests_Scope_WebInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest 运行单元测试；Playwright 在真实浏览器中验证完整用户流程。`)
+export const tests_layer_unit = /** @type {(inputs: Tests_Layer_UnitInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`单元和集成测试`)
 };
 
-export const tests_scope_web_integration = /** @type {(inputs: Tests_Scope_Web_IntegrationInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest 运行单元测试，以及连接真实数据库的 API 集成测试；Playwright 在真实浏览器中验证完整用户流程。`)
+export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`纯 API 项目没有 Web 应用，因此没有端到端测试。`)
+};
+
+export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`每个技术栈都用 Vitest 运行单元测试；这个技术栈还会运行连接真实数据库的 API 集成测试。`)
+};
+
+export const tests_scope_unit = /** @type {(inputs: Tests_Scope_UnitInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`每个技术栈都用 Vitest 运行单元测试，测试文件位于代码旁。`)
 };
 
 export const tool_analyze = /** @type {(inputs: Tool_AnalyzeInputs) => LocalizedString} */ () => {

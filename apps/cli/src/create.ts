@@ -135,6 +135,11 @@ const chooseAddons = async (options: Options, addons: Given["addons"]) => {
     : defaults;
 };
 
+const testRows = (stack: Stack, kind: string, runner: string) => [
+  ["Unit & integration tests", "Vitest"],
+  ...(stack.framework === undefined ? [] : [[kind, runner]]),
+];
+
 const summary = (
   stack: Stack,
   addons: readonly string[],
@@ -146,7 +151,12 @@ const summary = (
       const integration = registry.integrations.find(
         (candidate) => candidate.id === stack[kind.id]
       );
-      return integration === undefined ? [] : [[kind.name, integration.name]];
+      if (integration === undefined) {
+        return [];
+      }
+      return kind.id === "testing"
+        ? testRows(stack, kind.name, integration.name)
+        : [[kind.name, integration.name]];
     }),
     ["Package manager", packageManager],
     [

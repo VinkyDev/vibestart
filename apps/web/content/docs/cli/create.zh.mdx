@@ -82,7 +82,9 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database s
 npx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none
 ```
 
-表格最后一列是不进行交互时，未指定类别的取值：数据库为 SQLite，不含桌面应用和部署配置。
+表格最后一列是不进行交互时未指定类别的取值，例如数据库为 SQLite，不含桌面应用和部署配置。
+
+单元测试和集成测试固定使用 Vitest。`--testing` 选择 Web 应用端到端测试的框架：`playwright` 对应 Playwright，`e2e` 对应 TesterArmy e2e。两者的对比见[测试工具](/docs/stack/testing#e2e-tests)。
 
 ### 不兼容的选择 [#illegal]
 

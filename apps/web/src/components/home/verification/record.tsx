@@ -10,7 +10,7 @@ import { relativeTime } from "#/lib/i18n.ts";
 import type { StackEntry, StackVerification } from "#/lib/project.ts";
 import { loadProject } from "#/lib/projects.ts";
 import { tintClass } from "#/lib/roles.ts";
-import { chosen, decisions } from "#/lib/stack.ts";
+import { chosen, decisions, e2eRunner } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const Status = ({
@@ -33,7 +33,8 @@ const Status = ({
 const Technologies = ({ entry }: { readonly entry: StackEntry }) => (
   <ul className="text-muted-foreground flex flex-wrap gap-x-3.5 gap-y-1 text-xs">
     {decisions.map((kind) => {
-      const integration = chosen(entry.stack, kind);
+      const integration =
+        kind === "testing" ? e2eRunner(entry.stack) : chosen(entry.stack, kind);
       return (
         integration !== undefined && (
           <li

@@ -79,7 +79,8 @@ const descriptions = {
   "tanstack-router": () => m.desc_tanstack_router(),
   "tanstack-start": () => m.desc_tanstack_start(),
   "vite-plus": () => m.desc_vite_plus(),
-  "vitest-playwright": () => m.desc_vitest_playwright(),
+  e2e: () => m.desc_e2e(),
+  playwright: () => m.desc_playwright(),
 };
 
 export const integrationDescription = (integration: IntegrationInfo) =>

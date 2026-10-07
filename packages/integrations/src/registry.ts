@@ -20,9 +20,9 @@ import { spa } from "#/spa.ts";
 import { sqlite } from "#/sqlite.ts";
 import { tanstackRouter } from "#/tanstack-router.ts";
 import { tanstackStart } from "#/tanstack-start.ts";
+import { e2eTests, playwrightTests } from "#/testing/index.ts";
 import { ultracite } from "#/ultracite.ts";
 import { vitePlus } from "#/vite-plus/index.ts";
-import { vitestPlaywright } from "#/vitest-playwright/index.ts";
 
 export const registry = defineRegistry({
   addons: [knip, ultracite],
@@ -61,7 +61,8 @@ export const registry = defineRegistry({
     node,
     bun,
     docker,
-    vitestPlaywright,
+    playwrightTests,
+    e2eTests,
   ],
   kindGroups: [["framework", "backend"]],
   kinds: [
@@ -78,6 +79,11 @@ export const registry = defineRegistry({
     { id: "desktop", name: "Desktop", optional: true, default: null },
     { id: "runtime", name: "Runtime", optional: true, default: "node" },
     { id: "deployment", name: "Deployment", optional: true, default: null },
-    { id: "testing", name: "Testing", optional: false },
+    {
+      id: "testing",
+      name: "End-to-end tests",
+      optional: false,
+      default: "playwright",
+    },
   ],
 });

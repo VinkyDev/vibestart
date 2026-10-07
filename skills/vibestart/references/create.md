@@ -26,6 +26,7 @@ If the preview reports `incomplete-stack`, supply the remaining choices. If it r
 - `--addons knip,ultracite` uses comma-separated IDs. `--addons none` explicitly excludes all extensions. Omitting the flag selects the release's defaults.
 - Docker is a deployment choice at creation: `--deployment docker`, not `--addons docker`. For existing projects, use `add docker`.
 - Flags with `none` are supported only for optional kinds. Obtain the choices from `--list` rather than inventing values.
+- Unit and integration tests always run on Vitest. `--testing` picks the runner of a web project's end-to-end tests: `playwright` (Playwright: fully scripted tests on a stable 1.x API) or `e2e` (TesterArmy e2e: the same scripted tests, plus optional natural-language steps an AI agent runs; before 1.0). Choose from the user's needs, and leave the flag out when they have none: the stack then gets the kind's default from `--list --json`. An API-only project has no end-to-end tests, and the generated tests of either runner need no AI credentials.
 
 ## Use a recipe
 

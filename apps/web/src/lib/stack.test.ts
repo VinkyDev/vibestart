@@ -5,6 +5,7 @@ import {
   addonsFlag,
   commandLine,
   commandWords,
+  e2eRunner,
   entryFromFlags,
   flagsOf,
   integrationOf,
@@ -27,6 +28,23 @@ const entry = (label: string) => {
 };
 
 describe("stack flags", () => {
+  it("round-trips the selected runner through URL flags and CLI output", () => {
+    const { stack } = entryFromFlags({ testing: "e2e" });
+    expect(stack.testing).toBe("e2e");
+    const flags = flagsOf(stack);
+    expect(parseFlags(searchSchema.parse(flags)).testing).toBe("e2e");
+    expect(entryFromFlags(flags).stack).toStrictEqual(stack);
+    expect(commandLine(commandWords(flags, "my-app", "pnpm"))).toContain(
+      "--testing e2e"
+    );
+    expect(recommended.testing).toBe("playwright");
+  });
+
+  it("shows an end-to-end runner only for a stack with a web app", () => {
+    expect(e2eRunner(recommended)?.name).toBe("Playwright");
+    expect(e2eRunner(entry("hono-openapi-sqlite").stack)).toBeUndefined();
+  });
+
   it("names every legal stack, and the stack it names is the same one", () => {
     for (const { label, stack } of stacks) {
       expect(entryFromFlags(flagsOf(stack)).label).toBe(label);

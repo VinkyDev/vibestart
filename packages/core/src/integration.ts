@@ -50,6 +50,11 @@ export interface Integration {
   readonly homepage?: string;
   /** Can be added to a project after creation without regenerating its business source. */
   readonly supportsAdd?: boolean;
+  /**
+   * Ids an earlier release wrote to `vibestart.jsonc` for this integration. A blueprint that names one
+   * reads as `id`, so existing projects keep upgrading. Drop an id once no supported release writes it.
+   */
+  readonly formerIds?: readonly string[];
   readonly provides: readonly string[];
   readonly requires: readonly string[];
   /** Chosen only to satisfy another integration's `requires`, so it is illegal when nothing requires what it provides. */

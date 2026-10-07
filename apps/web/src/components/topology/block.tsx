@@ -18,7 +18,7 @@ import {
 import { integrationDescription } from "#/lib/i18n.ts";
 import { ease, spring } from "#/lib/motion.ts";
 import { addLabel, roles, tintClass } from "#/lib/roles.ts";
-import type { Decision } from "#/lib/stack.ts";
+import type { OptionalDecision } from "#/lib/stack.ts";
 import { chosen } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
@@ -35,7 +35,7 @@ export const Block = ({
   readonly choosing: Choosing;
   readonly delay: number;
   readonly folded: boolean;
-  readonly kind: Decision;
+  readonly kind: OptionalDecision;
   readonly rect: Rect;
   readonly shown: Stack;
 }) => {

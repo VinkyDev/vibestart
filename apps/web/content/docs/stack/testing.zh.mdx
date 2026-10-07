@@ -5,26 +5,47 @@ description: 运行测试，了解隔离的测试环境，并排查失败。
 
 测试范围随技术栈生成：纯静态站点验证浏览器交互；带数据库的 API 为每个接口操作生成集成测试；选择认证后，进一步验证会话与用户隔离。各层覆盖的范围和测试遵循的原则，见[测试与验证](/docs/testing)。
 
-## Vitest 与 Playwright [#vitest-playwright]
-
-### Vitest [#vitest]
+## 单元和集成测试 [#vitest]
 
 <Tech href="https://vitest.dev" icon="vitest" />
 
-Vitest 通过 `vp test` 运行单元测试与 API 集成测试，使用项目的工具配置。单元测试位于代码旁；集成测试位于 `packages/api/tests/integration`，在测试进程内通过类型化的客户端调用 API，并连接真实数据库。
+所有技术栈的单元测试和集成测试都固定使用 Vitest，通过 `vp test` 运行，使用项目的工具配置，无需选择。单元测试位于代码旁；集成测试位于 `packages/api/tests/integration`，在测试进程内通过类型化的客户端调用 API，并连接真实数据库。
+
+## 端到端测试 [#e2e-tests]
+
+端到端测试模拟用户完成登录、下单等完整流程，检查页面交互、接口与数据存储能否协同工作，用来发现单个模块测试难以覆盖的衔接问题。
+
+在 CLI 或 Studio 中选择 Playwright（`--testing playwright`）或 TesterArmy e2e（`--testing e2e`）。纯 API 技术栈不生成浏览器端到端测试。
 
 ### Playwright [#playwright]
 
 <Tech href="https://playwright.dev" icon="playwright" />
 
-Playwright 使用 Chromium 验证完整用户流程。测试按角色和可见名称定位元素，使用自动等待的断言。失败时保存 trace，便于检查请求、页面状态和操作过程。
+**用代码精确描述验收规则。** Playwright 将定位器、操作和断言组合成可审查的测试脚本，自动等待元素可交互、断言满足条件。失败时可以通过 trace 逐步查看页面快照、网络请求和操作记录，定位问题发生在哪一步。
+
+**适合长期维护的回归测试。** 当登录、支付、权限等关键流程有明确的预期结果，希望把每个操作和检查点写进代码时，这种方式便于审查和排错。框架支持 Chromium、Firefox 和 WebKit，可扩展为跨浏览器验证；vibestart 生成的配置使用 Chromium。
+
+使用方法见 [Playwright 文档](https://playwright.dev/docs/intro)。
+
+### TesterArmy e2e [#e2e]
+
+<Tech href="https://e2e.tester.army" icon="e2e" />
+
+**用自然语言描述目标，与脚本断言搭配。** TesterArmy e2e 让 AI agent 根据当前界面完成操作（`agent.act`）和判断结果（`agent.assert`），也能在同一测试中使用定位器与明确的代码断言。经过后续检查验证的 `act` 步骤会缓存操作供下次回放；回放无法继续时，agent 接手处理变化。AI 判断仍需调用模型。
+
+**适合快速补充用户流程覆盖。** 对于交互频繁调整、流程更容易用目标描述的产品，可以让 agent 探索操作路径，同时用脚本固定关键验收点。`e2e explore` 支持不写测试文件就按目标探索，包内文档也便于 coding agent 编写和排查测试。
+
+vibestart 生成的用例使用脚本步骤，无需模型。加入 agent 步骤时，需在 `apps/web/e2e.config.ts` 中配置模型，并考虑运行成本。该框架尚未发布 1.0，升级时需关注 API 变化；匿名使用统计可通过 `E2E_TELEMETRY_DISABLED=1` 关闭。
+
+使用方法见 [TesterArmy e2e 文档](https://e2e.tester.army/docs)，源码见 [GitHub](https://github.com/tester-army/e2e)。
 
 ## 运行测试 [#commands]
 
-首次运行浏览器测试前，在 `apps/web` 下载浏览器：
+首次运行端到端测试前，在 `apps/web` 用项目所用的框架下载 Chromium：
 
 ```sh
-vp exec playwright install chromium
+vp exec playwright install chromium   # Playwright
+vp exec e2e-web install chromium      # TesterArmy e2e
 ```
 
 在项目根目录运行：
@@ -35,12 +56,12 @@ vp run test:e2e
 vp run ready
 ```
 
-`vp run ready` 按生成项目的配置执行代码检查、已选的 Knip、测试与生产构建。纯 API 项目不包含浏览器测试。开发时可按文件筛选，例如 `vp test packages/api/tests/integration/todos.test.ts`，也可用 `vp test --project unit` 或 `vp test --project integration` 按项目筛选。
+`vp run ready` 按生成项目的配置执行代码检查、已选的 Knip、测试与生产构建。纯 API 项目没有端到端测试。开发时可按文件筛选，例如 `vp test packages/api/tests/integration/todos.test.ts`，也可用 `vp test --project unit` 或 `vp test --project integration` 按项目筛选。
 
 ## 隔离环境 [#infrastructure]
 
 每次测试运行都使用独立的数据库，按项目迁移创建，结束后删除。每个集成测试文件通过 `db` 包中的 `createTestDatabase()` 获得一个单独的数据库，因此文件可以并行运行；认证测试为每个用例注册新用户。集成测试不启动服务，也不占用端口。
 
-端到端测试的支持代码位于 `apps/web/tests/support`，每次运行在 3200 端口启动一次真实服务，可通过 `E2E_TEST_PORT` 修改端口。PostgreSQL 组合需要可连接的数据库实例：测试数据库创建在服务端 `DATABASE_URL` 所指向的实例中。
+端到端测试的支持代码位于 `apps/web/tests/support`，每次运行在 3200 端口启动一次真实服务，可通过 `E2E_TEST_PORT` 修改端口。PostgreSQL 组合需要可连接的数据库实例：测试数据库创建在服务端 `DATABASE_URL` 所指向的实例中。Playwright 在 global setup 中启动这些服务；TesterArmy e2e 由 `e2e.config.ts` 将其作为应用命令启动，该命令只继承配置中转发的环境变量。
 
-测试失败时，先查看第一个失败断言。端到端测试中出现连接失败，通常表示测试服务未就绪或已退出，应先检查服务日志，再检查接口行为。
+测试失败时，先查看第一个失败断言。端到端测试中出现连接失败，通常表示测试服务未就绪或已退出，应先检查服务日志，再检查接口行为。Playwright 将该日志与测试输出一同打印，失败 trace 保存在 `apps/web/test-results`。TesterArmy e2e 将日志写入 `apps/web/.e2e/server.log`，报告和失败 trace 写入 `apps/web/.e2e`，可用 `vp exec e2e run --last-failed` 重跑失败用例。

@@ -1,5 +1,8 @@
+import { ArrowUpRight } from "lucide-react";
+
 import type { Stack } from "@vibestart/core";
 
+import { optionsOf } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const Commands = ({
@@ -10,7 +13,7 @@ const Commands = ({
     readonly label: string;
   }[];
 }) => (
-  <dl className="border-border mt-1 grid gap-2 border-t pt-3">
+  <dl className="border-border mt-1 grid gap-2 border-t pt-3 first:mt-0 first:border-0 first:pt-0">
     {commands.map(({ run, label }) => (
       <div className="flex items-baseline justify-between gap-3" key={run}>
         <dt className="text-muted-foreground">{label}</dt>
@@ -18,6 +21,28 @@ const Commands = ({
       </div>
     ))}
   </dl>
+);
+
+const Sites = ({ kind }: { readonly kind: string }) => (
+  <p className="flex flex-wrap gap-x-4 gap-y-1">
+    {optionsOf(kind).flatMap((integration) =>
+      integration?.homepage === undefined
+        ? []
+        : [
+            <a
+              aria-label={m.visit_site({ name: integration.name })}
+              className="text-foreground/80 hover:text-tint focus-visible:focus-ring inline-flex items-center gap-1 rounded-sm transition-colors outline-none"
+              href={integration.homepage}
+              key={integration.id}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {integration.name}
+              <ArrowUpRight className="size-3.5" strokeWidth={1.75} />
+            </a>,
+          ]
+    )}
+  </p>
 );
 
 export const ToolDetails = ({
@@ -42,37 +67,38 @@ export const ToolDetails = ({
         </>
       );
     }
-    case "vitest-playwright": {
+    case "vitest": {
       // Integration tests pin the todo example, which needs both an API and a database.
       const integration =
         stack.api !== undefined && stack.database !== undefined;
-      const scope = () => {
-        if (stack.framework === undefined) {
-          return integration
-            ? m.tests_scope_api_integration()
-            : m.tests_scope_api();
-        }
-        if (stack.backend === undefined) {
-          return m.tests_scope_static();
-        }
-        return integration
-          ? m.tests_scope_web_integration()
-          : m.tests_scope_web();
-      };
       return (
         <>
-          <p>{scope()}</p>
+          <p>
+            {integration ? m.tests_scope_integration() : m.tests_scope_unit()}
+          </p>
           <Commands
             commands={[
               {
                 label: integration ? m.tool_test_integration() : m.tool_test(),
                 run: "vp test",
               },
-              ...(stack.framework === undefined
-                ? []
-                : [{ label: m.tool_e2e(), run: "vp run test:e2e" }]),
             ]}
           />
+        </>
+      );
+    }
+    case "e2e":
+    case "playwright": {
+      return (
+        <>
+          {stack.framework === undefined ? (
+            <p>{m.tests_scope_e2e_none()}</p>
+          ) : (
+            <Commands
+              commands={[{ label: m.tool_e2e(), run: "vp run test:e2e" }]}
+            />
+          )}
+          <Sites kind="testing" />
         </>
       );
     }
