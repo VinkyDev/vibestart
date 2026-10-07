@@ -1107,7 +1107,13 @@ export const createTestDatabase = async () => {
     db,
     remove: async () => {
       db.$client.close();
-      await rm(dir, { force: true, recursive: true });
+      // Windows keeps the file locked until every process that opened it has exited.
+      await rm(dir, {
+        force: true,
+        maxRetries: 10,
+        recursive: true,
+        retryDelay: 100,
+      });
     },
     url,
   };

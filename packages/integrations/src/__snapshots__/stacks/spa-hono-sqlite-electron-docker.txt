@@ -1419,7 +1419,7 @@ export const closeTestHttp = async () => {
 };
 
 # apps/web/tests/support/server.ts (vitest-playwright)
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
 import { existsSync } from "node:fs";
@@ -1468,7 +1468,14 @@ const stop = async (child: ChildProcess) => {
     return;
   }
   const exited = once(child, "exit");
-  process.kill(-child.pid, "SIGTERM");
+  if (process.platform === "win32") {
+    // Windows has no process groups; taskkill may return non-zero for descendants that already exited.
+    spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
+      stdio: "ignore",
+    });
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
   await exited;
 };
 
@@ -1817,7 +1824,13 @@ export const createTestDatabase = async () => {
     db,
     remove: async () => {
       db.$client.close();
-      await rm(dir, { force: true, recursive: true });
+      // Windows keeps the file locked until every process that opened it has exited.
+      await rm(dir, {
+        force: true,
+        maxRetries: 10,
+        recursive: true,
+        retryDelay: 100,
+      });
     },
     url,
   };
