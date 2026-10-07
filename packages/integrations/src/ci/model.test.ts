@@ -8,6 +8,7 @@ import {
   completedResults,
   digest,
   reusable,
+  reportSchema,
   runtimeInput,
   superseded,
 } from "#/ci/model.ts";
@@ -85,6 +86,25 @@ describe("verification evidence", () => {
     expect(reusable(task, result, now - 1)).toBeFalsy();
     expect(
       reusable(task, { ...result, lock: digest("changed lock") }, now)
+    ).toBeFalsy();
+  });
+
+  it("rejects corrupted evidence before it can enter the cache", () => {
+    expect(
+      reportSchema.safeParse({ version: 1, results: [result], failed: [] })
+        .success
+    ).toBeTruthy();
+    expect(
+      reportSchema.safeParse({
+        version: 1,
+        results: [
+          {
+            ...result,
+            record: { ...result.record, fingerprint: digest("wrong output") },
+          },
+        ],
+        failed: [],
+      }).success
     ).toBeFalsy();
   });
 

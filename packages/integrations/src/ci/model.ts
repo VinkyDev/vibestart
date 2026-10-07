@@ -22,18 +22,25 @@ const taskSchema = z.strictObject({
   lock: hash.optional(),
 });
 
-const resultSchema = taskSchema.extend({
-  lock: hash,
-  key: hash,
-  record: verificationSchema.valueType,
-  image: z.string(),
-  source: z.strictObject({
-    run: z.string(),
-    attempt: z.string(),
-    sha: z.string(),
-    job: z.string(),
-  }),
-});
+const resultSchema = taskSchema
+  .extend({
+    lock: hash,
+    key: hash,
+    record: verificationSchema.valueType,
+    image: z.string(),
+    source: z.strictObject({
+      run: z.string(),
+      attempt: z.string(),
+      sha: z.string(),
+      job: z.string(),
+    }),
+  })
+  .refine(
+    (result) =>
+      result.record.fingerprint === result.fingerprint &&
+      result.key === digest(`${result.input}:${result.lock}`),
+    "Invalid verification identity"
+  );
 
 export const reportSchema = z.strictObject({
   version: z.literal(1),
