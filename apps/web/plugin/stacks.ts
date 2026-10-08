@@ -10,7 +10,7 @@ import {
   verifiedAs,
 } from "@vibestart/integrations";
 
-import type { StackEntry, StackPreview } from "../src/lib/project.ts";
+import type { Project, StackEntry, StackPreview } from "../src/lib/project.ts";
 import { projectKey } from "../src/lib/project.ts";
 
 /** The name the CLI gives a project when it is not asked for one. */
@@ -66,31 +66,46 @@ const subsets = (ids: readonly string[]) => {
   return sets;
 };
 
-const projectSets = subsets(registry.addons.map((addon) => addon.id)).flatMap(
-  (addons) =>
-    (["pnpm", "bun"] as const).map((packageManager) => ({
-      addons,
-      key: projectKey(addons, packageManager),
-      packageManager,
-    }))
+const projectSets = new Map(
+  subsets(registry.addons.map((addon) => addon.id)).flatMap((addons) =>
+    (["pnpm", "bun"] as const).map(
+      (packageManager) =>
+        [
+          projectKey(addons, packageManager),
+          { addons, packageManager },
+        ] as const
+    )
+  )
 );
+
+export const stackProject = async (
+  label: string,
+  key: string
+): Promise<Project> => {
+  const stack = legal.get(label);
+  const selection = projectSets.get(key);
+  if (stack === undefined || selection === undefined) {
+    throw new Error(`No legal stack is labeled "${label}" with add-ons ${key}`);
+  }
+  const { files, gettingStarted, setup } = await generate(
+    registry,
+    { ...selection, channel: "recommended", stack },
+    { name: previewName }
+  );
+  return {
+    files,
+    gettingStarted,
+    packageManager: selection.packageManager,
+    setup,
+  };
+};
 
 /** Each content is stored once, in the order of `projectSets`, so a build writes the same bytes for the same output. */
 export const stackPreview = async (label: string): Promise<StackPreview> => {
-  const stack = legal.get(label);
-  if (stack === undefined) {
-    throw new Error(`No legal stack is labeled "${label}"`);
-  }
   const generated = await Promise.all(
-    projectSets.map(async ({ addons, key, packageManager }) => ({
-      generation: await generate(
-        registry,
-        { addons, channel: "recommended", packageManager, stack },
-        { name: previewName }
-      ),
-      key,
-      packageManager,
-    }))
+    [...projectSets.keys()].map(
+      async (key) => [key, await stackProject(label, key)] as const
+    )
   );
   const contents: string[] = [];
   const indexes = new Map<string, number>();
@@ -104,24 +119,16 @@ export const stackPreview = async (label: string): Promise<StackPreview> => {
     return index;
   };
   const projects = Object.fromEntries(
-    generated.map(
-      ({
-        generation: { files, gettingStarted, setup },
-        key,
-        packageManager,
-      }) => [
-        key,
-        {
-          files: files.map((file) => ({
-            ...file,
-            content: intern(file.content),
-          })),
-          gettingStarted,
-          packageManager,
-          setup,
-        },
-      ]
-    )
+    generated.map(([key, project]) => [
+      key,
+      {
+        ...project,
+        files: project.files.map((file) => ({
+          ...file,
+          content: intern(file.content),
+        })),
+      },
+    ])
   );
   return { contents, projects };
 };
