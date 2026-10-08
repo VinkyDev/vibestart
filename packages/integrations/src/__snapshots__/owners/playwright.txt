@@ -6822,8 +6822,11 @@ export const createTestDatabase = async () => {
   await runAsAdmin(adminUrl, `create database "${name}"`);
   const db = createDb(url.href);
   const remove = async () => {
-    await db.$client.end();
-    await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
+    try {
+      await db.$client.end();
+    } finally {
+      await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
+    }
   };
   try {
     await migrateDatabase(db);
