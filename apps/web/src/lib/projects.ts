@@ -48,7 +48,6 @@ const fetchPreview = async (label: string) => {
   return previewSchema.parse(await response.json());
 };
 
-/** Keeps a pending or fulfilled promise; a rejected one is dropped, so the next caller retries. */
 const cached = <T>(
   cache: Map<string, Promise<T>>,
   key: string,
@@ -95,10 +94,6 @@ const expand = async (label: string, key: string): Promise<Project> => {
 
 const loaded = new Map<string, Promise<Project>>();
 
-/**
- * The same promise for the same project while it loads or once it has, as React's `use` requires. A stack's
- * projects share one request.
- */
 export const loadProject = (
   entry: StackEntry,
   addons: readonly string[] = verifiedAddons,

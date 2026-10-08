@@ -11,7 +11,6 @@ import type * as Stacks from "./stacks.ts";
 const moduleId = "virtual:vibestart";
 const resolved = `\0${moduleId}`;
 
-/** Through Vite, so the generator's templates load as raw strings rather than as this app's source. */
 export const importStacks = async () => {
   const imported = await runnerImport<typeof Stacks>("/plugin/stacks.ts", {
     oxc: { exclude: ["**/templates/**"] },
@@ -50,7 +49,6 @@ export const vibestart = (): Plugin => {
         response: ServerResponse,
         next: Connect.NextFunction
       ) => {
-        // Every other request passes without waiting for the generator to load.
         if (
           url?.startsWith(`${server.config.base}${previewDirectory}`) !== true
         ) {

@@ -43,22 +43,22 @@ export interface Task {
 }
 
 export const tasks: readonly Task[] = [
-  ...verifiedStacks.map((stack) => ({
+  ...verifiedStacks.map((stack): Task => ({
     label: stackLabel(stack),
-    packageManager: "pnpm" as const,
-    platform: "linux" as const,
+    packageManager: "pnpm",
+    platform: "linux",
     stack,
   })),
-  ...bunSubjects.map((stack) => ({
+  ...bunSubjects.map((stack): Task => ({
     label: `${stackLabel(stack)}-bun-pm`,
-    packageManager: "bun" as const,
-    platform: "linux" as const,
+    packageManager: "bun",
+    platform: "linux",
     stack,
   })),
-  ...Object.entries(goldens).map(([label, stack]) => ({
+  ...Object.entries(goldens).map(([label, stack]): Task => ({
     label,
-    packageManager: "pnpm" as const,
-    platform: "windows" as const,
+    packageManager: "pnpm",
+    platform: "windows",
     stack,
   })),
 ];
@@ -89,7 +89,6 @@ const store = {
   repository: "https://github.com/VinkyDev/vibestart.git",
 };
 
-/** A shallow clone of the store in a new directory. */
 export const cloneStore = () => {
   const dir = mkdtempSync(path.join(tmpdir(), "vibestart-verification-"));
   execFileSync(

@@ -7,7 +7,7 @@
 - `packages/core`: Blueprint schema, registry, resolver, generator, and the pure merge used by maintenance. It never touches the file system: `generate` returns a virtual file tree, so the browser and the CLI run the same resolver.
 - `packages/integrations`: every integration and add-on, the `recommended` catalog, templates, the golden comparison, and the verification store.
 - `apps/cli`: the `vibestart` command: prompts, flags, `--json`, writing files, running setup, and project maintenance.
-- `apps/web`: the Studio, the documentation site, and the generator preview. `oxfmt` has only a native binding, so the build runs the generator and writes each stack's projects, for every add-on set and package manager, to one static JSON file with each distinct content once. The Studio fetches a stack's file when it shows that stack; the files stay out of the JavaScript bundle, so the build grows with the number of stacks, not with the bundler's work on them.
+- `apps/web`: the Studio, the documentation site, and the generator preview. `oxfmt` has only a native binding, so the build runs the generator and writes each stack's projects to one static JSON file, outside the JavaScript bundle, which the Studio fetches when it shows that stack.
 - `golden/`: checked-in generated projects. Each is its own workspace and the expected output of the comparison tests.
 
 ## Model
@@ -100,7 +100,7 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 `.github/workflows/ci.yml` is one workflow for pull requests and `main`:
 
 1. `ready` runs `vp run ready`.
-2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the tasks no record covers. Linux tasks split across up to eight shards, about a dozen per shard, two stacks at a time; the Windows tasks run one at a time on a single runner. Most of a job is preparing its runner, so fewer, fuller jobs finish sooner. A change that touches no generated output plans no job.
+2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the tasks no record covers. Linux tasks split across up to eight shards; the Windows tasks run on a single runner. A change that touches no generated output plans no job.
 3. `verify` runs each planned job. Linux uses a PostgreSQL 18 service container; Windows starts the PostgreSQL 17 its runner image ships. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
 4. `ci`, the one required check, passes when `ready` and `plan` passed and `verify` passed or had nothing to run.
 5. On `main`, `record` adds every pass that matches `main`'s output to the store, then triggers the Studio's deploy hook (`CLOUDFLARE_DEPLOY_HOOK`), since the build for that commit may have embedded the records before they existed.

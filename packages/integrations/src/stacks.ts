@@ -47,6 +47,7 @@ import {
 } from "#/verification-store.ts";
 import type { Platform } from "#/verification.ts";
 import {
+  platforms,
   verification,
   verifiedBlueprint,
   verifiedName,
@@ -431,8 +432,9 @@ const selectStacks = async (
       }))
   );
 
-const isCurrent = async ({ generation, label, platform: of }: Selected) =>
-  verification[of][label]?.fingerprint === (await fingerprint(generation));
+const isCurrent = async (task: Task) =>
+  verification[task.platform][task.label]?.fingerprint ===
+  (await fingerprint(await generateTask(task)));
 
 const checkTasks = async (selected: readonly Selected[]) => {
   const results = await Promise.all(
@@ -461,16 +463,7 @@ const verifyTasks = async (
   const verify = limitAsync(verifyStack, jobs);
   const results = await Promise.all(
     selected.map(
-      async ({ generation, label, platform: of, stack }, index) =>
-        await verify({
-          force,
-          generation,
-          index,
-          label,
-          out,
-          platform: of,
-          stack,
-        })
+      async (task, index) => await verify({ ...task, force, index, out })
     )
   );
   const passed = results.filter(Boolean).length;
@@ -490,21 +483,16 @@ const pull = async (evidence: string | undefined) => {
     "@vibestart"
   );
   writeFileSync(projectionPath, code);
-  for (const of of ["linux", "windows"] as const) {
+  for (const name of platforms) {
     print(
-      `${Object.keys(projection[of]).length} of ${tasks.filter((task) => task.platform === of).length} ${of} tasks verified at current output`
+      `${Object.keys(projection[name]).length} of ${tasks.filter((task) => task.platform === name).length} ${name} tasks verified at current output`
     );
   }
 };
 
 const plan = async () => {
-  const selected = await selectTasks(
-    ["linux", "windows"],
-    ["pnpm", "bun"],
-    () => true
-  );
   const pending = await Promise.all(
-    selected.map(async (task) => ((await isCurrent(task)) ? [] : [task]))
+    tasks.map(async (task) => ((await isCurrent(task)) ? [] : [task]))
   );
   print(JSON.stringify(batchesOf(pending.flat())));
 };
@@ -537,9 +525,7 @@ const runStackCommand = async (
   const matches = (label: string) =>
     matching === undefined || matching.test(label);
   if (command === "check") {
-    return await checkTasks(
-      await selectTasks(["linux", "windows"], managers, matches)
-    );
+    return await checkTasks(await selectTasks(platforms, managers, matches));
   }
   mkdirSync(values.out, { recursive: true });
   if (command === "verify") {

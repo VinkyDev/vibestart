@@ -57,7 +57,10 @@ export const stackEntries = async (): Promise<StackEntry[]> =>
     })
   );
 
-/** Every set of add-ons. A stack's preview holds a project for each, under each package manager. */
+/**
+ * Every set of add-ons. A preview is generated ahead for each, so their count doubles with
+ * each add-on; past a few, previews should generate on demand instead.
+ */
 const subsets = (ids: readonly string[]) => {
   let sets: string[][] = [[]];
   for (const id of ids.toReversed()) {
@@ -78,33 +81,36 @@ const projectSets = new Map(
   )
 );
 
-export const stackProject = async (
-  label: string,
-  key: string
-): Promise<Project> => {
+export const project = async (label: string, key: string): Promise<Project> => {
   const stack = legal.get(label);
   const selection = projectSets.get(key);
-  if (stack === undefined || selection === undefined) {
+  const addons = selection?.addons;
+  if (stack === undefined || addons === undefined || selection === undefined) {
     throw new Error(`No legal stack is labeled "${label}" with add-ons ${key}`);
   }
   const { files, gettingStarted, setup } = await generate(
     registry,
-    { ...selection, channel: "recommended", stack },
+    {
+      addons,
+      channel: "recommended",
+      packageManager: selection.packageManager,
+      stack,
+    },
     { name: previewName }
   );
   return {
     files,
     gettingStarted,
-    packageManager: selection.packageManager,
     setup,
+    packageManager: selection.packageManager,
   };
 };
 
-/** Each content is stored once, in the order of `projectSets`, so a build writes the same bytes for the same output. */
+/** In the order of `projectSets`, so a build writes the same bytes for the same output. */
 export const stackPreview = async (label: string): Promise<StackPreview> => {
   const generated = await Promise.all(
     [...projectSets.keys()].map(
-      async (key) => [key, await stackProject(label, key)] as const
+      async (key) => [key, await project(label, key)] as const
     )
   );
   const contents: string[] = [];
@@ -119,11 +125,11 @@ export const stackPreview = async (label: string): Promise<StackPreview> => {
     return index;
   };
   const projects = Object.fromEntries(
-    generated.map(([key, project]) => [
+    generated.map(([key, { files, ...rest }]) => [
       key,
       {
-        ...project,
-        files: project.files.map((file) => ({
+        ...rest,
+        files: files.map((file) => ({
           ...file,
           content: intern(file.content),
         })),

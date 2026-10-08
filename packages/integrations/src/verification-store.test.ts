@@ -47,8 +47,8 @@ describe("verification tasks", () => {
   });
 
   it("name each output once per platform", () => {
-    for (const of of [linux, windows]) {
-      expect(new Set(of.map((task) => task.label)).size).toBe(of.length);
+    for (const group of [linux, windows]) {
+      expect(new Set(group.map((task) => task.label)).size).toBe(group.length);
     }
   });
 });
