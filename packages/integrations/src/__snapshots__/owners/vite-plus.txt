@@ -54939,12 +54939,10 @@ import core from "ultracite/oxlint/core";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**"];
-
 export default defineConfig({
   fmt: {
     ...oxfmt,
-    ignorePatterns: [...(oxfmt.ignorePatterns ?? []), ...generatedFiles],
+    ignorePatterns: [...(oxfmt.ignorePatterns ?? [])],
     proseWrap: "preserve",
     sortImports: {
       customGroups: [
@@ -54969,7 +54967,7 @@ export default defineConfig({
   },
   lint: {
     extends: [core, vitest, antiSlop],
-    ignorePatterns: [...(core.ignorePatterns ?? []), ...generatedFiles],
+    ignorePatterns: [...(core.ignorePatterns ?? [])],
     jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
     options: { typeAware: true, typeCheck: true },
     overrides: [
@@ -55011,12 +55009,10 @@ import core from "ultracite/oxlint/core";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**"];
-
 export default defineConfig({
   fmt: {
     ...oxfmt,
-    ignorePatterns: [...(oxfmt.ignorePatterns ?? []), ...generatedFiles],
+    ignorePatterns: [...(oxfmt.ignorePatterns ?? [])],
     proseWrap: "preserve",
     sortImports: {
       customGroups: [
@@ -55041,7 +55037,7 @@ export default defineConfig({
   },
   lint: {
     extends: [core, vitest, antiSlop],
-    ignorePatterns: [...(core.ignorePatterns ?? []), ...generatedFiles],
+    ignorePatterns: [...(core.ignorePatterns ?? [])],
     jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
     options: { typeAware: true, typeCheck: true },
     overrides: [
@@ -55089,7 +55085,7 @@ import core from "ultracite/oxlint/core";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "packages/db/src/migrations/**"];
+const generatedFiles = ["packages/db/src/migrations/**"];
 
 export default defineConfig({
   fmt: {
@@ -55173,7 +55169,7 @@ import core from "ultracite/oxlint/core";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "packages/db/src/migrations/**"];
+const generatedFiles = ["packages/db/src/migrations/**"];
 
 export default defineConfig({
   fmt: {
@@ -55257,7 +55253,7 @@ import core from "ultracite/oxlint/core";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "packages/db/src/migrations/**"];
+const generatedFiles = ["packages/db/src/migrations/**"];
 
 export default defineConfig({
   fmt: {
@@ -55335,7 +55331,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -55420,7 +55415,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -55512,7 +55506,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -55616,7 +55609,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -55727,7 +55719,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -55838,7 +55829,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -55935,7 +55925,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -56027,7 +56016,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",
@@ -56106,7 +56094,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56195,7 +56183,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56293,7 +56281,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56396,7 +56384,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56496,7 +56484,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56595,7 +56583,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56699,11 +56687,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56825,11 +56809,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -56952,11 +56932,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57065,11 +57041,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57179,11 +57151,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57305,11 +57273,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57432,11 +57396,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57545,11 +57505,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57659,11 +57615,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57779,11 +57731,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -57900,11 +57848,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58007,11 +57951,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58111,7 +58051,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58206,7 +58146,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58306,7 +58246,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [".vibestart/**", "**/routeTree.gen.ts"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58410,11 +58350,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58537,11 +58473,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58651,11 +58583,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58778,11 +58706,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -58892,11 +58816,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -59013,11 +58933,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -59117,11 +59033,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -59231,11 +59143,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -59332,11 +59240,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({
@@ -59440,11 +59344,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = [
-  ".vibestart/**",
-  "**/routeTree.gen.ts",
-  "packages/db/src/migrations/**",
-];
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({

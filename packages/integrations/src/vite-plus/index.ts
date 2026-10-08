@@ -128,10 +128,7 @@ const renderViteConfig = (ctx: Context, read: ReadSlot) => {
   const presets = read(lintPresets);
   const [base] = presets;
   const [fmt] = read(fmtPresets);
-  const generated = [
-    quote(".vibestart/**"),
-    ...read(generatedFiles).map(({ glob }) => quote(glob)),
-  ];
+  const generated = read(generatedFiles).map(({ glob }) => quote(glob));
   const vendored = read(vendoredFiles).map(quote);
   const plugins = [
     ...read(lintPlugins),

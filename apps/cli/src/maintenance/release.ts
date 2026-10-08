@@ -1,36 +1,64 @@
-import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 
 import { execa } from "execa";
 import { z } from "zod";
 
 import { createBlueprintSchema, generate } from "@vibestart/core";
-import type { Blueprint } from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
-import type { Snapshot } from "#/maintenance/model.ts";
+import type { Input, Project, Snapshot } from "#/maintenance/model.ts";
 import {
   MaintenanceError,
-  normalizeInput,
   serialize,
   snapshotOf,
   snapshotSchema,
+  versionSchema,
 } from "#/maintenance/model.ts";
 
 import packageJson from "../../package.json";
 
-export const currentSnapshot = async (name: string, input: Blueprint) => {
+export const runningVersion = packageJson.version;
+
+export const currentSnapshot = async (name: string, input: Input) => {
   const blueprint = createBlueprintSchema(registry).parse(input);
-  const generation = await generate(registry, blueprint, { name });
-  return snapshotOf(packageJson.version, name, blueprint, generation.files);
+  const generation = await generate(registry, blueprint, {
+    name,
+    version: runningVersion,
+  });
+  return snapshotOf(runningVersion, name, blueprint, generation.files);
 };
 
-const versionSchema = z.string().regex(/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/u);
+/** A release's `snapshot` output, accepted only as the files it generated for exactly this project. */
+export const verifiedSnapshot = (
+  output: string,
+  version: string,
+  { blueprint, name }: Pick<Project, "blueprint" | "name">
+) => {
+  const snapshot = snapshotSchema.parse(JSON.parse(output));
+  if (snapshot.version !== version || snapshot.name !== name) {
+    throw new MaintenanceError(
+      "Requested release returned a different identity."
+    );
+  }
+  if (serialize(snapshot.blueprint) !== serialize(blueprint)) {
+    throw new MaintenanceError(
+      `Release ${version} changed the project's choices without a migration.`
+    );
+  }
+  return snapshot;
+};
 
-/** Execute the requested immutable release's generator, never mix its catalog with our templates. */
-export const targetSnapshot = async (base: Snapshot, version?: string) => {
-  if (version === undefined || version === packageJson.version) {
-    return await currentSnapshot(base.name, base.blueprint);
+/**
+ * A release's generated files for the project's name and choices. Generation is deterministic and npm
+ * releases are immutable, so this reproduces what the release wrote. Execute the requested release's
+ * own generator, never mix its catalog with our templates.
+ */
+export const snapshotAt = async (
+  version: string,
+  { blueprint, name }: Pick<Project, "blueprint" | "name">
+): Promise<Snapshot> => {
+  if (version === runningVersion) {
+    return await currentSnapshot(name, blueprint);
   }
   if (!versionSchema.safeParse(version).success) {
     throw new MaintenanceError(
@@ -51,62 +79,26 @@ export const targetSnapshot = async (base: Snapshot, version?: string) => {
     ],
     {
       cwd: tmpdir(),
-      input: JSON.stringify({ blueprint: base.blueprint, name: base.name }),
+      input: JSON.stringify({ blueprint, name }),
       reject: false,
     }
   );
   if (result.failed) {
     throw new MaintenanceError(
-      `Release ${version} could not export a baseline: ${result.stderr}`
+      `Release ${version} could not export its templates: ${result.stderr}`
     );
   }
-  const snapshot = snapshotSchema.parse(JSON.parse(result.stdout));
-  if (snapshot.version !== version || snapshot.name !== base.name) {
-    throw new MaintenanceError(
-      "Requested release returned a different identity."
-    );
-  }
-  if (
-    serialize(normalizeInput(snapshot.blueprint)) !==
-    serialize(normalizeInput(base.blueprint))
-  ) {
-    throw new MaintenanceError(
-      "Target release changed historical choices without a migration."
-    );
-  }
-  return snapshot;
+  return verifiedSnapshot(result.stdout, version, { blueprint, name });
 };
 
-export const readSnapshot = (file: string) =>
-  snapshotSchema.parse(JSON.parse(readFileSync(file, "utf-8")));
-
 export const latestVersion = async () => {
-  const response = await fetch("https://registry.npmjs.org/vibestart/latest", {
-    signal: AbortSignal.timeout(8000),
-  });
+  const response = await fetch(
+    "https://registry.npmjs.org/vibestart-cli/latest",
+    { signal: AbortSignal.timeout(8000) }
+  );
   if (!response.ok) {
     return null;
   }
   return z.object({ version: versionSchema }).parse(await response.json())
     .version;
-};
-
-const sources = (snapshot: Snapshot) =>
-  new Map(
-    snapshot.files
-      .filter(({ path }) => /\/src\/.*\.[cm]?[jt]sx?$/u.test(path))
-      .map(({ path, content }) => [path, content])
-  );
-/** Source additions and removals can change application contracts as much as edits do. */
-export const assertSourceCompatible = (base: Snapshot, target: Snapshot) => {
-  const before = sources(base);
-  const after = sources(target);
-  const changed = [...new Set([...before.keys(), ...after.keys()])].filter(
-    (path) => before.get(path) !== after.get(path)
-  );
-  if (changed.length > 0) {
-    throw new MaintenanceError(
-      `requires-migration: this release changes starter source: ${changed.join(", ")}. A reviewed source migration is required before advancing the baseline.`
-    );
-  }
 };

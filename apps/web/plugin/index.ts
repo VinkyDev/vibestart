@@ -5,7 +5,7 @@ import { limitAsync } from "es-toolkit/promise";
 import type { Connect, Plugin } from "vite-plus";
 import { runnerImport } from "vite-plus";
 
-import { previewDirectory, previewPath } from "../src/lib/project.ts";
+import { previewPath } from "../src/lib/project.ts";
 import type * as Stacks from "./stacks.ts";
 
 const moduleId = "virtual:vibestart";
@@ -20,8 +20,8 @@ export const importStacks = async () => {
 };
 
 /**
- * Serves the registry and every legal stack as `virtual:vibestart`, and each stack's preview as a JSON file at
- * `previewPath`. The generator formats with oxfmt's native binding, so it runs here in Node, not in the browser.
+ * Serves the registry and every legal stack as `virtual:vibestart`, each stack's preview as a JSON file at
+ * `previewPath`, and `vibestart.jsonc`'s JSON Schema at the path of `blueprintSchemaUrl`. The generator formats with oxfmt's native binding, so it runs here in Node, not in the browser.
  * Previews are files, not modules: hundreds of them, each holding whole projects, would make the bundler parse
  * and keep every one.
  */
@@ -34,47 +34,54 @@ export const vibestart = (): Plugin => {
 
   return {
     configureServer: (server) => {
-      const previewAt = async (url: string) => {
+      const { base } = server.config;
+      const fileAt = async (url: string) => {
         const loaded = await loadStacks();
+        if (url === `${base}${loaded.blueprintSchema.path}`) {
+          return loaded.blueprintSchema.source;
+        }
         const label = loaded.stackLabels.find(
-          (candidate) =>
-            url === `${server.config.base}${previewPath(candidate)}`
+          (candidate) => url === `${base}${previewPath(candidate)}`
         );
         return label === undefined
           ? undefined
           : JSON.stringify(await loaded.stackPreview(label));
       };
-      const servePreview = async (
+      const serveFile = async (
         url: string | undefined,
         response: ServerResponse,
         next: Connect.NextFunction
       ) => {
-        if (
-          url?.startsWith(`${server.config.base}${previewDirectory}`) !== true
-        ) {
+        // Every file this plugin serves is JSON; other requests skip loading the generator.
+        if (url?.startsWith(base) !== true || !url.endsWith(".json")) {
           next();
           return;
         }
-        let preview: string | undefined;
+        let file: string | undefined;
         try {
-          preview = await previewAt(url);
+          file = await fileAt(url);
         } catch (error) {
           next(error);
           return;
         }
-        if (preview === undefined) {
+        if (file === undefined) {
           next();
           return;
         }
         response.setHeader("Content-Type", "application/json");
-        response.end(preview);
+        response.end(file);
       };
       server.middlewares.use((request, response, next) => {
-        void servePreview(request.url, response, next);
+        void serveFile(request.url, response, next);
       });
     },
     async generateBundle() {
       const loaded = await loadStacks();
+      this.emitFile({
+        fileName: loaded.blueprintSchema.path,
+        source: loaded.blueprintSchema.source,
+        type: "asset",
+      });
       // A few stacks at a time: each generates every project it previews at once.
       const emit = limitAsync(async (label: string) => {
         this.emitFile({

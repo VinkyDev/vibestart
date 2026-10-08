@@ -13,14 +13,14 @@ npx vibestart-cli add knip ultracite docker --yes
 
 ## 预览与应用 [#apply]
 
-`--dry-run` 展示文件与配置变更，不写入项目。确认后运行带 `--yes` 的命令，或在终端中确认计划。
+`--dry-run` 展示文件与配置变更，不写入项目。确认后运行带 `--yes` 的命令，或在终端中确认计划。与升级相同，写入要求 Git 工作区干净，冲突会直接写进文件，详见[用 Git 审查与撤销](/docs/cli/upgrade#git)。
 
-项目基线与运行中的 CLI 模板版本不同时，先执行 [`upgrade`](/docs/cli/upgrade)。已有能力不会重复添加。
+`vibestart.jsonc` 记录的版本与运行中的 CLI 不同时，先执行 [`upgrade`](/docs/cli/upgrade)。已有能力不会重复添加。
 
 ## 安装与检查 [#checks]
 
 默认安装依赖一次，然后执行 `vp check`、已选择的 Knip，以及存在的 `unit` 测试项目。`--full-check` 改为执行完整的 `vp run ready`。
 
-`--no-install` 只写文件，并将操作保留为 `needs-install`。之后运行 [`recover`](/docs/cli/recover) 完成安装和检查。这两个参数不能同时使用。
+`--no-install` 只写文件，返回 `needs-install`，并给出需要执行的安装与检查命令。这两个参数不能同时使用。
 
-接入 Ultracite 后，已有业务代码可能需要按新增规则调整。检查失败时，操作会被保留；修改代码后，通过 `recover` 继续。添加能力不会自动迁移数据库。
+接入 Ultracite 后，已有业务代码可能需要按新增规则调整。检查失败时，文件保持已写入的状态：修改代码后重新执行检查，或用 Git 撤销。添加能力不会自动迁移数据库。

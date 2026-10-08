@@ -1,7 +1,13 @@
 import { omit } from "es-toolkit/object";
 
 import type { RegistryInfo } from "@vibestart/core";
-import { defaultAddons, generate, legalStacks } from "@vibestart/core";
+import {
+  blueprintJsonSchema,
+  blueprintSchemaUrl,
+  defaultAddons,
+  generate,
+  legalStacks,
+} from "@vibestart/core";
 import {
   registry,
   stackLabel,
@@ -27,6 +33,12 @@ export const registryInfo: RegistryInfo = {
   ),
   kindGroups: registry.kindGroups,
   kinds: registry.kinds,
+};
+
+/** The JSON Schema every generated `vibestart.jsonc` names, served from the site at its URL's path. */
+export const blueprintSchema = {
+  path: new URL(blueprintSchemaUrl).pathname.slice(1),
+  source: JSON.stringify(blueprintJsonSchema(registry)),
 };
 
 export const stackLabels = [...legal.keys()];

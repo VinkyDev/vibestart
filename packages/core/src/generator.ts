@@ -84,9 +84,16 @@ export const projectNameError = (name: string) =>
 export const generate = async (
   registry: Registry,
   blueprint: Blueprint,
-  options: { readonly name: string }
+  options: {
+    readonly name: string;
+    /**
+     * The vibestart release generating a project it will maintain, recorded with the name in `vibestart.jsonc`.
+     * Previews and verification omit it, so their output does not change with each release.
+     */
+    readonly version?: string;
+  }
 ): Promise<Generation> => {
-  const { name } = options;
+  const { name, version } = options;
   const nameError = projectNameError(name);
   if (nameError !== undefined) {
     throw new Error(nameError);
@@ -159,7 +166,14 @@ export const generate = async (
             path: "pnpm-workspace.yaml",
           },
         ]),
-    { content: renderBlueprint(registry, blueprint), path: "vibestart.jsonc" },
+    {
+      content: renderBlueprint(
+        registry,
+        blueprint,
+        version === undefined ? undefined : { name, version }
+      ),
+      path: "vibestart.jsonc",
+    },
   ].map(({ path, content }) => ({ content, owner: "core", path }));
 
   const files = new Map<string, GeneratedFile>();

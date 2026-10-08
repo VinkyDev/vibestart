@@ -3,7 +3,7 @@ title: Agent Skills
 description: Let a coding agent use the vibestart CLI to create and maintain projects.
 ---
 
-The `vibestart` skill teaches a coding agent how to choose a stack, preview changes, add capabilities, upgrade templates, and recover unfinished operations. It reads the CLI's current options and structured results before choosing an action.
+The `vibestart` skill teaches a coding agent how to choose a stack, preview changes, add capabilities, upgrade templates, and finish an upgrade: resolve conflicts and port template changes to starter source. It reads the CLI's current options and structured results before choosing an action.
 
 Installing the skill adds instructions to your agent. It does not install the vibestart CLI, Vite+, or project dependencies. See [CLI overview](/docs/cli) for the current CLI entry point.
 
@@ -26,9 +26,9 @@ Describe the desired result and the target project. For example:
 - “Create a vibestart project with a React SPA, Hono, oRPC, SQLite, and authentication. Use pnpm for dependencies and Bun for the Hono runtime.”
 - “Add Knip and Docker to this vibestart project. Preserve my application changes.”
 - “Preview a template upgrade for this project and explain any conflicts. Do not apply it yet.”
-- “Continue the unfinished vibestart operation after I resolved its candidate files.”
+- “Upgrade this project and port the template's changes to the starter source into my code.”
 
-The skill routes creation and maintenance to separate references. It distinguishes previews, deferred installation, and completed checks, so the agent can report what actually ran. It also explains when an older project needs its original template snapshot for adoption.
+The skill routes creation and maintenance to separate references. It distinguishes previews, deferred installation, and completed checks, so the agent can report what actually ran.
 
 For one session without installation, `skills use` prints instructions and provides a temporary supporting-files directory:
 

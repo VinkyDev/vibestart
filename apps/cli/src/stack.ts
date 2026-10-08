@@ -5,7 +5,7 @@ import type { ParseError } from "jsonc-parser";
 import { parse, printParseErrorCode } from "jsonc-parser";
 import { z } from "zod";
 
-import type { Blueprint, Resolution, Stack } from "@vibestart/core";
+import type { Resolution, Stack } from "@vibestart/core";
 import { createBlueprintSchema } from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
@@ -88,7 +88,7 @@ const readRecipe = async (source: string) => {
   }
 };
 
-export const loadRecipe = async (source: string): Promise<Blueprint> => {
+export const loadRecipe = async (source: string) => {
   const errors: ParseError[] = [];
   const data: unknown = parse(await readRecipe(source), errors, {
     allowTrailingComma: true,

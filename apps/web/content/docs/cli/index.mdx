@@ -31,14 +31,12 @@ bunx vibestart-cli <command>
 
 ## Commands [#commands]
 
-| Command                            | Purpose                                                       |
-| ---------------------------------- | ------------------------------------------------------------- |
-| [`create`](/docs/cli/create)       | Create a project; the `create` keyword is optional            |
-| [`add`](/docs/cli/add)             | Add Knip, Ultracite, or Docker to an existing project         |
-| [`doctor`](/docs/cli/doctor)       | Inspect configuration and maintenance state, without writing  |
-| [`upgrade`](/docs/cli/upgrade)     | Preview and apply template updates                            |
-| [`recover`](/docs/cli/recover)     | Resume or roll back an unfinished operation                   |
-| [`adopt`](/docs/cli/upgrade#adopt) | Record the baseline of an older project whose origin is known |
+| Command                        | Purpose                                                      |
+| ------------------------------ | ------------------------------------------------------------ |
+| [`create`](/docs/cli/create)   | Create a project; the `create` keyword is optional           |
+| [`add`](/docs/cli/add)         | Add Knip, Ultracite, or Docker to an existing project        |
+| [`doctor`](/docs/cli/doctor)   | Inspect configuration and maintenance state, without writing |
+| [`upgrade`](/docs/cli/upgrade) | Preview and apply template updates                           |
 
 To let a coding agent run these commands for you, install the [vibestart skill](/docs/cli/skill).
 
@@ -67,24 +65,24 @@ npx vibestart-cli upgrade --dry-run
 </Step>
 <Step title="Apply">
 
-Confirm the plan in the terminal, or pass `--yes` where there is no terminal. Dependencies are installed and the project is checked afterwards.
+Commit your work first: a write starts from a clean Git worktree. Confirm the plan in the terminal, or pass `--yes` where there is no terminal. Dependencies are installed and the project is checked afterwards.
 
 ```sh
 npx vibestart-cli upgrade --yes
 ```
 
 </Step>
-<Step title="Recover, if needed">
+<Step title="Review">
 
-After a conflict or a failed check, the operation is kept. Resolve the problem, then continue or roll back with [`recover`](/docs/cli/recover).
+`git diff` shows every change. After a conflict, resolve the markers written into the files, then run the installation and checks the result names. `git restore . && git clean -fd` undoes the write.
 
 </Step>
 </Steps>
 
-<Callout type="warn" title="Commit the maintenance state">
-  `.vibestart/state.json` and `.vibestart/base.json` record where the project
-  came from and the template it started with. Commit them together, and never
-  replace them with application files; upgrades depend on them.
+<Callout type="warn" title="Keep the project record">
+  `vibestart.jsonc` records the project's `name` and the `version` of the
+  release that generated it. Upgrades regenerate that release's templates from
+  them, so commit the file and leave those fields as the CLI wrote them.
 </Callout>
 
 ## Project and output options [#options]

@@ -123,17 +123,15 @@ Teardown stops server process trees before removing test databases. Windows uses
 
 ## Project maintenance
 
-`create` writes `.vibestart/base.json`, a pure snapshot of generator output, and `.vibestart/state.json`, with the identity, choices, project name, ownership, and SHA-256 inventory. Commit both. `.vibestart/.gitignore` keeps local recovery data out; Vite+ formatting and Docker contexts exclude the whole directory.
+`vibestart.jsonc` is the whole maintenance state. When the CLI generates a project, it passes its version to the generator, which records `name` and `version` in that file beside the choices. Previews, goldens, and verification generate without a version, so their output and fingerprints do not change with each release.
 
-Commands: `create`, `add`, `upgrade`, `adopt`, `recover`, and the `snapshot` protocol. `add` and `upgrade` reuse the generator, compare the prior baseline, the current files, and the target output, and produce one plan. `packages/core` owns the pure line and JSONC merge, `packages/integrations` declares addable capabilities and the maintained scope, and `apps/cli/src/maintenance` owns release loading, project I/O, commands, and recovery. A capability has one template, shared by create and add.
+The merge base is regenerated, not stored. Generation is deterministic and npm releases are immutable, so the recorded release, given the recorded name and choices, reproduces the original templates. The running release generates its own; any other runs through the `snapshot` protocol (`npm exec vibestart-cli@<version> snapshot`), which every release keeps reading and writing in the same format. The CLI checks that the snapshot's identity and choices match what it asked for. `--to` selects the target the same way, and must name a release that records its version.
 
-Only infrastructure is maintained: manifests, catalog, toolchain and config files, Git ignores, agent conventions, Docker files. Starter business source belongs to the user. An upgrade whose target changes existing starter source stops with `requires-migration`; untouched files are never taken as proof of compatibility. Replacing a stack choice is not an automatic migration.
+Commands: `create`, `add`, `upgrade`, `doctor`, and the `snapshot` protocol. `add` and `upgrade` compare the regenerated base, the current files, and the target output, and produce one plan. `packages/core` owns the pure line and JSONC merge, `packages/integrations` declares addable capabilities and the maintained scope, and `apps/cli/src/maintenance` owns release loading, project I/O, and commands. A capability has one template, shared by create and add.
 
-A release is identified by the CLI version and a digest of its normalized input and generated output. `upgrade` uses the running CLI; `--to` runs the exact published target CLI's `snapshot` protocol through npm, then validates identity and choices.
+Only infrastructure is merged: manifests, catalog, toolchain and config files, Git ignores, agent conventions, Docker files. The CLI writes `vibestart.jsonc` itself, only when its recorded data changes, and refuses a target release whose record omits its version. Starter business source belongs to the user: a template change to it is reported in the plan's `manual` list with the previous and target template, and never written. Replacing a stack choice is not an automatic migration.
 
-Each mutation takes a project lock, rechecks the reviewed files, persists a backup and journal, and renames files atomically one by one. The operation as a whole is not atomic. Recovery accepts a file at either its recorded before or after content, and rollback refuses newer edits. After files are applied, validation failures let the user fix code without reapplying merges. A changed install input invalidates installation; source-only fixes repeat validation. Installation runs once per unchanged input.
-
-An older project is adopted from an independently preserved snapshot of its exact name and choices (`adopt --from`). `adopt` never infers the old template from modified files, and unknown provenance is a hard stop.
+Git is the record of a write. A write requires a clean worktree, so `git diff` shows exactly what it changed and `git restore . && git clean -fd` undoes it. Conflicts are written into the files with Git's markers, and the write stops before installation. Otherwise the CLI installs once and runs the selected checks; a failing check leaves the files written for the user to fix or undo.
 
 ## Decisions
 

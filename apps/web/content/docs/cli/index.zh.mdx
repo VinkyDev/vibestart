@@ -31,14 +31,12 @@ bunx vibestart-cli <命令>
 
 ## 命令 [#commands]
 
-| 命令                               | 用途                                     |
-| ---------------------------------- | ---------------------------------------- |
-| [`create`](/docs/cli/create)       | 创建项目，`create` 关键字可以省略        |
-| [`add`](/docs/cli/add)             | 为已有项目添加 Knip、Ultracite 或 Docker |
-| [`doctor`](/docs/cli/doctor)       | 检查配置与维护状态，不写入任何文件       |
-| [`upgrade`](/docs/cli/upgrade)     | 预览并应用模板更新                       |
-| [`recover`](/docs/cli/recover)     | 继续或回滚未完成的操作                   |
-| [`adopt`](/docs/cli/upgrade#adopt) | 为来源可确认的旧项目记录基线             |
+| 命令                           | 用途                                     |
+| ------------------------------ | ---------------------------------------- |
+| [`create`](/docs/cli/create)   | 创建项目，`create` 关键字可以省略        |
+| [`add`](/docs/cli/add)         | 为已有项目添加 Knip、Ultracite 或 Docker |
+| [`doctor`](/docs/cli/doctor)   | 检查配置与维护状态，不写入任何文件       |
+| [`upgrade`](/docs/cli/upgrade) | 预览并应用模板更新                       |
 
 如果希望由编码 Agent 代为执行这些命令，请安装 [vibestart skill](/docs/cli/skill)。
 
@@ -67,23 +65,24 @@ npx vibestart-cli upgrade --dry-run
 </Step>
 <Step title="应用">
 
-在终端中确认计划；没有终端的环境请传入 `--yes`。应用后会安装依赖并检查项目。
+先提交当前的修改：写入要求 Git 工作区干净。在终端中确认计划；没有终端的环境请传入 `--yes`。应用后会安装依赖并检查项目。
 
 ```sh
 npx vibestart-cli upgrade --yes
 ```
 
 </Step>
-<Step title="必要时恢复">
+<Step title="审查">
 
-遇到冲突或检查失败时，操作会被保留。解决问题后，通过 [`recover`](/docs/cli/recover) 继续或回滚。
+`git diff` 显示全部改动。遇到冲突时，解决写入文件中的冲突标记，再执行结果中给出的安装与检查命令。`git restore . && git clean -fd` 可以撤销本次写入。
 
 </Step>
 </Steps>
 
-<Callout type="warn" title="提交维护状态">
-  `.vibestart/state.json` 与 `.vibestart/base.json`
-  记录项目的来源和最初的模板。请一并提交这两个文件，不要用业务文件替换它们，升级依赖于此。
+<Callout type="warn" title="保留项目记录">
+  `vibestart.jsonc` 记录项目名 `name` 和生成项目的版本
+  `version`。升级依据它们重新生成该版本的模板，请提交这个文件，并保留 CLI
+  写入的这两个字段。
 </Callout>
 
 ## 项目与输出选项 [#options]

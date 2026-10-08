@@ -3,6 +3,14 @@
   "type": "object",
   "properties": {
     "$schema": { "type": "string" },
+    "name": {
+      "description": "The project name the templates were rendered with. A recipe ignores it.",
+      "type": "string"
+    },
+    "version": {
+      "description": "The vibestart release that generated the project. Maintenance regenerates that release's templates as the merge base. A recipe ignores it.",
+      "type": "string"
+    },
     "addons": {
       "default": ["knip", "ultracite"],
       "type": "array",

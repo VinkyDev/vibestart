@@ -1,51 +1,56 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { snapshotOf } from "#/maintenance/model.ts";
-import {
-  assertSourceCompatible,
-  targetSnapshot,
-} from "#/maintenance/release.ts";
+import type { Project } from "#/maintenance/model.ts";
+import { serialize } from "#/maintenance/model.ts";
+import { snapshotAt, verifiedSnapshot } from "#/maintenance/release.ts";
 
-const input = { addons: [], channel: "recommended", stack: {} } as const;
-const source = {
-  content: "export const api = 1;",
-  owner: "hono",
-  path: "apps/server/src/api.ts",
+const project: Pick<Project, "blueprint" | "name"> = {
+  blueprint: {
+    addons: [],
+    channel: "recommended",
+    packageManager: "pnpm",
+    stack: { backend: "hono" },
+  },
+  name: "business",
 };
-const base = snapshotOf("1.0.0", "business", input, [source]);
+const exported = ({
+  addons = project.blueprint.addons,
+  name = project.name,
+  version = "1.0.0",
+}: {
+  readonly addons?: readonly string[];
+  readonly name?: string;
+  readonly version?: string;
+}) =>
+  serialize({
+    blueprint: { ...project.blueprint, addons },
+    files: [],
+    name,
+    schemaVersion: 1,
+    version,
+  });
 
-describe("application contract upgrades", () => {
+describe("release snapshots", () => {
   it("rejects non-version targets before running a package manager", async () => {
     await expect(
-      targetSnapshot(base, "latest; echo unsafe")
+      snapshotAt("latest; echo unsafe", project)
     ).rejects.toMatchObject({ exitCode: 2 });
   });
 
-  it.each(
-    [
-      [{ ...source, content: "export const api = 2;" }],
-      [],
-      [source, { ...source, path: "apps/server/src/context.ts" }],
-    ].map((files) => ({ files }))
-  )(
-    "requires a migration for edited, removed or added source: %j",
-    ({ files }) => {
-      expect(() => {
-        assertSourceCompatible(
-          base,
-          snapshotOf("1.1.0", "business", input, files)
-        );
-      }).toThrow("requires-migration");
-    }
-  );
+  it("accepts the files a release generated for exactly this project", () => {
+    expect(verifiedSnapshot(exported({}), "1.0.0", project)).toMatchObject({
+      name: "business",
+      version: "1.0.0",
+    });
+  });
 
-  it("allows a dependency-only update without replacing business source", () => {
-    const target = snapshotOf("1.1.0", "business", input, [
-      source,
-      { content: '{"hono":"2"}', owner: "core", path: "package.json" },
-    ]);
-    expect(() => {
-      assertSourceCompatible(base, target);
-    }).not.toThrow();
+  it.each([
+    [{ name: "other" }, "different identity"],
+    [{ version: "1.0.1" }, "different identity"],
+    [{ addons: ["knip"] }, "changed the project's choices"],
+  ])("refuses a base generated for another project (%o)", (output, error) => {
+    expect(() => verifiedSnapshot(exported(output), "1.0.0", project)).toThrow(
+      error
+    );
   });
 });

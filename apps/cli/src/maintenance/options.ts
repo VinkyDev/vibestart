@@ -7,13 +7,15 @@ import { MaintenanceError } from "#/maintenance/model.ts";
 export const usage = `vibestart add [knip ultracite docker] [--list]
 vibestart doctor [--offline]
 vibestart upgrade [--to <exact-version>] [--check | --dry-run]
-vibestart adopt --from <original-snapshot.json>
-vibestart recover [--rollback | --abort]
 
 Common: --cwd <project> --json --yes/-y --no-install --full-check
-Writes show one plan and require --yes in non-interactive mode.
+vibestart.jsonc records the release and name that generated the project; the
+original templates are regenerated from them as the merge base.
+Writes need a clean Git worktree, show one plan, and require --yes in non-interactive mode.
 upgrade uses this CLI's template release unless --to selects another release.
---no-install leaves a resumable operation; recover installs and validates it.
+Conflicts are written into the files as markers. Template changes to files the
+project owns, such as starter source, are reported under manual and never written.
+--no-install writes the files only; the result names the install and checks to run.
 Default validation: vp check, selected knip, and the unit test project.
 --full-check runs vp run ready instead (including project services and browsers).
 `;
@@ -24,27 +26,21 @@ export const options = (args: readonly string[]) => {
       allowPositionals: true,
       args: [...args],
       options: {
-        abort: { default: false, type: "boolean" },
         check: { default: false, type: "boolean" },
         cwd: { type: "string", default: process.cwd() },
         "dry-run": { default: false, type: "boolean" },
-        from: { type: "string" },
         "full-check": { default: false, type: "boolean" },
         help: { default: false, type: "boolean", short: "h" },
         json: { default: false, type: "boolean" },
         list: { default: false, type: "boolean" },
         "no-install": { default: false, type: "boolean" },
         offline: { default: false, type: "boolean" },
-        rollback: { default: false, type: "boolean" },
         to: { type: "string" },
         yes: { default: false, type: "boolean", short: "y" },
       },
     });
     if (parsed.values["no-install"] && parsed.values["full-check"]) {
       throw new Error("--no-install and --full-check cannot be combined");
-    }
-    if (parsed.values.rollback && parsed.values.abort) {
-      throw new Error("Choose --rollback or --abort");
     }
     return parsed;
   } catch (error) {
@@ -82,29 +78,17 @@ export const validateOptions = (
       2
     );
   }
-  const exclusive = [
-    values.check,
-    values["dry-run"],
-    values.rollback,
-    values.abort,
-  ].filter(Boolean);
-  if (exclusive.length > 1) {
-    throw new MaintenanceError("Choose one inspection or recovery mode.", 2);
+  if (values.check && values["dry-run"]) {
+    throw new MaintenanceError("Choose --check or --dry-run.", 2);
   }
   const restricted = [
     { used: values.to !== undefined, commands: ["upgrade"], flag: "--to" },
-    { used: values.from !== undefined, commands: ["adopt"], flag: "--from" },
     { used: values.list, commands: ["add"], flag: "--list" },
     { used: values.offline, commands: ["doctor"], flag: "--offline" },
-    {
-      used: values.rollback || values.abort,
-      commands: ["recover"],
-      flag: "--rollback/--abort",
-    },
     { used: values.check, commands: ["upgrade"], flag: "--check" },
     {
       used: values["dry-run"],
-      commands: ["upgrade", "add", "adopt"],
+      commands: ["upgrade", "add"],
       flag: "--dry-run",
     },
     {

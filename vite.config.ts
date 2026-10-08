@@ -139,7 +139,7 @@ export default defineConfig({
         files: [
           "apps/cli/src/create.ts",
           "apps/cli/src/prompts.ts",
-          "apps/cli/src/maintenance/transaction.ts",
+          "apps/cli/src/maintenance/apply.ts",
         ],
         rules: { "eslint/no-await-in-loop": "off" },
       },

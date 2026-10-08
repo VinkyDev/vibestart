@@ -23,8 +23,6 @@ import {
   verificationOf,
 } from "@vibestart/integrations";
 
-import { initializeBaseline } from "#/maintenance/files.ts";
-import { snapshotOf } from "#/maintenance/model.ts";
 import type { Options } from "#/options.ts";
 import type { StepResult, Target } from "#/project.ts";
 import {
@@ -308,7 +306,7 @@ export const create = async (
   const generation = await generate(
     registry,
     { addons, channel: "recommended", packageManager, stack },
-    { name: target.name }
+    { name: target.name, version }
   );
   const relative = path.relative(process.cwd(), target.directory);
   const vitePlus = await hasCommand("vp");
@@ -352,15 +350,6 @@ export const create = async (
   }
 
   await writeFiles(target.directory, generation.files);
-  initializeBaseline(
-    target.directory,
-    snapshotOf(
-      version,
-      target.name,
-      { addons, channel: "recommended", packageManager, stack },
-      generation.files
-    )
-  );
   materializeEnvFromExamples(target.directory, {
     authSecret: randomBytes(32).toString("base64"),
   });
