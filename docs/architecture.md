@@ -7,7 +7,7 @@
 - `packages/core`: Blueprint schema, registry, resolver, generator, and the pure merge used by maintenance. It never touches the file system: `generate` returns a virtual file tree, so the browser and the CLI run the same resolver.
 - `packages/integrations`: every integration and add-on, the `recommended` catalog, templates, the golden comparison, and the verification store.
 - `apps/cli`: the `vibestart` command: prompts, flags, `--json`, writing files, running setup, and project maintenance.
-- `apps/web`: the Studio, the documentation site, and the generator preview. `oxfmt` has only a native binding, so previews run the generator on the server.
+- `apps/web`: the Studio, the documentation site, and the generator preview. `oxfmt` has only a native binding, so the build runs the generator and writes each stack's projects, for every add-on set and package manager, to one static JSON file with each distinct content once. The Studio fetches a stack's file when it shows that stack; the files stay out of the JavaScript bundle, so the build grows with the number of stacks, not with the bundler's work on them.
 - `golden/`: checked-in generated projects. Each is its own workspace and the expected output of the comparison tests.
 
 ## Model
@@ -100,14 +100,14 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 `.github/workflows/ci.yml` is one workflow for pull requests and `main`:
 
 1. `ready` runs `vp run ready`.
-2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the tasks no record covers. Up to eight Linux shards split the Linux tasks, about a dozen per shard, and each Windows task gets its own runner. A change that touches no generated output plans no job.
+2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the tasks no record covers. Linux tasks split across up to eight shards, about a dozen per shard, two stacks at a time; the Windows tasks run one at a time on a single runner. Most of a job is preparing its runner, so fewer, fuller jobs finish sooner. A change that touches no generated output plans no job.
 3. `verify` runs each planned job. Linux uses a PostgreSQL 18 service container; Windows starts the PostgreSQL 17 its runner image ships. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
 4. `ci`, the one required check, passes when `ready` and `plan` passed and `verify` passed or had nothing to run.
 5. On `main`, `record` adds every pass that matches `main`'s output to the store, then triggers the Studio's deploy hook (`CLOUDFLARE_DEPLOY_HOOK`), since the build for that commit may have embedded the records before they existed.
 
 **Evidence.** On a pull request, `plan` downloads the results of the branch's latest runs; on `main`, those of the pull request merged as that commit. A run re-uploads the results it reused, so the latest runs carry all of a branch's evidence. Only runs from this repository count: a fork controls the workflow its pull request runs. A result counts only when its platform and fingerprint match a task at the current output, so a stale branch or a later merge re-verifies only what changed. Each `main` commit runs to the end instead of being cancelled, so no merge's evidence is dropped.
 
-The local `setup-playwright` action caches npm's checksum-validated downloads, separated by platform and catalog version; npm retries fetches twice and Playwright uses its native browser download retries. Tests run once, and Vite+ owns the pnpm cache.
+`verify` installs Chromium in each project with a browser test, through the project's own runner as its README says, so the browser build follows the runner version that project resolved rather than the registry's latest. A Linux job first installs Chromium's system libraries. Tests run once, and Vite+ owns the pnpm cache.
 
 ## Package manager and runtime
 

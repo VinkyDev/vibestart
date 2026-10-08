@@ -3,7 +3,7 @@ declare module "virtual:vibestart" {
 
   import type { StackEntry } from "#/lib/project.ts";
 
-  /** The project name the previews are generated for. */
+  /** The project name the previews are generated for; `loadProject` fetches a stack's preview. */
   export const previewName: string;
   export const registry: RegistryInfo;
   export const stacks: readonly StackEntry[];

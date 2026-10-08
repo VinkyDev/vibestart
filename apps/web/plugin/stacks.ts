@@ -10,8 +10,8 @@ import {
   verifiedAs,
 } from "@vibestart/integrations";
 
-import type { Project, StackSummary } from "../src/lib/project.ts";
-import { addonsKey, projectKey } from "../src/lib/project.ts";
+import type { StackEntry, StackPreview } from "../src/lib/project.ts";
+import { projectKey } from "../src/lib/project.ts";
 
 /** The name the CLI gives a project when it is not asked for one. */
 export const previewName = "my-app";
@@ -30,7 +30,9 @@ export const registryInfo: RegistryInfo = {
   kinds: registry.kinds,
 };
 
-export const stackSummaries = async (): Promise<StackSummary[]> =>
+export const stackLabels = [...legal.keys()];
+
+export const stackEntries = async (): Promise<StackEntry[]> =>
   await Promise.all(
     [...legal].map(async ([label, stack]) => {
       const [verification, bunVerification] = await Promise.all([
@@ -55,10 +57,7 @@ export const stackSummaries = async (): Promise<StackSummary[]> =>
     })
   );
 
-/**
- * Every set of add-ons, by `addonsKey`. A preview is generated ahead for each, so their count doubles with
- * each add-on; past a few, previews should generate on demand instead.
- */
+/** Every set of add-ons. A stack's preview holds a project for each, under each package manager. */
 const subsets = (ids: readonly string[]) => {
   let sets: string[][] = [[]];
   for (const id of ids.toReversed()) {
@@ -67,46 +66,62 @@ const subsets = (ids: readonly string[]) => {
   return sets;
 };
 
-const addonSets = new Map(
-  subsets(registry.addons.map((addon) => addon.id)).map((set) => [
-    addonsKey(set),
-    set,
-  ])
-);
-
-export const projectSets = new Map(
-  [...addonSets.values()].flatMap((addons) =>
-    (["pnpm", "bun"] as const).map(
-      (packageManager) =>
-        [
-          projectKey(addons, packageManager),
-          { addons, packageManager },
-        ] as const
-    )
-  )
-);
-
-export const project = async (label: string, key: string): Promise<Project> => {
-  const stack = legal.get(label);
-  const selection = projectSets.get(key);
-  const addons = selection?.addons;
-  if (stack === undefined || addons === undefined || selection === undefined) {
-    throw new Error(`No legal stack is labeled "${label}" with add-ons ${key}`);
-  }
-  const { files, gettingStarted, setup } = await generate(
-    registry,
-    {
+const projectSets = subsets(registry.addons.map((addon) => addon.id)).flatMap(
+  (addons) =>
+    (["pnpm", "bun"] as const).map((packageManager) => ({
       addons,
-      channel: "recommended",
-      packageManager: selection.packageManager,
-      stack,
-    },
-    { name: previewName }
+      key: projectKey(addons, packageManager),
+      packageManager,
+    }))
+);
+
+/** Each content is stored once, in the order of `projectSets`, so a build writes the same bytes for the same output. */
+export const stackPreview = async (label: string): Promise<StackPreview> => {
+  const stack = legal.get(label);
+  if (stack === undefined) {
+    throw new Error(`No legal stack is labeled "${label}"`);
+  }
+  const generated = await Promise.all(
+    projectSets.map(async ({ addons, key, packageManager }) => ({
+      generation: await generate(
+        registry,
+        { addons, channel: "recommended", packageManager, stack },
+        { name: previewName }
+      ),
+      key,
+      packageManager,
+    }))
   );
-  return {
-    files,
-    gettingStarted,
-    setup,
-    packageManager: selection.packageManager,
+  const contents: string[] = [];
+  const indexes = new Map<string, number>();
+  const intern = (content: string) => {
+    let index = indexes.get(content);
+    if (index === undefined) {
+      index = contents.length;
+      contents.push(content);
+      indexes.set(content, index);
+    }
+    return index;
   };
+  const projects = Object.fromEntries(
+    generated.map(
+      ({
+        generation: { files, gettingStarted, setup },
+        key,
+        packageManager,
+      }) => [
+        key,
+        {
+          files: files.map((file) => ({
+            ...file,
+            content: intern(file.content),
+          })),
+          gettingStarted,
+          packageManager,
+          setup,
+        },
+      ]
+    )
+  );
+  return { contents, projects };
 };

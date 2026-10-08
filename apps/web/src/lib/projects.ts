@@ -1,11 +1,81 @@
+import { z } from "zod";
+
 import type { GeneratedFile } from "@vibestart/core";
 
-import type { Project, StackEntry } from "#/lib/project.ts";
-import { projectKey } from "#/lib/project.ts";
+import type { Project, StackEntry, StackPreview } from "#/lib/project.ts";
+import { previewPath, projectKey } from "#/lib/project.ts";
 import { verifiedAddons } from "#/lib/stack.ts";
+
+const previewSchema: z.ZodType<StackPreview> = z.object({
+  contents: z.array(z.string()),
+  projects: z.record(
+    z.string(),
+    z.object({
+      files: z.array(
+        z.object({
+          content: z.int().nonnegative(),
+          owner: z.string(),
+          path: z.string(),
+        })
+      ),
+      gettingStarted: z.array(
+        z.object({
+          note: z
+            .object({
+              id: z.string(),
+              text: z.string(),
+              values: z.record(z.string(), z.string()).optional(),
+            })
+            .optional(),
+          run: z.string(),
+        })
+      ),
+      packageManager: z.enum(["pnpm", "bun"]),
+      setup: z.array(
+        z.object({ run: z.string(), writes: z.array(z.string()) })
+      ),
+    })
+  ),
+});
+
+const fetchPreview = async (label: string) => {
+  const response = await fetch(
+    `${import.meta.env.BASE_URL}${previewPath(label)}`
+  );
+  if (!response.ok) {
+    throw new Error(`No preview of ${label}: HTTP ${response.status}`);
+  }
+  return previewSchema.parse(await response.json());
+};
+
+const previews = new Map<string, Promise<StackPreview>>();
+
+const expand = async (label: string, key: string): Promise<Project> => {
+  let preview = previews.get(label);
+  if (preview === undefined) {
+    preview = fetchPreview(label);
+    previews.set(label, preview);
+  }
+  const { contents, projects } = await preview;
+  const project = projects[key];
+  if (project === undefined) {
+    throw new Error(`No project of ${label} with add-ons ${key}`);
+  }
+  return {
+    ...project,
+    files: project.files.map((file) => {
+      const content = contents[file.content];
+      if (content === undefined) {
+        throw new Error(`${label} ${key} ${file.path} has no content`);
+      }
+      return { ...file, content };
+    }),
+  };
+};
 
 const loaded = new Map<string, Promise<Project>>();
 
+/** The same promise for the same project, as React's `use` requires. A stack's projects share one request. */
 export const loadProject = (
   entry: StackEntry,
   addons: readonly string[] = verifiedAddons,
@@ -15,11 +85,7 @@ export const loadProject = (
   const cacheKey = `${entry.label}/${key}`;
   let project = loaded.get(cacheKey);
   if (project === undefined) {
-    const load = entry.projects[key];
-    if (load === undefined) {
-      throw new Error(`No project of ${entry.label} with add-ons ${key}`);
-    }
-    project = load();
+    project = expand(entry.label, key);
     loaded.set(cacheKey, project);
   }
   return project;

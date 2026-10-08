@@ -17,19 +17,31 @@ export type StackVerification = Verification[string] & {
   readonly label: string;
 };
 
-export interface StackSummary {
+export interface StackEntry {
   readonly bunVerification?: StackVerification | null;
   readonly label: string;
   readonly stack: Stack;
   readonly verification: StackVerification | null;
 }
 
-export const addonsKey = (addons: readonly string[]) =>
-  addons.length === 0 ? "none" : addons.join("+");
-
-export interface StackEntry extends StackSummary {
-  readonly projects: Readonly<Record<string, () => Promise<Project>>>;
+/** A project whose file contents are indexes into its `StackPreview`'s `contents`. */
+interface PreviewProject extends Omit<Project, "files"> {
+  readonly files: readonly (Omit<GeneratedFile, "content"> & {
+    readonly content: number;
+  })[];
 }
+
+/** A stack's project for each set of add-ons and package manager, by `projectKey`, with each distinct content once. */
+export interface StackPreview {
+  readonly contents: readonly string[];
+  readonly projects: Readonly<Record<string, PreviewProject>>;
+}
+
+/** Where a stack's preview is served, relative to the site's base. */
+export const previewPath = (label: string) => `previews/${label}.json`;
+
+const addonsKey = (addons: readonly string[]) =>
+  addons.length === 0 ? "none" : addons.join("+");
 
 export const projectKey = (
   addons: readonly string[],
