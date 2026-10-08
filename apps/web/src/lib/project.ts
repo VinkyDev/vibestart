@@ -44,7 +44,7 @@ export interface StackPreview {
   readonly projects: Readonly<Record<string, PreviewProject>>;
 }
 
-export const previewDirectory = "previews/";
+const previewDirectory = "previews/";
 
 export const previewPath = (label: string) =>
   `${previewDirectory}${label}.json`;

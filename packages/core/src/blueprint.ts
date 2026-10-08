@@ -8,7 +8,7 @@ import {
   integrationsOfKind,
 } from "#/registry.ts";
 
-export const blueprintSchemaUrl = "https://vibestart.dev/schema.json";
+export const blueprintSchemaUrl = "https://vibestart.net/schema.json";
 
 export const channels = ["recommended"] as const;
 export const packageManagers = ["pnpm", "bun"] as const;
