@@ -8,15 +8,18 @@ import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
 import { stackLabel } from "#/stack-label.ts";
 
-/** Every integration appears in at least one golden. */
+/**
+ * One product each, and together every integration.
+ * A browser app, a full-stack app on its own server, a site with a documented
+ * HTTP API, a desktop client of a hosted API, and a small Bun service.
+ * A project that only swaps a choice one of these already uses — the test runner,
+ * Node beside the Bun service, or `self` on a second framework — is not a golden.
+ */
 const goldenLabels = [
   "spa-hono-orpc-postgres-better-auth-docker-e2e",
   "tanstack-start-self-orpc-postgres-better-auth-docker",
-  "next-self-orpc-sqlite-better-auth-docker",
-  "spa-hono-orpc-postgres-better-auth-docker",
-  "spa-hono-orpc-postgres-better-auth-electron-docker",
   "next-hono-openapi-postgres-better-auth-docker",
-  "hono-openapi-sqlite-docker",
+  "spa-hono-orpc-postgres-better-auth-electron-docker",
   "hono-openapi-sqlite-bun-docker",
 ];
 

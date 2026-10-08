@@ -118,6 +118,10 @@ const recordPath = new RegExp(
 export const readRecords = (dirs: readonly string[]) => {
   const records = new Map<string, StackVerification>();
   for (const dir of dirs) {
+    // download-artifact leaves the path uncreated when a run uploaded nothing.
+    if (!existsSync(dir)) {
+      continue;
+    }
     for (const entry of readdirSync(dir, {
       encoding: "utf-8",
       recursive: true,
