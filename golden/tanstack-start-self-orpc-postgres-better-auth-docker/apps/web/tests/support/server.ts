@@ -88,6 +88,8 @@ export const startTestServer = async (baseURL: string) => {
         [
           "node_modules/vite-plus/bin/vp",
           "dev",
+          "--host",
+          "127.0.0.1",
           "--port",
           port,
           "--strictPort",
