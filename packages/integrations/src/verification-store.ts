@@ -192,46 +192,39 @@ export const projectionOf = async (
   return projection;
 };
 
-const runners = {
-  linux: "ubuntu-24.04",
-  windows: "windows-2025",
-} satisfies Record<Platform, string>;
-
 const exactly = (labels: readonly string[]) =>
   `^(?:${labels.map(escapeRegExp).join("|")})$`;
 
-// A Linux stack takes about 30 seconds two at a time; a Windows golden takes several minutes and runs alone.
-const stacksPerLinuxShard = 12;
-const maxLinuxShards = 8;
+/**
+ * Most of a job is preparing the runner, and a stack verifies in under a minute. Linux runs two stacks at a time
+ * across up to eight shards; Windows runs its goldens one at a time on a single runner.
+ */
+const capacity = {
+  linux: { jobs: 2, runner: "ubuntu-24.04", shards: 8 },
+  windows: { jobs: 1, runner: "windows-2025", shards: 1 },
+} satisfies Record<Platform, { jobs: number; runner: string; shards: number }>;
 
-/** CI jobs for the tasks no record vouches for: a few Linux shards, and one runner per Windows golden. */
-export const batchesOf = (pending: readonly Task[]) => {
-  const linux = pending
-    .filter((task) => task.platform === "linux")
-    .map((task) => task.label)
-    .toSorted();
-  const shards = Math.min(
-    maxLinuxShards,
-    Math.ceil(linux.length / stacksPerLinuxShard)
-  );
-  return [
-    ...Array.from({ length: shards }, (_, shard) => ({
-      jobs: 2,
-      name: `linux-${shard}`,
+const stacksPerShard = 12;
+
+/** CI jobs for the tasks no record vouches for, `<platform>-<shard>`, each taking every n-th task in label order. */
+export const batchesOf = (pending: readonly Task[]) =>
+  platforms.flatMap((platform) => {
+    const labels = pending
+      .filter((task) => task.platform === platform)
+      .map((task) => task.label)
+      .toSorted();
+    const { jobs, runner, shards: maxShards } = capacity[platform];
+    const shards = Math.min(
+      maxShards,
+      Math.ceil(labels.length / stacksPerShard)
+    );
+    return Array.from({ length: shards }, (_, shard) => ({
+      jobs,
+      name: `${platform}-${shard}`,
       pattern: exactly(
-        linux.filter((_label, order) => order % shards === shard)
+        labels.filter((_label, order) => order % shards === shard)
       ),
-      platform: "linux" as const,
-      runner: runners.linux,
-    })),
-    ...pending
-      .filter((task) => task.platform === "windows")
-      .map((task) => ({
-        jobs: 1,
-        name: `windows-${task.label}`,
-        pattern: exactly([task.label]),
-        platform: "windows" as const,
-        runner: runners.windows,
-      })),
-  ];
-};
+      platform,
+      runner,
+    }));
+  });

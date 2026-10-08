@@ -58,17 +58,18 @@ describe(batchesOf, () => {
     expect(batchesOf([])).toStrictEqual([]);
   });
 
-  it("shards Linux tasks by count and gives each Windows golden a runner", () => {
+  it("shards Linux tasks by count and runs the Windows goldens on one runner", () => {
     const batches = batchesOf(tasks);
-    const linuxBatches = batches.filter((batch) => batch.platform === "linux");
-    expect(linuxBatches).toHaveLength(8);
-    expect(
-      batches.filter((batch) => batch.platform === "windows")
-    ).toHaveLength(windows.length);
-    for (const task of linux) {
+    expect(batches.map((batch) => batch.name)).toStrictEqual([
+      ...Array.from({ length: 8 }, (_, shard) => `linux-${shard}`),
+      "windows-0",
+    ]);
+    for (const task of tasks) {
       expect(
-        linuxBatches.filter((batch) =>
-          new RegExp(batch.pattern, "u").test(task.label)
+        batches.filter(
+          (batch) =>
+            batch.platform === task.platform &&
+            new RegExp(batch.pattern, "u").test(task.label)
         )
       ).toHaveLength(1);
     }

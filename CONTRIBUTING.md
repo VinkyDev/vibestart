@@ -28,7 +28,7 @@ vp run stacks verify       # run `vp run ready` in each stack without a current 
 ```
 
 - Push, and the pull request's CI verifies every stack your change reaches: on Linux every stack, on Windows the goldens. A change that alters no generated output, documentation included, verifies nothing. Records come only from CI and land on the `verification` branch when the pull request merges; nobody commits them.
-- `stacks verify` reproduces a CI failure locally. It runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`) and a Chromium installed with `npx playwright install chromium`, which both browser runners launch. Bun stacks need Bun 1.4.2 or newer.
+- `stacks verify` reproduces a CI failure locally. It runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`) and Chromium, which each project's browser runner installs before its tests. Bun stacks need Bun 1.4.2 or newer.
 - `stacks check` and `stacks verify` take a name pattern and `--package-manager pnpm|bun`. `check` exits 1 when a record is stale or missing and never installs or writes.
 - `vp test` and `vp run ready` need no records; `pull` is for the CLI and Studio builds and for `check`.
 - Add representatives in `packages/integrations/src/goldens.ts`; see [CI architecture](docs/architecture.md#ci) for planning, evidence, and environment preparation.

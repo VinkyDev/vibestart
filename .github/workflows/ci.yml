@@ -104,7 +104,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "PostgreSQL is not accepting connections" }
           "STACKS_POSTGRES_URL=postgres://postgres:root@localhost:5432/postgres" >> $env:GITHUB_ENV
       - run: vp install
-      - uses: ./.github/actions/setup-playwright
+      # Chromium's system libraries. Each project's own runner installs the browser build its version needs.
+      - if: runner.os == 'Linux'
+        run: npx --yes "playwright@$(node --input-type=module -e "import { catalog } from './packages/integrations/src/catalog.ts'; console.log(catalog.toolchain['@playwright/test']);")" install-deps chromium
         timeout-minutes: 10
       - run: vp run stacks verify "$PATTERN" --jobs "$JOBS" --out "$RUNNER_TEMP/stacks"
         env:

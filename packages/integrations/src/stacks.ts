@@ -33,6 +33,7 @@ import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
 import { materializeEnvFromExamples } from "#/server-env.ts";
 import { stackLabel } from "#/stack-label.ts";
+import { e2e, playwright } from "#/testing/runners.ts";
 import type { StackVerification, Task } from "#/verification-store.ts";
 import {
   batchesOf,
@@ -124,6 +125,27 @@ interface StackRun {
   out: string;
 }
 
+const browserRunners = new Map([
+  ["e2e", e2e],
+  ["playwright", playwright],
+]);
+
+/**
+ * The README's first-run step for e2e tests. The project's own runner installs the browser, because the
+ * build it needs follows the version that project resolved, which can trail the latest release.
+ */
+const browserInstall = (stack: Stack) => {
+  const runner =
+    stack.framework === undefined || stack.testing === undefined
+      ? undefined
+      : browserRunners.get(stack.testing);
+  return runner === undefined
+    ? []
+    : [
+        `cd ${path.join("apps", "web")} && vp exec ${runner.installer} install chromium && cd ${path.join("..", "..")}`,
+      ];
+};
+
 const verifyStack = async ({
   force,
   generation,
@@ -131,6 +153,7 @@ const verifyStack = async ({
   label,
   out,
   platform: taskPlatform,
+  stack,
 }: StackRun) => {
   const hash = await fingerprint(generation);
   if (!force && verification[taskPlatform][label]?.fingerprint === hash) {
@@ -147,6 +170,7 @@ const verifyStack = async ({
   const commands = [
     "git init -q",
     ...generation.setup.map((command) => command.run),
+    ...browserInstall(stack),
     "vp run ready",
   ];
   const child = spawn(commands.join(" && "), {
