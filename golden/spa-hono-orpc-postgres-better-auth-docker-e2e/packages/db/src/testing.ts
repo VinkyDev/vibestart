@@ -3,8 +3,11 @@ import { migrateDatabase } from "#src/migrate.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
-  await admin.$client.unsafe(statement);
-  await admin.$client.end();
+  try {
+    await admin.$client.unsafe(statement);
+  } finally {
+    await admin.$client.end();
+  }
 };
 
 /**
@@ -23,14 +26,19 @@ export const createTestDatabase = async () => {
 
   await runAsAdmin(adminUrl, `create database "${name}"`);
   const db = createDb(url.href);
-  await migrateDatabase(db);
-
-  return {
-    db,
-    remove: async () => {
+  const remove = async () => {
+    try {
       await db.$client.end();
+    } finally {
       await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
-    },
-    url: url.href,
+    }
   };
+  try {
+    await migrateDatabase(db);
+  } catch (error) {
+    await remove();
+    throw error;
+  }
+
+  return { db, remove, url: url.href };
 };
