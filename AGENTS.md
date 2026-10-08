@@ -52,7 +52,7 @@ Converge on the simplest durable design that meets current requirements. Land it
 | ----------------------- | ------------------------------------------------------------------------------------------------- |
 | `apps/cli`              | The `vibestart` CLI: prompts, flags, `--json`, writing the project and running its setup          |
 | `packages/core`         | Blueprint schema, resolver, and generator. Core returns a virtual file tree                       |
-| `packages/integrations` | Integrations, the catalog, templates, golden comparison, and `verification.json`                  |
+| `packages/integrations` | Integrations, the catalog, templates, golden comparison, and the verification store               |
 | `packages/config`       | Shared TypeScript presets: `typescript/node.json` for Node, `typescript/react.json` for a web app |
 | `golden/`               | Checked-in generated projects. Each is its own workspace and runs its own `vp check`              |
 
@@ -63,16 +63,16 @@ Converge on the simplest durable design that meets current requirements. Land it
 - **Lint.** Templates and `golden/` are linted as generated output, so `vp run stacks verify` is where a template meets the rules. In this repo, turn a misfiring rule off in `lint.overrides` of the root `vite.config.ts`. In a generated project, the integration that owns the library contributes `lintOverrides`.
 - **TypeScript.** A package extends `@vibestart/config` and lists it as a devDependency. Node code uses `typescript/node.json`. Web code uses `typescript/react.json`.
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
-- **Dependencies.** A package has one range across `pnpm-workspace.yaml`, the generated catalog in `packages/integrations/src/catalog.ts`, and the `package.json` engines, and `src/deps/pins.test.ts` holds them to it. Move versions with `vp run deps update`, which verifies every stack they reach.
+- **Dependencies.** A package has one range across `pnpm-workspace.yaml`, the generated catalog in `packages/integrations/src/catalog.ts`, and the `package.json` engines, and `src/deps/pins.test.ts` holds them to it. Move versions with `vp run deps update`; CI on the pull request verifies every stack they reach.
 - **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.
 
 ## Tests
 
-`vp test` runs the Vitest files beside the code in `packages/core` and `packages/integrations`. Snapshots in `packages/integrations/src/__snapshots__` pin the generated tree of every verified stack, and tests compare `golden/` to that output. A stack without a deployment is verified as its Docker sibling (`deployment.test.ts`). Under Bun, `stacks verify` installs only the stacks no other stack covers (`bun-subject.test.ts`). A golden project's `vp run ready` is a local check, outside `vp test`.
+`vp test` runs the Vitest files beside the code in `packages/core` and `packages/integrations`. Snapshots in `packages/integrations/src/__snapshots__` pin the generated tree of every verified stack, one file per owner with each distinct file once under the stacks that render it, and tests compare `golden/` to that output. A stack without a deployment is verified as its Docker sibling (`deployment.test.ts`). Under Bun, `stacks verify` installs only the stacks no other stack covers (`bun-subject.test.ts`). A golden project's `vp run ready` is a local check, outside `vp test`.
 
-Generated projects ship no GitHub Actions. `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request; on `main` it also re-verifies stale stacks in shards and a `record` job commits `verification.json` (see `docs/architecture.md`). A shard that hits the job limit keeps what it finished; run the workflow again (`workflow_dispatch`) to continue.
+Generated projects ship no GitHub Actions. `.github/workflows/ci.yml` runs `vp run ready` on every push and pull request, and runs `vp run ready` inside each task whose output no record vouches for: every stack on Linux, the goldens also on Windows. Records live on the `verification` branch, which only CI on `main` writes; the passes of a pull request from this repository carry over to `main` at the merge. `ci` is the one required check (see `docs/architecture.md`).
 
-A template change updates the snapshot and, when a golden project renders that template, the files in `golden/`. `vp run stacks verify` records a passing fingerprint in `packages/integrations/verification.json`.
+A template change updates the snapshot and, when a golden project renders that template, the files in `golden/`. A local `vp run stacks verify` is for debugging and records nothing. `vp run stacks pull` writes the records for the current output to the ignored `packages/integrations/verification.json`, which the CLI and the Studio embed.
 
 ## Done
 

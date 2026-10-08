@@ -28,7 +28,8 @@ jobs:
       - name: Tag matches the package version
         run: test "v$(node -p "require('./apps/cli/package.json').version")" = "$VERSION"
       - run: vp run ready
-      # Exits 1 when a stack's verification record is stale or missing, so an unverified stack never ships.
+      # The CLI embeds the records this writes. `check` exits 1 when a task has none, so an unverified stack never ships.
+      - run: vp run stacks pull
       - run: vp run stacks check
       # `vp pm pack` is pnpm's pack: it replaces `catalog:` and `workspace:`, which `npm publish` would not.
       - name: Pack
@@ -46,4 +47,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           case "$VERSION" in *-*) flag=--prerelease ;; *) flag= ;; esac
-          gh release create "$VERSION" --verify-tag --title "$VERSION" --generate-notes $flag
+          gh release create "$VERSION" packages/integrations/verification.json --verify-tag --title "$VERSION" --generate-notes $flag

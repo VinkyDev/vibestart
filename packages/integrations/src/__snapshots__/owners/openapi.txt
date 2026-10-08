@@ -1,0 +1,1155 @@
+# apps/web/src/lib/api.ts · 16 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
+import { parseResponse } from "hono/client";
+
+import { createClient } from "#src/lib/client.ts";
+
+type Client = ReturnType<typeof createClient>;
+
+const mutation = <Input, Output>(
+  mutationFn: (input: Input) => Promise<Output>
+) => ({
+  mutationOptions: (
+    options: Pick<UseMutationOptions<Output, Error, Input>, "onSuccess"> = {}
+  ) => mutationOptions({ ...options, mutationFn }),
+});
+
+const todosKey = ["todos"] as const;
+
+export const createQueries = (client: Client) => ({
+  todos: {
+    create: mutation(
+      async (json: { title: string }) =>
+        await parseResponse(client.todos.$post({ json }))
+    ),
+    delete: mutation(
+      async ({ id }: { id: number }) =>
+        await parseResponse(
+          client.todos[":id"].$delete({ param: { id: String(id) } })
+        )
+    ),
+    key: () => todosKey,
+    list: {
+      queryOptions: () =>
+        queryOptions({
+          queryFn: async () => await parseResponse(client.todos.$get()),
+          queryKey: [...todosKey, "list"],
+        }),
+    },
+    update: mutation(
+      async ({ completed, id }: { completed: boolean; id: number }) =>
+        await parseResponse(
+          client.todos[":id"].$patch({
+            json: { completed },
+            param: { id: String(id) },
+          })
+        )
+    ),
+  },
+});
+
+export const api = createQueries(createClient());
+
+# apps/web/src/lib/api.ts · 48 stacks
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
+import { parseResponse } from "hono/client";
+
+import { createClient } from "#src/lib/client.ts";
+
+type Client = ReturnType<typeof createClient>;
+
+const mutation = <Input, Output>(
+  mutationFn: (input: Input) => Promise<Output>
+) => ({
+  mutationOptions: (
+    options: Pick<UseMutationOptions<Output, Error, Input>, "onSuccess"> = {}
+  ) => mutationOptions({ ...options, mutationFn }),
+});
+
+const todosKey = ["todos"] as const;
+
+const createQueries = (client: Client) => ({
+  todos: {
+    create: mutation(
+      async (json: { title: string }) =>
+        await parseResponse(client.todos.$post({ json }))
+    ),
+    delete: mutation(
+      async ({ id }: { id: number }) =>
+        await parseResponse(
+          client.todos[":id"].$delete({ param: { id: String(id) } })
+        )
+    ),
+    key: () => todosKey,
+    list: {
+      queryOptions: () =>
+        queryOptions({
+          queryFn: async () => await parseResponse(client.todos.$get()),
+          queryKey: [...todosKey, "list"],
+        }),
+    },
+    update: mutation(
+      async ({ completed, id }: { completed: boolean; id: number }) =>
+        await parseResponse(
+          client.todos[":id"].$patch({
+            json: { completed },
+            param: { id: String(id) },
+          })
+        )
+    ),
+  },
+});
+
+export const api = createQueries(createClient());
+
+# apps/web/src/lib/client.ts · 48 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+import { hc } from "hono/client";
+
+import type { Api } from "@my-app/api";
+
+export const createClient = () => hc<Api>("/api");
+
+# apps/web/src/lib/client.ts · 16 stacks
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getRequestHeaders } from "@tanstack/react-start/server";
+import { hc } from "hono/client";
+
+import type { Api } from "@my-app/api";
+
+import { env } from "#src/server/env.ts";
+
+// During SSR the web server calls the API server directly, with the visitor's cookies.
+export const createClient = createIsomorphicFn()
+  .server(() =>
+    hc<Api>(`${env.SERVER_URL}/api`, {
+      headers: () => ({ cookie: getRequestHeaders().get("cookie") ?? "" }),
+    })
+  )
+  .client(() => hc<Api>("/api"));
+
+# apps/web/src/server/query.ts · 16 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+import "server-only";
+import { QueryClient } from "@tanstack/react-query";
+import { hc } from "hono/client";
+import { headers } from "next/headers";
+import { cache } from "react";
+
+import type { Api } from "@my-app/api";
+
+import { createQueries } from "#src/lib/api.ts";
+import { readEnv } from "#src/server/env.ts";
+
+// `next build` imports this module without runtime variables, so each request resolves `SERVER_URL`.
+const fetchFromServer: typeof fetch = async (input, init) =>
+  await fetch(
+    new URL(input instanceof Request ? input.url : input, readEnv().SERVER_URL),
+    init
+  );
+
+// Server Components call the API server directly, with the visitor's cookies.
+export const serverApi = createQueries(
+  hc<Api>("/api", {
+    fetch: fetchFromServer,
+    headers: async () => {
+      const requestHeaders = await headers();
+      return { cookie: requestHeaders.get("cookie") ?? "" };
+    },
+  })
+);
+
+export const getQueryClient = cache(() => new QueryClient());
+
+# packages/api/src/index.ts · 18 stacks
+#   hono-openapi-bun-docker
+#   hono-openapi-docker
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   spa-hono-openapi-bun-docker
+#   spa-hono-openapi-bun-docker-e2e
+#   spa-hono-openapi-docker
+#   spa-hono-openapi-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   tanstack-start-hono-openapi-bun-docker
+#   tanstack-start-hono-openapi-bun-docker-e2e
+#   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-docker-e2e
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { Scalar } from "@scalar/hono-api-reference";
+
+import { healthRoutes } from "#src/routes/health.ts";
+
+export const createApi = () => {
+  const api = new OpenAPIHono().route("/health", healthRoutes());
+
+  // The server mounts the API at `/api`, which the document and the reference page resolve against.
+  api.doc31("/openapi.json", {
+    info: { title: "my-app", version: "0.0.0" },
+    openapi: "3.1.0",
+    servers: [{ url: "/api" }],
+  });
+  api.get("/", Scalar({ url: "/api/openapi.json" }));
+
+  return api;
+};
+
+export type Api = ReturnType<typeof createApi>;
+
+# packages/api/src/index.ts · 72 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { Scalar } from "@scalar/hono-api-reference";
+
+import { healthRoutes } from "#src/routes/health.ts";
+import { todoRoutes } from "#src/routes/todos.ts";
+import type { Services } from "#src/services.ts";
+
+export type { Services } from "#src/services.ts";
+
+export const createApi = (services: Services) => {
+  const api = new OpenAPIHono()
+    .route("/health", healthRoutes(services))
+    .route("/todos", todoRoutes(services));
+
+  // The server mounts the API at `/api`, which the document and the reference page resolve against.
+  api.doc31("/openapi.json", {
+    info: { title: "my-app", version: "0.0.0" },
+    openapi: "3.1.0",
+    servers: [{ url: "/api" }],
+  });
+  api.get("/", Scalar({ url: "/api/openapi.json" }));
+
+  return api;
+};
+
+export type Api = ReturnType<typeof createApi>;
+
+# packages/api/src/routes/health.ts · 18 stacks
+#   hono-openapi-bun-docker
+#   hono-openapi-docker
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   spa-hono-openapi-bun-docker
+#   spa-hono-openapi-bun-docker-e2e
+#   spa-hono-openapi-docker
+#   spa-hono-openapi-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   tanstack-start-hono-openapi-bun-docker
+#   tanstack-start-hono-openapi-bun-docker-e2e
+#   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+const health = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: {
+        "application/json": { schema: z.object({ status: z.literal("ok") }) },
+      },
+      description: "The server answers",
+    },
+  },
+});
+
+export const healthRoutes = () =>
+  new OpenAPIHono().openapi(health, (c) =>
+    c.json({ status: "ok" as const }, 200)
+  );
+
+# packages/api/src/routes/health.ts · 36 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { sql } from "drizzle-orm";
+
+import type { Services } from "#src/services.ts";
+
+const health = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: {
+        "application/json": { schema: z.object({ status: z.literal("ok") }) },
+      },
+      description: "The server and PostgreSQL answer",
+    },
+  },
+});
+
+export const healthRoutes = ({ db }: Services) =>
+  new OpenAPIHono().openapi(health, async (c) => {
+    await db.execute(sql`select 1`);
+    return c.json({ status: "ok" as const }, 200);
+  });
+
+# packages/api/src/routes/health.ts · 36 stacks
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { sql } from "drizzle-orm";
+
+import type { Services } from "#src/services.ts";
+
+const health = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: {
+        "application/json": { schema: z.object({ status: z.literal("ok") }) },
+      },
+      description: "The server and SQLite answer",
+    },
+  },
+});
+
+export const healthRoutes = ({ db }: Services) =>
+  new OpenAPIHono().openapi(health, (c) => {
+    db.run(sql`select 1`);
+    return c.json({ status: "ok" as const }, 200);
+  });
+
+# packages/api/src/routes/todos.ts · 36 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { and, eq } from "drizzle-orm";
+import { HTTPException } from "hono/http-exception";
+
+import { todos } from "@my-app/db/schema/todos";
+
+import type { Services } from "#src/services.ts";
+
+const json = <T extends z.ZodType>(schema: T) => ({
+  "application/json": { schema },
+});
+
+const todo = z
+  .object({
+    completed: z.boolean(),
+    createdAt: z.iso.datetime(),
+    id: z.int(),
+    title: z.string(),
+    userId: z.string(),
+  })
+  .openapi("Todo");
+
+const params = z.object({
+  id: z.coerce
+    .number()
+    .int()
+    .positive()
+    .openapi({ param: { in: "path", name: "id" } }),
+});
+
+const message = json(z.object({ message: z.string() }));
+
+const invalid = { description: "The request does not match its schema" };
+
+const unauthorized = { content: message, description: "No session" };
+
+// Someone else's todo is not found either, which does not reveal that the id exists.
+const notFound = {
+  content: message,
+  description: "The user has no todo with this id",
+};
+
+const listTodos = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: json(z.array(todo)),
+      description: "The user's todos, oldest first",
+    },
+    401: unauthorized,
+  },
+});
+
+const createTodo = createRoute({
+  method: "post",
+  path: "/",
+  request: {
+    body: {
+      content: json(z.object({ title: z.string().trim().min(1).max(200) })),
+      required: true,
+    },
+  },
+  responses: {
+    201: { content: json(todo), description: "The created todo" },
+    400: invalid,
+    401: unauthorized,
+  },
+});
+
+const updateTodo = createRoute({
+  method: "patch",
+  path: "/{id}",
+  request: {
+    body: {
+      content: json(z.object({ completed: z.boolean() })),
+      required: true,
+    },
+    params,
+  },
+  responses: {
+    200: { content: json(todo), description: "The updated todo" },
+    400: invalid,
+    401: unauthorized,
+    404: notFound,
+  },
+});
+
+const deleteTodo = createRoute({
+  method: "delete",
+  path: "/{id}",
+  request: { params },
+  responses: {
+    200: { content: json(todo), description: "The deleted todo" },
+    401: unauthorized,
+    404: notFound,
+  },
+});
+
+const todoNotFound = { message: "Todo not found" };
+
+export const todoRoutes = ({ auth, db }: Services) => {
+  const routes = new OpenAPIHono<{ Variables: { userId: string } }>();
+
+  // On the sub-app, so a route added here cannot skip the check.
+  routes.use(async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    if (!session) {
+      throw new HTTPException(401, {
+        res: c.json({ message: "Sign in first" }, 401),
+      });
+    }
+    c.set("userId", session.user.id);
+    await next();
+  });
+
+  return routes
+    .openapi(listTodos, async (c) => {
+      const rows = await db.query.todos.findMany({
+        orderBy: { id: "asc" },
+        where: { userId: c.var.userId },
+      });
+      return c.json(rows, 200);
+    })
+    .openapi(createTodo, async (c) => {
+      const [created] = await db
+        .insert(todos)
+        .values({ ...c.req.valid("json"), userId: c.var.userId })
+        .returning();
+      if (created === undefined) {
+        throw new Error("The insert returned no row");
+      }
+      return c.json(created, 201);
+    })
+    .openapi(updateTodo, async (c) => {
+      const [updated] = await db
+        .update(todos)
+        .set(c.req.valid("json"))
+        .where(
+          and(
+            eq(todos.id, c.req.valid("param").id),
+            eq(todos.userId, c.var.userId)
+          )
+        )
+        .returning();
+      return updated === undefined
+        ? c.json(todoNotFound, 404)
+        : c.json(updated, 200);
+    })
+    .openapi(deleteTodo, async (c) => {
+      const [deleted] = await db
+        .delete(todos)
+        .where(
+          and(
+            eq(todos.id, c.req.valid("param").id),
+            eq(todos.userId, c.var.userId)
+          )
+        )
+        .returning();
+      return deleted === undefined
+        ? c.json(todoNotFound, 404)
+        : c.json(deleted, 200);
+    });
+};
+
+# packages/api/src/routes/todos.ts · 36 stacks
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { eq } from "drizzle-orm";
+
+import { todos } from "@my-app/db/schema/todos";
+
+import type { Services } from "#src/services.ts";
+
+const json = <T extends z.ZodType>(schema: T) => ({
+  "application/json": { schema },
+});
+
+const todo = z
+  .object({
+    completed: z.boolean(),
+    createdAt: z.iso.datetime(),
+    id: z.int(),
+    title: z.string(),
+  })
+  .openapi("Todo");
+
+const params = z.object({
+  id: z.coerce
+    .number()
+    .int()
+    .positive()
+    .openapi({ param: { in: "path", name: "id" } }),
+});
+
+const invalid = { description: "The request does not match its schema" };
+
+const notFound = {
+  content: json(z.object({ message: z.string() })),
+  description: "No todo has this id",
+};
+
+const listTodos = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: json(z.array(todo)),
+      description: "Every todo, oldest first",
+    },
+  },
+});
+
+const createTodo = createRoute({
+  method: "post",
+  path: "/",
+  request: {
+    body: {
+      content: json(z.object({ title: z.string().trim().min(1).max(200) })),
+      required: true,
+    },
+  },
+  responses: {
+    201: { content: json(todo), description: "The created todo" },
+    400: invalid,
+  },
+});
+
+const updateTodo = createRoute({
+  method: "patch",
+  path: "/{id}",
+  request: {
+    body: {
+      content: json(z.object({ completed: z.boolean() })),
+      required: true,
+    },
+    params,
+  },
+  responses: {
+    200: { content: json(todo), description: "The updated todo" },
+    400: invalid,
+    404: notFound,
+  },
+});
+
+const deleteTodo = createRoute({
+  method: "delete",
+  path: "/{id}",
+  request: { params },
+  responses: {
+    200: { content: json(todo), description: "The deleted todo" },
+    404: notFound,
+  },
+});
+
+const todoNotFound = { message: "Todo not found" };
+
+export const todoRoutes = ({ db }: Services) =>
+  new OpenAPIHono()
+    .openapi(listTodos, async (c) =>
+      c.json(await db.query.todos.findMany({ orderBy: { id: "asc" } }), 200)
+    )
+    .openapi(createTodo, async (c) => {
+      const [created] = await db
+        .insert(todos)
+        .values(c.req.valid("json"))
+        .returning();
+      if (created === undefined) {
+        throw new Error("The insert returned no row");
+      }
+      return c.json(created, 201);
+    })
+    .openapi(updateTodo, async (c) => {
+      const [updated] = await db
+        .update(todos)
+        .set(c.req.valid("json"))
+        .where(eq(todos.id, c.req.valid("param").id))
+        .returning();
+      return updated === undefined
+        ? c.json(todoNotFound, 404)
+        : c.json(updated, 200);
+    })
+    .openapi(deleteTodo, async (c) => {
+      const [deleted] = await db
+        .delete(todos)
+        .where(eq(todos.id, c.req.valid("param").id))
+        .returning();
+      return deleted === undefined
+        ? c.json(todoNotFound, 404)
+        : c.json(deleted, 200);
+    });
+
+# packages/api/src/services.ts · 36 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+import type { Auth } from "@my-app/auth";
+import type { Database } from "@my-app/db";
+
+export interface Services {
+  auth: Auth;
+  db: Database;
+}
+
+# packages/api/src/services.ts · 36 stacks
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+import type { Database } from "@my-app/db";
+
+export interface Services {
+  db: Database;
+}
+
+# packages/api/tsconfig.json · 90 stacks
+#   hono-openapi-bun-docker
+#   hono-openapi-docker
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-bun-docker
+#   spa-hono-openapi-bun-docker-e2e
+#   spa-hono-openapi-docker
+#   spa-hono-openapi-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-bun-docker
+#   tanstack-start-hono-openapi-bun-docker-e2e
+#   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src", "tests"]
+}

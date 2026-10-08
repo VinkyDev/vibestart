@@ -1,0 +1,1608 @@
+# apps/desktop/electron-builder.yml · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+appId: com.my-app.desktop
+productName: my-app
+asar: true
+npmRebuild: false
+directories:
+  output: release
+files:
+  - dist/main/**/*
+  - dist/preload/**/*
+  - dist/renderer/**/*
+mac:
+  category: public.app-category.developer-tools
+  target:
+    - dmg
+    - zip
+win:
+  target:
+    - nsis
+linux:
+  target:
+    - AppImage
+
+# apps/desktop/scripts/copy-renderer.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { cp, rm } from "node:fs/promises";
+import path from "node:path";
+
+const webDist = path.join(import.meta.dirname, "../../web/dist");
+const renderer = path.join(import.meta.dirname, "../dist/renderer");
+
+await rm(renderer, { force: true, recursive: true });
+await cp(webDist, renderer, { recursive: true });
+
+# apps/desktop/scripts/dev.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
+import path from "node:path";
+
+import { retry } from "es-toolkit/function";
+import { z } from "zod";
+
+const rendererUrl = "http://localhost:5173/";
+
+const electron = z.string().parse(createRequire(import.meta.url)("electron"));
+
+// Any answer counts: something is serving the port.
+const isUp = async () => {
+  try {
+    await fetch(rendererUrl);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+await retry(
+  async () => {
+    if (!(await isUp())) {
+      throw new Error(
+        `Nothing answered at ${rendererUrl}. Is the web dev server running on port 5173?`
+      );
+    }
+  },
+  { delay: 200, retries: 300 }
+);
+
+const app = spawn(electron, ["."], {
+  cwd: path.join(import.meta.dirname, ".."),
+  env: { ...process.env, ELECTRON_RENDERER_URL: rendererUrl },
+  stdio: "inherit",
+});
+
+const stop = () => {
+  app.kill();
+};
+process.on("SIGINT", stop);
+process.on("SIGTERM", stop);
+app.on("exit", (code) => process.exit(code ?? 0));
+
+# apps/desktop/src/main/config.ts · 2 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+export const apiPaths: readonly string[] = [];
+
+export const defaultApiOrigin = "http://localhost:3000";
+
+# apps/desktop/src/main/config.ts · 40 stacks
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+export const apiPaths: readonly string[] = ["/api"];
+
+export const defaultApiOrigin = "http://localhost:3000";
+
+# apps/desktop/src/main/config.ts · 20 stacks
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+export const apiPaths: readonly string[] = ["/rpc", "/api"];
+
+export const defaultApiOrigin = "http://localhost:3000";
+
+# apps/desktop/src/main/index.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import path from "node:path";
+
+import { app, BrowserWindow } from "electron";
+
+import { rendererOrigin } from "@my-app/electron";
+
+import { defaultApiOrigin } from "#src/main/config.ts";
+import { setupIpc } from "#src/main/ipc.ts";
+import {
+  parseHttpOrigin,
+  parseLoopbackOrigin,
+} from "#src/main/renderer-route.ts";
+import { serveRenderer } from "#src/main/renderer.ts";
+import { createMainWindow } from "#src/main/window.ts";
+
+const origin = (name: string, parse: (value: string) => string | null) => {
+  const value = process.env[name];
+  if (value === undefined || value === "") {
+    return null;
+  }
+  const parsed = parse(value);
+  if (parsed === null) {
+    throw new Error(`${name} is not a valid origin: ${value}`);
+  }
+  return parsed;
+};
+
+const devOrigin = origin("ELECTRON_RENDERER_URL", parseLoopbackOrigin);
+const apiOrigin =
+  origin("API_ORIGIN", parseHttpOrigin) ?? parseHttpOrigin(defaultApiOrigin);
+if (apiOrigin === null) {
+  throw new Error(`defaultApiOrigin is not an origin: ${defaultApiOrigin}`);
+}
+
+const open = () =>
+  createMainWindow({
+    devOrigin,
+    preload: path.join(import.meta.dirname, "../preload/index.cjs"),
+    url: devOrigin ?? `${rendererOrigin}/`,
+  });
+
+const start = () => {
+  setupIpc(devOrigin);
+  if (devOrigin === null) {
+    serveRenderer({
+      apiOrigin,
+      rendererRoot: path.join(import.meta.dirname, "../renderer"),
+    });
+  }
+  open();
+};
+
+if (app.requestSingleInstanceLock()) {
+  // No top-level `await`: Electron starts the app only after the main module finishes evaluating.
+  app.on("ready", start);
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      open();
+    }
+  });
+  app.on("second-instance", () => {
+    const [win] = BrowserWindow.getAllWindows();
+    win?.focus();
+  });
+  app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+      app.quit();
+    }
+  });
+} else {
+  app.quit();
+}
+
+# apps/desktop/src/main/ipc.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { app, ipcMain } from "electron";
+
+import { desktopChannels } from "@my-app/electron";
+import type { DesktopVersions } from "@my-app/electron";
+
+import { isTrustedUrl } from "#src/main/renderer-route.ts";
+
+const versions = (): DesktopVersions => ({
+  app: app.getVersion(),
+  chrome: process.versions.chrome,
+  electron: process.versions.electron,
+  node: process.versions.node,
+});
+
+/** Every channel goes through here: a handler answers only frames the app itself loaded. */
+export const setupIpc = (devOrigin: string | null) => {
+  ipcMain.handle(desktopChannels.versions, (event) => {
+    if (!isTrustedUrl(event.senderFrame?.url ?? "", devOrigin)) {
+      throw new Error("Untrusted IPC sender");
+    }
+    return versions();
+  });
+};
+
+# apps/desktop/src/main/renderer-route.test.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
+import { describe, expect, it } from "vite-plus/test";
+
+import {
+  isApiPath,
+  isExternalUrl,
+  isTrustedUrl,
+  parseLoopbackOrigin,
+  parseRendererUrl,
+  rendererFile,
+  rewriteToOrigin,
+} from "#src/main/renderer-route.ts";
+
+const root = mkdtempSync(path.join(tmpdir(), "renderer-"));
+mkdirSync(path.join(root, "assets"));
+writeFileSync(path.join(root, "index.html"), "<html></html>");
+writeFileSync(path.join(root, "assets", "app.js"), "");
+
+const fileOf = (requestUrl: string) => {
+  const url = parseRendererUrl(requestUrl);
+  return url === null ? null : rendererFile(url, root);
+};
+
+describe("the packaged renderer", () => {
+  it("serves only its own origin", () => {
+    expect(parseRendererUrl("https://app.localhost/settings")).not.toBeNull();
+    expect(parseRendererUrl("https://example.com/")).toBeNull();
+    expect(parseRendererUrl("http://app.localhost/")).toBeNull();
+    expect(parseRendererUrl("app://bundle/")).toBeNull();
+    expect(parseRendererUrl("not a url")).toBeNull();
+  });
+
+  it("maps a request to a file, and a route to index.html", () => {
+    expect(fileOf("https://app.localhost/")).toBe(
+      path.join(root, "index.html")
+    );
+    expect(fileOf("https://app.localhost/assets/app.js")).toBe(
+      path.join(root, "assets", "app.js")
+    );
+    expect(fileOf("https://app.localhost/todos/1")).toBe(
+      path.join(root, "index.html")
+    );
+  });
+
+  it("does not invent a missing asset or leave the renderer folder", () => {
+    expect(fileOf("https://app.localhost/assets/missing.js")).toBeNull();
+    expect(fileOf("https://app.localhost/..%2f..%2fetc/passwd")).toBeNull();
+    expect(fileOf("https://app.localhost/%00")).toBeNull();
+    expect(fileOf("https://app.localhost/%E0%A4%A")).toBeNull();
+  });
+});
+
+describe("the API proxy", () => {
+  it("matches a prefix on a path boundary", () => {
+    const apiPaths = ["/api", "/rpc"];
+    expect(isApiPath("/api", apiPaths)).toBeTruthy();
+    expect(isApiPath("/rpc/todos/list", apiPaths)).toBeTruthy();
+    expect(isApiPath("/apiary", apiPaths)).toBeFalsy();
+    expect(isApiPath("/api", [])).toBeFalsy();
+  });
+
+  it("keeps the path and query", () => {
+    const url = new URL("https://app.localhost/rpc/todos?x=1");
+    expect(rewriteToOrigin(url, "http://localhost:3000")).toBe(
+      "http://localhost:3000/rpc/todos?x=1"
+    );
+  });
+});
+
+describe("trust", () => {
+  it("IPC and navigation are trusted from the renderer only", () => {
+    const dev = "http://localhost:5173";
+    expect(isTrustedUrl("https://app.localhost/settings")).toBeTruthy();
+    expect(isTrustedUrl("http://localhost:5173/todos", dev)).toBeTruthy();
+    expect(isTrustedUrl("http://localhost:5173/")).toBeFalsy();
+    expect(isTrustedUrl("https://evil.example/", dev)).toBeFalsy();
+    expect(isTrustedUrl("", dev)).toBeFalsy();
+  });
+
+  it("only a loopback server is a dev renderer", () => {
+    expect(parseLoopbackOrigin("http://localhost:5173/")).toBe(
+      "http://localhost:5173"
+    );
+    expect(parseLoopbackOrigin("http://[::1]:5173")).toBe("http://[::1]:5173");
+    expect(parseLoopbackOrigin("https://example.com")).toBeNull();
+    expect(parseLoopbackOrigin("file:///etc/passwd")).toBeNull();
+  });
+
+  it("links open outside the app only for web and mail", () => {
+    expect(isExternalUrl("https://example.com")).toBeTruthy();
+    expect(isExternalUrl("mailto:dev@example.com")).toBeTruthy();
+    expect(isExternalUrl("file:///etc/passwd")).toBeFalsy();
+    expect(isExternalUrl("https://app.localhost/")).toBeFalsy();
+  });
+});
+
+# apps/desktop/src/main/renderer-route.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { existsSync, statSync } from "node:fs";
+import path from "node:path";
+
+import { rendererHost } from "@my-app/electron";
+
+const loopbackHosts = new Set(["localhost", "127.0.0.1", "[::1]"]);
+const externalProtocols = new Set(["http:", "https:", "mailto:"]);
+
+const parseUrl = (value: string) => {
+  try {
+    return new URL(value);
+  } catch {
+    return null;
+  }
+};
+
+export const parseHttpOrigin = (value: string) => {
+  const url = parseUrl(value);
+  return url?.protocol === "http:" || url?.protocol === "https:"
+    ? url.origin
+    : null;
+};
+
+export const parseLoopbackOrigin = (value: string) => {
+  const origin = parseHttpOrigin(value);
+  return origin !== null && loopbackHosts.has(new URL(origin).hostname)
+    ? origin
+    : null;
+};
+
+export const parseRendererUrl = (requestUrl: string) => {
+  const url = parseUrl(requestUrl);
+  return url?.protocol === "https:" && url.hostname === rendererHost
+    ? url
+    : null;
+};
+
+export const isTrustedUrl = (
+  value: string,
+  devOrigin: string | null = null
+) => {
+  const url = parseUrl(value);
+  if (url === null) {
+    return false;
+  }
+  return (
+    parseRendererUrl(value) !== null ||
+    (devOrigin !== null && url.origin === devOrigin)
+  );
+};
+
+export const isExternalUrl = (value: string) => {
+  const url = parseUrl(value);
+  return (
+    url !== null &&
+    externalProtocols.has(url.protocol) &&
+    parseRendererUrl(value) === null
+  );
+};
+
+export const isApiPath = (pathname: string, apiPaths: readonly string[]) =>
+  apiPaths.some(
+    (apiPath) => pathname === apiPath || pathname.startsWith(`${apiPath}/`)
+  );
+
+export const rewriteToOrigin = (url: URL, origin: string) =>
+  new URL(`${url.pathname}${url.search}`, origin).href;
+
+const isFile = (filePath: string) =>
+  existsSync(filePath) && statSync(filePath).isFile();
+
+// A path without an extension is a client-side route and gets `index.html`. Nothing outside `root` is served.
+export const rendererFile = (url: URL, root: string) => {
+  let pathname: string;
+  try {
+    pathname = decodeURIComponent(url.pathname);
+  } catch {
+    return null;
+  }
+  if (pathname.includes("\0")) {
+    return null;
+  }
+  const mapped = path.resolve(root, `.${pathname}`);
+  const relative = path.relative(root, mapped);
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    return null;
+  }
+  if (isFile(mapped)) {
+    return mapped;
+  }
+  const index = path.join(root, "index.html");
+  return path.extname(pathname) === "" && isFile(index) ? index : null;
+};
+
+# apps/desktop/src/main/renderer.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { pathToFileURL } from "node:url";
+
+import { net, protocol } from "electron";
+
+import { apiPaths } from "#src/main/config.ts";
+import {
+  isApiPath,
+  parseRendererUrl,
+  rendererFile,
+  rewriteToOrigin,
+} from "#src/main/renderer-route.ts";
+
+type ProxyInit = RequestInit & { duplex?: "half" };
+
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "img-src 'self' data: blob:",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self' data:",
+  "object-src 'none'",
+  "base-uri 'none'",
+  "frame-ancestors 'none'",
+].join("; ");
+
+const notFound = () => new Response("Not found", { status: 404 });
+
+const proxy = async (
+  request: Request,
+  apiOrigin: string,
+  clientOrigin: string
+) => {
+  const url = new URL(request.url);
+  const headers = new Headers(request.headers);
+  // Better Auth checks `Origin` against `BETTER_AUTH_URL` and `trustedOrigins`, not the upstream API host.
+  headers.set("origin", clientOrigin);
+  headers.delete("referer");
+  const init: ProxyInit = {
+    // The session cookie belongs to the API's origin, so `net.fetch` keeps it in the session's cookie jar.
+    credentials: "include",
+    headers,
+    method: request.method,
+    redirect: "manual",
+  };
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    init.body = request.body;
+    init.duplex = "half";
+  }
+  try {
+    return await net.fetch(rewriteToOrigin(url, apiOrigin), init);
+  } catch {
+    return new Response("The API is unreachable", { status: 502 });
+  }
+};
+
+export const serveRenderer = ({
+  apiOrigin,
+  rendererRoot,
+}: {
+  apiOrigin: string;
+  rendererRoot: string;
+}) => {
+  protocol.handle("https", async (request) => {
+    const url = parseRendererUrl(request.url);
+    if (url === null) {
+      return await net.fetch(request, { bypassCustomProtocolHandlers: true });
+    }
+    if (isApiPath(url.pathname, apiPaths)) {
+      return await proxy(request, apiOrigin, url.origin);
+    }
+    const file = rendererFile(url, rendererRoot);
+    if (file === null) {
+      return notFound();
+    }
+    const response = await net.fetch(pathToFileURL(file).href);
+    const headers = new Headers(response.headers);
+    headers.set("content-security-policy", contentSecurityPolicy);
+    return new Response(response.body, { headers, status: response.status });
+  });
+};
+
+# apps/desktop/src/main/window.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { BrowserWindow, shell } from "electron";
+
+import { isExternalUrl, isTrustedUrl } from "#src/main/renderer-route.ts";
+
+// The window shows the app and nothing else: other links open in the user's browser or mail client.
+const openOutside = (target: string) => {
+  if (isExternalUrl(target)) {
+    void shell.openExternal(target);
+  }
+};
+
+export const createMainWindow = ({
+  devOrigin,
+  preload,
+  url,
+}: {
+  devOrigin: string | null;
+  preload: string;
+  url: string;
+}) => {
+  const win = new BrowserWindow({
+    height: 800,
+    show: false,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      preload,
+      sandbox: true,
+      webviewTag: false,
+    },
+    width: 1280,
+  });
+
+  win.once("ready-to-show", () => {
+    win.show();
+  });
+
+  win.webContents.setWindowOpenHandler((details) => {
+    openOutside(details.url);
+    return { action: "deny" };
+  });
+  win.webContents.on("will-navigate", (event, target) => {
+    if (!isTrustedUrl(target, devOrigin)) {
+      event.preventDefault();
+      openOutside(target);
+    }
+  });
+
+  void win.loadURL(url);
+  return win;
+};
+
+# apps/desktop/src/preload/index.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { contextBridge, ipcRenderer } from "electron";
+
+import type { DesktopApi } from "@my-app/electron";
+import {
+  desktopBridgeGlobal,
+  desktopChannels,
+  versionsSchema,
+} from "@my-app/electron";
+
+const desktop: DesktopApi = {
+  versions: async () =>
+    versionsSchema.parse(await ipcRenderer.invoke(desktopChannels.versions)),
+};
+
+contextBridge.exposeInMainWorld(desktopBridgeGlobal, desktop);
+
+# apps/desktop/tsconfig.json · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src", "scripts", "vite.main.config.ts", "vite.preload.config.ts"]
+}
+
+# apps/desktop/vite.main.config.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import path from "node:path";
+
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  build: {
+    lib: {
+      entry: path.join(import.meta.dirname, "src/main/index.ts"),
+      fileName: () => "index.js",
+      formats: ["es"],
+    },
+    outDir: "dist/main",
+    rolldownOptions: { external: ["electron"] },
+    ssr: true,
+    target: "node22",
+  },
+  publicDir: false,
+});
+
+# apps/desktop/vite.preload.config.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import path from "node:path";
+
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  build: {
+    lib: {
+      entry: path.join(import.meta.dirname, "src/preload/index.ts"),
+      fileName: () => "index.cjs",
+      formats: ["cjs"],
+    },
+    outDir: "dist/preload",
+    rolldownOptions: { external: ["electron"] },
+    ssr: true,
+    target: "node22",
+  },
+  publicDir: false,
+  // A sandboxed preload cannot `require()` npm packages, so it bundles everything but `electron`.
+  ssr: { noExternal: true },
+});
+
+# packages/electron/src/index.ts · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+import { z } from "zod";
+
+export const desktopBridgeGlobal = "desktop";
+
+// https, because clients such as Better Auth accept only http and https origins.
+export const rendererHost = "app.localhost";
+export const rendererOrigin = `https://${rendererHost}`;
+
+export const desktopChannels = { versions: "desktop:versions" } as const;
+
+export const versionsSchema = z.object({
+  app: z.string(),
+  chrome: z.string(),
+  electron: z.string(),
+  node: z.string(),
+});
+
+export type DesktopVersions = z.infer<typeof versionsSchema>;
+
+export interface DesktopApi {
+  versions: () => Promise<DesktopVersions>;
+}
+
+# packages/electron/tsconfig.json · 62 stacks
+#   spa-electron-docker
+#   spa-electron-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker
+#   spa-hono-electron-docker-e2e
+#   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src"]
+}

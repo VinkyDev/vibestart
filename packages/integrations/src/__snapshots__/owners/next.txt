@@ -1,0 +1,3126 @@
+# apps/web/.env.example · 60 stacks
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+SERVER_URL=http://localhost:3001
+
+# apps/web/.env.example · 4 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+
+# apps/web/.env.example · 4 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+
+# apps/web/.env.example · 4 stacks
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+DATABASE_URL=local.db
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+
+# apps/web/.env.example · 4 stacks
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+DATABASE_URL=local.db
+
+# apps/web/next.config.ts · 62 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  agentRules: false,
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
+  reactCompiler: true,
+  transpilePackages: ["@my-app/ui"],
+  typedRoutes: true,
+};
+
+export default nextConfig;
+
+# apps/web/next.config.ts · 2 stacks
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  agentRules: false,
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
+  reactCompiler: true,
+  transpilePackages: ["@my-app/api", "@my-app/ui"],
+  typedRoutes: true,
+};
+
+export default nextConfig;
+
+# apps/web/next.config.ts · 4 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  agentRules: false,
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
+  reactCompiler: true,
+  transpilePackages: [
+    "@my-app/api",
+    "@my-app/auth",
+    "@my-app/db",
+    "@my-app/ui",
+  ],
+  typedRoutes: true,
+};
+
+export default nextConfig;
+
+# apps/web/next.config.ts · 4 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  agentRules: false,
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
+  reactCompiler: true,
+  transpilePackages: ["@my-app/api", "@my-app/db", "@my-app/ui"],
+  typedRoutes: true,
+};
+
+export default nextConfig;
+
+# apps/web/next.config.ts · 4 stacks
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  agentRules: false,
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
+  reactCompiler: true,
+  transpilePackages: ["@my-app/auth", "@my-app/db", "@my-app/ui"],
+  typedRoutes: true,
+};
+
+export default nextConfig;
+
+# apps/web/next.config.ts · 4 stacks
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  agentRules: false,
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../..", import.meta.url)),
+  reactCompiler: true,
+  transpilePackages: ["@my-app/db", "@my-app/ui"],
+  typedRoutes: true,
+};
+
+export default nextConfig;
+
+# apps/web/postcss.config.mjs · 80 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+export default {
+  plugins: { "@tailwindcss/postcss": {} },
+};
+
+# apps/web/src/app/api/[[...rest]]/route.ts · 60 stacks
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+export {
+  proxyToServer as DELETE,
+  proxyToServer as GET,
+  proxyToServer as HEAD,
+  proxyToServer as PATCH,
+  proxyToServer as POST,
+  proxyToServer as PUT,
+} from "#src/server/proxy.ts";
+
+# apps/web/src/app/api/[[...rest]]/route.ts · 10 stacks
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+export {
+  handleOpenApi as DELETE,
+  handleOpenApi as GET,
+  handleOpenApi as HEAD,
+  handleOpenApi as PATCH,
+  handleOpenApi as POST,
+  handleOpenApi as PUT,
+} from "#src/server/orpc.ts";
+
+# apps/web/src/app/api/health/route.ts · 4 stacks
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+import { sql } from "drizzle-orm";
+
+import { getServices } from "#src/server/context.ts";
+
+export const GET = async () => {
+  await getServices().db.execute(sql`select 1`);
+  return Response.json({ status: "ok" });
+};
+
+# apps/web/src/app/api/health/route.ts · 4 stacks
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import { sql } from "drizzle-orm";
+
+import { getServices } from "#src/server/context.ts";
+
+export const GET = () => {
+  getServices().db.run(sql`select 1`);
+  return Response.json({ status: "ok" });
+};
+
+# apps/web/src/app/layout.tsx · 80 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import "@my-app/ui/globals.css";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+
+import { Header } from "#src/components/header.tsx";
+import { Providers } from "#src/components/providers.tsx";
+
+export const metadata: Metadata = {
+  title: "my-app",
+};
+
+const RootLayout = ({ children }: { children: ReactNode }) => (
+  <html lang="en" suppressHydrationWarning>
+    <body>
+      <Providers>
+        <div className="grid min-h-svh grid-rows-[auto_1fr]">
+          <Header />
+          <main className="mx-auto w-full max-w-2xl px-4 py-8">{children}</main>
+        </div>
+      </Providers>
+    </body>
+  </html>
+);
+
+export default RootLayout;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-docker
+#   next-docker-e2e
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js on Vite+.</CardDescription>
+    </CardHeader>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js and Hono on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js, Hono and OpenAPI on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, PostgreSQL, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, PostgreSQL and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, SQLite, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, SQLite and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js, Hono and oRPC on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, PostgreSQL, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, PostgreSQL and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, SQLite, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, SQLite and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, PostgreSQL, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, PostgreSQL and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, SQLite, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, SQLite and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js and oRPC on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, PostgreSQL, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, PostgreSQL and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, SQLite, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, SQLite and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, PostgreSQL, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, PostgreSQL and Drizzle on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, SQLite, Drizzle and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js, SQLite and Drizzle on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/rpc/[[...rest]]/route.ts · 20 stacks
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+export {
+  proxyToServer as DELETE,
+  proxyToServer as GET,
+  proxyToServer as HEAD,
+  proxyToServer as PATCH,
+  proxyToServer as POST,
+  proxyToServer as PUT,
+} from "#src/server/proxy.ts";
+
+# apps/web/src/app/rpc/[[...rest]]/route.ts · 10 stacks
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+export {
+  handleRpc as DELETE,
+  handleRpc as GET,
+  handleRpc as HEAD,
+  handleRpc as PATCH,
+  handleRpc as POST,
+  handleRpc as PUT,
+} from "#src/server/orpc.ts";
+
+# apps/web/src/app/todos/page.tsx · 20 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { redirect } from "next/navigation";
+
+import { TodoList } from "#src/components/todo-list.tsx";
+import { getQueryClient, serverApi } from "#src/server/query.ts";
+import { getSession } from "#src/server/session.ts";
+
+const TodosPage = async () => {
+  if (!(await getSession())) {
+    redirect("/login?redirect=%2Ftodos");
+  }
+
+  const queryClient = getQueryClient();
+  await queryClient.query(serverApi.todos.list.queryOptions());
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TodoList />
+    </HydrationBoundary>
+  );
+};
+
+export default TodosPage;
+
+# apps/web/src/app/todos/page.tsx · 20 stacks
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+
+import { TodoList } from "#src/components/todo-list.tsx";
+import { getQueryClient, serverApi } from "#src/server/query.ts";
+
+const TodosPage = async () => {
+  const queryClient = getQueryClient();
+  await queryClient.query(serverApi.todos.list.queryOptions());
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TodoList />
+    </HydrationBoundary>
+  );
+};
+
+export default TodosPage;
+
+# apps/web/src/components/header.tsx · 48 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import { ModeToggle } from "#src/components/mode-toggle.tsx";
+import { NavLinks } from "#src/components/nav-links.tsx";
+
+export const Header = () => (
+  <header className="border-b">
+    <div className="mx-auto flex h-14 max-w-2xl items-center justify-between px-4">
+      <NavLinks />
+      <ModeToggle />
+    </div>
+  </header>
+);
+
+# apps/web/src/components/header.tsx · 32 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+import { ModeToggle } from "#src/components/mode-toggle.tsx";
+import { NavLinks } from "#src/components/nav-links.tsx";
+import { UserMenu } from "#src/components/user-menu.tsx";
+import { getSession } from "#src/server/session.ts";
+
+export const Header = async () => {
+  const session = await getSession();
+
+  return (
+    <header className="border-b">
+      <div className="mx-auto flex h-14 max-w-2xl items-center justify-between px-4">
+        <NavLinks />
+        <div className="flex items-center gap-2">
+          <UserMenu user={session?.user ?? null} />
+          <ModeToggle />
+        </div>
+      </div>
+    </header>
+  );
+};
+
+# apps/web/src/components/mode-toggle.tsx · 80 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+"use client";
+
+import { MoonIcon, SunIcon } from "lucide-react";
+import { useTheme } from "next-themes";
+
+import { Button } from "@my-app/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@my-app/ui/components/dropdown-menu";
+
+export const ModeToggle = () => {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button aria-label="Toggle theme" size="icon" variant="ghost" />
+        }
+      >
+        <SunIcon className="dark:hidden" />
+        <MoonIcon className="hidden dark:block" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuRadioGroup onValueChange={setTheme} value={theme}>
+          <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+# apps/web/src/components/nav-links.tsx · 40 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const links = [{ href: "/", label: "Home" }] as const;
+
+export const NavLinks = () => {
+  const pathname = usePathname();
+
+  return (
+    <nav className="flex gap-4 text-sm">
+      {links.map(({ href, label }) => (
+        <Link
+          className={
+            pathname === href
+              ? "text-foreground font-medium"
+              : "text-muted-foreground hover:text-foreground transition-colors"
+          }
+          href={href}
+          key={href}
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
+  );
+};
+
+# apps/web/src/components/nav-links.tsx · 40 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/todos", label: "Todos" },
+] as const;
+
+export const NavLinks = () => {
+  const pathname = usePathname();
+
+  return (
+    <nav className="flex gap-4 text-sm">
+      {links.map(({ href, label }) => (
+        <Link
+          className={
+            pathname === href
+              ? "text-foreground font-medium"
+              : "text-muted-foreground hover:text-foreground transition-colors"
+          }
+          href={href}
+          key={href}
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
+  );
+};
+
+# apps/web/src/components/providers.tsx · 80 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+"use client";
+
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ThemeProvider } from "next-themes";
+import type { ReactNode } from "react";
+
+import { Toaster } from "@my-app/ui/components/sonner";
+
+import { getQueryClient } from "#src/lib/query-client.ts";
+
+export const Providers = ({ children }: { children: ReactNode }) => {
+  const queryClient = getQueryClient();
+
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      disableTransitionOnChange
+    >
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools buttonPosition="bottom-right" />
+      </QueryClientProvider>
+      <Toaster richColors />
+    </ThemeProvider>
+  );
+};
+
+# apps/web/src/components/todo-list.tsx · 20 stacks
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+"use client";
+
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import type { SubmitEvent } from "react";
+
+import { Button } from "@my-app/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+import { Checkbox } from "@my-app/ui/components/checkbox";
+import { Input } from "@my-app/ui/components/input";
+
+import { api } from "#src/lib/api.ts";
+
+export const TodoList = () => {
+  const [title, setTitle] = useState("");
+  const queryClient = useQueryClient();
+  const { data: todos } = useSuspenseQuery(api.todos.list.queryOptions());
+
+  const invalidateTodos = {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: api.todos.key() });
+    },
+  };
+  const createTodo = useMutation(
+    api.todos.create.mutationOptions(invalidateTodos)
+  );
+  const updateTodo = useMutation(
+    api.todos.update.mutationOptions(invalidateTodos)
+  );
+  const deleteTodo = useMutation(
+    api.todos.delete.mutationOptions(invalidateTodos)
+  );
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    createTodo.mutate(
+      { title },
+      {
+        onSuccess: () => {
+          setTitle("");
+        },
+      }
+    );
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Todos</CardTitle>
+        <CardDescription>Private to your account.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          <form className="flex gap-2" onSubmit={handleSubmit}>
+            <Input
+              aria-label="New todo"
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
+              placeholder="What needs to be done?"
+              value={title}
+            />
+            <Button
+              disabled={createTodo.isPending || title.trim() === ""}
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+          {todos.length === 0 ? (
+            <p className="text-muted-foreground py-4 text-center text-sm">
+              No todos yet.
+            </p>
+          ) : (
+            <ul className="grid gap-1">
+              {todos.map((todo) => (
+                <li
+                  className="hover:bg-muted/50 flex items-center gap-3 rounded-md px-2 py-1.5"
+                  key={todo.id}
+                >
+                  <Checkbox
+                    aria-label={todo.title}
+                    checked={todo.completed}
+                    onCheckedChange={(completed) => {
+                      updateTodo.mutate({ completed, id: todo.id });
+                    }}
+                  />
+                  <span
+                    className={
+                      todo.completed
+                        ? "text-muted-foreground flex-1 text-sm line-through"
+                        : "flex-1 text-sm"
+                    }
+                  >
+                    {todo.title}
+                  </span>
+                  <Button
+                    aria-label={`Delete ${todo.title}`}
+                    onClick={() => {
+                      deleteTodo.mutate({ id: todo.id });
+                    }}
+                    size="icon-sm"
+                    variant="ghost"
+                  >
+                    <Trash2Icon />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+# apps/web/src/components/todo-list.tsx · 20 stacks
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+"use client";
+
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import type { SubmitEvent } from "react";
+
+import { Button } from "@my-app/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+import { Checkbox } from "@my-app/ui/components/checkbox";
+import { Input } from "@my-app/ui/components/input";
+
+import { api } from "#src/lib/api.ts";
+
+export const TodoList = () => {
+  const [title, setTitle] = useState("");
+  const queryClient = useQueryClient();
+  const { data: todos } = useSuspenseQuery(api.todos.list.queryOptions());
+
+  const invalidateTodos = {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: api.todos.key() });
+    },
+  };
+  const createTodo = useMutation(
+    api.todos.create.mutationOptions(invalidateTodos)
+  );
+  const updateTodo = useMutation(
+    api.todos.update.mutationOptions(invalidateTodos)
+  );
+  const deleteTodo = useMutation(
+    api.todos.delete.mutationOptions(invalidateTodos)
+  );
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    createTodo.mutate(
+      { title },
+      {
+        onSuccess: () => {
+          setTitle("");
+        },
+      }
+    );
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Todos</CardTitle>
+        <CardDescription>Shared by everyone who opens the app.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          <form className="flex gap-2" onSubmit={handleSubmit}>
+            <Input
+              aria-label="New todo"
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
+              placeholder="What needs to be done?"
+              value={title}
+            />
+            <Button
+              disabled={createTodo.isPending || title.trim() === ""}
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+          {todos.length === 0 ? (
+            <p className="text-muted-foreground py-4 text-center text-sm">
+              No todos yet.
+            </p>
+          ) : (
+            <ul className="grid gap-1">
+              {todos.map((todo) => (
+                <li
+                  className="hover:bg-muted/50 flex items-center gap-3 rounded-md px-2 py-1.5"
+                  key={todo.id}
+                >
+                  <Checkbox
+                    aria-label={todo.title}
+                    checked={todo.completed}
+                    onCheckedChange={(completed) => {
+                      updateTodo.mutate({ completed, id: todo.id });
+                    }}
+                  />
+                  <span
+                    className={
+                      todo.completed
+                        ? "text-muted-foreground flex-1 text-sm line-through"
+                        : "flex-1 text-sm"
+                    }
+                  >
+                    {todo.title}
+                  </span>
+                  <Button
+                    aria-label={`Delete ${todo.title}`}
+                    onClick={() => {
+                      deleteTodo.mutate({ id: todo.id });
+                    }}
+                    size="icon-sm"
+                    variant="ghost"
+                  >
+                    <Trash2Icon />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+# apps/web/src/lib/api.ts · 30 stacks
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+import { createORPCClient } from "@orpc/client";
+import { RPCLink } from "@orpc/client/fetch";
+import { createTanstackQueryUtils } from "@orpc/tanstack-query";
+
+import type { AppRouterClient } from "@my-app/api";
+
+const client: AppRouterClient = createORPCClient(
+  new RPCLink({ url: () => `${window.location.origin}/rpc` })
+);
+
+export const api = createTanstackQueryUtils(client);
+
+# apps/web/src/lib/query-client.ts · 80 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  environmentManager,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
+
+const createQueryClient = () => {
+  const queryClient: QueryClient = new QueryClient({
+    defaultOptions: { queries: { staleTime: 60_000 } },
+    mutationCache: new MutationCache({
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }),
+    queryCache: new QueryCache({
+      onError: (error) => {
+        toast.error(error.message, {
+          action: {
+            label: "Retry",
+            onClick: () => {
+              void queryClient.invalidateQueries();
+            },
+          },
+        });
+      },
+    }),
+  });
+
+  return queryClient;
+};
+
+let browserQueryClient: QueryClient | undefined;
+
+export const getQueryClient = () => {
+  if (environmentManager.isServer()) {
+    return createQueryClient();
+  }
+  browserQueryClient ??= createQueryClient();
+  return browserQueryClient;
+};
+
+# apps/web/src/server/context.ts · 8 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+import "server-only";
+import { createAuth } from "@my-app/auth";
+import { createDb } from "@my-app/db";
+
+import { readEnv } from "#src/server/env.ts";
+
+const createServices = () => {
+  const env = readEnv();
+  const db = createDb(env.DATABASE_URL);
+  const auth = createAuth({
+    baseURL: env.BETTER_AUTH_URL,
+    db,
+    secret: env.BETTER_AUTH_SECRET,
+  });
+  return { auth, db };
+};
+
+let services: ReturnType<typeof createServices> | undefined;
+
+export const getServices = () => {
+  services ??= createServices();
+  return services;
+};
+
+# apps/web/src/server/context.ts · 8 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import "server-only";
+import { createDb } from "@my-app/db";
+
+import { readEnv } from "#src/server/env.ts";
+
+const createServices = () => ({ db: createDb(readEnv().DATABASE_URL) });
+
+let services: ReturnType<typeof createServices> | undefined;
+
+export const getServices = () => {
+  services ??= createServices();
+  return services;
+};
+
+# apps/web/src/server/env.ts · 60 stacks
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const readEnv = () =>
+  createEnv({
+    emptyStringAsUndefined: true,
+    runtimeEnv: process.env,
+    server: {
+      SERVER_URL: z.url().default("http://localhost:3001"),
+    },
+  });
+
+# apps/web/src/server/env.ts · 4 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const readEnv = () =>
+  createEnv({
+    emptyStringAsUndefined: true,
+    runtimeEnv: process.env,
+    server: {
+      BETTER_AUTH_SECRET: z.string().min(32),
+      BETTER_AUTH_URL: z.url(),
+      DATABASE_URL: z.url(),
+    },
+  });
+
+# apps/web/src/server/env.ts · 4 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const readEnv = () =>
+  createEnv({
+    emptyStringAsUndefined: true,
+    runtimeEnv: process.env,
+    server: {
+      DATABASE_URL: z.url(),
+    },
+  });
+
+# apps/web/src/server/env.ts · 4 stacks
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const readEnv = () =>
+  createEnv({
+    emptyStringAsUndefined: true,
+    runtimeEnv: process.env,
+    server: {
+      BETTER_AUTH_SECRET: z.string().min(32),
+      BETTER_AUTH_URL: z.url(),
+      DATABASE_URL: z.string().min(1),
+    },
+  });
+
+# apps/web/src/server/env.ts · 4 stacks
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const readEnv = () =>
+  createEnv({
+    emptyStringAsUndefined: true,
+    runtimeEnv: process.env,
+    server: {
+      DATABASE_URL: z.string().min(1),
+    },
+  });
+
+# apps/web/src/server/orpc.ts · 2 stacks
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+import "server-only";
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { ORPCError, onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+
+import { appRouter } from "@my-app/api";
+import type { Context } from "@my-app/api";
+
+const logServerError = (cause: unknown) => {
+  if (!(cause instanceof ORPCError) || cause.status >= 500) {
+    console.error(cause);
+  }
+};
+
+const mount =
+  (
+    handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+    prefix: `/${string}`
+  ) =>
+  async (request: Request) => {
+    const { response } = await handler.handle(request, {
+      context: {},
+      prefix,
+    });
+    return response ?? new Response("Not Found", { status: 404 });
+  };
+
+export const handleRpc = mount(
+  new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
+  "/rpc"
+);
+
+export const handleOpenApi = mount(
+  new OpenAPIHandler(appRouter, {
+    interceptors: [onError(logServerError)],
+    plugins: [
+      new OpenAPIReferencePlugin({
+        schemaConverters: [new ZodToJsonSchemaConverter()],
+        specGenerateOptions: {
+          info: {
+            title: "my-app",
+            version: "0.0.0",
+          },
+        },
+      }),
+    ],
+  }),
+  "/api"
+);
+
+# apps/web/src/server/orpc.ts · 4 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+import "server-only";
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { ORPCError, onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+
+import { appRouter } from "@my-app/api";
+import type { Context } from "@my-app/api";
+
+import { getServices } from "#src/server/context.ts";
+
+export const createContext = async (
+  requestHeaders: Headers
+): Promise<Context> => {
+  const { db, auth } = getServices();
+  return {
+    db,
+    session: await auth.api.getSession({ headers: requestHeaders }),
+  };
+};
+
+const logServerError = (cause: unknown) => {
+  if (!(cause instanceof ORPCError) || cause.status >= 500) {
+    console.error(cause);
+  }
+};
+
+const mount =
+  (
+    handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+    prefix: `/${string}`
+  ) =>
+  async (request: Request) => {
+    const { response } = await handler.handle(request, {
+      context: await createContext(request.headers),
+      prefix,
+    });
+    return response ?? new Response("Not Found", { status: 404 });
+  };
+
+export const handleRpc = mount(
+  new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
+  "/rpc"
+);
+
+export const handleOpenApi = mount(
+  new OpenAPIHandler(appRouter, {
+    interceptors: [onError(logServerError)],
+    plugins: [
+      new OpenAPIReferencePlugin({
+        schemaConverters: [new ZodToJsonSchemaConverter()],
+        specGenerateOptions: {
+          info: {
+            title: "my-app",
+            version: "0.0.0",
+          },
+        },
+      }),
+    ],
+  }),
+  "/api"
+);
+
+# apps/web/src/server/orpc.ts · 4 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+import "server-only";
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { ORPCError, onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+
+import { appRouter } from "@my-app/api";
+import type { Context } from "@my-app/api";
+
+import { getServices } from "#src/server/context.ts";
+
+export const createContext = (): Context => ({ db: getServices().db });
+
+const logServerError = (cause: unknown) => {
+  if (!(cause instanceof ORPCError) || cause.status >= 500) {
+    console.error(cause);
+  }
+};
+
+const mount =
+  (
+    handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+    prefix: `/${string}`
+  ) =>
+  async (request: Request) => {
+    const { response } = await handler.handle(request, {
+      context: createContext(),
+      prefix,
+    });
+    return response ?? new Response("Not Found", { status: 404 });
+  };
+
+export const handleRpc = mount(
+  new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
+  "/rpc"
+);
+
+export const handleOpenApi = mount(
+  new OpenAPIHandler(appRouter, {
+    interceptors: [onError(logServerError)],
+    plugins: [
+      new OpenAPIReferencePlugin({
+        schemaConverters: [new ZodToJsonSchemaConverter()],
+        specGenerateOptions: {
+          info: {
+            title: "my-app",
+            version: "0.0.0",
+          },
+        },
+      }),
+    ],
+  }),
+  "/api"
+);
+
+# apps/web/src/server/proxy.ts · 60 stacks
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+import "server-only";
+import { proxy } from "hono/proxy";
+
+import { readEnv } from "#src/server/env.ts";
+
+export const proxyToServer = async (request: Request) => {
+  const { pathname, search } = new URL(request.url);
+  try {
+    return await proxy(new URL(`${pathname}${search}`, readEnv().SERVER_URL), {
+      raw: request,
+      redirect: "manual",
+    });
+  } catch (error) {
+    // The client went away, so no one reads the response; this is not a server error.
+    if (request.signal.aborted) {
+      return new Response(null, { status: 499 });
+    }
+    throw error;
+  }
+};
+
+# apps/web/src/server/query.ts · 16 stacks
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+import "server-only";
+import { createORPCClient } from "@orpc/client";
+import { RPCLink } from "@orpc/client/fetch";
+import { createTanstackQueryUtils } from "@orpc/tanstack-query";
+import { QueryClient } from "@tanstack/react-query";
+import { headers } from "next/headers";
+import { cache } from "react";
+
+import type { AppRouterClient } from "@my-app/api";
+
+import { readEnv } from "#src/server/env.ts";
+
+// Server Components call the API server directly, with the visitor's cookies.
+const serverClient: AppRouterClient = createORPCClient(
+  new RPCLink({
+    headers: async () => {
+      const requestHeaders = await headers();
+      return { cookie: requestHeaders.get("cookie") ?? "" };
+    },
+    url: () => `${readEnv().SERVER_URL}/rpc`,
+  })
+);
+
+export const serverApi = createTanstackQueryUtils(serverClient);
+
+export const getQueryClient = cache(() => new QueryClient());
+
+# apps/web/src/server/query.ts · 4 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+import "server-only";
+import { createRouterClient } from "@orpc/server";
+import { createTanstackQueryUtils } from "@orpc/tanstack-query";
+import { QueryClient } from "@tanstack/react-query";
+import { headers } from "next/headers";
+import { cache } from "react";
+
+import { appRouter } from "@my-app/api";
+import type { AppRouterClient } from "@my-app/api";
+
+import { createContext } from "#src/server/orpc.ts";
+
+const serverClient: AppRouterClient = createRouterClient(appRouter, {
+  context: async () => await createContext(await headers()),
+});
+
+export const serverApi = createTanstackQueryUtils(serverClient);
+
+export const getQueryClient = cache(() => new QueryClient());
+
+# apps/web/src/server/query.ts · 4 stacks
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+import "server-only";
+import { createRouterClient } from "@orpc/server";
+import { createTanstackQueryUtils } from "@orpc/tanstack-query";
+import { QueryClient } from "@tanstack/react-query";
+import { headers } from "next/headers";
+import { cache } from "react";
+
+import { appRouter } from "@my-app/api";
+import type { AppRouterClient } from "@my-app/api";
+
+import { createContext } from "#src/server/orpc.ts";
+
+const serverClient: AppRouterClient = createRouterClient(appRouter, {
+  context: async () => {
+    await headers();
+    return createContext();
+  },
+});
+
+export const serverApi = createTanstackQueryUtils(serverClient);
+
+export const getQueryClient = cache(() => new QueryClient());
+
+# apps/web/tsconfig.json · 80 stacks
+#   next-docker
+#   next-docker-e2e
+#   next-hono-bun-docker
+#   next-hono-bun-docker-e2e
+#   next-hono-docker
+#   next-hono-docker-e2e
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-bun-docker-e2e
+#   next-hono-openapi-docker
+#   next-hono-openapi-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-bun-docker-e2e
+#   next-hono-orpc-docker
+#   next-hono-orpc-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-docker
+#   next-self-orpc-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+{
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "jsx": "preserve",
+    "plugins": [{ "name": "next" }]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "src",
+    "tests",
+    "*.config.ts"
+  ]
+}
+
+# apps/web/vite.config.ts · 16 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  pack: {
+    copy: [{ from: "../../packages/db/src/migrations", to: "dist" }],
+    deps: { alwaysBundle: [/./u] },
+    entry: ["src/server/migrate.ts"],
+  },
+});

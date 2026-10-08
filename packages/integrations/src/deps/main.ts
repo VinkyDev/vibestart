@@ -9,15 +9,13 @@ import type { Target } from "#/deps/targets.ts";
 import { isBehind, targetsOf } from "#/deps/targets.ts";
 import { repoRoot } from "#/repo.ts";
 
-const usage = `Usage: vp run deps [update] [pattern] [--json] [--skip-stack-verification]
+const usage = `Usage: vp run deps [update] [pattern] [--json]
 
   (no command)       compare each pinned version with the registry and list the pins behind,
                      exiting 1 when one is (--json prints every pin, behind or not)
-  update [pattern]   move the pins whose name matches to their targets, then refresh and verify
-                     what they reach: vp install, the golden projects and their lockfiles, the
-                     stack snapshots, vp run stacks verify, and vp run ready
-
-  --skip-stack-verification  omit service/browser stack verification; records stay unchanged
+  update [pattern]   move the pins whose name matches to their targets, then refresh what they
+                     reach: vp install, the golden projects and their lockfiles, the stack
+                     snapshots, and vp run ready. CI verifies the stacks on the pull request.
 
 Pins live in pnpm-workspace.yaml (this repository), packages/integrations/src/catalog.ts
 (generated projects), and package.json (the Node.js and pnpm this repository runs).`;
@@ -78,7 +76,7 @@ interface Step {
   readonly env?: Readonly<Record<string, string>>;
 }
 
-const refresh = (skipStackVerification: boolean): readonly Step[] => [
+const refresh: readonly Step[] = [
   { args: ["install", "--no-frozen-lockfile"], cwd: "" },
   { args: ["run", "stacks", "goldens"], cwd: "" },
   // A golden sits inside this repository, so its `vp config` must not take over the repository's hooks.
@@ -101,13 +99,10 @@ const refresh = (skipStackVerification: boolean): readonly Step[] => [
     ],
     cwd: "",
   },
-  ...(skipStackVerification
-    ? []
-    : [{ args: ["run", "stacks", "verify"], cwd: "" }]),
   { args: ["run", "ready"], cwd: "" },
 ];
 
-const update = (targets: readonly Target[], skipStackVerification: boolean) => {
+const update = (targets: readonly Target[]) => {
   const moving = targets.filter(isBehind);
   if (moving.length === 0) {
     print("Every pin is at its target");
@@ -120,7 +115,7 @@ const update = (targets: readonly Target[], skipStackVerification: boolean) => {
   for (const target of moving) {
     print(`${target.name}: ${target.current} → ${target.target}`);
   }
-  for (const step of refresh(skipStackVerification)) {
+  for (const step of refresh) {
     const command = ["vp", ...step.args].join(" ");
     print(`\n$ ${command}${step.cwd === "" ? "" : `  (in ${step.cwd})`}`);
     try {
@@ -137,7 +132,7 @@ const update = (targets: readonly Target[], skipStackVerification: boolean) => {
     }
   }
   print(
-    `\nMoved ${moving.length} pins. ${skipStackVerification ? "Repository checks passed; stack verification was skipped and verification.json was not refreshed." : "All repository and stack checks passed."}`
+    `\nMoved ${moving.length} pins. Repository checks passed; CI verifies the stacks on the pull request.`
   );
   return 0;
 };
@@ -148,7 +143,6 @@ export const main = async (args: readonly string[]) => {
     args: [...args],
     options: {
       json: { default: false, type: "boolean" },
-      "skip-stack-verification": { default: false, type: "boolean" },
     },
   });
   const [command, pattern] = positionals;
@@ -172,7 +166,7 @@ export const main = async (args: readonly string[]) => {
       : (name: string) => new RegExp(pattern, "u").test(name);
   const targets = targetsOf(pins, releases, matches);
   if (command === "update") {
-    return update(targets, values["skip-stack-verification"]);
+    return update(targets);
   }
   if (values.json) {
     print(

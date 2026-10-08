@@ -5,7 +5,7 @@
 ## Packages
 
 - `packages/core`: Blueprint schema, registry, resolver, generator, and the pure merge used by maintenance. It never touches the file system: `generate` returns a virtual file tree, so the browser and the CLI run the same resolver.
-- `packages/integrations`: every integration and add-on, the `recommended` catalog, templates, the golden comparison, and `verification.json`.
+- `packages/integrations`: every integration and add-on, the `recommended` catalog, templates, the golden comparison, and the verification store.
 - `apps/cli`: the `vibestart` command: prompts, flags, `--json`, writing files, running setup, and project maintenance.
 - `apps/web`: the Studio, the documentation site, and the generator preview. `oxfmt` has only a native binding, so previews run the generator on the server.
 - `golden/`: checked-in generated projects. Each is its own workspace and the expected output of the comparison tests.
@@ -69,11 +69,11 @@ Generated code uses the idiom a library documents. When a lint rule misfires on 
 
 Three gates, each pinning something different:
 
-- **Snapshots** (`vp test`): one file per verified stack, recording the setup commands and each file's path, owner, and content. A template change shows as a diff per stack. `vp test -u` updates them.
+- **Snapshots** (`vp test`): the setup commands and every file of every verified stack, in one file per owner. Each distinct content appears once, under the stacks that render it, so a template change is one hunk however many stacks render the template. `vp test -u` updates them.
 - **Golden** (`vp test`): `golden/*` must match generator output byte for byte, and together they use every integration. `vp run stacks goldens` rewrites them.
-- **Verification** (`vp run stacks verify`): generate, install, run `setup`, then `vp run ready` inside the project. A pass records the output's SHA-256 fingerprint, time, and environment in `packages/integrations/verification.json`. A stack whose fingerprint still matches is skipped. `vp run stacks check` reports `CURRENT`, `STALE`, or `MISSING` without installing or writing and exits 1 on stale or missing. The CLI reads the same record, so "Verified" needs no backend service.
+- **Verification** (`vp run stacks verify`): generate, install, run `setup`, then `vp run ready` inside the project. A pass is a record of the output's SHA-256 fingerprint, time, and environment. A task whose fingerprint already has a record is skipped. Records count only from CI (see [CI](#ci)).
 
-The fingerprint covers generated content, not resolved dependency versions. "Verified" means it passed against the dependencies resolved at that moment; `vp run deps update` moves the pins and re-verifies what they reach.
+The fingerprint covers what `vp run ready` reads: every generated file except documentation (`*.md`), and the setup commands. It does not cover resolved dependency versions. "Verified" means it passed against the dependencies resolved at that moment; `vp run deps update` moves the pins, which changes the output of every stack they reach, so CI re-verifies those stacks.
 
 ### Equivalence classes
 
@@ -87,15 +87,27 @@ Verification runs once per class of stacks that share a result:
 
 `verify` runs stacks concurrently (`--jobs`). Each takes its own e2e ports from 20000 through `E2E_TEST_PORT`, below the ephemeral ranges of Linux and macOS; integration tests run in process and listen on none. PostgreSQL stacks use `STACKS_POSTGRES_URL`.
 
-`verify --shard <i>/<n>` takes every n-th stack in name order. `stacks merge <dir> --shards <n>` joins the shard files: a shard answers for the stacks it owns, a stack that failed is dropped, and a shard that left no file keeps the repository's records.
+### The store
+
+A **task** is one stack on one platform: every verified stack and Bun subject on Linux, and each golden also on Windows. A record is keyed by platform and fingerprint, so it vouches for an output wherever that output appears, and a Linux golden is an ordinary Linux task.
+
+Records live on the orphan `verification` branch as `<platform>/<fingerprint>.json`. CI on `main` is its only writer, and a record, once written, is never rewritten, so writers never conflict. Runs on a developer's machine record nothing: a local `verify` is for debugging, and a pass on another machine says nothing about CI's environment.
+
+`vp run stacks pull` clones the store and writes the records for the current output to `packages/integrations/verification.json`, which Git ignores. The CLI and the Studio embed that file when they are built, so "Verified" needs no backend service; a build without it shows every stack unverified. `vp run stacks check` reports each task `CURRENT`, `STALE`, or `MISSING` against that file and exits 1 unless all are current. Release runs `pull` and `check` before it packs, and attaches the file to the GitHub release.
 
 ### CI
 
-`.github/workflows/ci.yml` runs `vp run ready` on every push and pull request. On `main`, when `stacks check` finds a stale record, eight shards verify in parallel against a PostgreSQL service and a single `record` job merges them onto the ref's current tip and commits `verification.json` to that ref. To verify a branch before merging, run the workflow on it (`gh workflow run ci.yml --ref <branch>`); the records land on the branch and reach `main` with the merge. A pull request never records. A shard that hits the job limit keeps what it finished; run the workflow again to continue.
+`.github/workflows/ci.yml` is one workflow for pull requests and `main`:
 
-A golden matrix verifies every project in `goldens.ts` on Linux and Windows. `stacks golden-matrix` supplies the matrix; each job prepares its stack's services and runs full verification with `--force`, so a fingerprint from another platform cannot skip it. Golden jobs never publish verification records.
+1. `ready` runs `vp run ready`.
+2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the tasks no record covers. Up to eight Linux shards split the Linux tasks, about a dozen per shard, and each Windows task gets its own runner. A change that touches no generated output plans no job.
+3. `verify` runs each planned job. Linux uses a PostgreSQL 18 service container; Windows starts the PostgreSQL 17 its runner image ships. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
+4. `ci`, the one required check, passes when `ready` and `plan` passed and `verify` passed or had nothing to run.
+5. On `main`, `record` adds every pass that matches `main`'s output to the store, then triggers the Studio's deploy hook (`CLOUDFLARE_DEPLOY_HOOK`), since the build for that commit may have embedded the records before they existed.
 
-The local `setup-postgres` and `setup-playwright` actions cache checksum-validated Windows installers and npm downloads, separated by platform and version/configuration identity. PostgreSQL installation gets three Chocolatey attempts, 15 seconds apart; npm retries fetches twice and Playwright uses its native browser download retries. Setup deadlines bound both actions. Database initialization and tests run once; caches never contain database clusters or test results. Browser binaries are installed normally, and Vite+ owns the pnpm cache.
+**Evidence.** On a pull request, `plan` downloads the results of the branch's latest runs; on `main`, those of the pull request merged as that commit. A run re-uploads the results it reused, so the latest runs carry all of a branch's evidence. Only runs from this repository count: a fork controls the workflow its pull request runs. A result counts only when its platform and fingerprint match a task at the current output, so a stale branch or a later merge re-verifies only what changed. Each `main` commit runs to the end instead of being cancelled, so no merge's evidence is dropped.
+
+The local `setup-playwright` action caches npm's checksum-validated downloads, separated by platform and catalog version; npm retries fetches twice and Playwright uses its native browser download retries. Tests run once, and Vite+ owns the pnpm cache.
 
 ## Package manager and runtime
 
@@ -128,5 +140,5 @@ An older project is adopted from an independently preserved snapshot of its exac
 - **Core stays off the file system.** Output is a virtual tree, so preview and CLI agree.
 - **Contributions, not AST transforms.** One owner renders each shared file, which is what lets `add` merge correctly.
 - **The resolver enumerates and explains.** Every refusal has a `reason` and the smallest fix.
-- **Verification is static data.** It ships with the repository, and the CLI shows "Verified" offline.
+- **Verification is static data.** CI keeps it on the `verification` branch, and the CLI and the Studio embed it at build, so "Verified" works offline and only CI's environment counts.
 - **Tests follow risk.** Playwright or TesterArmy e2e covers the main path black-box against a real server and a test database of its own; Vitest integration tests call the API in process against a real database, one database per test file; unit tests go to dense logic; nothing of the project is mocked. The rules ship in each project's `AGENTS.md`.
