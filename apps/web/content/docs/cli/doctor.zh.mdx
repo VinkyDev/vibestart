@@ -1,6 +1,6 @@
 ---
 title: 检查项目
-description: 只读检查配置、基线和未完成的维护操作。
+description: 只读检查项目记录、配置和待更新的模板变化。
 ---
 
 ```sh
@@ -9,16 +9,15 @@ npx vibestart-cli doctor --offline
 npx vibestart-cli doctor --cwd my-app --json
 ```
 
-`doctor` 检查项目基线完整性、配置、包管理器一致性、锁文件和未完成操作，不修改项目文件，也不执行依赖升级。
+`doctor` 读取 `vibestart.jsonc` 中记录的版本和项目名，检查包管理器一致性和锁文件，再将项目与运行中的 CLI 模板比较。它不修改项目文件，也不执行依赖升级。
 
-终端会列出项目模板版本、检查发现的问题、冲突文件和待更新文件数。`--json` 提供相同检查结果的结构化输出，供脚本和编码 Agent 使用。
+终端会列出项目模板版本、检查发现的问题、冲突文件、升级将应用的模板变化，以及需要手动移植的变化。`--json` 提供相同检查结果的结构化输出，供脚本和编码 Agent 使用。
 
-默认查询的是 npm 的 `latest` 通道，而非 `beta` 通道。如需预览 beta 模板的更新，请运行 `npx vibestart-cli upgrade --dry-run`。`--offline` 会关闭这项网络查询。发现新版本仅作为提示，不会因此判定项目存在问题。
+默认查询的是 npm 的 `latest` 通道，而非 `beta` 通道。如需预览 beta 模板的更新，请运行 `npx vibestart-cli upgrade --dry-run`。`--offline` 会关闭这项网络查询。发现新版本仅作为提示，不会因此判定项目存在问题。使用 `--offline` 时，如果项目记录的是其他版本，则不做比较，因为该版本的模板需要从 npm 获取。
 
 ## 处理检查结果 [#results]
 
-- 存在未完成操作：使用 [`recover`](/docs/cli/recover) 查看恢复方式。
-- 基线缺失：确认是否为旧项目，并查看 [`adopt`](/docs/cli/upgrade#adopt) 的来源要求。
+- `vibestart.jsonc` 缺少 `name` 或 `version`：没有它们，CLI 无法重新生成原始模板。请从 Git 历史中恢复。
 - 需要更新模板：使用 [`upgrade --dry-run`](/docs/cli/upgrade) 查看计划。
 
 `doctor` 检查维护状态，业务行为仍由项目自身的测试验证。

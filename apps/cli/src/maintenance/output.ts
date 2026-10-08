@@ -5,30 +5,14 @@ const summaries = new Map([
   ["no-op", "No changes needed."],
   ["conflicts", "Conflicts need resolution before this operation can finish."],
   ["completed", "Maintenance completed with the selected checks."],
-  [
-    "adopted",
-    "Baseline recorded. Dependencies and application behavior were not checked.",
-  ],
-  [
-    "needs-install",
-    "Files written. Installation and checks are still pending.\nNext (in the project directory): vibestart recover",
-  ],
-  [
-    "rolled-back",
-    "The unfinished operation was rolled back. Installed dependencies and database state were not restored.",
-  ],
-  [
-    "aborted",
-    "The pending plan was discarded; project files were left unchanged.",
-  ],
+  ["needs-install", "Files written. Installation and checks were not run."],
 ]);
 
 export const maintenanceText = (
   result: MaintenanceResult,
-  command: string,
-  offline = false
+  offline: boolean
 ): string => {
-  if ("capabilities" in result && result.capabilities !== undefined) {
+  if ("capabilities" in result) {
     return [
       "Available capabilities:",
       ...result.capabilities.map(
@@ -39,7 +23,7 @@ export const maintenanceText = (
       "",
     ].join("\n");
   }
-  if ("issues" in result && result.issues !== undefined) {
+  if ("issues" in result) {
     const lines = [
       result.status === "healthy"
         ? "Maintenance state is healthy. Application tests were not run."
@@ -53,24 +37,34 @@ export const maintenanceText = (
     }
     lines.push(
       ...result.issues.map((issue) => `  - ${issue}`),
-      ...result.conflicts.map((file) => `  - Conflict: ${file}`),
-      `Template changes with this CLI: ${result.updates}`
+      ...result.conflicts.map((file) => `  - Conflict: ${file}`)
     );
-    if (result.updates > 0 || result.conflicts.length > 0) {
+    if (result.updates === null || result.manual === null) {
+      lines.push(
+        `Template changes with this CLI: not compared (--offline; release ${result.release} comes from npm)`
+      );
+      return `${lines.join("\n")}\n`;
+    }
+    lines.push(
+      `Template changes with this CLI: ${result.updates} to apply, ${result.manual} to port by hand`
+    );
+    if (
+      result.updates > 0 ||
+      result.manual > 0 ||
+      result.conflicts.length > 0
+    ) {
       lines.push(
         "Inspect the plan in the project directory: vibestart upgrade --dry-run"
       );
     }
     return `${lines.join("\n")}\n`;
   }
-  if (command === "recover" && result.status === "no-op") {
-    return "No pending operation to recover.\n";
-  }
   const lines = [summaries.get(result.status) ?? result.status];
-  if ("conflicts" in result && result.conflicts !== undefined) {
-    lines.push(...result.conflicts.map((file) => `  - Conflict: ${file}`));
-  }
-  if ("next" in result && result.next !== undefined) {
+  lines.push(
+    ...result.conflicts.map((file) => `  - Conflict: ${file}`),
+    ...result.manual.map(({ path }) => `  - Port by hand: ${path}`)
+  );
+  if (result.next !== undefined) {
     lines.push(`Next (in the project directory): ${result.next}`);
   }
   return `${lines.join("\n")}\n`;

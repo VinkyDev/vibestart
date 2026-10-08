@@ -1,6 +1,6 @@
 ---
 title: Inspect a project
-description: Read-only checks for configuration, baseline integrity, and unfinished operations.
+description: Read-only checks for the project record, configuration, and pending template changes.
 ---
 
 ```sh
@@ -9,16 +9,15 @@ npx vibestart-cli doctor --offline
 npx vibestart-cli doctor --cwd my-app --json
 ```
 
-`doctor` checks baseline integrity, configuration, package-manager consistency, lockfiles, and unfinished operations. It neither modifies project files nor upgrades dependencies.
+`doctor` reads the release and name recorded in `vibestart.jsonc` and checks package-manager consistency and lockfiles. It then compares the project with the running CLI's templates. It neither modifies project files nor upgrades dependencies.
 
-Terminal output lists the project template version, findings, conflicting files, and pending template changes. Use `--json` for structured results in scripts and coding agents.
+Terminal output lists the project template version, findings, conflicting files, the template changes an upgrade would apply, and those it would leave to port by hand. Use `--json` for structured results in scripts and coding agents.
 
-By default, it queries npm’s `latest` channel, not the `beta` channel. To preview the beta template, run `npx vibestart-cli upgrade --dry-run`. `--offline` disables that query. An available release is informational and does not make the project unhealthy.
+By default, it queries npm’s `latest` channel, not the `beta` channel. To preview the beta template, run `npx vibestart-cli upgrade --dry-run`. `--offline` disables that query. An available release is informational and does not make the project unhealthy. With `--offline`, a project recorded by another release is not compared, because that release's templates come from npm.
 
 ## Act on findings [#results]
 
-- Unfinished operation: see [recovery](/docs/cli/recover).
-- Missing baseline: determine whether this is an older project and review the provenance requirements for [`adopt`](/docs/cli/upgrade#adopt).
+- Missing `name` or `version` in `vibestart.jsonc`: maintenance cannot regenerate the original templates without them. Restore them from Git history.
 - Template update needed: inspect an [`upgrade --dry-run`](/docs/cli/upgrade) plan.
 
 `doctor` inspects maintenance state. Project tests verify application behavior.

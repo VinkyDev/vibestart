@@ -13,14 +13,14 @@ Without explicit capabilities, the terminal offers a multi-select prompt. Knip a
 
 ## Preview and apply [#apply]
 
-`--dry-run` displays file and configuration changes without writing. Apply with `--yes`, or confirm the plan in a terminal.
+`--dry-run` displays file and configuration changes without writing. Apply with `--yes`, or confirm the plan in a terminal. Like an upgrade, a write needs a clean Git worktree and writes conflicts into the files; see [review and undo with Git](/docs/cli/upgrade#git).
 
-If the baseline differs from the running CLI’s template release, [upgrade](/docs/cli/upgrade) first. Existing capabilities are not added twice.
+If `vibestart.jsonc` records a release other than the running CLI, [upgrade](/docs/cli/upgrade) first. Existing capabilities are not added twice.
 
 ## Installation and checks [#checks]
 
 By default, the command installs once, then runs `vp check`, selected Knip checks, and an existing `unit` test project. `--full-check` runs the complete `vp run ready` instead.
 
-`--no-install` writes files and retains the operation as `needs-install`. Use [recover](/docs/cli/recover) to finish installation and validation. These flags cannot be combined.
+`--no-install` writes files only and returns `needs-install`, with the installation and checks to run. These flags cannot be combined.
 
-Adding Ultracite may require changes to existing application code to satisfy new rules. A failed check retains the operation; fix the code before resuming. Adding capabilities does not migrate databases automatically.
+Adding Ultracite may require changes to existing application code to satisfy new rules. When a check fails, the files stay written: fix the code and rerun the check, or undo with Git. Adding capabilities does not migrate databases automatically.

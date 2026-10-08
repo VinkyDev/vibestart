@@ -15,9 +15,8 @@ packages/
   auth/                Better Auth 配置
   ui/                  共享组件与主题
   config/              共享 TypeScript 配置
-.vibestart/            模板基线与维护状态
 AGENTS.md              开发约定
-vibestart.jsonc        项目的技术选择
+vibestart.jsonc        项目的技术选择与模板版本
 vite.config.ts         检查配置与项目任务
 ```
 
@@ -50,6 +49,8 @@ vite.config.ts         检查配置与项目任务
 
 `vibestart.jsonc` 记录创建项目时的技术栈、扩展、包管理器和发布渠道。`packageManager` 与 `stack.runtime` 相互独立：前者表示安装依赖的工具，后者表示应用的运行时。如需以相同选择创建新项目，可将该文件传给 `--recipe`，详见[配方](/docs/cli/create#recipe)。
 
+它还记录项目名 `name`，以及生成项目的 vibestart 版本 `version`。升级时，CLI 据此重新生成该版本的模板，用来区分模板的变化和你自己的修改，详见[升级项目](/docs/cli/upgrade#base)。添加能力或升级时，CLI 会更新这个文件。请提交它，并通过这些命令修改技术选择，不要手动编辑。
+
 ## 依赖版本 [#catalog]
 
 pnpm 项目在 `pnpm-workspace.yaml` 中声明 workspace 和共享版本目录（catalog）；Bun 项目在根目录的 `package.json` 中声明。各包通过 `catalog:` 引用目录中的版本，使每个依赖在整个 workspace 中只有一个版本。锁文件记录实际安装的结果。
@@ -62,10 +63,6 @@ pnpm 项目在 `pnpm-workspace.yaml` 中声明 workspace 和共享版本目录�
   `.env` 文件包含密钥，已被 Git 忽略。新增配置项时，请修改 `.env.example`
   并提交，不要写入真实的值。
 </Callout>
-
-## 维护基线 [#baseline]
-
-`.vibestart/state.json` 与 `.vibestart/base.json` 记录项目的来源和最初的模板文件。升级时，CLI 依靠它们区分模板的变化和你自己的修改。请一并提交这两个文件，不要手动编辑。详见[升级项目](/docs/cli/upgrade)。
 
 ## 项目任务 [#scripts]
 

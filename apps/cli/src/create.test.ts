@@ -6,7 +6,6 @@ import { packageManagers } from "@vibestart/core";
 import type * as Integrations from "@vibestart/integrations";
 
 import { create } from "#/create.ts";
-import type * as MaintenanceFiles from "#/maintenance/files.ts";
 import type * as Project from "#/project.ts";
 import { hasCommand, runStep } from "#/project.ts";
 import { jsonUi } from "#/ui.ts";
@@ -16,11 +15,6 @@ vi.mock(import("#/project.ts"), async (importOriginal) => ({
   hasCommand: vi.fn<typeof Project.hasCommand>(),
   runStep: vi.fn<typeof Project.runStep>(),
   writeFiles: vi.fn<typeof Project.writeFiles>(),
-}));
-
-vi.mock(import("#/maintenance/files.ts"), async (importOriginal) => ({
-  ...(await importOriginal()),
-  initializeBaseline: vi.fn<typeof MaintenanceFiles.initializeBaseline>(),
 }));
 
 vi.mock(import("@vibestart/integrations"), async (importOriginal) => ({

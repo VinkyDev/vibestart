@@ -34,7 +34,7 @@ If the preview reports `incomplete-stack`, supply the remaining choices. If it r
 npx --yes vibestart-cli create my-app --recipe /actual/path/vibestart.jsonc --dry-run --json
 ```
 
-Replace the example path. A recipe may be a file, directory, or URL. Stack flags override its choices. A recipe reproduces configuration; it does not preserve business edits or establish the original baseline for adopting an existing project.
+Replace the example path. A recipe may be a file, directory, or URL. Stack flags override its choices. A recipe reproduces configuration; it does not preserve business edits. Its `name` and `version` describe the project it came from; the new project records its own.
 
 ## Installation and validation
 
@@ -49,7 +49,7 @@ Normal creation writes files, initializes Git, installs dependencies, runs gener
 | `--no-install`     | Write files without installation, setup, formatting, or checks          |
 | `--no-check`       | Skip the final `vp check`; installation, setup and formatting still run |
 
-If installation was intentionally skipped, follow the generated `nextSteps` in order when the environment allows it. This creation mode does not create a maintenance recovery journal. Do not prescribe `recover` as a replacement for initial setup.
+If installation was intentionally skipped, follow the generated `nextSteps` in order when the environment allows it. Maintenance commands do not replace this initial setup.
 
 ## JSON and exit codes
 

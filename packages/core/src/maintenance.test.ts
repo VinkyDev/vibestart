@@ -19,7 +19,18 @@ describe("three-way template maintenance", () => {
   it("distinguishes file absence from empty contents and preserves ownership removals", () => {
     expect(mergeFile("a", null, "", "new").conflict).toBeTruthy();
     expect(mergeFile("a", "old", "edited", null).after).toBe("edited");
-    expect(mergeFile("a", "old", null, "new").conflict).toBeTruthy();
+    expect(mergeFile("a", "old", null, "new")).toMatchObject({
+      after: "new",
+      conflict: true,
+    });
+  });
+
+  it("keeps a project file the template now also adds, beside the template's version", () => {
+    expect(
+      mergeFile("Dockerfile", null, "FROM business\n", "FROM template\n").after
+    ).toBe(
+      "<<<<<<< project\nFROM business\n=======\nFROM template\n>>>>>>> target template\n"
+    );
   });
 
   it("preserves JSONC comments and custom scripts while updating a nearby catalog key", () => {

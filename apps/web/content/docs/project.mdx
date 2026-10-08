@@ -15,9 +15,8 @@ packages/
   auth/                Better Auth configuration
   ui/                  Shared components and theme
   config/              Shared TypeScript settings
-.vibestart/            Template baseline and maintenance state
 AGENTS.md              Development conventions
-vibestart.jsonc        The project's technology choices
+vibestart.jsonc        The project's technology choices and template release
 vite.config.ts         Checks and project tasks
 ```
 
@@ -50,6 +49,8 @@ For the example stack above:
 
 `vibestart.jsonc` records the stack, add-ons, package manager, and release channel the project was created with. `packageManager` and `stack.runtime` are separate: one names the installation tool, the other the application runtime. To create another project with the same choices, pass the file to `--recipe`; see [Recipes](/docs/cli/create#recipe).
 
+It also records the project's `name` and the `version` of the vibestart release that generated it. Upgrades regenerate that release's templates from them, to tell template changes apart from your own edits; see [Upgrade a project](/docs/cli/upgrade#base). The CLI updates the file when you add a capability or upgrade. Commit it, and change choices through those commands rather than by hand.
+
 ## Dependency versions [#catalog]
 
 pnpm projects declare their workspaces and a catalog of shared versions in `pnpm-workspace.yaml`; Bun projects declare them in the root `package.json`. Packages refer to catalog versions with `catalog:`, so each dependency has one version across the workspace. The lockfile records exactly what was installed.
@@ -62,10 +63,6 @@ pnpm projects declare their workspaces and a catalog of shared versions in `pnpm
   `.env` files contain secrets and are excluded from Git. Commit changes to
   `.env.example` instead, without real values.
 </Callout>
-
-## Maintenance baseline [#baseline]
-
-`.vibestart/state.json` and `.vibestart/base.json` record where the project came from and the template files it started with. Upgrades use them to tell template changes apart from your own edits. Commit both files, and do not edit them by hand. See [Upgrade a project](/docs/cli/upgrade).
 
 ## Project tasks [#scripts]
 

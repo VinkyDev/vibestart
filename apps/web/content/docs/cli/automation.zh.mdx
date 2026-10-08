@@ -13,19 +13,21 @@ npx vibestart-cli upgrade --cwd my-app --yes --json
 
 `--json` 输出一个 JSON 对象，不显示交互提示。维护命令写入时还需传入 `--yes`。`ok` 与退出码是否为零一致。
 
-预览成功表示变更计划已生成；`needs-install` 表示文件已写入、安装与检查尚未完成。两者都不代表业务测试通过。
+预览成功表示变更计划已生成；`needs-install` 表示文件已写入、安装与检查尚未完成，`next` 给出需要执行的命令。两者都不代表业务测试通过。
+
+计划包含 CLI 会写入的 `changes`、其中的冲突 `conflicts`，以及 `manual`：模板对项目所有文件的修改，附带原始模板和目标模板的内容，CLI 不会写入这些文件。写入要求 Git 工作区干净。
 
 ## 维护参数 [#options]
 
-| 参数              | 适用范围            | 作用                       |
-| ----------------- | ------------------- | -------------------------- |
-| `--cwd`、`--json` | 维护命令            | 项目目录与输出格式         |
-| `--yes`           | 写入操作            | 确认计划                   |
-| `--dry-run`       | add、upgrade、adopt | 预览，不写入               |
-| `--no-install`    | add、upgrade        | 延后安装与检查             |
-| `--full-check`    | add、upgrade        | 使用完整 ready 检查        |
-| `--offline`       | doctor              | 不查询远程发布版本         |
-| `--check`、`--to` | upgrade             | 检查更新、指定精确目标版本 |
+| 参数              | 适用范围     | 作用                       |
+| ----------------- | ------------ | -------------------------- |
+| `--cwd`、`--json` | 维护命令     | 项目目录与输出格式         |
+| `--yes`           | 写入操作     | 确认计划                   |
+| `--dry-run`       | add、upgrade | 预览，不写入               |
+| `--no-install`    | add、upgrade | 延后安装与检查             |
+| `--full-check`    | add、upgrade | 使用完整 ready 检查        |
+| `--offline`       | doctor       | 不查询远程发布版本         |
+| `--check`、`--to` | upgrade      | 检查更新、指定精确目标版本 |
 
 `--no-install` 与 `--full-check` 互斥。创建命令的参数及 JSON 字段见[创建项目](/docs/cli/create#json)。
 

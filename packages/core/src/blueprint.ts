@@ -59,6 +59,14 @@ export const createBlueprintSchema = (registry: Registry) => {
     firstAddon === undefined ? z.never() : z.enum([firstAddon, ...otherAddons]);
   return z.strictObject({
     $schema: z.string().optional(),
+    name: z.string().optional().meta({
+      description:
+        "The project name the templates were rendered with. A recipe ignores it.",
+    }),
+    version: z.string().optional().meta({
+      description:
+        "The vibestart release that generated the project. Maintenance regenerates that release's templates as the merge base. A recipe ignores it.",
+    }),
     // A blueprint that names no add-ons takes the defaults, as a project created without choosing does.
     addons: z
       .array(addonId)
@@ -74,7 +82,17 @@ export const createBlueprintSchema = (registry: Registry) => {
 export const blueprintJsonSchema = (registry: Registry) =>
   z.toJSONSchema(createBlueprintSchema(registry), { io: "input" });
 
-export const renderBlueprint = (registry: Registry, blueprint: Blueprint) => {
+/** Which release generated which project: what maintenance needs to regenerate the original templates. */
+interface Provenance {
+  readonly name: string;
+  readonly version: string;
+}
+
+export const renderBlueprint = (
+  registry: Registry,
+  blueprint: Blueprint,
+  provenance: Provenance | undefined
+) => {
   const entries = registry.kinds.flatMap((kind) => {
     const id = blueprint.stack[kind.id];
     return id === undefined ? [] : [`    "${kind.id}": "${id}",`];
@@ -84,6 +102,13 @@ export const renderBlueprint = (registry: Registry, blueprint: Blueprint) => {
     "{",
     `  "$schema": "${blueprintSchemaUrl}",`,
     "",
+    ...(provenance === undefined
+      ? []
+      : [
+          `  "name": "${provenance.name}",`,
+          `  "version": "${provenance.version}",`,
+          "",
+        ]),
     '  "stack": {',
     ...entries,
     "  },",

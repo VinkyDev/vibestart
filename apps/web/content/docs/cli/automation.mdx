@@ -13,7 +13,9 @@ npx vibestart-cli upgrade --cwd my-app --yes --json
 
 `--json` emits one JSON object without interactive prompts. Maintenance writes also require `--yes`. The `ok` field agrees with whether the exit code is zero.
 
-A successful preview means a plan was prepared. `needs-install` means files were written but installation and validation are unfinished. Neither indicates that application tests passed.
+A successful preview means a plan was prepared. `needs-install` means files were written but installation and validation are unfinished; `next` names the commands to run. Neither indicates that application tests passed.
+
+A plan lists `changes` the CLI writes, `conflicts` among them, and `manual`: template changes to files the project owns, with the previous and target template content, which the CLI never writes. Writes need a clean Git worktree.
 
 ## Maintenance flags [#options]
 
@@ -21,7 +23,7 @@ A successful preview means a plan was prepared. `needs-install` means files were
 | ----------------- | -------------------- | ----------------------------------------------- |
 | `--cwd`, `--json` | Maintenance commands | Project directory and output format             |
 | `--yes`           | Write operations     | Confirm the plan                                |
-| `--dry-run`       | add, upgrade, adopt  | Preview without writing                         |
+| `--dry-run`       | add, upgrade         | Preview without writing                         |
 | `--no-install`    | add, upgrade         | Defer installation and checks                   |
 | `--full-check`    | add, upgrade         | Run the complete ready task                     |
 | `--offline`       | doctor               | Skip remote release lookup                      |

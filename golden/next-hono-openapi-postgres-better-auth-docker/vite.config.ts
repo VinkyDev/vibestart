@@ -8,7 +8,6 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
 const generatedFiles = [
-  ".vibestart/**",
   "**/.next/**",
   "**/.next-test-*/**",
   "**/next-env.d.ts",

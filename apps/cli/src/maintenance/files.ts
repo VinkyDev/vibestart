@@ -13,19 +13,10 @@ import {
 } from "node:fs";
 import path from "node:path";
 
-import {
-  MaintenanceError,
-  relativePath,
-  serialize,
-  snapshotSchema,
-  stateOf,
-  stateSchema,
-  releaseId,
-} from "#/maintenance/model.ts";
-import type { Snapshot } from "#/maintenance/model.ts";
+import { MaintenanceError, relativePath } from "#/maintenance/model.ts";
 
-/** Never follow symlinks in a project's managed paths, including metadata. */
-export const projectPath = (cwd: string, file: string) => {
+/** Never follow symlinks in a project's managed paths. */
+const projectPath = (cwd: string, file: string) => {
   if (lstatSync(cwd, { throwIfNoEntry: false })?.isSymbolicLink() === true) {
     throw new MaintenanceError("Project directory must not be a symlink.");
   }
@@ -81,43 +72,4 @@ export const writeText = (
   }
   chmodSync(temporary, mode);
   renameSync(temporary, target);
-};
-
-export const metadataFiles = (snapshot: Snapshot) => [
-  { path: ".vibestart/base.json", content: serialize(snapshot) },
-  { path: ".vibestart/state.json", content: serialize(stateOf(snapshot)) },
-  {
-    path: ".vibestart/.gitignore",
-    content: "pending/\nbackup/\ncache/\nlast-run.json\noperation.lock\n",
-  },
-];
-
-export const readBaseline = (cwd: string) => {
-  const source = readText(cwd, ".vibestart/base.json");
-  const stateText = readText(cwd, ".vibestart/state.json");
-  if (source === null || stateText === null) {
-    throw new MaintenanceError(
-      "No trusted baseline. Run `vibestart adopt --from <original snapshot.json>` first."
-    );
-  }
-  const snapshot = snapshotSchema.parse(JSON.parse(source));
-  const state = stateSchema.parse(JSON.parse(stateText));
-  if (
-    state.release !== releaseId(snapshot) ||
-    serialize(state) !== serialize(stateOf(snapshot))
-  ) {
-    throw new MaintenanceError(
-      "Baseline and state disagree. Restore them together from Git or run recover."
-    );
-  }
-  return snapshot;
-};
-
-export const initializeBaseline = (cwd: string, snapshot: Snapshot) => {
-  for (const file of metadataFiles(snapshot)) {
-    if (readText(cwd, file.path) !== null) {
-      throw new MaintenanceError(`Baseline already exists: ${file.path}`);
-    }
-    writeText(cwd, file.path, file.content);
-  }
 };

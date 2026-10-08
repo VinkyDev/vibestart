@@ -264,7 +264,6 @@ export const renderDevCompose = (ctx: Context, read: ReadSlot) => {
 const renderDockerignore = (read: ReadSlot) =>
   [
     ".git",
-    ".vibestart",
     ...read(ignoredFiles).map((pattern) => `**/${pattern}`),
     "**/.env",
     "**/.env.*",

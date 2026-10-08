@@ -3,7 +3,7 @@ title: Agent Skills
 description: 让编码 Agent通过 vibestart CLI 创建和维护项目。
 ---
 
-`vibestart` skill 教编码 Agent 使用 CLI，内容涵盖选择技术栈、预览变更、添加能力、升级模板，以及恢复未完成的操作。Agent 会先读取当前 CLI 的选项和结构化结果，再决定如何操作。
+`vibestart` skill 教编码 Agent 使用 CLI，内容涵盖选择技术栈、预览变更、添加能力、升级模板，以及完成升级：解决冲突，并把模板对初始业务源码的修改移植到项目中。Agent 会先读取当前 CLI 的选项和结构化结果，再决定如何操作。
 
 安装 skill 只会为 Agent 添加指令，不会安装 vibestart CLI、Vite+ 或项目依赖。CLI 的运行方式见 [CLI 概览](/docs/cli)。
 
@@ -26,9 +26,9 @@ npx skills add VinkyDev/vibestart --skill vibestart
 - “用 vibestart 创建 React SPA、Hono、oRPC、SQLite 和认证项目。使用 pnpm 管理依赖，Hono 使用 Bun 运行时。”
 - “给这个 vibestart 项目添加 Knip 和 Docker，保留已有业务修改。”
 - “预览这个项目的模板升级，说明有哪些冲突，暂不应用。”
-- “候选文件的冲突已经解决，继续未完成的 vibestart 操作。”
+- “升级这个项目，并把模板对初始业务源码的修改移植到我的代码里。”
 
-Skill 按任务分别加载创建和维护的指引，并区分预览、延后安装与已完成的检查，使 Agent 能够如实报告实际执行了什么。对于缺少维护基线的旧项目，指引也说明了如何使用原始模板快照建立来源记录。
+Skill 按任务分别加载创建和维护的指引，并区分预览、延后安装与已完成的检查，使 Agent 能够如实报告实际执行了什么。
 
 如果只在本次会话中使用，可以运行 `skills use`，它会输出指令，并提供一个临时的 supporting-files 目录：
 

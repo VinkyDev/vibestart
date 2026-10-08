@@ -11,31 +11,30 @@ npx vibestart-cli upgrade --yes
 
 `--check` reports available updates and exits with `1` when an update is found. `--dry-run` shows the merge plan without writing. The default target is the template release bundled with the running CLI.
 
+## Where the original template comes from [#base]
+
+`vibestart.jsonc` records the project's `name` and the `version` of the release that generated it. An upgrade regenerates that release's templates for the project's choices and uses them as the merge base. Generation is deterministic and published releases never change, so the base matches what the project started with. Nothing else is stored in the project.
+
+When the recorded release is not the running CLI, the CLI runs that release from npm to regenerate it, which needs registry access.
+
 ## Target release [#target]
 
 Run the desired CLI version or use `--to <exact-published-version>`. The target CLI generates its own output, keeping templates and catalog on the same release. Use the same exact CLI version for preview and application; `--to` accepts a published version number, not the `beta` or `latest` tag.
 
 ## Merge scope [#merge]
 
-Upgrades perform a three-way merge of the original template, current project, and target template, preserving mergeable JSONC comments, custom scripts, and configuration fields. Application pages and API implementations remain project-owned. Target changes to existing application source require a reviewed migration before the baseline can advance.
+Upgrades perform a three-way merge of the original template, current project, and target template for the files the template keeps maintaining: manifests, the catalog, TypeScript and Vite+ configuration, Knip, Git ignores, `AGENTS.md`, and Docker files. Mergeable JSONC comments, custom scripts, and configuration fields are preserved. The CLI then writes `vibestart.jsonc` with the target release.
 
-The default installs dependencies and runs static checks, selected Knip checks, and existing unit tests. Use `--full-check` for the complete `vp run ready`. With `--no-install`, finish the retained operation through `recover` before making another maintenance change.
+Application pages, API implementations, and other starter source belong to the project. When the target template changes one of them, the plan lists it under `manual` with the template's own diff, and the upgrade never writes it. Port the change into your code, or ask your coding agent to. A change the project already made is not listed.
+
+The default installs dependencies and runs static checks, selected Knip checks, and existing unit tests. Use `--full-check` for the complete `vp run ready`. `--no-install` writes the files only and names the installation and checks to run.
 
 Maintenance does not initialize, migrate, or reset databases. Review and execute production data migrations separately.
 
+## Review and undo with Git [#git]
+
+A write needs the project in a Git repository with no uncommitted changes, so `git diff` shows exactly what the upgrade changed. Review it before you commit. To undo everything, run `git restore . && git clean -fd`. Previews have no such requirement.
+
 ## Conflicts [#conflicts]
 
-If application encounters conflicts, project files are not written. Candidates are saved in `.vibestart/pending/candidates/`. Review them, resolve conflict markers, and run `npx vibestart-cli recover --yes`. Previews do not create candidates.
-
-See [recovery](/docs/cli/recover) for resume and rollback behavior.
-
-## Adopt an older project [#adopt]
-
-```sh
-npx vibestart-cli adopt --from original-snapshot.json --dry-run
-npx vibestart-cli adopt --from original-snapshot.json --yes
-```
-
-`adopt` requires a separately retained original generation snapshot and confirmed project name and technology choices. The snapshot must use the CLI baseline format. A recipe or current application files cannot replace it.
-
-This records provenance without installing or running checks. Unknown origins are not inferred automatically.
+When a file has both your edit and a template change in the same place, the CLI writes both into the file between Git's conflict markers (`<<<<<<< project`, `=======`, `>>>>>>> target template`). It then stops before installation. Resolve the markers, then run the installation and checks the result names. A maintained file you deleted is restored and reported as a conflict. Previews report conflicts without writing.

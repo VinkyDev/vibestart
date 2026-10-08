@@ -9,7 +9,22 @@ export interface FileChange {
   readonly conflict: boolean;
 }
 
-/** Absence is distinct from an empty file. Removed ownership never deletes user files. */
+const lines = (text: string) => text.replace(/\n$/u, "");
+
+const conflictMarkers = (local: string, base: string | null, target: string) =>
+  `${[
+    "<<<<<<< project",
+    lines(local),
+    ...(base === null ? [] : ["||||||| previous template", lines(base)]),
+    "=======",
+    lines(target),
+    ">>>>>>> target template",
+  ].join("\n")}\n`;
+
+/**
+ * Absence is distinct from an empty file. Removed ownership never deletes user files. A conflict's
+ * `after` keeps both sides in the file, with Git's markers; a file the project deleted gets the target back.
+ */
 export const mergeFile = (
   path: string,
   base: string | null,
@@ -22,22 +37,22 @@ export const mergeFile = (
   if (local === base) {
     return { after: target, before: local, conflict: false, path };
   }
-  if (base === null || local === null) {
+  if (local === null) {
     return { after: target, before: local, conflict: true, path };
+  }
+  if (base === null) {
+    return {
+      after: conflictMarkers(local, base, target),
+      before: local,
+      conflict: true,
+      path,
+    };
   }
   if (/\.jsonc?$/u.test(path)) {
     const merged = mergeJson(base, local, target);
     return {
       after: merged.conflict
-        ? [
-            "<<<<<<< project",
-            local,
-            "||||||| previous template",
-            base,
-            "=======",
-            target,
-            ">>>>>>> target template",
-          ].join("\n")
+        ? conflictMarkers(local, base, target)
         : merged.result,
       before: local,
       conflict: merged.conflict,
@@ -60,7 +75,11 @@ export const mergeFile = (
   };
 };
 
-export const diffText = ({ path, before, after }: FileChange) => {
+export const diffText = ({
+  path,
+  before,
+  after,
+}: Pick<FileChange, "path" | "before" | "after">) => {
   const changes = diffIndices(
     before?.split("\n") ?? [],
     after?.split("\n") ?? []
