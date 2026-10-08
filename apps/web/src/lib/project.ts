@@ -37,8 +37,11 @@ export interface StackPreview {
   readonly projects: Readonly<Record<string, PreviewProject>>;
 }
 
-/** Where a stack's preview is served, relative to the site's base. */
-export const previewPath = (label: string) => `previews/${label}.json`;
+/** Where the stack previews are served, relative to the site's base. */
+export const previewDirectory = "previews/";
+
+export const previewPath = (label: string) =>
+  `${previewDirectory}${label}.json`;
 
 const addonsKey = (addons: readonly string[]) =>
   addons.length === 0 ? "none" : addons.join("+");

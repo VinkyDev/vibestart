@@ -5,7 +5,7 @@ import { limitAsync } from "es-toolkit/promise";
 import type { Connect, Plugin } from "vite-plus";
 import { runnerImport } from "vite-plus";
 
-import { previewPath } from "../src/lib/project.ts";
+import { previewDirectory, previewPath } from "../src/lib/project.ts";
 import type * as Stacks from "./stacks.ts";
 
 const moduleId = "virtual:vibestart";
@@ -35,7 +35,7 @@ export const vibestart = (): Plugin => {
 
   return {
     configureServer: (server) => {
-      const previewAt = async (url: string | undefined) => {
+      const previewAt = async (url: string) => {
         const loaded = await loadStacks();
         const label = loaded.stackLabels.find(
           (candidate) =>
@@ -50,6 +50,13 @@ export const vibestart = (): Plugin => {
         response: ServerResponse,
         next: Connect.NextFunction
       ) => {
+        // Every other request passes without waiting for the generator to load.
+        if (
+          url?.startsWith(`${server.config.base}${previewDirectory}`) !== true
+        ) {
+          next();
+          return;
+        }
         let preview: string | undefined;
         try {
           preview = await previewAt(url);

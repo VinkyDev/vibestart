@@ -48,15 +48,35 @@ const fetchPreview = async (label: string) => {
   return previewSchema.parse(await response.json());
 };
 
+/** Keeps a pending or fulfilled promise; a rejected one is dropped, so the next caller retries. */
+const cached = <T>(
+  cache: Map<string, Promise<T>>,
+  key: string,
+  create: () => Promise<T>
+) => {
+  let promise = cache.get(key);
+  if (promise === undefined) {
+    promise = (async () => {
+      try {
+        return await create();
+      } catch (error) {
+        cache.delete(key);
+        throw error;
+      }
+    })();
+    cache.set(key, promise);
+  }
+  return promise;
+};
+
 const previews = new Map<string, Promise<StackPreview>>();
 
 const expand = async (label: string, key: string): Promise<Project> => {
-  let preview = previews.get(label);
-  if (preview === undefined) {
-    preview = fetchPreview(label);
-    previews.set(label, preview);
-  }
-  const { contents, projects } = await preview;
+  const { contents, projects } = await cached(
+    previews,
+    label,
+    async () => await fetchPreview(label)
+  );
   const project = projects[key];
   if (project === undefined) {
     throw new Error(`No project of ${label} with add-ons ${key}`);
@@ -75,20 +95,21 @@ const expand = async (label: string, key: string): Promise<Project> => {
 
 const loaded = new Map<string, Promise<Project>>();
 
-/** The same promise for the same project, as React's `use` requires. A stack's projects share one request. */
+/**
+ * The same promise for the same project while it loads or once it has, as React's `use` requires. A stack's
+ * projects share one request.
+ */
 export const loadProject = (
   entry: StackEntry,
   addons: readonly string[] = verifiedAddons,
   packageManager: "pnpm" | "bun" = "pnpm"
 ) => {
   const key = projectKey(addons, packageManager);
-  const cacheKey = `${entry.label}/${key}`;
-  let project = loaded.get(cacheKey);
-  if (project === undefined) {
-    project = expand(entry.label, key);
-    loaded.set(cacheKey, project);
-  }
-  return project;
+  return cached(
+    loaded,
+    `${entry.label}/${key}`,
+    async () => await expand(entry.label, key)
+  );
 };
 
 export interface FileDelta {
