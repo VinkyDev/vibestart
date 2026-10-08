@@ -49,7 +49,12 @@ export { packageJson } from "#/package-json.ts";
 export type { PnpmWorkspaceContribution } from "#/pnpm-workspace.ts";
 export { pnpmWorkspace } from "#/pnpm-workspace.ts";
 export type { Catalog, Registry, RegistryInfo } from "#/registry.ts";
-export { addonsInOrder, defaultAddons, defineRegistry } from "#/registry.ts";
+export {
+  addonsInOrder,
+  defaultAddons,
+  defaultsCover,
+  defineRegistry,
+} from "#/registry.ts";
 export type {
   Change,
   Choices,

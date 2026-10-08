@@ -45,7 +45,9 @@ import {
 import { illegalStack, incompleteStack, loadRecipe } from "#/stack.ts";
 import type { Ui } from "#/ui.ts";
 
-type Verification = Awaited<ReturnType<typeof verificationOf>>;
+type Verification = NonNullable<
+  Awaited<ReturnType<typeof verificationOf>>
+>["record"];
 
 const chooseTarget = async ({ directory, interactive }: Options) => {
   if (directory === undefined && interactive) {
@@ -143,7 +145,7 @@ const testRows = (stack: Stack, kind: string, runner: string) => [
 const summary = (
   stack: Stack,
   addons: readonly string[],
-  verification: Verification,
+  verification: Verification | undefined,
   packageManager: PackageManager
 ) => {
   const rows = [
@@ -288,7 +290,8 @@ export const create = async (
   let packageManager =
     start.packageManager ??
     (options.interactive ? await promptPackageManager() : "pnpm");
-  let verification = await verificationOf(stack, addons, packageManager);
+  let match = await verificationOf(stack, addons, packageManager);
+  let verification = match?.record;
   ui.note("Your stack", summary(stack, addons, verification, packageManager));
   while (
     options.interactive &&
@@ -297,7 +300,8 @@ export const create = async (
     stack = await promptCompose({}, stack);
     addons = addonsInOrder(registry, await promptAddons(addons));
     packageManager = await promptPackageManager(packageManager);
-    verification = await verificationOf(stack, addons, packageManager);
+    match = await verificationOf(stack, addons, packageManager);
+    verification = match?.record;
     ui.note("Your stack", summary(stack, addons, verification, packageManager));
   }
 

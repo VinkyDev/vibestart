@@ -30,7 +30,7 @@ export const listing = async () => ({
       return {
         label: stackLabel(stack),
         stack,
-        verifiedAt: verification?.verifiedAt ?? null,
+        verifiedAt: verification?.record.verifiedAt ?? null,
       };
     })
   ),

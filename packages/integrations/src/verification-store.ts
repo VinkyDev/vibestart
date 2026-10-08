@@ -22,7 +22,7 @@ import { fingerprint, generate, verificationSchema } from "@vibestart/core";
 
 import { goldens } from "#/goldens.ts";
 import { registry } from "#/registry.ts";
-import { stackLabel } from "#/stack-label.ts";
+import { taskLabel } from "#/stack-label.ts";
 import type { Platform, Projection } from "#/verification.ts";
 import {
   bunSubjects,
@@ -44,19 +44,19 @@ export interface Task {
 
 export const tasks: readonly Task[] = [
   ...verifiedStacks.map((stack): Task => ({
-    label: stackLabel(stack),
+    label: taskLabel(stack),
     packageManager: "pnpm",
     platform: "linux",
     stack,
   })),
   ...bunSubjects.map((stack): Task => ({
-    label: `${stackLabel(stack)}-bun-pm`,
+    label: taskLabel(stack, "bun"),
     packageManager: "bun",
     platform: "linux",
     stack,
   })),
-  ...Object.entries(goldens).map(([label, stack]): Task => ({
-    label,
+  ...Object.values(goldens).map((stack): Task => ({
+    label: taskLabel(stack),
     packageManager: "pnpm",
     platform: "windows",
     stack,

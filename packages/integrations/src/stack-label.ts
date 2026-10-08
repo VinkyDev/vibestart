@@ -1,4 +1,4 @@
-import type { Stack } from "@vibestart/core";
+import type { PackageManager, Stack } from "@vibestart/core";
 
 export const stackLabel = (stack: Stack) =>
   [
@@ -14,3 +14,10 @@ export const stackLabel = (stack: Stack) =>
   ]
     .filter((id) => id !== undefined)
     .join("-");
+
+/** Bun and pnpm generate the same sources, so a Bun package-manager task keeps the stack label and adds this suffix. */
+export const taskLabel = (
+  stack: Stack,
+  packageManager: PackageManager = "pnpm"
+) =>
+  packageManager === "bun" ? `${stackLabel(stack)}-bun-pm` : stackLabel(stack);
