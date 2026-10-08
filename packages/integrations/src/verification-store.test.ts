@@ -124,6 +124,15 @@ describe("the store layout", () => {
     writeFileSync(path.join(dir, "README.md"), "store");
     expect(readRecords([dir]).size).toBe(0);
   });
+
+  it("reads nothing from a directory that is not there, and still reads the others", () => {
+    const dir = tempDir();
+    const hash = "f".repeat(64);
+    writeRecords(dir, new Map([[`linux/${hash}`, recordOf(hash)]]));
+    expect([
+      ...readRecords([path.join(dir, "absent"), dir]).keys(),
+    ]).toStrictEqual([`linux/${hash}`]);
+  });
 });
 
 describe("records of the current output", () => {
