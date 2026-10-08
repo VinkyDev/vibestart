@@ -61,7 +61,7 @@ jobs:
     needs: plan
     name: verify (${{ matrix.name }})
     runs-on: ${{ matrix.platform }}
-    timeout-minutes: 360
+    timeout-minutes: 90
     container:
       image: ${{ matrix.platform == 'ubuntu-24.04' && needs.plan.outputs.image || '' }}
       options: --init --ipc=host
@@ -105,9 +105,14 @@ jobs:
         with:
           name: verification-plan
           path: .verification
+      - if: github.run_attempt > 1
+        uses: actions/download-artifact@v8.0.1
+        continue-on-error: true
+        with:
+          name: results-${{ matrix.name }}
+          path: .verification/resume/${{ matrix.name }}
       - run: vp run stacks run "$BATCH"
         env:
-          GH_TOKEN: ${{ github.token }}
           VP_BUN_VERSION: 1.4.2
           BATCH: ${{ matrix.name }}
           CI_CONTAINER_IMAGE: ${{ matrix.platform == 'ubuntu-24.04' && needs.plan.outputs.image || '' }}

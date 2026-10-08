@@ -405,32 +405,11 @@ const execute = async (task: Task, index: number) => {
 };
 
 const resumeBatch = (plan: Plan, name: string) => {
-  const run = process.env.GITHUB_RUN_ID;
-  if (run === undefined || Number(process.env.GITHUB_RUN_ATTEMPT ?? 1) < 2) {
+  if (Number(process.env.GITHUB_RUN_ATTEMPT ?? 1) < 2) {
     return;
   }
   mkdirSync(path.join(artifact, "locks"), { recursive: true });
   const dir = path.join(root, "resume", name);
-  rmSync(dir, { recursive: true, force: true });
-  try {
-    execFileSync(
-      "gh",
-      [
-        "run",
-        "download",
-        run,
-        "--repo",
-        process.env.GITHUB_REPOSITORY ?? "VinkyDev/vibestart",
-        "--name",
-        `results-${name}`,
-        "--dir",
-        dir,
-      ],
-      { stdio: "pipe", timeout: 120_000 }
-    );
-  } catch {
-    return;
-  }
   for (const task of plan.tasks) {
     const file = path.join(dir, "results", `${task.id}.json`);
     if (!existsSync(file)) {
