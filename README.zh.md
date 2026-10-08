@@ -45,7 +45,7 @@ npx skills add VinkyDev/vibestart --skill vibestart
 - **好代码养出好代码。** Agent 会模仿周围的代码、遵守成文的规则、依靠报错修正自己。每个项目都带有风格一致的代码、写明每类改动放在哪里并如何实现的 `AGENTS.md`，以及在几秒内指出问题的类型、lint 和测试检查。`vp run ready` 按从快到慢的顺序运行全部检查。
 - **只选用前沿技术，并持续更新。** 只提供已经成为当前标准、或正在成为新标准的技术：TypeScript 7、启用 React Compiler 的 React 19、Drizzle ORM 1.0、Oxlint 与 Oxfmt，以及统一工具链 [Vite+](https://viteplus.dev)。开源、不绑定厂商、每种能力只用一个库。更好的工具成为标准时，模板会切换过去并移除旧工具。
 - **按需组合，而非复制模板。** 每项技术是一个带有文件、依赖和约束的集成，项目由你选择的集成组合而成。无法工作的组合会被拒绝，并给出原因和改动最少的修正方式。
-- **每个组合都经过验证。** 每次发布前，所有支持的组合都会被生成、安装，并依次通过类型检查、lint、测试、浏览器测试和生产构建。结果连同指纹记录在 [`verification.json`](packages/integrations/verification.json)，CLI 在创建项目时展示。
+- **每个组合都经过验证。** 每次发布前，所有支持的组合都会被生成、安装，并依次通过类型检查、lint、测试、浏览器测试和生产构建。结果连同指纹记录在 [`verification`](https://github.com/VinkyDev/vibestart/tree/verification) 分支上，CLI 在创建项目时展示。
 - **全栈 TypeScript。** 从数据库到按钮只用一种语言，类型从表结构经由接口传递到页面，无需代码生成。Zod 校验来自外部的数据。
 - **只写有价值的测试。** 端到端测试覆盖完整流程，集成测试基于真实数据库覆盖每个 API 操作，单元测试只留给真正含有分支逻辑的代码。
 - **创建之后仍可维护。** `upgrade` 对比原始模板、你的项目和新模板，写入前先预览结果。模板文件获得更新，你的应用代码保持原样。
@@ -96,14 +96,14 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 
 ## 仓库结构
 
-| 路径                    | 职责                                              |
-| ----------------------- | ------------------------------------------------- |
-| `apps/cli`              | `vibestart` 命令                                  |
-| `apps/web`              | 网页工作台与文档站                                |
-| `packages/core`         | Blueprint schema、解析器与生成器                  |
-| `packages/integrations` | Integration、模板、依赖目录与 `verification.json` |
-| `packages/config`       | 共享的 TypeScript 预设                            |
-| `golden/`               | 已提交的生成项目,各自是独立的 workspace           |
+| 路径                    | 职责                                      |
+| ----------------------- | ----------------------------------------- |
+| `apps/cli`              | `vibestart` 命令                          |
+| `apps/web`              | 网页工作台与文档站                        |
+| `packages/core`         | Blueprint schema、解析器与生成器          |
+| `packages/integrations` | Integration、模板、依赖目录与验证记录存储 |
+| `packages/config`       | 共享的 TypeScript 预设                    |
+| `golden/`               | 已提交的生成项目,各自是独立的 workspace   |
 
 ## 参与贡献
 

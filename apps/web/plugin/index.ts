@@ -1,69 +1,102 @@
+import type { ServerResponse } from "node:http";
 import path from "node:path";
 
-import type { Plugin } from "vite-plus";
+import { limitAsync } from "es-toolkit/promise";
+import type { Connect, Plugin } from "vite-plus";
 import { runnerImport } from "vite-plus";
 
-import type { Project } from "../src/lib/project.ts";
+import { previewDirectory, previewPath } from "../src/lib/project.ts";
 import type * as Stacks from "./stacks.ts";
 
 const moduleId = "virtual:vibestart";
-const projectPrefix = `${moduleId}/project/`;
-const resolved = (id: string) => `\0${id}`;
+const resolved = `\0${moduleId}`;
 
-/** A module whose default export is one project; `JSON.parse` of a string literal parses faster than an object literal. */
-const jsonModule = (project: Project) =>
-  `export default JSON.parse(${JSON.stringify(JSON.stringify(project))});`;
+export const importStacks = async () => {
+  const imported = await runnerImport<typeof Stacks>("/plugin/stacks.ts", {
+    oxc: { exclude: ["**/templates/**"] },
+    root: path.dirname(import.meta.dirname),
+  });
+  return imported.module;
+};
 
 /**
- * Serves the registry, every legal stack, and each stack's generated project with each set of add-ons as
- * virtual modules, one lazy chunk per project. The generator formats with oxfmt's native binding, so it runs here in Node, not in the browser.
+ * Serves the registry and every legal stack as `virtual:vibestart`, and each stack's preview as a JSON file at
+ * `previewPath`. The generator formats with oxfmt's native binding, so it runs here in Node, not in the browser.
+ * Previews are files, not modules: hundreds of them, each holding whole projects, would make the bundler parse
+ * and keep every one.
  */
 export const vibestart = (): Plugin => {
   let stacks: Promise<typeof Stacks> | undefined;
   const loadStacks = async () => {
-    stacks ??= (async () => {
-      const imported = await runnerImport<typeof Stacks>("/plugin/stacks.ts", {
-        oxc: { exclude: ["**/templates/**"] },
-        root: path.dirname(import.meta.dirname),
-      });
-      return imported.module;
-    })();
+    stacks ??= importStacks();
     return await stacks;
   };
 
   return {
-    load: async (id) => {
-      if (id === resolved(moduleId)) {
+    configureServer: (server) => {
+      const previewAt = async (url: string) => {
         const loaded = await loadStacks();
-        const summaries = await loaded.stackSummaries();
-        const entries = summaries.map((summary) => {
-          const projects = [...loaded.projectSets.keys()].map(
-            (key) =>
-              `${JSON.stringify(key)}: () => import(${JSON.stringify(`${projectPrefix}${summary.label}/${key}`)}).then((module) => module.default)`
-          );
-          return `{ ...${JSON.stringify(summary)}, projects: { ${projects.join(", ")} } }`;
+        const label = loaded.stackLabels.find(
+          (candidate) =>
+            url === `${server.config.base}${previewPath(candidate)}`
+        );
+        return label === undefined
+          ? undefined
+          : JSON.stringify(await loaded.stackPreview(label));
+      };
+      const servePreview = async (
+        url: string | undefined,
+        response: ServerResponse,
+        next: Connect.NextFunction
+      ) => {
+        if (
+          url?.startsWith(`${server.config.base}${previewDirectory}`) !== true
+        ) {
+          next();
+          return;
+        }
+        let preview: string | undefined;
+        try {
+          preview = await previewAt(url);
+        } catch (error) {
+          next(error);
+          return;
+        }
+        if (preview === undefined) {
+          next();
+          return;
+        }
+        response.setHeader("Content-Type", "application/json");
+        response.end(preview);
+      };
+      server.middlewares.use((request, response, next) => {
+        void servePreview(request.url, response, next);
+      });
+    },
+    async generateBundle() {
+      const loaded = await loadStacks();
+      // A few stacks at a time: each generates every project it previews at once.
+      const emit = limitAsync(async (label: string) => {
+        this.emitFile({
+          fileName: previewPath(label),
+          source: JSON.stringify(await loaded.stackPreview(label)),
+          type: "asset",
         });
-        return [
-          `export const previewName = ${JSON.stringify(loaded.previewName)};`,
-          `export const registry = ${JSON.stringify(loaded.registryInfo)};`,
-          `export const stacks = [${entries.join(",\n")}];`,
-        ].join("\n");
+      }, 2);
+      await Promise.all(loaded.stackLabels.map(emit));
+    },
+    load: async (id) => {
+      if (id !== resolved) {
+        return null;
       }
-      if (id.startsWith(resolved(projectPrefix))) {
-        const loaded = await loadStacks();
-        const [label = "", key = ""] = id
-          .slice(resolved(projectPrefix).length)
-          .split("/");
-        return jsonModule(await loaded.project(label, key));
-      }
-      return null;
+      const loaded = await loadStacks();
+      return [
+        `export const previewName = ${JSON.stringify(loaded.previewName)};`,
+        `export const registry = ${JSON.stringify(loaded.registryInfo)};`,
+        `export const stacks = ${JSON.stringify(await loaded.stackEntries())};`,
+      ].join("\n");
     },
     name: "vibestart",
-    resolveId: (id) => {
-      if (id === moduleId || id.startsWith(projectPrefix)) {
-        return resolved(id);
-      }
-      return null;
-    },
+    resolveId: (id) => (id === moduleId ? resolved : null),
   };
 };

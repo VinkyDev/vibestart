@@ -1,0 +1,934 @@
+# packages/db/drizzle.config.ts · 108 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-orpc-postgres-better-auth-bun-docker
+#   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-postgres-bun-docker
+#   hono-orpc-postgres-docker
+#   hono-postgres-better-auth-bun-docker
+#   hono-postgres-better-auth-docker
+#   hono-postgres-bun-docker
+#   hono-postgres-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-bun-docker
+#   spa-hono-orpc-postgres-bun-docker-e2e
+#   spa-hono-orpc-postgres-docker
+#   spa-hono-orpc-postgres-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-bun-docker
+#   spa-hono-postgres-bun-docker-e2e
+#   spa-hono-postgres-docker
+#   spa-hono-postgres-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-bun-docker
+#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-bun-docker-e2e
+#   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-docker-e2e
+import { existsSync } from "node:fs";
+
+import { defineConfig } from "drizzle-kit";
+
+const serverEnvFile = "../../apps/server/.env";
+
+if (existsSync(serverEnvFile)) {
+  process.loadEnvFile(serverEnvFile);
+}
+
+export default defineConfig({
+  dbCredentials: { url: process.env.DATABASE_URL ?? "" },
+  dialect: "postgresql",
+  out: "./src/migrations",
+  schema: "./src/schema",
+});
+
+# packages/db/drizzle.config.ts · 108 stacks
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   hono-orpc-sqlite-better-auth-bun-docker
+#   hono-orpc-sqlite-better-auth-docker
+#   hono-orpc-sqlite-bun-docker
+#   hono-orpc-sqlite-docker
+#   hono-sqlite-better-auth-bun-docker
+#   hono-sqlite-better-auth-docker
+#   hono-sqlite-bun-docker
+#   hono-sqlite-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-bun-docker
+#   spa-hono-orpc-sqlite-bun-docker-e2e
+#   spa-hono-orpc-sqlite-docker
+#   spa-hono-orpc-sqlite-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-bun-docker
+#   spa-hono-sqlite-bun-docker-e2e
+#   spa-hono-sqlite-docker
+#   spa-hono-sqlite-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-bun-docker
+#   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-bun-docker
+#   tanstack-start-hono-sqlite-bun-docker-e2e
+#   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-docker-e2e
+import { existsSync } from "node:fs";
+import path from "node:path";
+
+import { defineConfig } from "drizzle-kit";
+
+const appDir = "../../apps/server";
+const appEnvFile = `${appDir}/.env`;
+
+if (existsSync(appEnvFile)) {
+  process.loadEnvFile(appEnvFile);
+}
+
+export default defineConfig({
+  dbCredentials: {
+    url: path.resolve(appDir, process.env.DATABASE_URL ?? "local.db"),
+  },
+  dialect: "sqlite",
+  out: "./src/migrations",
+  schema: "./src/schema",
+});
+
+# packages/db/drizzle.config.ts · 16 stacks
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-docker-e2e
+#   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-docker-e2e
+#   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-docker-e2e
+import { existsSync } from "node:fs";
+
+import { defineConfig } from "drizzle-kit";
+
+const serverEnvFile = "../../apps/web/.env";
+
+if (existsSync(serverEnvFile)) {
+  process.loadEnvFile(serverEnvFile);
+}
+
+export default defineConfig({
+  dbCredentials: { url: process.env.DATABASE_URL ?? "" },
+  dialect: "postgresql",
+  out: "./src/migrations",
+  schema: "./src/schema",
+});
+
+# packages/db/drizzle.config.ts · 16 stacks
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-docker-e2e
+import { existsSync } from "node:fs";
+import path from "node:path";
+
+import { defineConfig } from "drizzle-kit";
+
+const appDir = "../../apps/web";
+const appEnvFile = `${appDir}/.env`;
+
+if (existsSync(appEnvFile)) {
+  process.loadEnvFile(appEnvFile);
+}
+
+export default defineConfig({
+  dbCredentials: {
+    url: path.resolve(appDir, process.env.DATABASE_URL ?? "local.db"),
+  },
+  dialect: "sqlite",
+  out: "./src/migrations",
+  schema: "./src/schema",
+});
+
+# packages/db/src/migrations/.gitkeep · 44 stacks
+#   hono-postgres-bun-docker
+#   hono-postgres-docker
+#   hono-sqlite-bun-docker
+#   hono-sqlite-docker
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+#   spa-hono-postgres-bun-docker
+#   spa-hono-postgres-bun-docker-e2e
+#   spa-hono-postgres-docker
+#   spa-hono-postgres-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-bun-docker
+#   spa-hono-sqlite-bun-docker-e2e
+#   spa-hono-sqlite-docker
+#   spa-hono-sqlite-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+#   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-bun-docker-e2e
+#   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-docker-e2e
+#   tanstack-start-hono-sqlite-bun-docker
+#   tanstack-start-hono-sqlite-bun-docker-e2e
+#   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-docker-e2e
+#   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-docker-e2e
+#   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-docker-e2e
+
+# packages/db/src/relations.ts · 80 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-orpc-postgres-better-auth-bun-docker
+#   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-sqlite-better-auth-bun-docker
+#   hono-orpc-sqlite-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
+import { defineRelations } from "drizzle-orm";
+
+import { account, session, user, verification } from "#src/schema/auth.ts";
+import { todos } from "#src/schema/todos.ts";
+
+export const relations = defineRelations(
+  { account, session, todos, user, verification },
+  (r) => ({
+    account: {
+      user: r.one.user({ from: r.account.userId, to: r.user.id }),
+    },
+    session: {
+      user: r.one.user({ from: r.session.userId, to: r.user.id }),
+    },
+    todos: {
+      user: r.one.user({ from: r.todos.userId, to: r.user.id }),
+    },
+    user: {
+      accounts: r.many.account(),
+      sessions: r.many.session(),
+      todos: r.many.todos(),
+    },
+  })
+);
+
+# packages/db/src/relations.ts · 80 stacks
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   hono-orpc-postgres-bun-docker
+#   hono-orpc-postgres-docker
+#   hono-orpc-sqlite-bun-docker
+#   hono-orpc-sqlite-docker
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-postgres-bun-docker
+#   spa-hono-orpc-postgres-bun-docker-e2e
+#   spa-hono-orpc-postgres-docker
+#   spa-hono-orpc-postgres-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-bun-docker
+#   spa-hono-orpc-sqlite-bun-docker-e2e
+#   spa-hono-orpc-sqlite-docker
+#   spa-hono-orpc-sqlite-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-orpc-postgres-bun-docker
+#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-bun-docker
+#   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-docker-e2e
+#   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-docker-e2e
+#   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-docker-e2e
+import { defineRelations } from "drizzle-orm";
+
+import { todos } from "#src/schema/todos.ts";
+
+export const relations = defineRelations({ todos });
+
+# packages/db/src/relations.ts · 44 stacks
+#   hono-postgres-better-auth-bun-docker
+#   hono-postgres-better-auth-docker
+#   hono-sqlite-better-auth-bun-docker
+#   hono-sqlite-better-auth-docker
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-docker-e2e
+import { defineRelations } from "drizzle-orm";
+
+import { account, session, user, verification } from "#src/schema/auth.ts";
+
+export const relations = defineRelations(
+  { account, session, user, verification },
+  (r) => ({
+    account: {
+      user: r.one.user({ from: r.account.userId, to: r.user.id }),
+    },
+    session: {
+      user: r.one.user({ from: r.session.userId, to: r.user.id }),
+    },
+    user: {
+      accounts: r.many.account(),
+      sessions: r.many.session(),
+    },
+  })
+);
+
+# packages/db/src/relations.ts · 44 stacks
+#   hono-postgres-bun-docker
+#   hono-postgres-docker
+#   hono-sqlite-bun-docker
+#   hono-sqlite-docker
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+#   spa-hono-postgres-bun-docker
+#   spa-hono-postgres-bun-docker-e2e
+#   spa-hono-postgres-docker
+#   spa-hono-postgres-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-bun-docker
+#   spa-hono-sqlite-bun-docker-e2e
+#   spa-hono-sqlite-docker
+#   spa-hono-sqlite-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+#   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-bun-docker-e2e
+#   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-docker-e2e
+#   tanstack-start-hono-sqlite-bun-docker
+#   tanstack-start-hono-sqlite-bun-docker-e2e
+#   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-docker-e2e
+#   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-docker-e2e
+#   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-docker-e2e
+import { defineRelations } from "drizzle-orm";
+
+export const relations = defineRelations({});
+
+# packages/db/tsconfig.json · 248 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-bun-docker
+#   hono-openapi-sqlite-docker
+#   hono-orpc-postgres-better-auth-bun-docker
+#   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-postgres-bun-docker
+#   hono-orpc-postgres-docker
+#   hono-orpc-sqlite-better-auth-bun-docker
+#   hono-orpc-sqlite-better-auth-docker
+#   hono-orpc-sqlite-bun-docker
+#   hono-orpc-sqlite-docker
+#   hono-postgres-better-auth-bun-docker
+#   hono-postgres-better-auth-docker
+#   hono-postgres-bun-docker
+#   hono-postgres-docker
+#   hono-sqlite-better-auth-bun-docker
+#   hono-sqlite-better-auth-docker
+#   hono-sqlite-bun-docker
+#   hono-sqlite-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-bun-docker-e2e
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-bun-docker-e2e
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-bun-docker-e2e
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-docker
+#   next-self-postgres-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-docker
+#   next-self-sqlite-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-bun-docker
+#   spa-hono-orpc-postgres-bun-docker-e2e
+#   spa-hono-orpc-postgres-docker
+#   spa-hono-orpc-postgres-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-bun-docker
+#   spa-hono-orpc-sqlite-bun-docker-e2e
+#   spa-hono-orpc-sqlite-docker
+#   spa-hono-orpc-sqlite-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-bun-docker
+#   spa-hono-postgres-bun-docker-e2e
+#   spa-hono-postgres-docker
+#   spa-hono-postgres-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-bun-docker
+#   spa-hono-sqlite-bun-docker-e2e
+#   spa-hono-sqlite-docker
+#   spa-hono-sqlite-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-bun-docker
+#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-bun-docker
+#   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-bun-docker-e2e
+#   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-bun-docker
+#   tanstack-start-hono-sqlite-bun-docker-e2e
+#   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-docker-e2e
+#   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-docker-e2e
+#   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src", "drizzle.config.ts"]
+}

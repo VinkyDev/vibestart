@@ -10,8 +10,8 @@ import {
   verifiedAs,
 } from "@vibestart/integrations";
 
-import type { Project, StackSummary } from "../src/lib/project.ts";
-import { addonsKey, projectKey } from "../src/lib/project.ts";
+import type { Project, StackEntry, StackPreview } from "../src/lib/project.ts";
+import { projectKey } from "../src/lib/project.ts";
 
 /** The name the CLI gives a project when it is not asked for one. */
 export const previewName = "my-app";
@@ -30,7 +30,9 @@ export const registryInfo: RegistryInfo = {
   kinds: registry.kinds,
 };
 
-export const stackSummaries = async (): Promise<StackSummary[]> =>
+export const stackLabels = [...legal.keys()];
+
+export const stackEntries = async (): Promise<StackEntry[]> =>
   await Promise.all(
     [...legal].map(async ([label, stack]) => {
       const [verification, bunVerification] = await Promise.all([
@@ -56,7 +58,7 @@ export const stackSummaries = async (): Promise<StackSummary[]> =>
   );
 
 /**
- * Every set of add-ons, by `addonsKey`. A preview is generated ahead for each, so their count doubles with
+ * Every set of add-ons. A preview is generated ahead for each, so their count doubles with
  * each add-on; past a few, previews should generate on demand instead.
  */
 const subsets = (ids: readonly string[]) => {
@@ -67,15 +69,8 @@ const subsets = (ids: readonly string[]) => {
   return sets;
 };
 
-const addonSets = new Map(
-  subsets(registry.addons.map((addon) => addon.id)).map((set) => [
-    addonsKey(set),
-    set,
-  ])
-);
-
-export const projectSets = new Map(
-  [...addonSets.values()].flatMap((addons) =>
+const projectSets = new Map(
+  subsets(registry.addons.map((addon) => addon.id)).flatMap((addons) =>
     (["pnpm", "bun"] as const).map(
       (packageManager) =>
         [
@@ -109,4 +104,37 @@ export const project = async (label: string, key: string): Promise<Project> => {
     setup,
     packageManager: selection.packageManager,
   };
+};
+
+/** In the order of `projectSets`, so a build writes the same bytes for the same output. */
+export const stackPreview = async (label: string): Promise<StackPreview> => {
+  const generated = await Promise.all(
+    [...projectSets.keys()].map(
+      async (key) => [key, await project(label, key)] as const
+    )
+  );
+  const contents: string[] = [];
+  const indexes = new Map<string, number>();
+  const intern = (content: string) => {
+    let index = indexes.get(content);
+    if (index === undefined) {
+      index = contents.length;
+      contents.push(content);
+      indexes.set(content, index);
+    }
+    return index;
+  };
+  const projects = Object.fromEntries(
+    generated.map(([key, { files, ...rest }]) => [
+      key,
+      {
+        ...rest,
+        files: files.map((file) => ({
+          ...file,
+          content: intern(file.content),
+        })),
+      },
+    ])
+  );
+  return { contents, projects };
 };

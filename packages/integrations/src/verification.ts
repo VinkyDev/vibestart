@@ -1,4 +1,5 @@
 import { minBy } from "es-toolkit/array";
+import { z } from "zod";
 
 import type { Blueprint, PackageManager, Stack } from "@vibestart/core";
 import {
@@ -12,12 +13,31 @@ import {
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
 
-import recorded from "../verification.json";
+/** Every stack is verified on Linux; the goldens also on Windows. */
+export const platforms = ["linux", "windows"] as const;
+
+export type Platform = (typeof platforms)[number];
+
+/** Each platform's records for the current output, by stack label. */
+const projectionSchema = z.strictObject({
+  linux: verificationSchema,
+  windows: verificationSchema,
+});
+
+export type Projection = z.infer<typeof projectionSchema>;
+
+/** `vp run stacks pull` writes this from the verification store; a checkout without it verifies nothing. */
+const projections = import.meta.glob("../verification.json", {
+  eager: true,
+  import: "default",
+});
 
 /** Templates are files of a project with this name, so stacks are verified under it. */
 export const verifiedName = "my-app";
 
-export const verification = verificationSchema.parse(recorded);
+export const verification = projectionSchema.parse(
+  projections["../verification.json"] ?? { linux: {}, windows: {} }
+);
 
 const legal = new Map(
   legalStacks(registry).map((stack) => [stackLabel(stack), stack])
@@ -74,7 +94,7 @@ const currentRecord = async (
   packageManager: PackageManager
 ) => {
   const record =
-    verification[
+    verification.linux[
       `${stackLabel(subject)}${packageManager === "bun" ? "-bun-pm" : ""}`
     ];
   if (record === undefined) {

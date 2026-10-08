@@ -23,28 +23,32 @@ import { parseArgs } from "node:util";
 
 import { limitAsync } from "es-toolkit/promise";
 
-import type {
-  Generation,
-  PackageManager,
-  Stack,
-  Verification,
-} from "@vibestart/core";
-import {
-  fingerprint,
-  generate,
-  legalStacks,
-  verificationSchema,
-} from "@vibestart/core";
+import type { Generation, PackageManager, Stack } from "@vibestart/core";
+import { fingerprint, generate, legalStacks } from "@vibestart/core";
 
+import { downloadEvidence } from "#/evidence.ts";
 import { goldenPaths, goldenRoot, goldens } from "#/goldens.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
 import { materializeEnvFromExamples } from "#/server-env.ts";
 import { stackLabel } from "#/stack-label.ts";
+import { e2e, playwright } from "#/testing/runners.ts";
+import type { StackVerification, Task } from "#/verification-store.ts";
 import {
-  bunSubjects,
-  verification as recorded,
+  batchesOf,
+  cloneStore,
+  currentRecords,
+  generateTask,
+  projectionOf,
+  readRecords,
+  tasks,
+  writeRecords,
+} from "#/verification-store.ts";
+import type { Platform } from "#/verification.ts";
+import {
+  platforms,
+  verification,
   verifiedBlueprint,
   verifiedName,
   verifiedStacks,
@@ -89,29 +93,21 @@ const projectEnv = Object.fromEntries(
 const logTail = (logFile: string, lines = 80) =>
   readFileSync(logFile, "utf-8").trimEnd().split("\n").slice(-lines).join("\n");
 
-const verificationPath = `${repoRoot}packages/integrations/verification.json`;
-
-type StackVerification = Verification[string];
-
-const writeVerification = async (
-  verification: ReadonlyMap<string, StackVerification>
-) => {
-  const sorted = Object.fromEntries(
-    [...verification].toSorted(([a], [b]) => a.localeCompare(b))
-  );
-  const { code } = await formatWithProjectConfig(
-    verificationPath,
-    JSON.stringify(sorted),
-    "@vibestart"
-  );
-  writeFileSync(verificationPath, code);
-};
+const projectionPath = `${repoRoot}packages/integrations/verification.json`;
 
 const environment = {
   arch: arch(),
   node: process.version,
   os: `${platform()} ${release()}`,
 };
+
+const hostPlatforms: Partial<Record<NodeJS.Platform, Platform>> = {
+  linux: "linux",
+  win32: "windows",
+};
+
+/** The platform whose records this machine's runs produce; elsewhere `verify` runs the Linux tasks and writes none. */
+const hostPlatform = hostPlatforms[platform()];
 
 // Each stack's e2e runner takes a port for the web app and the next for a Hono server, so stacks sit 10 ports apart.
 // From 20000 the range stays below the ephemeral ports of Linux (32768) and macOS (49152), which the operating system
@@ -125,10 +121,31 @@ interface StackRun {
   generation: Generation;
   index: number;
   label: string;
+  platform: Platform;
   stack: Stack;
   out: string;
-  verification: Map<string, StackVerification>;
 }
+
+const browserRunners = new Map([
+  ["e2e", e2e],
+  ["playwright", playwright],
+]);
+
+/**
+ * The README's first-run step for e2e tests. The project's own runner installs the browser, because the
+ * build it needs follows the version that project resolved, which can trail the latest release.
+ */
+const browserInstall = (stack: Stack) => {
+  const runner =
+    stack.framework === undefined || stack.testing === undefined
+      ? undefined
+      : browserRunners.get(stack.testing);
+  return runner === undefined
+    ? []
+    : [
+        `cd ${path.join("apps", "web")} && vp exec ${runner.installer} install chromium && cd ${path.join("..", "..")}`,
+      ];
+};
 
 const verifyStack = async ({
   force,
@@ -136,10 +153,11 @@ const verifyStack = async ({
   index,
   label,
   out,
-  verification,
+  platform: taskPlatform,
+  stack,
 }: StackRun) => {
   const hash = await fingerprint(generation);
-  if (!force && verification.get(label)?.fingerprint === hash) {
+  if (!force && verification[taskPlatform][label]?.fingerprint === hash) {
     print(`${label} verified at this output`);
     return true;
   }
@@ -153,6 +171,7 @@ const verifyStack = async ({
   const commands = [
     "git init -q",
     ...generation.setup.map((command) => command.run),
+    ...browserInstall(stack),
     "vp run ready",
   ];
   const child = spawn(commands.join(" && "), {
@@ -165,23 +184,27 @@ const verifyStack = async ({
   closeSync(log);
   const passed = child.exitCode === 0;
   const seconds = Math.round((Date.now() - started) / 1000);
-  if (passed) {
-    verification.set(label, {
+  if (!passed) {
+    print(`${label} FAIL (${seconds}s), see ${logFile}`);
+    // On CI the log file stays on the runner, so the reason has to reach the job output.
+    print(logTail(logFile));
+    return false;
+  }
+  print(`${label} PASS (${seconds}s)`);
+  // After each stack, so an interrupted run keeps what it verified.
+  if (hostPlatform !== undefined) {
+    const record: StackVerification = {
       environment,
       fingerprint: hash,
       seconds,
       verifiedAt: new Date().toISOString(),
-    });
-    print(`${label} PASS (${seconds}s)`);
-  } else {
-    verification.delete(label);
-    print(`${label} FAIL (${seconds}s), see ${logFile}`);
-    // On CI the log file stays on the runner, so the reason has to reach the job output.
-    print(logTail(logFile));
+    };
+    writeRecords(
+      path.join(out, "results"),
+      new Map([[`${hostPlatform}/${hash}`, record]])
+    );
   }
-  // After each stack, so an interrupted run keeps what it verified.
-  await writeVerification(verification);
-  return passed;
+  return true;
 };
 
 const smokeStack = ({
@@ -340,148 +363,107 @@ const syncGoldens = async () => {
   );
 };
 
-const verifiedLabels = [
-  ...verifiedStacks.map((stack) => stackLabel(stack)),
-  ...bunSubjects.map((stack) => `${stackLabel(stack)}-bun-pm`),
-].toSorted();
-
-const shardOf = (label: string, shards: number) =>
-  verifiedLabels.indexOf(label) % shards;
-
-/** A shard answers for the labels it owns; one that left no file keeps the repository's. */
-const mergeShards = async (dir: string, shards: number) => {
-  const merged = new Map(Object.entries(recorded));
-  for (let index = 0; index < shards; index += 1) {
-    const file = path.join(dir, `shard-${index}`, "verification.json");
-    if (!existsSync(file)) {
-      print(`shard ${index} left no records`);
-      continue;
-    }
-    const shard = verificationSchema.parse(
-      JSON.parse(readFileSync(file, "utf-8"))
-    );
-    for (const label of verifiedLabels.filter(
-      (name) => shardOf(name, shards) === index
-    )) {
-      const record = shard[label];
-      if (record === undefined) {
-        merged.delete(label);
-      } else {
-        merged.set(label, record);
-      }
-    }
-  }
-  await writeVerification(merged);
-};
-
-const shardPattern = /^(?<index>\d+)\/(?<count>\d+)$/u;
-
 // A stack's `ready` runs several dev servers and a browser, so a few stacks saturate the CPU.
 const defaultJobs = Math.max(1, Math.floor(availableParallelism() / 4));
 
-const usage = `Usage: vp run stacks <command> [pattern] [--out <dir>] [--force] [--jobs <n>] [--package-manager pnpm|bun|all] [--shard <i>/<n>]
+const usage = `Usage: vp run stacks <command> [pattern] [--out <dir>] [--force] [--jobs <n>] [--package-manager pnpm|bun|all]
 
   gen [pattern]      write each legal stack whose name matches to <out>/<name>
-  check [pattern]    compare verification records with current output; no installs, services, or writes
-  verify [pattern]   generate, install, set up, and run \`vp run ready\` in each matching stack,
-                     skipping stacks verified at their current output (--force reruns them),
-                     and records each result in packages/integrations/verification.json
-  smoke [pattern]   install Hono stacks, check, unit-test, build, and exercise modules/handlers without listening; no verification record
-  merge <dir> --shards <n>
-                     combine the verification.json each \`verify --shard <i>/<n>\` wrote to <dir>/shard-<i>/
-                     into packages/integrations/verification.json
+  pull [--evidence <dir>]
+                     read the verification store (the \`verification\` branch, which only CI on main writes)
+                     and the records under <dir>, and write the records for the current output to
+                     packages/integrations/verification.json, which the CLI and the Studio embed
+  check [pattern]    compare that file with the current output of every task, Linux and Windows;
+                     no installs, services, or writes
+  verify [pattern]   generate, install, set up, and run \`vp run ready\` in each matching task of this
+                     platform, skipping tasks verified at their current output (--force reruns them).
+                     On Linux and Windows each pass is written to <out>/results; CI records them
+  smoke [pattern]    install Hono stacks, check, unit-test, build, and exercise modules/handlers without listening; no record
   goldens            regenerate golden/* from generator output
-  golden-matrix      print the golden names and stack choices as JSON for CI
+  plan               print the CI jobs for the tasks verification.json does not cover, as JSON
+  evidence <dir>     on CI, copy the records of this pull request's earlier runs (or, on main, of the merged
+                     pull request's runs) that match the current output to <dir>
+  record <results> <store>
+                     on CI, add the records under <results> that match the current output to a store checkout
 
-gen, check, and verify include both package managers by default. --package-manager narrows the matrix.
+Every stack is a Linux task; the goldens are also Windows tasks. gen, check, and verify include both
+package managers by default. --package-manager narrows the matrix.
 Bun is required to install or run Bun package-manager or Hono-runtime combinations.
---shard <i>/<n> (0-based) takes every n-th stack by name, so n machines each verify a share; merge joins the shares.
 verify runs --jobs stacks at a time (default ${defaultJobs}), each on its own test ports.
 Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres).`;
 
-interface Selection {
-  command: string;
-  managers: readonly PackageManager[];
-  matching: RegExp | undefined;
-  shard: { count: number; index: number };
-}
+type Selected = Task & { readonly generation: Generation };
 
-const selectStacks = async ({
-  command,
-  managers,
-  matching,
-  shard,
-}: Selection) => {
-  // A stack another one is verified as needs no run of its own, and Bun installs only the subjects.
-  const stacksFor = (packageManager: PackageManager) => {
-    if (command === "gen") {
-      return legalStacks(registry);
-    }
-    return packageManager === "bun" && ["check", "verify"].includes(command)
-      ? bunSubjects
-      : verifiedStacks;
-  };
-  return await Promise.all(
+const selectTasks = async (
+  selected: readonly Platform[],
+  managers: readonly PackageManager[],
+  matches: (label: string) => boolean
+): Promise<Selected[]> =>
+  await Promise.all(
+    tasks
+      .filter(
+        (task) =>
+          selected.includes(task.platform) &&
+          managers.includes(task.packageManager) &&
+          matches(task.label)
+      )
+      .map(async (task) => ({ ...task, generation: await generateTask(task) }))
+  );
+
+const selectStacks = async (
+  stacks: readonly Stack[],
+  managers: readonly PackageManager[],
+  matches: (label: string) => boolean
+) =>
+  await Promise.all(
     managers
       .flatMap((packageManager) =>
-        stacksFor(packageManager).map((stack) => ({
-          stack,
-          packageManager,
+        stacks.map((stack) => ({
           label: `${stackLabel(stack)}${packageManager === "bun" ? "-bun-pm" : ""}`,
+          packageManager,
+          stack,
         }))
       )
-      .filter(({ stack }) => command !== "smoke" || stack.backend === "hono")
-      .filter(({ label }) => shardOf(label, shard.count) === shard.index)
-      .filter(({ label }) => matching === undefined || matching.test(label))
-      .map(async ({ stack, packageManager, label }) => ({
+      .filter(({ label }) => matches(label))
+      .map(async ({ label, packageManager, stack }) => ({
         generation: await generateProject(stack, packageManager),
         label,
         stack,
       }))
   );
-};
 
-type Selected = Awaited<ReturnType<typeof selectStacks>>;
+const isCurrent = async (task: Task) =>
+  verification[task.platform][task.label]?.fingerprint ===
+  (await fingerprint(await generateTask(task)));
 
-const checkStacks = async (selected: Selected) => {
+const checkTasks = async (selected: readonly Selected[]) => {
   const results = await Promise.all(
-    selected.map(async ({ generation, label }) => {
-      const record = recorded[label];
-      const current = record?.fingerprint === (await fingerprint(generation));
+    selected.map(async (task) => {
+      const current = await isCurrent(task);
       let status = "MISSING";
-      if (record !== undefined) {
+      if (verification[task.platform][task.label] !== undefined) {
         status = current ? "CURRENT" : "STALE";
       }
-      print(`${label} ${status}`);
+      print(`${task.platform} ${task.label} ${status}`);
       return current;
     })
   );
   const current = results.filter(Boolean).length;
-  print(`${current} of ${selected.length} stacks verified at current output`);
+  print(`${current} of ${selected.length} tasks verified at current output`);
   return current === selected.length ? 0 : 1;
 };
 
-const verifyStacks = async (
-  selected: Selected,
+const verifyTasks = async (
+  selected: readonly Selected[],
   { force, jobs, out }: { force: boolean; jobs: number; out: string }
 ) => {
-  const labels = new Set(verifiedLabels);
-  const verified = new Map(
-    Object.entries(recorded).filter(([label]) => labels.has(label))
-  );
+  if (hostPlatform === undefined) {
+    print(`Runs on ${platform()} write no results`);
+  }
   const verify = limitAsync(verifyStack, jobs);
   const results = await Promise.all(
     selected.map(
-      async ({ generation, label, stack }, index) =>
-        await verify({
-          force,
-          generation,
-          index,
-          label,
-          stack,
-          out,
-          verification: verified,
-        })
+      async (task, index) => await verify({ ...task, force, index, out })
     )
   );
   const passed = results.filter(Boolean).length;
@@ -489,12 +471,37 @@ const verifyStacks = async (
   return passed === selected.length ? 0 : 1;
 };
 
+const pull = async (evidence: string | undefined) => {
+  const store = cloneStore();
+  const projection = await projectionOf(
+    readRecords(evidence === undefined ? [store] : [store, evidence])
+  );
+  rmSync(store, { force: true, recursive: true });
+  const { code } = await formatWithProjectConfig(
+    projectionPath,
+    JSON.stringify(projection),
+    "@vibestart"
+  );
+  writeFileSync(projectionPath, code);
+  for (const name of platforms) {
+    print(
+      `${Object.keys(projection[name]).length} of ${tasks.filter((task) => task.platform === name).length} ${name} tasks verified at current output`
+    );
+  }
+};
+
+const plan = async () => {
+  const pending = await Promise.all(
+    tasks.map(async (task) => ((await isCurrent(task)) ? [] : [task]))
+  );
+  print(JSON.stringify(batchesOf(pending.flat())));
+};
+
 interface Options {
   force: boolean;
   jobs: string;
   out: string;
   "package-manager": string;
-  shard: string;
 }
 
 const runStackCommand = async (
@@ -502,15 +509,6 @@ const runStackCommand = async (
   pattern: string | undefined,
   values: Options
 ) => {
-  const parsedShard = shardPattern.exec(values.shard)?.groups;
-  const shard = {
-    count: Number(parsedShard?.count),
-    index: Number(parsedShard?.index),
-  };
-  if (parsedShard === undefined || shard.index >= shard.count) {
-    print("--shard is <i>/<n> with 0 <= i < n");
-    return 1;
-  }
   const requested = values["package-manager"];
   if (requested !== "pnpm" && requested !== "bun" && requested !== "all") {
     print("--package-manager is pnpm, bun, or all");
@@ -521,34 +519,42 @@ const runStackCommand = async (
     print(`--jobs must be a positive integer, got ${values.jobs}`);
     return 1;
   }
-  const selected = await selectStacks({
-    command,
-    managers: requested === "all" ? ["pnpm", "bun"] : [requested],
-    matching: pattern === undefined ? undefined : new RegExp(pattern, "u"),
-    shard,
-  });
+  const managers: readonly PackageManager[] =
+    requested === "all" ? ["pnpm", "bun"] : [requested];
+  const matching = pattern === undefined ? undefined : new RegExp(pattern, "u");
+  const matches = (label: string) =>
+    matching === undefined || matching.test(label);
   if (command === "check") {
-    return await checkStacks(selected);
+    return await checkTasks(await selectTasks(platforms, managers, matches));
   }
   mkdirSync(values.out, { recursive: true });
+  if (command === "verify") {
+    return await verifyTasks(
+      await selectTasks([hostPlatform ?? "linux"], managers, matches),
+      { force: values.force, jobs, out: values.out }
+    );
+  }
   if (command === "gen") {
+    const selected = await selectStacks(
+      legalStacks(registry),
+      managers,
+      matches
+    );
     for (const { generation, label } of selected) {
       writeProject(path.join(values.out, label), generation);
     }
     print(`${selected.length} stacks in ${values.out}`);
     return 0;
   }
-  if (command === "smoke") {
-    const results = selected.map(({ generation, label, stack }) =>
-      smokeStack({ generation, label, stack, out: values.out })
-    );
-    return results.every(Boolean) ? 0 : 1;
-  }
-  return await verifyStacks(selected, {
-    force: values.force,
-    jobs,
-    out: values.out,
-  });
+  const selected = await selectStacks(
+    verifiedStacks.filter((stack) => stack.backend === "hono"),
+    managers,
+    matches
+  );
+  const results = selected.map(({ generation, label, stack }) =>
+    smokeStack({ generation, label, stack, out: values.out })
+  );
+  return results.every(Boolean) ? 0 : 1;
 };
 
 export const main = async (args: readonly string[]) => {
@@ -556,38 +562,45 @@ export const main = async (args: readonly string[]) => {
     allowPositionals: true,
     args: [...args],
     options: {
+      evidence: { type: "string" },
       force: { default: false, type: "boolean" },
       "package-manager": { default: "all", type: "string" },
       jobs: { default: String(defaultJobs), type: "string" },
       out: { default: path.join(tmpdir(), "vibestart-stacks"), type: "string" },
-      shard: { default: "0/1", type: "string" },
-      shards: { type: "string" },
     },
   });
-  const [command = "", pattern] = positionals;
-  if (command === "golden-matrix") {
-    print(
-      JSON.stringify(
-        Object.entries(goldens).map(([name, stack]) => ({ name, ...stack }))
-      )
-    );
-    return 0;
-  }
-  if (command === "merge") {
-    const shards = Number(values.shards);
-    if (pattern === undefined || !Number.isInteger(shards) || shards < 1) {
-      print("merge needs <dir> and --shards <n>");
-      return 1;
-    }
-    await mergeShards(pattern, shards);
-    return 0;
-  }
+  const [command = "", first, second] = positionals;
   if (command === "goldens") {
     await syncGoldens();
     return 0;
   }
+  if (command === "pull") {
+    await pull(values.evidence);
+    return 0;
+  }
+  if (command === "plan") {
+    await plan();
+    return 0;
+  }
+  if (command === "evidence" && first !== undefined) {
+    mkdirSync(first, { recursive: true });
+    const written = writeRecords(
+      first,
+      await currentRecords(readRecords([downloadEvidence(print)]))
+    );
+    print(`${written} records from earlier runs vouch for the current output`);
+    return 0;
+  }
+  if (command === "record" && first !== undefined && second !== undefined) {
+    const written = writeRecords(
+      second,
+      await currentRecords(readRecords([first]))
+    );
+    print(`${written} new records`);
+    return 0;
+  }
   if (["gen", "check", "verify", "smoke"].includes(command)) {
-    return await runStackCommand(command, pattern, values);
+    return await runStackCommand(command, first, values);
   }
   print(usage);
   return command === "" ? 0 : 1;

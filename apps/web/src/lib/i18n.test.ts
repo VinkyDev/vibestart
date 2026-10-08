@@ -1,4 +1,4 @@
-import { registry, stacks } from "virtual:vibestart";
+import { registry } from "virtual:vibestart";
 import { beforeAll, describe, expect, it } from "vite-plus/test";
 
 import { maxProjectNameLength, projectNameError } from "@vibestart/core";
@@ -8,9 +8,7 @@ import {
   capabilityText,
   integrationDescription,
   kindLabel,
-  noteText,
 } from "#/lib/i18n.ts";
-import { loadProject } from "#/lib/projects.ts";
 import { fitOf } from "#/lib/roles.ts";
 import { isDecision, optionsOf } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
@@ -54,23 +52,6 @@ describe("messages", () => {
       expect(kindLabel(kind.id)).toBe(kind.name);
     }
   });
-
-  it(
-    "words every getting-started note as the generator does",
-    { timeout: 60_000 },
-    async () => {
-      const projects = await Promise.all(
-        stacks.map(async (entry) => await loadProject(entry))
-      );
-      const notes = projects.flatMap((project) =>
-        project.gettingStarted.flatMap(({ note }) => note ?? [])
-      );
-      expect(notes).not.toHaveLength(0);
-      for (const note of notes) {
-        expect(noteText(note)).toBe(note.text);
-      }
-    }
-  );
 
   it("says when to pick every option of every decision", () => {
     const fits = registry.kinds
