@@ -61,7 +61,8 @@ Never move or delete a pushed tag, and never force-push `main`; fix a bad releas
 
 ## Repository setup
 
-- Branch protection on `main` requires the `ci` check, and requires a branch to be up to date before it merges, so the records of a pull request match `main`'s output after the merge.
+- The `Protect main` ruleset requires the `ci` check from GitHub Actions, and requires a branch to be up to date before it merges, so the records of a pull request match `main`'s output after the merge. It also forbids deleting or force-pushing `main`.
+- The `Protect verification store` ruleset forbids deleting or force-pushing `verification`; `record` only fast-forwards it. A personal repository cannot make GitHub Actions the branch's only writer, so do not push to it by hand.
 - The Studio's Cloudflare build runs the `@vibestart/web` `build` script, which pulls the records before `vp build`. The repository secret `CLOUDFLARE_DEPLOY_HOOK` holds a Workers Builds deploy hook for `main` (Worker → Settings → Builds → Deploy Hooks); `record` calls it after it adds records.
 
 ## Pull requests
