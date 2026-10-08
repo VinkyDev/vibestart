@@ -103,6 +103,12 @@ export const defaultAddons = (registry: {
 }): readonly string[] =>
   registry.addons.filter((addon) => addon.default).map((addon) => addon.id);
 
+/** A record taken with the default add-ons stands for any subset of them. */
+export const defaultsCover = (
+  registry: { readonly addons: readonly AddonInfo[] },
+  addons: readonly string[]
+) => addons.every((id) => defaultAddons(registry).includes(id));
+
 /**
  * `ids` in registry order, without repeats. Throws for an id the registry does not declare, as
  * `getIntegration` does, so a misspelled add-on cannot pass as one left out.

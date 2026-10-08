@@ -15,6 +15,7 @@ import {
   addonsInOrder,
   compose,
   defaultAddons,
+  defaultsCover,
   packageManagers,
   resolve,
 } from "@vibestart/core";
@@ -208,7 +209,7 @@ export const verificationWith = (
   addons: readonly string[],
   packageManager: "pnpm" | "bun" = "pnpm"
 ): StackVerification | null => {
-  if (!addons.every((id) => verifiedAddons.includes(id))) {
+  if (!defaultsCover(registry, addons)) {
     return null;
   }
   return packageManager === "bun"

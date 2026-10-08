@@ -32,7 +32,7 @@ import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
 import { materializeEnvFromExamples } from "#/server-env.ts";
-import { stackLabel } from "#/stack-label.ts";
+import { taskLabel } from "#/stack-label.ts";
 import { e2e, playwright } from "#/testing/runners.ts";
 import type { StackVerification, Task } from "#/verification-store.ts";
 import {
@@ -419,7 +419,7 @@ const selectStacks = async (
     managers
       .flatMap((packageManager) =>
         stacks.map((stack) => ({
-          label: `${stackLabel(stack)}${packageManager === "bun" ? "-bun-pm" : ""}`,
+          label: taskLabel(stack, packageManager),
           packageManager,
           stack,
         }))

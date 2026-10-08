@@ -3,11 +3,10 @@ import { omit } from "es-toolkit/object";
 import type { RegistryInfo } from "@vibestart/core";
 import { defaultAddons, generate, legalStacks } from "@vibestart/core";
 import {
-  bunSubjectOf,
   registry,
   stackLabel,
+  taskLabel,
   verificationOf,
-  verifiedAs,
 } from "@vibestart/integrations";
 
 import type { Project, StackEntry, StackPreview } from "../src/lib/project.ts";
@@ -35,9 +34,10 @@ export const stackLabels = [...legal.keys()];
 export const stackEntries = async (): Promise<StackEntry[]> =>
   await Promise.all(
     [...legal].map(async ([label, stack]) => {
+      const addons = defaultAddons(registry);
       const [verification, bunVerification] = await Promise.all([
-        verificationOf(stack, defaultAddons(registry)),
-        verificationOf(stack, defaultAddons(registry), "bun"),
+        verificationOf(stack, addons),
+        verificationOf(stack, addons, "bun"),
       ]);
       return {
         label,
@@ -46,13 +46,16 @@ export const stackEntries = async (): Promise<StackEntry[]> =>
           bunVerification === undefined
             ? null
             : {
-                ...bunVerification,
-                label: `${stackLabel(bunSubjectOf(stack))}-bun-pm`,
+                ...bunVerification.record,
+                label: taskLabel(bunVerification.subject, "bun"),
               },
         verification:
           verification === undefined
             ? null
-            : { ...verification, label: stackLabel(verifiedAs(stack)) },
+            : {
+                ...verification.record,
+                label: taskLabel(verification.subject),
+              },
       };
     })
   );

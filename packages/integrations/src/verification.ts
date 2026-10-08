@@ -1,9 +1,15 @@
 import { minBy } from "es-toolkit/array";
 import { z } from "zod";
 
-import type { Blueprint, PackageManager, Stack } from "@vibestart/core";
+import type {
+  Blueprint,
+  PackageManager,
+  Stack,
+  Verification,
+} from "@vibestart/core";
 import {
   defaultAddons,
+  defaultsCover,
   fingerprint,
   generate,
   legalStacks,
@@ -11,7 +17,7 @@ import {
 } from "@vibestart/core";
 
 import { registry } from "#/registry.ts";
-import { stackLabel } from "#/stack-label.ts";
+import { stackLabel, taskLabel } from "#/stack-label.ts";
 
 /** Every stack is verified on Linux; the goldens also on Windows. */
 export const platforms = ["linux", "windows"] as const;
@@ -93,10 +99,7 @@ const currentRecord = async (
   subject: Stack,
   packageManager: PackageManager
 ) => {
-  const record =
-    verification.linux[
-      `${stackLabel(subject)}${packageManager === "bun" ? "-bun-pm" : ""}`
-    ];
+  const record = verification.linux[taskLabel(subject, packageManager)];
   if (record === undefined) {
     return record;
   }
@@ -110,17 +113,30 @@ const currentRecord = async (
     : undefined;
 };
 
-/** Any default add-on subset shares the record; under Bun, the record that installed the dependencies. */
+/** The record that matches the current output, and the stack whose output it covers. */
+export interface VerificationMatch {
+  readonly record: Verification[string];
+  readonly subject: Stack;
+}
+
+/** Under Bun, the record that installed the dependencies, and only when the pnpm record is current. */
 export const verificationOf = async (
   stack: Stack,
   addons: readonly string[],
   packageManager: PackageManager = "pnpm"
-) => {
-  const defaults = defaultAddons(registry);
-  const sources = addons.every((id) => defaults.includes(id))
-    ? await currentRecord(verifiedAs(stack), "pnpm")
-    : undefined;
-  return packageManager === "bun" && sources !== undefined
-    ? await currentRecord(bunSubjectOf(stack), "bun")
-    : sources;
+): Promise<VerificationMatch | undefined> => {
+  if (!defaultsCover(registry, addons)) {
+    return undefined;
+  }
+  const subject = verifiedAs(stack);
+  const sources = await currentRecord(subject, "pnpm");
+  if (sources === undefined) {
+    return undefined;
+  }
+  if (packageManager !== "bun") {
+    return { record: sources, subject };
+  }
+  const bunSubject = bunSubjectOf(stack);
+  const record = await currentRecord(bunSubject, "bun");
+  return record === undefined ? undefined : { record, subject: bunSubject };
 };
