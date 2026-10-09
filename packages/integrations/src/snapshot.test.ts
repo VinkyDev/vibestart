@@ -1,14 +1,10 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { generate, legalStacks } from "@vibestart/core";
+import { legalStacks } from "@vibestart/core";
 
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
-import {
-  verifiedBlueprint,
-  verifiedName,
-  verifiedStacks,
-} from "#/verification.ts";
+import { verifiedGeneration, verifiedStacks } from "#/verification.ts";
 
 const stacks = legalStacks(registry);
 
@@ -16,9 +12,7 @@ const stacks = legalStacks(registry);
 const generations = await Promise.all(
   verifiedStacks.map(async (stack) => ({
     label: stackLabel(stack),
-    ...(await generate(registry, verifiedBlueprint(stack), {
-      name: verifiedName,
-    })),
+    ...(await verifiedGeneration(stack)),
   }))
 );
 

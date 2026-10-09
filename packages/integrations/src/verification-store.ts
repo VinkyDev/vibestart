@@ -12,27 +12,22 @@ import path from "node:path";
 
 import { escapeRegExp } from "es-toolkit/string";
 
-import type {
-  Generation,
-  PackageManager,
-  Stack,
-  Verification,
-} from "@vibestart/core";
-import { fingerprint, generate, verificationSchema } from "@vibestart/core";
+import type { PackageManager, Stack } from "@vibestart/core";
+import { verificationSchema } from "@vibestart/core";
 
 import { goldens } from "#/goldens.ts";
-import { registry } from "#/registry.ts";
 import { taskLabel } from "#/stack-label.ts";
-import type { Platform, Projection } from "#/verification.ts";
+import type {
+  Platform,
+  Projection,
+  StackVerification,
+} from "#/verification.ts";
 import {
   bunSubjects,
   platforms,
-  verifiedBlueprint,
-  verifiedName,
+  verifiedFingerprint,
   verifiedStacks,
 } from "#/verification.ts";
-
-export type StackVerification = Verification[string];
 
 /** One stack to run `vp run ready` in, on one platform. */
 export interface Task {
@@ -63,22 +58,9 @@ export const tasks: readonly Task[] = [
   })),
 ];
 
-const generations = new Map<string, Promise<Generation>>();
-
-/** A label names one output, so the platforms of a stack share its generation. */
-export const generateTask = async ({ label, packageManager, stack }: Task) => {
-  const generation =
-    generations.get(label) ??
-    generate(registry, verifiedBlueprint(stack, packageManager), {
-      name: verifiedName,
-    });
-  generations.set(label, generation);
-  return await generation;
-};
-
 /** A record vouches for one output on one platform: `<platform>/<fingerprint>`. */
 const keyOf = async (task: Task) =>
-  `${task.platform}/${await fingerprint(await generateTask(task))}`;
+  `${task.platform}/${await verifiedFingerprint(task.stack, task.packageManager)}`;
 
 /**
  * The branch CI on `main` writes, and nothing else does. Each record is a file `<platform>/<fingerprint>.json`, so

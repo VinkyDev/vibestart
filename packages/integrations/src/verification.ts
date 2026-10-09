@@ -95,48 +95,75 @@ export const verifiedBlueprint = (
   return blueprint;
 };
 
-const currentRecord = async (
-  subject: Stack,
-  packageManager: PackageManager
+/** The project a stack is verified as: the default add-ons, under `verifiedName`. */
+export const verifiedGeneration = async (
+  stack: Stack,
+  packageManager?: PackageManager
+) =>
+  await generate(registry, verifiedBlueprint(stack, packageManager), {
+    name: verifiedName,
+  });
+
+/** A label names one output, so each is generated and fingerprinted once; a generation is too large to keep. */
+const fingerprints = new Map<string, Promise<string>>();
+
+export const verifiedFingerprint = async (
+  stack: Stack,
+  packageManager: PackageManager = "pnpm"
 ) => {
-  const record = verification.linux[taskLabel(subject, packageManager)];
-  if (record === undefined) {
-    return record;
+  const label = taskLabel(stack, packageManager);
+  let pending = fingerprints.get(label);
+  if (pending === undefined) {
+    pending = (async () =>
+      await fingerprint(await verifiedGeneration(stack, packageManager)))();
+    fingerprints.set(label, pending);
   }
-  const generation = await generate(
-    registry,
-    verifiedBlueprint(subject, packageManager),
-    { name: verifiedName }
-  );
-  return record.fingerprint === (await fingerprint(generation))
-    ? record
-    : undefined;
+  return await pending;
 };
 
-/** The record that matches the current output, and the stack whose output it covers. */
+export type StackVerification = Verification[string];
+
+/** Whether `record` passed at the stack's current output. */
+export const vouchesFor = async (
+  record: StackVerification | undefined,
+  stack: Stack,
+  packageManager?: PackageManager
+) =>
+  record !== undefined &&
+  record.fingerprint === (await verifiedFingerprint(stack, packageManager));
+
+/** The record that matches the current output, under the label of the task that produced it. */
 export interface VerificationMatch {
-  readonly record: Verification[string];
-  readonly subject: Stack;
+  readonly label: string;
+  readonly record: StackVerification;
 }
+
+const matchOf = async (
+  projection: Projection,
+  subject: Stack,
+  packageManager: PackageManager
+): Promise<VerificationMatch | undefined> => {
+  const label = taskLabel(subject, packageManager);
+  const record = projection.linux[label];
+  return record !== undefined &&
+    (await vouchesFor(record, subject, packageManager))
+    ? { label, record }
+    : undefined;
+};
 
 /** Under Bun, the record that installed the dependencies, and only when the pnpm record is current. */
 export const verificationOf = async (
   stack: Stack,
   addons: readonly string[],
-  packageManager: PackageManager = "pnpm"
+  packageManager: PackageManager = "pnpm",
+  projection: Projection = verification
 ): Promise<VerificationMatch | undefined> => {
   if (!defaultsCover(registry, addons)) {
     return undefined;
   }
-  const subject = verifiedAs(stack);
-  const sources = await currentRecord(subject, "pnpm");
-  if (sources === undefined) {
-    return undefined;
+  const sources = await matchOf(projection, verifiedAs(stack), "pnpm");
+  if (sources === undefined || packageManager !== "bun") {
+    return sources;
   }
-  if (packageManager !== "bun") {
-    return { record: sources, subject };
-  }
-  const bunSubject = bunSubjectOf(stack);
-  const record = await currentRecord(bunSubject, "bun");
-  return record === undefined ? undefined : { record, subject: bunSubject };
+  return await matchOf(projection, bunSubjectOf(stack), "bun");
 };

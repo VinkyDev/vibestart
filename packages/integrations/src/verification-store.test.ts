@@ -4,19 +4,17 @@ import path from "node:path";
 
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { fingerprint } from "@vibestart/core";
-
 import { goldens } from "#/goldens.ts";
-import type { StackVerification } from "#/verification-store.ts";
 import {
   batchesOf,
   currentRecords,
-  generateTask,
   projectionOf,
   readRecords,
   tasks,
   writeRecords,
 } from "#/verification-store.ts";
+import type { StackVerification } from "#/verification.ts";
+import { verifiedFingerprint } from "#/verification.ts";
 
 const dirs: string[] = [];
 const tempDir = () => {
@@ -141,7 +139,7 @@ describe("records of the current output", () => {
     if (task === undefined) {
       throw new Error("Every Linux task is a golden");
     }
-    const hash = await fingerprint(await generateTask(task));
+    const hash = await verifiedFingerprint(task.stack, task.packageManager);
     const stale = "e".repeat(64);
     const records = new Map([
       [`linux/${hash}`, recordOf(hash)],

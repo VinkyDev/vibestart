@@ -1,20 +1,11 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import type { Stack } from "@vibestart/core";
-import {
-  compose,
-  createBlueprintSchema,
-  generate,
-  resolve,
-} from "@vibestart/core";
+import { compose, createBlueprintSchema, resolve } from "@vibestart/core";
 
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
-import {
-  verifiedBlueprint,
-  verifiedName,
-  verifiedStacks,
-} from "#/verification.ts";
+import { verifiedGeneration, verifiedStacks } from "#/verification.ts";
 
 const journeys = import.meta.glob<string>(
   "../../templates/testing/*/*/apps/web/tests/e2e/app.e2e.ts",
@@ -40,9 +31,7 @@ const journeysOf = (runner: string) =>
   );
 
 const filesOf = async (stack: Stack) => {
-  const { files } = await generate(registry, verifiedBlueprint(stack), {
-    name: verifiedName,
-  });
+  const { files } = await verifiedGeneration(stack);
   return new Map(files.map(({ path, content }) => [path, content]));
 };
 

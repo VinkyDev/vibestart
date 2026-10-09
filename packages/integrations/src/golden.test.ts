@@ -3,17 +3,13 @@ import path from "node:path";
 
 import { describe, expect, it } from "vite-plus/test";
 
-import { generate } from "@vibestart/core";
-
 import { goldenPaths, goldenRoot, goldens } from "#/goldens.ts";
 import { registry } from "#/registry.ts";
-import { verifiedBlueprint, verifiedName } from "#/verification.ts";
+import { verifiedGeneration } from "#/verification.ts";
 
 const generations = await Promise.all(
   Object.entries(goldens).map(async ([golden, stack]) => ({
-    generation: await generate(registry, verifiedBlueprint(stack), {
-      name: verifiedName,
-    }),
+    generation: await verifiedGeneration(stack),
     golden,
     stack,
   }))
