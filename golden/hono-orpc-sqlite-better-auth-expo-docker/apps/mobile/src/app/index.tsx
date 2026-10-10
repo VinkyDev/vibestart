@@ -1,5 +1,6 @@
 import { ScrollView } from "react-native";
 
+import { ApiStatus } from "#src/components/api-status.tsx";
 import { Card } from "#src/components/ui/card.tsx";
 import { Text } from "#src/components/ui/text.tsx";
 
@@ -10,6 +11,7 @@ const Home = () => (
       <Text className="text-muted-foreground">
         Hono · oRPC · SQLite · Drizzle · Better Auth · Expo
       </Text>
+      <ApiStatus />
     </Card>
   </ScrollView>
 );

@@ -150,8 +150,57 @@
   }
 }
 
-# apps/mobile/package.json · 315 stacks
+# apps/mobile/package.json · 9 stacks
 #   expo
+#   next-expo-docker
+#   next-expo-docker-e2e
+#   spa-electron-expo-docker
+#   spa-electron-expo-docker-e2e
+#   spa-expo-docker
+#   spa-expo-docker-e2e
+#   tanstack-start-expo-docker
+#   tanstack-start-expo-docker-e2e
+{
+  "name": "@my-app/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "android": "expo run:android",
+    "build": "expo export --platform ios --platform android",
+    "ios": "expo run:ios",
+    "start": "expo start"
+  },
+  "dependencies": {
+    "cn": "catalog:",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "expo-linking": "catalog:",
+    "expo-router": "catalog:",
+    "expo-status-bar": "catalog:",
+    "expo-system-ui": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-screens": "catalog:",
+    "react-native-worklets": "catalog:",
+    "tailwindcss": "catalog:",
+    "uniwind": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/react": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# apps/mobile/package.json · 306 stacks
 #   hono-expo-bun-docker
 #   hono-expo-docker
 #   hono-openapi-expo-bun-docker
@@ -182,8 +231,6 @@
 #   hono-sqlite-better-auth-expo-docker
 #   hono-sqlite-expo-bun-docker
 #   hono-sqlite-expo-docker
-#   next-expo-docker
-#   next-expo-docker-e2e
 #   next-hono-expo-bun-docker
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
@@ -262,10 +309,6 @@
 #   next-self-sqlite-better-auth-expo-docker-e2e
 #   next-self-sqlite-expo-docker
 #   next-self-sqlite-expo-docker-e2e
-#   spa-electron-expo-docker
-#   spa-electron-expo-docker-e2e
-#   spa-expo-docker
-#   spa-expo-docker-e2e
 #   spa-hono-electron-expo-bun-docker
 #   spa-hono-electron-expo-bun-docker-e2e
 #   spa-hono-electron-expo-docker
@@ -386,8 +429,6 @@
 #   spa-hono-sqlite-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-docker
 #   spa-hono-sqlite-expo-docker-e2e
-#   tanstack-start-expo-docker
-#   tanstack-start-expo-docker-e2e
 #   tanstack-start-hono-expo-bun-docker
 #   tanstack-start-hono-expo-bun-docker-e2e
 #   tanstack-start-hono-expo-docker
@@ -482,6 +523,7 @@
     "start": "expo start"
   },
   "dependencies": {
+    "@tanstack/react-query": "catalog:",
     "cn": "catalog:",
     "expo": "catalog:",
     "expo-constants": "catalog:",
@@ -497,7 +539,8 @@
     "react-native-screens": "catalog:",
     "react-native-worklets": "catalog:",
     "tailwindcss": "catalog:",
-    "uniwind": "catalog:"
+    "uniwind": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@my-app/config": "workspace:*",
@@ -11248,6 +11291,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11297,6 +11341,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11406,6 +11451,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11457,6 +11503,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11586,6 +11633,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11646,6 +11694,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11776,6 +11825,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11832,6 +11882,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -11964,6 +12015,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12023,6 +12075,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12150,6 +12203,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12205,6 +12259,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12322,6 +12377,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12374,6 +12430,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12506,6 +12563,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12567,6 +12625,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12700,6 +12759,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12757,6 +12817,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12892,6 +12953,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -12952,6 +13014,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13082,6 +13145,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13138,6 +13202,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13268,6 +13333,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13326,6 +13392,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13450,6 +13517,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13504,6 +13572,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13630,6 +13699,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13687,6 +13757,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13808,6 +13879,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -13861,6 +13933,7 @@ catalog:
   vite-plus: 1.1.0
 
   # web
+  "@tanstack/react-query": ^5.104.1
   "@types/react": ^19.3.0
   react: 19.3.0
   tailwindcss: ^4.3.3
@@ -24246,6 +24319,7 @@ catalog:
   "@orpc/server": ^1.15.5
   "@orpc/tanstack-query": ^1.15.5
   "@orpc/zod": ^1.15.5
+  zod: ^4.6.5
 
   # mobile
   expo: 58.0.7
@@ -24328,6 +24402,7 @@ catalog:
   "@orpc/server": ^1.15.5
   "@orpc/tanstack-query": ^1.15.5
   "@orpc/zod": ^1.15.5
+  zod: ^4.6.5
 
   # mobile
   expo: 58.0.7
@@ -58802,6 +58877,7 @@ catalog:
   "@orpc/server": ^1.15.5
   "@orpc/tanstack-query": ^1.15.5
   "@orpc/zod": ^1.15.5
+  zod: ^4.6.5
 
   # mobile
   expo: 58.0.7
@@ -58886,6 +58962,7 @@ catalog:
   "@orpc/server": ^1.15.5
   "@orpc/tanstack-query": ^1.15.5
   "@orpc/zod": ^1.15.5
+  zod: ^4.6.5
 
   # mobile
   expo: 58.0.7

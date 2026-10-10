@@ -23,7 +23,7 @@ vp run dev:mobile   # in a second terminal
 
 The API listens on http://localhost:3000. API docs are at http://localhost:3000/api.
 
-`vp run dev:mobile` prints a QR code: scan it with Expo Go on a phone on the same network as this machine, or press `i` or `a` for a simulator.
+`vp run dev:mobile` prints a QR code: scan it with Expo Go on a phone on the same network as this machine, or press `i` or `a` for a simulator. The app reaches the server on port 3000 of this machine, so let the firewall pass it; a release build takes the server's origin from `EXPO_PUBLIC_API_URL` in `apps/mobile/.env`.
 
 ## Commands
 
