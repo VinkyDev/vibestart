@@ -2,15 +2,12 @@ import { describe, expect, it } from "vite-plus/test";
 import { z } from "zod";
 
 import type { Generation, PackageManager, Stack } from "@vibestart/core";
-import { generate } from "@vibestart/core";
 
-import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
 import {
   bunSubjectOf,
   bunSubjects,
-  verifiedBlueprint,
-  verifiedName,
+  verifiedGeneration,
   verifiedStacks,
 } from "#/verification.ts";
 
@@ -41,9 +38,7 @@ const generation = async (stack: Stack, packageManager: PackageManager) => {
   if (cached !== undefined) {
     return await cached;
   }
-  const pending = generate(registry, verifiedBlueprint(stack, packageManager), {
-    name: verifiedName,
-  });
+  const pending = verifiedGeneration(stack, packageManager);
   generated.set(key, pending);
   return await pending;
 };

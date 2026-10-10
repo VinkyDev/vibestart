@@ -24,7 +24,7 @@ import { parseArgs } from "node:util";
 import { limitAsync } from "es-toolkit/promise";
 
 import type { Generation, PackageManager, Stack } from "@vibestart/core";
-import { fingerprint, generate, legalStacks } from "@vibestart/core";
+import { fingerprint, legalStacks } from "@vibestart/core";
 
 import { downloadEvidence } from "#/evidence.ts";
 import { goldenPaths, goldenRoot, goldens } from "#/goldens.ts";
@@ -34,32 +34,26 @@ import { repoRoot } from "#/repo.ts";
 import { materializeEnvFromExamples } from "#/server-env.ts";
 import { taskLabel } from "#/stack-label.ts";
 import { e2e, playwright } from "#/testing/runners.ts";
-import type { StackVerification, Task } from "#/verification-store.ts";
+import type { Task } from "#/verification-store.ts";
 import {
   batchesOf,
   cloneStore,
   currentRecords,
-  generateTask,
   projectionOf,
   readRecords,
   tasks,
   writeRecords,
 } from "#/verification-store.ts";
-import type { Platform } from "#/verification.ts";
+import type { Platform, StackVerification } from "#/verification.ts";
 import {
   platforms,
   verification,
-  verifiedBlueprint,
-  verifiedName,
+  verifiedGeneration,
   verifiedStacks,
+  vouchesFor,
 } from "#/verification.ts";
 
 import httpSmoke from "../templates/testing/http-smoke/http-smoke.mjs.txt?raw";
-
-const generateProject = async (stack: Stack, packageManager?: PackageManager) =>
-  await generate(registry, verifiedBlueprint(stack, packageManager), {
-    name: verifiedName,
-  });
 
 const writeProject = (dir: string, { files }: Generation) => {
   rmSync(dir, { force: true, recursive: true });
@@ -116,15 +110,19 @@ const testPorts = (index: number) => ({
   E2E_TEST_PORT: String(20_000 + index * 10),
 });
 
-interface StackRun {
+interface StackRun extends Task {
   force: boolean;
-  generation: Generation;
   index: number;
-  label: string;
-  platform: Platform;
-  stack: Stack;
   out: string;
 }
+
+/** Whether a record in `verification.json` vouches for the task's current output. */
+const isCurrent = async ({
+  label,
+  packageManager,
+  platform: name,
+  stack,
+}: Task) => await vouchesFor(verification[name][label], stack, packageManager);
 
 const browserRunners = new Map([
   ["e2e", e2e],
@@ -149,13 +147,15 @@ const browserInstall = (stack: Stack) => {
 
 const verifyStack = async ({
   force,
-  generation,
   index,
   label,
   out,
+  packageManager,
   platform: taskPlatform,
   stack,
 }: StackRun) => {
+  // The output this run writes is the output its record vouches for, so it is generated once and compared here.
+  const generation = await verifiedGeneration(stack, packageManager);
   const hash = await fingerprint(generation);
   if (!force && verification[taskPlatform][label]?.fingerprint === hash) {
     print(`${label} verified at this output`);
@@ -212,7 +212,12 @@ const smokeStack = ({
   label,
   out,
   stack,
-}: Pick<StackRun, "generation" | "label" | "out" | "stack">) => {
+}: {
+  generation: Generation;
+  label: string;
+  out: string;
+  stack: Stack;
+}) => {
   const dir = path.join(out, label);
   writeProject(dir, generation);
   writeEnvFiles(dir);
@@ -329,7 +334,7 @@ const syncGoldens = async () => {
   }
   await Promise.all(
     Object.entries(goldens).map(async ([golden, stack]) => {
-      const generation = await generateProject(stack);
+      const generation = await verifiedGeneration(stack);
       const root = goldenRoot(golden);
       const created = !existsSync(root);
       const setupWrites = generation.setup.flatMap((command) => command.writes);
@@ -392,22 +397,16 @@ Bun is required to install or run Bun package-manager or Hono-runtime combinatio
 verify runs --jobs stacks at a time (default ${defaultJobs}), each on its own test ports.
 Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres).`;
 
-type Selected = Task & { readonly generation: Generation };
-
-const selectTasks = async (
+const selectTasks = (
   selected: readonly Platform[],
   managers: readonly PackageManager[],
   matches: (label: string) => boolean
-): Promise<Selected[]> =>
-  await Promise.all(
-    tasks
-      .filter(
-        (task) =>
-          selected.includes(task.platform) &&
-          managers.includes(task.packageManager) &&
-          matches(task.label)
-      )
-      .map(async (task) => ({ ...task, generation: await generateTask(task) }))
+) =>
+  tasks.filter(
+    (task) =>
+      selected.includes(task.platform) &&
+      managers.includes(task.packageManager) &&
+      matches(task.label)
   );
 
 const selectStacks = async (
@@ -426,17 +425,13 @@ const selectStacks = async (
       )
       .filter(({ label }) => matches(label))
       .map(async ({ label, packageManager, stack }) => ({
-        generation: await generateProject(stack, packageManager),
+        generation: await verifiedGeneration(stack, packageManager),
         label,
         stack,
       }))
   );
 
-const isCurrent = async (task: Task) =>
-  verification[task.platform][task.label]?.fingerprint ===
-  (await fingerprint(await generateTask(task)));
-
-const checkTasks = async (selected: readonly Selected[]) => {
+const checkTasks = async (selected: readonly Task[]) => {
   const results = await Promise.all(
     selected.map(async (task) => {
       const current = await isCurrent(task);
@@ -454,7 +449,7 @@ const checkTasks = async (selected: readonly Selected[]) => {
 };
 
 const verifyTasks = async (
-  selected: readonly Selected[],
+  selected: readonly Task[],
   { force, jobs, out }: { force: boolean; jobs: number; out: string }
 ) => {
   if (hostPlatform === undefined) {
@@ -525,12 +520,12 @@ const runStackCommand = async (
   const matches = (label: string) =>
     matching === undefined || matching.test(label);
   if (command === "check") {
-    return await checkTasks(await selectTasks(platforms, managers, matches));
+    return await checkTasks(selectTasks(platforms, managers, matches));
   }
   mkdirSync(values.out, { recursive: true });
   if (command === "verify") {
     return await verifyTasks(
-      await selectTasks([hostPlatform ?? "linux"], managers, matches),
+      selectTasks([hostPlatform ?? "linux"], managers, matches),
       { force: values.force, jobs, out: values.out }
     );
   }

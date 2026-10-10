@@ -8,12 +8,7 @@ import {
   generate,
   legalStacks,
 } from "@vibestart/core";
-import {
-  registry,
-  stackLabel,
-  taskLabel,
-  verificationOf,
-} from "@vibestart/integrations";
+import { registry, stackLabel, verificationOf } from "@vibestart/integrations";
 
 import type { Project, StackEntry, StackPreview } from "../src/lib/project.ts";
 import { projectKey } from "../src/lib/project.ts";
@@ -57,17 +52,11 @@ export const stackEntries = async (): Promise<StackEntry[]> =>
         bunVerification:
           bunVerification === undefined
             ? null
-            : {
-                ...bunVerification.record,
-                label: taskLabel(bunVerification.subject, "bun"),
-              },
+            : { ...bunVerification.record, label: bunVerification.label },
         verification:
           verification === undefined
             ? null
-            : {
-                ...verification.record,
-                label: taskLabel(verification.subject),
-              },
+            : { ...verification.record, label: verification.label },
       };
     })
   );
