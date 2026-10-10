@@ -122,10 +122,19 @@ const envExample = [
   "",
 ].join("\n");
 
-// The app reaches the server at the origin `src/env.ts` resolves; the home screen asks `/api/health`.
+const orpcFiles = (ctx: Context) => [
+  ...templateFiles(ctx, "expo/orpc"),
+  contribute(packageJson, {
+    dependencies: ["@orpc/client", "@orpc/tanstack-query"],
+    devDependencies: [`${ctx.scope}/api`],
+    path: "apps/mobile",
+  }),
+];
+
+// The app reaches the server at the origin `src/env.ts` resolves. oRPC brings its own typed status; without it the home screen asks `/api/health` directly.
 const backendFiles = (ctx: Context) => [
   ...templateFiles(ctx, "expo/backend"),
-  ...templateFiles(ctx, "expo/health"),
+  ...(ctx.has("orpc") ? orpcFiles(ctx) : templateFiles(ctx, "expo/health")),
   file("apps/mobile/.env.example", envExample),
   contribute(packageJson, {
     dependencies: ["@tanstack/react-query", "zod"],
