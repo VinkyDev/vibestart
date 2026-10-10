@@ -164,7 +164,7 @@ export const main = async (args: readonly string[]) => {
     pattern === undefined
       ? () => true
       : (name: string) => new RegExp(pattern, "u").test(name);
-  const targets = targetsOf(pins, releases, matches);
+  const targets = await targetsOf(pins, releases, matches);
   if (command === "update") {
     return update(targets);
   }

@@ -28,6 +28,10 @@ export interface Packument {
 export interface Releases {
   readonly packument: (name: string) => Packument;
   readonly nodeLts: string;
+  /** The ranges an Expo release names for the native modules it was built and tested with: its `bundledNativeModules.json`. */
+  readonly expoModules: (
+    expo: string
+  ) => Promise<Readonly<Record<string, string>>>;
 }
 
 /** A package follows `latest`, a prerelease its channel, Node.js its LTS; the rest follow another pin. */
@@ -36,7 +40,8 @@ type Rule =
   | "prerelease channel"
   | "Node.js LTS"
   | "Node.js major"
-  | "vite-plus";
+  | "vite-plus"
+  | "expo SDK";
 
 export interface Target {
   readonly name: string;
@@ -141,12 +146,16 @@ const currentOf = (pin: Pin) =>
     rcompare(split(a).version, split(b).version)
   )[0] ?? "";
 
-/** `selected` limits the move to the pins it names; a follower moves with its pin. */
-export const targetsOf = (
+/**
+ * `selected` limits the move to the pins it names; a follower moves with its pin.
+ * A package the Expo SDK bundles follows `expo` to the newest release in the range that SDK names,
+ * as `expo install --fix` would, so the mobile app runs what Expo Go ships.
+ */
+export const targetsOf = async (
   pins: readonly Pin[],
   releases: Releases,
   selected: (name: string) => boolean = () => true
-): readonly Target[] => {
+): Promise<readonly Target[]> => {
   const targets = new Map<string, Target>();
   const settle = (pin: Pin, rule: Rule, next: string | undefined) => {
     const current = currentOf(pin);
@@ -199,6 +208,30 @@ export const targetsOf = (
       );
     }
     settle(pin, follower.rule, next);
+  }
+  const expo = targets.get("expo");
+  if (expo !== undefined) {
+    const modules = await releases.expoModules(split(expo.target).version);
+    for (const pin of pins) {
+      const range = modules[pin.name];
+      if (range === undefined) {
+        continue;
+      }
+      if (!selected(pin.name) && !selected(expo.name)) {
+        settle(pin, "expo SDK", undefined);
+        continue;
+      }
+      const next = maxSatisfying(
+        Object.keys(releases.packument(pin.name).versions),
+        range
+      );
+      if (next === null) {
+        throw new Error(
+          `No ${pin.name} is in ${range}, the range expo ${expo.target} names`
+        );
+      }
+      settle(pin, "expo SDK", next);
+    }
   }
 
   return pins.flatMap((pin) => targets.get(pin.name) ?? []);

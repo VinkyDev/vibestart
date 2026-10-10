@@ -42,6 +42,10 @@ const registry = (
 ).replace(/\/?$/u, "/");
 const nodeDist = process.env.NODEJS_ORG_MIRROR ?? "https://nodejs.org/dist";
 
+// The registry serves metadata, not files; a CDN that mirrors it serves one file of a published package.
+const packageFiles =
+  process.env.VIBESTART_PACKAGE_CDN ?? "https://cdn.jsdelivr.net/npm";
+
 const getJson = async (
   url: string,
   headers: Readonly<Record<string, string>> = {}
@@ -87,6 +91,14 @@ export const fetchReleases = async (
     throw new Error(`${nodeDist}/index.json lists no LTS release`);
   }
   return {
+    expoModules: async (expo) =>
+      z
+        .record(z.string(), z.string())
+        .parse(
+          await getJson(
+            `${packageFiles}/expo@${expo}/bundledNativeModules.json`
+          )
+        ),
     nodeLts: lts.version.replace(/^v/u, ""),
     packument: (name) => {
       const packument = byName.get(name);
