@@ -1,4 +1,5 @@
-import type { IntegrationInfo, Stack } from "#/integration.ts";
+import type { IntegrationInfo, Requirement, Stack } from "#/integration.ts";
+import { alternatives } from "#/integration.ts";
 import type { RegistryInfo } from "#/registry.ts";
 import { getIntegration, integrationsOfKind } from "#/registry.ts";
 
@@ -17,7 +18,8 @@ export type Violation =
   | {
       readonly type: "missing-capability";
       readonly integration: string;
-      readonly capability: string;
+      /** Any one of these capabilities would satisfy the integration. */
+      readonly capabilities: readonly string[];
       readonly reason: string;
     }
   | {
@@ -75,6 +77,26 @@ const joinNames = (names: readonly string[], conjunction = "and") =>
     ? names.join(` ${conjunction} `)
     : `${names.slice(0, -1).join(", ")}, ${conjunction} ${names.at(-1)}`;
 
+/**
+ * Whether a requirement needs the integration in a stack: the integration meets it, and no alternative it
+ * does not provide is provided by another. A single capability with one provider always needs its provider.
+ */
+export const needs = (
+  requirement: Requirement,
+  integration: IntegrationInfo,
+  stack: readonly IntegrationInfo[]
+) => {
+  const accepted = alternatives(requirement);
+  const own = (capability: string) => integration.provides.includes(capability);
+  return (
+    accepted.some(own) &&
+    accepted.every(
+      (capability) =>
+        own(capability) || !stack.some((i) => i.provides.includes(capability))
+    )
+  );
+};
+
 export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
   const integrations = selectedIntegrations(registry, stack);
   const describe = (capability: string) =>
@@ -93,16 +115,16 @@ export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
       type: "missing-kind",
     }));
 
+  const provided = (capability: string) =>
+    integrations.some((i) => i.provides.includes(capability));
   const missingCapabilities = integrations.flatMap((integration) =>
     integration.requires
-      .filter(
-        (capability) =>
-          !integrations.some((i) => i.provides.includes(capability))
-      )
-      .map((capability): Violation => ({
-        capability,
+      .map(alternatives)
+      .filter((accepted) => !accepted.some(provided))
+      .map((accepted): Violation => ({
+        capabilities: accepted,
         integration: integration.id,
-        reason: `${integration.name} requires ${describe(capability)}, but nothing in the stack provides it.`,
+        reason: `${integration.name} requires ${joinNames(accepted.map(describe), "or")}, but nothing in the stack provides it.`,
         type: "missing-capability",
       }))
   );
@@ -128,8 +150,10 @@ export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
     .filter(
       (integration) =>
         integration.auxiliary &&
-        !integration.provides.some((capability) =>
-          integrations.some((other) => other.requires.includes(capability))
+        !integrations.some((other) =>
+          other.requires.some((requirement) =>
+            needs(requirement, integration, integrations)
+          )
         )
     )
     .map((integration): Violation => ({

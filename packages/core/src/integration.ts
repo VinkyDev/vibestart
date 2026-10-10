@@ -10,6 +10,13 @@ export interface Kind {
 
 export type Stack = Readonly<Partial<Record<string, string>>>;
 
+/** A capability, or alternatives of which any one satisfies the requirement. */
+export type Requirement = string | readonly [string, string, ...string[]];
+
+/** The capabilities a requirement accepts, any one of which satisfies it. */
+export const alternatives = (requirement: Requirement): readonly string[] =>
+  [requirement].flat();
+
 export interface Context {
   readonly packageManager?: PackageManager;
   readonly name: string;
@@ -56,7 +63,8 @@ export interface Integration {
    */
   readonly formerIds?: readonly string[];
   readonly provides: readonly string[];
-  readonly requires: readonly string[];
+  /** Each requirement is met when the stack provides it, or for alternatives, any one of them. */
+  readonly requires: readonly Requirement[];
   /** Chosen only to satisfy another integration's `requires`, so it is illegal when nothing requires what it provides. */
   readonly auxiliary: boolean;
   readonly contribute: (ctx: Context) => readonly Contribution[];

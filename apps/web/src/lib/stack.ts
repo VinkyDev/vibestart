@@ -13,9 +13,11 @@ import type {
 } from "@vibestart/core";
 import {
   addonsInOrder,
+  alternatives,
   compose,
   defaultAddons,
   defaultsCover,
+  needs,
   packageManagers,
   resolve,
 } from "@vibestart/core";
@@ -292,16 +294,19 @@ export const whyIncluded = (
   stack: Stack,
   integration: IntegrationInfo
 ): string | undefined => {
-  const needs = selected(stack).flatMap((other) =>
+  const integrations = selected(stack);
+  const needed = integrations.flatMap((other) =>
     other.requires
+      .filter((requirement) => needs(requirement, integration, integrations))
+      .flatMap(alternatives)
       .filter((capability) => integration.provides.includes(capability))
       .map((capability) => ({ capability, other }))
   );
-  if (needs.length === 0) {
+  if (needed.length === 0) {
     return undefined;
   }
-  const capabilities = uniq(needs.map(({ capability }) => capability));
-  const names = uniq(needs.map(({ other }) => other.name));
+  const capabilities = uniq(needed.map(({ capability }) => capability));
+  const names = uniq(needed.map(({ other }) => other.name));
   return m.why_included({
     capabilities: list(
       "conjunction",
