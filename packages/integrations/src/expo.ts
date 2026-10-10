@@ -10,7 +10,7 @@ import {
 import { hasBackend, hasWebApp, stackHeadline } from "#/app.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
-import { templateFiles } from "#/templates.ts";
+import { templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides, ultracitePresets } from "#/ultracite.ts";
 import {
   agentsConventions,
@@ -40,7 +40,10 @@ const renderAppJson = (ctx: Context) =>
         platforms: ["ios", "android"],
         ios: { bundleIdentifier: applicationId(ctx.name) },
         android: { package: applicationId(ctx.name) },
-        plugins: ["expo-router"],
+        plugins: [
+          "expo-router",
+          ...(ctx.has("better-auth") ? ["expo-secure-store"] : []),
+        ],
         experiments: { typedRoutes: true, reactCompiler: true },
       },
     },
@@ -51,11 +54,30 @@ const renderAppJson = (ctx: Context) =>
 // Generated files are formatted afterwards, so the renderers below build content, not layout.
 const rootLayout = (ctx: Context) => {
   const query = hasBackend(ctx);
+  const auth = ctx.has("better-auth");
   const navigation = [
     "<Stack>",
     `<Stack.Screen name="index" options={{ title: ${quote(ctx.name)} }} />`,
+    ...(auth
+      ? [
+          "<Stack.Protected guard={!signedIn}>",
+          '<Stack.Screen name="login" options={{ title: "Sign in" }} />',
+          "</Stack.Protected>",
+        ]
+      : []),
     "</Stack>",
     '<StatusBar style="auto" />',
+  ];
+  const tree = [
+    "<SafeAreaProvider>",
+    ...(query
+      ? [
+          "<QueryClientProvider client={queryClient}>",
+          ...navigation,
+          "</QueryClientProvider>",
+        ]
+      : navigation),
+    "</SafeAreaProvider>",
   ];
   return file(
     "apps/mobile/src/app/_layout.tsx",
@@ -68,20 +90,27 @@ const rootLayout = (ctx: Context) => {
       'import { StatusBar } from "expo-status-bar";',
       'import { SafeAreaProvider } from "react-native-safe-area-context";',
       "",
+      ...(auth
+        ? ['import { authClient } from "#src/lib/auth-client.ts";']
+        : []),
       ...(query
         ? ['import { queryClient } from "#src/lib/query-client.ts";', ""]
         : []),
-      "const RootLayout = () => (",
-      "<SafeAreaProvider>",
-      ...(query
+      ...(auth
         ? [
-            "<QueryClientProvider client={queryClient}>",
-            ...navigation,
-            "</QueryClientProvider>",
+            "const RootLayout = () => {",
+            "// The guards decide which screens exist, so they wait for the stored session.",
+            "const { data: session, isPending } = authClient.useSession();",
+            "if (isPending) {",
+            "return null;",
+            "}",
+            "const signedIn = session !== null;",
+            "return (",
+            ...tree,
+            ");",
+            "};",
           ]
-        : navigation),
-      "</SafeAreaProvider>",
-      ");",
+        : ["const RootLayout = () => (", ...tree, ");"]),
       "",
       "export default RootLayout;",
       "",
@@ -89,9 +118,32 @@ const rootLayout = (ctx: Context) => {
   );
 };
 
+const accountCard = [
+  "<Card>",
+  "<UserMenu />",
+  "{session === null && (",
+  '<Link className="text-primary underline" href="/login">',
+  "Sign in",
+  "</Link>",
+  ")}",
+  "</Card>",
+];
+
 const homeScreen = (ctx: Context) =>
-  renderFile("apps/mobile/src/app/index.tsx", (read) =>
-    [
+  renderFile("apps/mobile/src/app/index.tsx", (read) => {
+    const auth = ctx.has("better-auth");
+    const content = [
+      '<ScrollView className="bg-background" contentContainerClassName="gap-4 p-4">',
+      "<Card>",
+      `<Text className="text-2xl font-semibold">${ctx.name}</Text>`,
+      `<Text className="text-muted-foreground">${read(stackHeadline).join(" · ")}</Text>`,
+      ...(hasBackend(ctx) ? ["<ApiStatus />"] : []),
+      "</Card>",
+      ...(auth ? accountCard : []),
+      "</ScrollView>",
+    ];
+    return [
+      ...(auth ? ['import { Link } from "expo-router";'] : []),
       'import { ScrollView } from "react-native";',
       "",
       ...(hasBackend(ctx)
@@ -99,21 +151,28 @@ const homeScreen = (ctx: Context) =>
         : []),
       'import { Card } from "#src/components/ui/card.tsx";',
       'import { Text } from "#src/components/ui/text.tsx";',
+      ...(auth
+        ? [
+            'import { UserMenu } from "#src/components/user-menu.tsx";',
+            'import { authClient } from "#src/lib/auth-client.ts";',
+          ]
+        : []),
       "",
-      "const Home = () => (",
-      '<ScrollView className="bg-background" contentContainerClassName="gap-4 p-4">',
-      "<Card>",
-      `<Text className="text-2xl font-semibold">${ctx.name}</Text>`,
-      `<Text className="text-muted-foreground">${read(stackHeadline).join(" · ")}</Text>`,
-      ...(hasBackend(ctx) ? ["<ApiStatus />"] : []),
-      "</Card>",
-      "</ScrollView>",
-      ");",
+      ...(auth
+        ? [
+            "const Home = () => {",
+            "const { data: session } = authClient.useSession();",
+            "return (",
+            ...content,
+            ");",
+            "};",
+          ]
+        : ["const Home = () => (", ...content, ");"]),
       "",
       "export default Home;",
       "",
-    ].join("\n")
-  );
+    ].join("\n");
+  });
 
 const envExample = [
   "# The API origin of a release build. Leave it empty in development: the app reaches the server",
@@ -122,8 +181,62 @@ const envExample = [
   "",
 ].join("\n");
 
+const replaceOnce = (
+  content: string,
+  from: string,
+  to: string,
+  where: string
+) => {
+  const parts = content.split(from);
+  if (parts.length !== 2) {
+    throw new Error(`${where} must hold ${from} once`);
+  }
+  return parts.join(to);
+};
+
+const envImport = 'import { apiUrl } from "#src/env.ts";';
+
+// `call` places the session options in the client's constructor call.
+const withSession = (
+  ctx: Context,
+  set: string,
+  path: string,
+  call: readonly [from: string, to: (options: string) => string]
+) => {
+  const content = templateContent(ctx, set, path);
+  if (!ctx.has("better-auth")) {
+    return file(path, content);
+  }
+  const options = [
+    "// Native fetch has no cookie jar: Better Auth's Expo client keeps the session, and each request sends it.",
+    'fetch: async (input, init) => await fetch(input, { ...init, credentials: "omit" }),',
+    "headers: async () => ({ cookie: await authClient.getCookie() }),",
+  ].join("\n");
+  const where = `${set}/${path}`;
+  return file(
+    path,
+    replaceOnce(
+      replaceOnce(
+        content,
+        envImport,
+        `${envImport}\nimport { authClient } from "#src/lib/auth-client.ts";`,
+        where
+      ),
+      call[0],
+      call[1](options),
+      where
+    )
+  );
+};
+
+const orpcClientPath = "apps/mobile/src/lib/api.ts";
+
 const orpcFiles = (ctx: Context) => [
-  ...templateFiles(ctx, "expo/orpc"),
+  ...templateFiles(ctx, "expo/orpc", { except: [orpcClientPath] }),
+  withSession(ctx, "expo/orpc", orpcClientPath, [
+    "new RPCLink({ ",
+    (options) => `new RPCLink({\n${options}\n`,
+  ]),
   contribute(packageJson, {
     dependencies: ["@orpc/client", "@orpc/tanstack-query"],
     devDependencies: [`${ctx.scope}/api`],
@@ -138,6 +251,31 @@ const backendFiles = (ctx: Context) => [
   file("apps/mobile/.env.example", envExample),
   contribute(packageJson, {
     dependencies: ["@tanstack/react-query", "zod"],
+    path: "apps/mobile",
+  }),
+];
+
+const formFiles = (ctx: Context) => [
+  ...templateFiles(ctx, "expo/form"),
+  contribute(packageJson, {
+    dependencies: ["class-variance-authority"],
+    path: "apps/mobile",
+  }),
+];
+
+// Metro bundles every module `@better-auth/expo/client` imports, expo-network and expo-web-browser among them, though they are optional peers.
+const authFiles = (ctx: Context) => [
+  ...templateFiles(ctx, "expo/auth"),
+  contribute(packageJson, {
+    dependencies: [
+      "@better-auth/expo",
+      "better-auth",
+      "expo-network",
+      "expo-secure-store",
+      "expo-web-browser",
+      "lucide-react-native",
+      "react-native-svg",
+    ],
     path: "apps/mobile",
   }),
 ];
@@ -162,6 +300,11 @@ const architecture = (ctx: Context) =>
           "The app calls the server at the origin `src/env.ts` resolves: `EXPO_PUBLIC_API_URL` when it is set, otherwise, in development, port 3000 on the machine Metro runs on (`src/lib/api-url.ts`). A release build has no Metro, so it needs `EXPO_PUBLIC_API_URL`.",
         ]
       : []),
+    ...(ctx.has("better-auth")
+      ? [
+          `Better Auth's Expo client (\`src/lib/auth-client.ts\`) keeps the session in SecureStore. Native fetch has no cookie jar, so ${ctx.has("orpc") ? "`src/lib/api.ts` sends" : "a request to the API sends"} the session cookie itself. The server trusts \`${ctx.name}://\`, the app's scheme, as its origin.`,
+        ]
+      : []),
     "Uniwind compiles Tailwind classes for React Native; the theme is the CSS variables in `apps/mobile/global.css`.",
     `\`vp run build\` exports the iOS and Android bundles with \`expo export\`. A native module Expo Go does not ship needs a development build: \`vp run --filter ${ctx.scope}/mobile ios\` or \`android\`.`,
   ].join(" ");
@@ -170,6 +313,7 @@ export const expo = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "expo/common"),
     ...(hasBackend(ctx) ? backendFiles(ctx) : []),
+    ...(ctx.has("better-auth") ? [...formFiles(ctx), ...authFiles(ctx)] : []),
     rootLayout(ctx),
     file("apps/mobile/app.json", renderAppJson(ctx)),
     file("apps/mobile/.gitignore", ".expo\nexpo-env.d.ts\nios\nandroid\n"),
@@ -236,6 +380,14 @@ export const expo = defineIntegration({
       text: "Add a screen as a file in `apps/mobile/src/app`. Style React Native components with Tailwind classes in `className`, and reuse the components in `apps/mobile/src/components/ui`.",
       title: "Mobile",
     }),
+    ...(ctx.has("better-auth")
+      ? [
+          contribute(agentsConventions, {
+            text: "A screen that needs a user is listed under a `Stack.Protected guard={signedIn}` in `apps/mobile/src/app/_layout.tsx`. The guard is UX, and the server is the security boundary.",
+            title: "Protected screen",
+          }),
+        ]
+      : []),
     contribute(readmeTagline, "Expo"),
     contribute(readmeLayers, {
       choice: "Expo SDK 58 with Expo Router and Uniwind (Tailwind CSS 4)",

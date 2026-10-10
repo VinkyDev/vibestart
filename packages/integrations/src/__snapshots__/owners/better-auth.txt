@@ -1992,92 +1992,117 @@ export const getSession = cache(async () => {
   return await getServices().auth.api.getSession({ headers: requestHeaders });
 });
 
-# packages/auth/src/index.ts · 84 stacks
+# packages/auth/src/index.ts · 42 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
-#   hono-openapi-postgres-better-auth-expo-bun-docker
-#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
-#   hono-orpc-postgres-better-auth-expo-bun-docker
-#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-postgres-better-auth-bun-docker
 #   hono-postgres-better-auth-docker
-#   hono-postgres-better-auth-expo-bun-docker
-#   hono-postgres-better-auth-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-docker
-#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
 #   next-hono-orpc-postgres-better-auth-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-docker
-#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-bun-docker-e2e
 #   next-hono-postgres-better-auth-docker
 #   next-hono-postgres-better-auth-docker-e2e
-#   next-hono-postgres-better-auth-expo-bun-docker
-#   next-hono-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-postgres-better-auth-expo-docker
-#   next-hono-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-docker
-#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-docker
-#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-docker-e2e
-#   spa-hono-postgres-better-auth-expo-bun-docker
-#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-expo-docker
-#   spa-hono-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-docker
 #   tanstack-start-hono-postgres-better-auth-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "pg", schema }),
+    emailAndPassword: { enabled: true },
+    secret,
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 42 stacks
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-better-auth-expo-docker
+#   hono-postgres-better-auth-expo-bun-docker
+#   hono-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-postgres-better-auth-expo-docker
+#   next-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-expo-docker
+#   spa-hono-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-postgres-better-auth-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
 
 import type { Database } from "@my-app/db";
@@ -2094,98 +2119,126 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     baseURL,
     database: drizzleAdapter(db, { provider: "pg", schema }),
     emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    secret,
+    trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 42 stacks
+#   hono-openapi-sqlite-better-auth-bun-docker
+#   hono-openapi-sqlite-better-auth-docker
+#   hono-orpc-sqlite-better-auth-bun-docker
+#   hono-orpc-sqlite-better-auth-docker
+#   hono-sqlite-better-auth-bun-docker
+#   hono-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "sqlite", schema }),
+    emailAndPassword: { enabled: true },
     secret,
   });
 
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 84 stacks
-#   hono-openapi-sqlite-better-auth-bun-docker
-#   hono-openapi-sqlite-better-auth-docker
+# packages/auth/src/index.ts · 42 stacks
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
 #   hono-openapi-sqlite-better-auth-expo-docker
-#   hono-orpc-sqlite-better-auth-bun-docker
-#   hono-orpc-sqlite-better-auth-docker
 #   hono-orpc-sqlite-better-auth-expo-bun-docker
 #   hono-orpc-sqlite-better-auth-expo-docker
-#   hono-sqlite-better-auth-bun-docker
-#   hono-sqlite-better-auth-docker
 #   hono-sqlite-better-auth-expo-bun-docker
 #   hono-sqlite-better-auth-expo-docker
-#   next-hono-openapi-sqlite-better-auth-bun-docker
-#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-docker
-#   next-hono-openapi-sqlite-better-auth-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-bun-docker
-#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-docker
-#   next-hono-orpc-sqlite-better-auth-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-expo-bun-docker
 #   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   next-hono-sqlite-better-auth-bun-docker
-#   next-hono-sqlite-better-auth-bun-docker-e2e
-#   next-hono-sqlite-better-auth-docker
-#   next-hono-sqlite-better-auth-docker-e2e
 #   next-hono-sqlite-better-auth-expo-bun-docker
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-docker
-#   spa-hono-openapi-sqlite-better-auth-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-docker
-#   spa-hono-orpc-sqlite-better-auth-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-sqlite-better-auth-bun-docker
-#   spa-hono-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-docker
-#   spa-hono-sqlite-better-auth-docker-e2e
 #   spa-hono-sqlite-better-auth-expo-bun-docker
 #   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-bun-docker
-#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-docker
-#   tanstack-start-hono-sqlite-better-auth-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
 
 import type { Database } from "@my-app/db";
@@ -2202,21 +2255,20 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     baseURL,
     database: drizzleAdapter(db, { provider: "sqlite", schema }),
     emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
     secret,
+    trustedOrigins: ["my-app://"],
   });
 
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 8 stacks
+# packages/auth/src/index.ts · 4 stacks
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
-#   next-self-orpc-postgres-better-auth-expo-docker
-#   next-self-orpc-postgres-better-auth-expo-docker-e2e
 #   next-self-postgres-better-auth-docker
 #   next-self-postgres-better-auth-docker-e2e
-#   next-self-postgres-better-auth-expo-docker
-#   next-self-postgres-better-auth-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
@@ -2242,15 +2294,44 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 8 stacks
+# packages/auth/src/index.ts · 4 stacks
+#   next-self-orpc-postgres-better-auth-expo-docker
+#   next-self-orpc-postgres-better-auth-expo-docker-e2e
+#   next-self-postgres-better-auth-expo-docker
+#   next-self-postgres-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "pg", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo(), nextCookies()],
+    secret,
+    trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
 #   next-self-orpc-sqlite-better-auth-docker
 #   next-self-orpc-sqlite-better-auth-docker-e2e
-#   next-self-orpc-sqlite-better-auth-expo-docker
-#   next-self-orpc-sqlite-better-auth-expo-docker-e2e
 #   next-self-sqlite-better-auth-docker
 #   next-self-sqlite-better-auth-docker-e2e
-#   next-self-sqlite-better-auth-expo-docker
-#   next-self-sqlite-better-auth-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
@@ -2276,32 +2357,92 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 24 stacks
+# packages/auth/src/index.ts · 4 stacks
+#   next-self-orpc-sqlite-better-auth-expo-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-self-sqlite-better-auth-expo-docker
+#   next-self-sqlite-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "sqlite", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo(), nextCookies()],
+    secret,
+    trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 12 stacks
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-docker
 #   spa-hono-postgres-better-auth-electron-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "pg", schema }),
+    emailAndPassword: { enabled: true },
+    secret,
+    trustedOrigins: [rendererOrigin],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 12 stacks
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
 #   spa-hono-postgres-better-auth-electron-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
 
 import type { Database } from "@my-app/db";
@@ -2319,6 +2460,46 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     baseURL,
     database: drizzleAdapter(db, { provider: "pg", schema }),
     emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    secret,
+    trustedOrigins: [rendererOrigin, "my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 12 stacks
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "sqlite", schema }),
+    emailAndPassword: { enabled: true },
     secret,
     trustedOrigins: [rendererOrigin],
   });
@@ -2326,32 +2507,21 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 24 stacks
-#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+# packages/auth/src/index.ts · 12 stacks
 #   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-bun-docker
-#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-docker
-#   spa-hono-sqlite-better-auth-electron-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-expo-bun-docker
 #   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-expo-docker
 #   spa-hono-sqlite-better-auth-electron-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
 
 import type { Database } from "@my-app/db";
@@ -2369,22 +2539,20 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     baseURL,
     database: drizzleAdapter(db, { provider: "sqlite", schema }),
     emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
     secret,
-    trustedOrigins: [rendererOrigin],
+    trustedOrigins: [rendererOrigin, "my-app://"],
   });
 
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 8 stacks
+# packages/auth/src/index.ts · 4 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
-#   tanstack-start-self-postgres-better-auth-expo-docker
-#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
@@ -2410,15 +2578,44 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 8 stacks
+# packages/auth/src/index.ts · 4 stacks
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { tanstackStartCookies } from "better-auth/tanstack-start";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "pg", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo(), tanstackStartCookies()],
+    secret,
+    trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
-#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
-#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-docker
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
-#   tanstack-start-self-sqlite-better-auth-expo-docker
-#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
@@ -2439,6 +2636,39 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     emailAndPassword: { enabled: true },
     plugins: [tanstackStartCookies()],
     secret,
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-expo-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { tanstackStartCookies } from "better-auth/tanstack-start";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "sqlite", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo(), tanstackStartCookies()],
+    secret,
+    trustedOrigins: ["my-app://"],
   });
 
 export type Auth = ReturnType<typeof createAuth>;

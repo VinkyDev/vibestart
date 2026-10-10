@@ -59,6 +59,20 @@ describe("the Expo app", () => {
     });
   });
 
+  it("signs in with the scheme the server trusts as its origin", async () => {
+    const text = await project("hono-sqlite-better-auth-expo", "acme");
+    const { expo } = z
+      .object({ expo: z.object({ plugins: z.array(z.string()) }) })
+      .parse(JSON.parse(text("apps/mobile/app.json")));
+    expect(expo.plugins).toContain("expo-secure-store");
+    expect(text("apps/mobile/src/lib/auth-client.ts")).toContain(
+      'const scheme = "acme";'
+    );
+    const server = text("packages/auth/src/index.ts");
+    expect(server).toContain("plugins: [expo()],");
+    expect(server).toContain('trustedOrigins: ["acme://"],');
+  });
+
   it("is a project on its own, started with dev:mobile", async () => {
     const text = await project("expo");
     const { scripts } = z
