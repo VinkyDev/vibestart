@@ -8,10 +8,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime

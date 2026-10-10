@@ -1687,10 +1687,10 @@ WORKDIR /app
 COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/config/package.json packages/config/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -1716,10 +1716,10 @@ WORKDIR /app
 COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/config/package.json packages/config/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -1747,10 +1747,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -1778,10 +1778,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -1811,10 +1811,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -1844,10 +1844,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -1876,10 +1876,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -1908,10 +1908,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -1941,10 +1941,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -1976,10 +1976,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2010,10 +2010,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2044,10 +2044,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2077,10 +2077,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2108,10 +2108,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2138,10 +2138,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2168,10 +2168,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2199,10 +2199,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2232,10 +2232,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2264,10 +2264,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2296,10 +2296,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2329,10 +2329,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2362,10 +2362,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2396,10 +2396,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2433,10 +2433,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2470,10 +2470,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2509,10 +2509,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2548,10 +2548,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2586,10 +2586,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2624,10 +2624,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2663,10 +2663,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2704,10 +2704,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2744,10 +2744,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2784,10 +2784,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2822,10 +2822,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2858,10 +2858,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2893,10 +2893,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -2928,10 +2928,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -2964,10 +2964,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3002,10 +3002,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3039,10 +3039,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3076,10 +3076,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3112,10 +3112,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3147,10 +3147,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3182,10 +3182,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3218,10 +3218,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3255,10 +3255,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3292,10 +3292,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3326,10 +3326,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3361,10 +3361,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3397,10 +3397,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3432,10 +3432,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 
 FROM nginxinc/nginx-unprivileged:1.30-alpine AS runtime
 COPY <<'EOF' /etc/nginx/conf.d/default.conf
@@ -3467,10 +3467,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 
 FROM nginxinc/nginx-unprivileged:1.30-alpine AS runtime
 COPY <<'EOF' /etc/nginx/conf.d/default.conf
@@ -3501,10 +3501,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3534,10 +3534,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3569,10 +3569,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3604,10 +3604,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3640,10 +3640,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3676,10 +3676,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3714,10 +3714,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3752,10 +3752,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3790,10 +3790,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3828,10 +3828,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3868,10 +3868,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3908,10 +3908,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -3945,10 +3945,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -3982,10 +3982,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4021,10 +4021,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4060,10 +4060,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4098,10 +4098,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4138,10 +4138,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4180,10 +4180,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4222,10 +4222,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4261,10 +4261,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4300,10 +4300,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4341,10 +4341,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4382,10 +4382,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4419,10 +4419,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4454,10 +4454,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4491,10 +4491,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4528,10 +4528,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4562,10 +4562,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4596,10 +4596,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4632,10 +4632,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4668,10 +4668,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4703,10 +4703,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4740,10 +4740,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4779,10 +4779,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4818,10 +4818,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4854,10 +4854,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4890,10 +4890,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -4928,10 +4928,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -4966,10 +4966,10 @@ COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/electron/package.json packages/electron/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5000,10 +5000,10 @@ COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5032,10 +5032,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5065,10 +5065,10 @@ COPY --chown=vp:vp apps/server/package.json apps/server/
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5101,10 +5101,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5137,10 +5137,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5175,10 +5175,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5213,10 +5213,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5250,10 +5250,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5287,10 +5287,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5325,10 +5325,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5365,10 +5365,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5404,10 +5404,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5443,10 +5443,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5480,10 +5480,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5515,10 +5515,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5549,10 +5549,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5583,10 +5583,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5618,10 +5618,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5655,10 +5655,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5691,10 +5691,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM oven/bun:1.4.2-slim AS runtime
@@ -5727,10 +5727,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5762,10 +5762,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5796,10 +5796,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5830,10 +5830,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5865,10 +5865,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5901,10 +5901,10 @@ COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5937,10 +5937,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -5970,10 +5970,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -6004,10 +6004,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
@@ -6039,10 +6039,10 @@ COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime

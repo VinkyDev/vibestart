@@ -10,10 +10,10 @@ COPY --chown=vp:vp packages/auth/package.json packages/auth/
 COPY --chown=vp:vp packages/config/package.json packages/config/
 COPY --chown=vp:vp packages/db/package.json packages/db/
 COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile
+RUN vp install --frozen-lockfile --filter "@my-app/web..."
 
 COPY --chown=vp:vp . .
-RUN vp run build
+RUN vp run --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime

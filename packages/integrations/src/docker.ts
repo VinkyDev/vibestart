@@ -108,8 +108,20 @@ const nodeRuntime = (ctx: Context, read: ReadSlot) => {
   ];
 };
 
+/**
+ * The packages the image runs: the API server, the web app, or both. The build installs and builds them and the
+ * workspace packages they use, and nothing else, so another app in the workspace (Electron) stays out of the image.
+ */
+const deployedPackages = (ctx: Context) => [
+  ...(ctx.has("hono") ? [`${ctx.scope}/server`] : []),
+  ...(hasWebApp(ctx) ? [`${ctx.scope}/web`] : []),
+];
+
 const renderDockerfile = (ctx: Context, read: ReadSlot) => {
   const node = ctx.has("node") || ctx.has("bun");
+  const filters = deployedPackages(ctx)
+    .map((name) => `--filter "${name}..."`)
+    .join(" ");
   const packagePaths = read(packageJson)
     .map((pkg) => pkg.path)
     .filter(
@@ -136,11 +148,11 @@ const renderDockerfile = (ctx: Context, read: ReadSlot) => {
       ...packagePaths.map(
         (path) => `COPY --chown=vp:vp ${path}/package.json ${path}/`
       ),
-      "RUN vp install --frozen-lockfile",
+      `RUN vp install --frozen-lockfile ${filters}`,
     ].join("\n"),
     [
       "COPY --chown=vp:vp . .",
-      "RUN vp run build",
+      `RUN vp run ${filters} build`,
       ...(node ? ['RUN cp "$(vp env which node | head -1)" /tmp/node'] : []),
     ].join("\n"),
     ...(node ? nodeRuntime(ctx, read) : staticRuntime),

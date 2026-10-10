@@ -9,7 +9,7 @@ Delivery is how the finished application reaches its users: as a container runni
 
 <Tech href="https://docs.docker.com" icon="docker" />
 
-Selecting Docker adds a production Dockerfile, Compose configuration, and ignore file. Multi-stage builds separate dependency installation, application builds, and the runtime. The final image contains the output needed to run the application.
+Selecting Docker adds a production Dockerfile, Compose configuration, and ignore file. Multi-stage builds separate dependency installation, application builds, and the runtime. The build stage installs and builds only the apps the image runs and the packages they use, so an Electron app in the same repository stays out. The final image contains the output needed to run the application.
 
 Output follows the selected stack: static sites use a web server, SSR applications run their server build, and Hono uses the selected Node.js or Bun runtime. Database files and service data directories use persistent storage.
 
