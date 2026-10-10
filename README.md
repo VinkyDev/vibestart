@@ -112,3 +112,13 @@ Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, th
 ## License
 
 [MIT](LICENSE), copyright VinkyDev and contributors. Third-party materials retain their respective licenses.
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=vinkydev%2Fvibestart&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=vinkydev/vibestart&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=vinkydev/vibestart&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=vinkydev/vibestart&type=date&legend=top-left" />
+ </picture>
+</a>
