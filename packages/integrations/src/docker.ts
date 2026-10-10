@@ -386,6 +386,8 @@ export const docker = defineIntegration({
   id: "docker",
   kind: "deployment",
   name: "Docker",
+  // An image serves a web app or an API; a stack with neither has nothing to run.
+  requires: [["frontend-framework", "http-server"]],
   description: "Production Dockerfile and Docker Compose",
   homepage: "https://www.docker.com",
 });

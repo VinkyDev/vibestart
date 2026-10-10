@@ -173,6 +173,13 @@ describe("why an integration is included", () => {
     );
   });
 
+  it("leaves out a requirement another alternative already meets", () => {
+    const { stack } = entry("next-self-orpc-docker");
+    expect(whyIncluded(stack, integrationOf("self"))).toBe(
+      "oRPC needs an HTTP server."
+    );
+  });
+
   it("gives no reason for the foundation, which nothing needs", () => {
     const { stack } = entry("hono-postgres-better-auth");
     expect(whyIncluded(stack, integrationOf("vite-plus"))).toBeUndefined();

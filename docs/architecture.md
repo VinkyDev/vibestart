@@ -36,9 +36,9 @@
 Integrations declare `provides` and `requires` as capability strings. Four rules:
 
 1. A required kind has a value, and each `kindGroups` group (`framework` and `backend`) has at least one.
-2. Every `requires` is provided by some integration in the stack.
+2. Every `requires` is provided by some integration in the stack. A requirement may list alternatives, any one of which satisfies it: Docker needs a web app or an HTTP server to put in the image.
 3. A capability has at most one provider, so Next.js and TanStack Router (both `router`) exclude each other, as do Hono and `self` (both `http-server`).
-4. An `auxiliary` integration exists only to satisfy another's `requires`; a static SPA cannot carry a Node runtime.
+4. An `auxiliary` integration exists only to satisfy another's `requires`; a static SPA cannot carry a Node runtime. A requirement another alternative already meets does not count, so Docker beside Next.js does not justify `self`.
 
 Each violation carries a `reason`. The suggested fix is found by enumeration: among all legal stacks, the one that differs from the current stack in the fewest kinds, optionally keeping the kind just changed. Legal stacks number in the hundreds, so enumeration is cheap and no constraint solver is needed.
 

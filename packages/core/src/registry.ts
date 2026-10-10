@@ -5,6 +5,7 @@ import type {
   IntegrationInfo,
   Kind,
 } from "#/integration.ts";
+import { alternatives } from "#/integration.ts";
 
 /** Group name → package name → version range. Groups become comment headers in the catalog. */
 export type Catalog = Readonly<
@@ -56,7 +57,7 @@ export const defineRegistry = (registry: Registry): Registry => {
     }
     for (const capability of [
       ...integration.provides,
-      ...integration.requires,
+      ...integration.requires.flatMap(alternatives),
     ]) {
       if (registry.capabilities[capability] === undefined) {
         throw new Error(

@@ -33,10 +33,12 @@ export type {
   IntegrationInfo,
   Kind,
   ReadSlot,
+  Requirement,
   Slot,
   Stack,
 } from "#/integration.ts";
 export {
+  alternatives,
   contribute,
   defineAddon,
   defineIntegration,
@@ -69,6 +71,7 @@ export {
   compose,
   kindOptions,
   legalStacks,
+  needs,
   openChoices,
   resolve,
   startingChoice,

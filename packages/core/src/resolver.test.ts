@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import type { Requirement } from "#/integration.ts";
 import { defineIntegration } from "#/integration.ts";
 import { defineRegistry } from "#/registry.ts";
 import {
@@ -19,7 +20,7 @@ const integration = (
   options: {
     auxiliary?: boolean;
     provides?: string[];
-    requires?: string[];
+    requires?: Requirement[];
   } = {}
 ) =>
   defineIntegration({
@@ -84,7 +85,7 @@ describe(check, () => {
         type: "missing-kind",
       },
       {
-        capability: "node-runtime",
+        capabilities: ["node-runtime"],
         integration: "next",
         reason:
           "NEXT requires a Node.js runtime, but nothing in the stack provides it.",
@@ -133,6 +134,115 @@ describe(check, () => {
         type: "unused-integration",
       },
     ]);
+  });
+});
+
+describe("a requirement with alternatives", () => {
+  const deployable = defineRegistry({
+    addons: [],
+    capabilities: {
+      "http-server": "an HTTP server",
+      "web-app": "a web app",
+    },
+    catalog: {},
+    integrations: [
+      integration("vp", "toolchain"),
+      integration("spa", "framework", { provides: ["web-app"] }),
+      integration("worker", "framework"),
+      integration("hono", "backend", {
+        auxiliary: true,
+        provides: ["http-server"],
+      }),
+      integration("docker", "deployment", {
+        requires: [["web-app", "http-server"]],
+      }),
+    ],
+    kinds: [
+      { id: "toolchain", name: "Toolchain", optional: false },
+      { id: "framework", name: "Framework", optional: false },
+      { id: "backend", name: "Backend", optional: true },
+      { id: "deployment", name: "Deployment", optional: true },
+    ],
+  });
+
+  it("is met by any one alternative", () => {
+    expect(
+      check(deployable, {
+        deployment: "docker",
+        framework: "spa",
+        toolchain: "vp",
+      })
+    ).toStrictEqual([]);
+    expect(
+      check(deployable, {
+        backend: "hono",
+        deployment: "docker",
+        framework: "worker",
+        toolchain: "vp",
+      })
+    ).toStrictEqual([]);
+  });
+
+  it("explains a stack that provides none of the alternatives", () => {
+    expect(
+      check(deployable, {
+        deployment: "docker",
+        framework: "worker",
+        toolchain: "vp",
+      })
+    ).toStrictEqual([
+      {
+        capabilities: ["web-app", "http-server"],
+        integration: "docker",
+        reason:
+          "DOCKER requires a web app or an HTTP server, but nothing in the stack provides it.",
+        type: "missing-capability",
+      },
+    ]);
+  });
+
+  it("needs an auxiliary integration only for an alternative nothing else provides", () => {
+    expect(
+      legalStacks(deployable).filter((stack) => stack.backend === "hono")
+    ).toStrictEqual([
+      {
+        backend: "hono",
+        deployment: "docker",
+        framework: "worker",
+        toolchain: "vp",
+      },
+    ]);
+    expect(
+      check(deployable, {
+        backend: "hono",
+        deployment: "docker",
+        framework: "spa",
+        toolchain: "vp",
+      })
+    ).toStrictEqual([
+      {
+        integration: "hono",
+        reason:
+          "HONO provides an HTTP server, but nothing in the stack requires it.",
+        type: "unused-integration",
+      },
+    ]);
+  });
+
+  it("names only described capabilities", () => {
+    expect(() =>
+      defineRegistry({
+        addons: [],
+        capabilities: { "web-app": "a web app" },
+        catalog: {},
+        integrations: [
+          integration("docker", "deployment", {
+            requires: [["web-app", "http-server"]],
+          }),
+        ],
+        kinds: [{ id: "deployment", name: "Deployment", optional: false }],
+      })
+    ).toThrow('Integration "docker" uses undescribed capability "http-server"');
   });
 });
 
@@ -185,7 +295,7 @@ describe(resolve, () => {
       stacks: [],
       violations: [
         {
-          capability: "http-server",
+          capabilities: ["http-server"],
           integration: "spa",
           reason:
             "SPA requires an HTTP server, but nothing in the stack provides it.",
