@@ -73,6 +73,19 @@ describe("the Expo app", () => {
     expect(server).toContain('trustedOrigins: ["acme://"],');
   });
 
+  it.each([
+    ["hono-orpc-sqlite-expo", false],
+    ["hono-openapi-sqlite-better-auth-expo", true],
+  ])("lists the todos in %s behind sign-in: %s", async (label, guarded) => {
+    const layout = (await project(label))("apps/mobile/src/app/_layout.tsx");
+    expect(layout).toContain('<Stack.Screen name="todos"');
+    expect(
+      /<Stack\.Protected guard=\{signedIn\}>\s*<Stack\.Screen name="todos"/u.test(
+        layout
+      )
+    ).toBe(guarded);
+  });
+
   it("is a project on its own, started with dev:mobile", async () => {
     const text = await project("expo");
     const { scripts } = z

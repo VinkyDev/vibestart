@@ -20,11 +20,12 @@ const Home = () => {
       </Card>
       <Card>
         <UserMenu />
-        {session === null && (
-          <Link className="text-primary underline" href="/login">
-            Sign in
-          </Link>
-        )}
+        <Link
+          className="text-primary underline"
+          href={session === null ? "/login" : "/todos"}
+        >
+          {session === null ? "Sign in to keep todos" : "Open your todos"}
+        </Link>
       </Card>
     </ScrollView>
   );

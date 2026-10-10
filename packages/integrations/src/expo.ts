@@ -7,7 +7,7 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import { hasBackend, hasWebApp, stackHeadline } from "#/app.ts";
+import { hasBackend, hasWebApp, stackHeadline, todosExample } from "#/app.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
@@ -55,9 +55,15 @@ const renderAppJson = (ctx: Context) =>
 const rootLayout = (ctx: Context) => {
   const query = hasBackend(ctx);
   const auth = ctx.has("better-auth");
+  const todos = todosExample(ctx)
+    ? ['<Stack.Screen name="todos" options={{ title: "Todos" }} />']
+    : [];
   const navigation = [
     "<Stack>",
     `<Stack.Screen name="index" options={{ title: ${quote(ctx.name)} }} />`,
+    ...(auth && todos.length > 0
+      ? ["<Stack.Protected guard={signedIn}>", ...todos, "</Stack.Protected>"]
+      : todos),
     ...(auth
       ? [
           "<Stack.Protected guard={!signedIn}>",
@@ -118,20 +124,40 @@ const rootLayout = (ctx: Context) => {
   );
 };
 
-const accountCard = [
+const linkClass = 'className="text-primary underline"';
+
+// Signed out, the home screen offers the sign-in; signed in, the todos when there are any.
+const accountCard = (todos: boolean) => [
   "<Card>",
   "<UserMenu />",
-  "{session === null && (",
-  '<Link className="text-primary underline" href="/login">',
-  "Sign in",
+  ...(todos
+    ? [
+        `<Link ${linkClass} href={session === null ? "/login" : "/todos"}>`,
+        '{session === null ? "Sign in to keep todos" : "Open your todos"}',
+        "</Link>",
+      ]
+    : [
+        "{session === null && (",
+        `<Link ${linkClass} href="/login">`,
+        "Sign in",
+        "</Link>",
+        ")}",
+      ]),
+  "</Card>",
+];
+
+const todosCard = [
+  "<Card>",
+  `<Link ${linkClass} href="/todos">`,
+  "Open the todos",
   "</Link>",
-  ")}",
   "</Card>",
 ];
 
 const homeScreen = (ctx: Context) =>
   renderFile("apps/mobile/src/app/index.tsx", (read) => {
     const auth = ctx.has("better-auth");
+    const todos = todosExample(ctx);
     const content = [
       '<ScrollView className="bg-background" contentContainerClassName="gap-4 p-4">',
       "<Card>",
@@ -139,11 +165,12 @@ const homeScreen = (ctx: Context) =>
       `<Text className="text-muted-foreground">${read(stackHeadline).join(" · ")}</Text>`,
       ...(hasBackend(ctx) ? ["<ApiStatus />"] : []),
       "</Card>",
-      ...(auth ? accountCard : []),
+      ...(auth ? accountCard(todos) : []),
+      ...(!auth && todos ? todosCard : []),
       "</ScrollView>",
     ];
     return [
-      ...(auth ? ['import { Link } from "expo-router";'] : []),
+      ...(auth || todos ? ['import { Link } from "expo-router";'] : []),
       'import { ScrollView } from "react-native";',
       "",
       ...(hasBackend(ctx)
@@ -209,7 +236,7 @@ const withSession = (
   }
   const options = [
     "// Native fetch has no cookie jar: Better Auth's Expo client keeps the session, and each request sends it.",
-    'fetch: async (input, init) => await fetch(input, { ...init, credentials: "omit" }),',
+    'fetch: async (input: RequestInfo | URL, init?: RequestInit) => await fetch(input, { ...init, credentials: "omit" }),',
     "headers: async () => ({ cookie: await authClient.getCookie() }),",
   ].join("\n");
   const where = `${set}/${path}`;
@@ -244,10 +271,35 @@ const orpcFiles = (ctx: Context) => [
   }),
 ];
 
+const openapiQueriesPath = "apps/web/src/lib/api.ts";
+
+// The queries are the web app's, over a client that reaches the server's origin.
+const openapiFiles = (ctx: Context) => [
+  file(
+    "apps/mobile/src/lib/api.ts",
+    replaceOnce(
+      templateContent(ctx, "openapi/web", openapiQueriesPath),
+      "export const createQueries",
+      "const createQueries",
+      `openapi/web/${openapiQueriesPath}`
+    )
+  ),
+  withSession(ctx, "expo/openapi", "apps/mobile/src/lib/client.ts", [
+    "/api`)",
+    (options) => `/api\`, {\n${options}\n})`,
+  ]),
+  contribute(packageJson, {
+    dependencies: ["hono"],
+    devDependencies: [`${ctx.scope}/api`],
+    path: "apps/mobile",
+  }),
+];
+
 // The app reaches the server at the origin `src/env.ts` resolves. oRPC brings its own typed status; without it the home screen asks `/api/health` directly.
 const backendFiles = (ctx: Context) => [
   ...templateFiles(ctx, "expo/backend"),
   ...(ctx.has("orpc") ? orpcFiles(ctx) : templateFiles(ctx, "expo/health")),
+  ...(ctx.has("openapi") && todosExample(ctx) ? openapiFiles(ctx) : []),
   file("apps/mobile/.env.example", envExample),
   contribute(packageJson, {
     dependencies: ["@tanstack/react-query", "zod"],
@@ -263,6 +315,16 @@ const formFiles = (ctx: Context) => [
   }),
 ];
 
+const iconDependencies = contribute(packageJson, {
+  dependencies: ["lucide-react-native", "react-native-svg"],
+  path: "apps/mobile",
+});
+
+const todosFiles = (ctx: Context) => [
+  ...templateFiles(ctx, "expo/todos"),
+  iconDependencies,
+];
+
 // Metro bundles every module `@better-auth/expo/client` imports, expo-network and expo-web-browser among them, though they are optional peers.
 const authFiles = (ctx: Context) => [
   ...templateFiles(ctx, "expo/auth"),
@@ -273,11 +335,10 @@ const authFiles = (ctx: Context) => [
       "expo-network",
       "expo-secure-store",
       "expo-web-browser",
-      "lucide-react-native",
-      "react-native-svg",
     ],
     path: "apps/mobile",
   }),
+  iconDependencies,
 ];
 
 // `react/style-prop-object` takes expo-status-bar's `style="auto"`, a theme name, for an inline style.
@@ -288,6 +349,15 @@ const lintOverride = (ctx: Context) => `{
     "react/style-prop-object": ["error", { allow: ["StatusBar"] }],${ctx.has("shadcn") ? '\n    "shadcn/no-restyle": "off",' : ""}
   },
 }`;
+
+const sessionSender = (ctx: Context) => {
+  if (ctx.has("orpc")) {
+    return "`src/lib/api.ts` sends";
+  }
+  return ctx.has("openapi") && todosExample(ctx)
+    ? "`src/lib/client.ts` sends"
+    : "a request to the API sends";
+};
 
 const devServers = (ctx: Context) => hasWebApp(ctx) || hasBackend(ctx);
 
@@ -302,7 +372,7 @@ const architecture = (ctx: Context) =>
       : []),
     ...(ctx.has("better-auth")
       ? [
-          `Better Auth's Expo client (\`src/lib/auth-client.ts\`) keeps the session in SecureStore. Native fetch has no cookie jar, so ${ctx.has("orpc") ? "`src/lib/api.ts` sends" : "a request to the API sends"} the session cookie itself. The server trusts \`${ctx.name}://\`, the app's scheme, as its origin.`,
+          `Better Auth's Expo client (\`src/lib/auth-client.ts\`) keeps the session in SecureStore. Native fetch has no cookie jar, so ${sessionSender(ctx)} the session cookie itself. The server trusts \`${ctx.name}://\`, the app's scheme, as its origin.`,
         ]
       : []),
     "Uniwind compiles Tailwind classes for React Native; the theme is the CSS variables in `apps/mobile/global.css`.",
@@ -313,7 +383,9 @@ export const expo = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "expo/common"),
     ...(hasBackend(ctx) ? backendFiles(ctx) : []),
-    ...(ctx.has("better-auth") ? [...formFiles(ctx), ...authFiles(ctx)] : []),
+    ...(ctx.has("better-auth") || todosExample(ctx) ? formFiles(ctx) : []),
+    ...(ctx.has("better-auth") ? authFiles(ctx) : []),
+    ...(todosExample(ctx) ? todosFiles(ctx) : []),
     rootLayout(ctx),
     file("apps/mobile/app.json", renderAppJson(ctx)),
     file("apps/mobile/.gitignore", ".expo\nexpo-env.d.ts\nios\nandroid\n"),

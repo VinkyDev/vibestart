@@ -9,7 +9,7 @@ import { authClient } from "#src/lib/auth-client.ts";
 
 const link = new RPCLink({
   // Native fetch has no cookie jar: Better Auth's Expo client keeps the session, and each request sends it.
-  fetch: async (input, init) =>
+  fetch: async (input: RequestInfo | URL, init?: RequestInit) =>
     await fetch(input, { ...init, credentials: "omit" }),
   headers: async () => ({ cookie: await authClient.getCookie() }),
   url: `${apiUrl}/rpc`,

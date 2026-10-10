@@ -19,6 +19,9 @@ const RootLayout = () => {
       <QueryClientProvider client={queryClient}>
         <Stack>
           <Stack.Screen name="index" options={{ title: "my-app" }} />
+          <Stack.Protected guard={signedIn}>
+            <Stack.Screen name="todos" options={{ title: "Todos" }} />
+          </Stack.Protected>
           <Stack.Protected guard={!signedIn}>
             <Stack.Screen name="login" options={{ title: "Sign in" }} />
           </Stack.Protected>
