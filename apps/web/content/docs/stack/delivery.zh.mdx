@@ -9,7 +9,7 @@ description: 使用 Docker 部署应用，或将 Web 界面打包为 Electron �
 
 <Tech href="https://docs.docker.com" icon="docker" />
 
-选择 Docker 后，项目包含生产 Dockerfile、Compose 配置和忽略文件。多阶段构建将依赖安装、应用构建和运行环境分开，最终镜像包含应用运行所需的产物。
+选择 Docker 后，项目包含生产 Dockerfile、Compose 配置和忽略文件。多阶段构建将依赖安装、应用构建和运行环境分开。构建阶段只安装和构建镜像要运行的应用及其依赖的包，同一仓库里的 Electron 应用不会进入构建。最终镜像包含应用运行所需的产物。
 
 生成方式随技术栈调整：静态站点由 Web 服务器提供资源，SSR 应用运行服务端构建产物，Hono 使用所选的 Node.js 或 Bun 运行时。数据库文件和数据库服务的数据目录使用持久化存储。
 

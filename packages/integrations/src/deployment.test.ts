@@ -39,3 +39,37 @@ describe("a stack without a deployment is its Docker sibling without Docker", ()
     expect(bare.setup).toStrictEqual(docker.setup);
   });
 });
+
+const dockerStacks = legalStacks(registry)
+  .filter((stack) => stack.deployment === "docker")
+  .map((stack) => ({ label: stackLabel(stack), stack }));
+
+/** The distinct `app` groups the pattern matches in `text`, sorted. */
+const apps = (text: string, pattern: RegExp) =>
+  [
+    ...new Set([...text.matchAll(pattern)].map((match) => match.groups?.app)),
+  ].toSorted((a, b) => (a ?? "").localeCompare(b ?? ""));
+
+/** The apps a Dockerfile command selects with `--filter "<scope>/<app>..."`. */
+const filtered = (dockerfile: string, command: string) =>
+  apps(
+    dockerfile.split("\n").find((line) => line.startsWith(`RUN ${command}`)) ??
+      "",
+    /--filter "@[^/]+\/(?<app>[^."]+)\.\.\."/gu
+  );
+
+// An Electron app beside the web app would otherwise be installed and built in the image and never used.
+describe("the Docker build installs and builds the apps the image runs, and no other", () => {
+  it.each(dockerStacks)("$label", async ({ stack }) => {
+    const { files } = await verifiedGeneration(stack);
+    const dockerfile =
+      files.find((file) => file.path === "Dockerfile")?.content ?? "";
+    const copied = apps(
+      dockerfile,
+      /^COPY --from=build \/app\/apps\/(?<app>[^/]+)\//gmu
+    );
+    expect(copied).not.toStrictEqual([]);
+    expect(filtered(dockerfile, "vp install")).toStrictEqual(copied);
+    expect(filtered(dockerfile, "vp run")).toStrictEqual(copied);
+  });
+});
