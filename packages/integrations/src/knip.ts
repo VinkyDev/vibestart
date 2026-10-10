@@ -8,9 +8,11 @@ import {
 
 import { readySteps, toolConventions } from "#/vite-plus/slots.ts";
 
+/** `ignoreDependencies` lists packages a Knip plugin wrongly expects the workspace to install. */
 export const knipEntries = defineSlot<{
   readonly workspace: string;
-  readonly entry: readonly string[];
+  readonly entry?: readonly string[];
+  readonly ignoreDependencies?: readonly string[];
 }>("knip/entries");
 
 export const knip = defineAddon({
@@ -26,10 +28,12 @@ export const knip = defineAddon({
                 {
                   $schema: "https://unpkg.com/knip@6/schema.json",
                   workspaces: Object.fromEntries(
-                    read(knipEntries).map(({ workspace, entry }) => [
-                      workspace,
-                      { entry },
-                    ])
+                    read(knipEntries).map(
+                      ({ workspace, entry, ignoreDependencies }) => [
+                        workspace,
+                        { entry, ignoreDependencies },
+                      ]
+                    )
                   ),
                 },
                 null,

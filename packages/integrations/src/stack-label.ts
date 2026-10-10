@@ -8,6 +8,7 @@ export const stackLabel = (stack: Stack) =>
     stack.database,
     stack.auth,
     stack.desktop,
+    stack.mobile,
     ...(stack.runtime === "bun" ? ["bun"] : []),
     stack.deployment,
     ...(stack.testing === "e2e" ? ["e2e"] : []),

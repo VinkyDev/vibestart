@@ -1,20 +1,36 @@
-# apps/web/src/lib/api.ts · 16 stacks
+# apps/web/src/lib/api.ts · 32 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import type { UseMutationOptions } from "@tanstack/react-query";
 import { parseResponse } from "hono/client";
@@ -67,7 +83,7 @@ export const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/api.ts · 48 stacks
+# apps/web/src/lib/api.ts · 96 stacks
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -76,6 +92,14 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -84,6 +108,14 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -92,6 +124,14 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -100,22 +140,46 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import type { UseMutationOptions } from "@tanstack/react-query";
 import { parseResponse } from "hono/client";
@@ -168,23 +232,39 @@ const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/client.ts · 48 stacks
+# apps/web/src/lib/client.ts · 96 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -193,6 +273,14 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -201,6 +289,14 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -209,6 +305,14 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -217,29 +321,53 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 import { hc } from "hono/client";
 
 import type { Api } from "@my-app/api";
 
 export const createClient = () => hc<Api>("/api");
 
-# apps/web/src/lib/client.ts · 16 stacks
+# apps/web/src/lib/client.ts · 32 stacks
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import { createIsomorphicFn } from "@tanstack/react-start";
 import { getRequestHeaders } from "@tanstack/react-start/server";
 import { hc } from "hono/client";
@@ -257,23 +385,39 @@ export const createClient = createIsomorphicFn()
   )
   .client(() => hc<Api>("/api"));
 
-# apps/web/src/server/query.ts · 16 stacks
+# apps/web/src/server/query.ts · 32 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 import "server-only";
 import { QueryClient } from "@tanstack/react-query";
 import { hc } from "hono/client";
@@ -305,13 +449,19 @@ export const serverApi = createQueries(
 
 export const getQueryClient = cache(() => new QueryClient());
 
-# packages/api/src/index.ts · 18 stacks
+# packages/api/src/index.ts · 36 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
+#   hono-openapi-expo-bun-docker
+#   hono-openapi-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-bun-docker-e2e
 #   next-hono-openapi-docker
 #   next-hono-openapi-docker-e2e
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-bun-docker-e2e
+#   next-hono-openapi-expo-docker
+#   next-hono-openapi-expo-docker-e2e
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-bun-docker-e2e
 #   spa-hono-openapi-docker
@@ -320,10 +470,22 @@ export const getQueryClient = cache(() => new QueryClient());
 #   spa-hono-openapi-electron-bun-docker-e2e
 #   spa-hono-openapi-electron-docker
 #   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-bun-docker-e2e
+#   spa-hono-openapi-expo-docker
+#   spa-hono-openapi-expo-docker-e2e
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-bun-docker-e2e
 #   tanstack-start-hono-openapi-docker
 #   tanstack-start-hono-openapi-docker-e2e
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-expo-docker
+#   tanstack-start-hono-openapi-expo-docker-e2e
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
 
@@ -345,31 +507,55 @@ export const createApi = () => {
 
 export type Api = ReturnType<typeof createApi>;
 
-# packages/api/src/index.ts · 72 stacks
+# packages/api/src/index.ts · 144 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -378,6 +564,14 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -386,6 +580,14 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -394,6 +596,14 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -402,22 +612,46 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
 
@@ -445,13 +679,19 @@ export const createApi = (services: Services) => {
 
 export type Api = ReturnType<typeof createApi>;
 
-# packages/api/src/routes/health.ts · 18 stacks
+# packages/api/src/routes/health.ts · 36 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
+#   hono-openapi-expo-bun-docker
+#   hono-openapi-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-bun-docker-e2e
 #   next-hono-openapi-docker
 #   next-hono-openapi-docker-e2e
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-bun-docker-e2e
+#   next-hono-openapi-expo-docker
+#   next-hono-openapi-expo-docker-e2e
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-bun-docker-e2e
 #   spa-hono-openapi-docker
@@ -460,10 +700,22 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-electron-bun-docker-e2e
 #   spa-hono-openapi-electron-docker
 #   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-bun-docker-e2e
+#   spa-hono-openapi-expo-docker
+#   spa-hono-openapi-expo-docker-e2e
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-bun-docker-e2e
 #   tanstack-start-hono-openapi-docker
 #   tanstack-start-hono-openapi-docker-e2e
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-expo-docker
+#   tanstack-start-hono-openapi-expo-docker-e2e
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
 const health = createRoute({
@@ -484,19 +736,31 @@ export const healthRoutes = () =>
     c.json({ status: "ok" as const }, 200)
   );
 
-# packages/api/src/routes/health.ts · 36 stacks
+# packages/api/src/routes/health.ts · 72 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -505,6 +769,14 @@ export const healthRoutes = () =>
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -513,14 +785,30 @@ export const healthRoutes = () =>
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { sql } from "drizzle-orm";
 
@@ -545,19 +833,31 @@ export const healthRoutes = ({ db }: Services) =>
     return c.json({ status: "ok" as const }, 200);
   });
 
-# packages/api/src/routes/health.ts · 36 stacks
+# packages/api/src/routes/health.ts · 72 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -566,6 +866,14 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -574,14 +882,30 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { sql } from "drizzle-orm";
 
@@ -606,19 +930,31 @@ export const healthRoutes = ({ db }: Services) =>
     return c.json({ status: "ok" as const }, 200);
   });
 
-# packages/api/src/routes/todos.ts · 36 stacks
+# packages/api/src/routes/todos.ts · 72 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -627,6 +963,14 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -635,14 +979,30 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
@@ -808,19 +1168,31 @@ export const todoRoutes = ({ auth, db }: Services) => {
     });
 };
 
-# packages/api/src/routes/todos.ts · 36 stacks
+# packages/api/src/routes/todos.ts · 72 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -829,6 +1201,14 @@ export const todoRoutes = ({ auth, db }: Services) => {
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -837,14 +1217,30 @@ export const todoRoutes = ({ auth, db }: Services) => {
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { eq } from "drizzle-orm";
 
@@ -970,19 +1366,31 @@ export const todoRoutes = ({ db }: Services) =>
         : c.json(deleted, 200);
     });
 
-# packages/api/src/services.ts · 36 stacks
+# packages/api/src/services.ts · 72 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -991,6 +1399,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -999,14 +1415,30 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 import type { Auth } from "@my-app/auth";
 import type { Database } from "@my-app/db";
 
@@ -1015,19 +1447,31 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/src/services.ts · 36 stacks
+# packages/api/src/services.ts · 72 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -1036,6 +1480,14 @@ export interface Services {
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -1044,51 +1496,97 @@ export interface Services {
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import type { Database } from "@my-app/db";
 
 export interface Services {
   db: Database;
 }
 
-# packages/api/tsconfig.json · 90 stacks
+# packages/api/tsconfig.json · 180 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
+#   hono-openapi-expo-bun-docker
+#   hono-openapi-expo-docker
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-bun-docker-e2e
 #   next-hono-openapi-docker
 #   next-hono-openapi-docker-e2e
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-bun-docker-e2e
+#   next-hono-openapi-expo-docker
+#   next-hono-openapi-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
 #   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
 #   next-hono-openapi-sqlite-docker-e2e
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-sqlite-expo-docker-e2e
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-bun-docker-e2e
 #   spa-hono-openapi-docker
@@ -1097,6 +1595,14 @@ export interface Services {
 #   spa-hono-openapi-electron-bun-docker-e2e
 #   spa-hono-openapi-electron-docker
 #   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-bun-docker-e2e
+#   spa-hono-openapi-expo-docker
+#   spa-hono-openapi-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -1105,6 +1611,14 @@ export interface Services {
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -1113,6 +1627,14 @@ export interface Services {
 #   spa-hono-openapi-postgres-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-docker
 #   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -1121,6 +1643,14 @@ export interface Services {
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -1129,26 +1659,54 @@ export interface Services {
 #   spa-hono-openapi-sqlite-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-electron-docker
 #   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-bun-docker-e2e
 #   tanstack-start-hono-openapi-docker
 #   tanstack-start-hono-openapi-docker-e2e
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-expo-docker
+#   tanstack-start-hono-openapi-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
 #   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 {
   "extends": "@my-app/config/typescript/node.json",
   "include": ["src", "tests"]

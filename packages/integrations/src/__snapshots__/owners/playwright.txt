@@ -1,146 +1,288 @@
-# apps/web/playwright.config.ts · 142 stacks
+# apps/web/playwright.config.ts · 284 stacks
 #   next-docker
+#   next-expo-docker
 #   next-hono-bun-docker
 #   next-hono-docker
+#   next-hono-expo-bun-docker
+#   next-hono-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-docker
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-docker
+#   next-hono-orpc-expo-bun-docker
+#   next-hono-orpc-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-postgres-bun-docker
 #   next-hono-postgres-docker
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-docker
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-bun-docker
 #   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-bun-docker
+#   next-hono-sqlite-expo-docker
 #   next-self-orpc-docker
+#   next-self-orpc-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-postgres-docker
+#   next-self-postgres-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
 #   spa-docker
 #   spa-electron-docker
+#   spa-electron-expo-docker
+#   spa-expo-docker
 #   spa-hono-bun-docker
 #   spa-hono-docker
 #   spa-hono-electron-bun-docker
 #   spa-hono-electron-docker
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-electron-expo-docker
+#   spa-hono-expo-bun-docker
+#   spa-hono-expo-docker
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-docker
 #   spa-hono-openapi-electron-bun-docker
 #   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-docker
 #   spa-hono-orpc-electron-bun-docker
 #   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-expo-bun-docker
+#   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-docker
 #   spa-hono-postgres-electron-bun-docker
 #   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-electron-expo-docker
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-postgres-expo-docker
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-docker
 #   spa-hono-sqlite-better-auth-electron-bun-docker
 #   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-docker
 #   spa-hono-sqlite-electron-bun-docker
 #   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-expo-bun-docker
+#   spa-hono-sqlite-electron-expo-docker
+#   spa-hono-sqlite-expo-bun-docker
+#   spa-hono-sqlite-expo-docker
 #   tanstack-start-docker
+#   tanstack-start-expo-docker
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-docker
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-orpc-bun-docker
 #   tanstack-start-hono-orpc-docker
+#   tanstack-start-hono-orpc-expo-bun-docker
+#   tanstack-start-hono-orpc-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-postgres-bun-docker
 #   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-bun-docker
 #   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
+#   tanstack-start-hono-sqlite-expo-docker
 #   tanstack-start-self-orpc-docker
+#   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
 import { defineConfig, devices } from "@playwright/test";
 
 import { e2eBaseURL } from "./tests/support/server.ts";
@@ -163,11 +305,15 @@ export default defineConfig({
   },
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 4 stacks
+# apps/web/tests/e2e/app.e2e.ts · 8 stacks
 #   next-docker
+#   next-expo-docker
 #   spa-docker
 #   spa-electron-docker
+#   spa-electron-expo-docker
+#   spa-expo-docker
 #   tanstack-start-docker
+#   tanstack-start-expo-docker
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -192,53 +338,99 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 46 stacks
+# apps/web/tests/e2e/app.e2e.ts · 92 stacks
 #   next-hono-bun-docker
 #   next-hono-docker
+#   next-hono-expo-bun-docker
+#   next-hono-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-docker
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-docker
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-docker
+#   next-hono-orpc-expo-bun-docker
+#   next-hono-orpc-expo-docker
 #   next-hono-postgres-bun-docker
 #   next-hono-postgres-docker
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-docker
 #   next-hono-sqlite-bun-docker
 #   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-bun-docker
+#   next-hono-sqlite-expo-docker
 #   next-self-orpc-docker
+#   next-self-orpc-expo-docker
 #   next-self-postgres-docker
+#   next-self-postgres-expo-docker
 #   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
 #   spa-hono-bun-docker
 #   spa-hono-docker
 #   spa-hono-electron-bun-docker
 #   spa-hono-electron-docker
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-electron-expo-docker
+#   spa-hono-expo-bun-docker
+#   spa-hono-expo-docker
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-docker
 #   spa-hono-openapi-electron-bun-docker
 #   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-docker
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-docker
 #   spa-hono-orpc-electron-bun-docker
 #   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-expo-bun-docker
+#   spa-hono-orpc-expo-docker
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-docker
 #   spa-hono-postgres-electron-bun-docker
 #   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-electron-expo-docker
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-postgres-expo-docker
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-docker
 #   spa-hono-sqlite-electron-bun-docker
 #   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-expo-bun-docker
+#   spa-hono-sqlite-electron-expo-docker
+#   spa-hono-sqlite-expo-bun-docker
+#   spa-hono-sqlite-expo-docker
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-docker
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-docker
 #   tanstack-start-hono-orpc-bun-docker
 #   tanstack-start-hono-orpc-docker
+#   tanstack-start-hono-orpc-expo-bun-docker
+#   tanstack-start-hono-orpc-expo-docker
 #   tanstack-start-hono-postgres-bun-docker
 #   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-bun-docker
 #   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
+#   tanstack-start-hono-sqlite-expo-docker
 #   tanstack-start-self-orpc-docker
+#   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -263,43 +455,79 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 36 stacks
+# apps/web/tests/e2e/app.e2e.ts · 72 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -400,43 +628,79 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 36 stacks
+# apps/web/tests/e2e/app.e2e.ts · 72 stacks
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -488,27 +752,47 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 20 stacks
+# apps/web/tests/e2e/app.e2e.ts · 40 stacks
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-docker
 #   spa-hono-sqlite-better-auth-electron-bun-docker
 #   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -587,172 +871,330 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/global-setup.ts · 142 stacks
+# apps/web/tests/e2e/global-setup.ts · 284 stacks
 #   next-docker
+#   next-expo-docker
 #   next-hono-bun-docker
 #   next-hono-docker
+#   next-hono-expo-bun-docker
+#   next-hono-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-docker
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-docker
+#   next-hono-orpc-expo-bun-docker
+#   next-hono-orpc-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-postgres-bun-docker
 #   next-hono-postgres-docker
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-docker
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-bun-docker
 #   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-bun-docker
+#   next-hono-sqlite-expo-docker
 #   next-self-orpc-docker
+#   next-self-orpc-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-postgres-docker
+#   next-self-postgres-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
 #   spa-docker
 #   spa-electron-docker
+#   spa-electron-expo-docker
+#   spa-expo-docker
 #   spa-hono-bun-docker
 #   spa-hono-docker
 #   spa-hono-electron-bun-docker
 #   spa-hono-electron-docker
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-electron-expo-docker
+#   spa-hono-expo-bun-docker
+#   spa-hono-expo-docker
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-docker
 #   spa-hono-openapi-electron-bun-docker
 #   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-docker
 #   spa-hono-orpc-electron-bun-docker
 #   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-expo-bun-docker
+#   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-docker
 #   spa-hono-postgres-electron-bun-docker
 #   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-electron-expo-docker
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-postgres-expo-docker
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-docker
 #   spa-hono-sqlite-better-auth-electron-bun-docker
 #   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-docker
 #   spa-hono-sqlite-electron-bun-docker
 #   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-expo-bun-docker
+#   spa-hono-sqlite-electron-expo-docker
+#   spa-hono-sqlite-expo-bun-docker
+#   spa-hono-sqlite-expo-docker
 #   tanstack-start-docker
+#   tanstack-start-expo-docker
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-docker
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-orpc-bun-docker
 #   tanstack-start-hono-orpc-docker
+#   tanstack-start-hono-orpc-expo-bun-docker
+#   tanstack-start-hono-orpc-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-postgres-bun-docker
 #   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-bun-docker
 #   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
+#   tanstack-start-hono-sqlite-expo-docker
 #   tanstack-start-self-orpc-docker
+#   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
 import { e2eBaseURL, startTestServer } from "../support/server.ts";
 
 export default async function setup() {
   return await startTestServer(e2eBaseURL);
 }
 
-# apps/web/tests/support/api.ts · 16 stacks
+# apps/web/tests/support/api.ts · 32 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 import { hc, parseResponse } from "hono/client";
 
 import type { Api } from "@my-app/api";
@@ -788,27 +1230,47 @@ export const signUp = async (email = uniqueEmail()) => {
   };
 };
 
-# apps/web/tests/support/api.ts · 20 stacks
+# apps/web/tests/support/api.ts · 40 stacks
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 
@@ -843,27 +1305,47 @@ export const signUp = async (email = uniqueEmail()) => {
   return { client, email };
 };
 
-# apps/web/tests/support/api.ts · 20 stacks
+# apps/web/tests/support/api.ts · 40 stacks
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-docker
 #   spa-hono-sqlite-better-auth-electron-bun-docker
 #   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 import { e2eBaseURL } from "./server.ts";
 
 export const password = "correct-horse-battery";
@@ -883,145 +1365,283 @@ export const signUp = async (email = uniqueEmail()) => {
   return { email };
 };
 
-# apps/web/tests/support/http.ts · 138 stacks
+# apps/web/tests/support/http.ts · 276 stacks
 #   next-hono-bun-docker
 #   next-hono-docker
+#   next-hono-expo-bun-docker
+#   next-hono-expo-docker
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-docker
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-docker
+#   next-hono-orpc-expo-bun-docker
+#   next-hono-orpc-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-postgres-bun-docker
 #   next-hono-postgres-docker
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-docker
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-bun-docker
 #   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-bun-docker
+#   next-hono-sqlite-expo-docker
 #   next-self-orpc-docker
+#   next-self-orpc-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-postgres-docker
+#   next-self-postgres-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
 #   spa-hono-bun-docker
 #   spa-hono-docker
 #   spa-hono-electron-bun-docker
 #   spa-hono-electron-docker
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-electron-expo-docker
+#   spa-hono-expo-bun-docker
+#   spa-hono-expo-docker
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-docker
 #   spa-hono-openapi-electron-bun-docker
 #   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-docker
 #   spa-hono-orpc-electron-bun-docker
 #   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-expo-bun-docker
+#   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-docker
 #   spa-hono-postgres-electron-bun-docker
 #   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-electron-expo-docker
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-postgres-expo-docker
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-docker
 #   spa-hono-sqlite-better-auth-electron-bun-docker
 #   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-docker
 #   spa-hono-sqlite-electron-bun-docker
 #   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-expo-bun-docker
+#   spa-hono-sqlite-electron-expo-docker
+#   spa-hono-sqlite-expo-bun-docker
+#   spa-hono-sqlite-expo-docker
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-docker
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-orpc-bun-docker
 #   tanstack-start-hono-orpc-docker
+#   tanstack-start-hono-orpc-expo-bun-docker
+#   tanstack-start-hono-orpc-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-postgres-bun-docker
 #   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-bun-docker
 #   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
+#   tanstack-start-hono-sqlite-expo-docker
 #   tanstack-start-self-orpc-docker
+#   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
 import { Agent, setGlobalDispatcher } from "undici";
 
 // Node 24's bundled Undici can crash on macOS socket QoS calls (nodejs/undici#5544), so tests use the catalog's fixed dispatcher.
@@ -1032,8 +1652,9 @@ export const closeTestHttp = async () => {
   await dispatcher.close();
 };
 
-# apps/web/tests/support/server.ts · 1 stack
+# apps/web/tests/support/server.ts · 2 stacks
 #   next-docker
+#   next-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1121,10 +1742,13 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 3 stacks
+# apps/web/tests/support/server.ts · 6 stacks
 #   next-hono-bun-docker
+#   next-hono-expo-bun-docker
 #   next-hono-openapi-bun-docker
+#   next-hono-openapi-expo-bun-docker
 #   next-hono-orpc-bun-docker
+#   next-hono-orpc-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1240,10 +1864,13 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 3 stacks
+# apps/web/tests/support/server.ts · 6 stacks
 #   next-hono-docker
+#   next-hono-expo-docker
 #   next-hono-openapi-docker
+#   next-hono-openapi-expo-docker
 #   next-hono-orpc-docker
+#   next-hono-orpc-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1352,11 +1979,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1486,11 +2117,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1610,11 +2245,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker
 #   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
 #   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-expo-bun-docker
 #   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1739,11 +2378,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1861,9 +2504,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
 #   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -1993,9 +2638,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2115,9 +2762,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-hono-postgres-bun-docker
+#   next-hono-postgres-expo-bun-docker
 #   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2242,9 +2891,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-hono-postgres-docker
+#   next-hono-postgres-expo-docker
 #   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2362,8 +3013,9 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 1 stack
+# apps/web/tests/support/server.ts · 2 stacks
 #   next-self-orpc-docker
+#   next-self-orpc-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2465,9 +3117,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2578,9 +3232,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2686,9 +3342,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2799,9 +3457,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   next-self-postgres-docker
+#   next-self-postgres-expo-docker
 #   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -2907,10 +3567,13 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 3 stacks
+# apps/web/tests/support/server.ts · 6 stacks
 #   spa-docker
 #   spa-electron-docker
+#   spa-electron-expo-docker
+#   spa-expo-docker
 #   tanstack-start-docker
+#   tanstack-start-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -3004,13 +3667,19 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 6 stacks
+# apps/web/tests/support/server.ts · 12 stacks
 #   spa-hono-bun-docker
 #   spa-hono-electron-bun-docker
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-expo-bun-docker
 #   spa-hono-openapi-bun-docker
 #   spa-hono-openapi-electron-bun-docker
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-expo-bun-docker
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -3100,6 +3769,1236 @@ export const startTestServer = async (baseURL: string) => {
   try {
     children.push(
       start(serverDir, ["src/index.ts"], { PORT: serverPort }, "bun")
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 12 stacks
+#   spa-hono-docker
+#   spa-hono-electron-docker
+#   spa-hono-electron-expo-docker
+#   spa-hono-expo-docker
+#   spa-hono-openapi-docker
+#   spa-hono-openapi-electron-docker
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-expo-docker
+#   spa-hono-orpc-docker
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-expo-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(start(serverDir, ["src/index.ts"], { PORT: serverPort }));
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 16 stacks
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (
+  cwd: string,
+  args: string[],
+  env: Record<string, string>,
+  executable = process.execPath
+) =>
+  spawn(executable, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        serverDir,
+        ["src/index.ts"],
+        {
+          BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+          BETTER_AUTH_URL: baseURL,
+          DATABASE_URL: database.url,
+          PORT: serverPort,
+        },
+        "bun"
+      )
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/login", "/todos"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 16 stacks
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(serverDir, ["src/index.ts"], {
+        BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+        BETTER_AUTH_URL: baseURL,
+        DATABASE_URL: database.url,
+        PORT: serverPort,
+      })
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/login", "/todos"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 16 stacks
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-sqlite-bun-docker
+#   spa-hono-openapi-sqlite-electron-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-orpc-postgres-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-sqlite-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (
+  cwd: string,
+  args: string[],
+  env: Record<string, string>,
+  executable = process.execPath
+) =>
+  spawn(executable, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        serverDir,
+        ["src/index.ts"],
+        { DATABASE_URL: database.url, PORT: serverPort },
+        "bun"
+      )
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/todos"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 16 stacks
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-docker
+#   spa-hono-orpc-postgres-docker
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-docker
+#   spa-hono-orpc-sqlite-docker
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(serverDir, ["src/index.ts"], {
+        DATABASE_URL: database.url,
+        PORT: serverPort,
+      })
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/todos"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 8 stacks
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (
+  cwd: string,
+  args: string[],
+  env: Record<string, string>,
+  executable = process.execPath
+) =>
+  spawn(executable, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        serverDir,
+        ["src/index.ts"],
+        {
+          BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+          BETTER_AUTH_URL: baseURL,
+          DATABASE_URL: database.url,
+          PORT: serverPort,
+        },
+        "bun"
+      )
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/login"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 8 stacks
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-docker
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(serverDir, ["src/index.ts"], {
+        BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+        BETTER_AUTH_URL: baseURL,
+        DATABASE_URL: database.url,
+        PORT: serverPort,
+      })
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/login"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 8 stacks
+#   spa-hono-postgres-bun-docker
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-sqlite-bun-docker
+#   spa-hono-sqlite-electron-bun-docker
+#   spa-hono-sqlite-electron-expo-bun-docker
+#   spa-hono-sqlite-expo-bun-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (
+  cwd: string,
+  args: string[],
+  env: Record<string, string>,
+  executable = process.execPath
+) =>
+  spawn(executable, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        serverDir,
+        ["src/index.ts"],
+        { DATABASE_URL: database.url, PORT: serverPort },
+        "bun"
+      )
+    );
+    await waitForServer(`http://localhost:${serverPort}/api/health`);
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          String(webPort),
+          "--strictPort",
+        ],
+        { SERVER_URL: `http://localhost:${serverPort}` }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/"].map(async (route) => {
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
+      })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 8 stacks
+#   spa-hono-postgres-docker
+#   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-expo-docker
+#   spa-hono-postgres-expo-docker
+#   spa-hono-sqlite-docker
+#   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-expo-docker
+#   spa-hono-sqlite-expo-docker
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+  const webPort = Number(new URL(baseURL).port);
+  const serverPort = String(webPort + 1);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(serverDir, ["src/index.ts"], {
+        DATABASE_URL: database.url,
+        PORT: serverPort,
+      })
     );
     await waitForServer(`http://localhost:${serverPort}/api/health`);
     children.push(
@@ -3130,1185 +5029,12 @@ export const startTestServer = async (baseURL: string) => {
 };
 
 # apps/web/tests/support/server.ts · 6 stacks
-#   spa-hono-docker
-#   spa-hono-electron-docker
-#   spa-hono-openapi-docker
-#   spa-hono-openapi-electron-docker
-#   spa-hono-orpc-docker
-#   spa-hono-orpc-electron-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (cwd: string, args: string[], env: Record<string, string>) =>
-  spawn(process.execPath, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(start(serverDir, ["src/index.ts"], { PORT: serverPort }));
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 8 stacks
-#   spa-hono-openapi-postgres-better-auth-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
-#   spa-hono-orpc-postgres-better-auth-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (
-  cwd: string,
-  args: string[],
-  env: Record<string, string>,
-  executable = process.execPath
-) =>
-  spawn(executable, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(
-        serverDir,
-        ["src/index.ts"],
-        {
-          BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
-          BETTER_AUTH_URL: baseURL,
-          DATABASE_URL: database.url,
-          PORT: serverPort,
-        },
-        "bun"
-      )
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/", "/login", "/todos"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 8 stacks
-#   spa-hono-openapi-postgres-better-auth-docker
-#   spa-hono-openapi-postgres-better-auth-electron-docker
-#   spa-hono-openapi-sqlite-better-auth-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-docker
-#   spa-hono-orpc-postgres-better-auth-docker
-#   spa-hono-orpc-postgres-better-auth-electron-docker
-#   spa-hono-orpc-sqlite-better-auth-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (cwd: string, args: string[], env: Record<string, string>) =>
-  spawn(process.execPath, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(serverDir, ["src/index.ts"], {
-        BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
-        BETTER_AUTH_URL: baseURL,
-        DATABASE_URL: database.url,
-        PORT: serverPort,
-      })
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/", "/login", "/todos"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 8 stacks
-#   spa-hono-openapi-postgres-bun-docker
-#   spa-hono-openapi-postgres-electron-bun-docker
-#   spa-hono-openapi-sqlite-bun-docker
-#   spa-hono-openapi-sqlite-electron-bun-docker
-#   spa-hono-orpc-postgres-bun-docker
-#   spa-hono-orpc-postgres-electron-bun-docker
-#   spa-hono-orpc-sqlite-bun-docker
-#   spa-hono-orpc-sqlite-electron-bun-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (
-  cwd: string,
-  args: string[],
-  env: Record<string, string>,
-  executable = process.execPath
-) =>
-  spawn(executable, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(
-        serverDir,
-        ["src/index.ts"],
-        { DATABASE_URL: database.url, PORT: serverPort },
-        "bun"
-      )
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/", "/todos"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 8 stacks
-#   spa-hono-openapi-postgres-docker
-#   spa-hono-openapi-postgres-electron-docker
-#   spa-hono-openapi-sqlite-docker
-#   spa-hono-openapi-sqlite-electron-docker
-#   spa-hono-orpc-postgres-docker
-#   spa-hono-orpc-postgres-electron-docker
-#   spa-hono-orpc-sqlite-docker
-#   spa-hono-orpc-sqlite-electron-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (cwd: string, args: string[], env: Record<string, string>) =>
-  spawn(process.execPath, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(serverDir, ["src/index.ts"], {
-        DATABASE_URL: database.url,
-        PORT: serverPort,
-      })
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/", "/todos"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 4 stacks
-#   spa-hono-postgres-better-auth-bun-docker
-#   spa-hono-postgres-better-auth-electron-bun-docker
-#   spa-hono-sqlite-better-auth-bun-docker
-#   spa-hono-sqlite-better-auth-electron-bun-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (
-  cwd: string,
-  args: string[],
-  env: Record<string, string>,
-  executable = process.execPath
-) =>
-  spawn(executable, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(
-        serverDir,
-        ["src/index.ts"],
-        {
-          BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
-          BETTER_AUTH_URL: baseURL,
-          DATABASE_URL: database.url,
-          PORT: serverPort,
-        },
-        "bun"
-      )
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/", "/login"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 4 stacks
-#   spa-hono-postgres-better-auth-docker
-#   spa-hono-postgres-better-auth-electron-docker
-#   spa-hono-sqlite-better-auth-docker
-#   spa-hono-sqlite-better-auth-electron-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (cwd: string, args: string[], env: Record<string, string>) =>
-  spawn(process.execPath, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(serverDir, ["src/index.ts"], {
-        BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
-        BETTER_AUTH_URL: baseURL,
-        DATABASE_URL: database.url,
-        PORT: serverPort,
-      })
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/", "/login"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 4 stacks
-#   spa-hono-postgres-bun-docker
-#   spa-hono-postgres-electron-bun-docker
-#   spa-hono-sqlite-bun-docker
-#   spa-hono-sqlite-electron-bun-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (
-  cwd: string,
-  args: string[],
-  env: Record<string, string>,
-  executable = process.execPath
-) =>
-  spawn(executable, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(
-        serverDir,
-        ["src/index.ts"],
-        { DATABASE_URL: database.url, PORT: serverPort },
-        "bun"
-      )
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 4 stacks
-#   spa-hono-postgres-docker
-#   spa-hono-postgres-electron-docker
-#   spa-hono-sqlite-docker
-#   spa-hono-sqlite-electron-docker
-import { spawn, spawnSync } from "node:child_process";
-import type { ChildProcess } from "node:child_process";
-import { once } from "node:events";
-import { existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-import { retry } from "es-toolkit/function";
-
-import { createTestDatabase } from "@my-app/db/testing";
-
-import { closeTestHttp } from "./http.ts";
-
-export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
-
-const webDir = fileURLToPath(new URL("../..", import.meta.url));
-const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
-const envFile = `${serverDir}/.env`;
-
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
-  await retry(
-    async () => {
-      const response = await fetch(url);
-      await response.arrayBuffer();
-      if (!response.ok) {
-        throw new Error(`Server did not become healthy at ${url}`);
-      }
-    },
-    { delay: 100, retries: attempts }
-  );
-};
-
-const start = (cwd: string, args: string[], env: Record<string, string>) =>
-  spawn(process.execPath, args, {
-    cwd,
-    detached: true,
-    env: { ...process.env, ...env },
-    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
-    stdio: ["pipe", "inherit", "inherit"],
-  });
-
-const stop = async (child: ChildProcess) => {
-  if (
-    child.pid === undefined ||
-    child.exitCode !== null ||
-    child.signalCode !== null
-  ) {
-    return;
-  }
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
-  await exited;
-};
-
-export const startTestServer = async (baseURL: string) => {
-  if (existsSync(envFile)) {
-    process.loadEnvFile(envFile);
-  }
-  const webPort = Number(new URL(baseURL).port);
-  const serverPort = String(webPort + 1);
-  const database = await createTestDatabase();
-  const children: ChildProcess[] = [];
-  const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
-  };
-
-  try {
-    children.push(
-      start(serverDir, ["src/index.ts"], {
-        DATABASE_URL: database.url,
-        PORT: serverPort,
-      })
-    );
-    await waitForServer(`http://localhost:${serverPort}/api/health`);
-    children.push(
-      start(
-        webDir,
-        [
-          "node_modules/vite-plus/bin/vp",
-          "dev",
-          "--port",
-          String(webPort),
-          "--strictPort",
-        ],
-        { SERVER_URL: `http://localhost:${serverPort}` }
-      )
-    );
-    await waitForServer(`${baseURL}/api/health`);
-    await Promise.all(
-      ["/"].map(async (route) => {
-        const response = await fetch(`${baseURL}${route}`);
-        await response.arrayBuffer();
-      })
-    );
-  } catch (error) {
-    await stopAll();
-    throw error;
-  }
-  return stopAll;
-};
-
-# apps/web/tests/support/server.ts · 3 stacks
 #   tanstack-start-hono-bun-docker
+#   tanstack-start-hono-expo-bun-docker
 #   tanstack-start-hono-openapi-bun-docker
+#   tanstack-start-hono-openapi-expo-bun-docker
 #   tanstack-start-hono-orpc-bun-docker
+#   tanstack-start-hono-orpc-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -4427,10 +5153,13 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 3 stacks
+# apps/web/tests/support/server.ts · 6 stacks
 #   tanstack-start-hono-docker
+#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-expo-docker
 #   tanstack-start-hono-orpc-docker
+#   tanstack-start-hono-orpc-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -4542,11 +5271,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -4679,11 +5412,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -4806,11 +5543,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -4938,11 +5679,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5063,9 +5808,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5198,9 +5945,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5323,9 +6072,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
 #   tanstack-start-hono-sqlite-bun-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5453,9 +6204,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5576,8 +6329,9 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 1 stack
+# apps/web/tests/support/server.ts · 2 stacks
 #   tanstack-start-self-orpc-docker
+#   tanstack-start-self-orpc-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5685,9 +6439,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5803,9 +6559,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -5917,9 +6675,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -6035,9 +6795,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -6149,27 +6911,47 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# packages/api/tests/integration/todos.test.ts · 20 stacks
+# packages/api/tests/integration/todos.test.ts · 40 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 import { parseResponse } from "hono/client";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -6280,27 +7062,47 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/integration/todos.test.ts · 20 stacks
+# packages/api/tests/integration/todos.test.ts · 40 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 import { parseResponse } from "hono/client";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -6362,31 +7164,55 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/integration/todos.test.ts · 24 stacks
+# packages/api/tests/integration/todos.test.ts · 48 stacks
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
+#   hono-orpc-sqlite-better-auth-expo-bun-docker
+#   hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 import { describe, expect, it } from "vite-plus/test";
 
 import { createClient, signUp } from "../support/api.ts";
@@ -6455,31 +7281,55 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/integration/todos.test.ts · 24 stacks
+# packages/api/tests/integration/todos.test.ts · 48 stacks
 #   hono-orpc-postgres-bun-docker
 #   hono-orpc-postgres-docker
+#   hono-orpc-postgres-expo-bun-docker
+#   hono-orpc-postgres-expo-docker
 #   hono-orpc-sqlite-bun-docker
 #   hono-orpc-sqlite-docker
+#   hono-orpc-sqlite-expo-bun-docker
+#   hono-orpc-sqlite-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 import { describe, expect, it } from "vite-plus/test";
 
 import { client } from "../support/api.ts";
@@ -6517,27 +7367,47 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/support/api.ts · 20 stacks
+# packages/api/tests/support/api.ts · 40 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
@@ -6584,27 +7454,47 @@ export const signUp = async () => {
   );
 };
 
-# packages/api/tests/support/api.ts · 20 stacks
+# packages/api/tests/support/api.ts · 40 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
@@ -6622,31 +7512,55 @@ export const api = createApi({ db });
 /** Sends each request to the API in this process, through its routing, validation, and serialization. */
 export const client = hc<Api>("http://localhost", { fetch: api.request });
 
-# packages/api/tests/support/api.ts · 24 stacks
+# packages/api/tests/support/api.ts · 48 stacks
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
+#   hono-orpc-sqlite-better-auth-expo-bun-docker
+#   hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 import { createRouterClient } from "@orpc/server";
 import { afterAll } from "vite-plus/test";
 
@@ -6689,31 +7603,55 @@ export const signUp = async () => {
   );
 };
 
-# packages/api/tests/support/api.ts · 24 stacks
+# packages/api/tests/support/api.ts · 48 stacks
 #   hono-orpc-postgres-bun-docker
 #   hono-orpc-postgres-docker
+#   hono-orpc-postgres-expo-bun-docker
+#   hono-orpc-postgres-expo-docker
 #   hono-orpc-sqlite-bun-docker
 #   hono-orpc-sqlite-docker
+#   hono-orpc-sqlite-expo-bun-docker
+#   hono-orpc-sqlite-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 import { createRouterClient } from "@orpc/server";
 import { afterAll } from "vite-plus/test";
 
@@ -6728,71 +7666,135 @@ afterAll(remove);
 /** Calls the procedures in this process, through their middleware and validation. */
 export const client = createRouterClient(appRouter, { context: { db } });
 
-# packages/db/src/testing.ts · 64 stacks
+# packages/db/src/testing.ts · 128 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-openapi-postgres-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-orpc-postgres-bun-docker
 #   hono-orpc-postgres-docker
+#   hono-orpc-postgres-expo-bun-docker
+#   hono-orpc-postgres-expo-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
 #   next-hono-postgres-bun-docker
 #   next-hono-postgres-docker
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-docker
 #   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
 #   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
 #   next-self-postgres-docker
+#   next-self-postgres-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-docker
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-docker
 #   spa-hono-openapi-postgres-electron-bun-docker
 #   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-docker
 #   spa-hono-orpc-postgres-electron-bun-docker
 #   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-docker
 #   spa-hono-postgres-better-auth-electron-bun-docker
 #   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-docker
 #   spa-hono-postgres-electron-bun-docker
 #   spa-hono-postgres-electron-docker
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-electron-expo-docker
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-postgres-bun-docker
 #   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
 import { createDb } from "#src/index.ts";
 import { migrateDatabase } from "#src/migrate.ts";
 
@@ -6838,71 +7840,135 @@ export const createTestDatabase = async () => {
   return { db, remove, url: url.href };
 };
 
-# packages/db/src/testing.ts · 64 stacks
+# packages/db/src/testing.ts · 128 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
+#   hono-openapi-sqlite-expo-bun-docker
+#   hono-openapi-sqlite-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
+#   hono-orpc-sqlite-better-auth-expo-bun-docker
+#   hono-orpc-sqlite-better-auth-expo-docker
 #   hono-orpc-sqlite-bun-docker
 #   hono-orpc-sqlite-docker
+#   hono-orpc-sqlite-expo-bun-docker
+#   hono-orpc-sqlite-expo-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-bun-docker
 #   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-bun-docker
+#   next-hono-sqlite-expo-docker
 #   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
 #   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-docker
 #   spa-hono-openapi-sqlite-electron-bun-docker
 #   spa-hono-openapi-sqlite-electron-docker
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-electron-expo-docker
+#   spa-hono-openapi-sqlite-expo-bun-docker
+#   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-docker
 #   spa-hono-orpc-sqlite-electron-bun-docker
 #   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-docker
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-docker
 #   spa-hono-sqlite-better-auth-electron-bun-docker
 #   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-docker
 #   spa-hono-sqlite-electron-bun-docker
 #   spa-hono-sqlite-electron-docker
+#   spa-hono-sqlite-electron-expo-bun-docker
+#   spa-hono-sqlite-electron-expo-docker
+#   spa-hono-sqlite-expo-bun-docker
+#   spa-hono-sqlite-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-bun-docker
 #   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
+#   tanstack-start-hono-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
