@@ -145,14 +145,23 @@ const browserInstall = (stack: Stack) => {
       ];
 };
 
-const verifyStack = async (run: StackRun) => {
-  const { force, index, label, out, packageManager, stack } = run;
-  if (!force && (await isCurrent(run))) {
+const verifyStack = async ({
+  force,
+  index,
+  label,
+  out,
+  packageManager,
+  platform: taskPlatform,
+  stack,
+}: StackRun) => {
+  // The output this run writes is the output its record vouches for, so it is generated once and compared here.
+  const generation = await verifiedGeneration(stack, packageManager);
+  const hash = await fingerprint(generation);
+  if (!force && verification[taskPlatform][label]?.fingerprint === hash) {
     print(`${label} verified at this output`);
     return true;
   }
 
-  const generation = await verifiedGeneration(stack, packageManager);
   const dir = path.join(out, label);
   writeProject(dir, generation);
   writeEnvFiles(dir);
@@ -184,7 +193,6 @@ const verifyStack = async (run: StackRun) => {
   print(`${label} PASS (${seconds}s)`);
   // After each stack, so an interrupted run keeps what it verified.
   if (hostPlatform !== undefined) {
-    const hash = await fingerprint(generation);
     const record: StackVerification = {
       environment,
       fingerprint: hash,
