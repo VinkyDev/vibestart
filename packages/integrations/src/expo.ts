@@ -376,6 +376,7 @@ const architecture = (ctx: Context) =>
         ]
       : []),
     "Uniwind compiles Tailwind classes for React Native; the theme is the CSS variables in `apps/mobile/global.css`.",
+    `Unit tests run in Node, where \`react-native\` does not load, so they cover logic kept out of components${hasBackend(ctx) ? ", as `src/lib/api-url.test.ts` does" : ""}.`,
     `\`vp run build\` exports the iOS and Android bundles with \`expo export\`. A native module Expo Go does not ship needs a development build: \`vp run --filter ${ctx.scope}/mobile ios\` or \`android\`.`,
   ].join(" ");
 

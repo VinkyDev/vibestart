@@ -4979,13 +4979,118 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-docker
-#   tanstack-start-hono-expo-bun-docker
-#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-bun-docker-e2e
+#   tanstack-start-hono-docker-e2e
+#   tanstack-start-hono-openapi-bun-docker-e2e
+#   tanstack-start-hono-openapi-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-docker
 #   tanstack-start-hono-openapi-expo-bun-docker
 #   tanstack-start-hono-openapi-expo-docker
 {
@@ -4997,7 +5102,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5037,13 +5142,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-bun-docker-e2e
-#   tanstack-start-hono-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-expo-bun-docker-e2e
 #   tanstack-start-hono-expo-docker-e2e
-#   tanstack-start-hono-openapi-bun-docker-e2e
-#   tanstack-start-hono-openapi-docker-e2e
 #   tanstack-start-hono-openapi-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-expo-docker-e2e
 {
@@ -5055,7 +5156,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5096,13 +5197,124 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 {
@@ -5114,7 +5326,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5157,13 +5369,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 {
@@ -5175,7 +5383,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5219,13 +5427,122 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-docker
-#   tanstack-start-hono-openapi-postgres-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-sqlite-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-expo-docker
 {
@@ -5237,7 +5554,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5279,13 +5596,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 {
@@ -5297,7 +5610,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5340,9 +5653,118 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 2 stacks
 #   tanstack-start-hono-orpc-bun-docker
 #   tanstack-start-hono-orpc-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-hono-orpc-bun-docker-e2e
+#   tanstack-start-hono-orpc-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
 #   tanstack-start-hono-orpc-expo-bun-docker
 #   tanstack-start-hono-orpc-expo-docker
 {
@@ -5354,7 +5776,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5397,9 +5819,7 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
-#   tanstack-start-hono-orpc-bun-docker-e2e
-#   tanstack-start-hono-orpc-docker-e2e
+# apps/web/package.json · 2 stacks
 #   tanstack-start-hono-orpc-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-expo-docker-e2e
 {
@@ -5411,7 +5831,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5455,13 +5875,128 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 {
@@ -5473,7 +6008,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5518,13 +6053,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
 {
@@ -5536,7 +6067,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5582,13 +6113,126 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-docker
-#   tanstack-start-hono-orpc-postgres-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-sqlite-expo-bun-docker
 #   tanstack-start-hono-orpc-sqlite-expo-docker
 {
@@ -5600,7 +6244,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5644,13 +6288,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-expo-docker-e2e
 {
@@ -5662,7 +6302,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5707,13 +6347,122 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-docker
-#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
 {
@@ -5725,7 +6474,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5767,13 +6516,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
 {
@@ -5785,7 +6530,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5828,13 +6573,120 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-postgres-bun-docker
 #   tanstack-start-hono-postgres-docker
-#   tanstack-start-hono-postgres-expo-bun-docker
-#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-bun-docker
 #   tanstack-start-hono-sqlite-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-postgres-bun-docker-e2e
+#   tanstack-start-hono-postgres-docker-e2e
+#   tanstack-start-hono-sqlite-bun-docker-e2e
+#   tanstack-start-hono-sqlite-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "hono": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 4 stacks
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
 #   tanstack-start-hono-sqlite-expo-bun-docker
 #   tanstack-start-hono-sqlite-expo-docker
 {
@@ -5846,7 +6698,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5887,13 +6739,9 @@
   }
 }
 
-# apps/web/package.json · 8 stacks
-#   tanstack-start-hono-postgres-bun-docker-e2e
-#   tanstack-start-hono-postgres-docker-e2e
+# apps/web/package.json · 4 stacks
 #   tanstack-start-hono-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-postgres-expo-docker-e2e
-#   tanstack-start-hono-sqlite-bun-docker-e2e
-#   tanstack-start-hono-sqlite-docker-e2e
 #   tanstack-start-hono-sqlite-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-expo-docker-e2e
 {
@@ -5905,7 +6753,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "e2e run"
@@ -5947,8 +6795,116 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 1 stack
 #   tanstack-start-self-orpc-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 1 stack
+#   tanstack-start-self-orpc-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 1 stack
 #   tanstack-start-self-orpc-expo-docker
 {
   "name": "@my-app/web",
@@ -5959,7 +6915,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "test:e2e": "playwright test"
@@ -5983,6 +6939,122 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "sonner": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 1 stack
+#   tanstack-start-self-orpc-expo-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@my-app/config": "workspace:*",
@@ -6003,8 +7075,8 @@
 }
 
 # apps/web/package.json · 2 stacks
-#   tanstack-start-self-orpc-docker-e2e
-#   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -6015,29 +7087,35 @@
   },
   "scripts": {
     "dev": "vp dev",
-    "build": "vp build",
+    "build": "vp build && vp pack",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
     "test:e2e": "e2e run"
   },
   "dependencies": {
     "@my-app/api": "workspace:*",
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
     "@my-app/ui": "workspace:*",
     "@orpc/client": "catalog:",
     "@orpc/openapi": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/tanstack-query": "catalog:",
     "@orpc/zod": "catalog:",
+    "@t3-oss/env-core": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-query-devtools": "catalog:",
     "@tanstack/react-router": "catalog:",
     "@tanstack/react-router-devtools": "catalog:",
     "@tanstack/react-router-ssr-query": "catalog:",
     "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
     "lucide-react": "catalog:",
     "next-themes": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "sonner": "catalog:"
+    "sonner": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@e2e-dev/web": "catalog:",
@@ -6058,10 +7136,8 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
-#   tanstack-start-self-orpc-postgres-better-auth-docker
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
 {
   "name": "@my-app/web",
@@ -6072,7 +7148,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build && vp pack",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
@@ -6121,10 +7197,8 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
-#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
 {
   "name": "@my-app/web",
@@ -6135,7 +7209,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build && vp pack",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
@@ -6185,10 +7259,127 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-orpc-postgres-docker
-#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-orpc-postgres-docker-e2e
+#   tanstack-start-self-orpc-sqlite-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/tanstack-query": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker
 {
   "name": "@my-app/web",
@@ -6199,7 +7390,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build && vp pack",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
@@ -6246,10 +7437,8 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
-#   tanstack-start-self-orpc-postgres-docker-e2e
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
-#   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
 {
   "name": "@my-app/web",
@@ -6260,7 +7449,7 @@
     "#src/*": "./src/*"
   },
   "scripts": {
-    "dev": "vp dev",
+    "dev": "vp dev --host",
     "build": "vp build && vp pack",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
@@ -6308,11 +7497,9 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-postgres-better-auth-docker
-#   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
-#   tanstack-start-self-sqlite-better-auth-expo-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -6366,11 +7553,9 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-postgres-better-auth-docker-e2e
-#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
-#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -6425,11 +7610,122 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-postgres-better-auth-expo-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-postgres-docker
-#   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-sqlite-docker
-#   tanstack-start-self-sqlite-expo-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -6481,11 +7777,9 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 2 stacks
 #   tanstack-start-self-postgres-docker-e2e
-#   tanstack-start-self-postgres-expo-docker-e2e
 #   tanstack-start-self-sqlite-docker-e2e
-#   tanstack-start-self-sqlite-expo-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -6496,6 +7790,115 @@
   },
   "scripts": {
     "dev": "vp dev",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "drizzle-orm": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-postgres-expo-docker
+#   tanstack-start-self-sqlite-expo-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build && vp pack",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
+    "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/db": "workspace:*",
+    "@my-app/ui": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-router-ssr-query": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "drizzle-orm": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "es-toolkit": "catalog:",
+    "nitro": "catalog:",
+    "oxc-transform-react": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-sqlite-expo-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
     "build": "vp build && vp pack",
     "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "db:migrate": "node --env-file-if-exists=.env src/server/migrate.ts",

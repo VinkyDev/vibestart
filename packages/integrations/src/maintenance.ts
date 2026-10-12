@@ -8,7 +8,7 @@ export const maintenanceFiles = (files: readonly GeneratedFile[]) =>
   files.filter(
     ({ path, owner }) =>
       owner === "docker" ||
-      /(?:^|\/)(?:package\.json|pnpm-workspace\.yaml|tsconfig(?:\.[\w-]+)?\.json|vite\.config\.ts|knip\.jsonc?|\.gitignore|\.npmrc|\.node-version|\.bun-version|AGENTS\.md)$/u.test(
+      /(?:^|\/)(?:package\.json|pnpm-workspace\.yaml|tsconfig(?:\.[\w-]+)?\.json|vite\.config\.ts|metro\.config\.ts|knip\.jsonc?|\.gitignore|\.npmrc|\.node-version|\.bun-version|AGENTS\.md)$/u.test(
         path
       ) ||
       path.startsWith("packages/config/")
