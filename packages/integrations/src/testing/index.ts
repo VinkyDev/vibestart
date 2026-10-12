@@ -160,17 +160,14 @@ const practice = (ctx: Context, runner: BrowserRunner) => {
     ...(web ? runner.practice : []),
     ...(hasIntegrationTests(ctx)
       ? [
-          `Integration tests ${ctx.has("openapi") ? "send requests to `createApi` in this process, through the same routing and validation as the server" : "call the procedures in this process, through the same middleware and validation as a request"}, with ${ctx.has("better-auth") ? "real Better Auth sessions and " : ""}a real database; nothing of this repo is mocked. A fake stands in only for a third-party service this repo does not run, with the reason next to it and a contract test that pins the request and response it imitates.`,
+          `Integration tests ${ctx.has("openapi") ? "send requests to `createApi` in this process, through the same routing and validation as the server" : "call the procedures in this process, through the same middleware and validation as a request"}, with ${ctx.has("better-auth") ? "real Better Auth sessions and " : ""}a real database.`,
         ]
       : []),
-    [
-      "A test fails when the behavior it names is broken. For important logic, break the code on purpose and confirm a test fails. A bug fix starts from a test that reproduces the bug and fails.",
-      ...(web
-        ? [
-            "E2E tests in `apps/web/tests/e2e` are the specification: changing, skipping, or weakening an assertion takes the user's approval first.",
-          ]
-        : []),
-    ].join(" "),
+    ...(web
+      ? [
+          "E2E tests in `apps/web/tests/e2e` are the specification: changing, skipping, or weakening an assertion takes the user's approval first.",
+        ]
+      : []),
     `While iterating, run the narrowest set that covers the change: ${[
       "`vp test --project unit`",
       ...(hasIntegrationTests(ctx) ? ["`vp test --project integration`"] : []),
@@ -182,23 +179,10 @@ const practice = (ctx: Context, runner: BrowserRunner) => {
   ];
 };
 
-const coverage = (ctx: Context) => {
-  const layers = [
-    ...(hasIntegrationTests(ctx) ? ["integration"] : []),
-    ...(hasWebApp(ctx) ? ["e2e"] : []),
-  ];
-  return layers.length === 0
-    ? []
-    : [
-        `A module with no branching logic worth isolating is covered by its ${layers.join(" or ")} test.`,
-      ];
-};
-
 const renderTestsSection = (ctx: Context, runner: BrowserRunner) =>
   [
     agentsTestsIntro.trimEnd(),
     layerTable(ctx, runner),
-    ...coverage(ctx),
     ...isolation(ctx, runner),
     ...practice(ctx, runner),
   ].join("\n\n");
