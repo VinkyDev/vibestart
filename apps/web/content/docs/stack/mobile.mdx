@@ -1,0 +1,40 @@
+---
+title: Mobile
+description: An iOS and Android app on Expo, on its own or beside the web app and the server.
+---
+
+The mobile app is optional. It can be the whole project, or sit beside a web app, a server, or both. It does not run inside the web app: it calls the server's API itself, as the web app does.
+
+## Expo [#expo]
+
+<Tech href="https://expo.dev" icon="expo" />
+
+`apps/mobile` is a React Native app on Expo and Expo Router. Screens are files in `src/app`, and their routes are typed. Uniwind brings Tailwind classes to React Native, with the themes in `global.css`. Imports start with `#src/`, as in the web app.
+
+The rest of the stack decides what the app contains:
+
+| The stack has         | The app adds                                                                                        |
+| --------------------- | --------------------------------------------------------------------------------------------------- |
+| A server              | A card that calls the API, through oRPC or the web app's typed client, with TanStack Query          |
+| Better Auth           | Sign-up and sign-in screens, the session in the device's secure storage, and guards on user screens |
+| An API and a database | The todo example, behind sign-in when the stack has authentication                                  |
+
+Docker deploys the web app and the server. The mobile app is not part of the image, so a stack with only a mobile app cannot add Docker.
+
+## Reaching the server [#api]
+
+In development, the app calls port 3000 on the computer that runs Metro, so a phone on the same network reaches the server that `vp run dev` started. A release build has no Metro to ask: set `EXPO_PUBLIC_API_URL` in `apps/mobile/.env` to the server's origin before building it.
+
+Native requests keep no cookies. With Better Auth, the Expo client stores the session and every API request sends it. The server trusts the app's scheme, which is the project name.
+
+## Expo Go and development builds [#builds]
+
+`vp run dev:mobile` starts Metro in a terminal of its own, apart from `vp run dev`. Scan its QR code with Expo Go to open the app on a phone, or press `a` or `i` for an Android emulator or an iOS simulator. Expo Go includes every native module the generated app uses, so no native build is needed to start.
+
+When the app needs a native module that Expo Go lacks, switch to a development build. The `android` and `ios` scripts in `apps/mobile` build one locally: Android needs Android Studio and JDK 17–21, and iOS needs a Mac with Xcode. The project includes no EAS configuration; run `eas init` to build in Expo's cloud instead.
+
+## Checks [#checks]
+
+`vp run ready` type checks and lints the app, runs its unit tests, and bundles it for iOS and Android with `expo export`. It does not run the app on a device, so open the screens you changed on a phone or simulator.
+
+Unit tests run in Node, where `react-native` does not load. Keep logic you want to test out of components, as `src/lib/api-url.ts` does in a stack with a server.

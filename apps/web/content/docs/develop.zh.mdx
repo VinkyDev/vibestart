@@ -54,6 +54,7 @@ Agent 报告完成后，重点检查以下几项：
 | 任务                   | 命令                 |
 | ---------------------- | -------------------- |
 | 启动应用               | `vp run dev`         |
+| 在单独终端中启动移动端 | `vp run dev:mobile`  |
 | 修改表结构后生成迁移   | `vp run db:generate` |
 | 将迁移应用到本地数据库 | `vp run db:migrate`  |
 | 格式、lint 与类型检查  | `vp check`           |
@@ -64,6 +65,12 @@ Agent 报告完成后，重点检查以下几项：
 | 提交前完整检查         | `vp run ready`       |
 
 迭代过程中，只运行覆盖当前改动的最小范围检查；提交之前，再运行 `vp run ready`。
+
+## 移动端 [#mobile]
+
+有移动端时，先用 `vp run dev` 启动服务端，再在第二个终端运行 `vp run dev:mobile`，然后用 Expo Go 打开 App。App 调用你电脑上的 3000 端口，因此手机必须能访问到它：让两者处于同一网络，并在防火墙中放行该端口。公司网络或 VPN 常常阻止设备之间互相访问，改用手机热点即可避开。发布构建没有 Metro 可询问，因此会调用 `apps/mobile/.env` 中 `EXPO_PUBLIC_API_URL` 指定的服务端。
+
+`vp run ready` 不需要设备即可检查 App，因此提交前请在 Expo Go 中打开你改过的页面。开发构建与 API 连接的说明见[移动端](/docs/stack/mobile)。
 
 ## 完成标准 [#done]
 
