@@ -32,17 +32,17 @@ The architecture this project was created with is recorded in `vibestart.jsonc`.
 
 ## Code
 
-Converge on the simplest durable design that meets current requirements. Land it directly, unless a verified external constraint forces a staged path. The change you land is the design that stays.
+Converge on the simplest durable design that meets current requirements, and land it directly. The change you land is the design that stays.
 
+- Make routine judgment calls yourself. Ask when readings of the request lead to materially different work; when no one can answer, take the reading the code supports and state it in your report.
 - Fix the root cause at the abstraction that owns it. Carry the change through every layer it touches, and leave unrelated areas intact.
-- Open with a tracer bullet: the smallest end-to-end slice that works. Grow it in complete layers, and add only what current requirements need.
-- Use the fewest concepts, paths, configuration options, and extension points those requirements need. Add indirection for a use case that exists now.
-- One representation, one execution path. Update every in-repository consumer to the final interface, and remove the obsolete API, schema, implementation, configuration, tests, and documentation in the same change. The core path is that final interface alone: no adapter, deprecated alias, dual read or write, fallback, feature flag, or migration layer beside it.
+- Open with a tracer bullet: the smallest end-to-end slice that works, grown in complete layers. Add a concept, configuration option, or extension point only for a use case that exists now.
+- One representation, one execution path. Move every in-repository consumer to the final interface, and delete the obsolete API, schema, implementation, configuration, tests, and documentation in the same change. The final interface stands alone: no adapter, deprecated alias, dual read or write, fallback, feature flag, or migration layer beside it.
 - A compatibility path exists only for a verified external constraint: a deployed consumer, a public contract, persisted production data, or a staged rollout. An assumed consumer is not a constraint. Isolate the path, name the condition that removes it, and let the final state shape the core. When production state cannot change atomically, ship an explicit, reversible migration with a defined end.
-- Let small units and precise names carry the meaning. A comment states a why the code cannot: an external constraint, counterintuitive behavior, an invariant, or a tradeoff. Delete a comment that restates the code or has gone stale.
-- Carry precise types across input, internal, and output boundaries. Validate untrusted data before use, and make invalid states unrepresentable so later code does not re-check them. Type unknown data as `unknown` and narrow it with a schema or a type guard. `any` is not a type in this repo. Back every type assertion and non-null assertion with a runtime check or a stated invariant.
+- Validate untrusted data where it enters, then trust it. Type it as `unknown`, narrow it with a schema or a type guard, and make invalid states unrepresentable so later code does not re-check them. `any` is not a type in this repo. Back every type assertion and non-null assertion with a runtime check or a stated invariant. Catch an error only where you recover from it or add context; let the rest propagate.
+- Names carry the meaning. A comment states a why the code cannot: an external constraint, counterintuitive behavior, an invariant, or a tradeoff. It speaks to the next reader, never about the change, its history, or its reviewer. Delete a comment that restates the code or has gone stale.
 - Lint serves the design. When a rule's concern applies, fix the code. When a rule misfires on the idiom a library documents, keep the idiom and turn the rule off for that library's files in a `lint.overrides` entry in `vite.config.ts`, with a comment naming the idiom.
-- Before writing a helper or adding a package, read the dependencies already in the repo, their docs, and their types. Prefer one of those. Otherwise add one mature, widely used, maintained library when it lowers total complexity or raises reliability, at the latest stable version this toolchain accepts, and follow its current docs. One library per capability. Keep a few lines of domain logic inline when they are smaller than a new dependency.
+- Reuse before you write: search the repo's own modules, then its dependencies, their docs, and their types. Otherwise add one mature, maintained library when it lowers total complexity or raises reliability, at the latest stable version the toolchain accepts, and follow its current docs. One library per capability; a few lines of domain logic stay inline.
 
 ## Map
 
@@ -75,22 +75,23 @@ The mobile app in `apps/mobile` runs on Expo with Expo Router: each file in `src
 
 ## Tests
 
-Types, Zod at every procedure boundary, database constraints, lint, and CI catch whole classes of bugs before a test runs. When one of those can enforce a rule, enforce it there too.
+A test earns its upkeep when its expected values come from a source independent of the code: the request, an acceptance criterion, a documented contract, or a domain rule, written down before the implementation. A test derived from reading the implementation restates it and catches nothing.
 
-Write what "working" means before the implementation: acceptance criteria, the procedure's input, output, and error contract, and the invariants. The expected value comes from that specification.
+- Cover a change with the broadest test that reaches it. End-to-end journeys and integration tests through the real stack carry most of the confidence; a unit test is for dense logic with many cases: calculations, parsers, state machines, permissions.
+- Test behavior at the boundary that owns it: the exported API, the command, the route or procedure, the page. A test that breaks under a behavior-preserving refactor is pinned to the implementation; move it to that boundary.
+- Before adding a test, name the regression that makes it fail, and confirm no type, schema, lint rule, or existing test already catches it. Each contract has one owning test; extend its table of cases rather than adding a near-copy.
+- Run this repo's own code for real. A fake stands in only for a service this repo does not run, with the reason next to it and a contract test that pins the request and response it imitates.
+- Watch every new test go red before it goes green. A bug fix starts from a test that reproduces the bug.
+- When a test fails, fix the code. Change, skip, or weaken an assertion only when the specified behavior changed, and say so in your report.
 
 | Layer       | Location                                                                                | Runs against                                                                                              | Write it for                                                                             |
 | ----------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | Integration | `packages/api/tests/integration/*.test.ts`                                              | Vitest calling `appRouter` in process through `createRouterClient`, real sessions, a real SQLite database | Every procedure's validation, error codes, authorization, and invariants                 |
 | Unit        | `*.test.ts` beside the code in `apps/server/src`, `apps/mobile/src` or `packages/*/src` | Node, no I/O                                                                                              | Branching logic: pricing, permissions, state machines, parsers, calculations, edge cases |
 
-A module with no branching logic worth isolating is covered by its integration test.
-
 Each integration test file gets a database of its own from `createTestDatabase()` in `@my-app/db/testing`, migrated and removed when the file ends, so files run in parallel. Test databases are SQLite files in the system temp directory with the real migrations applied. Tests sign up a new user with `signUp()`, so they share no rows.
 
-Integration tests call the procedures in this process, through the same middleware and validation as a request, with real Better Auth sessions and a real database; nothing of this repo is mocked. A fake stands in only for a third-party service this repo does not run, with the reason next to it and a contract test that pins the request and response it imitates.
-
-A test fails when the behavior it names is broken. For important logic, break the code on purpose and confirm a test fails. A bug fix starts from a test that reproduces the bug and fails.
+Integration tests call the procedures in this process, through the same middleware and validation as a request, with real Better Auth sessions and a real database.
 
 While iterating, run the narrowest set that covers the change: `vp test --project unit`, `vp test --project integration`, `vp test --changed`, or a single file.
 

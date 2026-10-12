@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { View } from "react-native";
 
@@ -11,18 +12,17 @@ export const AuthForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string>();
-  const [pending, setPending] = useState(false);
-
-  const submit = async () => {
-    setPending(true);
-    const result =
-      mode === "sign-in"
-        ? await authClient.signIn.email({ email, password })
-        : await authClient.signUp.email({ email, name, password });
-    setPending(false);
-    setError(result.error?.message);
-  };
+  const { error, isPending, mutate, reset } = useMutation({
+    mutationFn: async () => {
+      const result =
+        mode === "sign-in"
+          ? await authClient.signIn.email({ email, password })
+          : await authClient.signUp.email({ email, name, password });
+      if (result.error) {
+        throw new Error(result.error.message ?? result.error.statusText);
+      }
+    },
+  });
 
   return (
     <View className="gap-3">
@@ -49,17 +49,22 @@ export const AuthForm = () => {
         secureTextEntry
         value={password}
       />
-      {error !== undefined && <Text className="text-destructive">{error}</Text>}
+      {error !== null && (
+        <Text className="text-destructive">{error.message}</Text>
+      )}
       <Button
-        disabled={pending}
+        disabled={isPending}
         label={mode === "sign-in" ? "Sign in" : "Create account"}
-        onPress={submit}
+        onPress={() => {
+          mutate();
+        }}
       />
       <Button
         label={
           mode === "sign-in" ? "Create an account instead" : "Sign in instead"
         }
         onPress={() => {
+          reset();
           setMode(mode === "sign-in" ? "sign-up" : "sign-in");
         }}
         variant="outline"
