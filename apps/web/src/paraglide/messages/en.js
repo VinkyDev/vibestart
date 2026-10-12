@@ -1369,7 +1369,7 @@ export const role_mobile = /** @type {(inputs: Role_MobileInputs) => LocalizedSt
 };
 
 export const role_mobile_about = /** @type {(inputs: Role_Mobile_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`An iOS and Android app that calls the API directly.`)
+	return /** @type {LocalizedString} */ (`An iOS and Android app. With a server, it calls the API directly.`)
 };
 
 export const role_mobile_none = /** @type {(inputs: Role_Mobile_NoneInputs) => LocalizedString} */ () => {

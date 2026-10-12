@@ -3899,7 +3899,7 @@ export declare const role_mobile: ((inputs?: Role_MobileInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "An iOS and Android app that calls the API directly." |
+* | "An iOS and Android app. With a server, it calls the API directly." |
 *
 * @param {Role_Mobile_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

@@ -1365,7 +1365,7 @@ export const role_mobile = /** @type {(inputs: Role_MobileInputs) => LocalizedSt
 };
 
 export const role_mobile_about = /** @type {(inputs: Role_Mobile_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`直接调用 API 的 iOS 与 Android 应用。`)
+	return /** @type {LocalizedString} */ (`iOS 与 Android 应用。有服务端时，它直接调用 API。`)
 };
 
 export const role_mobile_none = /** @type {(inputs: Role_Mobile_NoneInputs) => LocalizedString} */ () => {
