@@ -263,7 +263,8 @@ export const tanstackStart = defineIntegration({
         imports: { "#src/*": "./src/*" },
         path: "apps/web",
         scripts: {
-          dev: "vp dev",
+          // The Expo app on a phone reaches the API through this server, which Vite binds to localhost alone by default.
+          dev: ctx.has("expo") && hasBackend(ctx) ? "vp dev --host" : "vp dev",
           build: database ? "vp build && vp pack" : "vp build",
           start: "node --env-file-if-exists=.env .output/server/index.mjs",
         },

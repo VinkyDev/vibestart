@@ -35,10 +35,15 @@ export const ultracite = defineAddon({
       module: "ultracite/oxfmt",
       name: "oxfmt",
     }),
+    // React and Expo both bring the React preset, which `vite.config.ts` imports once.
     ...[
-      { module: "ultracite/oxlint/core", name: "core" },
-      ...ultracitePresets.values(ctx),
-      { module: "ultracite/oxlint/anti-slop", name: "antiSlop" },
+      ...new Map(
+        [
+          { module: "ultracite/oxlint/core", name: "core" },
+          ...ultracitePresets.values(ctx),
+          { module: "ultracite/oxlint/anti-slop", name: "antiSlop" },
+        ].map((preset) => [preset.name, preset])
+      ).values(),
     ].map((preset) => contribute(lintPresets, preset)),
     ...ultraciteOverrides
       .values(ctx)

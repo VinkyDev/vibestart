@@ -328,6 +328,38 @@ describe("creating a project", async () => {
     );
   });
 
+  it("adds an Expo app only when asked, alone or beside a server", async () => {
+    const target = path.join(root, "mobile");
+    await expect(dryRunPaths(target)).resolves.not.toContain(
+      "apps/mobile/app.json"
+    );
+    await expect(dryRunPaths(target, "--mobile", "expo")).resolves.toContain(
+      "apps/mobile/app.json"
+    );
+    const mobileOnly = [
+      "--framework",
+      "none",
+      "--backend",
+      "none",
+      "--mobile",
+      "expo",
+    ];
+    const alone = await run(target, ...mobileOnly, "--dry-run");
+    expect(alone.output).toMatchObject({ label: "expo", ok: true });
+    await expect(
+      run(target, ...mobileOnly, "--deployment", "docker", "--dry-run")
+    ).resolves.toMatchObject({
+      exitCode: 1,
+      output: {
+        error: {
+          code: "illegal-stack",
+          violations: [{ integration: "docker", type: "missing-capability" }],
+        },
+        ok: false,
+      },
+    });
+  });
+
   it("takes the default add-ons unless told otherwise, and stays verified without them", async () => {
     const target = path.join(root, "addons");
     const defaults = await run(target, ...restApi, "--dry-run");

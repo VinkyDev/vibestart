@@ -78,6 +78,12 @@ const integrationRow = (ctx: Context) => {
       ];
 };
 
+const unitSources = (ctx: Context) => [
+  ...(ctx.has("hono") ? ["apps/server/src"] : []),
+  ...(!ctx.has("hono") && hasWebApp(ctx) ? ["apps/web/src"] : []),
+  ...(ctx.has("expo") ? ["apps/mobile/src"] : []),
+];
+
 const layerTable = (ctx: Context, runner: BrowserRunner) =>
   markdownTable(
     ["Layer", "Location", "Runs against", "Write it for"],
@@ -95,7 +101,9 @@ const layerTable = (ctx: Context, runner: BrowserRunner) =>
       ...(hasIntegrationTests(ctx) ? [integrationRow(ctx)] : []),
       [
         "Unit",
-        `\`*.test.ts\` beside the code in \`${ctx.has("hono") ? "apps/server/src" : "apps/web/src"}\` or \`packages/*/src\``,
+        `\`*.test.ts\` beside the code in ${unitSources(ctx)
+          .map((source) => `\`${source}\``)
+          .join(", ")} or \`packages/*/src\``,
         "Node, no I/O",
         "Branching logic: pricing, permissions, state machines, parsers, calculations, edge cases",
       ],

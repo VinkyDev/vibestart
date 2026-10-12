@@ -45,6 +45,11 @@ export const unitTestSources = defineSlot<string>(
 
 export const ignoredFiles = defineSlot<string>("vite-plus/ignored-files");
 
+/** Node-side config files that no app's `tsconfig.json` includes, type-checked by the root one. */
+export const rootTypeScriptFiles = defineSlot<string>(
+  "vite-plus/root-typescript-files"
+);
+
 /** `prepare` runs before `vp check`, `analyze` before `vp test`, `verify` after it. */
 export interface ReadyStep {
   phase: "prepare" | "analyze" | "verify";

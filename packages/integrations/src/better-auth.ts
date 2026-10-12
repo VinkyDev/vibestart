@@ -16,6 +16,7 @@ import {
   todosExample,
 } from "#/app.ts";
 import { composeEnv } from "#/docker.ts";
+import { quote } from "#/format.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -44,9 +45,20 @@ const renderAuthIndex = (ctx: Context) => {
   const plugin = ctx.has("self")
     ? cookiePlugins.find(({ framework }) => ctx.has(framework))
     : undefined;
+  const mobile = ctx.has("expo");
+  // The cookie plugins go last: they read the cookies the other plugins set.
+  const plugins = [
+    ...(mobile ? ["expo()"] : []),
+    ...(plugin === undefined ? [] : [plugin.call]),
+  ];
+  const trustedOrigins = [
+    ...(ctx.has("electron") ? ["rendererOrigin"] : []),
+    ...(mobile ? [quote(`${ctx.name}://`)] : []),
+  ];
   const provider = ctx.has("sqlite") ? "sqlite" : "pg";
   return [
     'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
+    ...(mobile ? ['import { expo } from "@better-auth/expo";'] : []),
     'import { betterAuth } from "better-auth";',
     ...(plugin === undefined ? [] : [plugin.statement]),
     "",
@@ -67,9 +79,16 @@ const renderAuthIndex = (ctx: Context) => {
     "    baseURL,",
     `    database: drizzleAdapter(db, { provider: "${provider}", schema }),`,
     "    emailAndPassword: { enabled: true },",
-    ...(plugin === undefined ? [] : [`    plugins: [${plugin.call}],`]),
+    ...(mobile
+      ? [
+          "    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.",
+        ]
+      : []),
+    ...(plugins.length === 0 ? [] : [`    plugins: [${plugins.join(", ")}],`]),
     "    secret,",
-    ...(ctx.has("electron") ? ["    trustedOrigins: [rendererOrigin],"] : []),
+    ...(trustedOrigins.length === 0
+      ? []
+      : [`    trustedOrigins: [${trustedOrigins.join(", ")}],`]),
     "  });",
     "",
     "export type Auth = ReturnType<typeof createAuth>;",
@@ -174,6 +193,7 @@ export const betterAuth = defineIntegration({
     contribute(packageJson, {
       dependencies: [
         "@better-auth/drizzle-adapter",
+        ...(ctx.has("expo") ? ["@better-auth/expo"] : []),
         `${ctx.scope}/db`,
         "better-auth",
       ],

@@ -18,7 +18,7 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import { hasWebApp } from "#/app.ts";
+import { hasBackend, hasWebApp } from "#/app.ts";
 import { toolchainVersions } from "#/catalog.ts";
 import { commentedShell, joinWords, markdownTable, quote } from "#/format.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
@@ -40,6 +40,7 @@ import {
   readmeSections,
   readmeTagline,
   readySteps,
+  rootTypeScriptFiles,
   testProjects,
   toolConventions,
   unitTestSources,
@@ -251,6 +252,16 @@ const renderVscodeSettings = (read: ReadSlot) =>
     2
   )}\n`;
 
+const renderRootTsconfig = (ctx: Context, read: ReadSlot) =>
+  `${JSON.stringify(
+    {
+      extends: `${ctx.scope}/config/typescript/node.json`,
+      include: ["vite.config.ts", ...read(rootTypeScriptFiles)],
+    },
+    null,
+    2
+  )}\n`;
+
 const renderGitignore = (read: ReadSlot) =>
   [
     ...read(ignoredFiles),
@@ -313,6 +324,23 @@ const renderAgents = (read: ReadSlot) => {
   ].join("\n\n")}\n`;
 };
 
+// The web app and the API run together; the mobile app has an interactive terminal of its own.
+const hasDevServers = (ctx: Context) => hasWebApp(ctx) || hasBackend(ctx);
+
+const devCommands = (ctx: Context): (readonly [string, string?])[] => {
+  const servers = hasDevServers(ctx);
+  return [
+    ...(servers ? [["vp run dev"] as const] : []),
+    ...(ctx.has("expo")
+      ? [
+          servers
+            ? (["vp run dev:mobile", "in a second terminal"] as const)
+            : (["vp run dev:mobile"] as const),
+        ]
+      : []),
+  ];
+};
+
 const renderReadme = (ctx: Context, read: ReadSlot) => {
   const steps = orderedReadySteps(read);
   const commands = commentedShell([
@@ -346,7 +374,7 @@ const renderReadme = (ctx: Context, read: ReadSlot) => {
         ...read(gettingStarted).map(({ run, note }) =>
           note === undefined ? ([run] as const) : ([run, note.text] as const)
         ),
-        ["vp run dev"],
+        ...devCommands(ctx),
       ]),
       "```",
     ].join("\n"),
@@ -379,12 +407,17 @@ export const vitePlus = defineIntegration({
       run: "vp install",
       writes: [ctx.packageManager === "bun" ? "bun.lock" : "pnpm-lock.yaml"],
     }),
+    ...(hasDevServers(ctx)
+      ? [
+          contribute(packageJson, {
+            path: ".",
+            scripts: { dev: "vp run -r --parallel dev" },
+          }),
+        ]
+      : []),
     contribute(packageJson, {
       path: ".",
-      scripts: {
-        dev: "vp run -r --parallel dev",
-        build: "vp run -r build",
-      },
+      scripts: { build: "vp run -r build" },
     }),
     contribute(packageJson, {
       derivedScripts: { ready: readyScript },
@@ -446,6 +479,7 @@ export const vitePlus = defineIntegration({
     ),
     renderFile(".vscode/settings.json", renderVscodeSettings),
     renderFile(".gitignore", renderGitignore),
+    renderFile("tsconfig.json", (read) => renderRootTsconfig(ctx, read)),
     renderFile("vite.config.ts", (read) => renderViteConfig(ctx, read)),
     renderFile("AGENTS.md", renderAgents),
     renderFile("README.md", (read) => renderReadme(ctx, read)),

@@ -6,6 +6,7 @@ import { catalog } from "#/catalog.ts";
 import { docker } from "#/docker.ts";
 import { drizzle } from "#/drizzle.ts";
 import { electron } from "#/electron.ts";
+import { expo } from "#/expo.ts";
 import { hono } from "#/hono.ts";
 import { knip } from "#/knip.ts";
 import { next } from "#/next.ts";
@@ -47,6 +48,7 @@ export const registry = defineRegistry({
     spa,
     tanstackStart,
     next,
+    expo,
     tanstackRouter,
     hono,
     self,
@@ -64,7 +66,7 @@ export const registry = defineRegistry({
     playwrightTests,
     e2eTests,
   ],
-  kindGroups: [["framework", "backend"]],
+  kindGroups: [["framework", "backend", "mobile"]],
   kinds: [
     { id: "toolchain", name: "Toolchain", optional: false },
     { id: "frontend", name: "Frontend", optional: true },
@@ -77,6 +79,7 @@ export const registry = defineRegistry({
     { id: "auth", name: "Auth", optional: true },
     { id: "ui", name: "UI", optional: true },
     { id: "desktop", name: "Desktop", optional: true, default: null },
+    { id: "mobile", name: "Mobile", optional: true, default: null },
     { id: "runtime", name: "Runtime", optional: true, default: "node" },
     { id: "deployment", name: "Deployment", optional: true, default: null },
     {

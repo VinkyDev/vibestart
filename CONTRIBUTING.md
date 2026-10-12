@@ -46,6 +46,8 @@ vp run deps update hono     # only matching pins and the pins that follow them
 
 `update` stops at the first failing step and leaves the moved pins in the working tree.
 
+A package the Expo SDK bundles, such as `react`, `react-native`, or `expo-router`, follows `expo` to the newest release in the range that SDK's `bundledNativeModules.json` names, as `expo install --fix` would; `react` is exact because React Native renders with that one version.
+
 The `/update-deps` agent skill (`.agents/skills/update-deps`) runs this whole flow: branch, `vp run deps update`, `vp check`, and a pull request.
 
 ## Releasing the CLI
