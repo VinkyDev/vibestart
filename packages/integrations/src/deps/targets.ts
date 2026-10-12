@@ -34,10 +34,14 @@ export interface Releases {
   ) => Promise<Readonly<Record<string, string>>>;
 }
 
-/** A package follows `latest`, a prerelease its channel, Node.js its LTS; the rest follow another pin. */
+/**
+ * A package follows `latest`, a prerelease its channel, a release ahead of `latest` the tags on its major,
+ * Node.js its LTS; the rest follow another pin.
+ */
 type Rule =
   | "latest"
   | "prerelease channel"
+  | "tag ahead of latest"
   | "Node.js LTS"
   | "Node.js major"
   | "vite-plus"
@@ -127,6 +131,19 @@ const newest = (version: string, packument: Packument) => {
       ? latest
       : undefined;
   const channel = channelOf(version);
+  if (channel === undefined && latest !== undefined && gt(version, latest)) {
+    // Expo tags an SDK beta `next` with a stable-looking version while `latest` holds the previous SDK.
+    const [top = version] = [
+      version,
+      ...Object.values(packument.distTags).filter(
+        (tag) =>
+          valid(tag) !== null &&
+          prerelease(tag) === null &&
+          major(tag) === major(version)
+      ),
+    ].toSorted(rcompare);
+    return { rule: "tag ahead of latest" as const, version: top };
+  }
   if (channel === undefined) {
     return { rule: "latest" as const, version: stable ?? version };
   }

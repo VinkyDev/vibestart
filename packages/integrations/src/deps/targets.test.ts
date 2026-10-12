@@ -112,10 +112,30 @@ describe("where a pin moves", () => {
     ).resolves.toBe("44.5.1");
   });
 
-  it("stays when `latest` is behind the pin", async () => {
+  it("moves a pin ahead of `latest` to the newest stable tag on its major", async () => {
     await expect(
       targetOf([pin("electron-builder", "^26.17.0")], "electron-builder")
     ).resolves.toBe("^26.17.0");
+    // Expo tags an SDK beta `next` while `latest` holds the previous SDK.
+    const beta: Releases = {
+      ...releases,
+      expoModules: async () => {
+        await Promise.resolve();
+        return {};
+      },
+      packument: () => ({
+        distTags: {
+          canary: "58.0.0-canary-20260909-ea7a89a",
+          latest: "57.0.27",
+          next: "58.0.8",
+          "sdk-57": "57.0.27",
+        },
+        versions: { "57.0.27": {}, "58.0.7": {}, "58.0.8": {} },
+      }),
+    };
+    await expect(
+      targetsOf([pin("expo", "58.0.7")], beta)
+    ).resolves.toMatchObject([{ target: "58.0.8" }]);
   });
 
   it("keeps a prerelease pin on its channel until a stable release passes it", async () => {
