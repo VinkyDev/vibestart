@@ -43,7 +43,7 @@ export const AuthForm = () => {
         value={email}
       />
       <Input
-        autoComplete="password"
+        autoComplete={mode === "sign-in" ? "current-password" : "new-password"}
         onChangeText={setPassword}
         placeholder="Password"
         secureTextEntry
@@ -60,6 +60,7 @@ export const AuthForm = () => {
         }}
       />
       <Button
+        disabled={isPending}
         label={
           mode === "sign-in" ? "Create an account instead" : "Sign in instead"
         }
