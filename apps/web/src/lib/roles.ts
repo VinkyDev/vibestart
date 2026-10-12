@@ -114,6 +114,20 @@ export const roles = {
       return m.role_desktop();
     },
   },
+  mobile: {
+    get about() {
+      return m.role_mobile_about();
+    },
+    get none() {
+      return m.role_mobile_none();
+    },
+    get question() {
+      return m.role_mobile_question();
+    },
+    get role() {
+      return m.role_mobile();
+    },
+  },
   deployment: {
     get about() {
       return m.role_deployment_about();
@@ -152,6 +166,7 @@ const noneNames: Record<OptionalDecision, () => string> = {
   backend: () => m.none_backend(),
   database: () => m.none_database(),
   desktop: () => m.none_desktop(),
+  mobile: () => m.none_mobile(),
   deployment: () => m.none_deployment(),
   framework: () => m.none_framework(),
 };
@@ -181,6 +196,7 @@ const addLabels: Record<OptionalDecision, () => string> = {
   backend: () => m.add_backend(),
   database: () => m.add_database(),
   desktop: () => m.add_desktop(),
+  mobile: () => m.add_mobile(),
   deployment: () => m.add_deployment(),
   framework: () => m.add_framework(),
 };
@@ -193,6 +209,7 @@ const fits = {
   "better-auth": () => m.fit_better_auth(),
   docker: () => m.fit_docker(),
   electron: () => m.fit_electron(),
+  expo: () => m.fit_expo(),
   hono: () => m.fit_hono(),
   next: () => m.fit_next(),
   openapi: () => m.fit_openapi(),
@@ -213,6 +230,7 @@ const noneFits: Record<OptionalDecision, () => string> = {
   backend: () => m.fit_none_backend(),
   database: () => m.fit_none_database(),
   desktop: () => m.fit_none_desktop(),
+  mobile: () => m.fit_none_mobile(),
   deployment: () => m.fit_none_deployment(),
   framework: () => m.fit_none_framework(),
 };
@@ -238,6 +256,7 @@ const groupOfKind = {
   desktop: "desktop",
   framework: "framework",
   frontend: "framework",
+  mobile: "mobile",
   orm: "database",
   router: "framework",
   runtime: "backend",
@@ -273,6 +292,7 @@ export const tintClass: Record<Group, string> = {
   deployment: "tint-deployment",
   desktop: "tint-desktop",
   foundation: "tint-foundation",
+  mobile: "tint-mobile",
   runtime: "tint-backend",
   framework: "tint-framework",
   testing: "tint-foundation",

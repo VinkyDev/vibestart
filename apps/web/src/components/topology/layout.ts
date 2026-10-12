@@ -4,7 +4,7 @@ import type { Group } from "#/lib/roles.ts";
 import { chosen } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
-export const stage = { height: 740, width: 1250 } as const;
+export const stage = { height: 906, width: 1250 } as const;
 
 export interface Rect {
   readonly x: number;
@@ -19,6 +19,8 @@ export const blocks = {
   database: { height: 232, width: 196, x: 1048, y: 90 },
   desktop: { height: 148, width: 252, x: 196, y: 450 },
   framework: { height: 232, width: 252, x: 196, y: 90 },
+  // Below the server, clear of the deployment frame around it: the app calls the API, and is not deployed with it.
+  mobile: { height: 148, width: 236, x: 680, y: 616 },
   visitors: { height: 56, width: 56, x: 28, y: 178 },
 } as const satisfies Record<string, Rect>;
 
@@ -27,11 +29,13 @@ export type BlockKind =
   | "backend"
   | "database"
   | "auth"
-  | "desktop";
+  | "desktop"
+  | "mobile";
 
 const folds: Partial<Record<BlockKind, Rect>> = {
   desktop: { height: 64, width: 252, x: 196, y: 460 },
   framework: { height: 64, width: 252, x: 196, y: 254 },
+  mobile: { height: 64, width: 236, x: 680, y: 616 },
 };
 
 export const blockOf = (
@@ -44,7 +48,7 @@ export const blockOf = (
     : { folded: false, rect: blocks[kind] };
 };
 
-export const rail: Rect = { height: 92, width: 1048, x: 196, y: 632 };
+export const rail: Rect = { height: 92, width: 1048, x: 196, y: 798 };
 
 export const placedClass = "absolute top-(--y) left-(--x) h-(--h) w-(--w)";
 
@@ -71,7 +75,7 @@ const around = (
 };
 
 export interface ProcessBox {
-  readonly id: "web" | "server" | "database" | "desktop";
+  readonly id: "web" | "server" | "database" | "desktop" | "mobile";
   readonly rect: Rect;
   readonly label: string;
   readonly group: Group;
@@ -150,6 +154,16 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       label: m.electron_process(),
       node: false,
       rect: around([blocks.desktop], boxPadding, boxLabel),
+    });
+  }
+  if (has(stack, "mobile")) {
+    boxes.push({
+      deployed: false,
+      group: "mobile",
+      id: "mobile",
+      label: m.expo_process(),
+      node: false,
+      rect: around([blocks.mobile], boxPadding, boxLabel),
     });
   }
   return boxes;
@@ -315,6 +329,23 @@ export const proxyAnchor: Point = {
   y: midpoint(right(blocks.desktop), proxyLanding).y,
 };
 
+// The app reaches the server itself, so its wire bends around the auth block into the server's side.
+const mobileBend = 600;
+const mobileLanding: Point = { x: blocks.backend.x, y: blocks.backend.y + 210 };
+
+const mobileWire = () =>
+  curve(
+    left(blocks.mobile),
+    { x: mobileBend, y: left(blocks.mobile).y },
+    { x: mobileBend, y: mobileLanding.y },
+    mobileLanding
+  );
+
+export const mobileAnchor: Point = {
+  x: (left(blocks.mobile).x + 3 * mobileBend) / 4,
+  y: midpoint(left(blocks.mobile), mobileLanding).y,
+};
+
 export const ormAnchor: Point = midpoint(
   right(blocks.backend),
   left(blocks.database)
@@ -326,6 +357,7 @@ export const edges = (stack: Stack): Edge[] => {
   const database = has(stack, "database");
   const auth = has(stack, "auth");
   const desktop = has(stack, "desktop");
+  const mobile = has(stack, "mobile");
   const authRight = right(blocks.auth);
   const databaseBottom = bottom(blocks.database);
   const all: (Edge | false)[] = [
@@ -357,13 +389,21 @@ export const edges = (stack: Stack): Edge[] => {
       id: "desktop-backend",
       to: "backend",
     },
-    !framework && {
-      ...line(right(blocks.visitors), left(blocks.backend)),
-      from: "foundation",
+    mobile && {
+      ...mobileWire(),
+      from: "mobile",
       ghost: !backend,
-      id: "visitors-backend",
+      id: "mobile-backend",
       to: "backend",
     },
+    !framework &&
+      backend && {
+        ...line(right(blocks.visitors), left(blocks.backend)),
+        from: "foundation",
+        ghost: false,
+        id: "visitors-backend",
+        to: "backend",
+      },
     {
       ...line(right(blocks.backend), left(blocks.database)),
       from: "backend",

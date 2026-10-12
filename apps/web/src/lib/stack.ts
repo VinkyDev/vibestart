@@ -33,6 +33,7 @@ const optionalDecisions = [
   "database",
   "auth",
   "desktop",
+  "mobile",
   "deployment",
   "runtime",
 ] as const;
@@ -125,6 +126,7 @@ export const searchSchema = z.object({
   deployment: flag,
   desktop: flag,
   framework: flag,
+  mobile: flag,
   runtime: flag,
   testing: flag,
   packageManager: z.preprocess((value) => {

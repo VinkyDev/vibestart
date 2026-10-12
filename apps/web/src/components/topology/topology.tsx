@@ -17,6 +17,7 @@ import {
   blocks,
   distAnchor,
   edges,
+  mobileAnchor,
   ormAnchor,
   placedClass,
   processBoxes,
@@ -147,24 +148,34 @@ export const Topology = ({
         <DeploymentFrame boxes={boxes} stack={shown} />
         <Boxes boxes={boxes} choosing={choosing} stack={shown} />
         <Wires wires={edges(shown)} />
-        <Visitors stack={shown} />
-        {(["framework", "desktop", "backend", "database", "auth"] as const).map(
-          (kind, index) => {
-            const { folded, rect } = blockOf(shown, kind);
-            return (
-              <Block
-                chips={chipsOf(kind)}
-                choosing={choosing}
-                delay={0.08 * (index + 1)}
-                folded={folded}
-                key={kind}
-                kind={kind}
-                rect={rect}
-                shown={shown}
-              />
-            );
-          }
+        {/* A mobile app alone serves no page and no API to anyone else. */}
+        {(shown.framework !== undefined || shown.backend !== undefined) && (
+          <Visitors stack={shown} />
         )}
+        {(
+          [
+            "framework",
+            "desktop",
+            "backend",
+            "database",
+            "auth",
+            "mobile",
+          ] as const
+        ).map((kind, index) => {
+          const { folded, rect } = blockOf(shown, kind);
+          return (
+            <Block
+              chips={chipsOf(kind)}
+              choosing={choosing}
+              delay={0.08 * (index + 1)}
+              folded={folded}
+              key={kind}
+              kind={kind}
+              rect={rect}
+              shown={shown}
+            />
+          );
+        })}
         <AnimatePresence>
           {shown.backend !== undefined && (
             <Anchored key="api" point={apiAnchor(shown)}>
@@ -213,6 +224,11 @@ export const Topology = ({
               <Capsule label={m.desktop_proxy()}>
                 {m.desktop_proxy_pill()}
               </Capsule>
+            </Anchored>
+          )}
+          {shown.mobile !== undefined && shown.backend !== undefined && (
+            <Anchored key="mobile-api" point={mobileAnchor} tint="tint-mobile">
+              <Capsule label={m.mobile_api()}>{m.mobile_api_pill()}</Capsule>
             </Anchored>
           )}
           {orm !== undefined && (

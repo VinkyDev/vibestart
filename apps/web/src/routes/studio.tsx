@@ -117,7 +117,7 @@ const Studio = () => {
             )}
           </AnimatePresence>
           <div className="relative hidden min-h-[440px] overflow-x-auto overflow-y-hidden lg:block xl:flex-1">
-            <div className="aspect-[1250/740] min-w-[760px] px-6 py-4 xl:aspect-auto xl:h-full xl:px-10">
+            <div className="aspect-[1250/906] min-w-[760px] px-6 py-4 xl:aspect-auto xl:h-full xl:px-10">
               <Topology
                 choosing={choosing}
                 shown={previewing ? preview.stack : entry.stack}

@@ -4,6 +4,7 @@ import docker from "#/assets/tech/docker.svg";
 import drizzle from "#/assets/tech/drizzle.svg";
 import e2e from "#/assets/tech/e2e.svg";
 import electron from "#/assets/tech/electron.svg";
+import expo from "#/assets/tech/expo.svg";
 import hono from "#/assets/tech/hono.svg";
 import knip from "#/assets/tech/knip.svg";
 import next from "#/assets/tech/next.svg";
@@ -33,6 +34,7 @@ export const techIcons = {
   drizzle,
   e2e,
   electron,
+  expo,
   hono,
   knip,
   next,
