@@ -14,7 +14,10 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Addon_Desc_KnipInputs */
 /** @typedef {{}} Addon_Desc_UltraciteInputs */
 /** @typedef {{}} AddonsInputs */
+/** @typedef {{}} Api_Client_DesktopInputs */
+/** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
+/** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -85,8 +88,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
-/** @typedef {{}} Desktop_ProxyInputs */
-/** @typedef {{}} Desktop_Proxy_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
 /** @typedef {{}} Docs_Back_HomeInputs */
 /** @typedef {{}} Docs_Copy_CodeInputs */
@@ -184,8 +185,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
-/** @typedef {{}} Mobile_ApiInputs */
-/** @typedef {{}} Mobile_Api_PillInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
 /** @typedef {{}} None_ApiInputs */
@@ -519,6 +518,34 @@ export const addons = /** @type {((inputs?: AddonsInputs, options?: { locale?: "
 /**
 * | output |
 * | --- |
+* | "The desktop app runs the web app in Electron, and its main process forwards the calls to the server." |
+*
+* @param {Api_Client_DesktopInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const api_client_desktop = /** @type {((inputs?: Api_Client_DesktopInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Client_DesktopInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.api_client_desktop(inputs)
+	return __en.api_client_desktop(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "The mobile app calls the server over the network: the computer running Metro in development, and EXPO_PUBLIC_API_URL in a release build." |
+*
+* @param {Api_Client_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const api_client_mobile = /** @type {((inputs?: Api_Client_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Client_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.api_client_mobile(inputs)
+	return __en.api_client_mobile(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "API clients" |
 *
 * @param {Api_ClientsInputs} inputs
@@ -529,6 +556,20 @@ export const api_clients = /** @type {((inputs?: Api_ClientsInputs, options?: { 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.api_clients(inputs)
 	return __en.api_clients(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Every client calls this one API, with its types taken from the server code." |
+*
+* @param {Api_Clients_SameInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const api_clients_same = /** @type {((inputs?: Api_Clients_SameInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Clients_SameInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.api_clients_same(inputs)
+	return __en.api_clients_same(inputs)
 });
 /**
 * | output |
@@ -1513,34 +1554,6 @@ export const desktop_dist_pill = /** @type {((inputs?: Desktop_Dist_PillInputs, 
 /**
 * | output |
 * | --- |
-* | "Forwards" |
-*
-* @param {Desktop_ProxyInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desktop_proxy = /** @type {((inputs?: Desktop_ProxyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desktop_ProxyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desktop_proxy(inputs)
-	return __en.desktop_proxy(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "API proxy" |
-*
-* @param {Desktop_Proxy_PillInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desktop_proxy_pill = /** @type {((inputs?: Desktop_Proxy_PillInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desktop_Proxy_PillInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desktop_proxy_pill(inputs)
-	return __en.desktop_proxy_pill(inputs)
-});
-/**
-* | output |
-* | --- |
 * | "Link to this section" |
 *
 * @param {Docs_AnchorInputs} inputs
@@ -2032,7 +2045,7 @@ export const fit_openapi = /** @type {((inputs?: Fit_OpenapiInputs, options?: { 
 /**
 * | output |
 * | --- |
-* | "For an API only your own frontend calls." |
+* | "For an API only your own apps call." |
 *
 * @param {Fit_OrpcInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -2913,34 +2926,6 @@ export const learn_about = /** @type {((inputs: Learn_AboutInputs, options?: { l
 /**
 * | output |
 * | --- |
-* | "Calls" |
-*
-* @param {Mobile_ApiInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const mobile_api = /** @type {((inputs?: Mobile_ApiInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mobile_ApiInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.mobile_api(inputs)
-	return __en.mobile_api(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "API" |
-*
-* @param {Mobile_Api_PillInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const mobile_api_pill = /** @type {((inputs?: Mobile_Api_PillInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mobile_Api_PillInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.mobile_api_pill(inputs)
-	return __en.mobile_api_pill(inputs)
-});
-/**
-* | output |
-* | --- |
 * | "Docs" |
 *
 * @param {Nav_DocsInputs} inputs
@@ -3456,7 +3441,7 @@ export const role_api = /** @type {((inputs?: Role_ApiInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "How the frontend calls the backend." |
+* | "The protocol, and the typed client every app calls it with." |
 *
 * @param {Role_Api_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3484,7 +3469,7 @@ export const role_api_none = /** @type {((inputs?: Role_Api_NoneInputs, options?
 /**
 * | output |
 * | --- |
-* | "How does the frontend talk to the backend?" |
+* | "How do the clients call the server?" |
 *
 * @param {Role_Api_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

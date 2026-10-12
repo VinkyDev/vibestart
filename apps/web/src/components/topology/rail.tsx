@@ -24,11 +24,11 @@ import {
   CardHeading,
   IntegrationCard,
 } from "#/components/topology/integration-card.tsx";
-import { placedClass, rail } from "#/components/topology/layout.ts";
+import type { Rect } from "#/components/topology/layout.ts";
 import { Swatch, Tile } from "#/components/topology/tile.tsx";
 import { ToolDetails } from "#/components/topology/tool-details.tsx";
 import { focusesGroup, useFocus, useFocusTarget } from "#/lib/focus.ts";
-import { ease } from "#/lib/motion.ts";
+import { ease, spring } from "#/lib/motion.ts";
 import { addLabel, groupOf, roles } from "#/lib/roles.ts";
 import { chosen, e2eRunner, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
@@ -180,9 +180,11 @@ const EndToEndTests = ({
 
 export const Rail = ({
   choosing,
+  rect,
   stack,
 }: {
   readonly choosing: Choosing;
+  readonly rect: Rect;
   readonly stack: Stack;
 }) => {
   const { focus } = useFocus();
@@ -195,16 +197,15 @@ export const Rail = ({
   const deployment = chosen(stack, "deployment");
   return (
     <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      className={cn("flex gap-3", placedClass)}
-      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, top: rect.y, y: 0 }}
+      className="absolute left-(--x) flex h-(--h) w-(--w) gap-3"
+      initial={{ opacity: 0, top: rect.y, y: 10 }}
       style={{
-        "--h": `${rail.height}px`,
-        "--w": `${rail.width}px`,
-        "--x": `${rail.x}px`,
-        "--y": `${rail.y}px`,
+        "--h": `${rect.height}px`,
+        "--w": `${rect.width}px`,
+        "--x": `${rect.x}px`,
       }}
-      transition={{ delay: 0.5, duration: 0.8, ease }}
+      transition={{ default: { delay: 0.5, duration: 0.8, ease }, top: spring }}
     >
       <Frame
         className="tint-foundation flex-1"

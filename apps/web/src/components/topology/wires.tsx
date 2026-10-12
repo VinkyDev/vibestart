@@ -1,16 +1,10 @@
 import { AnimatePresence, motion } from "motion/react";
 
 import type { Edge } from "#/components/topology/layout.ts";
-import { stage } from "#/components/topology/layout.ts";
 import { ease } from "#/lib/motion.ts";
 
 export const Wires = ({ wires }: { readonly wires: readonly Edge[] }) => (
-  <svg
-    className="pointer-events-none absolute inset-0 overflow-visible"
-    height={stage.height}
-    viewBox={`0 0 ${stage.width} ${stage.height}`}
-    width={stage.width}
-  >
+  <svg className="pointer-events-none absolute inset-0 size-full overflow-visible">
     <defs>
       {wires.map((wire) => (
         <linearGradient

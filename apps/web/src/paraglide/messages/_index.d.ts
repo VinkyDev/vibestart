@@ -11,7 +11,10 @@ export type Addon_DefaultInputs = {};
 export type Addon_Desc_KnipInputs = {};
 export type Addon_Desc_UltraciteInputs = {};
 export type AddonsInputs = {};
+export type Api_Client_DesktopInputs = {};
+export type Api_Client_MobileInputs = {};
 export type Api_ClientsInputs = {};
+export type Api_Clients_SameInputs = {};
 export type Cap_Frontend_FrameworkInputs = {};
 export type Cap_Fullstack_FrameworkInputs = {};
 export type Cap_Hono_ServerInputs = {};
@@ -88,8 +91,6 @@ export type Desc_Tanstack_StartInputs = {};
 export type Desc_Vite_PlusInputs = {};
 export type Desktop_DistInputs = {};
 export type Desktop_Dist_PillInputs = {};
-export type Desktop_ProxyInputs = {};
-export type Desktop_Proxy_PillInputs = {};
 export type Docs_AnchorInputs = {};
 export type Docs_Back_HomeInputs = {};
 export type Docs_Copy_CodeInputs = {};
@@ -207,8 +208,6 @@ export type LanguageInputs = {};
 export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
-export type Mobile_ApiInputs = {};
-export type Mobile_Api_PillInputs = {};
 export type Nav_DocsInputs = {};
 export type Nav_StudioInputs = {};
 export type None_ApiInputs = {};
@@ -572,6 +571,34 @@ export declare const addons: ((inputs?: AddonsInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "The desktop app runs the web app in Electron, and its main process forwards the calls to the server." |
+*
+* @param {Api_Client_DesktopInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const api_client_desktop: ((inputs?: Api_Client_DesktopInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Client_DesktopInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "The mobile app calls the server over the network: the computer running Metro in development, and EXPO_PUBLIC_API_URL in a release build." |
+*
+* @param {Api_Client_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const api_client_mobile: ((inputs?: Api_Client_MobileInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Client_MobileInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "API clients" |
 *
 * @param {Api_ClientsInputs} inputs
@@ -581,6 +608,20 @@ export declare const addons: ((inputs?: AddonsInputs, options?: {
 export declare const api_clients: ((inputs?: Api_ClientsInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_ClientsInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Every client calls this one API, with its types taken from the server code." |
+*
+* @param {Api_Clients_SameInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const api_clients_same: ((inputs?: Api_Clients_SameInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Clients_SameInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1566,34 +1607,6 @@ export declare const desktop_dist_pill: ((inputs?: Desktop_Dist_PillInputs, opti
 /**
 * | output |
 * | --- |
-* | "Forwards" |
-*
-* @param {Desktop_ProxyInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const desktop_proxy: ((inputs?: Desktop_ProxyInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desktop_ProxyInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "API proxy" |
-*
-* @param {Desktop_Proxy_PillInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const desktop_proxy_pill: ((inputs?: Desktop_Proxy_PillInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desktop_Proxy_PillInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
 * | "Link to this section" |
 *
 * @param {Docs_AnchorInputs} inputs
@@ -2085,7 +2098,7 @@ export declare const fit_openapi: ((inputs?: Fit_OpenapiInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "For an API only your own frontend calls." |
+* | "For an API only your own apps call." |
 *
 * @param {Fit_OrpcInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -2965,34 +2978,6 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Calls" |
-*
-* @param {Mobile_ApiInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const mobile_api: ((inputs?: Mobile_ApiInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mobile_ApiInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
-* | "API" |
-*
-* @param {Mobile_Api_PillInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export declare const mobile_api_pill: ((inputs?: Mobile_Api_PillInputs, options?: {
-    locale?: "en" | "zh";
-}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mobile_Api_PillInputs, {
-    locale?: "en" | "zh";
-}, {}>;
-/**
-* | output |
-* | --- |
 * | "Docs" |
 *
 * @param {Nav_DocsInputs} inputs
@@ -3507,7 +3492,7 @@ export declare const role_api: ((inputs?: Role_ApiInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "How the frontend calls the backend." |
+* | "The protocol, and the typed client every app calls it with." |
 *
 * @param {Role_Api_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3535,7 +3520,7 @@ export declare const role_api_none: ((inputs?: Role_Api_NoneInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "How does the frontend talk to the backend?" |
+* | "How do the clients call the server?" |
 *
 * @param {Role_Api_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

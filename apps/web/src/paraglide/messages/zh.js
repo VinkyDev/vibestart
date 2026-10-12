@@ -12,7 +12,10 @@
 /** @typedef {{}} Addon_Desc_KnipInputs */
 /** @typedef {{}} Addon_Desc_UltraciteInputs */
 /** @typedef {{}} AddonsInputs */
+/** @typedef {{}} Api_Client_DesktopInputs */
+/** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
+/** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -83,8 +86,6 @@
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
-/** @typedef {{}} Desktop_ProxyInputs */
-/** @typedef {{}} Desktop_Proxy_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
 /** @typedef {{}} Docs_Back_HomeInputs */
 /** @typedef {{}} Docs_Copy_CodeInputs */
@@ -182,8 +183,6 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
-/** @typedef {{}} Mobile_ApiInputs */
-/** @typedef {{}} Mobile_Api_PillInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
 /** @typedef {{}} None_ApiInputs */
@@ -395,8 +394,20 @@ export const addons = /** @type {(inputs: AddonsInputs) => LocalizedString} */ (
 	return /** @type {LocalizedString} */ (`扩展能力`)
 };
 
+export const api_client_desktop = /** @type {(inputs: Api_Client_DesktopInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`桌面端在 Electron 中运行网页应用，由主进程把调用转发给服务端。`)
+};
+
+export const api_client_mobile = /** @type {(inputs: Api_Client_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`移动端通过网络直接调用服务端：开发时访问运行 Metro 的电脑，发布构建访问 EXPO_PUBLIC_API_URL。`)
+};
+
 export const api_clients = /** @type {(inputs: Api_ClientsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`API 调用方`)
+};
+
+export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`所有客户端都调用这一套 API，类型直接来自服务端代码。`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -684,14 +695,6 @@ export const desktop_dist_pill = /** @type {(inputs: Desktop_Dist_PillInputs) =>
 	return /** @type {LocalizedString} */ (`apps/web/dist`)
 };
 
-export const desktop_proxy = /** @type {(inputs: Desktop_ProxyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`转发`)
-};
-
-export const desktop_proxy_pill = /** @type {(inputs: Desktop_Proxy_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API 代理`)
-};
-
 export const docs_anchor = /** @type {(inputs: Docs_AnchorInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`链接到此小节`)
 };
@@ -833,7 +836,7 @@ export const fit_openapi = /** @type {(inputs: Fit_OpenapiInputs) => LocalizedSt
 };
 
 export const fit_orpc = /** @type {(inputs: Fit_OrpcInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`适合只供自己的前端调用`)
+	return /** @type {LocalizedString} */ (`适合只供自己的应用调用`)
 };
 
 export const fit_postgres = /** @type {(inputs: Fit_PostgresInputs) => LocalizedString} */ () => {
@@ -1091,14 +1094,6 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`了解 ${i?.name}`)
 };
 
-export const mobile_api = /** @type {(inputs: Mobile_ApiInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`调用`)
-};
-
-export const mobile_api_pill = /** @type {(inputs: Mobile_Api_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API`)
-};
-
 export const nav_docs = /** @type {(inputs: Nav_DocsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`文档`)
 };
@@ -1253,7 +1248,7 @@ export const role_api = /** @type {(inputs: Role_ApiInputs) => LocalizedString} 
 };
 
 export const role_api_about = /** @type {(inputs: Role_Api_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`前端调用后端的方式。`)
+	return /** @type {LocalizedString} */ (`接口的协议，以及各端调用它所用的类型化客户端。`)
 };
 
 export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => LocalizedString} */ () => {
@@ -1261,7 +1256,7 @@ export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => Localiz
 };
 
 export const role_api_question = /** @type {(inputs: Role_Api_QuestionInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`前端如何与后端通信？`)
+	return /** @type {LocalizedString} */ (`客户端如何调用服务端？`)
 };
 
 export const role_auth = /** @type {(inputs: Role_AuthInputs) => LocalizedString} */ () => {

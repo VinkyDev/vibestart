@@ -8,11 +8,7 @@ import { Chip } from "#/components/topology/chip.tsx";
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
 import type { ProcessBox } from "#/components/topology/layout.ts";
-import {
-  deploymentFrame,
-  roundedPath,
-  stage,
-} from "#/components/topology/layout.ts";
+import { deploymentFrame, roundedPath } from "#/components/topology/layout.ts";
 import { spring } from "#/lib/motion.ts";
 import { tintClass } from "#/lib/roles.ts";
 import { chosen, integrationOf } from "#/lib/stack.ts";
@@ -103,11 +99,7 @@ export const DeploymentFrame = ({
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
         >
-          <svg
-            className="absolute inset-0 overflow-visible"
-            height={stage.height}
-            width={stage.width}
-          >
+          <svg className="absolute inset-0 size-full overflow-visible">
             <motion.path
               animate={{ d: path }}
               className="fill-foreground/[0.025] stroke-foreground/25"

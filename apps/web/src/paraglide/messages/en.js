@@ -12,7 +12,10 @@
 /** @typedef {{}} Addon_Desc_KnipInputs */
 /** @typedef {{}} Addon_Desc_UltraciteInputs */
 /** @typedef {{}} AddonsInputs */
+/** @typedef {{}} Api_Client_DesktopInputs */
+/** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
+/** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -83,8 +86,6 @@
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
-/** @typedef {{}} Desktop_ProxyInputs */
-/** @typedef {{}} Desktop_Proxy_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
 /** @typedef {{}} Docs_Back_HomeInputs */
 /** @typedef {{}} Docs_Copy_CodeInputs */
@@ -182,8 +183,6 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
-/** @typedef {{}} Mobile_ApiInputs */
-/** @typedef {{}} Mobile_Api_PillInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
 /** @typedef {{}} None_ApiInputs */
@@ -395,8 +394,20 @@ export const addons = /** @type {(inputs: AddonsInputs) => LocalizedString} */ (
 	return /** @type {LocalizedString} */ (`Extensions`)
 };
 
+export const api_client_desktop = /** @type {(inputs: Api_Client_DesktopInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`The desktop app runs the web app in Electron, and its main process forwards the calls to the server.`)
+};
+
+export const api_client_mobile = /** @type {(inputs: Api_Client_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`The mobile app calls the server over the network: the computer running Metro in development, and EXPO_PUBLIC_API_URL in a release build.`)
+};
+
 export const api_clients = /** @type {(inputs: Api_ClientsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`API clients`)
+};
+
+export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Every client calls this one API, with its types taken from the server code.`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -684,14 +695,6 @@ export const desktop_dist_pill = /** @type {(inputs: Desktop_Dist_PillInputs) =>
 	return /** @type {LocalizedString} */ (`apps/web/dist`)
 };
 
-export const desktop_proxy = /** @type {(inputs: Desktop_ProxyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Forwards`)
-};
-
-export const desktop_proxy_pill = /** @type {(inputs: Desktop_Proxy_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API proxy`)
-};
-
 export const docs_anchor = /** @type {(inputs: Docs_AnchorInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Link to this section`)
 };
@@ -835,7 +838,7 @@ export const fit_openapi = /** @type {(inputs: Fit_OpenapiInputs) => LocalizedSt
 };
 
 export const fit_orpc = /** @type {(inputs: Fit_OrpcInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`For an API only your own frontend calls.`)
+	return /** @type {LocalizedString} */ (`For an API only your own apps call.`)
 };
 
 export const fit_postgres = /** @type {(inputs: Fit_PostgresInputs) => LocalizedString} */ () => {
@@ -1095,14 +1098,6 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`About ${i?.name}`)
 };
 
-export const mobile_api = /** @type {(inputs: Mobile_ApiInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Calls`)
-};
-
-export const mobile_api_pill = /** @type {(inputs: Mobile_Api_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API`)
-};
-
 export const nav_docs = /** @type {(inputs: Nav_DocsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Docs`)
 };
@@ -1257,7 +1252,7 @@ export const role_api = /** @type {(inputs: Role_ApiInputs) => LocalizedString} 
 };
 
 export const role_api_about = /** @type {(inputs: Role_Api_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`How the frontend calls the backend.`)
+	return /** @type {LocalizedString} */ (`The protocol, and the typed client every app calls it with.`)
 };
 
 export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => LocalizedString} */ () => {
@@ -1265,7 +1260,7 @@ export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => Localiz
 };
 
 export const role_api_question = /** @type {(inputs: Role_Api_QuestionInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`How does the frontend talk to the backend?`)
+	return /** @type {LocalizedString} */ (`How do the clients call the server?`)
 };
 
 export const role_auth = /** @type {(inputs: Role_AuthInputs) => LocalizedString} */ () => {

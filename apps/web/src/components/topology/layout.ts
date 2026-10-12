@@ -4,7 +4,7 @@ import type { Group } from "#/lib/roles.ts";
 import { chosen } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
-export const stage = { height: 906, width: 1250 } as const;
+export const stageWidth = 1250;
 
 export interface Rect {
   readonly x: number;
@@ -17,45 +17,113 @@ export const blocks = {
   auth: { height: 148, width: 236, x: 680, y: 372 },
   backend: { height: 232, width: 236, x: 680, y: 90 },
   database: { height: 232, width: 196, x: 1048, y: 90 },
-  desktop: { height: 148, width: 252, x: 196, y: 450 },
   framework: { height: 232, width: 252, x: 196, y: 90 },
-  // Below the server, clear of the deployment frame around it: the app calls the API, and is not deployed with it.
-  mobile: { height: 148, width: 236, x: 680, y: 616 },
   visitors: { height: 56, width: 56, x: 28, y: 178 },
 } as const satisfies Record<string, Rect>;
 
-export type BlockKind =
-  | "framework"
-  | "backend"
-  | "database"
-  | "auth"
-  | "desktop"
-  | "mobile";
+/** The apps beside the web app that call the same API: they stack under it, in the column of clients. */
+const clients = ["desktop", "mobile"] as const;
+type Client = (typeof clients)[number];
 
-const folds: Partial<Record<BlockKind, Rect>> = {
-  desktop: { height: 64, width: 252, x: 196, y: 460 },
-  framework: { height: 64, width: 252, x: 196, y: 254 },
-  mobile: { height: 64, width: 236, x: 680, y: 616 },
-};
+type BlockKind = "framework" | "backend" | "database" | "auth" | Client;
 
-export const blockOf = (
-  stack: Stack,
-  kind: BlockKind
-): { readonly rect: Rect; readonly folded: boolean } => {
-  const fold = folds[kind];
-  return fold !== undefined && stack[kind] === undefined
-    ? { folded: true, rect: fold }
-    : { folded: false, rect: blocks[kind] };
-};
-
-export const rail: Rect = { height: 92, width: 1048, x: 196, y: 798 };
-
-export const placedClass = "absolute top-(--y) left-(--x) h-(--h) w-(--w)";
+interface Placed {
+  readonly rect: Rect;
+  readonly folded: boolean;
+}
 
 const boxPadding = 16;
 const boxLabel = 30;
 const framePadding = 14;
 const frameLabel = 22;
+
+const frameworkFold: Rect = { height: 64, width: 252, x: 196, y: 254 };
+const clientHeight = 148;
+const foldHeight = 56;
+// Room between the web app and the desktop shell for the capsule naming what the shell loads.
+const shellGap = 66;
+const clientGap = 32;
+const foldGap = 12;
+// The server column ends with the deployment frame around the server and its auth.
+const serverFloor =
+  blocks.auth.y + blocks.auth.height + boxPadding + framePadding;
+const railGap = 48;
+const railHeight = 92;
+
+export interface Layout {
+  readonly blocks: Record<BlockKind, Placed>;
+  readonly rail: Rect;
+  readonly height: number;
+}
+
+/**
+ * Where everything sits for `stack`. The clients take room only when chosen: a chosen client gets a block in
+ * its process box, and the others fold into a row each beneath, so the stage grows only with what it shows.
+ * The desktop shell comes first, right under the web app it loads.
+ */
+export const layoutOf = (stack: Stack): Layout => {
+  const web = stack.framework !== undefined;
+  // A framework that serves the API itself shares its process box with the server and auth.
+  const inWebBox = [
+    blocks.framework,
+    ...(stack.backend === "self"
+      ? [blocks.backend, ...(stack.auth === undefined ? [] : [blocks.auth])]
+      : []),
+  ];
+  let floor = web
+    ? Math.max(...inWebBox.map((rect) => rect.y + rect.height)) + boxPadding
+    : frameworkFold.y + frameworkFold.height;
+  const placed: Partial<Record<Client, Placed>> = {};
+  for (const client of clients.filter((kind) => stack[kind] !== undefined)) {
+    const top =
+      floor +
+      (client === "desktop" ? shellGap : clientGap) +
+      boxPadding +
+      boxLabel;
+    placed[client] = {
+      folded: false,
+      rect: {
+        height: clientHeight,
+        width: blocks.framework.width,
+        x: blocks.framework.x,
+        y: top,
+      },
+    };
+    floor = top + clientHeight + boxPadding;
+  }
+  let gap = clientGap;
+  for (const client of clients.filter((kind) => stack[kind] === undefined)) {
+    const top = floor + gap;
+    placed[client] = {
+      folded: true,
+      rect: {
+        height: foldHeight,
+        width: blocks.framework.width,
+        x: blocks.framework.x,
+        y: top,
+      },
+    };
+    floor = top + foldHeight;
+    gap = foldGap;
+  }
+  const railTop = Math.max(floor, serverFloor) + railGap + 34;
+  return {
+    blocks: {
+      auth: { folded: false, rect: blocks.auth },
+      backend: { folded: false, rect: blocks.backend },
+      database: { folded: false, rect: blocks.database },
+      desktop: placed.desktop ?? { folded: true, rect: frameworkFold },
+      framework: web
+        ? { folded: false, rect: blocks.framework }
+        : { folded: true, rect: frameworkFold },
+      mobile: placed.mobile ?? { folded: true, rect: frameworkFold },
+    },
+    height: railTop + railHeight + 16,
+    rail: { height: railHeight, width: 1048, x: 196, y: railTop },
+  };
+};
+
+export const placedClass = "absolute top-(--y) left-(--x) h-(--h) w-(--w)";
 
 const around = (
   rects: readonly Rect[],
@@ -104,6 +172,7 @@ const webLabel = (
 };
 
 export const processBoxes = (stack: Stack): ProcessBox[] => {
+  const { blocks: placed } = layoutOf(stack);
   const framework = chosen(stack, "framework");
   const hosted = [
     ...(has(stack, "auth") ? [blocks.auth] : []),
@@ -153,7 +222,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       id: "desktop",
       label: m.electron_process(),
       node: false,
-      rect: around([blocks.desktop], boxPadding, boxLabel),
+      rect: around([placed.desktop.rect], boxPadding, boxLabel),
     });
   }
   if (has(stack, "mobile")) {
@@ -163,7 +232,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       id: "mobile",
       label: m.expo_process(),
       node: false,
-      rect: around([blocks.mobile], boxPadding, boxLabel),
+      rect: around([placed.mobile.rect], boxPadding, boxLabel),
     });
   }
   return boxes;
@@ -287,63 +356,49 @@ const midpoint = (a: Point, b: Point): Point => ({
   y: (a.y + b.y) / 2,
 });
 
-export const apiAnchor = (stack: Stack): Point =>
-  midpoint(
-    right(has(stack, "framework") ? blocks.framework : blocks.visitors),
-    left(blocks.backend)
-  );
+/** Where every client's calls meet the server: the API capsule, halfway between the web app and the server. */
+export const apiAnchor: Point = midpoint(
+  right(blocks.framework),
+  left(blocks.backend)
+);
 
-const webFloor =
-  blocks.framework.y + blocks.framework.height + boxPadding + framePadding;
-const shellCeiling = blocks.desktop.y - boxPadding - boxLabel;
-
-export const distAnchor: Point = {
-  x: top(blocks.framework).x,
-  y: (webFloor + shellCeiling) / 2,
+/** Between the web app's box and the desktop shell's, where the capsule naming what the shell loads sits. */
+export const distAnchor = (stack: Stack): Point => {
+  const shell = layoutOf(stack).blocks.desktop.rect;
+  const webFloor =
+    blocks.framework.y + blocks.framework.height + boxPadding + framePadding;
+  return {
+    x: top(blocks.framework).x,
+    y: (webFloor + shell.y - boxPadding - boxLabel) / 2,
+  };
 };
 
-const proxyBend =
-  (blocks.framework.x +
-    blocks.framework.width +
-    boxPadding +
-    blocks.backend.x -
-    boxPadding -
-    framePadding) /
-  2;
-
-const proxyLanding: Point = {
-  x: blocks.backend.x,
-  y: blocks.backend.y + 170,
+// Each client below the web app runs its own lane up to the API capsule, so the calls visibly share one API.
+// The lanes sit side by side, the upper client's nearer, so no wire crosses another.
+const lanes: Record<Client, number> = {
+  desktop: apiAnchor.x - 12,
+  mobile: apiAnchor.x + 12,
 };
+const laneRadius = 18;
 
-const proxyWire = () =>
-  curve(
-    right(blocks.desktop),
-    { x: proxyBend, y: right(blocks.desktop).y },
-    { x: proxyBend, y: proxyLanding.y },
-    proxyLanding
-  );
-
-export const proxyAnchor: Point = {
-  x: proxyBend,
-  y: midpoint(right(blocks.desktop), proxyLanding).y,
-};
-
-// The app reaches the server itself, so its wire bends around the auth block into the server's side.
-const mobileBend = 600;
-const mobileLanding: Point = { x: blocks.backend.x, y: blocks.backend.y + 210 };
-
-const mobileWire = () =>
-  curve(
-    left(blocks.mobile),
-    { x: mobileBend, y: left(blocks.mobile).y },
-    { x: mobileBend, y: mobileLanding.y },
-    mobileLanding
-  );
-
-export const mobileAnchor: Point = {
-  x: (left(blocks.mobile).x + 3 * mobileBend) / 4,
-  y: midpoint(left(blocks.mobile), mobileLanding).y,
+const clientWire = (rect: Rect, lane: number, meetsLine: boolean) => {
+  const start = right(rect);
+  const turn = `L ${lane - laneRadius} ${start.y} Q ${lane} ${start.y} ${lane} ${start.y - laneRadius}`;
+  if (meetsLine) {
+    // A wire from the web app or the visitors runs through the capsule, which covers where the lane ends.
+    const end = { x: lane, y: apiAnchor.y };
+    return {
+      end,
+      path: `M ${start.x} ${start.y} ${turn} L ${end.x} ${end.y}`,
+      start,
+    };
+  }
+  const end = left(blocks.backend);
+  return {
+    end,
+    path: `M ${start.x} ${start.y} ${turn} L ${lane} ${end.y + laneRadius} Q ${lane} ${end.y} ${lane + laneRadius} ${end.y} L ${end.x} ${end.y}`,
+    start,
+  };
 };
 
 export const ormAnchor: Point = midpoint(
@@ -356,8 +411,8 @@ export const edges = (stack: Stack): Edge[] => {
   const backend = has(stack, "backend");
   const database = has(stack, "database");
   const auth = has(stack, "auth");
-  const desktop = has(stack, "desktop");
-  const mobile = has(stack, "mobile");
+  const { blocks: placed } = layoutOf(stack);
+  const meetsLine = framework || backend;
   const authRight = right(blocks.auth);
   const databaseBottom = bottom(blocks.database);
   const all: (Edge | false)[] = [
@@ -375,27 +430,23 @@ export const edges = (stack: Stack): Edge[] => {
       id: "framework-backend",
       to: "backend",
     },
-    desktop && {
-      ...line(bottom(blocks.framework), top(blocks.desktop)),
+    !placed.desktop.folded && {
+      ...line(bottom(blocks.framework), top(placed.desktop.rect)),
       from: "framework",
       ghost: false,
       id: "framework-desktop",
       to: "desktop",
     },
-    desktop && {
-      ...proxyWire(),
-      from: "desktop",
-      ghost: !backend,
-      id: "desktop-backend",
-      to: "backend",
-    },
-    mobile && {
-      ...mobileWire(),
-      from: "mobile",
-      ghost: !backend,
-      id: "mobile-backend",
-      to: "backend",
-    },
+    ...clients.map(
+      (client) =>
+        !placed[client].folded && {
+          ...clientWire(placed[client].rect, lanes[client], meetsLine),
+          from: client,
+          ghost: !backend,
+          id: `${client}-backend`,
+          to: "backend" as const,
+        }
+    ),
     !framework &&
       backend && {
         ...line(right(blocks.visitors), left(blocks.backend)),
