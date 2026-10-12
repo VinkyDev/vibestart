@@ -58,6 +58,7 @@ const Studio = () => {
   }
   const file = project.files.find((candidate) => candidate.path === openPath);
   const previewing = preview !== null && preview.label !== entry.label;
+  const shown = previewing ? preview.stack : entry.stack;
   const choosing: Choosing = {
     baseline: entry.stack,
     addons,
@@ -121,13 +122,10 @@ const Studio = () => {
             <div
               className="aspect-(--stage-ratio) min-w-[760px] px-6 py-4 xl:aspect-auto xl:h-full xl:px-10"
               style={{
-                "--stage-ratio": `${stageWidth} / ${layoutOf(entry.stack).height}`,
+                "--stage-ratio": `${stageWidth} / ${layoutOf(shown).height}`,
               }}
             >
-              <Topology
-                choosing={choosing}
-                shown={previewing ? preview.stack : entry.stack}
-              />
+              <Topology choosing={choosing} shown={shown} />
             </div>
           </div>
           <AnimatePresence>
