@@ -58,6 +58,7 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 | -------------- | --------------------------------------------------- |
 | 应用           | React SPA(TanStack Router)、TanStack Start、Next.js |
 | 桌面端         | Electron                                            |
+| 移动端         | Expo(React Native),iOS 与 Android                   |
 | 后端           | Hono,或框架自带服务                                 |
 | API            | oRPC、OpenAPI,或不选                                |
 | 数据库         | PostgreSQL 或 SQLite(Drizzle),或不选                |
@@ -76,17 +77,17 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
 ```
 
-| 选项                                                         | 说明                                                                                                                                 |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `--<kind> <choice>`                                          | 决定某一类选择(`--framework`、`--backend`、`--api`、`--database`、`--auth`、`--desktop`、`--deployment` 等)。`none` 表示可选项留空。 |
-| `--addons <ids\|none>`                                       | 选择扩展,逗号分隔。默认启用 Knip 与 Ultracite;`none` 两者都不要。                                                                    |
-| `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.2 及以上安装依赖。                                                                                           |
-| `--runtime <node\|bun>`                                      | Hono 服务运行在 Node.js(默认)或 Bun 上。                                                                                             |
-| `--recipe <path\|url>`                                       | 从 `vibestart.jsonc` 开始;`kind` 参数优先于它。                                                                                      |
-| `--list`                                                     | 列出所有选择类别、选项与全部合法技术栈。                                                                                             |
-| `--dry-run`                                                  | 解析技术栈并列出文件,不写入磁盘。                                                                                                    |
-| `--json`                                                     | 只输出一个 JSON 对象,从不提问。失败时带有机器可读的 `code`。                                                                         |
-| `--no-interactive`、`--no-git`、`--no-install`、`--no-check` | 跳过提问、`git init`、安装与初始化、最后的 `vp check`。                                                                              |
+| 选项                                                         | 说明                                                                                                                                             |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--<kind> <choice>`                                          | 决定某一类选择(`--framework`、`--backend`、`--api`、`--database`、`--auth`、`--desktop`、`--mobile`、`--deployment` 等)。`none` 表示可选项留空。 |
+| `--addons <ids\|none>`                                       | 选择扩展,逗号分隔。默认启用 Knip 与 Ultracite;`none` 两者都不要。                                                                                |
+| `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.2 及以上安装依赖。                                                                                                       |
+| `--runtime <node\|bun>`                                      | Hono 服务运行在 Node.js(默认)或 Bun 上。                                                                                                         |
+| `--recipe <path\|url>`                                       | 从 `vibestart.jsonc` 开始;`kind` 参数优先于它。                                                                                                  |
+| `--list`                                                     | 列出所有选择类别、选项与全部合法技术栈。                                                                                                         |
+| `--dry-run`                                                  | 解析技术栈并列出文件,不写入磁盘。                                                                                                                |
+| `--json`                                                     | 只输出一个 JSON 对象,从不提问。失败时带有机器可读的 `code`。                                                                                     |
+| `--no-interactive`、`--no-git`、`--no-install`、`--no-check` | 跳过提问、`git init`、安装与初始化、最后的 `vp check`。                                                                                          |
 
 ## 文档
 

@@ -12,13 +12,13 @@
 
 ## Model
 
-**Kinds and stacks.** The registry declares an ordered list of kinds: `toolchain`, `frontend`, `framework`, `router`, `backend`, `api`, `database`, `orm`, `auth`, `ui`, `desktop`, `runtime`, `deployment`, `testing`. A kind is required or optional and may have a default. A stack maps kind to integration id. An integration lists the `formerIds` earlier releases wrote for it; a blueprint that names one reads as the current id, so existing projects keep upgrading. Kind order fixes the field order of `vibestart.jsonc` and the order in which contributions are collected.
+**Kinds and stacks.** The registry declares an ordered list of kinds: `toolchain`, `frontend`, `framework`, `router`, `backend`, `api`, `database`, `orm`, `auth`, `ui`, `desktop`, `mobile`, `runtime`, `deployment`, `testing`. A kind is required or optional and may have a default. A stack maps kind to integration id. An integration lists the `formerIds` earlier releases wrote for it; a blueprint that names one reads as the current id, so existing projects keep upgrading. Kind order fixes the field order of `vibestart.jsonc` and the order in which contributions are collected.
 
 **Blueprint.** `vibestart.jsonc` records `stack`, `addons`, `channel`, and an optional `packageManager`. Its Zod schema and the exported JSON Schema derive from the registry, so a new integration changes no schema.
 
 **Add-ons.** Orthogonal extensions (Knip, Ultracite) are chosen independently of the stack and stay out of the resolver. The registry declares the defaults: omitting `addons` takes them, an explicit `[]` takes none. The CLI flag, the prompt, and the Studio read the same registry.
 
-**App shape is not a kind.** It is a legal pairing of `framework` and `backend`, of which at least one is set:
+**App shape is not a kind.** It is a legal pairing of `framework` and `backend`. At least one of them is set, unless the stack has a mobile app:
 
 | `framework`              | `backend` | Shape                                                                                                |
 | ------------------------ | --------- | ---------------------------------------------------------------------------------------------------- |
@@ -29,13 +29,15 @@
 | `tanstack-start`, `next` | none      | Server-rendered pages only, with no API or database                                                  |
 | none                     | `hono`    | A backend alone, tested by integration tests                                                         |
 
+A mobile app (`mobile`: `expo`) joins any of these shapes or stands alone. With a backend, it calls the API on port 3000 of the machine Metro runs on in development, which is Hono or the framework that forwards to it, and the origin in `EXPO_PUBLIC_API_URL` in a release build. Docker requires a web app or an HTTP server, so a mobile app alone has no deployment.
+
 `self` contributes nothing. It makes "has a backend" a value of the same kind in every shape, and frameworks branch on `ctx.has("self")`.
 
 ## Resolver
 
 Integrations declare `provides` and `requires` as capability strings. Four rules:
 
-1. A required kind has a value, and each `kindGroups` group (`framework` and `backend`) has at least one.
+1. A required kind has a value, and each `kindGroups` group (`framework`, `backend`, and `mobile`) has at least one.
 2. Every `requires` is provided by some integration in the stack. A requirement may list alternatives, any one of which satisfies it: Docker needs a web app or an HTTP server to put in the image.
 3. A capability has at most one provider, so Next.js and TanStack Router (both `router`) exclude each other, as do Hono and `self` (both `http-server`).
 4. An `auxiliary` integration exists only to satisfy another's `requires`; a static SPA cannot carry a Node runtime. A requirement another alternative already meets does not count, so Docker beside Next.js does not justify `self`.
