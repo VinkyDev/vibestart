@@ -355,14 +355,20 @@ export const compose = (registry: RegistryInfo, fixed: Choices): Stack => {
       choices[kind] = id;
     }
   }
+  assertOffered(registry, choices);
   for (const kind of registry.kinds) {
     if (choices[kind.id] !== undefined) {
       continue;
     }
-    const start = startingChoice(
-      openChoices(kindOptions(registry, choices, kind.id)),
-      kind.default
+    // The open choices `kindOptions` would find, without the violations it works out for the others.
+    const left = legalStacks(registry).filter((stack) =>
+      Object.entries(choices).every(([k, id]) => (stack[k] ?? null) === id)
     );
+    const open = [
+      ...integrationsOfKind(registry, kind.id).map(({ id }) => id),
+      ...(kind.optional ? [null] : []),
+    ].filter((id) => left.some((stack) => (stack[kind.id] ?? null) === id));
+    const start = startingChoice(open, kind.default);
     if (start === undefined) {
       throw new Error(`The choices leave no option of ${kind.id} open`);
     }
