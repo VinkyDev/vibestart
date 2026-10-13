@@ -183,15 +183,15 @@ const historyTables: Record<ServerDatabase, string> = {
 const lockStatements = (ctx: Context) =>
   serverDatabase(ctx) === "postgres"
     ? [
-        '    await tx.$queryRawUnsafe("SELECT pg_advisory_xact_lock(7270736973)");',
+        '    await tx.$executeRawUnsafe("SELECT pg_advisory_xact_lock(7270736973)");',
         "    await applyInOrder(tx, await pending(tx));",
       ].join("\n")
     : [
-        "    await tx.$queryRawUnsafe(\"SELECT GET_LOCK('prisma_migrate', -1)\");",
+        "    await tx.$executeRawUnsafe(\"SELECT GET_LOCK('prisma_migrate', -1)\");",
         "    try {",
         "      await applyInOrder(tx, await pending(tx));",
         "    } finally {",
-        "      await tx.$queryRawUnsafe(\"SELECT RELEASE_LOCK('prisma_migrate')\");",
+        "      await tx.$executeRawUnsafe(\"SELECT RELEASE_LOCK('prisma_migrate')\");",
         "    }",
       ].join("\n");
 
@@ -266,7 +266,7 @@ const executeInOrder = async (
 // The statements a run needs: Prisma's client binds a transaction's queries to one connection.
 type Session = Pick<
   Database,
-  "$executeRaw" | "$executeRawUnsafe" | "$queryRaw" | "$queryRawUnsafe"
+  "$executeRaw" | "$executeRawUnsafe" | "$queryRaw"
 >;
 
 const applyMigration = async (db: Session, name: string) => {

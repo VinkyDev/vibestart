@@ -49,7 +49,7 @@ describe("stack flags", () => {
     for (const { label, stack } of stacks) {
       expect(entryFromFlags(flagsOf(stack)).label).toBe(label);
     }
-  }, 60_000);
+  });
 
   it("leaves out the decisions the others imply", () => {
     expect(flagsOf(entry("hono-openapi-sqlite").stack)).toStrictEqual({

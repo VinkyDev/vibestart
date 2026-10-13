@@ -40,7 +40,7 @@ const executeInOrder = async (
 // The statements a run needs: Prisma's client binds a transaction's queries to one connection.
 type Session = Pick<
   Database,
-  "$executeRaw" | "$executeRawUnsafe" | "$queryRaw" | "$queryRawUnsafe"
+  "$executeRaw" | "$executeRawUnsafe" | "$queryRaw"
 >;
 
 const applyMigration = async (db: Session, name: string) => {
@@ -94,7 +94,7 @@ export const migrateDatabase = async (db: Database) => {
   // A migration may outlast the default 5 seconds of an interactive transaction.
   await db.$transaction(
     async (tx) => {
-      await tx.$queryRawUnsafe("SELECT pg_advisory_xact_lock(7270736973)");
+      await tx.$executeRawUnsafe("SELECT pg_advisory_xact_lock(7270736973)");
       await applyInOrder(tx, await pending(tx));
     },
     { maxWait: 600_000, timeout: 600_000 }
