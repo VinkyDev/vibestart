@@ -275,7 +275,8 @@ const smokeStack = ({
       : []),
     "} finally {",
     ...(database === "sqlite" ? ["  db.$client.close();"] : []),
-    ...(server ? ["  await db.$client.end();"] : []),
+    ...(database === "postgres" ? ["  await db.$client.end();"] : []),
+    ...(database === "mysql" ? ["  await db.$client.promise().end();"] : []),
     "}",
     server
       ? 'console.log("Runtime imports passed; live database requests require stacks verify.");'

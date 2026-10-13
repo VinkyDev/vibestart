@@ -4171,7 +4171,7 @@ await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
 server.close();
 await once(server, "close");
 
-# apps/server/src/index.ts · 216 stacks
+# apps/server/src/index.ts · 108 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-expo-bun-docker
 #   hono-mysql-bun-docker
@@ -4180,22 +4180,10 @@ await once(server, "close");
 #   hono-openapi-mysql-better-auth-expo-bun-docker
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-expo-bun-docker
-#   hono-openapi-postgres-better-auth-bun-docker
-#   hono-openapi-postgres-better-auth-expo-bun-docker
-#   hono-openapi-postgres-bun-docker
-#   hono-openapi-postgres-expo-bun-docker
 #   hono-orpc-mysql-better-auth-bun-docker
 #   hono-orpc-mysql-better-auth-expo-bun-docker
 #   hono-orpc-mysql-bun-docker
 #   hono-orpc-mysql-expo-bun-docker
-#   hono-orpc-postgres-better-auth-bun-docker
-#   hono-orpc-postgres-better-auth-expo-bun-docker
-#   hono-orpc-postgres-bun-docker
-#   hono-orpc-postgres-expo-bun-docker
-#   hono-postgres-better-auth-bun-docker
-#   hono-postgres-better-auth-expo-bun-docker
-#   hono-postgres-bun-docker
-#   hono-postgres-expo-bun-docker
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-expo-bun-docker
@@ -4212,14 +4200,6 @@ await once(server, "close");
 #   next-hono-openapi-mysql-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-bun-docker
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-bun-docker
-#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-postgres-bun-docker
-#   next-hono-openapi-postgres-bun-docker-e2e
-#   next-hono-openapi-postgres-expo-bun-docker
-#   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-expo-bun-docker
@@ -4228,22 +4208,6 @@ await once(server, "close");
 #   next-hono-orpc-mysql-bun-docker-e2e
 #   next-hono-orpc-mysql-expo-bun-docker
 #   next-hono-orpc-mysql-expo-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-bun-docker
-#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-postgres-bun-docker
-#   next-hono-orpc-postgres-bun-docker-e2e
-#   next-hono-orpc-postgres-expo-bun-docker
-#   next-hono-orpc-postgres-expo-bun-docker-e2e
-#   next-hono-postgres-better-auth-bun-docker
-#   next-hono-postgres-better-auth-bun-docker-e2e
-#   next-hono-postgres-better-auth-expo-bun-docker
-#   next-hono-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-postgres-bun-docker
-#   next-hono-postgres-bun-docker-e2e
-#   next-hono-postgres-expo-bun-docker
-#   next-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-bun-docker
 #   spa-hono-mysql-better-auth-bun-docker-e2e
 #   spa-hono-mysql-better-auth-electron-bun-docker
@@ -4276,22 +4240,6 @@ await once(server, "close");
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-bun-docker
-#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-bun-docker
-#   spa-hono-openapi-postgres-bun-docker-e2e
-#   spa-hono-openapi-postgres-electron-bun-docker
-#   spa-hono-openapi-postgres-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-electron-expo-bun-docker
-#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-expo-bun-docker
-#   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-bun-docker
 #   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-bun-docker
@@ -4308,38 +4256,6 @@ await once(server, "close");
 #   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-bun-docker
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-bun-docker
-#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-bun-docker
-#   spa-hono-orpc-postgres-bun-docker-e2e
-#   spa-hono-orpc-postgres-electron-bun-docker
-#   spa-hono-orpc-postgres-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-expo-bun-docker
-#   spa-hono-orpc-postgres-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-bun-docker
-#   spa-hono-postgres-better-auth-bun-docker-e2e
-#   spa-hono-postgres-better-auth-electron-bun-docker
-#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-expo-bun-docker
-#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-postgres-bun-docker
-#   spa-hono-postgres-bun-docker-e2e
-#   spa-hono-postgres-electron-bun-docker
-#   spa-hono-postgres-electron-bun-docker-e2e
-#   spa-hono-postgres-electron-expo-bun-docker
-#   spa-hono-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-expo-bun-docker
-#   spa-hono-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-mysql-better-auth-bun-docker
 #   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-mysql-better-auth-expo-bun-docker
@@ -4356,14 +4272,6 @@ await once(server, "close");
 #   tanstack-start-hono-openapi-mysql-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-bun-docker
-#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
 #   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
@@ -4372,22 +4280,6 @@ await once(server, "close");
 #   tanstack-start-hono-orpc-mysql-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-bun-docker
-#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-bun-docker
-#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-postgres-bun-docker
-#   tanstack-start-hono-postgres-bun-docker-e2e
-#   tanstack-start-hono-postgres-expo-bun-docker
-#   tanstack-start-hono-postgres-expo-bun-docker-e2e
 import { once } from "node:events";
 
 import { serve } from "bun";
@@ -4402,9 +4294,9 @@ console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
 await server.stop();
-await db.$client.end();
+await db.$client.promise().end();
 
-# apps/server/src/index.ts · 216 stacks
+# apps/server/src/index.ts · 108 stacks
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-docker
 #   hono-mysql-docker
@@ -4413,22 +4305,10 @@ await db.$client.end();
 #   hono-openapi-mysql-better-auth-expo-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-docker
-#   hono-openapi-postgres-better-auth-docker
-#   hono-openapi-postgres-better-auth-expo-docker
-#   hono-openapi-postgres-docker
-#   hono-openapi-postgres-expo-docker
 #   hono-orpc-mysql-better-auth-docker
 #   hono-orpc-mysql-better-auth-expo-docker
 #   hono-orpc-mysql-docker
 #   hono-orpc-mysql-expo-docker
-#   hono-orpc-postgres-better-auth-docker
-#   hono-orpc-postgres-better-auth-expo-docker
-#   hono-orpc-postgres-docker
-#   hono-orpc-postgres-expo-docker
-#   hono-postgres-better-auth-docker
-#   hono-postgres-better-auth-expo-docker
-#   hono-postgres-docker
-#   hono-postgres-expo-docker
 #   next-hono-mysql-better-auth-docker
 #   next-hono-mysql-better-auth-docker-e2e
 #   next-hono-mysql-better-auth-expo-docker
@@ -4445,14 +4325,6 @@ await db.$client.end();
 #   next-hono-openapi-mysql-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
-#   next-hono-openapi-postgres-better-auth-docker
-#   next-hono-openapi-postgres-better-auth-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-docker
-#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   next-hono-openapi-postgres-docker
-#   next-hono-openapi-postgres-docker-e2e
-#   next-hono-openapi-postgres-expo-docker
-#   next-hono-openapi-postgres-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
 #   next-hono-orpc-mysql-better-auth-docker-e2e
 #   next-hono-orpc-mysql-better-auth-expo-docker
@@ -4461,22 +4333,6 @@ await db.$client.end();
 #   next-hono-orpc-mysql-docker-e2e
 #   next-hono-orpc-mysql-expo-docker
 #   next-hono-orpc-mysql-expo-docker-e2e
-#   next-hono-orpc-postgres-better-auth-docker
-#   next-hono-orpc-postgres-better-auth-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-docker
-#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   next-hono-orpc-postgres-docker
-#   next-hono-orpc-postgres-docker-e2e
-#   next-hono-orpc-postgres-expo-docker
-#   next-hono-orpc-postgres-expo-docker-e2e
-#   next-hono-postgres-better-auth-docker
-#   next-hono-postgres-better-auth-docker-e2e
-#   next-hono-postgres-better-auth-expo-docker
-#   next-hono-postgres-better-auth-expo-docker-e2e
-#   next-hono-postgres-docker
-#   next-hono-postgres-docker-e2e
-#   next-hono-postgres-expo-docker
-#   next-hono-postgres-expo-docker-e2e
 #   spa-hono-mysql-better-auth-docker
 #   spa-hono-mysql-better-auth-docker-e2e
 #   spa-hono-mysql-better-auth-electron-docker
@@ -4509,22 +4365,6 @@ await db.$client.end();
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-docker
-#   spa-hono-openapi-postgres-better-auth-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-docker
-#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-docker
-#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   spa-hono-openapi-postgres-docker
-#   spa-hono-openapi-postgres-docker-e2e
-#   spa-hono-openapi-postgres-electron-docker
-#   spa-hono-openapi-postgres-electron-docker-e2e
-#   spa-hono-openapi-postgres-electron-expo-docker
-#   spa-hono-openapi-postgres-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-expo-docker
-#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-docker
 #   spa-hono-orpc-mysql-better-auth-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-docker
@@ -4541,6 +4381,225 @@ await db.$client.end();
 #   spa-hono-orpc-mysql-electron-expo-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-docker
+#   tanstack-start-hono-mysql-docker-e2e
+#   tanstack-start-hono-mysql-expo-docker
+#   tanstack-start-hono-mysql-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-docker
+#   tanstack-start-hono-openapi-mysql-docker-e2e
+#   tanstack-start-hono-openapi-mysql-expo-docker
+#   tanstack-start-hono-openapi-mysql-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-docker
+#   tanstack-start-hono-orpc-mysql-docker-e2e
+#   tanstack-start-hono-orpc-mysql-expo-docker
+#   tanstack-start-hono-orpc-mysql-expo-docker-e2e
+import { once } from "node:events";
+
+import { serve } from "@hono/node-server";
+
+import { app } from "#src/app.ts";
+import { db } from "#src/context.ts";
+import { env } from "#src/env.ts";
+
+const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
+  console.log(`Server listening on http://localhost:${port}`);
+});
+
+await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+server.close();
+await once(server, "close");
+await db.$client.promise().end();
+
+# apps/server/src/index.ts · 108 stacks
+#   hono-openapi-postgres-better-auth-bun-docker
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-bun-docker
+#   hono-openapi-postgres-expo-bun-docker
+#   hono-orpc-postgres-better-auth-bun-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-bun-docker
+#   hono-orpc-postgres-expo-bun-docker
+#   hono-postgres-better-auth-bun-docker
+#   hono-postgres-better-auth-expo-bun-docker
+#   hono-postgres-bun-docker
+#   hono-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-bun-docker-e2e
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-bun-docker-e2e
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-bun-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-bun-docker-e2e
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-bun-docker
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-bun-docker
+#   spa-hono-orpc-postgres-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-bun-docker
+#   spa-hono-postgres-bun-docker-e2e
+#   spa-hono-postgres-electron-bun-docker
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-expo-bun-docker
+#   spa-hono-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-expo-bun-docker
+#   spa-hono-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-bun-docker
+#   tanstack-start-hono-orpc-postgres-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-bun-docker-e2e
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-bun-docker-e2e
+import { once } from "node:events";
+
+import { serve } from "bun";
+
+import { app } from "#src/app.ts";
+import { db } from "#src/context.ts";
+import { env } from "#src/env.ts";
+
+const server = serve({ fetch: app.fetch, port: env.PORT });
+const { port } = server;
+console.log(`Server listening on http://localhost:${port}`);
+
+await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+await server.stop();
+await db.$client.end();
+
+# apps/server/src/index.ts · 108 stacks
+#   hono-openapi-postgres-better-auth-docker
+#   hono-openapi-postgres-better-auth-expo-docker
+#   hono-openapi-postgres-docker
+#   hono-openapi-postgres-expo-docker
+#   hono-orpc-postgres-better-auth-docker
+#   hono-orpc-postgres-better-auth-expo-docker
+#   hono-orpc-postgres-docker
+#   hono-orpc-postgres-expo-docker
+#   hono-postgres-better-auth-docker
+#   hono-postgres-better-auth-expo-docker
+#   hono-postgres-docker
+#   hono-postgres-expo-docker
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-docker-e2e
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-docker-e2e
+#   next-hono-orpc-postgres-expo-docker
+#   next-hono-orpc-postgres-expo-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-better-auth-expo-docker
+#   next-hono-postgres-better-auth-expo-docker-e2e
+#   next-hono-postgres-docker
+#   next-hono-postgres-docker-e2e
+#   next-hono-postgres-expo-docker
+#   next-hono-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker
+#   spa-hono-openapi-postgres-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
 #   spa-hono-orpc-postgres-better-auth-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-docker
@@ -4573,22 +4632,6 @@ await db.$client.end();
 #   spa-hono-postgres-electron-expo-docker-e2e
 #   spa-hono-postgres-expo-docker
 #   spa-hono-postgres-expo-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-docker
-#   tanstack-start-hono-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-expo-docker
-#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-hono-mysql-docker
-#   tanstack-start-hono-mysql-docker-e2e
-#   tanstack-start-hono-mysql-expo-docker
-#   tanstack-start-hono-mysql-expo-docker-e2e
-#   tanstack-start-hono-openapi-mysql-better-auth-docker
-#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
-#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-mysql-docker
-#   tanstack-start-hono-openapi-mysql-docker-e2e
-#   tanstack-start-hono-openapi-mysql-expo-docker
-#   tanstack-start-hono-openapi-mysql-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
@@ -4597,14 +4640,6 @@ await db.$client.end();
 #   tanstack-start-hono-openapi-postgres-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
-#   tanstack-start-hono-orpc-mysql-better-auth-docker
-#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
-#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-hono-orpc-mysql-docker
-#   tanstack-start-hono-orpc-mysql-docker-e2e
-#   tanstack-start-hono-orpc-mysql-expo-docker
-#   tanstack-start-hono-orpc-mysql-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker

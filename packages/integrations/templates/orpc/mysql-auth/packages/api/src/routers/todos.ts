@@ -29,7 +29,7 @@ export const todosRouter = {
       if (created === undefined) {
         throw new Error("The insert returned no id");
       }
-      return findOrNotFound(context.db, created.id, userId);
+      return await findOrNotFound(context.db, created.id, userId);
     }),
 
   delete: protectedProcedure.input(todoId).handler(async ({ context, input }) => {

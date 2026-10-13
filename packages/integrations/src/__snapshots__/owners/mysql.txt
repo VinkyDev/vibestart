@@ -222,7 +222,7 @@ import { env } from "#src/env.ts";
 
 const db = createDb(env.DATABASE_URL);
 await migrateDatabase(db);
-await db.$client.end();
+await db.$client.promise().end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
 #   next-self-mysql-better-auth-docker
@@ -248,7 +248,7 @@ import { readEnv } from "#src/server/env.ts";
 
 const db = createDb(readEnv().DATABASE_URL);
 await migrateDatabase(db);
-await db.$client.end();
+await db.$client.promise().end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
 #   tanstack-start-self-mysql-better-auth-docker
@@ -274,7 +274,7 @@ import { env } from "#src/server/env.ts";
 
 const db = createDb(env.DATABASE_URL);
 await migrateDatabase(db);
-await db.$client.end();
+await db.$client.promise().end();
 
 # packages/db/src/index.ts · 248 stacks
 #   hono-mysql-better-auth-bun-docker
@@ -526,11 +526,14 @@ await db.$client.end();
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
 import { drizzle } from "drizzle-orm/mysql2";
+import { createPool } from "mysql2";
 
 import { relations } from "#src/relations.ts";
 
+// drizzle-orm sets options on `client.config` and wraps the pool with `promise()`, which a `mysql2/promise` pool
+// lacks. Close it with `db.$client.promise().end()`.
 export const createDb = (url: string) =>
-  drizzle({ connection: url, relations });
+  drizzle({ client: createPool({ uri: url }), relations });
 
 export type Database = ReturnType<typeof createDb>;
 

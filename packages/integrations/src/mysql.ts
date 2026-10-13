@@ -32,7 +32,7 @@ export const mysql = defineIntegration({
         : []),
       migrationEntry(ctx, [
         "await migrateDatabase(db);",
-        "await db.$client.end();",
+        "await db.$client.promise().end();",
       ]),
       contribute(packageJson, {
         dependencies: ["mysql2"],

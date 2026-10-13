@@ -4,9 +4,9 @@ import { migrateDatabase } from "#src/migrate.ts";
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
   try {
-    await admin.$client.query(statement);
+    await admin.$client.promise().query(statement);
   } finally {
-    await admin.$client.end();
+    await admin.$client.promise().end();
   }
 };
 
@@ -28,7 +28,7 @@ export const createTestDatabase = async () => {
   const db = createDb(url.href);
   const remove = async () => {
     try {
-      await db.$client.end();
+      await db.$client.promise().end();
     } finally {
       await runAsAdmin(adminUrl, `drop database \`${name}\``);
     }

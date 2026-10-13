@@ -131,30 +131,30 @@ export const todoRoutes = ({ auth, db }: Services) => {
         .insert(todos)
         .values({ ...c.req.valid("json"), userId: c.var.userId })
         .$returningId();
-      const todo =
+      const row =
         created === undefined
           ? undefined
           : await findTodo(created.id, c.var.userId);
-      if (todo === undefined) {
+      if (row === undefined) {
         throw new Error("The insert returned no row");
       }
-      return c.json(todo, 201);
+      return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
-      const todo = await findTodo(c.req.valid("param").id, c.var.userId);
-      if (todo === undefined) {
+      const row = await findTodo(c.req.valid("param").id, c.var.userId);
+      if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
-      await db.update(todos).set(values).where(eq(todos.id, todo.id));
-      return c.json({ ...todo, ...values }, 200);
+      await db.update(todos).set(values).where(eq(todos.id, row.id));
+      return c.json({ ...row, ...values }, 200);
     })
     .openapi(deleteTodo, async (c) => {
-      const todo = await findTodo(c.req.valid("param").id, c.var.userId);
-      if (todo === undefined) {
+      const row = await findTodo(c.req.valid("param").id, c.var.userId);
+      if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
-      await db.delete(todos).where(eq(todos.id, todo.id));
-      return c.json(todo, 200);
+      await db.delete(todos).where(eq(todos.id, row.id));
+      return c.json(row, 200);
     });
 };

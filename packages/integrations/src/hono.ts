@@ -88,8 +88,13 @@ const closeDatabase = (ctx: Context) => {
     return [];
   }
   // The SQLite driver closes synchronously.
+  if (ctx.has("sqlite")) {
+    return ["db.$client.close();"];
+  }
   return [
-    ctx.has("sqlite") ? "db.$client.close();" : "await db.$client.end();",
+    ctx.has("mysql")
+      ? "await db.$client.promise().end();"
+      : "await db.$client.end();",
   ];
 };
 
