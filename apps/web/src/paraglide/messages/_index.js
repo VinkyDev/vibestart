@@ -18,6 +18,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -80,6 +81,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_OrpcInputs */
 /** @typedef {{}} Desc_PlaywrightInputs */
 /** @typedef {{}} Desc_PostgresInputs */
+/** @typedef {{}} Desc_PrismaInputs */
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
 /** @typedef {{}} Desc_ShadcnInputs */
@@ -111,6 +113,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
+/** @typedef {{}} Fit_DrizzleInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -128,6 +131,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_OpenapiInputs */
 /** @typedef {{}} Fit_OrpcInputs */
 /** @typedef {{}} Fit_PostgresInputs */
+/** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
@@ -209,6 +213,9 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Note_Auth_SecretInputs */
 /** @typedef {{ path: NonNullable<unknown> }} Note_Sqlite_FileInputs */
 /** @typedef {{}} OrmInputs */
+/** @typedef {{}} Orm_AboutInputs */
+/** @typedef {{}} Orm_NoneInputs */
+/** @typedef {{}} Orm_QuestionInputs */
 /** @typedef {{}} Package_ManagerInputs */
 /** @typedef {{}} Package_RunnerInputs */
 /** @typedef {{}} Pillar_Quality_BodyInputs */
@@ -575,6 +582,20 @@ export const api_clients_same = /** @type {((inputs?: Api_Clients_SameInputs, op
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.api_clients_same(inputs)
 	return __en.api_clients_same(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "a database server (PostgreSQL or MySQL)" |
+*
+* @param {Cap_Database_ServerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const cap_database_server = /** @type {((inputs?: Cap_Database_ServerInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Database_ServerInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.cap_database_server(inputs)
+	return __en.cap_database_server(inputs)
 });
 /**
 * | output |
@@ -1447,6 +1468,20 @@ export const desc_postgres = /** @type {((inputs?: Desc_PostgresInputs, options?
 /**
 * | output |
 * | --- |
+* | "Prisma ORM 7 with Prisma Migrate" |
+*
+* @param {Desc_PrismaInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_prisma = /** @type {((inputs?: Desc_PrismaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_PrismaInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_prisma(inputs)
+	return __en.desc_prisma(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "React 19 with TanStack Query" |
 *
 * @param {Desc_ReactInputs} inputs
@@ -1882,6 +1917,20 @@ export const fit_docker = /** @type {((inputs?: Fit_DockerInputs, options?: { lo
 /**
 * | output |
 * | --- |
+* | "For SQL written as TypeScript, on any database." |
+*
+* @param {Fit_DrizzleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_drizzle = /** @type {((inputs?: Fit_DrizzleInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_DrizzleInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_drizzle(inputs)
+	return __en.fit_drizzle(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "For the same web app in its own window, packaged as an installer." |
 *
 * @param {Fit_ElectronInputs} inputs
@@ -2116,6 +2165,20 @@ export const fit_postgres = /** @type {((inputs?: Fit_PostgresInputs, options?: 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_postgres(inputs)
 	return __en.fit_postgres(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "For a schema file and a generated, typed client on PostgreSQL or MySQL." |
+*
+* @param {Fit_PrismaInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_prisma = /** @type {((inputs?: Fit_PrismaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_PrismaInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_prisma(inputs)
+	return __en.fit_prisma(inputs)
 });
 /**
 * | output |
@@ -3263,6 +3326,48 @@ export const orm = /** @type {((inputs?: OrmInputs, options?: { locale?: "en" | 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.orm(inputs)
 	return __en.orm(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Defines the schema, writes migrations, and runs the queries. Drizzle works with every database; Prisma needs a database server." |
+*
+* @param {Orm_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const orm_about = /** @type {((inputs?: Orm_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Orm_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.orm_about(inputs)
+	return __en.orm_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "No ORM" |
+*
+* @param {Orm_NoneInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const orm_none = /** @type {((inputs?: Orm_NoneInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Orm_NoneInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.orm_none(inputs)
+	return __en.orm_none(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Reach the database through which ORM?" |
+*
+* @param {Orm_QuestionInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const orm_question = /** @type {((inputs?: Orm_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Orm_QuestionInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.orm_question(inputs)
+	return __en.orm_question(inputs)
 });
 /**
 * | output |

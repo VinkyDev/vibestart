@@ -1,4 +1,4 @@
-# apps/web/src/lib/api.ts · 48 stacks
+# apps/web/src/lib/api.ts · 80 stacks
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -15,6 +15,22 @@
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -31,6 +47,22 @@
 #   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
@@ -99,7 +131,7 @@ export const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/api.ts · 144 stacks
+# apps/web/src/lib/api.ts · 240 stacks
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -132,6 +164,38 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -164,6 +228,38 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -212,6 +308,22 @@ export const api = createQueries(createClient());
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-expo-docker
 #   tanstack-start-hono-openapi-mysql-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -228,6 +340,22 @@ export const api = createQueries(createClient());
 #   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
@@ -296,7 +424,7 @@ const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/client.ts · 144 stacks
+# apps/web/src/lib/client.ts · 240 stacks
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -313,6 +441,22 @@ export const api = createQueries(createClient());
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -329,6 +473,22 @@ export const api = createQueries(createClient());
 #   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
@@ -377,6 +537,38 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -409,6 +601,38 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -447,7 +671,7 @@ import type { Api } from "@my-app/api";
 
 export const createClient = () => hc<Api>("/api");
 
-# apps/web/src/lib/client.ts · 48 stacks
+# apps/web/src/lib/client.ts · 80 stacks
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -464,6 +688,22 @@ export const createClient = () => hc<Api>("/api");
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-expo-docker
 #   tanstack-start-hono-openapi-mysql-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -480,6 +720,22 @@ export const createClient = () => hc<Api>("/api");
 #   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
@@ -513,7 +769,7 @@ export const createClient = createIsomorphicFn()
   )
   .client(() => hc<Api>("/api"));
 
-# apps/web/src/server/query.ts · 48 stacks
+# apps/web/src/server/query.ts · 80 stacks
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -530,6 +786,22 @@ export const createClient = createIsomorphicFn()
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -546,6 +818,22 @@ export const createClient = createIsomorphicFn()
 #   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
@@ -651,7 +939,7 @@ export const createApi = () => {
 
 export type Api = ReturnType<typeof createApi>;
 
-# packages/api/src/index.ts · 216 stacks
+# packages/api/src/index.ts · 360 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -660,6 +948,14 @@ export type Api = ReturnType<typeof createApi>;
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
 #   hono-openapi-mysql-expo-docker
+#   hono-openapi-mysql-prisma-better-auth-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-docker
+#   hono-openapi-mysql-prisma-bun-docker
+#   hono-openapi-mysql-prisma-docker
+#   hono-openapi-mysql-prisma-expo-bun-docker
+#   hono-openapi-mysql-prisma-expo-docker
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -668,6 +964,14 @@ export type Api = ReturnType<typeof createApi>;
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-prisma-better-auth-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-docker
+#   hono-openapi-postgres-prisma-bun-docker
+#   hono-openapi-postgres-prisma-docker
+#   hono-openapi-postgres-prisma-expo-bun-docker
+#   hono-openapi-postgres-prisma-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -692,6 +996,22 @@ export type Api = ReturnType<typeof createApi>;
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -708,6 +1028,22 @@ export type Api = ReturnType<typeof createApi>;
 #   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
@@ -756,6 +1092,38 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -788,6 +1156,38 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -836,6 +1236,22 @@ export type Api = ReturnType<typeof createApi>;
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-expo-docker
 #   tanstack-start-hono-openapi-mysql-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -852,6 +1268,22 @@ export type Api = ReturnType<typeof createApi>;
 #   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
@@ -1050,6 +1482,102 @@ export const healthRoutes = ({ db }: Services) =>
   });
 
 # packages/api/src/routes/health.ts · 72 stacks
+#   hono-openapi-mysql-prisma-better-auth-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-docker
+#   hono-openapi-mysql-prisma-bun-docker
+#   hono-openapi-mysql-prisma-docker
+#   hono-openapi-mysql-prisma-expo-bun-docker
+#   hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+import type { Services } from "#src/services.ts";
+
+const health = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: {
+        "application/json": { schema: z.object({ status: z.literal("ok") }) },
+      },
+      description: "The server and MySQL answer",
+    },
+  },
+});
+
+export const healthRoutes = ({ db }: Services) =>
+  new OpenAPIHono().openapi(health, async (c) => {
+    await db.$queryRaw`select 1`;
+    return c.json({ status: "ok" as const }, 200);
+  });
+
+# packages/api/src/routes/health.ts · 72 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -1143,6 +1671,102 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.execute(sql`select 1`);
+    return c.json({ status: "ok" as const }, 200);
+  });
+
+# packages/api/src/routes/health.ts · 72 stacks
+#   hono-openapi-postgres-prisma-better-auth-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-docker
+#   hono-openapi-postgres-prisma-bun-docker
+#   hono-openapi-postgres-prisma-docker
+#   hono-openapi-postgres-prisma-expo-bun-docker
+#   hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+import type { Services } from "#src/services.ts";
+
+const health = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: {
+        "application/json": { schema: z.object({ status: z.literal("ok") }) },
+      },
+      description: "The server and PostgreSQL answer",
+    },
+  },
+});
+
+export const healthRoutes = ({ db }: Services) =>
+  new OpenAPIHono().openapi(health, async (c) => {
+    await db.$queryRaw`select 1`;
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -1608,6 +2232,424 @@ export const todoRoutes = ({ db }: Services) => {
 };
 
 # packages/api/src/routes/todos.ts · 72 stacks
+#   hono-openapi-mysql-prisma-better-auth-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-docker
+#   hono-openapi-postgres-prisma-better-auth-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { HTTPException } from "hono/http-exception";
+
+import type { Services } from "#src/services.ts";
+
+const json = <T extends z.ZodType>(schema: T) => ({
+  "application/json": { schema },
+});
+
+const todo = z
+  .object({
+    completed: z.boolean(),
+    createdAt: z.iso.datetime(),
+    id: z.int(),
+    title: z.string(),
+    userId: z.string(),
+  })
+  .openapi("Todo");
+
+const params = z.object({
+  id: z.coerce
+    .number()
+    .int()
+    .positive()
+    .openapi({ param: { in: "path", name: "id" } }),
+});
+
+const message = json(z.object({ message: z.string() }));
+
+const invalid = { description: "The request does not match its schema" };
+
+const unauthorized = { content: message, description: "No session" };
+
+// Someone else's todo is not found either, which does not reveal that the id exists.
+const notFound = {
+  content: message,
+  description: "The user has no todo with this id",
+};
+
+const listTodos = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: json(z.array(todo)),
+      description: "The user's todos, oldest first",
+    },
+    401: unauthorized,
+  },
+});
+
+const createTodo = createRoute({
+  method: "post",
+  path: "/",
+  request: {
+    body: {
+      content: json(z.object({ title: z.string().trim().min(1).max(200) })),
+      required: true,
+    },
+  },
+  responses: {
+    201: { content: json(todo), description: "The created todo" },
+    400: invalid,
+    401: unauthorized,
+  },
+});
+
+const updateTodo = createRoute({
+  method: "patch",
+  path: "/{id}",
+  request: {
+    body: {
+      content: json(z.object({ completed: z.boolean() })),
+      required: true,
+    },
+    params,
+  },
+  responses: {
+    200: { content: json(todo), description: "The updated todo" },
+    400: invalid,
+    401: unauthorized,
+    404: notFound,
+  },
+});
+
+const deleteTodo = createRoute({
+  method: "delete",
+  path: "/{id}",
+  request: { params },
+  responses: {
+    200: { content: json(todo), description: "The deleted todo" },
+    401: unauthorized,
+    404: notFound,
+  },
+});
+
+const todoNotFound = { message: "Todo not found" };
+
+export const todoRoutes = ({ auth, db }: Services) => {
+  const routes = new OpenAPIHono<{ Variables: { userId: string } }>();
+
+  // On the sub-app, so a route added here cannot skip the check.
+  routes.use(async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    if (!session) {
+      throw new HTTPException(401, {
+        res: c.json({ message: "Sign in first" }, 401),
+      });
+    }
+    c.set("userId", session.user.id);
+    await next();
+  });
+
+  // A write finds the user's row first: someone else's todo is not found either.
+  const findTodo = async (id: number, userId: string) =>
+    await db.todo.findFirst({ where: { id, userId } });
+
+  return routes
+    .openapi(listTodos, async (c) => {
+      const rows = await db.todo.findMany({
+        orderBy: { id: "asc" },
+        where: { userId: c.var.userId },
+      });
+      return c.json(rows, 200);
+    })
+    .openapi(createTodo, async (c) => {
+      const row = await db.todo.create({
+        data: { ...c.req.valid("json"), userId: c.var.userId },
+      });
+      return c.json(row, 201);
+    })
+    .openapi(updateTodo, async (c) => {
+      const values = c.req.valid("json");
+      const row = await findTodo(c.req.valid("param").id, c.var.userId);
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      return c.json(
+        await db.todo.update({ data: values, where: { id: row.id } }),
+        200
+      );
+    })
+    .openapi(deleteTodo, async (c) => {
+      const row = await findTodo(c.req.valid("param").id, c.var.userId);
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      await db.todo.delete({ where: { id: row.id } });
+      return c.json(row, 200);
+    });
+};
+
+# packages/api/src/routes/todos.ts · 72 stacks
+#   hono-openapi-mysql-prisma-bun-docker
+#   hono-openapi-mysql-prisma-docker
+#   hono-openapi-mysql-prisma-expo-bun-docker
+#   hono-openapi-mysql-prisma-expo-docker
+#   hono-openapi-postgres-prisma-bun-docker
+#   hono-openapi-postgres-prisma-docker
+#   hono-openapi-postgres-prisma-expo-bun-docker
+#   hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+import type { Services } from "#src/services.ts";
+
+const json = <T extends z.ZodType>(schema: T) => ({
+  "application/json": { schema },
+});
+
+const todo = z
+  .object({
+    completed: z.boolean(),
+    createdAt: z.iso.datetime(),
+    id: z.int(),
+    title: z.string(),
+  })
+  .openapi("Todo");
+
+const params = z.object({
+  id: z.coerce
+    .number()
+    .int()
+    .positive()
+    .openapi({ param: { in: "path", name: "id" } }),
+});
+
+const invalid = { description: "The request does not match its schema" };
+
+const notFound = {
+  content: json(z.object({ message: z.string() })),
+  description: "No todo has this id",
+};
+
+const listTodos = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: json(z.array(todo)),
+      description: "Every todo, oldest first",
+    },
+  },
+});
+
+const createTodo = createRoute({
+  method: "post",
+  path: "/",
+  request: {
+    body: {
+      content: json(z.object({ title: z.string().trim().min(1).max(200) })),
+      required: true,
+    },
+  },
+  responses: {
+    201: { content: json(todo), description: "The created todo" },
+    400: invalid,
+  },
+});
+
+const updateTodo = createRoute({
+  method: "patch",
+  path: "/{id}",
+  request: {
+    body: {
+      content: json(z.object({ completed: z.boolean() })),
+      required: true,
+    },
+    params,
+  },
+  responses: {
+    200: { content: json(todo), description: "The updated todo" },
+    400: invalid,
+    404: notFound,
+  },
+});
+
+const deleteTodo = createRoute({
+  method: "delete",
+  path: "/{id}",
+  request: { params },
+  responses: {
+    200: { content: json(todo), description: "The deleted todo" },
+    404: notFound,
+  },
+});
+
+const todoNotFound = { message: "Todo not found" };
+
+export const todoRoutes = ({ db }: Services) => {
+  const findTodo = async (id: number) =>
+    await db.todo.findUnique({ where: { id } });
+
+  return new OpenAPIHono()
+    .openapi(listTodos, async (c) =>
+      c.json(await db.todo.findMany({ orderBy: { id: "asc" } }), 200)
+    )
+    .openapi(createTodo, async (c) => {
+      const row = await db.todo.create({ data: c.req.valid("json") });
+      return c.json(row, 201);
+    })
+    .openapi(updateTodo, async (c) => {
+      const values = c.req.valid("json");
+      const row = await findTodo(c.req.valid("param").id);
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      return c.json(
+        await db.todo.update({ data: values, where: { id: row.id } }),
+        200
+      );
+    })
+    .openapi(deleteTodo, async (c) => {
+      const row = await findTodo(c.req.valid("param").id);
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      await db.todo.delete({ where: { id: row.id } });
+      return c.json(row, 200);
+    });
+};
+
+# packages/api/src/routes/todos.ts · 72 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -2043,15 +3085,23 @@ export const todoRoutes = ({ db }: Services) =>
         : c.json(deleted, 200);
     });
 
-# packages/api/src/services.ts · 108 stacks
+# packages/api/src/services.ts · 180 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
 #   hono-openapi-mysql-better-auth-expo-docker
+#   hono-openapi-mysql-prisma-better-auth-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-docker
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
 #   hono-openapi-postgres-better-auth-expo-docker
+#   hono-openapi-postgres-prisma-better-auth-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -2064,6 +3114,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-expo-docker
 #   next-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -2072,6 +3130,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-expo-docker
 #   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
@@ -2096,6 +3162,22 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -2112,6 +3194,22 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -2136,6 +3234,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -2144,6 +3250,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
@@ -2160,15 +3274,23 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/src/services.ts · 108 stacks
+# packages/api/src/services.ts · 180 stacks
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
 #   hono-openapi-mysql-expo-docker
+#   hono-openapi-mysql-prisma-bun-docker
+#   hono-openapi-mysql-prisma-docker
+#   hono-openapi-mysql-prisma-expo-bun-docker
+#   hono-openapi-mysql-prisma-expo-docker
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-prisma-bun-docker
+#   hono-openapi-postgres-prisma-docker
+#   hono-openapi-postgres-prisma-expo-bun-docker
+#   hono-openapi-postgres-prisma-expo-docker
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
 #   hono-openapi-sqlite-expo-bun-docker
@@ -2181,6 +3303,14 @@ export interface Services {
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
 #   next-hono-openapi-postgres-bun-docker
 #   next-hono-openapi-postgres-bun-docker-e2e
 #   next-hono-openapi-postgres-docker
@@ -2189,6 +3319,14 @@ export interface Services {
 #   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
 #   next-hono-openapi-sqlite-bun-docker
 #   next-hono-openapi-sqlite-bun-docker-e2e
 #   next-hono-openapi-sqlite-docker
@@ -2213,6 +3351,22 @@ export interface Services {
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -2229,6 +3383,22 @@ export interface Services {
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -2253,6 +3423,14 @@ export interface Services {
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-expo-docker
 #   tanstack-start-hono-openapi-mysql-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
@@ -2261,6 +3439,14 @@ export interface Services {
 #   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-bun-docker
 #   tanstack-start-hono-openapi-sqlite-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-docker
@@ -2275,7 +3461,7 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/tsconfig.json · 252 stacks
+# packages/api/tsconfig.json · 396 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
@@ -2288,6 +3474,14 @@ export interface Services {
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
 #   hono-openapi-mysql-expo-docker
+#   hono-openapi-mysql-prisma-better-auth-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   hono-openapi-mysql-prisma-better-auth-expo-docker
+#   hono-openapi-mysql-prisma-bun-docker
+#   hono-openapi-mysql-prisma-docker
+#   hono-openapi-mysql-prisma-expo-bun-docker
+#   hono-openapi-mysql-prisma-expo-docker
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -2296,6 +3490,14 @@ export interface Services {
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-prisma-better-auth-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   hono-openapi-postgres-prisma-better-auth-expo-docker
+#   hono-openapi-postgres-prisma-bun-docker
+#   hono-openapi-postgres-prisma-docker
+#   hono-openapi-postgres-prisma-expo-bun-docker
+#   hono-openapi-postgres-prisma-expo-docker
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -2328,6 +3530,22 @@ export interface Services {
 #   next-hono-openapi-mysql-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-expo-docker
 #   next-hono-openapi-mysql-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-mysql-prisma-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -2344,6 +3562,22 @@ export interface Services {
 #   next-hono-openapi-postgres-expo-bun-docker-e2e
 #   next-hono-openapi-postgres-expo-docker
 #   next-hono-openapi-postgres-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-postgres-prisma-expo-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
@@ -2408,6 +3642,38 @@ export interface Services {
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -2440,6 +3706,38 @@ export interface Services {
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -2496,6 +3794,22 @@ export interface Services {
 #   tanstack-start-hono-openapi-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-expo-docker
 #   tanstack-start-hono-openapi-mysql-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -2512,6 +3826,22 @@ export interface Services {
 #   tanstack-start-hono-openapi-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-expo-docker
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker

@@ -16,6 +16,7 @@ import oxc from "#/assets/tech/oxc.svg";
 import playwright from "#/assets/tech/playwright.svg";
 import pnpm from "#/assets/tech/pnpm.svg";
 import postgres from "#/assets/tech/postgres.svg";
+import prisma from "#/assets/tech/prisma.svg";
 import react from "#/assets/tech/react.svg";
 import shadcn from "#/assets/tech/shadcn.svg";
 import sqlite from "#/assets/tech/sqlite.svg";
@@ -47,6 +48,7 @@ export const techIcons = {
   playwright,
   pnpm,
   postgres,
+  prisma,
   react,
   shadcn,
   sqlite,

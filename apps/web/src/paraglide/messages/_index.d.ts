@@ -15,6 +15,7 @@ export type Api_Client_DesktopInputs = {};
 export type Api_Client_MobileInputs = {};
 export type Api_ClientsInputs = {};
 export type Api_Clients_SameInputs = {};
+export type Cap_Database_ServerInputs = {};
 export type Cap_Frontend_FrameworkInputs = {};
 export type Cap_Fullstack_FrameworkInputs = {};
 export type Cap_Hono_ServerInputs = {};
@@ -85,6 +86,7 @@ export type Desc_OpenapiInputs = {};
 export type Desc_OrpcInputs = {};
 export type Desc_PlaywrightInputs = {};
 export type Desc_PostgresInputs = {};
+export type Desc_PrismaInputs = {};
 export type Desc_ReactInputs = {};
 export type Desc_SelfInputs = {};
 export type Desc_ShadcnInputs = {};
@@ -120,6 +122,7 @@ export type File_CountInputs = {
 export type Fit_Better_AuthInputs = {};
 export type Fit_BunInputs = {};
 export type Fit_DockerInputs = {};
+export type Fit_DrizzleInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
 export type Fit_HonoInputs = {};
@@ -137,6 +140,7 @@ export type Fit_None_MobileInputs = {};
 export type Fit_OpenapiInputs = {};
 export type Fit_OrpcInputs = {};
 export type Fit_PostgresInputs = {};
+export type Fit_PrismaInputs = {};
 export type Fit_SelfInputs = {};
 export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
@@ -236,6 +240,9 @@ export type Note_Sqlite_FileInputs = {
     path: NonNullable<unknown>;
 };
 export type OrmInputs = {};
+export type Orm_AboutInputs = {};
+export type Orm_NoneInputs = {};
+export type Orm_QuestionInputs = {};
 export type Package_ManagerInputs = {};
 export type Package_RunnerInputs = {};
 export type Pillar_Quality_BodyInputs = {};
@@ -629,6 +636,20 @@ export declare const api_clients: ((inputs?: Api_ClientsInputs, options?: {
 export declare const api_clients_same: ((inputs?: Api_Clients_SameInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Clients_SameInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "a database server (PostgreSQL or MySQL)" |
+*
+* @param {Cap_Database_ServerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const cap_database_server: ((inputs?: Cap_Database_ServerInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Database_ServerInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1502,6 +1523,20 @@ export declare const desc_postgres: ((inputs?: Desc_PostgresInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "Prisma ORM 7 with Prisma Migrate" |
+*
+* @param {Desc_PrismaInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_prisma: ((inputs?: Desc_PrismaInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_PrismaInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "React 19 with TanStack Query" |
 *
 * @param {Desc_ReactInputs} inputs
@@ -1937,6 +1972,20 @@ export declare const fit_docker: ((inputs?: Fit_DockerInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "For SQL written as TypeScript, on any database." |
+*
+* @param {Fit_DrizzleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_drizzle: ((inputs?: Fit_DrizzleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_DrizzleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "For the same web app in its own window, packaged as an installer." |
 *
 * @param {Fit_ElectronInputs} inputs
@@ -2170,6 +2219,20 @@ export declare const fit_orpc: ((inputs?: Fit_OrpcInputs, options?: {
 export declare const fit_postgres: ((inputs?: Fit_PostgresInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_PostgresInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "For a schema file and a generated, typed client on PostgreSQL or MySQL." |
+*
+* @param {Fit_PrismaInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_prisma: ((inputs?: Fit_PrismaInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_PrismaInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -3316,6 +3379,48 @@ export declare const note_sqlite_file: ((inputs: Note_Sqlite_FileInputs, options
 export declare const orm: ((inputs?: OrmInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<OrmInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Defines the schema, writes migrations, and runs the queries. Drizzle works with every database; Prisma needs a database server." |
+*
+* @param {Orm_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const orm_about: ((inputs?: Orm_AboutInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Orm_AboutInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "No ORM" |
+*
+* @param {Orm_NoneInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const orm_none: ((inputs?: Orm_NoneInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Orm_NoneInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Reach the database through which ORM?" |
+*
+* @param {Orm_QuestionInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const orm_question: ((inputs?: Orm_QuestionInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Orm_QuestionInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

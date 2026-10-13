@@ -2,42 +2,22 @@ import {
   contribute,
   defineIntegration,
   gettingStarted,
-  packageJson,
   renderFile,
 } from "@vibestart/core";
 
-import {
-  authVariant,
-  migrationEntry,
-  serverEnv,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
 import {
   composeEnv,
   composeServices,
   composeVolumes,
   renderDevCompose,
 } from "#/docker.ts";
-import { templateFiles } from "#/templates.ts";
 import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 
 export const mysql = defineIntegration({
   contribute: (ctx) => {
     const database = ctx.name.replaceAll("-", "_");
     return [
-      ...templateFiles(ctx, "mysql/common"),
-      ...(todosExample(ctx)
-        ? templateFiles(ctx, `mysql/${authVariant(ctx)}`)
-        : []),
-      migrationEntry(ctx, [
-        "await migrateDatabase(db);",
-        "await db.$client.promise().end();",
-      ]),
-      contribute(packageJson, {
-        dependencies: ["mysql2"],
-        path: "packages/db",
-      }),
       contribute(serverEnv, {
         example: `mysql://root:mysql@localhost:3306/${database}`,
         name: "DATABASE_URL",
@@ -76,7 +56,7 @@ export const mysql = defineIntegration({
       contribute(readmeTagline, "MySQL"),
       contribute(stackHeadline, "MySQL"),
       contribute(readmeLayers, {
-        choice: "MySQL 8.4, Drizzle ORM v1",
+        choice: `MySQL 8.4, ${ormRelease(ctx)}`,
         layer: "Database",
       }),
       contribute(gettingStarted, {
@@ -93,6 +73,6 @@ export const mysql = defineIntegration({
   name: "MySQL",
   description: "MySQL server, run by Docker Compose in development",
   homepage: "https://www.mysql.com",
-  provides: ["sql-database"],
+  provides: ["database-server", "sql-database"],
   requires: ["http-server", "sql-orm"],
 });

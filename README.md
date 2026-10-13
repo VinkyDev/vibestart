@@ -61,7 +61,8 @@ VibeStart does not host your application, does not migrate production data, and 
 | Mobile                   | Expo (React Native), iOS and Android                 |
 | Backend                  | Hono, or the framework's own server                  |
 | API                      | oRPC, OpenAPI, or none                               |
-| Database                 | PostgreSQL, MySQL, or SQLite with Drizzle, or none   |
+| Database                 | PostgreSQL, MySQL, or SQLite, or none                |
+| ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL           |
 | Auth                     | Better Auth                                          |
 | Deployment               | Docker                                               |
 | UI                       | shadcn (Base UI) and Tailwind 4                      |
@@ -77,17 +78,17 @@ Pass flags to skip the prompts:
 npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
 ```
 
-| Option                                                       | Description                                                                                                                                                                |
-| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--auth`, `--desktop`, `--mobile`, `--deployment`, …). `none` is the empty choice of an optional kind. |
-| `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                             |
-| `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.2 or newer.                                                                                                                         |
-| `--runtime <node\|bun>`                                      | Run the Hono server on Node.js (default) or Bun.                                                                                                                           |
-| `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                                    |
-| `--list`                                                     | List every kind, its options, and every legal stack.                                                                                                                       |
-| `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                                      |
-| `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                                          |
-| `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                                      |
+| Option                                                       | Description                                                                                                                                                                         |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--orm`, `--auth`, `--desktop`, `--mobile`, `--deployment`, …). `none` is the empty choice of an optional kind. |
+| `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                                      |
+| `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.2 or newer.                                                                                                                                  |
+| `--runtime <node\|bun>`                                      | Run the Hono server on Node.js (default) or Bun.                                                                                                                                    |
+| `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                                             |
+| `--list`                                                     | List every kind, its options, and every legal stack.                                                                                                                                |
+| `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                                               |
+| `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                                                   |
+| `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                                               |
 
 ## Documentation
 

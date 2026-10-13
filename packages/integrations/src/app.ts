@@ -145,17 +145,25 @@ export const apiVariant = (ctx: Context) =>
 export const todosExample = (ctx: Context) =>
   ctx.stack.api !== undefined && ctx.stack.database !== undefined;
 
-/**
- * The API's template set. MySQL has no `returning`, so its todos module, at `todos`, reads a row back after
- * each write.
- */
-export const apiTemplates = (ctx: Context, set: string, todos: string) =>
-  ctx.has("mysql") && todosExample(ctx)
-    ? [
+// The todos module written for Drizzle on PostgreSQL and SQLite, or the set that replaces it.
+const todosModule = (ctx: Context) => {
+  if (ctx.has("prisma")) {
+    return `prisma-${authVariant(ctx)}`;
+  }
+  // MySQL has no `returning`, so Drizzle reads a row back after each write.
+  return ctx.has("mysql") ? `drizzle-mysql-${authVariant(ctx)}` : undefined;
+};
+
+/** The API's template set, with the todos module at `todos` written for the stack's ORM and database. */
+export const apiTemplates = (ctx: Context, set: string, todos: string) => {
+  const module = todosExample(ctx) ? todosModule(ctx) : undefined;
+  return module === undefined
+    ? templateFiles(ctx, `${set}/${apiVariant(ctx)}`)
+    : [
         ...templateFiles(ctx, `${set}/${apiVariant(ctx)}`, { except: [todos] }),
-        ...templateFiles(ctx, `${set}/mysql-${authVariant(ctx)}`),
-      ]
-    : templateFiles(ctx, `${set}/${apiVariant(ctx)}`);
+        ...templateFiles(ctx, `${set}/${module}`),
+      ];
+};
 
 /** `auth` adds accounts to the todos; `account` is accounts alone; `none` has no data. */
 export const exampleVariant = (ctx: Context) => {
@@ -171,13 +179,62 @@ export const webMigrates = (ctx: Context) =>
 export const hasTables = (ctx: Context) =>
   todosExample(ctx) || ctx.has("better-auth");
 
-export const databaseFlow = (ctx: Context) =>
-  ctx.stack.database === undefined ? "" : ` → Drizzle → ${databaseName(ctx)}`;
+export const ormId = (ctx: Context) =>
+  ctx.has("prisma") ? "prisma" : "drizzle";
 
-export const databaseCheck = (ctx: Context, db: string) =>
-  ctx.has("sqlite")
-    ? { async: false, statement: `${db}.run(sql\`select 1\`);` }
-    : { async: true, statement: `await ${db}.execute(sql\`select 1\`);` };
+const ormName = (ctx: Context) => (ctx.has("prisma") ? "Prisma" : "Drizzle");
+
+/** The ORM as the README's layers table names it, with its major version. */
+export const ormRelease = (ctx: Context) =>
+  ctx.has("prisma") ? "Prisma ORM 7" : "Drizzle ORM v1";
+
+export const databaseFlow = (ctx: Context) =>
+  ctx.stack.database === undefined
+    ? ""
+    : ` → ${ormName(ctx)} → ${databaseName(ctx)}`;
+
+/**
+ * A `select 1` through the ORM, for a health check: the statement, whether it awaits, the imports it needs, and
+ * the packages those come from.
+ */
+export const databaseCheck = (ctx: Context, db: string) => {
+  if (ctx.has("prisma")) {
+    return {
+      async: true,
+      dependencies: [],
+      imports: [],
+      statement: `await ${db}.$queryRaw\`select 1\`;`,
+    };
+  }
+  const drizzle = {
+    dependencies: ["drizzle-orm"],
+    imports: ['import { sql } from "drizzle-orm";'],
+  };
+  return ctx.has("sqlite")
+    ? { ...drizzle, async: false, statement: `${db}.run(sql\`select 1\`);` }
+    : {
+        ...drizzle,
+        async: true,
+        statement: `await ${db}.execute(sql\`select 1\`);`,
+      };
+};
+
+/** The import block of a generated module: the imports, then a blank line, or nothing. */
+export const importBlock = (imports: readonly string[]) =>
+  imports.length === 0 ? [] : [...imports, ""];
+
+/** The statement that closes `db` once a script is done with it. */
+export const closeDatabase = (ctx: Context, db = "db") => {
+  if (ctx.has("prisma")) {
+    return `await ${db}.$disconnect();`;
+  }
+  if (ctx.has("sqlite")) {
+    return `${db}.$client.close();`;
+  }
+  return ctx.has("mysql")
+    ? `await ${db}.$client.promise().end();`
+    : `await ${db}.$client.end();`;
+};
 
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
@@ -192,8 +249,7 @@ export const selfHealthRoute = (ctx: Context) => {
     return file(
       "apps/web/src/app/api/health/route.ts",
       [
-        'import { sql } from "drizzle-orm";',
-        "",
+        ...importBlock(check.imports),
         'import { getServices } from "#src/server/context.ts";',
         "",
         `export const GET = ${handler.join("\n")}`,
@@ -205,7 +261,7 @@ export const selfHealthRoute = (ctx: Context) => {
     "apps/web/src/routes/api/health.ts",
     [
       'import { createFileRoute } from "@tanstack/react-router";',
-      'import { sql } from "drizzle-orm";',
+      ...check.imports,
       "",
       'import { db } from "#src/server/context.ts";',
       "",

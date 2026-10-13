@@ -1,0 +1,44 @@
+import { createDb } from "#src/index.ts";
+import { migrateDatabase } from "#src/migrate.ts";
+
+const runAsAdmin = async (adminUrl: URL, statement: string) => {
+  const admin = createDb(adminUrl.href);
+  try {
+    await admin.$executeRawUnsafe(statement);
+  } finally {
+    await admin.$disconnect();
+  }
+};
+
+/**
+ * A migrated database of its own beside `DATABASE_URL`, dropped by `remove`. The random name lets
+ * parallel test files, runners, and checkouts share one PostgreSQL server.
+ */
+export const createTestDatabase = async () => {
+  const { DATABASE_URL } = process.env;
+  if (DATABASE_URL === undefined) {
+    throw new Error("DATABASE_URL is not set");
+  }
+  const adminUrl = new URL(DATABASE_URL);
+  const url = new URL(adminUrl);
+  url.pathname = `${adminUrl.pathname}_test_${crypto.randomUUID().slice(0, 8)}`;
+  const name = url.pathname.slice(1);
+
+  await runAsAdmin(adminUrl, `create database "${name}"`);
+  const db = createDb(url.href);
+  const remove = async () => {
+    try {
+      await db.$disconnect();
+    } finally {
+      await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
+    }
+  };
+  try {
+    await migrateDatabase(db);
+  } catch (error) {
+    await remove();
+    throw error;
+  }
+
+  return { db, remove, url: url.href };
+};

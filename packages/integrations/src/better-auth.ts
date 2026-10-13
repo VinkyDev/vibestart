@@ -56,17 +56,22 @@ const renderAuthIndex = (ctx: Context) => {
     ...(ctx.has("electron") ? ["rendererOrigin"] : []),
     ...(mobile ? [quote(`${ctx.name}://`)] : []),
   ];
-  const provider = { mysql: "mysql", postgres: "pg", sqlite: "sqlite" }[
-    sqlDatabase(ctx).id
-  ];
+  const prisma = ctx.has("prisma");
+  const provider = prisma
+    ? { mysql: "mysql", postgres: "postgresql", sqlite: "sqlite" }
+    : { mysql: "mysql", postgres: "pg", sqlite: "sqlite" };
   return [
-    'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
+    prisma
+      ? 'import { prismaAdapter } from "@better-auth/prisma-adapter";'
+      : 'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
     ...(mobile ? ['import { expo } from "@better-auth/expo";'] : []),
     'import { betterAuth } from "better-auth";',
     ...(plugin === undefined ? [] : [plugin.statement]),
     "",
     `import type { Database } from "${ctx.scope}/db";`,
-    `import * as schema from "${ctx.scope}/db/schema/auth";`,
+    ...(prisma
+      ? []
+      : [`import * as schema from "${ctx.scope}/db/schema/auth";`]),
     ...(ctx.has("electron")
       ? [`import { rendererOrigin } from "${ctx.scope}/electron";`, ""]
       : []),
@@ -80,7 +85,9 @@ const renderAuthIndex = (ctx: Context) => {
     "export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>",
     "  betterAuth({",
     "    baseURL,",
-    `    database: drizzleAdapter(db, { provider: "${provider}", schema }),`,
+    prisma
+      ? `    database: prismaAdapter(db, { provider: "${provider[sqlDatabase(ctx).id]}" }),`
+      : `    database: drizzleAdapter(db, { provider: "${provider[sqlDatabase(ctx).id]}", schema }),`,
     "    emailAndPassword: { enabled: true },",
     ...(mobile
       ? [
@@ -187,12 +194,13 @@ const webFiles = (ctx: Context) => {
 export const betterAuth = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "better-auth/common"),
-    ...templateFiles(ctx, `better-auth/${sqlDatabase(ctx).id}`),
     ...(hasWebApp(ctx) ? webFiles(ctx) : []),
     file("packages/auth/src/index.ts", renderAuthIndex(ctx)),
     contribute(packageJson, {
       dependencies: [
-        "@better-auth/drizzle-adapter",
+        ctx.has("prisma")
+          ? "@better-auth/prisma-adapter"
+          : "@better-auth/drizzle-adapter",
         ...(ctx.has("expo") ? ["@better-auth/expo"] : []),
         `${ctx.scope}/db`,
         "better-auth",

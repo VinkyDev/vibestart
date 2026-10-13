@@ -211,6 +211,19 @@ const verifyStack = async ({
   return true;
 };
 
+// What the generated `migrate.ts` closes `db` with, for the stack's ORM and driver.
+const closeStatement = ({ database, orm }: Stack) => {
+  if (orm === "prisma") {
+    return "await db.$disconnect();";
+  }
+  if (database === "sqlite") {
+    return "db.$client.close();";
+  }
+  return database === "mysql"
+    ? "await db.$client.promise().end();"
+    : "await db.$client.end();";
+};
+
 const smokeStack = ({
   generation,
   label,
@@ -274,9 +287,7 @@ const smokeStack = ({
         ]
       : []),
     "} finally {",
-    ...(database === "sqlite" ? ["  db.$client.close();"] : []),
-    ...(database === "postgres" ? ["  await db.$client.end();"] : []),
-    ...(database === "mysql" ? ["  await db.$client.promise().end();"] : []),
+    ...(database === undefined ? [] : [`  ${closeStatement(stack)}`]),
     "}",
     server
       ? 'console.log("Runtime imports passed; live database requests require stacks verify.");'

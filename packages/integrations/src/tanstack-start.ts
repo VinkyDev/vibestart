@@ -22,6 +22,7 @@ import {
   stackHeadline,
   todosExample,
   webMigrates,
+  databaseCheck,
 } from "#/app.ts";
 import { dockerRuntime } from "#/docker.ts";
 import { joinWords, markdownTable } from "#/format.ts";
@@ -124,7 +125,7 @@ const selfApi = (ctx: Context) =>
     : [
         selfHealthRoute(ctx),
         contribute(packageJson, {
-          dependencies: ["drizzle-orm"],
+          dependencies: databaseCheck(ctx, "db").dependencies,
           path: "apps/web",
         }),
       ];

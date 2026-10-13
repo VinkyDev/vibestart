@@ -16,6 +16,7 @@
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -78,6 +79,7 @@
 /** @typedef {{}} Desc_OrpcInputs */
 /** @typedef {{}} Desc_PlaywrightInputs */
 /** @typedef {{}} Desc_PostgresInputs */
+/** @typedef {{}} Desc_PrismaInputs */
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
 /** @typedef {{}} Desc_ShadcnInputs */
@@ -109,6 +111,7 @@
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
+/** @typedef {{}} Fit_DrizzleInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -126,6 +129,7 @@
 /** @typedef {{}} Fit_OpenapiInputs */
 /** @typedef {{}} Fit_OrpcInputs */
 /** @typedef {{}} Fit_PostgresInputs */
+/** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
@@ -207,6 +211,9 @@
 /** @typedef {{}} Note_Auth_SecretInputs */
 /** @typedef {{ path: NonNullable<unknown> }} Note_Sqlite_FileInputs */
 /** @typedef {{}} OrmInputs */
+/** @typedef {{}} Orm_AboutInputs */
+/** @typedef {{}} Orm_NoneInputs */
+/** @typedef {{}} Orm_QuestionInputs */
 /** @typedef {{}} Package_ManagerInputs */
 /** @typedef {{}} Package_RunnerInputs */
 /** @typedef {{}} Pillar_Quality_BodyInputs */
@@ -413,6 +420,10 @@ export const api_clients = /** @type {(inputs: Api_ClientsInputs) => LocalizedSt
 
 export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`所有客户端都调用这一套 API，类型直接来自服务端代码。`)
+};
+
+export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`数据库服务（PostgreSQL 或 MySQL）`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -668,6 +679,10 @@ export const desc_postgres = /** @type {(inputs: Desc_PostgresInputs) => Localiz
 	return /** @type {LocalizedString} */ (`PostgreSQL 数据库服务，开发时由 Docker Compose 运行`)
 };
 
+export const desc_prisma = /** @type {(inputs: Desc_PrismaInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Prisma ORM 7，含 Prisma Migrate 迁移`)
+};
+
 export const desc_react = /** @type {(inputs: Desc_ReactInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`React 19 与 TanStack Query`)
 };
@@ -792,6 +807,10 @@ export const fit_docker = /** @type {(inputs: Fit_DockerInputs) => LocalizedStri
 	return /** @type {LocalizedString} */ (`适合自有服务器或任意容器平台`)
 };
 
+export const fit_drizzle = /** @type {(inputs: Fit_DrizzleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合以 TypeScript 编写 SQL，支持所有数据库`)
+};
+
 export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合把同一个网页应用装进独立窗口，打包成安装程序`)
 };
@@ -858,6 +877,10 @@ export const fit_orpc = /** @type {(inputs: Fit_OrpcInputs) => LocalizedString} 
 
 export const fit_postgres = /** @type {(inputs: Fit_PostgresInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合多用户的正式产品`)
+};
+
+export const fit_prisma = /** @type {(inputs: Fit_PrismaInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合以 schema 文件生成类型化客户端，支持 PostgreSQL 与 MySQL`)
 };
 
 export const fit_self = /** @type {(inputs: Fit_SelfInputs) => LocalizedString} */ () => {
@@ -1193,6 +1216,18 @@ export const note_sqlite_file = /** @type {(inputs: Note_Sqlite_FileInputs) => L
 
 export const orm = /** @type {(inputs: OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`ORM`)
+};
+
+export const orm_about = /** @type {(inputs: Orm_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`定义 schema、生成迁移并执行查询。Drizzle 支持所有数据库；Prisma 需要数据库服务。`)
+};
+
+export const orm_none = /** @type {(inputs: Orm_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`无 ORM`)
+};
+
+export const orm_question = /** @type {(inputs: Orm_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`通过哪个 ORM 访问数据库？`)
 };
 
 export const package_manager = /** @type {(inputs: Package_ManagerInputs) => LocalizedString} */ () => {

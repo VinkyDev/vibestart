@@ -5,6 +5,7 @@ import {
   Cpu,
   Database,
   KeyRound,
+  Layers,
   MousePointerClick,
   PanelsTopLeft,
   Plug,
@@ -20,6 +21,7 @@ import type { Decision } from "#/lib/stack.ts";
 const icons: Record<Decision, LucideIcon> = {
   testing: MousePointerClick,
   runtime: Cpu,
+  orm: Layers,
   api: Plug,
   auth: KeyRound,
   backend: Server,

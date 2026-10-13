@@ -43,12 +43,15 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
   );
   const generated = new Map(files.map((file) => [file.path, file.content]));
 
-  it("runs install, then generates route types or the route tree, and the initial migration", () => {
+  it("runs install, then generates the database client, route types or the route tree, and the initial migration", () => {
     expect(setup.map((command) => command.run)).toStrictEqual([
       "vp install",
+      ...(stack.orm === "prisma"
+        ? ["vp run --filter @my-app/db db:init", "vp run db:client"]
+        : []),
       ...(stack.framework === "next" ? ["vp run typegen"] : []),
       ...(stack.router === "tanstack-router" ? ["vp build apps/web"] : []),
-      "vp run db:generate --name init",
+      ...(stack.orm === "prisma" ? [] : ["vp run db:generate --name init"]),
     ]);
   });
 
