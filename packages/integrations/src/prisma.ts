@@ -19,6 +19,7 @@ import {
   todosExample,
 } from "#/app.ts";
 import { commentedShell } from "#/format.ts";
+import { knipEntries } from "#/knip.ts";
 import { templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -380,6 +381,11 @@ export const prisma = defineIntegration({
         label: "packages/db/src/migrations/**",
       }),
       contribute(ignoredFiles, "packages/db/src/generated"),
+      // Only the generated client imports `@prisma/client`, and Knip skips ignored files.
+      contribute(knipEntries, {
+        ignoreDependencies: ["@prisma/client"],
+        workspace: "packages/db",
+      }),
       contribute(agentsMap, {
         owns: `Prisma schema (\`src/schema/*.prisma\`${ctx.has("better-auth") ? ", including Better Auth models" : ""}), migrations (\`src/migrations/\`), \`createDb\``,
         path: "packages/db",
