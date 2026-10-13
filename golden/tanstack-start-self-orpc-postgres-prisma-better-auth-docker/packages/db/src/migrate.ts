@@ -37,7 +37,13 @@ const executeInOrder = async (
   await executeInOrder(db, rest);
 };
 
-const applyMigration = async (db: Database, name: string) => {
+// The statements a run needs: Prisma's client binds a transaction's queries to one connection.
+type Session = Pick<
+  Database,
+  "$executeRaw" | "$executeRawUnsafe" | "$queryRaw" | "$queryRawUnsafe"
+>;
+
+const applyMigration = async (db: Session, name: string) => {
   const script = await readFile(
     path.join(migrationsFolder, name, "migration.sql"),
     "utf-8"
@@ -45,17 +51,11 @@ const applyMigration = async (db: Database, name: string) => {
   const id = randomUUID();
   const checksum = createHash("sha256").update(script).digest("hex");
   await db.$executeRaw`INSERT INTO _prisma_migrations (id, checksum, migration_name) VALUES (${id}, ${checksum}, ${name})`;
-  // A migration may outlast the default 5 seconds of an interactive transaction.
-  await db.$transaction(
-    async (tx) => {
-      await executeInOrder(tx, statementsOf(script));
-    },
-    { timeout: 600_000 }
-  );
+  await executeInOrder(db, statementsOf(script));
   await db.$executeRaw`UPDATE _prisma_migrations SET finished_at = CURRENT_TIMESTAMP, applied_steps_count = 1 WHERE id = ${id}`;
 };
 
-const applyInOrder = async (db: Database, [name, ...rest]: string[]) => {
+const applyInOrder = async (db: Session, [name, ...rest]: string[]) => {
   if (name === undefined) {
     return;
   }
@@ -63,19 +63,40 @@ const applyInOrder = async (db: Database, [name, ...rest]: string[]) => {
   await applyInOrder(db, rest);
 };
 
-/** Applies the migrations under `src/migrations` that the database has not finished, in name order. */
-export const migrateDatabase = async (db: Database) => {
+const pending = async (db: Session) => {
   await db.$executeRawUnsafe(historyTable);
+  const unresolved = await db.$queryRaw<
+    { migration_name: string }[]
+  >`SELECT migration_name FROM _prisma_migrations WHERE finished_at IS NULL AND rolled_back_at IS NULL`;
+  if (unresolved.length > 0) {
+    const names = unresolved.map((row) => row.migration_name).join(", ");
+    throw new Error(
+      `Migration ${names} failed: repair the schema, then mark it with \`prisma migrate resolve\` before migrating again`
+    );
+  }
   const finished = await db.$queryRaw<
     { migration_name: string }[]
   >`SELECT migration_name FROM _prisma_migrations WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL`;
   const applied = new Set(finished.map((row) => row.migration_name));
   const entries = await readdir(migrationsFolder, { withFileTypes: true });
-  await applyInOrder(
-    db,
-    entries
-      .filter((entry) => entry.isDirectory() && !applied.has(entry.name))
-      .map((entry) => entry.name)
-      .toSorted()
+  return entries
+    .filter((entry) => entry.isDirectory() && !applied.has(entry.name))
+    .map((entry) => entry.name)
+    .toSorted();
+};
+
+/**
+ * Applies the migrations under `src/migrations` that the database has not finished, in name order. A lock held
+ * from the history check to the last migration makes concurrent deploys apply each migration once; a migration
+ * that failed stops every later run until `prisma migrate resolve` marks it.
+ */
+export const migrateDatabase = async (db: Database) => {
+  // A migration may outlast the default 5 seconds of an interactive transaction.
+  await db.$transaction(
+    async (tx) => {
+      await tx.$queryRawUnsafe("SELECT pg_advisory_xact_lock(7270736973)");
+      await applyInOrder(tx, await pending(tx));
+    },
+    { maxWait: 600_000, timeout: 600_000 }
   );
 };
