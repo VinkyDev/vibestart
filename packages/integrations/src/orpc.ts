@@ -10,6 +10,7 @@ import {
   apiTemplates,
   clientComponent,
   databaseCheck,
+  importBlock,
   hasWebApp,
   serverApp,
   stackHeadline,
@@ -60,8 +61,7 @@ const renderHealth = (ctx: Context) => {
   }
   const check = databaseCheck(ctx, "context.db");
   return [
-    'import { sql } from "drizzle-orm";',
-    "",
+    ...importBlock(check.imports),
     'import { publicProcedure } from "#src/procedures.ts";',
     "",
     "export const health = publicProcedure",
@@ -85,7 +85,11 @@ export const orpc = defineIntegration({
       dependencies: [
         ...(ctx.stack.database === undefined
           ? []
-          : [`${ctx.scope}/db`, "drizzle-orm", "zod"]),
+          : [
+              `${ctx.scope}/db`,
+              ...(ctx.has("prisma") ? [] : ["drizzle-orm"]),
+              "zod",
+            ]),
         "@orpc/server",
       ],
       devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],

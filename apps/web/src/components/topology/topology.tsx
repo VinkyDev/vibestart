@@ -8,7 +8,6 @@ import { cn } from "@vibestart/ui/lib/utils";
 
 import { Block } from "#/components/topology/block.tsx";
 import { Capsule, capsuleClass } from "#/components/topology/capsule.tsx";
-import { Chip } from "#/components/topology/chip.tsx";
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
 import {
@@ -251,7 +250,20 @@ export const Topology = ({
           )}
           {orm !== undefined && (
             <Anchored key="orm" point={ormAnchor} tint="tint-database">
-              <Chip integration={orm} label={m.orm()} stack={shown} />
+              <DecisionTrigger choosing={choosing} kind="orm">
+                <span
+                  className={cn(
+                    capsuleClass,
+                    "bg-card text-foreground shadow-rest hover:bg-tint-soft focus-visible:focus-ring transition-colors",
+                    shown.orm !== choosing.baseline.orm && "shadow-preview"
+                  )}
+                >
+                  <span className="bg-tint size-1.5 rounded-full" />
+                  <span className="text-muted-foreground">{m.orm()}</span>
+                  {orm.name}
+                  <ChevronsUpDown className="size-3" />
+                </span>
+              </DecisionTrigger>
             </Anchored>
           )}
         </AnimatePresence>

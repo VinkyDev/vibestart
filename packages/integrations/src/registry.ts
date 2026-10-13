@@ -15,6 +15,7 @@ import { node } from "#/node.ts";
 import { openapi } from "#/openapi.ts";
 import { orpc } from "#/orpc.ts";
 import { postgres } from "#/postgres.ts";
+import { prisma } from "#/prisma.ts";
 import { react } from "#/react.ts";
 import { self } from "#/self.ts";
 import { shadcn } from "#/shadcn.ts";
@@ -38,6 +39,7 @@ export const registry = defineRegistry({
     router: "a router",
     "single-page-app": "a single-page app",
     rpc: "a typed RPC layer",
+    "database-server": "a database server (PostgreSQL or MySQL)",
     "sql-database": "a SQL database",
     "sql-orm": "a SQL ORM",
     "ui-components": "a UI component library",
@@ -59,6 +61,7 @@ export const registry = defineRegistry({
     mysql,
     sqlite,
     drizzle,
+    prisma,
     betterAuth,
     shadcn,
     electron,
@@ -77,7 +80,7 @@ export const registry = defineRegistry({
     { id: "backend", name: "Backend", optional: true },
     { id: "api", name: "API", optional: true },
     { id: "database", name: "Database", optional: true, default: "sqlite" },
-    { id: "orm", name: "ORM", optional: true },
+    { id: "orm", name: "ORM", optional: true, default: "drizzle" },
     { id: "auth", name: "Auth", optional: true },
     { id: "ui", name: "UI", optional: true },
     { id: "desktop", name: "Desktop", optional: true, default: null },

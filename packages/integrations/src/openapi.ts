@@ -50,7 +50,7 @@ const renderHealth = (ctx: Context) => {
   const check = databaseCheck(ctx, "db");
   return [
     'import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";',
-    'import { sql } from "drizzle-orm";',
+    ...check.imports,
     "",
     'import type { Services } from "#src/services.ts";',
     "",
@@ -106,7 +106,7 @@ export const openapi = defineIntegration({
       dependencies: [
         ...(ctx.stack.database === undefined
           ? []
-          : [`${ctx.scope}/db`, "drizzle-orm"]),
+          : [`${ctx.scope}/db`, ...(ctx.has("prisma") ? [] : ["drizzle-orm"])]),
         "@hono/zod-openapi",
         "@scalar/hono-api-reference",
         "hono",

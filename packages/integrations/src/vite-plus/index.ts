@@ -405,6 +405,7 @@ export const vitePlus = defineIntegration({
     contribute(formatter, formatLikeProject(ctx)),
     contribute(setupCommand, {
       run: "vp install",
+      stage: "install",
       writes: [ctx.packageManager === "bun" ? "bun.lock" : "pnpm-lock.yaml"],
     }),
     ...(hasDevServers(ctx)

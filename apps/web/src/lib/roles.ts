@@ -44,6 +44,20 @@ export const roles = {
       return m.runtime_none();
     },
   },
+  orm: {
+    get role() {
+      return m.kind_orm();
+    },
+    get question() {
+      return m.orm_question();
+    },
+    get about() {
+      return m.orm_about();
+    },
+    get none() {
+      return m.orm_none();
+    },
+  },
   api: {
     get about() {
       return m.role_api_about();
@@ -161,6 +175,7 @@ export const roles = {
 
 const noneNames: Record<OptionalDecision, () => string> = {
   runtime: () => m.runtime_none(),
+  orm: () => m.orm_none(),
   api: () => m.none_api(),
   auth: () => m.none_auth(),
   backend: () => m.none_backend(),
@@ -191,6 +206,7 @@ export const changeText = ({ kind, to }: Change) => {
 
 const addLabels: Record<OptionalDecision, () => string> = {
   runtime: () => m.runtime_none(),
+  orm: () => m.orm_none(),
   api: () => m.add_api(),
   auth: () => m.add_auth(),
   backend: () => m.add_backend(),
@@ -205,6 +221,8 @@ export const addLabel = (kind: Decision) => addLabels[optional(kind)]();
 
 const fits = {
   bun: () => m.fit_bun(),
+  drizzle: () => m.fit_drizzle(),
+  prisma: () => m.fit_prisma(),
   node: () => m.fit_node(),
   "better-auth": () => m.fit_better_auth(),
   docker: () => m.fit_docker(),
@@ -226,6 +244,7 @@ const fits = {
 
 const noneFits: Record<OptionalDecision, () => string> = {
   runtime: () => m.runtime_none(),
+  orm: () => m.orm_none(),
   api: () => m.fit_none_api(),
   auth: () => m.fit_none_auth(),
   backend: () => m.fit_none_backend(),
@@ -295,6 +314,7 @@ export const tintClass: Record<Group, string> = {
   foundation: "tint-foundation",
   mobile: "tint-mobile",
   runtime: "tint-backend",
+  orm: "tint-database",
   framework: "tint-framework",
   testing: "tint-foundation",
 };

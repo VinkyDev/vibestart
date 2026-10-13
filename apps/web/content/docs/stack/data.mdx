@@ -11,6 +11,8 @@ These choices decide where the application's records live and how users sign in.
 | PostgreSQL | A separate database service | Concurrent writes, several app instances, production    |
 | MySQL      | A separate database service | Teams and hosts that already run MySQL                  |
 
+Drizzle is the ORM for every database. Prisma is the alternative on PostgreSQL and MySQL.
+
 ## PostgreSQL [#postgres]
 
 <Tech href="https://www.postgresql.org" icon="postgres" />
@@ -59,6 +61,21 @@ Commit migration files to version control.
     },
   ]}
 />
+
+## Prisma [#prisma]
+
+<Tech href="https://www.prisma.io" icon="prisma" />
+
+Prisma 7 is the alternative ORM for PostgreSQL and MySQL. Models live in `packages/db/src/schema/*.prisma`, and Prisma generates a typed client into `packages/db/src/generated`, which is not committed. The client connects through a driver adapter (`@prisma/adapter-pg` or `@prisma/adapter-mariadb`) and bundles into the server, so the Docker image needs no `node_modules`. Prisma does not support SQLite here: its SQLite drivers are native modules.
+
+After changing a model, create the migration against the development database, review it, and apply it:
+
+```sh
+vp run db:generate --name add-due-date
+vp run db:migrate
+```
+
+`vp run db:client` regenerates the client; `vp run ready` and the build run it first. The server applies committed migrations at startup and records them in Prisma's `_prisma_migrations` table, so `prisma migrate status` reads the same history.
 
 ## Better Auth [#better-auth]
 

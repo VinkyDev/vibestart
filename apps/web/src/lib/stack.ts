@@ -31,6 +31,7 @@ const optionalDecisions = [
   "backend",
   "api",
   "database",
+  "orm",
   "auth",
   "desktop",
   "mobile",
@@ -127,6 +128,7 @@ export const searchSchema = z.object({
   desktop: flag,
   framework: flag,
   mobile: flag,
+  orm: flag,
   runtime: flag,
   testing: flag,
   packageManager: z.preprocess((value) => {

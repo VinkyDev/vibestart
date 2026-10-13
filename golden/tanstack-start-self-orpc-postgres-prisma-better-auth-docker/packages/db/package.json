@@ -1,0 +1,31 @@
+{
+  "name": "@my-app/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./migrate": "./src/migrate.ts",
+    "./testing": "./src/testing.ts"
+  },
+  "scripts": {
+    "build": "prisma generate",
+    "db:client": "prisma generate",
+    "db:generate": "prisma migrate dev --create-only",
+    "db:init": "prisma migrate diff --from-empty --to-schema src/schema --script --output src/migrations/0_init/migration.sql",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "catalog:",
+    "@prisma/client": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "prisma": "catalog:",
+    "typescript": "catalog:"
+  }
+}

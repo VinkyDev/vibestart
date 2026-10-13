@@ -9,7 +9,11 @@ import {
 } from "@vibestart/core";
 
 import {
+  authVariant,
+  closeDatabase,
   exampleVariant,
+  migrationEntry,
+  todosExample,
   hasTables,
   serverApp,
   sqlDatabase,
@@ -101,8 +105,28 @@ const packageOwns = (ctx: Context) => {
 export const drizzle = defineIntegration({
   contribute: (ctx) => {
     const { dir } = serverApp(ctx);
+    const database = sqlDatabase(ctx).id;
     return [
       ...templateFiles(ctx, "drizzle/common"),
+      ...templateFiles(ctx, `drizzle/${database}/common`),
+      ...(todosExample(ctx)
+        ? templateFiles(ctx, `drizzle/${database}/${authVariant(ctx)}`)
+        : []),
+      ...(ctx.has("better-auth")
+        ? templateFiles(ctx, `drizzle/${database}/auth-tables`)
+        : []),
+      migrationEntry(ctx, [
+        `${database === "sqlite" ? "" : "await "}migrateDatabase(db);`,
+        closeDatabase(ctx),
+      ]),
+      ...(database === "sqlite"
+        ? []
+        : [
+            contribute(packageJson, {
+              dependencies: [database === "mysql" ? "mysql2" : "postgres"],
+              path: "packages/db",
+            }),
+          ]),
       ...templateFiles(ctx, `drizzle/${exampleVariant(ctx)}`),
       file("packages/db/drizzle.config.ts", drizzleConfig(ctx)),
       // drizzle-kit refuses an empty schema folder, and the migrator needs its folder even when empty.

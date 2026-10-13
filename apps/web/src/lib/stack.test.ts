@@ -121,7 +121,7 @@ describe("search params", () => {
           database: "mongo",
           deployment: "none",
           framework: "next",
-          orm: "drizzle",
+          orm: "typeorm",
         })
       )
     ).toStrictEqual({ deployment: "none", framework: "next" });

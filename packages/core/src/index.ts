@@ -14,6 +14,7 @@ export type {
   GettingStartedNote,
   GettingStartedStep,
   SetupCommand,
+  SetupStage,
 } from "#/generator.ts";
 export {
   formatter,

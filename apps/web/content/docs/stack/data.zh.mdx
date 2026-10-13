@@ -11,6 +11,8 @@ description: 数据库选择、表结构迁移和用户会话。
 | PostgreSQL | 独立的数据库服务     | 并发写入、多实例部署、生产环境  |
 | MySQL      | 独立的数据库服务     | 已在使用 MySQL 的团队与托管环境 |
 
+Drizzle 适用于所有数据库；PostgreSQL 与 MySQL 还可以选择 Prisma。
+
 ## PostgreSQL [#postgres]
 
 <Tech href="https://www.postgresql.org" icon="postgres" />
@@ -54,6 +56,21 @@ vp run db:migrate
     { text: "db:migrate 应用迁移，保留已有记录，新字段初始为 NULL。" },
   ]}
 />
+
+## Prisma [#prisma]
+
+<Tech href="https://www.prisma.io" icon="prisma" />
+
+Prisma 7 是 PostgreSQL 与 MySQL 可选的另一种 ORM。模型位于 `packages/db/src/schema/*.prisma`，Prisma 将带类型的客户端生成到 `packages/db/src/generated`，该目录不提交。客户端通过驱动适配器（`@prisma/adapter-pg` 或 `@prisma/adapter-mariadb`）连接数据库，并打包进服务端，因此 Docker 镜像无需 `node_modules`。这里的 Prisma 不支持 SQLite：它的 SQLite 驱动是原生模块。
+
+修改模型后，基于开发数据库生成迁移，审阅后再应用：
+
+```sh
+vp run db:generate --name add-due-date
+vp run db:migrate
+```
+
+`vp run db:client` 重新生成客户端；`vp run ready` 和构建会先执行它。服务启动时应用已提交的迁移，并记录在 Prisma 的 `_prisma_migrations` 表中，因此 `prisma migrate status` 读取的是同一份历史。
 
 ## Better Auth [#better-auth]
 

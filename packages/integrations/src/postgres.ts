@@ -2,17 +2,10 @@ import {
   contribute,
   defineIntegration,
   gettingStarted,
-  packageJson,
   renderFile,
 } from "@vibestart/core";
 
-import {
-  authVariant,
-  migrationEntry,
-  serverEnv,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { serverEnv, stackHeadline } from "#/app.ts";
 import {
   composeEnv,
   composeServices,
@@ -20,25 +13,12 @@ import {
   renderDevCompose,
 } from "#/docker.ts";
 import { quote } from "#/format.ts";
-import { templateFiles } from "#/templates.ts";
 import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 
 export const postgres = defineIntegration({
   contribute: (ctx) => {
     const database = ctx.name.replaceAll("-", "_");
     return [
-      ...templateFiles(ctx, "postgres/common"),
-      ...(todosExample(ctx)
-        ? templateFiles(ctx, `postgres/${authVariant(ctx)}`)
-        : []),
-      migrationEntry(ctx, [
-        "await migrateDatabase(db);",
-        "await db.$client.end();",
-      ]),
-      contribute(packageJson, {
-        dependencies: ["postgres"],
-        path: "packages/db",
-      }),
       contribute(serverEnv, {
         example: `postgres://postgres:postgres@localhost:5432/${database}`,
         name: "DATABASE_URL",
@@ -95,6 +75,6 @@ export const postgres = defineIntegration({
   name: "PostgreSQL",
   description: "PostgreSQL server, run by Docker Compose in development",
   homepage: "https://www.postgresql.org",
-  provides: ["sql-database"],
+  provides: ["database-server", "sql-database"],
   requires: ["http-server", "sql-orm"],
 });

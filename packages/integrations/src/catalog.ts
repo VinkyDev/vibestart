@@ -99,12 +99,17 @@ export const catalog = {
   auth: {
     "@better-auth/drizzle-adapter": "^1.7.7",
     "@better-auth/expo": "^1.7.7",
+    "@better-auth/prisma-adapter": "^1.7.7",
     "better-auth": "^1.7.7",
   },
   db: {
+    "@prisma/adapter-mariadb": "^7.10.0",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "drizzle-kit": "1.0.0-rc.4",
     "drizzle-orm": "1.0.0-rc.4",
     mysql2: "^3.24.5",
     postgres: "^3.4.9",
+    prisma: "^7.10.0",
   },
 } satisfies Catalog;

@@ -16,6 +16,7 @@
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -78,6 +79,7 @@
 /** @typedef {{}} Desc_OrpcInputs */
 /** @typedef {{}} Desc_PlaywrightInputs */
 /** @typedef {{}} Desc_PostgresInputs */
+/** @typedef {{}} Desc_PrismaInputs */
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
 /** @typedef {{}} Desc_ShadcnInputs */
@@ -109,6 +111,7 @@
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
+/** @typedef {{}} Fit_DrizzleInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -126,6 +129,7 @@
 /** @typedef {{}} Fit_OpenapiInputs */
 /** @typedef {{}} Fit_OrpcInputs */
 /** @typedef {{}} Fit_PostgresInputs */
+/** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
@@ -207,6 +211,9 @@
 /** @typedef {{}} Note_Auth_SecretInputs */
 /** @typedef {{ path: NonNullable<unknown> }} Note_Sqlite_FileInputs */
 /** @typedef {{}} OrmInputs */
+/** @typedef {{}} Orm_AboutInputs */
+/** @typedef {{}} Orm_NoneInputs */
+/** @typedef {{}} Orm_QuestionInputs */
 /** @typedef {{}} Package_ManagerInputs */
 /** @typedef {{}} Package_RunnerInputs */
 /** @typedef {{}} Pillar_Quality_BodyInputs */
@@ -413,6 +420,10 @@ export const api_clients = /** @type {(inputs: Api_ClientsInputs) => LocalizedSt
 
 export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Every client calls this one API, with its types taken from the server code.`)
+};
+
+export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`a database server (PostgreSQL or MySQL)`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -668,6 +679,10 @@ export const desc_postgres = /** @type {(inputs: Desc_PostgresInputs) => Localiz
 	return /** @type {LocalizedString} */ (`PostgreSQL server, run by Docker Compose in development`)
 };
 
+export const desc_prisma = /** @type {(inputs: Desc_PrismaInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Prisma ORM 7 with Prisma Migrate`)
+};
+
 export const desc_react = /** @type {(inputs: Desc_ReactInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`React 19 with TanStack Query`)
 };
@@ -794,6 +809,10 @@ export const fit_docker = /** @type {(inputs: Fit_DockerInputs) => LocalizedStri
 	return /** @type {LocalizedString} */ (`For your own server or any container host.`)
 };
 
+export const fit_drizzle = /** @type {(inputs: Fit_DrizzleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For SQL written as TypeScript, on any database.`)
+};
+
 export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For the same web app in its own window, packaged as an installer.`)
 };
@@ -860,6 +879,10 @@ export const fit_orpc = /** @type {(inputs: Fit_OrpcInputs) => LocalizedString} 
 
 export const fit_postgres = /** @type {(inputs: Fit_PostgresInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For production apps with many users.`)
+};
+
+export const fit_prisma = /** @type {(inputs: Fit_PrismaInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For a schema file and a generated, typed client on PostgreSQL or MySQL.`)
 };
 
 export const fit_self = /** @type {(inputs: Fit_SelfInputs) => LocalizedString} */ () => {
@@ -1197,6 +1220,18 @@ export const note_sqlite_file = /** @type {(inputs: Note_Sqlite_FileInputs) => L
 
 export const orm = /** @type {(inputs: OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`ORM`)
+};
+
+export const orm_about = /** @type {(inputs: Orm_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Defines the schema, writes migrations, and runs the queries. Drizzle works with every database; Prisma needs a database server.`)
+};
+
+export const orm_none = /** @type {(inputs: Orm_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`No ORM`)
+};
+
+export const orm_question = /** @type {(inputs: Orm_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Reach the database through which ORM?`)
 };
 
 export const package_manager = /** @type {(inputs: Package_ManagerInputs) => LocalizedString} */ () => {

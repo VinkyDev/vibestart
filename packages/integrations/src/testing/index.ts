@@ -15,6 +15,7 @@ import {
   serverApp,
   sqlDatabase,
   todosExample,
+  ormId,
 } from "#/app.ts";
 import { joinWords, markdownTable } from "#/format.ts";
 import { templateFiles } from "#/templates.ts";
@@ -256,7 +257,7 @@ const integrationTests = (ctx: Context) => [
 const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
   ...(usesTestDatabase(ctx)
     ? [
-        ...templateFiles(ctx, `testing/database/${sqlDatabase(ctx).id}`),
+        ...templateFiles(ctx, `${ormId(ctx)}/${sqlDatabase(ctx).id}/testing`),
         contribute(packageJson, {
           exports: { "./testing": "./src/testing.ts" },
           path: "packages/db",

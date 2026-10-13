@@ -6,6 +6,7 @@ export const stackLabel = (stack: Stack) =>
     stack.backend,
     stack.api,
     stack.database,
+    ...(stack.orm === "prisma" ? ["prisma"] : []),
     stack.auth,
     stack.desktop,
     stack.mobile,

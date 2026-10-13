@@ -21,7 +21,19 @@ export interface SetupCommand {
   readonly run: string;
   /** Globs of the paths the command writes. The generator leaves these files to the command. */
   readonly writes: readonly string[];
+  /**
+   * When the command runs: `install` first, then `generate` (code other commands import), then
+   * `build` (the default). Commands in one stage run in contribution order.
+   */
+  readonly stage?: SetupStage;
 }
+
+export type SetupStage = "install" | "generate" | "build";
+
+const setupStages: readonly SetupStage[] = ["install", "generate", "build"];
+
+const stageOf = (command: SetupCommand) =>
+  setupStages.indexOf(command.stage ?? "build");
 
 export const setupCommand = defineSlot<SetupCommand>("setup-command");
 
@@ -213,6 +225,6 @@ export const generate = async (
     ),
     gettingStarted: read(gettingStarted),
     read,
-    setup: read(setupCommand),
+    setup: read(setupCommand).toSorted((a, b) => stageOf(a) - stageOf(b)),
   };
 };

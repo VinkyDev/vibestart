@@ -1,4 +1,4 @@
-# apps/web/src/components/api-status.tsx · 84 stacks
+# apps/web/src/components/api-status.tsx · 132 stacks
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-bun-docker-e2e
 #   next-hono-orpc-docker
@@ -23,6 +23,22 @@
 #   next-hono-orpc-mysql-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-expo-docker
 #   next-hono-orpc-mysql-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -39,6 +55,22 @@
 #   next-hono-orpc-postgres-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-postgres-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
@@ -67,6 +99,14 @@
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
 #   next-self-orpc-mysql-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -75,6 +115,14 @@
 #   next-self-orpc-postgres-docker-e2e
 #   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-postgres-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
 #   next-self-orpc-sqlite-better-auth-docker
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
@@ -105,7 +153,7 @@ export const ApiStatus = () => {
   );
 };
 
-# apps/web/src/components/api-status.tsx · 196 stacks
+# apps/web/src/components/api-status.tsx · 308 stacks
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-bun-docker-e2e
 #   spa-hono-orpc-docker
@@ -154,6 +202,38 @@ export const ApiStatus = () => {
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -186,6 +266,38 @@ export const ApiStatus = () => {
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -242,6 +354,22 @@ export const ApiStatus = () => {
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-expo-docker
 #   tanstack-start-hono-orpc-mysql-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -258,6 +386,22 @@ export const ApiStatus = () => {
 #   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
@@ -286,6 +430,14 @@ export const ApiStatus = () => {
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -294,6 +446,14 @@ export const ApiStatus = () => {
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -369,15 +529,23 @@ export const ApiStatus = () => {
 #   tanstack-start-self-orpc-expo-docker-e2e
 export type Context = Record<string, never>;
 
-# packages/api/src/context.ts · 132 stacks
+# packages/api/src/context.ts · 220 stacks
 #   hono-orpc-mysql-better-auth-bun-docker
 #   hono-orpc-mysql-better-auth-docker
 #   hono-orpc-mysql-better-auth-expo-bun-docker
 #   hono-orpc-mysql-better-auth-expo-docker
+#   hono-orpc-mysql-prisma-better-auth-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-bun-docker
 #   hono-orpc-postgres-better-auth-expo-docker
+#   hono-orpc-postgres-prisma-better-auth-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
 #   hono-orpc-sqlite-better-auth-expo-bun-docker
@@ -390,6 +558,14 @@ export type Context = Record<string, never>;
 #   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-expo-docker
 #   next-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -398,6 +574,14 @@ export type Context = Record<string, never>;
 #   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
@@ -410,10 +594,18 @@ export type Context = Record<string, never>;
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
 #   next-self-orpc-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   next-self-orpc-sqlite-better-auth-docker
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
@@ -434,6 +626,22 @@ export type Context = Record<string, never>;
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -450,6 +658,22 @@ export type Context = Record<string, never>;
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -474,6 +698,14 @@ export type Context = Record<string, never>;
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -482,6 +714,14 @@ export type Context = Record<string, never>;
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
@@ -494,10 +734,18 @@ export type Context = Record<string, never>;
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -510,15 +758,23 @@ export interface Context {
   session: Session | null;
 }
 
-# packages/api/src/context.ts · 132 stacks
+# packages/api/src/context.ts · 220 stacks
 #   hono-orpc-mysql-bun-docker
 #   hono-orpc-mysql-docker
 #   hono-orpc-mysql-expo-bun-docker
 #   hono-orpc-mysql-expo-docker
+#   hono-orpc-mysql-prisma-bun-docker
+#   hono-orpc-mysql-prisma-docker
+#   hono-orpc-mysql-prisma-expo-bun-docker
+#   hono-orpc-mysql-prisma-expo-docker
 #   hono-orpc-postgres-bun-docker
 #   hono-orpc-postgres-docker
 #   hono-orpc-postgres-expo-bun-docker
 #   hono-orpc-postgres-expo-docker
+#   hono-orpc-postgres-prisma-bun-docker
+#   hono-orpc-postgres-prisma-docker
+#   hono-orpc-postgres-prisma-expo-bun-docker
+#   hono-orpc-postgres-prisma-expo-docker
 #   hono-orpc-sqlite-bun-docker
 #   hono-orpc-sqlite-docker
 #   hono-orpc-sqlite-expo-bun-docker
@@ -531,6 +787,14 @@ export interface Context {
 #   next-hono-orpc-mysql-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-expo-docker
 #   next-hono-orpc-mysql-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-bun-docker-e2e
 #   next-hono-orpc-postgres-docker
@@ -539,6 +803,14 @@ export interface Context {
 #   next-hono-orpc-postgres-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-postgres-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-bun-docker-e2e
 #   next-hono-orpc-sqlite-docker
@@ -551,10 +823,18 @@ export interface Context {
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
 #   next-self-orpc-mysql-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
 #   next-self-orpc-postgres-docker
 #   next-self-orpc-postgres-docker-e2e
 #   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-postgres-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
 #   next-self-orpc-sqlite-docker
 #   next-self-orpc-sqlite-docker-e2e
 #   next-self-orpc-sqlite-expo-docker
@@ -575,6 +855,22 @@ export interface Context {
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -591,6 +887,22 @@ export interface Context {
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-bun-docker-e2e
 #   spa-hono-orpc-sqlite-docker
@@ -615,6 +927,14 @@ export interface Context {
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-expo-docker
 #   tanstack-start-hono-orpc-mysql-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-docker
@@ -623,6 +943,14 @@ export interface Context {
 #   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-docker
@@ -635,10 +963,18 @@ export interface Context {
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
@@ -707,7 +1043,7 @@ export const appRouter = {
 export type AppRouter = typeof appRouter;
 export type AppRouterClient = RouterClient<AppRouter>;
 
-# packages/api/src/index.ts · 264 stacks
+# packages/api/src/index.ts · 440 stacks
 #   hono-orpc-mysql-better-auth-bun-docker
 #   hono-orpc-mysql-better-auth-docker
 #   hono-orpc-mysql-better-auth-expo-bun-docker
@@ -716,6 +1052,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   hono-orpc-mysql-docker
 #   hono-orpc-mysql-expo-bun-docker
 #   hono-orpc-mysql-expo-docker
+#   hono-orpc-mysql-prisma-better-auth-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-docker
+#   hono-orpc-mysql-prisma-bun-docker
+#   hono-orpc-mysql-prisma-docker
+#   hono-orpc-mysql-prisma-expo-bun-docker
+#   hono-orpc-mysql-prisma-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-bun-docker
@@ -724,6 +1068,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   hono-orpc-postgres-docker
 #   hono-orpc-postgres-expo-bun-docker
 #   hono-orpc-postgres-expo-docker
+#   hono-orpc-postgres-prisma-better-auth-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-docker
+#   hono-orpc-postgres-prisma-bun-docker
+#   hono-orpc-postgres-prisma-docker
+#   hono-orpc-postgres-prisma-expo-bun-docker
+#   hono-orpc-postgres-prisma-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
 #   hono-orpc-sqlite-better-auth-expo-bun-docker
@@ -748,6 +1100,22 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-hono-orpc-mysql-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-expo-docker
 #   next-hono-orpc-mysql-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -764,6 +1132,22 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-hono-orpc-postgres-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-postgres-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
@@ -788,6 +1172,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
 #   next-self-orpc-mysql-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -796,6 +1188,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-self-orpc-postgres-docker-e2e
 #   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-postgres-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
 #   next-self-orpc-sqlite-better-auth-docker
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
@@ -836,6 +1236,38 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -868,6 +1300,38 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -916,6 +1380,22 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-expo-docker
 #   tanstack-start-hono-orpc-mysql-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -932,6 +1412,22 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
@@ -956,6 +1452,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -964,6 +1468,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -987,7 +1499,7 @@ export const appRouter = {
 export type AppRouter = typeof appRouter;
 export type AppRouterClient = RouterClient<AppRouter>;
 
-# packages/api/src/procedures.ts · 176 stacks
+# packages/api/src/procedures.ts · 264 stacks
 #   hono-orpc-bun-docker
 #   hono-orpc-docker
 #   hono-orpc-expo-bun-docker
@@ -996,10 +1508,18 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   hono-orpc-mysql-docker
 #   hono-orpc-mysql-expo-bun-docker
 #   hono-orpc-mysql-expo-docker
+#   hono-orpc-mysql-prisma-bun-docker
+#   hono-orpc-mysql-prisma-docker
+#   hono-orpc-mysql-prisma-expo-bun-docker
+#   hono-orpc-mysql-prisma-expo-docker
 #   hono-orpc-postgres-bun-docker
 #   hono-orpc-postgres-docker
 #   hono-orpc-postgres-expo-bun-docker
 #   hono-orpc-postgres-expo-docker
+#   hono-orpc-postgres-prisma-bun-docker
+#   hono-orpc-postgres-prisma-docker
+#   hono-orpc-postgres-prisma-expo-bun-docker
+#   hono-orpc-postgres-prisma-expo-docker
 #   hono-orpc-sqlite-bun-docker
 #   hono-orpc-sqlite-docker
 #   hono-orpc-sqlite-expo-bun-docker
@@ -1020,6 +1540,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-hono-orpc-mysql-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-expo-docker
 #   next-hono-orpc-mysql-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
 #   next-hono-orpc-postgres-bun-docker
 #   next-hono-orpc-postgres-bun-docker-e2e
 #   next-hono-orpc-postgres-docker
@@ -1028,6 +1556,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-hono-orpc-postgres-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-postgres-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
 #   next-hono-orpc-sqlite-bun-docker
 #   next-hono-orpc-sqlite-bun-docker-e2e
 #   next-hono-orpc-sqlite-docker
@@ -1044,10 +1580,18 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
 #   next-self-orpc-mysql-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
 #   next-self-orpc-postgres-docker
 #   next-self-orpc-postgres-docker-e2e
 #   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-postgres-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
 #   next-self-orpc-sqlite-docker
 #   next-self-orpc-sqlite-docker-e2e
 #   next-self-orpc-sqlite-expo-docker
@@ -1084,6 +1628,22 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -1100,6 +1660,22 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-bun-docker-e2e
 #   spa-hono-orpc-sqlite-docker
@@ -1132,6 +1708,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-expo-docker
 #   tanstack-start-hono-orpc-mysql-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-bun-docker
 #   tanstack-start-hono-orpc-postgres-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-docker
@@ -1140,6 +1724,14 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-bun-docker
 #   tanstack-start-hono-orpc-sqlite-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-docker
@@ -1156,10 +1748,18 @@ export type AppRouterClient = RouterClient<AppRouter>;
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
@@ -1170,15 +1770,23 @@ import type { Context } from "#src/context.ts";
 
 export const publicProcedure = os.$context<Context>();
 
-# packages/api/src/procedures.ts · 132 stacks
+# packages/api/src/procedures.ts · 220 stacks
 #   hono-orpc-mysql-better-auth-bun-docker
 #   hono-orpc-mysql-better-auth-docker
 #   hono-orpc-mysql-better-auth-expo-bun-docker
 #   hono-orpc-mysql-better-auth-expo-docker
+#   hono-orpc-mysql-prisma-better-auth-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-bun-docker
 #   hono-orpc-postgres-better-auth-expo-docker
+#   hono-orpc-postgres-prisma-better-auth-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
 #   hono-orpc-sqlite-better-auth-expo-bun-docker
@@ -1191,6 +1799,14 @@ export const publicProcedure = os.$context<Context>();
 #   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-expo-docker
 #   next-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -1199,6 +1815,14 @@ export const publicProcedure = os.$context<Context>();
 #   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-expo-docker
 #   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
@@ -1211,10 +1835,18 @@ export const publicProcedure = os.$context<Context>();
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
 #   next-self-orpc-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   next-self-orpc-sqlite-better-auth-docker
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
@@ -1235,6 +1867,22 @@ export const publicProcedure = os.$context<Context>();
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -1251,6 +1899,22 @@ export const publicProcedure = os.$context<Context>();
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -1275,6 +1939,14 @@ export const publicProcedure = os.$context<Context>();
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -1283,6 +1955,14 @@ export const publicProcedure = os.$context<Context>();
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
@@ -1295,10 +1975,18 @@ export const publicProcedure = os.$context<Context>();
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -1554,6 +2242,192 @@ export const health = publicProcedure
   .route({ method: "GET", path: "/health" })
   .handler(async ({ context }) => {
     await context.db.execute(sql`select 1`);
+    return { status: "ok" as const };
+  });
+
+# packages/api/src/routers/health.ts · 176 stacks
+#   hono-orpc-mysql-prisma-better-auth-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-docker
+#   hono-orpc-mysql-prisma-bun-docker
+#   hono-orpc-mysql-prisma-docker
+#   hono-orpc-mysql-prisma-expo-bun-docker
+#   hono-orpc-mysql-prisma-expo-docker
+#   hono-orpc-postgres-prisma-better-auth-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-docker
+#   hono-orpc-postgres-prisma-bun-docker
+#   hono-orpc-postgres-prisma-docker
+#   hono-orpc-postgres-prisma-expo-bun-docker
+#   hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+import { publicProcedure } from "#src/procedures.ts";
+
+export const health = publicProcedure
+  .route({ method: "GET", path: "/health" })
+  .handler(async ({ context }) => {
+    await context.db.$queryRaw`select 1`;
     return { status: "ok" as const };
   });
 
@@ -1868,6 +2742,288 @@ export const todosRouter = {
 };
 
 # packages/api/src/routers/todos.ts · 88 stacks
+#   hono-orpc-mysql-prisma-better-auth-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-docker
+#   hono-orpc-postgres-prisma-better-auth-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+import { ORPCError } from "@orpc/server";
+import { z } from "zod";
+
+import type { Database } from "@my-app/db";
+
+import { protectedProcedure } from "#src/procedures.ts";
+
+const todoId = z.object({ id: z.int().positive() });
+
+// A write finds the user's row first: someone else's todo is not found either.
+const findOrNotFound = async (db: Database, id: number, userId: string) => {
+  const row = await db.todo.findFirst({ where: { id, userId } });
+  if (row === null) {
+    throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
+  }
+  return row;
+};
+
+export const todosRouter = {
+  create: protectedProcedure
+    .input(z.object({ title: z.string().trim().min(1).max(200) }))
+    .handler(
+      async ({ context, input }) =>
+        await context.db.todo.create({
+          data: { ...input, userId: context.session.user.id },
+        })
+    ),
+
+  delete: protectedProcedure
+    .input(todoId)
+    .handler(async ({ context, input }) => {
+      const todo = await findOrNotFound(
+        context.db,
+        input.id,
+        context.session.user.id
+      );
+      await context.db.todo.delete({ where: { id: todo.id } });
+      return todo;
+    }),
+
+  list: protectedProcedure.handler(
+    async ({ context }) =>
+      await context.db.todo.findMany({
+        orderBy: { id: "asc" },
+        where: { userId: context.session.user.id },
+      })
+  ),
+
+  update: protectedProcedure
+    .input(todoId.extend({ completed: z.boolean() }))
+    .handler(async ({ context, input: { id, ...data } }) => {
+      const todo = await findOrNotFound(
+        context.db,
+        id,
+        context.session.user.id
+      );
+      return await context.db.todo.update({ data, where: { id: todo.id } });
+    }),
+};
+
+# packages/api/src/routers/todos.ts · 88 stacks
+#   hono-orpc-mysql-prisma-bun-docker
+#   hono-orpc-mysql-prisma-docker
+#   hono-orpc-mysql-prisma-expo-bun-docker
+#   hono-orpc-mysql-prisma-expo-docker
+#   hono-orpc-postgres-prisma-bun-docker
+#   hono-orpc-postgres-prisma-docker
+#   hono-orpc-postgres-prisma-expo-bun-docker
+#   hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+import { ORPCError } from "@orpc/server";
+import { z } from "zod";
+
+import type { Database } from "@my-app/db";
+
+import { publicProcedure } from "#src/procedures.ts";
+
+const todoId = z.object({ id: z.int().positive() });
+
+const findOrNotFound = async (db: Database, id: number) => {
+  const row = await db.todo.findUnique({ where: { id } });
+  if (row === null) {
+    throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
+  }
+  return row;
+};
+
+export const todosRouter = {
+  create: publicProcedure
+    .input(z.object({ title: z.string().trim().min(1).max(200) }))
+    .handler(
+      async ({ context, input }) =>
+        await context.db.todo.create({ data: input })
+    ),
+
+  delete: publicProcedure.input(todoId).handler(async ({ context, input }) => {
+    const todo = await findOrNotFound(context.db, input.id);
+    await context.db.todo.delete({ where: { id: todo.id } });
+    return todo;
+  }),
+
+  list: publicProcedure.handler(
+    async ({ context }) =>
+      await context.db.todo.findMany({ orderBy: { id: "asc" } })
+  ),
+
+  update: publicProcedure
+    .input(todoId.extend({ completed: z.boolean() }))
+    .handler(async ({ context, input: { id, ...data } }) => {
+      const todo = await findOrNotFound(context.db, id);
+      return await context.db.todo.update({ data, where: { id: todo.id } });
+    }),
+};
+
+# packages/api/src/routers/todos.ts · 88 stacks
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-bun-docker
@@ -2156,7 +3312,7 @@ export const todosRouter = {
     ),
 };
 
-# packages/api/tsconfig.json · 308 stacks
+# packages/api/tsconfig.json · 484 stacks
 #   hono-orpc-bun-docker
 #   hono-orpc-docker
 #   hono-orpc-expo-bun-docker
@@ -2169,6 +3325,14 @@ export const todosRouter = {
 #   hono-orpc-mysql-docker
 #   hono-orpc-mysql-expo-bun-docker
 #   hono-orpc-mysql-expo-docker
+#   hono-orpc-mysql-prisma-better-auth-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   hono-orpc-mysql-prisma-better-auth-expo-docker
+#   hono-orpc-mysql-prisma-bun-docker
+#   hono-orpc-mysql-prisma-docker
+#   hono-orpc-mysql-prisma-expo-bun-docker
+#   hono-orpc-mysql-prisma-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-bun-docker
@@ -2177,6 +3341,14 @@ export const todosRouter = {
 #   hono-orpc-postgres-docker
 #   hono-orpc-postgres-expo-bun-docker
 #   hono-orpc-postgres-expo-docker
+#   hono-orpc-postgres-prisma-better-auth-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   hono-orpc-postgres-prisma-better-auth-expo-docker
+#   hono-orpc-postgres-prisma-bun-docker
+#   hono-orpc-postgres-prisma-docker
+#   hono-orpc-postgres-prisma-expo-bun-docker
+#   hono-orpc-postgres-prisma-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
 #   hono-orpc-sqlite-better-auth-expo-bun-docker
@@ -2209,6 +3381,22 @@ export const todosRouter = {
 #   next-hono-orpc-mysql-expo-bun-docker-e2e
 #   next-hono-orpc-mysql-expo-docker
 #   next-hono-orpc-mysql-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-mysql-prisma-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -2225,6 +3413,22 @@ export const todosRouter = {
 #   next-hono-orpc-postgres-expo-bun-docker-e2e
 #   next-hono-orpc-postgres-expo-docker
 #   next-hono-orpc-postgres-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-postgres-prisma-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
@@ -2253,6 +3457,14 @@ export const todosRouter = {
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
 #   next-self-orpc-mysql-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-docker-e2e
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-mysql-prisma-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -2261,6 +3473,14 @@ export const todosRouter = {
 #   next-self-orpc-postgres-docker-e2e
 #   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-postgres-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-docker-e2e
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-postgres-prisma-expo-docker-e2e
 #   next-self-orpc-sqlite-better-auth-docker
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
@@ -2317,6 +3537,38 @@ export const todosRouter = {
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -2349,6 +3601,38 @@ export const todosRouter = {
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -2405,6 +3689,22 @@ export const todosRouter = {
 #   tanstack-start-hono-orpc-mysql-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-mysql-expo-docker
 #   tanstack-start-hono-orpc-mysql-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -2421,6 +3721,22 @@ export const todosRouter = {
 #   tanstack-start-hono-orpc-postgres-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-expo-docker
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
@@ -2449,6 +3765,14 @@ export const todosRouter = {
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -2457,6 +3781,14 @@ export const todosRouter = {
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker

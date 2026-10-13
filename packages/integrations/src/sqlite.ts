@@ -1,14 +1,7 @@
 import { contribute, defineIntegration } from "@vibestart/core";
 
-import {
-  authVariant,
-  migrationEntry,
-  serverEnv,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { serverEnv, stackHeadline } from "#/app.ts";
 import { composeAppVolumes, composeVolumes, dockerRuntime } from "#/docker.ts";
-import { templateFiles } from "#/templates.ts";
 import {
   ignoredFiles,
   readmeLayers,
@@ -17,11 +10,6 @@ import {
 
 export const sqlite = defineIntegration({
   contribute: (ctx) => [
-    ...templateFiles(ctx, "sqlite/common"),
-    ...(todosExample(ctx)
-      ? templateFiles(ctx, `sqlite/${authVariant(ctx)}`)
-      : []),
-    migrationEntry(ctx, ["migrateDatabase(db);", "db.$client.close();"]),
     contribute(serverEnv, {
       example: "local.db",
       name: "DATABASE_URL",

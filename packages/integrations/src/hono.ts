@@ -20,6 +20,7 @@ import {
   renderEnvModule,
   serverEnv,
   stackHeadline,
+  closeDatabase as closeDatabaseStatement,
 } from "#/app.ts";
 import { composeServers, dockerRuntime } from "#/docker.ts";
 import { templateFiles } from "#/templates.ts";
@@ -88,14 +89,7 @@ const closeDatabase = (ctx: Context) => {
     return [];
   }
   // The SQLite driver closes synchronously.
-  if (ctx.has("sqlite")) {
-    return ["db.$client.close();"];
-  }
-  return [
-    ctx.has("mysql")
-      ? "await db.$client.promise().end();"
-      : "await db.$client.end();",
-  ];
+  return [closeDatabaseStatement(ctx)];
 };
 
 const contextImport = (ctx: Context) => {
@@ -133,7 +127,7 @@ const renderApp = (ctx: Context) => {
         ]
       : []),
     ...(!api && ctx.stack.database !== undefined
-      ? ['import { sql } from "drizzle-orm";']
+      ? databaseCheck(ctx, "db").imports
       : []),
     'import { Hono } from "hono";',
     ...(auth || !api ? ['import type { Context } from "hono";'] : []),
@@ -334,7 +328,7 @@ const databaseScripts = (ctx: Context) => [
   ...(ctx.stack.api === undefined
     ? [
         contribute(packageJson, {
-          dependencies: ["drizzle-orm"],
+          dependencies: databaseCheck(ctx, "db").dependencies,
           path: "apps/server",
         }),
       ]
