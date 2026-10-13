@@ -45,7 +45,7 @@ While developing, run the narrowest set that covers your change, such as a singl
 
 ## Verification records [#verification]
 
-Before each release, every supported combination is generated with its default add-ons and covered by runs of `vp run ready`: CI installs and runs a set of combinations chosen so that every file `vp run ready` reads in any combination (documentation, Docker files, and `vibestart.jsonc` aside), and every three choices that can be made together, pass in at least one of them. A passing run produces a verification record containing:
+Before each release, CI installs and runs `vp run ready` in a chosen set of combinations, with their default add-ons, rather than in every combination. Together those runs cover every file `vp run ready` reads in any combination (documentation, Docker files, and `vibestart.jsonc` aside) and every three choices that can be made together: each passes in at least one of them. A passing run produces a verification record containing:
 
 - a fingerprint of every generated file except documentation, which `vp run ready` does not read;
 - the operating system, architecture, and Node.js version it ran on;
