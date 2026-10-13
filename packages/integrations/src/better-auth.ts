@@ -232,6 +232,17 @@ export const betterAuth = defineIntegration({
       name: "BETTER_AUTH_SECRET",
       schema: "z.string().min(32)",
     }),
+    // Expo Go from the app stores may send exp:// as the origin, which the Expo plugin trusts only
+    // in development. A framework's dev server sets that; Hono's `node --watch` does not.
+    ...(ctx.has("expo") && ctx.has("hono")
+      ? [
+          contribute(serverEnv, {
+            example: "development",
+            name: "NODE_ENV",
+            schema: 'z.enum(["development", "production", "test"]).optional()',
+          }),
+        ]
+      : []),
     contribute(composeEnv, {
       name: "BETTER_AUTH_URL",
       value: `\${BETTER_AUTH_URL:-http://localhost:3000}`,

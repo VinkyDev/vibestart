@@ -61,22 +61,29 @@
 #   spa-hono-orpc-expo-docker-e2e
 PORT=3000
 
-# apps/server/.env.example · 12 stacks
+# apps/server/.env.example · 6 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
-#   hono-openapi-postgres-better-auth-expo-bun-docker
-#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
-#   hono-orpc-postgres-better-auth-expo-bun-docker
-#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-postgres-better-auth-bun-docker
 #   hono-postgres-better-auth-docker
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3000
+
+# apps/server/.env.example · 6 stacks
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-postgres-better-auth-expo-bun-docker
 #   hono-postgres-better-auth-expo-docker
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
 BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
 PORT=3000
 
 # apps/server/.env.example · 60 stacks
@@ -143,22 +150,29 @@ PORT=3000
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
 PORT=3000
 
-# apps/server/.env.example · 12 stacks
+# apps/server/.env.example · 6 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
-#   hono-openapi-sqlite-better-auth-expo-bun-docker
-#   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
-#   hono-orpc-sqlite-better-auth-expo-bun-docker
-#   hono-orpc-sqlite-better-auth-expo-docker
 #   hono-sqlite-better-auth-bun-docker
 #   hono-sqlite-better-auth-docker
+DATABASE_URL=local.db
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3000
+
+# apps/server/.env.example · 6 stacks
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
+#   hono-orpc-sqlite-better-auth-expo-bun-docker
+#   hono-orpc-sqlite-better-auth-expo-docker
 #   hono-sqlite-better-auth-expo-bun-docker
 #   hono-sqlite-better-auth-expo-docker
 DATABASE_URL=local.db
 BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
 PORT=3000
 
 # apps/server/.env.example · 60 stacks
@@ -276,51 +290,57 @@ PORT=3000
 #   tanstack-start-hono-orpc-expo-docker-e2e
 PORT=3001
 
-# apps/server/.env.example · 48 stacks
+# apps/server/.env.example · 24 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-docker
-#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
 #   next-hono-orpc-postgres-better-auth-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-docker
-#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-bun-docker-e2e
 #   next-hono-postgres-better-auth-docker
 #   next-hono-postgres-better-auth-docker-e2e
-#   next-hono-postgres-better-auth-expo-bun-docker
-#   next-hono-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-postgres-better-auth-expo-docker
-#   next-hono-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-docker
 #   tanstack-start-hono-postgres-better-auth-docker-e2e
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3001
+
+# apps/server/.env.example · 24 stacks
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-postgres-better-auth-expo-docker
+#   next-hono-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-docker
@@ -328,6 +348,7 @@ PORT=3001
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
 BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
 PORT=3001
 
 # apps/server/.env.example · 48 stacks
@@ -382,51 +403,57 @@ PORT=3001
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
 PORT=3001
 
-# apps/server/.env.example · 48 stacks
+# apps/server/.env.example · 24 stacks
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-expo-docker
-#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
 #   next-hono-orpc-sqlite-better-auth-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-expo-docker
-#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-bun-docker-e2e
 #   next-hono-sqlite-better-auth-docker
 #   next-hono-sqlite-better-auth-docker-e2e
-#   next-hono-sqlite-better-auth-expo-bun-docker
-#   next-hono-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-sqlite-better-auth-expo-docker
-#   next-hono-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-docker
 #   tanstack-start-hono-sqlite-better-auth-docker-e2e
+DATABASE_URL=local.db
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3001
+
+# apps/server/.env.example · 24 stacks
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-sqlite-better-auth-expo-docker
+#   next-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
@@ -434,6 +461,7 @@ PORT=3001
 DATABASE_URL=local.db
 BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
 PORT=3001
 
 # apps/server/.env.example · 48 stacks
@@ -488,7 +516,7 @@ PORT=3001
 DATABASE_URL=local.db
 PORT=3001
 
-# apps/server/.env.example · 48 stacks
+# apps/server/.env.example · 24 stacks
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -497,14 +525,6 @@ PORT=3001
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-docker
-#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -513,14 +533,6 @@ PORT=3001
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-docker
-#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -529,6 +541,28 @@ PORT=3001
 #   spa-hono-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-docker
 #   spa-hono-postgres-better-auth-electron-docker-e2e
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:5173
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3000
+
+# apps/server/.env.example · 24 stacks
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
@@ -540,9 +574,10 @@ PORT=3001
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
 BETTER_AUTH_URL=http://localhost:5173
 BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
 PORT=3000
 
-# apps/server/.env.example · 48 stacks
+# apps/server/.env.example · 24 stacks
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -551,14 +586,6 @@ PORT=3000
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-docker
-#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -567,14 +594,6 @@ PORT=3000
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-docker
@@ -583,6 +602,28 @@ PORT=3000
 #   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-docker
 #   spa-hono-sqlite-better-auth-electron-docker-e2e
+DATABASE_URL=local.db
+BETTER_AUTH_URL=http://localhost:5173
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3000
+
+# apps/server/.env.example · 24 stacks
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-expo-bun-docker
 #   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-expo-docker
@@ -594,6 +635,7 @@ PORT=3000
 DATABASE_URL=local.db
 BETTER_AUTH_URL=http://localhost:5173
 BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
 PORT=3000
 
 # apps/server/src/app.ts · 20 stacks
@@ -2411,19 +2453,13 @@ export const env = createEnv({
   },
 });
 
-# apps/server/src/env.ts · 60 stacks
+# apps/server/src/env.ts · 30 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
-#   hono-openapi-postgres-better-auth-expo-bun-docker
-#   hono-openapi-postgres-better-auth-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
-#   hono-orpc-postgres-better-auth-expo-bun-docker
-#   hono-orpc-postgres-better-auth-expo-docker
 #   hono-postgres-better-auth-bun-docker
 #   hono-postgres-better-auth-docker
-#   hono-postgres-better-auth-expo-bun-docker
-#   hono-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -2432,14 +2468,6 @@ export const env = createEnv({
 #   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-docker
 #   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-docker
-#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -2448,14 +2476,6 @@ export const env = createEnv({
 #   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-docker
 #   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-docker
-#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -2464,6 +2484,43 @@ export const env = createEnv({
 #   spa-hono-postgres-better-auth-electron-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-docker
 #   spa-hono-postgres-better-auth-electron-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  emptyStringAsUndefined: true,
+  runtimeEnv: process.env,
+  server: {
+    BETTER_AUTH_SECRET: z.string().min(32),
+    BETTER_AUTH_URL: z.url(),
+    DATABASE_URL: z.url(),
+    PORT: z.coerce.number().int().positive().default(3000),
+  },
+});
+
+# apps/server/src/env.ts · 30 stacks
+#   hono-openapi-postgres-better-auth-expo-bun-docker
+#   hono-openapi-postgres-better-auth-expo-docker
+#   hono-orpc-postgres-better-auth-expo-bun-docker
+#   hono-orpc-postgres-better-auth-expo-docker
+#   hono-postgres-better-auth-expo-bun-docker
+#   hono-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
@@ -2482,6 +2539,7 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url(),
     DATABASE_URL: z.url(),
+    NODE_ENV: z.enum(["development", "production", "test"]).optional(),
     PORT: z.coerce.number().int().positive().default(3000),
   },
 });
@@ -2559,19 +2617,13 @@ export const env = createEnv({
   },
 });
 
-# apps/server/src/env.ts · 60 stacks
+# apps/server/src/env.ts · 30 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
-#   hono-openapi-sqlite-better-auth-expo-bun-docker
-#   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-orpc-sqlite-better-auth-bun-docker
 #   hono-orpc-sqlite-better-auth-docker
-#   hono-orpc-sqlite-better-auth-expo-bun-docker
-#   hono-orpc-sqlite-better-auth-expo-docker
 #   hono-sqlite-better-auth-bun-docker
 #   hono-sqlite-better-auth-docker
-#   hono-sqlite-better-auth-expo-bun-docker
-#   hono-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -2580,14 +2632,6 @@ export const env = createEnv({
 #   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-electron-docker
 #   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-docker
-#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -2596,14 +2640,6 @@ export const env = createEnv({
 #   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-electron-docker
 #   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-docker
@@ -2612,6 +2648,43 @@ export const env = createEnv({
 #   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-docker
 #   spa-hono-sqlite-better-auth-electron-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  emptyStringAsUndefined: true,
+  runtimeEnv: process.env,
+  server: {
+    BETTER_AUTH_SECRET: z.string().min(32),
+    BETTER_AUTH_URL: z.url(),
+    DATABASE_URL: z.string().min(1),
+    PORT: z.coerce.number().int().positive().default(3000),
+  },
+});
+
+# apps/server/src/env.ts · 30 stacks
+#   hono-openapi-sqlite-better-auth-expo-bun-docker
+#   hono-openapi-sqlite-better-auth-expo-docker
+#   hono-orpc-sqlite-better-auth-expo-bun-docker
+#   hono-orpc-sqlite-better-auth-expo-docker
+#   hono-sqlite-better-auth-expo-bun-docker
+#   hono-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-expo-bun-docker
 #   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-electron-expo-docker
@@ -2630,6 +2703,7 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url(),
     DATABASE_URL: z.string().min(1),
+    NODE_ENV: z.enum(["development", "production", "test"]).optional(),
     PORT: z.coerce.number().int().positive().default(3000),
   },
 });
@@ -2767,51 +2841,66 @@ export const env = createEnv({
   },
 });
 
-# apps/server/src/env.ts · 48 stacks
+# apps/server/src/env.ts · 24 stacks
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-docker
-#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
 #   next-hono-orpc-postgres-better-auth-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-docker
-#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-bun-docker-e2e
 #   next-hono-postgres-better-auth-docker
 #   next-hono-postgres-better-auth-docker-e2e
-#   next-hono-postgres-better-auth-expo-bun-docker
-#   next-hono-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-postgres-better-auth-expo-docker
-#   next-hono-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-docker
 #   tanstack-start-hono-postgres-better-auth-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  emptyStringAsUndefined: true,
+  runtimeEnv: process.env,
+  server: {
+    BETTER_AUTH_SECRET: z.string().min(32),
+    BETTER_AUTH_URL: z.url(),
+    DATABASE_URL: z.url(),
+    PORT: z.coerce.number().int().positive().default(3001),
+  },
+});
+
+# apps/server/src/env.ts · 24 stacks
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-postgres-better-auth-expo-docker
+#   next-hono-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker
 #   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-expo-docker
@@ -2826,6 +2915,7 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url(),
     DATABASE_URL: z.url(),
+    NODE_ENV: z.enum(["development", "production", "test"]).optional(),
     PORT: z.coerce.number().int().positive().default(3001),
   },
 });
@@ -2891,51 +2981,66 @@ export const env = createEnv({
   },
 });
 
-# apps/server/src/env.ts · 48 stacks
+# apps/server/src/env.ts · 24 stacks
 #   next-hono-openapi-sqlite-better-auth-bun-docker
 #   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-docker
 #   next-hono-openapi-sqlite-better-auth-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-expo-docker
-#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-bun-docker
 #   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-docker
 #   next-hono-orpc-sqlite-better-auth-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-expo-docker
-#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   next-hono-sqlite-better-auth-bun-docker
 #   next-hono-sqlite-better-auth-bun-docker-e2e
 #   next-hono-sqlite-better-auth-docker
 #   next-hono-sqlite-better-auth-docker-e2e
-#   next-hono-sqlite-better-auth-expo-bun-docker
-#   next-hono-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-sqlite-better-auth-expo-docker
-#   next-hono-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-docker
 #   tanstack-start-hono-sqlite-better-auth-docker-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  emptyStringAsUndefined: true,
+  runtimeEnv: process.env,
+  server: {
+    BETTER_AUTH_SECRET: z.string().min(32),
+    BETTER_AUTH_URL: z.url(),
+    DATABASE_URL: z.string().min(1),
+    PORT: z.coerce.number().int().positive().default(3001),
+  },
+});
+
+# apps/server/src/env.ts · 24 stacks
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-sqlite-better-auth-expo-docker
+#   next-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
@@ -2950,6 +3055,7 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url(),
     DATABASE_URL: z.string().min(1),
+    NODE_ENV: z.enum(["development", "production", "test"]).optional(),
     PORT: z.coerce.number().int().positive().default(3001),
   },
 });
