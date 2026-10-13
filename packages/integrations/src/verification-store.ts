@@ -15,6 +15,8 @@ import { escapeRegExp } from "es-toolkit/string";
 import type { PackageManager, Stack } from "@vibestart/core";
 import { verificationSchema } from "@vibestart/core";
 
+import type { Candidate } from "#/coverage.ts";
+import { coverPlan, coveredBy } from "#/coverage.ts";
 import { goldens } from "#/goldens.ts";
 import { taskLabel } from "#/stack-label.ts";
 import type {
@@ -23,9 +25,10 @@ import type {
   StackVerification,
 } from "#/verification.ts";
 import {
-  bunSubjects,
+  emptyProjection,
   platforms,
   verifiedFingerprint,
+  verifiedOutput,
   verifiedStacks,
 } from "#/verification.ts";
 
@@ -37,19 +40,18 @@ export interface Task {
   readonly stack: Stack;
 }
 
+const linuxTasks = (packageManager: PackageManager) =>
+  verifiedStacks.map((stack): Task => ({
+    label: taskLabel(stack, packageManager),
+    packageManager,
+    platform: "linux",
+    stack,
+  }));
+
+/** Every task whose record counts: each verified stack on Linux under both package managers, each golden on Windows. */
 export const tasks: readonly Task[] = [
-  ...verifiedStacks.map((stack): Task => ({
-    label: taskLabel(stack),
-    packageManager: "pnpm",
-    platform: "linux",
-    stack,
-  })),
-  ...bunSubjects.map((stack): Task => ({
-    label: taskLabel(stack, "bun"),
-    packageManager: "bun",
-    platform: "linux",
-    stack,
-  })),
+  ...linuxTasks("pnpm"),
+  ...linuxTasks("bun"),
   ...Object.values(goldens).map((stack): Task => ({
     label: taskLabel(stack),
     packageManager: "pnpm",
@@ -57,6 +59,28 @@ export const tasks: readonly Task[] = [
     stack,
   })),
 ];
+
+const packageManagers = [
+  "pnpm",
+  "bun",
+] as const satisfies readonly PackageManager[];
+
+/** A lane is the Linux tasks of one package manager, whose passes cover one another's facets. */
+const lane = async (packageManager: PackageManager): Promise<Candidate[]> =>
+  await Promise.all(
+    tasks
+      .filter(
+        (task) =>
+          task.platform === "linux" && task.packageManager === packageManager
+      )
+      .map(async (task) => ({
+        facets: (await verifiedOutput(task.stack, packageManager)).facets,
+        label: task.label,
+      }))
+  );
+
+/** The goldens are the projects this repository shows, so each runs itself under pnpm wherever it is checked. */
+const pinned = new Set(Object.values(goldens).map((stack) => taskLabel(stack)));
 
 /** A record vouches for one output on one platform: `<platform>/<fingerprint>`. */
 const keyOf = async (task: Task) =>
@@ -156,7 +180,7 @@ export const currentRecords = async (
   );
 };
 
-/** Each platform's records for the current output, by label. */
+/** Each platform's records for the current output by label, and the Linux tasks those records cover. */
 export const projectionOf = async (
   records: ReadonlyMap<string, StackVerification>
 ): Promise<Projection> => {
@@ -166,7 +190,7 @@ export const projectionOf = async (
       task,
     }))
   );
-  const projection: Projection = { linux: {}, windows: {} };
+  const projection = emptyProjection();
   for (const { record, task } of entries.toSorted((a, b) =>
     a.task.label.localeCompare(b.task.label)
   )) {
@@ -174,7 +198,46 @@ export const projectionOf = async (
       projection[task.platform][task.label] = record;
     }
   }
+  const passed = new Set(Object.keys(projection.linux));
+  for (const packageManager of packageManagers) {
+    const candidates = await lane(packageManager);
+    const witnesses = coveredBy(candidates, passed);
+    for (const task of tasks.filter(
+      (candidate) =>
+        candidate.platform === "linux" &&
+        candidate.packageManager === packageManager
+    )) {
+      const by = witnesses.get(task.label);
+      if (by !== undefined) {
+        projection.coverage[packageManager][task.label] = {
+          by,
+          fingerprint: await verifiedFingerprint(task.stack, packageManager),
+        };
+      }
+    }
+  }
   return projection;
+};
+
+/** The tasks to run so that the projection covers every Linux task and has every golden's Windows record. */
+export const pendingTasks = async (projection: Projection) => {
+  const passed = new Set(Object.keys(projection.linux));
+  const planned = new Set<string>();
+  for (const packageManager of packageManagers) {
+    const candidates = await lane(packageManager);
+    for (const label of coverPlan(
+      candidates,
+      passed,
+      packageManager === "pnpm" ? pinned : new Set()
+    )) {
+      planned.add(`linux ${label}`);
+    }
+  }
+  return tasks.filter((task) =>
+    task.platform === "windows"
+      ? projection.windows[task.label] === undefined
+      : planned.has(`linux ${task.label}`)
+  );
 };
 
 const exactly = (labels: readonly string[]) =>

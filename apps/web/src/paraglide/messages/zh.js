@@ -994,7 +994,7 @@ export const home_title_rest = /** @type {(inputs: Home_Title_RestInputs) => Loc
 };
 
 export const home_verify_body = /** @type {(inputs: Home_Verify_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`每种组合都从零完成安装、检查、测试与构建。通过的输出留有指纹，随时可以核对。`)
+	return /** @type {LocalizedString} */ (`每种组合的每个文件，都在 CI 实际运行的组合中从零完成安装、检查、测试与构建。通过的输出留有指纹，随时可以核对。`)
 };
 
 export const home_verify_follow = /** @type {(inputs: Home_Verify_FollowInputs) => LocalizedString} */ () => {
@@ -1506,11 +1506,11 @@ export const verified = /** @type {(inputs: VerifiedInputs) => LocalizedString} 
 export const verified_passed = /** @type {((inputs: Verified_PassedInputs) => LocalizedString) & { parts: (inputs: Verified_PassedInputs) => import('../runtime.js').MessagePart[] }} */ (
 	/* @__PURE__ */ Object.assign(
 		/** @type {(inputs: Verified_PassedInputs) => LocalizedString} */ (() => {
-			return /** @type {LocalizedString} */ (`此输出已通过 vp run ready`)
+			return /** @type {LocalizedString} */ (`此输出的每个文件都已通过 vp run ready`)
 		}),
 		{
 			parts: /** @type {(inputs: Verified_PassedInputs) => import('../runtime.js').MessagePart[]} */ (() => {
-				return /** @type {import('../runtime.js').MessagePart[]} */ ([{ type: "text", value: "此输出已通过 " }, { type: "markup-start", name: "code", options: {}, attributes: {} }, { type: "text", value: "vp run ready" }, { type: "markup-end", name: "code", options: {}, attributes: {} }])
+				return /** @type {import('../runtime.js').MessagePart[]} */ ([{ type: "text", value: "此输出的每个文件都已通过 " }, { type: "markup-start", name: "code", options: {}, attributes: {} }, { type: "text", value: "vp run ready" }, { type: "markup-end", name: "code", options: {}, attributes: {} }])
 			})
 		}
 	)

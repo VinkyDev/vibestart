@@ -1,4 +1,3 @@
-import { minBy } from "es-toolkit/array";
 import { z } from "zod";
 
 import type {
@@ -16,21 +15,36 @@ import {
   verificationSchema,
 } from "@vibestart/core";
 
+import type { Facets } from "#/coverage.ts";
+import { bunFacets, pnpmFacets } from "#/coverage.ts";
 import { registry } from "#/registry.ts";
 import { stackLabel, taskLabel } from "#/stack-label.ts";
 
-/** Every stack is verified on Linux; the goldens also on Windows. */
+/** Every stack is covered on Linux; the goldens are also verified on Windows. */
 export const platforms = ["linux", "windows"] as const;
 
 export type Platform = (typeof platforms)[number];
 
-/** Each platform's records for the current output, by stack label. */
+/** For each verified stack's task label, its fingerprint when the store was read and the task whose record covers it. */
+const coverageSchema = z.record(
+  z.string(),
+  z.strictObject({ by: z.string(), fingerprint: z.string() })
+);
+
+/** Each platform's records for the current output by task label, and the Linux tasks they cover. */
 const projectionSchema = z.strictObject({
+  coverage: z.strictObject({ bun: coverageSchema, pnpm: coverageSchema }),
   linux: verificationSchema,
   windows: verificationSchema,
 });
 
 export type Projection = z.infer<typeof projectionSchema>;
+
+export const emptyProjection = (): Projection => ({
+  coverage: { bun: {}, pnpm: {} },
+  linux: {},
+  windows: {},
+});
 
 /** `vp run stacks pull` writes this from the verification store; a checkout without it verifies nothing. */
 const projections = import.meta.glob("../verification.json", {
@@ -42,7 +56,7 @@ const projections = import.meta.glob("../verification.json", {
 export const verifiedName = "my-app";
 
 export const verification = projectionSchema.parse(
-  projections["../verification.json"] ?? { linux: {}, windows: {} }
+  projections["../verification.json"] ?? emptyProjection()
 );
 
 const legal = new Map(
@@ -58,27 +72,6 @@ export const verifiedAs = (stack: Stack): Stack =>
 export const verifiedStacks = [...legal.values()].filter(
   (stack) => verifiedAs(stack) === stack
 );
-
-/** The runtime picks the server's dependencies, so it must match. */
-const covers = (whole: Stack, part: Stack) =>
-  part.runtime === whole.runtime &&
-  Object.entries(part).every(([kind, id]) => whole[kind] === id);
-
-/** Stacks no other verified stack covers; Bun and pnpm generate the same sources (bun.test.ts). */
-export const bunSubjects = verifiedStacks.filter(
-  (stack) =>
-    !verifiedStacks.some((other) => other !== stack && covers(other, stack))
-);
-
-export const bunSubjectOf = (stack: Stack): Stack => {
-  const subject = verifiedAs(stack);
-  const subjects = bunSubjects.filter((candidate) =>
-    covers(candidate, subject)
-  );
-  return (
-    minBy(subjects, (candidate) => Object.keys(candidate).length) ?? subject
-  );
-};
 
 export const verifiedBlueprint = (
   stack: Stack,
@@ -104,22 +97,39 @@ export const verifiedGeneration = async (
     name: verifiedName,
   });
 
-/** A label names one output, so each is generated and fingerprinted once; a generation is too large to keep. */
-const fingerprints = new Map<string, Promise<string>>();
+interface VerifiedOutput {
+  readonly facets: Facets;
+  readonly fingerprint: string;
+}
 
-export const verifiedFingerprint = async (
+/** A label names one output, so each is generated and analyzed once; a generation is too large to keep. */
+const outputs = new Map<string, Promise<VerifiedOutput>>();
+
+/** The fingerprint of the task's output, and the facets a pass of it vouches for. */
+export const verifiedOutput = async (
   stack: Stack,
   packageManager: PackageManager = "pnpm"
 ) => {
   const label = taskLabel(stack, packageManager);
-  let pending = fingerprints.get(label);
+  let pending = outputs.get(label);
   if (pending === undefined) {
-    pending = (async () =>
-      await fingerprint(await verifiedGeneration(stack, packageManager)))();
-    fingerprints.set(label, pending);
+    pending = (async () => {
+      const generation = await verifiedGeneration(stack, packageManager);
+      const facetsOf = packageManager === "bun" ? bunFacets : pnpmFacets;
+      return {
+        facets: facetsOf(stack, generation),
+        fingerprint: await fingerprint(generation),
+      };
+    })();
+    outputs.set(label, pending);
   }
   return await pending;
 };
+
+export const verifiedFingerprint = async (
+  stack: Stack,
+  packageManager: PackageManager = "pnpm"
+) => (await verifiedOutput(stack, packageManager)).fingerprint;
 
 export type StackVerification = Verification[string];
 
@@ -132,7 +142,7 @@ export const vouchesFor = async (
   record !== undefined &&
   record.fingerprint === (await verifiedFingerprint(stack, packageManager));
 
-/** The record that matches the current output, under the label of the task that produced it. */
+/** The record that covers the current output, under the label of the task that produced it. */
 export interface VerificationMatch {
   readonly label: string;
   readonly record: StackVerification;
@@ -140,18 +150,20 @@ export interface VerificationMatch {
 
 const matchOf = async (
   projection: Projection,
-  subject: Stack,
+  stack: Stack,
   packageManager: PackageManager
 ): Promise<VerificationMatch | undefined> => {
-  const label = taskLabel(subject, packageManager);
-  const record = projection.linux[label];
-  return record !== undefined &&
-    (await vouchesFor(record, subject, packageManager))
-    ? { label, record }
+  const entry =
+    projection.coverage[packageManager][taskLabel(stack, packageManager)];
+  const record = entry === undefined ? undefined : projection.linux[entry.by];
+  return entry !== undefined &&
+    record !== undefined &&
+    entry.fingerprint === (await verifiedFingerprint(stack, packageManager))
+    ? { label: entry.by, record }
     : undefined;
 };
 
-/** Under Bun, the record that installed the dependencies, and only when the pnpm record is current. */
+/** Under Bun, the record that covers its dependencies, and only when the sources are covered under pnpm. */
 export const verificationOf = async (
   stack: Stack,
   addons: readonly string[],
@@ -161,9 +173,10 @@ export const verificationOf = async (
   if (!defaultsCover(registry, addons)) {
     return undefined;
   }
-  const sources = await matchOf(projection, verifiedAs(stack), "pnpm");
+  const subject = verifiedAs(stack);
+  const sources = await matchOf(projection, subject, "pnpm");
   if (sources === undefined || packageManager !== "bun") {
     return sources;
   }
-  return await matchOf(projection, bunSubjectOf(stack), "bun");
+  return await matchOf(projection, subject, "bun");
 };

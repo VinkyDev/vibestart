@@ -45,13 +45,13 @@ While developing, run the narrowest set that covers your change, such as a singl
 
 ## Verification records [#verification]
 
-Before each release, every supported combination is generated with its default add-ons, installed, and run through `vp run ready`. A passing run produces a verification record containing:
+Before each release, every supported combination is generated with its default add-ons and covered by runs of `vp run ready`: CI installs and runs a set of combinations chosen so that every file any combination generates, and every three choices that can be made together, pass in at least one of them. A passing run produces a verification record containing:
 
 - a fingerprint of every generated file except documentation, which `vp run ready` does not read;
 - the operating system, architecture, and Node.js version it ran on;
 - when it ran, and how long it took.
 
-The studio shows the record for the stack you compose, and the CLI reports it at the end of `create` (or in the `verification` field with `--json`). The fingerprint ties the record to one exact output: if the files differ, as with a combination that has no record at this version or with add-ons beyond the defaults, no record applies.
+The studio shows the record that covers the stack you compose, and the CLI reports it at the end of `create` (or in the `verification` field with `--json`). The record names the combination that ran, and your stack is covered at one exact output: if the files differ, as with a combination not yet covered at this version or with add-ons beyond the defaults, no record applies.
 
 <Callout title="What a record covers">
   A record shows that the project as generated passed. It says nothing about

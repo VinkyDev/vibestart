@@ -2628,7 +2628,7 @@ export declare const home_title_rest: ((inputs?: Home_Title_RestInputs, options?
 /**
 * | output |
 * | --- |
-* | "Every stack is installed, checked, tested and built from scratch. The output that passed keeps a fingerprint, so you can check what you get." |
+* | "Every file of every stack is installed, checked, tested and built from scratch in a stack CI runs. The output that passed keeps a fingerprint, so you can che..." |
 *
 * @param {Home_Verify_BodyInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4388,7 +4388,7 @@ export declare const verified: ((inputs: VerifiedInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "vp run ready passed on this exact output" |
+* | "vp run ready passed on every file of this exact output" |
 *
 * @param {Verified_PassedInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

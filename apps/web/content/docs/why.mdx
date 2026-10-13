@@ -84,9 +84,9 @@ The studio and the CLI read the same registry of integrations. When choices conf
 
 ## Every combination is verified [#verification]
 
-Composition is only useful if every result works. Before each release, every supported combination is generated, installed, and run through type checks, lint, tests, browser tests, and a production build. A passing run is recorded with a fingerprint of the generated files, the environment, and the time.
+Composition is only useful if every result works. Before each release, every supported combination is covered: each file it generates, and every three of its choices together, have been installed and run through type checks, lint, tests, browser tests, and a production build in a combination CI ran. A passing run is recorded with a fingerprint of the generated files, the environment, and the time.
 
-When you create a project, the CLI matches its output against that fingerprint and reports the verification that applies. A record covers the project as generated; once you change code, dependencies, or deployment settings, your own `vp run ready` takes over. See [Testing and verification](/docs/testing#verification).
+When you create a project, the CLI matches its output against the fingerprint of the covered output and reports the run that covers it. A record covers the project as generated; once you change code, dependencies, or deployment settings, your own `vp run ready` takes over. See [Testing and verification](/docs/testing#verification).
 
 ## TypeScript across the stack [#typescript]
 

@@ -7,24 +7,22 @@ import { registry } from "#/registry.ts";
 import { taskLabel } from "#/stack-label.ts";
 import type { Projection, StackVerification } from "#/verification.ts";
 import {
-  bunSubjectOf,
+  emptyProjection,
   verificationOf,
   verifiedAs,
   verifiedFingerprint,
 } from "#/verification.ts";
 
-// A stack verified as its Docker sibling, whose Bun record comes from a third stack that covers it.
+// A stack verified as its Docker sibling, which another stack's record covers.
 const stack = legalStacks(registry).find(
   (candidate) =>
-    candidate.deployment === undefined &&
-    candidate.backend === "hono" &&
-    bunSubjectOf(candidate) !== verifiedAs(candidate)
+    candidate.deployment === undefined && candidate.backend === "hono"
 );
 if (stack === undefined) {
-  throw new Error("No Hono stack without a deployment has another Bun subject");
+  throw new Error("No Hono stack without a deployment");
 }
 const sibling = verifiedAs(stack);
-const subject = bunSubjectOf(stack);
+const witness = "some-covering-stack";
 const addons = defaultAddons(registry);
 
 const recordOf = (fingerprint: string): StackVerification => ({
@@ -34,54 +32,74 @@ const recordOf = (fingerprint: string): StackVerification => ({
   verifiedAt: "2026-10-08T00:00:00.000Z",
 });
 
-const current = async (of: Stack, packageManager: PackageManager) =>
-  recordOf(await verifiedFingerprint(of, packageManager));
+const record = recordOf("a".repeat(64));
 
-const projectionOf = (linux: Projection["linux"]): Projection => ({
-  linux,
-  windows: {},
-});
+/** A projection in which `witness` covers the sibling under each listed package manager at `fingerprint`. */
+const covering = async (
+  managers: readonly PackageManager[],
+  fingerprintOf: (of: Stack, packageManager: PackageManager) => Promise<string>
+): Promise<Projection> => {
+  const projection = emptyProjection();
+  projection.linux[witness] = record;
+  for (const packageManager of managers) {
+    projection.coverage[packageManager][taskLabel(sibling, packageManager)] = {
+      by: witness,
+      fingerprint: await fingerprintOf(sibling, packageManager),
+    };
+  }
+  return projection;
+};
 
 describe(verificationOf, () => {
-  it("vouches for a stack with its Docker sibling's record", async () => {
-    const record = await current(sibling, "pnpm");
+  it("vouches for a stack with the record that covers its Docker sibling", async () => {
     await expect(
       verificationOf(
         stack,
         addons,
         "pnpm",
-        projectionOf({ [taskLabel(sibling)]: record })
+        await covering(["pnpm"], verifiedFingerprint)
       )
-    ).resolves.toStrictEqual({ label: taskLabel(sibling), record });
+    ).resolves.toStrictEqual({ label: witness, record });
   });
 
-  it("ignores a record of an earlier output", async () => {
+  it("ignores coverage of an earlier output", async () => {
     await expect(
       verificationOf(
         stack,
         addons,
         "pnpm",
-        projectionOf({ [taskLabel(sibling)]: recordOf("0".repeat(64)) })
+        await covering(["pnpm"], async () => await Promise.resolve("0"))
       )
     ).resolves.toBeUndefined();
   });
 
-  it("under Bun, takes the Bun subject's record once the pnpm record is current", async () => {
-    const bun = await current(subject, "bun");
-    const linux = { [taskLabel(subject, "bun")]: bun };
+  it("ignores an add-on outside the defaults", async () => {
     await expect(
-      verificationOf(stack, addons, "bun", projectionOf(linux))
+      verificationOf(
+        stack,
+        [...addons, "unknown"],
+        "pnpm",
+        await covering(["pnpm"], verifiedFingerprint)
+      )
+    ).resolves.toBeUndefined();
+  });
+
+  it("under Bun, needs the sources covered under pnpm as well", async () => {
+    await expect(
+      verificationOf(
+        stack,
+        addons,
+        "bun",
+        await covering(["bun"], verifiedFingerprint)
+      )
     ).resolves.toBeUndefined();
     await expect(
       verificationOf(
         stack,
         addons,
         "bun",
-        projectionOf({
-          ...linux,
-          [taskLabel(sibling)]: await current(sibling, "pnpm"),
-        })
+        await covering(["pnpm", "bun"], verifiedFingerprint)
       )
-    ).resolves.toStrictEqual({ label: taskLabel(subject, "bun"), record: bun });
+    ).resolves.toStrictEqual({ label: witness, record });
   });
 });
