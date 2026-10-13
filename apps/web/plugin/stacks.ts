@@ -16,25 +16,18 @@ import { projectKey } from "../src/lib/project.ts";
 /** The name the CLI gives a project when it is not asked for one. */
 export const previewName = "my-app";
 
-// The Studio leaves out kinds its picker and topology cannot show yet. The CLI and the schema offer them.
-const hiddenKinds: readonly string[] = ["mobile"];
-
 const legal = new Map(
-  legalStacks(registry)
-    .filter((stack) => hiddenKinds.every((kind) => stack[kind] === undefined))
-    .map((stack) => [stackLabel(stack), stack])
+  legalStacks(registry).map((stack) => [stackLabel(stack), stack])
 );
 
 export const registryInfo: RegistryInfo = {
   addons: registry.addons.map((addon) => omit(addon, ["contribute"])),
   capabilities: registry.capabilities,
-  integrations: registry.integrations
-    .filter((integration) => !hiddenKinds.includes(integration.kind))
-    .map((integration) => omit(integration, ["contribute"])),
-  kindGroups: registry.kindGroups?.map((group) =>
-    group.filter((kind) => !hiddenKinds.includes(kind))
+  integrations: registry.integrations.map((integration) =>
+    omit(integration, ["contribute"])
   ),
-  kinds: registry.kinds.filter((kind) => !hiddenKinds.includes(kind.id)),
+  kindGroups: registry.kindGroups,
+  kinds: registry.kinds,
 };
 
 /** The JSON Schema every generated `vibestart.jsonc` names, served from the site at its URL's path. */

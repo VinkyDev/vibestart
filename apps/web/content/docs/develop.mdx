@@ -55,6 +55,7 @@ When the agent reports that it is done, review the parts that matter most:
 | Task                                       | Command              |
 | ------------------------------------------ | -------------------- |
 | Start the application                      | `vp run dev`         |
+| Start the mobile app, in its own terminal  | `vp run dev:mobile`  |
 | Generate a migration after a schema change | `vp run db:generate` |
 | Apply migrations to the local database     | `vp run db:migrate`  |
 | Format, lint, and type check               | `vp check`           |
@@ -65,6 +66,12 @@ When the agent reports that it is done, review the parts that matter most:
 | Check everything before a commit           | `vp run ready`       |
 
 While iterating, run the narrowest check that covers your change. Run `vp run ready` before you commit.
+
+## The mobile app [#mobile]
+
+Start the app with `vp run dev:mobile` and open it in Expo Go. A mobile app on its own needs nothing else. With a server, start it first with `vp run dev`, and run `vp run dev:mobile` in a second terminal. The app calls the server on port 3000 of your computer, so the phone must reach it: put both on the same network and let the firewall pass the port. A company network or VPN often blocks devices from reaching each other; a hotspot from the phone avoids that. A release build has no Metro to ask, so it calls the server at `EXPO_PUBLIC_API_URL` in `apps/mobile/.env`.
+
+`vp run ready` checks the app without a device, so open the screens you changed in Expo Go before you commit. [Mobile](/docs/stack/mobile) covers development builds and the API connection.
 
 ## When a change is done [#done]
 

@@ -58,6 +58,7 @@ describe("stack flags", () => {
       database: "sqlite",
       deployment: "none",
       framework: "none",
+      mobile: "none",
     });
   });
 });
@@ -77,6 +78,23 @@ describe("desktop shell", () => {
       "electron"
     );
     expect(next?.entry.stack.framework).toBe("spa");
+  });
+});
+
+describe("mobile app", () => {
+  it("is chosen with the flag the CLI takes", () => {
+    const { stack } = entryFromFlags({ mobile: "expo" });
+    expect(stack.mobile).toBe("expo");
+    expect(stack.framework).toBe(recommended.framework);
+    expect(flagsOf(stack).mobile).toBe("expo");
+    expect(
+      commandLine(commandWords(flagsOf(stack), "my-app", "pnpm"))
+    ).toContain("--mobile expo");
+  });
+
+  it("is named as none when left out, since every stack can have one", () => {
+    expect(recommended.mobile).toBeUndefined();
+    expect(flagsOf(recommended).mobile).toBe("none");
   });
 });
 
@@ -190,7 +208,7 @@ describe("the create command", () => {
   it("writes the command a person runs", () => {
     const { stack } = entry("next-self-orpc-sqlite-better-auth-docker");
     expect(commandLine(commandWords(flagsOf(stack), "acme", "pnpm"))).toBe(
-      "pnpm dlx vibestart-cli acme --framework next --backend self --api orpc --database sqlite --auth better-auth --deployment docker"
+      "pnpm dlx vibestart-cli acme --framework next --backend self --api orpc --database sqlite --auth better-auth --mobile none --deployment docker"
     );
   });
 });

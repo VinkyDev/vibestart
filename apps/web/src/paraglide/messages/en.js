@@ -7,11 +7,15 @@
 /** @typedef {{}} Add_DeploymentInputs */
 /** @typedef {{}} Add_DesktopInputs */
 /** @typedef {{}} Add_FrameworkInputs */
+/** @typedef {{}} Add_MobileInputs */
 /** @typedef {{}} Addon_DefaultInputs */
 /** @typedef {{}} Addon_Desc_KnipInputs */
 /** @typedef {{}} Addon_Desc_UltraciteInputs */
 /** @typedef {{}} AddonsInputs */
+/** @typedef {{}} Api_Client_DesktopInputs */
+/** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
+/** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -64,6 +68,7 @@
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
 /** @typedef {{}} Desc_ElectronInputs */
+/** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
@@ -81,8 +86,6 @@
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
-/** @typedef {{}} Desktop_ProxyInputs */
-/** @typedef {{}} Desktop_Proxy_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
 /** @typedef {{}} Docs_Back_HomeInputs */
 /** @typedef {{}} Docs_Copy_CodeInputs */
@@ -97,6 +100,7 @@
 /** @typedef {{}} Document_TitleInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
+/** @typedef {{}} Expo_ProcessInputs */
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
@@ -104,6 +108,7 @@
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_ElectronInputs */
+/** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
@@ -114,6 +119,7 @@
 /** @typedef {{}} Fit_None_DeploymentInputs */
 /** @typedef {{}} Fit_None_DesktopInputs */
 /** @typedef {{}} Fit_None_FrameworkInputs */
+/** @typedef {{}} Fit_None_MobileInputs */
 /** @typedef {{}} Fit_OpenapiInputs */
 /** @typedef {{}} Fit_OrpcInputs */
 /** @typedef {{}} Fit_PostgresInputs */
@@ -165,6 +171,7 @@
 /** @typedef {{}} Kind_DesktopInputs */
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
+/** @typedef {{}} Kind_MobileInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -173,6 +180,7 @@
 /** @typedef {{}} Kind_UiInputs */
 /** @typedef {{}} Knip_Scope_DefaultInputs */
 /** @typedef {{}} Knip_Scope_DesktopInputs */
+/** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -184,6 +192,7 @@
 /** @typedef {{}} None_DeploymentInputs */
 /** @typedef {{}} None_DesktopInputs */
 /** @typedef {{}} None_FrameworkInputs */
+/** @typedef {{}} None_MobileInputs */
 /** @typedef {{}} None_TokenInputs */
 /** @typedef {{}} Not_Found_BodyInputs */
 /** @typedef {{}} Not_Found_HomeInputs */
@@ -237,6 +246,10 @@
 /** @typedef {{}} Role_Framework_AboutInputs */
 /** @typedef {{}} Role_Framework_NoneInputs */
 /** @typedef {{}} Role_Framework_QuestionInputs */
+/** @typedef {{}} Role_MobileInputs */
+/** @typedef {{}} Role_Mobile_AboutInputs */
+/** @typedef {{}} Role_Mobile_NoneInputs */
+/** @typedef {{}} Role_Mobile_QuestionInputs */
 /** @typedef {{}} Runs_In_BrowserInputs */
 /** @typedef {{}} Runs_In_ElectronInputs */
 /** @typedef {{}} Runtime_AboutInputs */
@@ -256,12 +269,14 @@
 /** @typedef {{}} Tests_Layer_UnitInputs */
 /** @typedef {{}} Tests_Scope_E2e_NoneInputs */
 /** @typedef {{}} Tests_Scope_IntegrationInputs */
+/** @typedef {{}} Tests_Scope_MobileInputs */
 /** @typedef {{}} Tests_Scope_UnitInputs */
 /** @typedef {{}} Tool_AnalyzeInputs */
 /** @typedef {{}} Tool_BuildInputs */
 /** @typedef {{}} Tool_BuiltinInputs */
 /** @typedef {{}} Tool_CheckInputs */
 /** @typedef {{}} Tool_DevInputs */
+/** @typedef {{}} Tool_Dev_MobileInputs */
 /** @typedef {{}} Tool_E2eInputs */
 /** @typedef {{}} Tool_TestInputs */
 /** @typedef {{}} Tool_Test_IntegrationInputs */
@@ -359,6 +374,10 @@ export const add_framework = /** @type {(inputs: Add_FrameworkInputs) => Localiz
 	return /** @type {LocalizedString} */ (`Add frontend`)
 };
 
+export const add_mobile = /** @type {(inputs: Add_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Add mobile app`)
+};
+
 export const addon_default = /** @type {(inputs: Addon_DefaultInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`default`)
 };
@@ -375,8 +394,20 @@ export const addons = /** @type {(inputs: AddonsInputs) => LocalizedString} */ (
 	return /** @type {LocalizedString} */ (`Extensions`)
 };
 
+export const api_client_desktop = /** @type {(inputs: Api_Client_DesktopInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`The desktop app runs the web app in Electron, and its main process forwards the calls to the server.`)
+};
+
+export const api_client_mobile = /** @type {(inputs: Api_Client_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`The mobile app calls the server over the network: the computer running Metro in development, and EXPO_PUBLIC_API_URL in a release build.`)
+};
+
 export const api_clients = /** @type {(inputs: Api_ClientsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`API clients`)
+};
+
+export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Every client calls this one API, with its types taken from the server code.`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -592,6 +623,10 @@ export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => Localiz
 	return /** @type {LocalizedString} */ (`Desktop app around the web app, packaged with electron-builder`)
 };
 
+export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`iOS and Android app on React Native, with Expo Router`)
+};
+
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Standalone API server built on Hono`)
 };
@@ -660,14 +695,6 @@ export const desktop_dist_pill = /** @type {(inputs: Desktop_Dist_PillInputs) =>
 	return /** @type {LocalizedString} */ (`apps/web/dist`)
 };
 
-export const desktop_proxy = /** @type {(inputs: Desktop_ProxyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Forwards`)
-};
-
-export const desktop_proxy_pill = /** @type {(inputs: Desktop_Proxy_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API proxy`)
-};
-
 export const docs_anchor = /** @type {(inputs: Docs_AnchorInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Link to this section`)
 };
@@ -724,6 +751,10 @@ export const engineering_capabilities = /** @type {(inputs: Engineering_Capabili
 	return /** @type {LocalizedString} */ (`Engineering`)
 };
 
+export const expo_process = /** @type {(inputs: Expo_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Expo app on the phone`)
+};
+
 export const extensions_about = /** @type {(inputs: Extensions_AboutInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Choose the capabilities you need. Select several without changing the existing test flow.`)
 };
@@ -752,6 +783,10 @@ export const fit_docker = /** @type {(inputs: Fit_DockerInputs) => LocalizedStri
 
 export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For the same web app in its own window, packaged as an installer.`)
+};
+
+export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For an iOS and Android app, beside the web app or on its own.`)
 };
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
@@ -794,12 +829,16 @@ export const fit_none_framework = /** @type {(inputs: Fit_None_FrameworkInputs) 
 	return /** @type {LocalizedString} */ (`For an API that apps or scripts call.`)
 };
 
+export const fit_none_mobile = /** @type {(inputs: Fit_None_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For a product without a phone app.`)
+};
+
 export const fit_openapi = /** @type {(inputs: Fit_OpenapiInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For a standard REST API that others call.`)
 };
 
 export const fit_orpc = /** @type {(inputs: Fit_OrpcInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`For an API only your own frontend calls.`)
+	return /** @type {LocalizedString} */ (`For an API only your own apps call.`)
 };
 
 export const fit_postgres = /** @type {(inputs: Fit_PostgresInputs) => LocalizedString} */ () => {
@@ -1011,6 +1050,10 @@ export const kind_frontend = /** @type {(inputs: Kind_FrontendInputs) => Localiz
 	return /** @type {LocalizedString} */ (`Frontend`)
 };
 
+export const kind_mobile = /** @type {(inputs: Kind_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Mobile`)
+};
+
 export const kind_orm = /** @type {(inputs: Kind_OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`ORM`)
 };
@@ -1041,6 +1084,10 @@ export const knip_scope_default = /** @type {(inputs: Knip_Scope_DefaultInputs) 
 
 export const knip_scope_desktop = /** @type {(inputs: Knip_Scope_DesktopInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`knip.json declares Electron main, preload, and both Vite build configurations as entries. Other workspaces are discovered automatically.`)
+};
+
+export const knip_scope_mobile = /** @type {(inputs: Knip_Scope_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Knip's Expo plugin finds the app's screens. knip.json only ignores expo-updates, which that plugin expects.`)
 };
 
 export const language = /** @type {(inputs: LanguageInputs) => LocalizedString} */ () => {
@@ -1085,6 +1132,10 @@ export const none_desktop = /** @type {(inputs: None_DesktopInputs) => Localized
 
 export const none_framework = /** @type {(inputs: None_FrameworkInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`No frontend`)
+};
+
+export const none_mobile = /** @type {(inputs: None_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`No mobile app`)
 };
 
 export const none_token = /** @type {(inputs: None_TokenInputs) => LocalizedString} */ () => {
@@ -1201,7 +1252,7 @@ export const role_api = /** @type {(inputs: Role_ApiInputs) => LocalizedString} 
 };
 
 export const role_api_about = /** @type {(inputs: Role_Api_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`How the frontend calls the backend.`)
+	return /** @type {LocalizedString} */ (`The protocol, and the typed client every app calls it with.`)
 };
 
 export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => LocalizedString} */ () => {
@@ -1209,7 +1260,7 @@ export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => Localiz
 };
 
 export const role_api_question = /** @type {(inputs: Role_Api_QuestionInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`How does the frontend talk to the backend?`)
+	return /** @type {LocalizedString} */ (`How do the clients call the server?`)
 };
 
 export const role_auth = /** @type {(inputs: Role_AuthInputs) => LocalizedString} */ () => {
@@ -1308,6 +1359,22 @@ export const role_framework_question = /** @type {(inputs: Role_Framework_Questi
 	return /** @type {LocalizedString} */ (`How are the pages built?`)
 };
 
+export const role_mobile = /** @type {(inputs: Role_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Mobile`)
+};
+
+export const role_mobile_about = /** @type {(inputs: Role_Mobile_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`An iOS and Android app. With a server, it calls the API directly.`)
+};
+
+export const role_mobile_none = /** @type {(inputs: Role_Mobile_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`No phone app.`)
+};
+
+export const role_mobile_question = /** @type {(inputs: Role_Mobile_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Does it need a mobile app?`)
+};
+
 export const runs_in_browser = /** @type {(inputs: Runs_In_BrowserInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Runs in the browser`)
 };
@@ -1377,11 +1444,15 @@ export const tests_layer_unit = /** @type {(inputs: Tests_Layer_UnitInputs) => L
 };
 
 export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`An API-only project has no web app, so it has no end-to-end tests.`)
+	return /** @type {LocalizedString} */ (`A project without a web app has no end-to-end tests.`)
 };
 
 export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Every stack runs its unit tests on Vitest. This one also runs API integration tests against a real database.`)
+};
+
+export const tests_scope_mobile = /** @type {(inputs: Tests_Scope_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`The mobile app runs no end-to-end tests. Ready checks its types and lint, runs its unit tests, and bundles it for iOS and Android, without a device.`)
 };
 
 export const tests_scope_unit = /** @type {(inputs: Tests_Scope_UnitInputs) => LocalizedString} */ () => {
@@ -1406,6 +1477,10 @@ export const tool_check = /** @type {(inputs: Tool_CheckInputs) => LocalizedStri
 
 export const tool_dev = /** @type {(inputs: Tool_DevInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Develop`)
+};
+
+export const tool_dev_mobile = /** @type {(inputs: Tool_Dev_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Develop the app`)
 };
 
 export const tool_e2e = /** @type {(inputs: Tool_E2eInputs) => LocalizedString} */ () => {

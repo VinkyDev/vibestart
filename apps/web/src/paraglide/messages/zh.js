@@ -7,11 +7,15 @@
 /** @typedef {{}} Add_DeploymentInputs */
 /** @typedef {{}} Add_DesktopInputs */
 /** @typedef {{}} Add_FrameworkInputs */
+/** @typedef {{}} Add_MobileInputs */
 /** @typedef {{}} Addon_DefaultInputs */
 /** @typedef {{}} Addon_Desc_KnipInputs */
 /** @typedef {{}} Addon_Desc_UltraciteInputs */
 /** @typedef {{}} AddonsInputs */
+/** @typedef {{}} Api_Client_DesktopInputs */
+/** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
+/** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -64,6 +68,7 @@
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
 /** @typedef {{}} Desc_ElectronInputs */
+/** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
@@ -81,8 +86,6 @@
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
-/** @typedef {{}} Desktop_ProxyInputs */
-/** @typedef {{}} Desktop_Proxy_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
 /** @typedef {{}} Docs_Back_HomeInputs */
 /** @typedef {{}} Docs_Copy_CodeInputs */
@@ -97,6 +100,7 @@
 /** @typedef {{}} Document_TitleInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
+/** @typedef {{}} Expo_ProcessInputs */
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
@@ -104,6 +108,7 @@
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_ElectronInputs */
+/** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
@@ -114,6 +119,7 @@
 /** @typedef {{}} Fit_None_DeploymentInputs */
 /** @typedef {{}} Fit_None_DesktopInputs */
 /** @typedef {{}} Fit_None_FrameworkInputs */
+/** @typedef {{}} Fit_None_MobileInputs */
 /** @typedef {{}} Fit_OpenapiInputs */
 /** @typedef {{}} Fit_OrpcInputs */
 /** @typedef {{}} Fit_PostgresInputs */
@@ -165,6 +171,7 @@
 /** @typedef {{}} Kind_DesktopInputs */
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
+/** @typedef {{}} Kind_MobileInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -173,6 +180,7 @@
 /** @typedef {{}} Kind_UiInputs */
 /** @typedef {{}} Knip_Scope_DefaultInputs */
 /** @typedef {{}} Knip_Scope_DesktopInputs */
+/** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -184,6 +192,7 @@
 /** @typedef {{}} None_DeploymentInputs */
 /** @typedef {{}} None_DesktopInputs */
 /** @typedef {{}} None_FrameworkInputs */
+/** @typedef {{}} None_MobileInputs */
 /** @typedef {{}} None_TokenInputs */
 /** @typedef {{}} Not_Found_BodyInputs */
 /** @typedef {{}} Not_Found_HomeInputs */
@@ -237,6 +246,10 @@
 /** @typedef {{}} Role_Framework_AboutInputs */
 /** @typedef {{}} Role_Framework_NoneInputs */
 /** @typedef {{}} Role_Framework_QuestionInputs */
+/** @typedef {{}} Role_MobileInputs */
+/** @typedef {{}} Role_Mobile_AboutInputs */
+/** @typedef {{}} Role_Mobile_NoneInputs */
+/** @typedef {{}} Role_Mobile_QuestionInputs */
 /** @typedef {{}} Runs_In_BrowserInputs */
 /** @typedef {{}} Runs_In_ElectronInputs */
 /** @typedef {{}} Runtime_AboutInputs */
@@ -256,12 +269,14 @@
 /** @typedef {{}} Tests_Layer_UnitInputs */
 /** @typedef {{}} Tests_Scope_E2e_NoneInputs */
 /** @typedef {{}} Tests_Scope_IntegrationInputs */
+/** @typedef {{}} Tests_Scope_MobileInputs */
 /** @typedef {{}} Tests_Scope_UnitInputs */
 /** @typedef {{}} Tool_AnalyzeInputs */
 /** @typedef {{}} Tool_BuildInputs */
 /** @typedef {{}} Tool_BuiltinInputs */
 /** @typedef {{}} Tool_CheckInputs */
 /** @typedef {{}} Tool_DevInputs */
+/** @typedef {{}} Tool_Dev_MobileInputs */
 /** @typedef {{}} Tool_E2eInputs */
 /** @typedef {{}} Tool_TestInputs */
 /** @typedef {{}} Tool_Test_IntegrationInputs */
@@ -359,6 +374,10 @@ export const add_framework = /** @type {(inputs: Add_FrameworkInputs) => Localiz
 	return /** @type {LocalizedString} */ (`添加前端`)
 };
 
+export const add_mobile = /** @type {(inputs: Add_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`添加移动端`)
+};
+
 export const addon_default = /** @type {(inputs: Addon_DefaultInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`默认`)
 };
@@ -375,8 +394,20 @@ export const addons = /** @type {(inputs: AddonsInputs) => LocalizedString} */ (
 	return /** @type {LocalizedString} */ (`扩展能力`)
 };
 
+export const api_client_desktop = /** @type {(inputs: Api_Client_DesktopInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`桌面端在 Electron 中运行网页应用，由主进程把调用转发给服务端。`)
+};
+
+export const api_client_mobile = /** @type {(inputs: Api_Client_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`移动端通过网络直接调用服务端：开发时访问运行 Metro 的电脑，发布构建访问 EXPO_PUBLIC_API_URL。`)
+};
+
 export const api_clients = /** @type {(inputs: Api_ClientsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`API 调用方`)
+};
+
+export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`所有客户端都调用这一套 API，类型直接来自服务端代码。`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -592,6 +623,10 @@ export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => Localiz
 	return /** @type {LocalizedString} */ (`包裹 Web 应用的桌面端，用 electron-builder 打包`)
 };
 
+export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`基于 React Native 的 iOS 与 Android 应用，使用 Expo Router`)
+};
+
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`基于 Hono 的独立 API 服务`)
 };
@@ -660,14 +695,6 @@ export const desktop_dist_pill = /** @type {(inputs: Desktop_Dist_PillInputs) =>
 	return /** @type {LocalizedString} */ (`apps/web/dist`)
 };
 
-export const desktop_proxy = /** @type {(inputs: Desktop_ProxyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`转发`)
-};
-
-export const desktop_proxy_pill = /** @type {(inputs: Desktop_Proxy_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`API 代理`)
-};
-
 export const docs_anchor = /** @type {(inputs: Docs_AnchorInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`链接到此小节`)
 };
@@ -724,6 +751,10 @@ export const engineering_capabilities = /** @type {(inputs: Engineering_Capabili
 	return /** @type {LocalizedString} */ (`工程能力`)
 };
 
+export const expo_process = /** @type {(inputs: Expo_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`手机上的 Expo 应用`)
+};
+
 export const extensions_about = /** @type {(inputs: Extensions_AboutInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`按需接入，可同时选择多个。原有测试流程保持不变。`)
 };
@@ -750,6 +781,10 @@ export const fit_docker = /** @type {(inputs: Fit_DockerInputs) => LocalizedStri
 
 export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合把同一个网页应用装进独立窗口，打包成安装程序`)
+};
+
+export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合 iOS 与 Android 应用，可与网页应用并存，也可单独使用`)
 };
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
@@ -792,12 +827,16 @@ export const fit_none_framework = /** @type {(inputs: Fit_None_FrameworkInputs) 
 	return /** @type {LocalizedString} */ (`适合只供 App 或脚本调用的 API`)
 };
 
+export const fit_none_mobile = /** @type {(inputs: Fit_None_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合不需要手机 App 的产品`)
+};
+
 export const fit_openapi = /** @type {(inputs: Fit_OpenapiInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合提供给他人调用的标准 REST API`)
 };
 
 export const fit_orpc = /** @type {(inputs: Fit_OrpcInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`适合只供自己的前端调用`)
+	return /** @type {LocalizedString} */ (`适合只供自己的应用调用`)
 };
 
 export const fit_postgres = /** @type {(inputs: Fit_PostgresInputs) => LocalizedString} */ () => {
@@ -1007,6 +1046,10 @@ export const kind_frontend = /** @type {(inputs: Kind_FrontendInputs) => Localiz
 	return /** @type {LocalizedString} */ (`前端`)
 };
 
+export const kind_mobile = /** @type {(inputs: Kind_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`移动端`)
+};
+
 export const kind_orm = /** @type {(inputs: Kind_OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`ORM`)
 };
@@ -1037,6 +1080,10 @@ export const knip_scope_default = /** @type {(inputs: Knip_Scope_DefaultInputs) 
 
 export const knip_scope_desktop = /** @type {(inputs: Knip_Scope_DesktopInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`knip.json 补齐 Electron 主进程、preload 和两份 Vite 构建配置的入口；其余 workspace 自动识别。`)
+};
+
+export const knip_scope_mobile = /** @type {(inputs: Knip_Scope_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Knip 的 Expo 插件识别 App 的各个页面；knip.json 只忽略该插件默认要求的 expo-updates。`)
 };
 
 export const language = /** @type {(inputs: LanguageInputs) => LocalizedString} */ () => {
@@ -1081,6 +1128,10 @@ export const none_desktop = /** @type {(inputs: None_DesktopInputs) => Localized
 
 export const none_framework = /** @type {(inputs: None_FrameworkInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`无前端`)
+};
+
+export const none_mobile = /** @type {(inputs: None_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`无移动端`)
 };
 
 export const none_token = /** @type {(inputs: None_TokenInputs) => LocalizedString} */ () => {
@@ -1197,7 +1248,7 @@ export const role_api = /** @type {(inputs: Role_ApiInputs) => LocalizedString} 
 };
 
 export const role_api_about = /** @type {(inputs: Role_Api_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`前端调用后端的方式。`)
+	return /** @type {LocalizedString} */ (`接口的协议，以及各端调用它所用的类型化客户端。`)
 };
 
 export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => LocalizedString} */ () => {
@@ -1205,7 +1256,7 @@ export const role_api_none = /** @type {(inputs: Role_Api_NoneInputs) => Localiz
 };
 
 export const role_api_question = /** @type {(inputs: Role_Api_QuestionInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`前端如何与后端通信？`)
+	return /** @type {LocalizedString} */ (`客户端如何调用服务端？`)
 };
 
 export const role_auth = /** @type {(inputs: Role_AuthInputs) => LocalizedString} */ () => {
@@ -1304,6 +1355,22 @@ export const role_framework_question = /** @type {(inputs: Role_Framework_Questi
 	return /** @type {LocalizedString} */ (`页面用什么构建？`)
 };
 
+export const role_mobile = /** @type {(inputs: Role_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`移动端`)
+};
+
+export const role_mobile_about = /** @type {(inputs: Role_Mobile_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`iOS 与 Android 应用。有服务端时，它直接调用 API。`)
+};
+
+export const role_mobile_none = /** @type {(inputs: Role_Mobile_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`没有手机 App。`)
+};
+
+export const role_mobile_question = /** @type {(inputs: Role_Mobile_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`需要手机 App 吗？`)
+};
+
 export const runs_in_browser = /** @type {(inputs: Runs_In_BrowserInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`在浏览器中运行`)
 };
@@ -1373,11 +1440,15 @@ export const tests_layer_unit = /** @type {(inputs: Tests_Layer_UnitInputs) => L
 };
 
 export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`纯 API 项目没有 Web 应用，因此没有端到端测试。`)
+	return /** @type {LocalizedString} */ (`没有 Web 应用的项目没有端到端测试。`)
 };
 
 export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`每个技术栈都用 Vitest 运行单元测试；这个技术栈还会运行连接真实数据库的 API 集成测试。`)
+};
+
+export const tests_scope_mobile = /** @type {(inputs: Tests_Scope_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`移动端不跑端到端测试：ready 检查它的类型和 lint，运行单元测试，并打出 iOS 与 Android 的 bundle，不在设备上运行。`)
 };
 
 export const tests_scope_unit = /** @type {(inputs: Tests_Scope_UnitInputs) => LocalizedString} */ () => {
@@ -1402,6 +1473,10 @@ export const tool_check = /** @type {(inputs: Tool_CheckInputs) => LocalizedStri
 
 export const tool_dev = /** @type {(inputs: Tool_DevInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`开发`)
+};
+
+export const tool_dev_mobile = /** @type {(inputs: Tool_Dev_MobileInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`开发 App`)
 };
 
 export const tool_e2e = /** @type {(inputs: Tool_E2eInputs) => LocalizedString} */ () => {

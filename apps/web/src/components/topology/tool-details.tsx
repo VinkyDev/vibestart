@@ -59,7 +59,13 @@ export const ToolDetails = ({
           <p>{m.toolchain_scope()}</p>
           <Commands
             commands={[
-              { label: m.tool_dev(), run: "vp run dev" },
+              // A mobile app alone has no `dev`: Expo's terminal UI runs in a terminal of its own.
+              ...(stack.framework === undefined && stack.backend === undefined
+                ? []
+                : [{ label: m.tool_dev(), run: "vp run dev" }]),
+              ...(stack.mobile === undefined
+                ? []
+                : [{ label: m.tool_dev_mobile(), run: "vp run dev:mobile" }]),
               { label: m.tool_check(), run: "vp check" },
               { label: m.tool_build(), run: "vp run build" },
             ]}
@@ -98,6 +104,7 @@ export const ToolDetails = ({
               commands={[{ label: m.tool_e2e(), run: "vp run test:e2e" }]}
             />
           )}
+          {stack.mobile !== undefined && <p>{m.tests_scope_mobile()}</p>}
           <Sites kind="testing" />
         </>
       );
@@ -113,11 +120,11 @@ export const ToolDetails = ({
     case "knip": {
       return (
         <>
-          <p>
-            {stack.desktop === "electron"
-              ? m.knip_scope_desktop()
-              : m.knip_scope_default()}
-          </p>
+          {stack.desktop === undefined && stack.mobile === undefined && (
+            <p>{m.knip_scope_default()}</p>
+          )}
+          {stack.desktop !== undefined && <p>{m.knip_scope_desktop()}</p>}
+          {stack.mobile !== undefined && <p>{m.knip_scope_mobile()}</p>}
           <Commands
             commands={[{ label: m.tool_analyze(), run: "vp run knip" }]}
           />

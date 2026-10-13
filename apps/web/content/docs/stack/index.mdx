@@ -17,6 +17,7 @@ If you are unsure where to start, find the row closest to what you are building:
 | A product whose pages must be searchable | Next.js or TanStack Start               | Pages render on the server, so their content arrives with the HTML |
 | An API for other clients                 | No frontend, Hono, OpenAPI              | Standard REST endpoints, with generated documentation              |
 | A desktop application                    | TanStack Router SPA, Electron           | Electron packages the single-page app as a desktop window          |
+| An iOS and Android app                   | Expo, plus Hono and SQLite for accounts | The app calls the server's API itself; without one it stands alone |
 | An app with many concurrent writers      | PostgreSQL rather than SQLite           | A separate database service built for concurrent access            |
 
 Otherwise, start from the recommended stack the CLI proposes.
@@ -34,6 +35,7 @@ Some choices depend on others:
 - Electron requires the TanStack Router single-page app.
 - A framework server requires Next.js or TanStack Start.
 - OpenAPI requires Hono.
+- Docker requires a web app or a server, which a mobile app alone does not have.
 - The Bun runtime applies to Hono only.
 
 The studio and the CLI apply these rules as you choose. When a choice conflicts with an earlier one, they explain why and suggest the smallest change that resolves it.

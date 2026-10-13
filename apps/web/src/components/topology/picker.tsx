@@ -121,6 +121,7 @@ const unmarked: ReadonlySet<Decision> = new Set([
   "auth",
   "database",
   "desktop",
+  "mobile",
   "testing",
 ]);
 

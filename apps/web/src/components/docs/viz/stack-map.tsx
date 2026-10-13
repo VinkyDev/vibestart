@@ -14,6 +14,7 @@ import { m } from "#/paraglide/messages.js";
 const groups: readonly Group[] = [
   "framework",
   "desktop",
+  "mobile",
   "api",
   "backend",
   "database",
@@ -30,6 +31,7 @@ const pages = new Map([
   ["docker", "stack/delivery"],
   ["drizzle", "stack/data"],
   ["electron", "stack/delivery"],
+  ["expo", "stack/mobile"],
   ["hono", "stack/backend"],
   ["next", "stack/frontend"],
   ["node", "stack/toolchain"],
@@ -55,6 +57,7 @@ const marks = new Map<string, TechIcon>([
   ["docker", "docker"],
   ["drizzle", "drizzle"],
   ["electron", "electron"],
+  ["expo", "expo"],
   ["hono", "hono"],
   ["next", "next"],
   ["node", "node"],

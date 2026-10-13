@@ -1,0 +1,40 @@
+---
+title: 移动端
+description: 基于 Expo 的 iOS 与 Android 应用，可单独存在，也可与网页应用和服务端并存。
+---
+
+移动端是可选的。它可以是整个项目，也可以与网页应用、服务端或两者并存。它不在网页应用中运行，而是像网页应用一样，直接调用服务端的 API。
+
+## Expo [#expo]
+
+<Tech href="https://expo.dev" icon="expo" />
+
+`apps/mobile` 是基于 Expo 和 Expo Router 的 React Native 应用。页面是 `src/app` 下的文件，路由带类型检查。Uniwind 让 React Native 使用 Tailwind 类名，主题写在 `global.css` 中。与网页应用一样，导入路径以 `#src/` 开头。
+
+App 包含哪些内容取决于技术栈的其他部分：
+
+| 技术栈包含   | App 增加                                                                   |
+| ------------ | -------------------------------------------------------------------------- |
+| 服务端       | 一张调用 API 的卡片，经 oRPC 或网页应用的类型化客户端，配合 TanStack Query |
+| Better Auth  | 注册与登录页面，会话存放在设备的安全存储中，需要登录的页面受保护           |
+| API 与数据库 | 待办示例；技术栈带认证时需要登录后使用                                     |
+
+Docker 部署网页应用和服务端。镜像中不包含移动端，因此只有移动端的组合不能添加 Docker。
+
+## 连接服务端 [#api]
+
+开发时，App 调用运行 Metro 的电脑上的 3000 端口，因此同一网络中的手机可以访问 `vp run dev` 启动的服务端。发布构建没有 Metro 可询问：构建前在 `apps/mobile/.env` 中把 `EXPO_PUBLIC_API_URL` 设为服务端的地址。
+
+原生请求不保存 Cookie。使用 Better Auth 时，Expo 客户端保存会话，每个 API 请求都会带上它。服务端信任 App 的 scheme，也就是项目名。
+
+## Expo Go 与开发构建 [#builds]
+
+`vp run dev:mobile` 在单独的终端中启动 Metro，与 `vp run dev` 分开。用 Expo Go 扫描二维码即可在手机上打开 App，也可以按 `a` 或 `i` 使用 Android 模拟器或 iOS 模拟器。Expo Go 已包含生成的 App 用到的所有原生模块，因此开始开发不需要原生构建。
+
+当 App 需要 Expo Go 没有的原生模块时，改用开发构建。`apps/mobile` 中的 `android` 和 `ios` 脚本会在本地构建：Android 需要 Android Studio 和 JDK 17–21，iOS 需要装有 Xcode 的 Mac。项目不包含 EAS 配置；如需在 Expo 云端构建，运行 `eas init`。
+
+## 检查 [#checks]
+
+`vp run ready` 对 App 做类型检查和 lint，运行单元测试，并用 `expo export` 打出 iOS 与 Android 的 bundle。它不会在设备上运行 App，因此请在手机或模拟器上打开你改过的页面。
+
+单元测试在 Node 中运行，那里无法加载 `react-native`。需要测试的逻辑应放在组件之外，例如带服务端的组合中的 `src/lib/api-url.ts`。

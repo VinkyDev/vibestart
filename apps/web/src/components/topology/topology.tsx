@@ -13,15 +13,14 @@ import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
 import {
   apiAnchor,
-  blockOf,
   blocks,
   distAnchor,
   edges,
+  layoutOf,
   ormAnchor,
   placedClass,
   processBoxes,
-  proxyAnchor,
-  stage,
+  stageWidth,
 } from "#/components/topology/layout.ts";
 import { Boxes, DeploymentFrame } from "#/components/topology/processes.tsx";
 import { Rail } from "#/components/topology/rail.tsx";
@@ -32,8 +31,13 @@ import { roles } from "#/lib/roles.ts";
 import { chosen, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
-const useFit = () => {
-  const [scale, setScale] = useState(1);
+const useFit = (stageHeight: number) => {
+  // `settled` once measured before: the first fit is not an animation.
+  const [room, setRoom] = useState<{
+    readonly width: number;
+    readonly height: number;
+    readonly settled: boolean;
+  }>();
   const ref = useCallback((element: HTMLDivElement | null) => {
     if (element === null) {
       return () => {
@@ -43,7 +47,11 @@ const useFit = () => {
     const observer = new ResizeObserver(([entry]) => {
       if (entry !== undefined) {
         const { height, width } = entry.contentRect;
-        setScale(Math.min(width / stage.width, height / stage.height, 1.25));
+        setRoom((previous) => ({
+          height,
+          settled: previous !== undefined,
+          width,
+        }));
       }
     });
     observer.observe(element);
@@ -51,8 +59,21 @@ const useFit = () => {
       observer.disconnect();
     };
   }, []);
-  return { ref, scale };
+  const scale =
+    room === undefined
+      ? 1
+      : Math.min(room.width / stageWidth, room.height / stageHeight, 1.25);
+  return { ref, scale, settled: room?.settled === true };
 };
+
+const ApiClients = ({ stack }: { readonly stack: Stack }) =>
+  (stack.desktop !== undefined || stack.mobile !== undefined) && (
+    <>
+      <p>{m.api_clients_same()}</p>
+      {stack.desktop !== undefined && <p>{m.api_client_desktop()}</p>}
+      {stack.mobile !== undefined && <p>{m.api_client_mobile()}</p>}
+    </>
+  );
 
 const Visitors = ({ stack }: { readonly stack: Stack }) => {
   const browser = stack.framework !== undefined;
@@ -120,7 +141,8 @@ export const Topology = ({
   readonly choosing: Choosing;
   readonly shown: Stack;
 }) => {
-  const { ref, scale } = useFit();
+  const layout = layoutOf(shown);
+  const { ref, scale, settled } = useFit(layout.height);
   const { enter: enterApi, leave: leaveApi } = useFocusTarget({ group: "api" });
   const boxes = processBoxes(shown);
   const included = selected(shown);
@@ -136,44 +158,59 @@ export const Topology = ({
 
   return (
     <div className="relative size-full" ref={ref}>
-      <div
-        className="absolute top-1/2 left-1/2 h-(--stage-height) w-(--stage-width) origin-center -translate-x-1/2 -translate-y-1/2 scale-(--fit)"
-        style={{
-          "--fit": scale,
-          "--stage-height": `${stage.height}px`,
-          "--stage-width": `${stage.width}px`,
-        }}
+      {/* The stage grows with the clients it shows, and stays centered as it does. */}
+      <motion.div
+        animate={{ height: layout.height, scale, x: "-50%", y: "-50%" }}
+        className="absolute top-1/2 left-1/2 w-(--stage-width) origin-center"
+        initial={false}
+        style={{ "--stage-width": `${stageWidth}px` }}
+        transition={settled ? spring : { duration: 0 }}
       >
         <DeploymentFrame boxes={boxes} stack={shown} />
         <Boxes boxes={boxes} choosing={choosing} stack={shown} />
         <Wires wires={edges(shown)} />
-        <Visitors stack={shown} />
-        {(["framework", "desktop", "backend", "database", "auth"] as const).map(
-          (kind, index) => {
-            const { folded, rect } = blockOf(shown, kind);
-            return (
-              <Block
-                chips={chipsOf(kind)}
-                choosing={choosing}
-                delay={0.08 * (index + 1)}
-                folded={folded}
-                key={kind}
-                kind={kind}
-                rect={rect}
-                shown={shown}
-              />
-            );
-          }
+        {/* A mobile app alone serves no page and no API to anyone else. */}
+        {(shown.framework !== undefined || shown.backend !== undefined) && (
+          <Visitors stack={shown} />
         )}
+        {(
+          [
+            "framework",
+            "desktop",
+            "backend",
+            "database",
+            "auth",
+            "mobile",
+          ] as const
+        ).map((kind, index) => {
+          const { folded, rect } = layout.blocks[kind];
+          return (
+            <Block
+              chips={chipsOf(kind)}
+              choosing={choosing}
+              delay={0.08 * (index + 1)}
+              folded={folded}
+              key={kind}
+              kind={kind}
+              rect={rect}
+              shown={shown}
+            />
+          );
+        })}
         <AnimatePresence>
           {shown.backend !== undefined && (
-            <Anchored key="api" point={apiAnchor(shown)}>
+            <Anchored key="api" point={apiAnchor}>
               <div
                 className="tint-api"
                 onPointerEnter={enterApi}
                 onPointerLeave={leaveApi}
               >
-                <DecisionTrigger choosing={choosing} className="h-8" kind="api">
+                <DecisionTrigger
+                  choosing={choosing}
+                  className="h-8"
+                  details={<ApiClients stack={choosing.baseline} />}
+                  kind="api"
+                >
                   <span
                     className={cn(
                       capsuleClass,
@@ -202,16 +239,13 @@ export const Topology = ({
             </Anchored>
           )}
           {shown.desktop !== undefined && (
-            <Anchored key="dist" point={distAnchor} tint="tint-framework">
+            <Anchored
+              key="dist"
+              point={distAnchor(shown)}
+              tint="tint-framework"
+            >
               <Capsule label={m.desktop_dist()}>
                 {m.desktop_dist_pill()}
-              </Capsule>
-            </Anchored>
-          )}
-          {shown.desktop !== undefined && shown.backend !== undefined && (
-            <Anchored key="proxy" point={proxyAnchor} tint="tint-desktop">
-              <Capsule label={m.desktop_proxy()}>
-                {m.desktop_proxy_pill()}
               </Capsule>
             </Anchored>
           )}
@@ -221,8 +255,8 @@ export const Topology = ({
             </Anchored>
           )}
         </AnimatePresence>
-        <Rail choosing={choosing} stack={shown} />
-      </div>
+        <Rail choosing={choosing} rect={layout.rail} stack={shown} />
+      </motion.div>
     </div>
   );
 };

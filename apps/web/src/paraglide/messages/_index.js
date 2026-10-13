@@ -9,11 +9,15 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Add_DeploymentInputs */
 /** @typedef {{}} Add_DesktopInputs */
 /** @typedef {{}} Add_FrameworkInputs */
+/** @typedef {{}} Add_MobileInputs */
 /** @typedef {{}} Addon_DefaultInputs */
 /** @typedef {{}} Addon_Desc_KnipInputs */
 /** @typedef {{}} Addon_Desc_UltraciteInputs */
 /** @typedef {{}} AddonsInputs */
+/** @typedef {{}} Api_Client_DesktopInputs */
+/** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
+/** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -66,6 +70,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
 /** @typedef {{}} Desc_ElectronInputs */
+/** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
@@ -83,8 +88,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
-/** @typedef {{}} Desktop_ProxyInputs */
-/** @typedef {{}} Desktop_Proxy_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
 /** @typedef {{}} Docs_Back_HomeInputs */
 /** @typedef {{}} Docs_Copy_CodeInputs */
@@ -99,6 +102,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Document_TitleInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
+/** @typedef {{}} Expo_ProcessInputs */
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
@@ -106,6 +110,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_ElectronInputs */
+/** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
@@ -116,6 +121,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_None_DeploymentInputs */
 /** @typedef {{}} Fit_None_DesktopInputs */
 /** @typedef {{}} Fit_None_FrameworkInputs */
+/** @typedef {{}} Fit_None_MobileInputs */
 /** @typedef {{}} Fit_OpenapiInputs */
 /** @typedef {{}} Fit_OrpcInputs */
 /** @typedef {{}} Fit_PostgresInputs */
@@ -167,6 +173,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Kind_DesktopInputs */
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
+/** @typedef {{}} Kind_MobileInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -175,6 +182,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Kind_UiInputs */
 /** @typedef {{}} Knip_Scope_DefaultInputs */
 /** @typedef {{}} Knip_Scope_DesktopInputs */
+/** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -186,6 +194,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} None_DeploymentInputs */
 /** @typedef {{}} None_DesktopInputs */
 /** @typedef {{}} None_FrameworkInputs */
+/** @typedef {{}} None_MobileInputs */
 /** @typedef {{}} None_TokenInputs */
 /** @typedef {{}} Not_Found_BodyInputs */
 /** @typedef {{}} Not_Found_HomeInputs */
@@ -239,6 +248,10 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Role_Framework_AboutInputs */
 /** @typedef {{}} Role_Framework_NoneInputs */
 /** @typedef {{}} Role_Framework_QuestionInputs */
+/** @typedef {{}} Role_MobileInputs */
+/** @typedef {{}} Role_Mobile_AboutInputs */
+/** @typedef {{}} Role_Mobile_NoneInputs */
+/** @typedef {{}} Role_Mobile_QuestionInputs */
 /** @typedef {{}} Runs_In_BrowserInputs */
 /** @typedef {{}} Runs_In_ElectronInputs */
 /** @typedef {{}} Runtime_AboutInputs */
@@ -258,12 +271,14 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Tests_Layer_UnitInputs */
 /** @typedef {{}} Tests_Scope_E2e_NoneInputs */
 /** @typedef {{}} Tests_Scope_IntegrationInputs */
+/** @typedef {{}} Tests_Scope_MobileInputs */
 /** @typedef {{}} Tests_Scope_UnitInputs */
 /** @typedef {{}} Tool_AnalyzeInputs */
 /** @typedef {{}} Tool_BuildInputs */
 /** @typedef {{}} Tool_BuiltinInputs */
 /** @typedef {{}} Tool_CheckInputs */
 /** @typedef {{}} Tool_DevInputs */
+/** @typedef {{}} Tool_Dev_MobileInputs */
 /** @typedef {{}} Tool_E2eInputs */
 /** @typedef {{}} Tool_TestInputs */
 /** @typedef {{}} Tool_Test_IntegrationInputs */
@@ -433,6 +448,20 @@ export const add_framework = /** @type {((inputs?: Add_FrameworkInputs, options?
 /**
 * | output |
 * | --- |
+* | "Add mobile app" |
+*
+* @param {Add_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const add_mobile = /** @type {((inputs?: Add_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Add_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.add_mobile(inputs)
+	return __en.add_mobile(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "default" |
 *
 * @param {Addon_DefaultInputs} inputs
@@ -489,6 +518,34 @@ export const addons = /** @type {((inputs?: AddonsInputs, options?: { locale?: "
 /**
 * | output |
 * | --- |
+* | "The desktop app runs the web app in Electron, and its main process forwards the calls to the server." |
+*
+* @param {Api_Client_DesktopInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const api_client_desktop = /** @type {((inputs?: Api_Client_DesktopInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Client_DesktopInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.api_client_desktop(inputs)
+	return __en.api_client_desktop(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "The mobile app calls the server over the network: the computer running Metro in development, and EXPO_PUBLIC_API_URL in a release build." |
+*
+* @param {Api_Client_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const api_client_mobile = /** @type {((inputs?: Api_Client_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Client_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.api_client_mobile(inputs)
+	return __en.api_client_mobile(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "API clients" |
 *
 * @param {Api_ClientsInputs} inputs
@@ -499,6 +556,20 @@ export const api_clients = /** @type {((inputs?: Api_ClientsInputs, options?: { 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.api_clients(inputs)
 	return __en.api_clients(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Every client calls this one API, with its types taken from the server code." |
+*
+* @param {Api_Clients_SameInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const api_clients_same = /** @type {((inputs?: Api_Clients_SameInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Api_Clients_SameInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.api_clients_same(inputs)
+	return __en.api_clients_same(inputs)
 });
 /**
 * | output |
@@ -1231,6 +1302,20 @@ export const desc_electron = /** @type {((inputs?: Desc_ElectronInputs, options?
 /**
 * | output |
 * | --- |
+* | "iOS and Android app on React Native, with Expo Router" |
+*
+* @param {Desc_ExpoInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_expo = /** @type {((inputs?: Desc_ExpoInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_ExpoInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_expo(inputs)
+	return __en.desc_expo(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Standalone API server built on Hono" |
 *
 * @param {Desc_HonoInputs} inputs
@@ -1469,34 +1554,6 @@ export const desktop_dist_pill = /** @type {((inputs?: Desktop_Dist_PillInputs, 
 /**
 * | output |
 * | --- |
-* | "Forwards" |
-*
-* @param {Desktop_ProxyInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desktop_proxy = /** @type {((inputs?: Desktop_ProxyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desktop_ProxyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desktop_proxy(inputs)
-	return __en.desktop_proxy(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "API proxy" |
-*
-* @param {Desktop_Proxy_PillInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desktop_proxy_pill = /** @type {((inputs?: Desktop_Proxy_PillInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desktop_Proxy_PillInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desktop_proxy_pill(inputs)
-	return __en.desktop_proxy_pill(inputs)
-});
-/**
-* | output |
-* | --- |
 * | "Link to this section" |
 *
 * @param {Docs_AnchorInputs} inputs
@@ -1693,6 +1750,20 @@ export const engineering_capabilities = /** @type {((inputs?: Engineering_Capabi
 /**
 * | output |
 * | --- |
+* | "Expo app on the phone" |
+*
+* @param {Expo_ProcessInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const expo_process = /** @type {((inputs?: Expo_ProcessInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Expo_ProcessInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.expo_process(inputs)
+	return __en.expo_process(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Choose the capabilities you need. Select several without changing the existing test flow." |
 *
 * @param {Extensions_AboutInputs} inputs
@@ -1788,6 +1859,20 @@ export const fit_electron = /** @type {((inputs?: Fit_ElectronInputs, options?: 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_electron(inputs)
 	return __en.fit_electron(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "For an iOS and Android app, beside the web app or on its own." |
+*
+* @param {Fit_ExpoInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_expo = /** @type {((inputs?: Fit_ExpoInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_ExpoInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_expo(inputs)
+	return __en.fit_expo(inputs)
 });
 /**
 * | output |
@@ -1932,6 +2017,20 @@ export const fit_none_framework = /** @type {((inputs?: Fit_None_FrameworkInputs
 /**
 * | output |
 * | --- |
+* | "For a product without a phone app." |
+*
+* @param {Fit_None_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_none_mobile = /** @type {((inputs?: Fit_None_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_None_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_none_mobile(inputs)
+	return __en.fit_none_mobile(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "For a standard REST API that others call." |
 *
 * @param {Fit_OpenapiInputs} inputs
@@ -1946,7 +2045,7 @@ export const fit_openapi = /** @type {((inputs?: Fit_OpenapiInputs, options?: { 
 /**
 * | output |
 * | --- |
-* | "For an API only your own frontend calls." |
+* | "For an API only your own apps call." |
 *
 * @param {Fit_OrpcInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -2659,6 +2758,20 @@ export const kind_frontend = /** @type {((inputs?: Kind_FrontendInputs, options?
 /**
 * | output |
 * | --- |
+* | "Mobile" |
+*
+* @param {Kind_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const kind_mobile = /** @type {((inputs?: Kind_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Kind_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.kind_mobile(inputs)
+	return __en.kind_mobile(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "ORM" |
 *
 * @param {Kind_OrmInputs} inputs
@@ -2767,6 +2880,20 @@ export const knip_scope_desktop = /** @type {((inputs?: Knip_Scope_DesktopInputs
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.knip_scope_desktop(inputs)
 	return __en.knip_scope_desktop(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Knip's Expo plugin finds the app's screens. knip.json only ignores expo-updates, which that plugin expects." |
+*
+* @param {Knip_Scope_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const knip_scope_mobile = /** @type {((inputs?: Knip_Scope_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Knip_Scope_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.knip_scope_mobile(inputs)
+	return __en.knip_scope_mobile(inputs)
 });
 /**
 * | output |
@@ -2921,6 +3048,20 @@ export const none_framework = /** @type {((inputs?: None_FrameworkInputs, option
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.none_framework(inputs)
 	return __en.none_framework(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "No mobile app" |
+*
+* @param {None_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const none_mobile = /** @type {((inputs?: None_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<None_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.none_mobile(inputs)
+	return __en.none_mobile(inputs)
 });
 /**
 * | output |
@@ -3300,7 +3441,7 @@ export const role_api = /** @type {((inputs?: Role_ApiInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "How the frontend calls the backend." |
+* | "The protocol, and the typed client every app calls it with." |
 *
 * @param {Role_Api_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3328,7 +3469,7 @@ export const role_api_none = /** @type {((inputs?: Role_Api_NoneInputs, options?
 /**
 * | output |
 * | --- |
-* | "How does the frontend talk to the backend?" |
+* | "How do the clients call the server?" |
 *
 * @param {Role_Api_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3678,6 +3819,62 @@ export const role_framework_question = /** @type {((inputs?: Role_Framework_Ques
 /**
 * | output |
 * | --- |
+* | "Mobile" |
+*
+* @param {Role_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const role_mobile = /** @type {((inputs?: Role_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Role_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.role_mobile(inputs)
+	return __en.role_mobile(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "An iOS and Android app. With a server, it calls the API directly." |
+*
+* @param {Role_Mobile_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const role_mobile_about = /** @type {((inputs?: Role_Mobile_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Role_Mobile_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.role_mobile_about(inputs)
+	return __en.role_mobile_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "No phone app." |
+*
+* @param {Role_Mobile_NoneInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const role_mobile_none = /** @type {((inputs?: Role_Mobile_NoneInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Role_Mobile_NoneInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.role_mobile_none(inputs)
+	return __en.role_mobile_none(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Does it need a mobile app?" |
+*
+* @param {Role_Mobile_QuestionInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const role_mobile_question = /** @type {((inputs?: Role_Mobile_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Role_Mobile_QuestionInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.role_mobile_question(inputs)
+	return __en.role_mobile_question(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Runs in the browser" |
 *
 * @param {Runs_In_BrowserInputs} inputs
@@ -3916,7 +4113,7 @@ export const tests_layer_unit = /** @type {((inputs?: Tests_Layer_UnitInputs, op
 /**
 * | output |
 * | --- |
-* | "An API-only project has no web app, so it has no end-to-end tests." |
+* | "A project without a web app has no end-to-end tests." |
 *
 * @param {Tests_Scope_E2e_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3940,6 +4137,20 @@ export const tests_scope_integration = /** @type {((inputs?: Tests_Scope_Integra
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.tests_scope_integration(inputs)
 	return __en.tests_scope_integration(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "The mobile app runs no end-to-end tests. Ready checks its types and lint, runs its unit tests, and bundles it for iOS and Android, without a device." |
+*
+* @param {Tests_Scope_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const tests_scope_mobile = /** @type {((inputs?: Tests_Scope_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.tests_scope_mobile(inputs)
+	return __en.tests_scope_mobile(inputs)
 });
 /**
 * | output |
@@ -4024,6 +4235,20 @@ export const tool_dev = /** @type {((inputs?: Tool_DevInputs, options?: { locale
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.tool_dev(inputs)
 	return __en.tool_dev(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Develop the app" |
+*
+* @param {Tool_Dev_MobileInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const tool_dev_mobile = /** @type {((inputs?: Tool_Dev_MobileInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tool_Dev_MobileInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.tool_dev_mobile(inputs)
+	return __en.tool_dev_mobile(inputs)
 });
 /**
 * | output |
