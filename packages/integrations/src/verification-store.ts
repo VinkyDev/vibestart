@@ -73,10 +73,10 @@ const lane = async (packageManager: PackageManager): Promise<Candidate[]> =>
         (task) =>
           task.platform === "linux" && task.packageManager === packageManager
       )
-      .map(async (task) => ({
-        facets: (await verifiedOutput(task.stack, packageManager)).facets,
-        label: task.label,
-      }))
+      .map(async (task) => {
+        const { facets } = await verifiedOutput(task.stack, packageManager);
+        return { facets, label: task.label };
+      })
   );
 
 /** The goldens are the projects this repository shows, so each runs itself under pnpm wherever it is checked. */
@@ -199,21 +199,29 @@ export const projectionOf = async (
     }
   }
   const passed = new Set(Object.keys(projection.linux));
-  for (const packageManager of packageManagers) {
-    const candidates = await lane(packageManager);
-    const witnesses = coveredBy(candidates, passed);
-    for (const task of tasks.filter(
-      (candidate) =>
-        candidate.platform === "linux" &&
-        candidate.packageManager === packageManager
-    )) {
-      const by = witnesses.get(task.label);
-      if (by !== undefined) {
-        projection.coverage[packageManager][task.label] = {
-          by,
-          fingerprint: await verifiedFingerprint(task.stack, packageManager),
-        };
-      }
+  const lanes = await Promise.all(
+    packageManagers.map(async (packageManager) => {
+      const witnesses = coveredBy(await lane(packageManager), passed);
+      const covered = await Promise.all(
+        tasks
+          .filter(
+            (task) =>
+              task.platform === "linux" &&
+              task.packageManager === packageManager &&
+              witnesses.has(task.label)
+          )
+          .map(async (task) => ({
+            by: witnesses.get(task.label) ?? "",
+            fingerprint: await verifiedFingerprint(task.stack, packageManager),
+            label: task.label,
+          }))
+      );
+      return { covered, packageManager };
+    })
+  );
+  for (const { covered, packageManager } of lanes) {
+    for (const { by, fingerprint, label } of covered) {
+      projection.coverage[packageManager][label] = { by, fingerprint };
     }
   }
   return projection;
@@ -222,17 +230,16 @@ export const projectionOf = async (
 /** The tasks to run so that the projection covers every Linux task and has every golden's Windows record. */
 export const pendingTasks = async (projection: Projection) => {
   const passed = new Set(Object.keys(projection.linux));
-  const planned = new Set<string>();
-  for (const packageManager of packageManagers) {
-    const candidates = await lane(packageManager);
-    for (const label of coverPlan(
-      candidates,
-      passed,
-      packageManager === "pnpm" ? pinned : new Set()
-    )) {
-      planned.add(`linux ${label}`);
-    }
-  }
+  const lanes = await Promise.all(
+    packageManagers.map(async (packageManager) =>
+      coverPlan(
+        await lane(packageManager),
+        passed,
+        packageManager === "pnpm" ? pinned : new Set()
+      )
+    )
+  );
+  const planned = new Set(lanes.flat().map((label) => `linux ${label}`));
   return tasks.filter((task) =>
     task.platform === "windows"
       ? projection.windows[task.label] === undefined

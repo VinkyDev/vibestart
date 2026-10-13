@@ -442,11 +442,8 @@ const statusOf = async (task: Task) => {
   if (entry === undefined || verification.linux[entry.by] === undefined) {
     return "MISSING";
   }
-  const fingerprint = await verifiedFingerprint(
-    task.stack,
-    task.packageManager
-  );
-  if (entry.fingerprint !== fingerprint) {
+  const current = await verifiedFingerprint(task.stack, task.packageManager);
+  if (entry.fingerprint !== current) {
     return "STALE";
   }
   return entry.by === task.label ? "CURRENT" : `CURRENT by ${entry.by}`;

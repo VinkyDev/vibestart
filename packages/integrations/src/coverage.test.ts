@@ -66,9 +66,9 @@ describe(pnpmFacets, () => {
     const stack = compose(registry, { deployment: "docker" });
     const facets = [...pnpmFacets(stack, await verifiedGeneration(stack))];
     const files = facets.filter((facet) => facet.startsWith("file "));
-    expect(files.some((facet) => facet.startsWith("file package.json "))).toBe(
-      true
-    );
+    expect(
+      files.some((facet) => facet.startsWith("file package.json "))
+    ).toBeTruthy();
     expect(
       files.filter((facet) =>
         /^file (?:\S+\.md|Dockerfile|docker-compose\.yml|\.dockerignore|vibestart\.jsonc) /u.test(
@@ -85,6 +85,6 @@ describe(pnpmFacets, () => {
     ].filter((facet) => facet.startsWith("choices "));
     const kinds = registry.kinds.length - 1;
     expect(choices).toHaveLength((kinds * (kinds - 1) * (kinds - 2)) / 6);
-    expect(choices.some((facet) => facet.includes("deployment="))).toBe(false);
+    expect(choices.some((facet) => facet.includes("deployment="))).toBeFalsy();
   });
 });

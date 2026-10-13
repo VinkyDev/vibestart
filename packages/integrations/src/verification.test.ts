@@ -41,10 +41,15 @@ const covering = async (
 ): Promise<Projection> => {
   const projection = emptyProjection();
   projection.linux[witness] = record;
-  for (const packageManager of managers) {
+  const fingerprints = await Promise.all(
+    managers.map(
+      async (packageManager) => await fingerprintOf(sibling, packageManager)
+    )
+  );
+  for (const [index, packageManager] of managers.entries()) {
     projection.coverage[packageManager][taskLabel(sibling, packageManager)] = {
       by: witness,
-      fingerprint: await fingerprintOf(sibling, packageManager),
+      fingerprint: fingerprints[index] ?? "",
     };
   }
   return projection;

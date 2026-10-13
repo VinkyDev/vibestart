@@ -88,7 +88,7 @@ A **facet** is one thing `ready` exercises in an output (`coverage.ts`). A pass 
 
 `stacks plan` picks the runs: the goldens' pnpm tasks first, then, greedily, the stack that covers the most facets no pass has, the first label on a tie. Passes already recorded count first, so a template change runs only what covers the facets it changed. From an empty store, about a quarter of the stacks under pnpm and a few under Bun cover all of them (`verification-store.test.ts` holds the plan under half and a tenth).
 
-`pull` records, for each stack, its fingerprint and the pass it shares the most facets with, and the CLI and the Studio show that pass. A stack is covered only at the fingerprint `pull` saw, so a later output is unverified until the next `pull`.
+`pull` records, for each stack, its fingerprint and a representative pass, the one it shares the most facets with; the CLI and the Studio show that pass. Coverage comes from the union of passes, so the representative alone may lack some of the stack's facets. A stack is covered only at the fingerprint `pull` saw, so a later output is unverified until the next `pull`.
 
 Two classes stand outside the facets:
 

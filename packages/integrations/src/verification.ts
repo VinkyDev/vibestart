@@ -129,7 +129,10 @@ export const verifiedOutput = async (
 export const verifiedFingerprint = async (
   stack: Stack,
   packageManager: PackageManager = "pnpm"
-) => (await verifiedOutput(stack, packageManager)).fingerprint;
+) => {
+  const output = await verifiedOutput(stack, packageManager);
+  return output.fingerprint;
+};
 
 export type StackVerification = Verification[string];
 

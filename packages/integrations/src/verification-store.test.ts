@@ -174,13 +174,13 @@ describe("records of the current output", () => {
 
 const plan = await pendingTasks(emptyProjection());
 
-describe(pendingTasks, () => {
-  const planned = (packageManager: string) =>
-    plan.filter(
-      (task) =>
-        task.platform === "linux" && task.packageManager === packageManager
-    );
+const planned = (packageManager: string) =>
+  plan.filter(
+    (task) =>
+      task.platform === "linux" && task.packageManager === packageManager
+  );
 
+describe(pendingTasks, () => {
   it("runs every golden on both platforms", () => {
     const pnpm = new Set(planned("pnpm").map((task) => task.label));
     expect(
