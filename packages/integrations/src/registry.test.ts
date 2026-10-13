@@ -30,7 +30,9 @@ describe("the registry", () => {
     const offered = new Set(
       resolve(registry, { database }).stacks.map(({ orm }) => orm)
     );
-    expect([...offered].toSorted()).toStrictEqual(orms);
+    expect([...offered].toSorted((a, b) => a.localeCompare(b))).toStrictEqual(
+      orms
+    );
   });
 
   it("signs users in on MongoDB as on a SQL database", () => {
