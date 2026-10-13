@@ -17,6 +17,7 @@ import {
   hasBackend,
   homePage,
   navigation,
+  packConfig,
   renderEnvExample,
   renderEnvModule,
   selfHealthRoute,
@@ -286,6 +287,9 @@ const backendContributions = (ctx: Context) => {
   ];
 };
 
+// The Next.js app bundles its migration entry with `vp pack`; Next.js itself never reads this config.
+const migratePackPath = "apps/web/vite.config.ts";
+
 export const next = defineIntegration({
   contribute: (ctx) => {
     const auth = ctx.has("better-auth");
@@ -299,7 +303,18 @@ export const next = defineIntegration({
       ...(todosExample(ctx)
         ? templateFiles(ctx, `next/todos-${authVariant(ctx)}`)
         : []),
-      ...(database ? templateFiles(ctx, "next/migrate") : []),
+      ...(database
+        ? [
+            file(
+              migratePackPath,
+              packConfig(
+                ctx,
+                migratePackPath,
+                templateContent(ctx, "next/migrate", migratePackPath)
+              )
+            ),
+          ]
+        : []),
       navigation(ctx, "next/common", navLinksPath),
       nextConfig(ctx),
       homePage(ctx, "apps/web/src/app/page.tsx", false),

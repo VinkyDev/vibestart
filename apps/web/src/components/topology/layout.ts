@@ -171,6 +171,23 @@ const webLabel = (
   return m.process({ name });
 };
 
+// A database server is a process of its own; SQLite lives in the server's.
+const databaseProcesses = {
+  mongodb: () => m.mongodb_process(),
+  mysql: () => m.mysql_process(),
+  postgres: () => m.postgres_process(),
+};
+
+const isServerDatabase = (
+  database: string
+): database is keyof typeof databaseProcesses =>
+  Object.hasOwn(databaseProcesses, database);
+
+const databaseProcess = (database: string | undefined) =>
+  database !== undefined && isServerDatabase(database)
+    ? databaseProcesses[database]
+    : undefined;
+
 export const processBoxes = (stack: Stack): ProcessBox[] => {
   const { blocks: placed } = layoutOf(stack);
   const framework = chosen(stack, "framework");
@@ -205,13 +222,13 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       rect: around([blocks.backend, ...hosted], boxPadding, boxLabel),
     });
   }
-  if (stack.database === "postgres" || stack.database === "mysql") {
+  const server = databaseProcess(stack.database);
+  if (server !== undefined) {
     boxes.push({
       deployed: true,
       group: "database",
       id: "database",
-      label:
-        stack.database === "mysql" ? m.mysql_process() : m.postgres_process(),
+      label: server(),
       node: false,
       rect: around([blocks.database], boxPadding, boxLabel),
     });

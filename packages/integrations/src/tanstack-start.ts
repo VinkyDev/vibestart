@@ -21,6 +21,7 @@ import {
   serverUrl,
   stackHeadline,
   todosExample,
+  packConfig,
   webMigrates,
   databaseCheck,
 } from "#/app.ts";
@@ -51,7 +52,9 @@ const viteConfig = (ctx: Context) => {
   }
   return file(
     viteConfigPath,
-    webMigrates(ctx) ? config : config.replace(packBlock, "")
+    webMigrates(ctx)
+      ? packConfig(ctx, viteConfigPath, config)
+      : config.replace(packBlock, "")
   );
 };
 

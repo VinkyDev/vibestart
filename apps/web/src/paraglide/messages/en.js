@@ -17,6 +17,8 @@
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
+/** @typedef {{}} Cap_Document_DatabaseInputs */
+/** @typedef {{}} Cap_Document_OrmInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -62,6 +64,7 @@
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
@@ -72,6 +75,8 @@
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
+/** @typedef {{}} Desc_MongodbInputs */
+/** @typedef {{}} Desc_MongooseInputs */
 /** @typedef {{}} Desc_MysqlInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
@@ -115,6 +120,8 @@
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
+/** @typedef {{}} Fit_MongodbInputs */
+/** @typedef {{}} Fit_MongooseInputs */
 /** @typedef {{}} Fit_MysqlInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
@@ -190,6 +197,7 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mongodb_ProcessInputs */
 /** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
@@ -206,6 +214,7 @@
 /** @typedef {{}} Not_Found_HomeInputs */
 /** @typedef {{}} Not_Found_TitleInputs */
 /** @typedef {{}} Not_VerifiedInputs */
+/** @typedef {{}} Note_Any_MongodbInputs */
 /** @typedef {{}} Note_Any_MysqlInputs */
 /** @typedef {{}} Note_Any_PostgresInputs */
 /** @typedef {{}} Note_Auth_SecretInputs */
@@ -426,6 +435,14 @@ export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs
 	return /** @type {LocalizedString} */ (`a database server (PostgreSQL or MySQL)`)
 };
 
+export const cap_document_database = /** @type {(inputs: Cap_Document_DatabaseInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`a document database`)
+};
+
+export const cap_document_orm = /** @type {(inputs: Cap_Document_OrmInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`a document ODM`)
+};
+
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`a frontend framework`)
 };
@@ -611,6 +628,10 @@ export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => L
 	return /** @type {LocalizedString} */ (`${i?.name} image`)
 };
 
+export const deployment_mongodb = /** @type {(inputs: Deployment_MongodbInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} image, with MongoDB via Compose`)
+};
+
 export const deployment_mysql = /** @type {(inputs: Deployment_MysqlInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} image, with MySQL via Compose`)
 };
@@ -649,6 +670,14 @@ export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString
 
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Standalone API server built on Hono`)
+};
+
+export const desc_mongodb = /** @type {(inputs: Desc_MongodbInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`MongoDB server, run by Docker Compose in development`)
+};
+
+export const desc_mongoose = /** @type {(inputs: Desc_MongooseInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Mongoose 9 schemas and models for MongoDB`)
 };
 
 export const desc_mysql = /** @type {(inputs: Desc_MysqlInputs) => LocalizedString} */ () => {
@@ -823,6 +852,14 @@ export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} 
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For an API that mobile apps or other services share.`)
+};
+
+export const fit_mongodb = /** @type {(inputs: Fit_MongodbInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For documents whose shape varies, without a fixed schema.`)
+};
+
+export const fit_mongoose = /** @type {(inputs: Fit_MongooseInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For schemas and models on MongoDB, the only ODM it offers.`)
 };
 
 export const fit_mysql = /** @type {(inputs: Fit_MysqlInputs) => LocalizedString} */ () => {
@@ -1138,6 +1175,10 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`About ${i?.name}`)
 };
 
+export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`MongoDB server`)
+};
+
 export const mysql_process = /** @type {(inputs: Mysql_ProcessInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`MySQL server`)
 };
@@ -1202,6 +1243,10 @@ export const not_verified = /** @type {(inputs: Not_VerifiedInputs) => Localized
 	return /** @type {LocalizedString} */ (`Not yet verified at this version`)
 };
 
+export const note_any_mongodb = /** @type {(inputs: Note_Any_MongodbInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`or point DATABASE_URL at any MongoDB`)
+};
+
 export const note_any_mysql = /** @type {(inputs: Note_Any_MysqlInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`or point DATABASE_URL at any MySQL`)
 };
@@ -1223,7 +1268,7 @@ export const orm = /** @type {(inputs: OrmInputs) => LocalizedString} */ () => {
 };
 
 export const orm_about = /** @type {(inputs: Orm_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Defines the schema, writes migrations, and runs the queries. Drizzle works with every database; Prisma needs a database server.`)
+	return /** @type {LocalizedString} */ (`Defines the schema, writes migrations, and runs the queries. Drizzle works with every SQL database; Prisma needs PostgreSQL or MySQL; MongoDB uses Mongoose.`)
 };
 
 export const orm_none = /** @type {(inputs: Orm_NoneInputs) => LocalizedString} */ () => {

@@ -54,21 +54,21 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 
 ## 支持的技术栈
 
-| 层级           | 选择                                                |
-| -------------- | --------------------------------------------------- |
-| 应用           | React SPA(TanStack Router)、TanStack Start、Next.js |
-| 桌面端         | Electron                                            |
-| 移动端         | Expo(React Native),iOS 与 Android                   |
-| 后端           | Hono,或框架自带服务                                 |
-| API            | oRPC、OpenAPI,或不选                                |
-| 数据库         | PostgreSQL、MySQL 或 SQLite,或不选                  |
-| ORM            | Drizzle;PostgreSQL 与 MySQL 也可选 Prisma           |
-| Auth           | Better Auth                                         |
-| 部署           | Docker                                              |
-| UI             | shadcn(Base UI)与 Tailwind 4                        |
-| 单元和集成测试 | Vitest                                              |
-| 端到端测试     | Playwright 或 TesterArmy e2e                        |
-| 工具链         | Vite+、Oxlint、Knip、`AGENTS.md`                    |
+| 层级           | 选择                                                          |
+| -------------- | ------------------------------------------------------------- |
+| 应用           | React SPA(TanStack Router)、TanStack Start、Next.js           |
+| 桌面端         | Electron                                                      |
+| 移动端         | Expo(React Native),iOS 与 Android                             |
+| 后端           | Hono,或框架自带服务                                           |
+| API            | oRPC、OpenAPI,或不选                                          |
+| 数据库         | PostgreSQL、MySQL、SQLite、MongoDB,或不选                     |
+| ORM            | Drizzle;PostgreSQL 与 MySQL 也可选 Prisma;MongoDB 用 Mongoose |
+| Auth           | Better Auth                                                   |
+| 部署           | Docker                                                        |
+| UI             | shadcn(Base UI)与 Tailwind 4                                  |
+| 单元和集成测试 | Vitest                                                        |
+| 端到端测试     | Playwright 或 TesterArmy e2e                                  |
+| 工具链         | Vite+、Oxlint、Knip、`AGENTS.md`                              |
 
 ## CLI 选项
 

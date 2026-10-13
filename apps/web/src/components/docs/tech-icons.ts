@@ -7,6 +7,8 @@ import electron from "#/assets/tech/electron.svg";
 import expo from "#/assets/tech/expo.svg";
 import hono from "#/assets/tech/hono.svg";
 import knip from "#/assets/tech/knip.svg";
+import mongodb from "#/assets/tech/mongodb.svg";
+import mongoose from "#/assets/tech/mongoose.svg";
 import mysql from "#/assets/tech/mysql.svg";
 import next from "#/assets/tech/next.svg";
 import node from "#/assets/tech/node.svg";
@@ -39,6 +41,8 @@ export const techIcons = {
   expo,
   hono,
   knip,
+  mongodb,
+  mongoose,
   mysql,
   next,
   node,

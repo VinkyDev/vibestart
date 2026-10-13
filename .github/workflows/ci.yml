@@ -90,6 +90,15 @@ jobs:
           --health-interval 2s
           --health-timeout 5s
           --health-retries 30
+      mongodb:
+        image: ${{ matrix.platform == 'linux' && 'mongo:8' || '' }}
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1}).ok'"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 30
     defaults:
       run:
         shell: bash
@@ -121,6 +130,13 @@ jobs:
         with:
           mysql-version: "8.4"
           root-password: mysql
+      # MongoDB listens on localhost:27017 without auth, as the Linux container does; stacks use STACKS_MONGODB_URL's default.
+      - if: runner.os == 'Windows'
+        # The Windows image ships MongoDB 7.0, the newest this action starts there; Linux runs mongo:8.
+        name: Start MongoDB
+        uses: ankane/setup-mongodb@v1
+        with:
+          mongodb-version: "7.0"
       - run: vp install
       # Chromium's system libraries. Each project's own runner installs the browser build its version needs.
       - if: runner.os == 'Linux'

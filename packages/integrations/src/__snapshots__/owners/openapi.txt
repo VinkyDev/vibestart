@@ -1,3 +1,70 @@
+# apps/web/src/lib/api.ts · 16 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
+import { parseResponse } from "hono/client";
+
+import { createClient } from "#src/lib/client.ts";
+
+type Client = ReturnType<typeof createClient>;
+
+const mutation = <Input, Output>(
+  mutationFn: (input: Input) => Promise<Output>
+) => ({
+  mutationOptions: (
+    options: Pick<UseMutationOptions<Output, Error, Input>, "onSuccess"> = {}
+  ) => mutationOptions({ ...options, mutationFn }),
+});
+
+const todosKey = ["todos"] as const;
+
+export const createQueries = (client: Client) => ({
+  todos: {
+    create: mutation(
+      async (json: { title: string }) =>
+        await parseResponse(client.todos.$post({ json }))
+    ),
+    delete: mutation(
+      async ({ id }: { id: string }) =>
+        await parseResponse(client.todos[":id"].$delete({ param: { id } }))
+    ),
+    key: () => todosKey,
+    list: {
+      queryOptions: () =>
+        queryOptions({
+          queryFn: async () => await parseResponse(client.todos.$get()),
+          queryKey: [...todosKey, "list"],
+        }),
+    },
+    update: mutation(
+      async ({ completed, id }: { completed: boolean; id: string }) =>
+        await parseResponse(
+          client.todos[":id"].$patch({
+            json: { completed },
+            param: { id },
+          })
+        )
+    ),
+  },
+});
+
+export const api = createQueries(createClient());
+
 # apps/web/src/lib/api.ts · 80 stacks
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
@@ -123,6 +190,105 @@ export const createQueries = (client: Client) => ({
           client.todos[":id"].$patch({
             json: { completed },
             param: { id: String(id) },
+          })
+        )
+    ),
+  },
+});
+
+export const api = createQueries(createClient());
+
+# apps/web/src/lib/api.ts · 48 stacks
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
+import { parseResponse } from "hono/client";
+
+import { createClient } from "#src/lib/client.ts";
+
+type Client = ReturnType<typeof createClient>;
+
+const mutation = <Input, Output>(
+  mutationFn: (input: Input) => Promise<Output>
+) => ({
+  mutationOptions: (
+    options: Pick<UseMutationOptions<Output, Error, Input>, "onSuccess"> = {}
+  ) => mutationOptions({ ...options, mutationFn }),
+});
+
+const todosKey = ["todos"] as const;
+
+const createQueries = (client: Client) => ({
+  todos: {
+    create: mutation(
+      async (json: { title: string }) =>
+        await parseResponse(client.todos.$post({ json }))
+    ),
+    delete: mutation(
+      async ({ id }: { id: string }) =>
+        await parseResponse(client.todos[":id"].$delete({ param: { id } }))
+    ),
+    key: () => todosKey,
+    list: {
+      queryOptions: () =>
+        queryOptions({
+          queryFn: async () => await parseResponse(client.todos.$get()),
+          queryKey: [...todosKey, "list"],
+        }),
+    },
+    update: mutation(
+      async ({ completed, id }: { completed: boolean; id: string }) =>
+        await parseResponse(
+          client.todos[":id"].$patch({
+            json: { completed },
+            param: { id },
           })
         )
     ),
@@ -424,7 +590,23 @@ const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/client.ts · 240 stacks
+# apps/web/src/lib/client.ts · 288 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -505,6 +687,38 @@ export const api = createQueries(createClient());
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -671,7 +885,23 @@ import type { Api } from "@my-app/api";
 
 export const createClient = () => hc<Api>("/api");
 
-# apps/web/src/lib/client.ts · 80 stacks
+# apps/web/src/lib/client.ts · 96 stacks
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -769,7 +999,23 @@ export const createClient = createIsomorphicFn()
   )
   .client(() => hc<Api>("/api"));
 
-# apps/web/src/server/query.ts · 80 stacks
+# apps/web/src/server/query.ts · 96 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -939,7 +1185,15 @@ export const createApi = () => {
 
 export type Api = ReturnType<typeof createApi>;
 
-# packages/api/src/index.ts · 360 stacks
+# packages/api/src/index.ts · 432 stacks
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -980,6 +1234,22 @@ export type Api = ReturnType<typeof createApi>;
 #   hono-openapi-sqlite-docker
 #   hono-openapi-sqlite-expo-bun-docker
 #   hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -1060,6 +1330,38 @@ export type Api = ReturnType<typeof createApi>;
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -1220,6 +1522,22 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-sqlite-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-openapi-sqlite-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -1383,6 +1701,102 @@ export const healthRoutes = () =>
   new OpenAPIHono().openapi(health, (c) =>
     c.json({ status: "ok" as const }, 200)
   );
+
+# packages/api/src/routes/health.ts · 72 stacks
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+import type { Services } from "#src/services.ts";
+
+const health = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: {
+        "application/json": { schema: z.object({ status: z.literal("ok") }) },
+      },
+      description: "The server and MongoDB answer",
+    },
+  },
+});
+
+export const healthRoutes = ({ db }: Services) =>
+  new OpenAPIHono().openapi(health, async (c) => {
+    await db.connection.getClient().db().command({ ping: 1 });
+    return c.json({ status: "ok" as const }, 200);
+  });
 
 # packages/api/src/routes/health.ts · 72 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
@@ -1866,6 +2280,358 @@ export const healthRoutes = ({ db }: Services) =>
     db.run(sql`select 1`);
     return c.json({ status: "ok" as const }, 200);
   });
+
+# packages/api/src/routes/todos.ts · 36 stacks
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+import { HTTPException } from "hono/http-exception";
+
+import { toTodo } from "@my-app/db";
+
+import type { Services } from "#src/services.ts";
+
+const json = <T extends z.ZodType>(schema: T) => ({
+  "application/json": { schema },
+});
+
+const todo = z
+  .object({
+    completed: z.boolean(),
+    createdAt: z.iso.datetime(),
+    id: z.string(),
+    title: z.string(),
+    userId: z.string(),
+  })
+  .openapi("Todo");
+
+// An ObjectId as the API spells it; anything else could never name a todo.
+const params = z.object({
+  id: z
+    .string()
+    .regex(/^[\da-f]{24}$/u)
+    .openapi({ param: { in: "path", name: "id" } }),
+});
+
+const message = json(z.object({ message: z.string() }));
+
+const invalid = { description: "The request does not match its schema" };
+
+const unauthorized = { content: message, description: "No session" };
+
+// Someone else's todo is not found either, which does not reveal that the id exists.
+const notFound = {
+  content: message,
+  description: "The user has no todo with this id",
+};
+
+const listTodos = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: json(z.array(todo)),
+      description: "The user's todos, oldest first",
+    },
+    401: unauthorized,
+  },
+});
+
+const createTodo = createRoute({
+  method: "post",
+  path: "/",
+  request: {
+    body: {
+      content: json(z.object({ title: z.string().trim().min(1).max(200) })),
+      required: true,
+    },
+  },
+  responses: {
+    201: { content: json(todo), description: "The created todo" },
+    400: invalid,
+    401: unauthorized,
+  },
+});
+
+const updateTodo = createRoute({
+  method: "patch",
+  path: "/{id}",
+  request: {
+    body: {
+      content: json(z.object({ completed: z.boolean() })),
+      required: true,
+    },
+    params,
+  },
+  responses: {
+    200: { content: json(todo), description: "The updated todo" },
+    400: invalid,
+    401: unauthorized,
+    404: notFound,
+  },
+});
+
+const deleteTodo = createRoute({
+  method: "delete",
+  path: "/{id}",
+  request: { params },
+  responses: {
+    200: { content: json(todo), description: "The deleted todo" },
+    401: unauthorized,
+    404: notFound,
+  },
+});
+
+const todoNotFound = { message: "Todo not found" };
+
+export const todoRoutes = ({ auth, db }: Services) => {
+  const routes = new OpenAPIHono<{ Variables: { userId: string } }>();
+
+  // On the sub-app, so a route added here cannot skip the check.
+  routes.use(async (c, next) => {
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    if (!session) {
+      throw new HTTPException(401, {
+        res: c.json({ message: "Sign in first" }, 401),
+      });
+    }
+    c.set("userId", session.user.id);
+    await next();
+  });
+
+  // Each write matches the user's id too: someone else's todo is not found either.
+  return routes
+    .openapi(listTodos, async (c) => {
+      const rows = await db.todos
+        .find({ userId: c.var.userId })
+        .sort({ _id: 1 })
+        .lean();
+      return c.json(rows.map(toTodo), 200);
+    })
+    .openapi(createTodo, async (c) => {
+      const created = await db.todos.create({
+        ...c.req.valid("json"),
+        userId: c.var.userId,
+      });
+      return c.json(toTodo(created.toObject()), 201);
+    })
+    .openapi(updateTodo, async (c) => {
+      const row = await db.todos
+        .findOneAndUpdate(
+          { _id: c.req.valid("param").id, userId: c.var.userId },
+          c.req.valid("json"),
+          { returnDocument: "after" }
+        )
+        .lean();
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      return c.json(toTodo(row), 200);
+    })
+    .openapi(deleteTodo, async (c) => {
+      const row = await db.todos
+        .findOneAndDelete({
+          _id: c.req.valid("param").id,
+          userId: c.var.userId,
+        })
+        .lean();
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      return c.json(toTodo(row), 200);
+    });
+};
+
+# packages/api/src/routes/todos.ts · 36 stacks
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+import { toTodo } from "@my-app/db";
+
+import type { Services } from "#src/services.ts";
+
+const json = <T extends z.ZodType>(schema: T) => ({
+  "application/json": { schema },
+});
+
+const todo = z
+  .object({
+    completed: z.boolean(),
+    createdAt: z.iso.datetime(),
+    id: z.string(),
+    title: z.string(),
+  })
+  .openapi("Todo");
+
+// An ObjectId as the API spells it; anything else could never name a todo.
+const params = z.object({
+  id: z
+    .string()
+    .regex(/^[\da-f]{24}$/u)
+    .openapi({ param: { in: "path", name: "id" } }),
+});
+
+const invalid = { description: "The request does not match its schema" };
+
+const notFound = {
+  content: json(z.object({ message: z.string() })),
+  description: "No todo has this id",
+};
+
+const listTodos = createRoute({
+  method: "get",
+  path: "/",
+  responses: {
+    200: {
+      content: json(z.array(todo)),
+      description: "Every todo, oldest first",
+    },
+  },
+});
+
+const createTodo = createRoute({
+  method: "post",
+  path: "/",
+  request: {
+    body: {
+      content: json(z.object({ title: z.string().trim().min(1).max(200) })),
+      required: true,
+    },
+  },
+  responses: {
+    201: { content: json(todo), description: "The created todo" },
+    400: invalid,
+  },
+});
+
+const updateTodo = createRoute({
+  method: "patch",
+  path: "/{id}",
+  request: {
+    body: {
+      content: json(z.object({ completed: z.boolean() })),
+      required: true,
+    },
+    params,
+  },
+  responses: {
+    200: { content: json(todo), description: "The updated todo" },
+    400: invalid,
+    404: notFound,
+  },
+});
+
+const deleteTodo = createRoute({
+  method: "delete",
+  path: "/{id}",
+  request: { params },
+  responses: {
+    200: { content: json(todo), description: "The deleted todo" },
+    404: notFound,
+  },
+});
+
+const todoNotFound = { message: "Todo not found" };
+
+export const todoRoutes = ({ db }: Services) =>
+  new OpenAPIHono()
+    .openapi(listTodos, async (c) => {
+      const rows = await db.todos.find().sort({ _id: 1 }).lean();
+      return c.json(rows.map(toTodo), 200);
+    })
+    .openapi(createTodo, async (c) => {
+      const created = await db.todos.create(c.req.valid("json"));
+      return c.json(toTodo(created.toObject()), 201);
+    })
+    .openapi(updateTodo, async (c) => {
+      const row = await db.todos
+        .findByIdAndUpdate(c.req.valid("param").id, c.req.valid("json"), {
+          returnDocument: "after",
+        })
+        .lean();
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      return c.json(toTodo(row), 200);
+    })
+    .openapi(deleteTodo, async (c) => {
+      const row = await db.todos
+        .findByIdAndDelete(c.req.valid("param").id)
+        .lean();
+      if (row === null) {
+        return c.json(todoNotFound, 404);
+      }
+      return c.json(toTodo(row), 200);
+    });
 
 # packages/api/src/routes/todos.ts · 36 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
@@ -3085,7 +3851,11 @@ export const todoRoutes = ({ db }: Services) =>
         : c.json(deleted, 200);
     });
 
-# packages/api/src/services.ts · 180 stacks
+# packages/api/src/services.ts · 216 stacks
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -3106,6 +3876,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
 #   hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -3146,6 +3924,22 @@ export const todoRoutes = ({ db }: Services) =>
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -3226,6 +4020,14 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -3274,7 +4076,11 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/src/services.ts · 180 stacks
+# packages/api/src/services.ts · 216 stacks
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -3295,6 +4101,14 @@ export interface Services {
 #   hono-openapi-sqlite-docker
 #   hono-openapi-sqlite-expo-bun-docker
 #   hono-openapi-sqlite-expo-docker
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-bun-docker
 #   next-hono-openapi-mysql-bun-docker-e2e
 #   next-hono-openapi-mysql-docker
@@ -3335,6 +4149,22 @@ export interface Services {
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -3415,6 +4245,14 @@ export interface Services {
 #   spa-hono-openapi-sqlite-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-openapi-sqlite-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
 #   tanstack-start-hono-openapi-mysql-bun-docker
 #   tanstack-start-hono-openapi-mysql-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-docker
@@ -3461,11 +4299,19 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/tsconfig.json · 396 stacks
+# packages/api/tsconfig.json · 468 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
 #   hono-openapi-expo-docker
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -3514,6 +4360,22 @@ export interface Services {
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -3610,6 +4472,38 @@ export interface Services {
 #   spa-hono-openapi-expo-bun-docker-e2e
 #   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -3778,6 +4672,22 @@ export interface Services {
 #   tanstack-start-hono-openapi-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-expo-docker
 #   tanstack-start-hono-openapi-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker

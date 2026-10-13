@@ -1,4 +1,4 @@
-# apps/web/.env.example · 264 stacks
+# apps/web/.env.example · 312 stacks
 #   next-hono-bun-docker
 #   next-hono-bun-docker-e2e
 #   next-hono-docker
@@ -7,6 +7,22 @@
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -47,6 +63,22 @@
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -135,6 +167,22 @@
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -265,6 +313,30 @@
 #   next-hono-sqlite-expo-docker-e2e
 SERVER_URL=http://localhost:3001
 
+# apps/web/.env.example · 8 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+DATABASE_URL=mongodb://localhost:27017/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+
+# apps/web/.env.example · 8 stacks
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+DATABASE_URL=mongodb://localhost:27017/my_app
+
 # apps/web/.env.example · 16 stacks
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
@@ -369,7 +441,7 @@ BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
 #   next-self-sqlite-expo-docker-e2e
 DATABASE_URL=local.db
 
-# apps/web/next.config.ts · 268 stacks
+# apps/web/next.config.ts · 316 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -382,6 +454,22 @@ DATABASE_URL=local.db
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -422,6 +510,22 @@ DATABASE_URL=local.db
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -510,6 +614,22 @@ DATABASE_URL=local.db
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -654,7 +774,11 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-# apps/web/next.config.ts · 20 stacks
+# apps/web/next.config.ts · 24 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -691,7 +815,11 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-# apps/web/next.config.ts · 20 stacks
+# apps/web/next.config.ts · 24 stacks
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-docker
 #   next-self-mysql-docker-e2e
 #   next-self-mysql-expo-docker
@@ -749,7 +877,11 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-# apps/web/next.config.ts · 20 stacks
+# apps/web/next.config.ts · 24 stacks
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -791,7 +923,11 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-# apps/web/next.config.ts · 20 stacks
+# apps/web/next.config.ts · 24 stacks
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -828,7 +964,7 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-# apps/web/postcss.config.mjs · 352 stacks
+# apps/web/postcss.config.mjs · 416 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -841,6 +977,22 @@ export default nextConfig;
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -881,6 +1033,22 @@ export default nextConfig;
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -969,6 +1137,22 @@ export default nextConfig;
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -1097,6 +1281,14 @@ export default nextConfig;
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -1117,6 +1309,14 @@ export default nextConfig;
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -1185,7 +1385,7 @@ export default {
   plugins: { "@tailwindcss/postcss": {} },
 };
 
-# apps/web/src/app/api/[[...rest]]/route.ts · 264 stacks
+# apps/web/src/app/api/[[...rest]]/route.ts · 312 stacks
 #   next-hono-bun-docker
 #   next-hono-bun-docker-e2e
 #   next-hono-docker
@@ -1194,6 +1394,22 @@ export default {
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -1234,6 +1450,22 @@ export default {
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -1322,6 +1554,22 @@ export default {
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -1459,11 +1707,19 @@ export {
   proxyToServer as PUT,
 } from "#src/server/proxy.ts";
 
-# apps/web/src/app/api/[[...rest]]/route.ts · 44 stacks
+# apps/web/src/app/api/[[...rest]]/route.ts · 52 stacks
 #   next-self-orpc-docker
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -1512,6 +1768,22 @@ export {
   handleOpenApi as POST,
   handleOpenApi as PUT,
 } from "#src/server/orpc.ts";
+
+# apps/web/src/app/api/health/route.ts · 8 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+import { getServices } from "#src/server/context.ts";
+
+export const GET = async () => {
+  await getServices().db.connection.getClient().db().command({ ping: 1 });
+  return Response.json({ status: "ok" });
+};
 
 # apps/web/src/app/api/health/route.ts · 16 stacks
 #   next-self-mysql-better-auth-docker
@@ -1581,7 +1853,7 @@ export const GET = () => {
   return Response.json({ status: "ok" });
 };
 
-# apps/web/src/app/layout.tsx · 352 stacks
+# apps/web/src/app/layout.tsx · 416 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -1594,6 +1866,22 @@ export const GET = () => {
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -1634,6 +1922,22 @@ export const GET = () => {
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -1722,6 +2026,22 @@ export const GET = () => {
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -1850,6 +2170,14 @@ export const GET = () => {
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -1870,6 +2198,14 @@ export const GET = () => {
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -2052,6 +2388,134 @@ const HomePage = () => (
     <CardHeader>
       <CardTitle>my-app</CardTitle>
       <CardDescription>Next.js, Hono and Expo on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, MongoDB, Mongoose and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, MongoDB, Mongoose, Better Auth and Expo on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, MongoDB and Mongoose on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, MongoDB, Mongoose and Expo on Vite+.
+      </CardDescription>
     </CardHeader>
     <CardContent className="flex items-center justify-between">
       <span>API status</span>
@@ -2369,6 +2833,135 @@ const HomePage = () => (
       <CardTitle>my-app</CardTitle>
       <CardDescription>
         Next.js, Hono, OpenAPI and Expo on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, MongoDB, Mongoose and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, MongoDB, Mongoose, Better Auth and Expo on
+        Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, MongoDB and Mongoose on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, OpenAPI, MongoDB, Mongoose and Expo on Vite+.
       </CardDescription>
     </CardHeader>
     <CardContent className="flex items-center justify-between">
@@ -3072,6 +3665,134 @@ const HomePage = () => (
     <CardHeader>
       <CardTitle>my-app</CardTitle>
       <CardDescription>Next.js, Hono, oRPC and Expo on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, MongoDB, Mongoose and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, MongoDB, Mongoose, Better Auth and Expo on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, MongoDB and Mongoose on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 4 stacks
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, Hono, oRPC, MongoDB, Mongoose and Expo on Vite+.
+      </CardDescription>
     </CardHeader>
     <CardContent className="flex items-center justify-between">
       <span>API status</span>
@@ -4107,6 +4828,124 @@ const HomePage = () => (
 export default HomePage;
 
 # apps/web/src/app/page.tsx · 2 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, MongoDB, Mongoose and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, MongoDB, Mongoose, Better Auth and Expo on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>Next.js, MongoDB and Mongoose on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, MongoDB, Mongoose and Expo on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 import {
@@ -4388,6 +5227,126 @@ const HomePage = () => (
     <CardHeader>
       <CardTitle>my-app</CardTitle>
       <CardDescription>Next.js, oRPC and Expo on Vite+.</CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, MongoDB, Mongoose and Better Auth on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, MongoDB, Mongoose, Better Auth and Expo on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, MongoDB and Mongoose on Vite+.
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="flex items-center justify-between">
+      <span>API status</span>
+      <ApiStatus />
+    </CardContent>
+  </Card>
+);
+
+export default HomePage;
+
+# apps/web/src/app/page.tsx · 2 stacks
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>my-app</CardTitle>
+      <CardDescription>
+        Next.js, oRPC, MongoDB, Mongoose and Expo on Vite+.
+      </CardDescription>
     </CardHeader>
     <CardContent className="flex items-center justify-between">
       <span>API status</span>
@@ -5356,7 +6315,7 @@ const HomePage = () => (
 
 export default HomePage;
 
-# apps/web/src/app/rpc/[[...rest]]/route.ts · 88 stacks
+# apps/web/src/app/rpc/[[...rest]]/route.ts · 104 stacks
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-bun-docker-e2e
 #   next-hono-orpc-docker
@@ -5365,6 +6324,22 @@ export default HomePage;
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -5454,11 +6429,19 @@ export {
   proxyToServer as PUT,
 } from "#src/server/proxy.ts";
 
-# apps/web/src/app/rpc/[[...rest]]/route.ts · 44 stacks
+# apps/web/src/app/rpc/[[...rest]]/route.ts · 52 stacks
 #   next-self-orpc-docker
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -5508,7 +6491,15 @@ export {
   handleRpc as PUT,
 } from "#src/server/orpc.ts";
 
-# apps/web/src/app/todos/page.tsx · 100 stacks
+# apps/web/src/app/todos/page.tsx · 120 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -5549,6 +6540,14 @@ export {
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -5589,6 +6588,10 @@ export {
 #   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -5633,7 +6636,15 @@ const TodosPage = async () => {
 
 export default TodosPage;
 
-# apps/web/src/app/todos/page.tsx · 100 stacks
+# apps/web/src/app/todos/page.tsx · 120 stacks
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-bun-docker
 #   next-hono-openapi-mysql-bun-docker-e2e
 #   next-hono-openapi-mysql-docker
@@ -5674,6 +6685,14 @@ export default TodosPage;
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-bun-docker
 #   next-hono-orpc-mysql-bun-docker-e2e
 #   next-hono-orpc-mysql-docker
@@ -5714,6 +6733,10 @@ export default TodosPage;
 #   next-hono-orpc-sqlite-expo-bun-docker-e2e
 #   next-hono-orpc-sqlite-expo-docker
 #   next-hono-orpc-sqlite-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -5752,7 +6775,7 @@ const TodosPage = async () => {
 
 export default TodosPage;
 
-# apps/web/src/components/header.tsx · 192 stacks
+# apps/web/src/components/header.tsx · 224 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -5765,6 +6788,14 @@ export default TodosPage;
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-bun-docker
 #   next-hono-mysql-bun-docker-e2e
 #   next-hono-mysql-docker
@@ -5789,6 +6820,14 @@ export default TodosPage;
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-bun-docker
 #   next-hono-openapi-mysql-bun-docker-e2e
 #   next-hono-openapi-mysql-docker
@@ -5837,6 +6876,14 @@ export default TodosPage;
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-bun-docker
 #   next-hono-orpc-mysql-bun-docker-e2e
 #   next-hono-orpc-mysql-docker
@@ -5901,6 +6948,10 @@ export default TodosPage;
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-docker
 #   next-self-mysql-docker-e2e
 #   next-self-mysql-expo-docker
@@ -5913,6 +6964,10 @@ export default TodosPage;
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -5957,7 +7012,15 @@ export const Header = () => (
   </header>
 );
 
-# apps/web/src/components/header.tsx · 160 stacks
+# apps/web/src/components/header.tsx · 192 stacks
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -5974,6 +7037,14 @@ export const Header = () => (
 #   next-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
 #   next-hono-mysql-prisma-better-auth-expo-docker
 #   next-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -6014,6 +7085,14 @@ export const Header = () => (
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -6078,6 +7157,10 @@ export const Header = () => (
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -6086,6 +7169,10 @@ export const Header = () => (
 #   next-self-mysql-prisma-better-auth-docker-e2e
 #   next-self-mysql-prisma-better-auth-expo-docker
 #   next-self-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -6139,7 +7226,7 @@ export const Header = async () => {
   );
 };
 
-# apps/web/src/components/mode-toggle.tsx · 352 stacks
+# apps/web/src/components/mode-toggle.tsx · 416 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -6152,6 +7239,22 @@ export const Header = async () => {
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -6192,6 +7295,22 @@ export const Header = async () => {
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -6280,6 +7399,22 @@ export const Header = async () => {
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -6408,6 +7543,14 @@ export const Header = async () => {
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -6428,6 +7571,14 @@ export const Header = async () => {
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -6530,7 +7681,7 @@ export const ModeToggle = () => {
   );
 };
 
-# apps/web/src/components/nav-links.tsx · 152 stacks
+# apps/web/src/components/nav-links.tsx · 176 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -6543,6 +7694,22 @@ export const ModeToggle = () => {
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -6639,6 +7806,14 @@ export const ModeToggle = () => {
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -6712,7 +7887,23 @@ export const NavLinks = () => {
   );
 };
 
-# apps/web/src/components/nav-links.tsx · 200 stacks
+# apps/web/src/components/nav-links.tsx · 240 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -6793,6 +7984,22 @@ export const NavLinks = () => {
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -6873,6 +8080,14 @@ export const NavLinks = () => {
 #   next-hono-orpc-sqlite-expo-bun-docker-e2e
 #   next-hono-orpc-sqlite-expo-docker
 #   next-hono-orpc-sqlite-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -6945,7 +8160,7 @@ export const NavLinks = () => {
   );
 };
 
-# apps/web/src/components/providers.tsx · 352 stacks
+# apps/web/src/components/providers.tsx · 416 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -6958,6 +8173,22 @@ export const NavLinks = () => {
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -6998,6 +8229,22 @@ export const NavLinks = () => {
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -7086,6 +8333,22 @@ export const NavLinks = () => {
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -7214,6 +8477,14 @@ export const NavLinks = () => {
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -7234,6 +8505,14 @@ export const NavLinks = () => {
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -7327,7 +8606,15 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   );
 };
 
-# apps/web/src/components/todo-list.tsx · 100 stacks
+# apps/web/src/components/todo-list.tsx · 120 stacks
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -7368,6 +8655,14 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -7408,6 +8703,10 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 #   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-orpc-sqlite-better-auth-expo-docker
 #   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -7555,7 +8854,15 @@ export const TodoList = () => {
   );
 };
 
-# apps/web/src/components/todo-list.tsx · 100 stacks
+# apps/web/src/components/todo-list.tsx · 120 stacks
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-bun-docker
 #   next-hono-openapi-mysql-bun-docker-e2e
 #   next-hono-openapi-mysql-docker
@@ -7596,6 +8903,14 @@ export const TodoList = () => {
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-bun-docker
 #   next-hono-orpc-mysql-bun-docker-e2e
 #   next-hono-orpc-mysql-docker
@@ -7636,6 +8951,10 @@ export const TodoList = () => {
 #   next-hono-orpc-sqlite-expo-bun-docker-e2e
 #   next-hono-orpc-sqlite-expo-docker
 #   next-hono-orpc-sqlite-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -7783,7 +9102,7 @@ export const TodoList = () => {
   );
 };
 
-# apps/web/src/lib/api.ts · 132 stacks
+# apps/web/src/lib/api.ts · 156 stacks
 #   next-hono-orpc-bun-docker
 #   next-hono-orpc-bun-docker-e2e
 #   next-hono-orpc-docker
@@ -7792,6 +9111,22 @@ export const TodoList = () => {
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -7876,6 +9211,14 @@ export const TodoList = () => {
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -7928,7 +9271,7 @@ const client: AppRouterClient = createORPCClient(
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/lib/query-client.ts · 352 stacks
+# apps/web/src/lib/query-client.ts · 416 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -7941,6 +9284,22 @@ export const api = createTanstackQueryUtils(client);
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -7981,6 +9340,22 @@ export const api = createTanstackQueryUtils(client);
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -8069,6 +9444,22 @@ export const api = createTanstackQueryUtils(client);
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -8197,6 +9588,14 @@ export const api = createTanstackQueryUtils(client);
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -8217,6 +9616,14 @@ export const api = createTanstackQueryUtils(client);
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -8324,7 +9731,11 @@ export const getQueryClient = () => {
   return browserQueryClient;
 };
 
-# apps/web/src/server/context.ts · 40 stacks
+# apps/web/src/server/context.ts · 48 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -8333,6 +9744,10 @@ export const getQueryClient = () => {
 #   next-self-mysql-prisma-better-auth-docker-e2e
 #   next-self-mysql-prisma-better-auth-expo-docker
 #   next-self-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -8389,7 +9804,11 @@ export const getServices = () => {
   return services;
 };
 
-# apps/web/src/server/context.ts · 40 stacks
+# apps/web/src/server/context.ts · 48 stacks
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-docker
 #   next-self-mysql-docker-e2e
 #   next-self-mysql-expo-docker
@@ -8398,6 +9817,10 @@ export const getServices = () => {
 #   next-self-mysql-prisma-docker-e2e
 #   next-self-mysql-prisma-expo-docker
 #   next-self-mysql-prisma-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -8444,7 +9867,7 @@ export const getServices = () => {
   return services;
 };
 
-# apps/web/src/server/env.ts · 264 stacks
+# apps/web/src/server/env.ts · 312 stacks
 #   next-hono-bun-docker
 #   next-hono-bun-docker-e2e
 #   next-hono-docker
@@ -8453,6 +9876,22 @@ export const getServices = () => {
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -8493,6 +9932,22 @@ export const getServices = () => {
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -8581,6 +10036,22 @@ export const getServices = () => {
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -8721,7 +10192,11 @@ export const readEnv = () =>
     },
   });
 
-# apps/web/src/server/env.ts · 32 stacks
+# apps/web/src/server/env.ts · 40 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -8730,6 +10205,10 @@ export const readEnv = () =>
 #   next-self-mysql-prisma-better-auth-docker-e2e
 #   next-self-mysql-prisma-better-auth-expo-docker
 #   next-self-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -8768,7 +10247,11 @@ export const readEnv = () =>
     },
   });
 
-# apps/web/src/server/env.ts · 32 stacks
+# apps/web/src/server/env.ts · 40 stacks
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-docker
 #   next-self-mysql-docker-e2e
 #   next-self-mysql-expo-docker
@@ -8777,6 +10260,10 @@ export const readEnv = () =>
 #   next-self-mysql-prisma-docker-e2e
 #   next-self-mysql-prisma-expo-docker
 #   next-self-mysql-prisma-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -8914,7 +10401,11 @@ export const handleOpenApi = mount(
   "/api"
 );
 
-# apps/web/src/server/orpc.ts · 20 stacks
+# apps/web/src/server/orpc.ts · 24 stacks
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -8999,7 +10490,11 @@ export const handleOpenApi = mount(
   "/api"
 );
 
-# apps/web/src/server/orpc.ts · 20 stacks
+# apps/web/src/server/orpc.ts · 24 stacks
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -9076,7 +10571,7 @@ export const handleOpenApi = mount(
   "/api"
 );
 
-# apps/web/src/server/proxy.ts · 264 stacks
+# apps/web/src/server/proxy.ts · 312 stacks
 #   next-hono-bun-docker
 #   next-hono-bun-docker-e2e
 #   next-hono-docker
@@ -9085,6 +10580,22 @@ export const handleOpenApi = mount(
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -9125,6 +10636,22 @@ export const handleOpenApi = mount(
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -9213,6 +10740,22 @@ export const handleOpenApi = mount(
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -9362,7 +10905,23 @@ export const proxyToServer = async (request: Request) => {
   }
 };
 
-# apps/web/src/server/query.ts · 80 stacks
+# apps/web/src/server/query.ts · 96 stacks
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -9470,7 +11029,11 @@ export const serverApi = createTanstackQueryUtils(serverClient);
 
 export const getQueryClient = cache(() => new QueryClient());
 
-# apps/web/src/server/query.ts · 20 stacks
+# apps/web/src/server/query.ts · 24 stacks
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -9511,7 +11074,11 @@ export const serverApi = createTanstackQueryUtils(serverClient);
 
 export const getQueryClient = cache(() => new QueryClient());
 
-# apps/web/src/server/query.ts · 20 stacks
+# apps/web/src/server/query.ts · 24 stacks
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-docker
 #   next-self-orpc-mysql-docker-e2e
 #   next-self-orpc-mysql-expo-docker
@@ -9555,7 +11122,7 @@ export const serverApi = createTanstackQueryUtils(serverClient);
 
 export const getQueryClient = cache(() => new QueryClient());
 
-# apps/web/tsconfig.json · 352 stacks
+# apps/web/tsconfig.json · 416 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -9568,6 +11135,22 @@ export const getQueryClient = cache(() => new QueryClient());
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
 #   next-hono-mysql-better-auth-bun-docker
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker
@@ -9608,6 +11191,22 @@ export const getQueryClient = cache(() => new QueryClient());
 #   next-hono-openapi-expo-bun-docker-e2e
 #   next-hono-openapi-expo-docker
 #   next-hono-openapi-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-bun-docker
 #   next-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-docker
@@ -9696,6 +11295,22 @@ export const getQueryClient = cache(() => new QueryClient());
 #   next-hono-orpc-expo-bun-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
 #   next-hono-orpc-mysql-better-auth-bun-docker
 #   next-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   next-hono-orpc-mysql-better-auth-docker
@@ -9824,6 +11439,14 @@ export const getQueryClient = cache(() => new QueryClient());
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -9844,6 +11467,14 @@ export const getQueryClient = cache(() => new QueryClient());
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
 #   next-self-orpc-mysql-better-auth-docker
 #   next-self-orpc-mysql-better-auth-docker-e2e
 #   next-self-orpc-mysql-better-auth-expo-docker
@@ -9924,6 +11555,32 @@ export const getQueryClient = cache(() => new QueryClient());
     "*.config.ts"
   ]
 }
+
+# apps/web/vite.config.ts · 16 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  pack: {
+    deps: { alwaysBundle: [/./u] },
+    entry: ["src/server/migrate.ts"],
+  },
+});
 
 # apps/web/vite.config.ts · 80 stacks
 #   next-self-mysql-better-auth-docker

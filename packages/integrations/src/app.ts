@@ -6,7 +6,7 @@ import { templateContent, templateFiles } from "#/templates.ts";
 export const authVariant = (ctx: Context) =>
   ctx.has("better-auth") ? "auth" : "public";
 
-/** The database kind's choice: SQLite is a file beside the app; PostgreSQL and MySQL are servers. */
+/** The SQL database of a stack that has one: SQLite is a file beside the app; PostgreSQL and MySQL are servers. */
 export const sqlDatabase = (ctx: Context) => {
   if (ctx.has("mysql")) {
     return { id: "mysql", name: "MySQL", server: true } as const;
@@ -17,7 +17,13 @@ export const sqlDatabase = (ctx: Context) => {
   return { id: "sqlite", name: "SQLite", server: false } as const;
 };
 
-export const databaseName = (ctx: Context) => sqlDatabase(ctx).name;
+/** The database kind's choice: SQLite is a file beside the app; the others are servers. */
+export const chosenDatabase = (ctx: Context) =>
+  ctx.has("mongodb")
+    ? ({ id: "mongodb", name: "MongoDB", server: true } as const)
+    : sqlDatabase(ctx);
+
+export const databaseName = (ctx: Context) => chosenDatabase(ctx).name;
 
 export const hasWebApp = (ctx: Context) => ctx.stack.framework !== undefined;
 
@@ -113,6 +119,17 @@ export const migrationEntry = (ctx: Context, run: readonly string[]) => {
   );
 };
 
+const migrationCopy =
+  '    copy: [{ from: "../../packages/db/src/migrations", to: "dist" }],\n';
+
+/** A `vp pack` config bundling the migration entry: it copies the SQL migrations, which MongoDB does not have. */
+export const packConfig = (ctx: Context, path: string, content: string) => {
+  if (!content.includes(migrationCopy)) {
+    throw new Error(`${path} does not copy the migrations`);
+  }
+  return ctx.has("mongodb") ? content.replace(migrationCopy, "") : content;
+};
+
 export const environmentConvention = (ctx: Context, loading: string) => {
   const { dir, lazy, src } = serverApp(ctx);
   const reads = lazy ? "`readEnv()`" : "`env`";
@@ -145,10 +162,31 @@ export const apiVariant = (ctx: Context) =>
 export const todosExample = (ctx: Context) =>
   ctx.stack.api !== undefined && ctx.stack.database !== undefined;
 
+const orms = [
+  { id: "prisma", name: "Prisma", release: "Prisma ORM 7" },
+  { id: "mongoose", name: "Mongoose", release: "Mongoose 9" },
+] as const;
+
+const drizzleOrm = {
+  id: "drizzle",
+  name: "Drizzle",
+  release: "Drizzle ORM v1",
+} as const;
+
+const ormOf = (ctx: Context) =>
+  orms.find(({ id }) => ctx.has(id)) ?? drizzleOrm;
+
+export const ormId = (ctx: Context) => ormOf(ctx).id;
+
+/** The packages a module needs to query through the ORM beside the `db` package: Drizzle's operators. */
+export const ormDependencies = (ctx: Context) =>
+  ormId(ctx) === "drizzle" ? ["drizzle-orm"] : [];
+
+/** The ORM as the README's layers table names it, with its major version. */
 // The todos module written for Drizzle on PostgreSQL and SQLite, or the set that replaces it.
 const todosModule = (ctx: Context) => {
-  if (ctx.has("prisma")) {
-    return `prisma-${authVariant(ctx)}`;
+  if (ctx.has("prisma") || ctx.has("mongoose")) {
+    return `${ormId(ctx)}-${authVariant(ctx)}`;
   }
   // MySQL has no `returning`, so Drizzle reads a row back after each write.
   return ctx.has("mysql") ? `drizzle-mysql-${authVariant(ctx)}` : undefined;
@@ -179,25 +217,26 @@ export const webMigrates = (ctx: Context) =>
 export const hasTables = (ctx: Context) =>
   todosExample(ctx) || ctx.has("better-auth");
 
-export const ormId = (ctx: Context) =>
-  ctx.has("prisma") ? "prisma" : "drizzle";
-
-const ormName = (ctx: Context) => (ctx.has("prisma") ? "Prisma" : "Drizzle");
-
-/** The ORM as the README's layers table names it, with its major version. */
-export const ormRelease = (ctx: Context) =>
-  ctx.has("prisma") ? "Prisma ORM 7" : "Drizzle ORM v1";
+export const ormRelease = (ctx: Context) => ormOf(ctx).release;
 
 export const databaseFlow = (ctx: Context) =>
   ctx.stack.database === undefined
     ? ""
-    : ` → ${ormName(ctx)} → ${databaseName(ctx)}`;
+    : ` → ${ormOf(ctx).name} → ${databaseName(ctx)}`;
 
 /**
  * A `select 1` through the ORM, for a health check: the statement, whether it awaits, the imports it needs, and
  * the packages those come from.
  */
 export const databaseCheck = (ctx: Context, db: string) => {
+  if (ctx.has("mongoose")) {
+    return {
+      async: true,
+      dependencies: [],
+      imports: [],
+      statement: `await ${db}.connection.getClient().db().command({ ping: 1 });`,
+    };
+  }
   if (ctx.has("prisma")) {
     return {
       async: true,
@@ -225,6 +264,9 @@ export const importBlock = (imports: readonly string[]) =>
 
 /** The statement that closes `db` once a script is done with it. */
 export const closeDatabase = (ctx: Context, db = "db") => {
+  if (ctx.has("mongoose")) {
+    return `await ${db}.connection.close();`;
+  }
   if (ctx.has("prisma")) {
     return `await ${db}.$disconnect();`;
   }

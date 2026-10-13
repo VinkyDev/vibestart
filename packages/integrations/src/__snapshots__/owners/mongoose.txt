@@ -1,0 +1,1318 @@
+# apps/server/src/migrate.ts · 216 stacks
+#   hono-mongodb-better-auth-bun-docker
+#   hono-mongodb-better-auth-docker
+#   hono-mongodb-better-auth-expo-bun-docker
+#   hono-mongodb-better-auth-expo-docker
+#   hono-mongodb-bun-docker
+#   hono-mongodb-docker
+#   hono-mongodb-expo-bun-docker
+#   hono-mongodb-expo-docker
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   hono-orpc-mongodb-better-auth-bun-docker
+#   hono-orpc-mongodb-better-auth-docker
+#   hono-orpc-mongodb-better-auth-expo-bun-docker
+#   hono-orpc-mongodb-better-auth-expo-docker
+#   hono-orpc-mongodb-bun-docker
+#   hono-orpc-mongodb-docker
+#   hono-orpc-mongodb-expo-bun-docker
+#   hono-orpc-mongodb-expo-docker
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-bun-docker
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mongodb-bun-docker
+#   spa-hono-mongodb-bun-docker-e2e
+#   spa-hono-mongodb-docker
+#   spa-hono-mongodb-docker-e2e
+#   spa-hono-mongodb-electron-bun-docker
+#   spa-hono-mongodb-electron-bun-docker-e2e
+#   spa-hono-mongodb-electron-docker
+#   spa-hono-mongodb-electron-docker-e2e
+#   spa-hono-mongodb-electron-expo-bun-docker
+#   spa-hono-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-electron-expo-docker
+#   spa-hono-mongodb-electron-expo-docker-e2e
+#   spa-hono-mongodb-expo-bun-docker
+#   spa-hono-mongodb-expo-bun-docker-e2e
+#   spa-hono-mongodb-expo-docker
+#   spa-hono-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-bun-docker
+#   tanstack-start-hono-mongodb-bun-docker-e2e
+#   tanstack-start-hono-mongodb-docker
+#   tanstack-start-hono-mongodb-docker-e2e
+#   tanstack-start-hono-mongodb-expo-bun-docker
+#   tanstack-start-hono-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-expo-docker
+#   tanstack-start-hono-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-bun-docker
+#   tanstack-start-hono-orpc-mongodb-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-docker
+#   tanstack-start-hono-orpc-mongodb-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/env.ts";
+
+const db = createDb(env.DATABASE_URL);
+await migrateDatabase(db);
+await db.connection.close();
+
+# apps/web/src/server/migrate.ts · 16 stacks
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { readEnv } from "#src/server/env.ts";
+
+const db = createDb(readEnv().DATABASE_URL);
+await migrateDatabase(db);
+await db.connection.close();
+
+# apps/web/src/server/migrate.ts · 16 stacks
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-docker
+#   tanstack-start-self-mongodb-docker-e2e
+#   tanstack-start-self-mongodb-expo-docker
+#   tanstack-start-self-mongodb-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-docker
+#   tanstack-start-self-orpc-mongodb-docker-e2e
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/server/env.ts";
+
+const db = createDb(env.DATABASE_URL);
+await migrateDatabase(db);
+await db.connection.close();
+
+# packages/db/src/index.ts · 88 stacks
+#   hono-mongodb-better-auth-bun-docker
+#   hono-mongodb-better-auth-docker
+#   hono-mongodb-better-auth-expo-bun-docker
+#   hono-mongodb-better-auth-expo-docker
+#   hono-mongodb-bun-docker
+#   hono-mongodb-docker
+#   hono-mongodb-expo-bun-docker
+#   hono-mongodb-expo-docker
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-bun-docker
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mongodb-bun-docker
+#   spa-hono-mongodb-bun-docker-e2e
+#   spa-hono-mongodb-docker
+#   spa-hono-mongodb-docker-e2e
+#   spa-hono-mongodb-electron-bun-docker
+#   spa-hono-mongodb-electron-bun-docker-e2e
+#   spa-hono-mongodb-electron-docker
+#   spa-hono-mongodb-electron-docker-e2e
+#   spa-hono-mongodb-electron-expo-bun-docker
+#   spa-hono-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-electron-expo-docker
+#   spa-hono-mongodb-electron-expo-docker-e2e
+#   spa-hono-mongodb-expo-bun-docker
+#   spa-hono-mongodb-expo-bun-docker-e2e
+#   spa-hono-mongodb-expo-docker
+#   spa-hono-mongodb-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-bun-docker
+#   tanstack-start-hono-mongodb-bun-docker-e2e
+#   tanstack-start-hono-mongodb-docker
+#   tanstack-start-hono-mongodb-docker-e2e
+#   tanstack-start-hono-mongodb-expo-bun-docker
+#   tanstack-start-hono-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-expo-docker
+#   tanstack-start-hono-mongodb-expo-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-docker
+#   tanstack-start-self-mongodb-docker-e2e
+#   tanstack-start-self-mongodb-expo-docker
+#   tanstack-start-self-mongodb-expo-docker-e2e
+import mongoose from "mongoose";
+
+// `migrateDatabase` builds the indexes once, at deploy, rather than every connection at startup.
+export const createDb = (url: string) => {
+  const connection = mongoose.createConnection(url, { autoIndex: false });
+  return { connection };
+};
+
+export type Database = ReturnType<typeof createDb>;
+
+# packages/db/src/index.ts · 160 stacks
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   hono-orpc-mongodb-better-auth-bun-docker
+#   hono-orpc-mongodb-better-auth-docker
+#   hono-orpc-mongodb-better-auth-expo-bun-docker
+#   hono-orpc-mongodb-better-auth-expo-docker
+#   hono-orpc-mongodb-bun-docker
+#   hono-orpc-mongodb-docker
+#   hono-orpc-mongodb-expo-bun-docker
+#   hono-orpc-mongodb-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-bun-docker
+#   tanstack-start-hono-orpc-mongodb-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-docker
+#   tanstack-start-hono-orpc-mongodb-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-docker
+#   tanstack-start-self-orpc-mongodb-docker-e2e
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
+import mongoose from "mongoose";
+
+import { todoSchema } from "#src/schema/todos.ts";
+
+export { toTodo } from "#src/schema/todos.ts";
+
+// `migrateDatabase` builds the indexes once, at deploy, rather than every connection at startup.
+export const createDb = (url: string) => {
+  const connection = mongoose.createConnection(url, { autoIndex: false });
+  return { connection, todos: connection.model("Todo", todoSchema) };
+};
+
+export type Database = ReturnType<typeof createDb>;
+
+# packages/db/src/migrate.ts · 124 stacks
+#   hono-mongodb-better-auth-bun-docker
+#   hono-mongodb-better-auth-docker
+#   hono-mongodb-better-auth-expo-bun-docker
+#   hono-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-orpc-mongodb-better-auth-bun-docker
+#   hono-orpc-mongodb-better-auth-docker
+#   hono-orpc-mongodb-better-auth-expo-bun-docker
+#   hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-bun-docker
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+import type { Database } from "#src/index.ts";
+
+/**
+ * MongoDB has no schema to migrate: this builds the indexes each model declares and drops the ones no model
+ * declares any more.
+ * Better Auth's collections get the indexes it queries by.
+ */
+export const migrateDatabase = async ({ connection }: Database) => {
+  await connection.syncIndexes();
+  const native = connection.getClient().db();
+  await Promise.all([
+    native.collection("user").createIndex({ email: 1 }, { unique: true }),
+    native.collection("session").createIndex({ token: 1 }, { unique: true }),
+    native.collection("session").createIndex({ userId: 1 }),
+    native.collection("account").createIndex({ userId: 1 }),
+    native.collection("verification").createIndex({ identifier: 1 }),
+  ]);
+};
+
+# packages/db/src/migrate.ts · 124 stacks
+#   hono-mongodb-bun-docker
+#   hono-mongodb-docker
+#   hono-mongodb-expo-bun-docker
+#   hono-mongodb-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   hono-orpc-mongodb-bun-docker
+#   hono-orpc-mongodb-docker
+#   hono-orpc-mongodb-expo-bun-docker
+#   hono-orpc-mongodb-expo-docker
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+#   spa-hono-mongodb-bun-docker
+#   spa-hono-mongodb-bun-docker-e2e
+#   spa-hono-mongodb-docker
+#   spa-hono-mongodb-docker-e2e
+#   spa-hono-mongodb-electron-bun-docker
+#   spa-hono-mongodb-electron-bun-docker-e2e
+#   spa-hono-mongodb-electron-docker
+#   spa-hono-mongodb-electron-docker-e2e
+#   spa-hono-mongodb-electron-expo-bun-docker
+#   spa-hono-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-electron-expo-docker
+#   spa-hono-mongodb-electron-expo-docker-e2e
+#   spa-hono-mongodb-expo-bun-docker
+#   spa-hono-mongodb-expo-bun-docker-e2e
+#   spa-hono-mongodb-expo-docker
+#   spa-hono-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-hono-mongodb-bun-docker
+#   tanstack-start-hono-mongodb-bun-docker-e2e
+#   tanstack-start-hono-mongodb-docker
+#   tanstack-start-hono-mongodb-docker-e2e
+#   tanstack-start-hono-mongodb-expo-bun-docker
+#   tanstack-start-hono-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-expo-docker
+#   tanstack-start-hono-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-bun-docker
+#   tanstack-start-hono-orpc-mongodb-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-docker
+#   tanstack-start-hono-orpc-mongodb-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-self-mongodb-docker
+#   tanstack-start-self-mongodb-docker-e2e
+#   tanstack-start-self-mongodb-expo-docker
+#   tanstack-start-self-mongodb-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-docker
+#   tanstack-start-self-orpc-mongodb-docker-e2e
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
+import type { Database } from "#src/index.ts";
+
+/**
+ * MongoDB has no schema to migrate: this builds the indexes each model declares and drops the ones no model
+ * declares any more.
+ */
+export const migrateDatabase = async ({ connection }: Database) => {
+  await connection.syncIndexes();
+};
+
+# packages/db/src/schema/todos.ts · 80 stacks
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-orpc-mongodb-better-auth-bun-docker
+#   hono-orpc-mongodb-better-auth-docker
+#   hono-orpc-mongodb-better-auth-expo-bun-docker
+#   hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+import type { InferSchemaType, Types } from "mongoose";
+import { Schema } from "mongoose";
+
+export const todoSchema = new Schema(
+  {
+    completed: { default: false, required: true, type: Boolean },
+    createdAt: { default: Date.now, required: true, type: Date },
+    title: {
+      maxlength: 200,
+      minlength: 1,
+      required: true,
+      trim: true,
+      type: String,
+    },
+    userId: { index: true, required: true, type: String },
+  },
+  { versionKey: false }
+);
+
+type TodoDocument = InferSchemaType<typeof todoSchema> & {
+  _id: Types.ObjectId;
+};
+
+/** A todo as the API returns it: the `ObjectId` as a hex string `id`, and no Mongoose types for a client to resolve. */
+interface Todo {
+  completed: boolean;
+  createdAt: Date;
+  id: string;
+  title: string;
+  userId: string;
+}
+
+export const toTodo = ({ _id, ...todo }: TodoDocument): Todo => ({
+  ...todo,
+  id: _id.toHexString(),
+});
+
+# packages/db/src/schema/todos.ts · 80 stacks
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   hono-orpc-mongodb-bun-docker
+#   hono-orpc-mongodb-docker
+#   hono-orpc-mongodb-expo-bun-docker
+#   hono-orpc-mongodb-expo-docker
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-bun-docker
+#   tanstack-start-hono-orpc-mongodb-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-docker
+#   tanstack-start-hono-orpc-mongodb-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-docker
+#   tanstack-start-self-orpc-mongodb-docker-e2e
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
+import type { InferSchemaType, Types } from "mongoose";
+import { Schema } from "mongoose";
+
+export const todoSchema = new Schema(
+  {
+    completed: { default: false, required: true, type: Boolean },
+    createdAt: { default: Date.now, required: true, type: Date },
+    title: {
+      maxlength: 200,
+      minlength: 1,
+      required: true,
+      trim: true,
+      type: String,
+    },
+  },
+  { versionKey: false }
+);
+
+type TodoDocument = InferSchemaType<typeof todoSchema> & {
+  _id: Types.ObjectId;
+};
+
+/** A todo as the API returns it: the `ObjectId` as a hex string `id`, and no Mongoose types for a client to resolve. */
+interface Todo {
+  completed: boolean;
+  createdAt: Date;
+  id: string;
+  title: string;
+}
+
+export const toTodo = ({ _id, ...todo }: TodoDocument): Todo => ({
+  ...todo,
+  id: _id.toHexString(),
+});
+
+# packages/db/tsconfig.json · 248 stacks
+#   hono-mongodb-better-auth-bun-docker
+#   hono-mongodb-better-auth-docker
+#   hono-mongodb-better-auth-expo-bun-docker
+#   hono-mongodb-better-auth-expo-docker
+#   hono-mongodb-bun-docker
+#   hono-mongodb-docker
+#   hono-mongodb-expo-bun-docker
+#   hono-mongodb-expo-docker
+#   hono-openapi-mongodb-better-auth-bun-docker
+#   hono-openapi-mongodb-better-auth-docker
+#   hono-openapi-mongodb-better-auth-expo-bun-docker
+#   hono-openapi-mongodb-better-auth-expo-docker
+#   hono-openapi-mongodb-bun-docker
+#   hono-openapi-mongodb-docker
+#   hono-openapi-mongodb-expo-bun-docker
+#   hono-openapi-mongodb-expo-docker
+#   hono-orpc-mongodb-better-auth-bun-docker
+#   hono-orpc-mongodb-better-auth-docker
+#   hono-orpc-mongodb-better-auth-expo-bun-docker
+#   hono-orpc-mongodb-better-auth-expo-docker
+#   hono-orpc-mongodb-bun-docker
+#   hono-orpc-mongodb-docker
+#   hono-orpc-mongodb-expo-bun-docker
+#   hono-orpc-mongodb-expo-docker
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-bun-docker-e2e
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-docker-e2e
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-bun-docker-e2e
+#   next-hono-mongodb-expo-docker
+#   next-hono-mongodb-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-bun-docker-e2e
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-bun-docker-e2e
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-docker-e2e
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mongodb-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mongodb-docker
+#   next-self-mongodb-docker-e2e
+#   next-self-mongodb-expo-docker
+#   next-self-mongodb-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-docker-e2e
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mongodb-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-bun-docker
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mongodb-bun-docker
+#   spa-hono-mongodb-bun-docker-e2e
+#   spa-hono-mongodb-docker
+#   spa-hono-mongodb-docker-e2e
+#   spa-hono-mongodb-electron-bun-docker
+#   spa-hono-mongodb-electron-bun-docker-e2e
+#   spa-hono-mongodb-electron-docker
+#   spa-hono-mongodb-electron-docker-e2e
+#   spa-hono-mongodb-electron-expo-bun-docker
+#   spa-hono-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-electron-expo-docker
+#   spa-hono-mongodb-electron-expo-docker-e2e
+#   spa-hono-mongodb-expo-bun-docker
+#   spa-hono-mongodb-expo-bun-docker-e2e
+#   spa-hono-mongodb-expo-docker
+#   spa-hono-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-bun-docker
+#   tanstack-start-hono-mongodb-bun-docker-e2e
+#   tanstack-start-hono-mongodb-docker
+#   tanstack-start-hono-mongodb-docker-e2e
+#   tanstack-start-hono-mongodb-expo-bun-docker
+#   tanstack-start-hono-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-expo-docker
+#   tanstack-start-hono-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-bun-docker
+#   tanstack-start-hono-orpc-mongodb-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-docker
+#   tanstack-start-hono-orpc-mongodb-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-docker
+#   tanstack-start-self-mongodb-docker-e2e
+#   tanstack-start-self-mongodb-expo-docker
+#   tanstack-start-self-mongodb-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-docker
+#   tanstack-start-self-orpc-mongodb-docker-e2e
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src"]
+}

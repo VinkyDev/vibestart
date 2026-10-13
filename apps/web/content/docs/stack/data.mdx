@@ -5,13 +5,14 @@ description: Database options, schema migrations, and user sessions.
 
 These choices decide where the application's records live and how users sign in. Sessions are stored in the same database as everything else.
 
-| Database   | Runs as                     | Suits                                                   |
-| ---------- | --------------------------- | ------------------------------------------------------- |
-| SQLite     | A file, inside the server   | Local development, prototypes, single-server deployment |
-| PostgreSQL | A separate database service | Concurrent writes, several app instances, production    |
-| MySQL      | A separate database service | Teams and hosts that already run MySQL                  |
+| Database   | Runs as                              | Suits                                                   |
+| ---------- | ------------------------------------ | ------------------------------------------------------- |
+| SQLite     | A file, inside the server            | Local development, prototypes, single-server deployment |
+| PostgreSQL | A separate database service          | Concurrent writes, several app instances, production    |
+| MySQL      | A separate database service          | Teams and hosts that already run MySQL                  |
+| MongoDB    | A separate document database service | Documents whose shape varies from one to the next       |
 
-Drizzle is the ORM for every database. Prisma is the alternative on PostgreSQL and MySQL.
+Drizzle is the ORM for every SQL database, and Prisma the alternative on PostgreSQL and MySQL. MongoDB uses Mongoose.
 
 ## PostgreSQL [#postgres]
 
@@ -24,6 +25,12 @@ PostgreSQL runs as a separate relational database service with transactions, con
 <Tech href="https://www.mysql.com" icon="mysql" />
 
 MySQL runs as a separate relational database service, like PostgreSQL. Generated projects include Compose configuration for MySQL 8.4 and connect through `mysql2`. MySQL has no `RETURNING`, so the example API reads a row back after each write. Use `DATABASE_URL` to connect to an existing instance.
+
+## MongoDB [#mongodb]
+
+<Tech href="https://www.mongodb.com" icon="mongodb" />
+
+MongoDB stores JSON-like documents in collections instead of rows in tables. Generated projects include Compose configuration for MongoDB 8 and reach it through Mongoose. The example API names a todo by its `ObjectId`, a 24-character hex string. Use `DATABASE_URL` to connect to an existing instance, such as MongoDB Atlas.
 
 ## SQLite [#sqlite]
 
@@ -76,6 +83,16 @@ vp run db:migrate
 ```
 
 `vp run db:client` regenerates the client; `vp run ready` and the build run it first. The server applies committed migrations at startup and records them in Prisma's `_prisma_migrations` table, so `prisma migrate status` reads the same history.
+
+## Mongoose [#mongoose]
+
+<Tech href="https://mongoosejs.com" icon="mongoose" />
+
+Mongoose 9 defines each collection as a schema in `packages/db/src/schema/` and registers it as a model in `createDb`. MongoDB has no migrations: add a field as optional, or with a default, so documents written before it still read. `vp run db:migrate` builds the indexes the schemas declare, and with Better Auth the indexes its collections need; the server runs it before it starts.
+
+```sh
+vp run db:migrate
+```
 
 ## Better Auth [#better-auth]
 
