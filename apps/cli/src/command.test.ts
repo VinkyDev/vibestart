@@ -131,6 +131,7 @@ describe("choosing a stack", () => {
         code: "illegal-stack",
         fixes: [
           { flags: ["--database postgres"] },
+          { flags: ["--database mysql"] },
           { flags: ["--database sqlite"] },
           { flags: ["--auth none"] },
         ],
