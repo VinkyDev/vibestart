@@ -287,7 +287,7 @@ const renderViteConfig = (ctx: Context) => {
     "",
     "export default defineConfig({",
     "  pack: {",
-    ...(database
+    ...(database && !ctx.has("mongodb")
       ? [
           '    copy: [{ from: "../../packages/db/src/migrations", to: "dist" }],',
         ]

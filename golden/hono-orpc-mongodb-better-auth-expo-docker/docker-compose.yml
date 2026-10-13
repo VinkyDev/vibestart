@@ -1,0 +1,42 @@
+name: my-app
+
+x-app: &app
+  build: .
+  image: my-app
+  environment:
+    DATABASE_URL: mongodb://db:27017/my_app
+    BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+    BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}
+
+services:
+  db:
+    image: mongo:8
+    healthcheck:
+      test:
+        ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - db-data:/data/db
+
+  migrate:
+    <<: *app
+    command: ["node", "dist/migrate.mjs"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    <<: *app
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  db-data:

@@ -51,7 +51,7 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
         : []),
       ...(stack.framework === "next" ? ["vp run typegen"] : []),
       ...(stack.router === "tanstack-router" ? ["vp build apps/web"] : []),
-      ...(stack.orm === "prisma" ? [] : ["vp run db:generate --name init"]),
+      ...(stack.orm === "drizzle" ? ["vp run db:generate --name init"] : []),
     ]);
   });
 

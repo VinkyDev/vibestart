@@ -11,6 +11,7 @@ import {
   databaseCheck,
   databaseName,
   hasWebApp,
+  ormDependencies,
   stackHeadline,
   todosExample,
 } from "#/app.ts";
@@ -66,9 +67,25 @@ const renderHealth = (ctx: Context) => {
 
 const queriesPath = "apps/web/src/lib/api.ts";
 
+// MongoDB names a todo by its ObjectId, a string the path carries as it is.
+const withStringIds = (content: string) => {
+  const typed = content.replaceAll("id: number", "id: string");
+  const passed = typed.replaceAll("{ id: String(id) }", "{ id }");
+  if (typed === content || passed === typed) {
+    throw new Error(`openapi/web/${queriesPath} has no numeric todo id`);
+  }
+  return passed;
+};
+
+/** The typed queries over the todo routes, which the web and mobile apps share. */
+export const openapiQueriesContent = (ctx: Context) => {
+  const template = templateContent(ctx, "openapi/web", queriesPath);
+  return ctx.has("mongodb") ? withStringIds(template) : template;
+};
+
 // Only Next.js builds a second set of queries, for its Server Components.
 const queries = (ctx: Context) => {
-  const content = templateContent(ctx, "openapi/web", queriesPath);
+  const content = openapiQueriesContent(ctx);
   return file(
     queriesPath,
     ctx.has("next")
@@ -106,7 +123,7 @@ export const openapi = defineIntegration({
       dependencies: [
         ...(ctx.stack.database === undefined
           ? []
-          : [`${ctx.scope}/db`, ...(ctx.has("prisma") ? [] : ["drizzle-orm"])]),
+          : [`${ctx.scope}/db`, ...ormDependencies(ctx)]),
         "@hono/zod-openapi",
         "@scalar/hono-api-reference",
         "hono",
