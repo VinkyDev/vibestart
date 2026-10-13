@@ -12,6 +12,7 @@ import {
   hasWebApp,
   serverApp,
   serverEnv,
+  sqlDatabase,
   stackHeadline,
   todosExample,
 } from "#/app.ts";
@@ -55,7 +56,9 @@ const renderAuthIndex = (ctx: Context) => {
     ...(ctx.has("electron") ? ["rendererOrigin"] : []),
     ...(mobile ? [quote(`${ctx.name}://`)] : []),
   ];
-  const provider = ctx.has("sqlite") ? "sqlite" : "pg";
+  const provider = { mysql: "mysql", postgres: "pg", sqlite: "sqlite" }[
+    sqlDatabase(ctx).id
+  ];
   return [
     'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
     ...(mobile ? ['import { expo } from "@better-auth/expo";'] : []),
@@ -184,10 +187,7 @@ const webFiles = (ctx: Context) => {
 export const betterAuth = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "better-auth/common"),
-    ...templateFiles(
-      ctx,
-      `better-auth/${ctx.has("sqlite") ? "sqlite" : "postgres"}`
-    ),
+    ...templateFiles(ctx, `better-auth/${sqlDatabase(ctx).id}`),
     ...(hasWebApp(ctx) ? webFiles(ctx) : []),
     file("packages/auth/src/index.ts", renderAuthIndex(ctx)),
     contribute(packageJson, {

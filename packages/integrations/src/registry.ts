@@ -9,6 +9,7 @@ import { electron } from "#/electron.ts";
 import { expo } from "#/expo.ts";
 import { hono } from "#/hono.ts";
 import { knip } from "#/knip.ts";
+import { mysql } from "#/mysql.ts";
 import { next } from "#/next.ts";
 import { node } from "#/node.ts";
 import { openapi } from "#/openapi.ts";
@@ -55,6 +56,7 @@ export const registry = defineRegistry({
     orpc,
     openapi,
     postgres,
+    mysql,
     sqlite,
     drizzle,
     betterAuth,

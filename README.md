@@ -61,7 +61,7 @@ VibeStart does not host your application, does not migrate production data, and 
 | Mobile                   | Expo (React Native), iOS and Android                 |
 | Backend                  | Hono, or the framework's own server                  |
 | API                      | oRPC, OpenAPI, or none                               |
-| Database                 | PostgreSQL or SQLite with Drizzle, or none           |
+| Database                 | PostgreSQL, MySQL, or SQLite with Drizzle, or none   |
 | Auth                     | Better Auth                                          |
 | Deployment               | Docker                                               |
 | UI                       | shadcn (Base UI) and Tailwind 4                      |

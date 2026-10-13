@@ -1,13 +1,23 @@
 import type { Context } from "@vibestart/core";
 import { defineSlot, file, renderFile } from "@vibestart/core";
 
-import { templateContent } from "#/templates.ts";
+import { templateContent, templateFiles } from "#/templates.ts";
 
 export const authVariant = (ctx: Context) =>
   ctx.has("better-auth") ? "auth" : "public";
 
-export const databaseName = (ctx: Context) =>
-  ctx.has("sqlite") ? "SQLite" : "PostgreSQL";
+/** The database kind's choice: SQLite is a file beside the app; PostgreSQL and MySQL are servers. */
+export const sqlDatabase = (ctx: Context) => {
+  if (ctx.has("mysql")) {
+    return { id: "mysql", name: "MySQL", server: true } as const;
+  }
+  if (ctx.has("postgres")) {
+    return { id: "postgres", name: "PostgreSQL", server: true } as const;
+  }
+  return { id: "sqlite", name: "SQLite", server: false } as const;
+};
+
+export const databaseName = (ctx: Context) => sqlDatabase(ctx).name;
 
 export const hasWebApp = (ctx: Context) => ctx.stack.framework !== undefined;
 
@@ -134,6 +144,18 @@ export const apiVariant = (ctx: Context) =>
 
 export const todosExample = (ctx: Context) =>
   ctx.stack.api !== undefined && ctx.stack.database !== undefined;
+
+/**
+ * The API's template set. MySQL has no `returning`, so its todos module, at `todos`, reads a row back after
+ * each write.
+ */
+export const apiTemplates = (ctx: Context, set: string, todos: string) =>
+  ctx.has("mysql") && todosExample(ctx)
+    ? [
+        ...templateFiles(ctx, `${set}/${apiVariant(ctx)}`, { except: [todos] }),
+        ...templateFiles(ctx, `${set}/mysql-${authVariant(ctx)}`),
+      ]
+    : templateFiles(ctx, `${set}/${apiVariant(ctx)}`);
 
 /** `auth` adds accounts to the todos; `account` is accounts alone; `none` has no data. */
 export const exampleVariant = (ctx: Context) => {

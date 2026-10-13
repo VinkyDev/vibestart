@@ -1,6 +1,7 @@
 import type { Context, Contribution } from "@vibestart/core";
 import { contribute, file } from "@vibestart/core";
 
+import { sqlDatabase } from "#/app.ts";
 import { knipEntries } from "#/knip.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ignoredFiles, readmeCommandNotes } from "#/vite-plus/slots.ts";
@@ -36,7 +37,7 @@ export const playwright: BrowserRunner = {
 const e2eConfigPath = "apps/web/e2e.config.ts";
 const forwardedVariables = '["CI", "DATABASE_URL"]';
 
-// SQLite test databases are temporary files; PostgreSQL creates them beside the shell's `DATABASE_URL`.
+// SQLite test databases are temporary files; a database server creates them beside the shell's `DATABASE_URL`.
 const e2eConfig = (ctx: Context) => {
   const config = templateContent(ctx, "testing/e2e/runner", e2eConfigPath);
   if (!config.includes(forwardedVariables)) {
@@ -46,7 +47,9 @@ const e2eConfig = (ctx: Context) => {
   }
   return file(
     e2eConfigPath,
-    ctx.has("postgres") ? config : config.replace(forwardedVariables, '["CI"]')
+    sqlDatabase(ctx).server
+      ? config
+      : config.replace(forwardedVariables, '["CI"]')
   );
 };
 

@@ -68,6 +68,7 @@ const descriptions = {
   electron: () => m.desc_electron(),
   expo: () => m.desc_expo(),
   hono: () => m.desc_hono(),
+  mysql: () => m.desc_mysql(),
   next: () => m.desc_next(),
   node: () => m.desc_node(),
   openapi: () => m.desc_openapi(),
@@ -100,6 +101,7 @@ export const addonDescription = (addon: AddonInfo) =>
 export const noteText = ({ id, values }: GettingStartedNote) =>
   translate(
     {
+      "any-mysql": () => m.note_any_mysql(),
       "any-postgres": () => m.note_any_postgres(),
       "auth-secret": () => m.note_auth_secret(),
       "sqlite-file": () => m.note_sqlite_file({ path: values?.path ?? "" }),

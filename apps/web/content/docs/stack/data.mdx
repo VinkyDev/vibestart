@@ -9,12 +9,19 @@ These choices decide where the application's records live and how users sign in.
 | ---------- | --------------------------- | ------------------------------------------------------- |
 | SQLite     | A file, inside the server   | Local development, prototypes, single-server deployment |
 | PostgreSQL | A separate database service | Concurrent writes, several app instances, production    |
+| MySQL      | A separate database service | Teams and hosts that already run MySQL                  |
 
 ## PostgreSQL [#postgres]
 
 <Tech href="https://www.postgresql.org" icon="postgres" />
 
 PostgreSQL runs as a separate relational database service with transactions, constraints, and concurrent access. Generated projects include Compose configuration for development. Use `DATABASE_URL` to connect to an existing instance.
+
+## MySQL [#mysql]
+
+<Tech href="https://www.mysql.com" icon="mysql" />
+
+MySQL runs as a separate relational database service, like PostgreSQL. Generated projects include Compose configuration for MySQL 8.4 and connect through `mysql2`. MySQL has no `RETURNING`, so the example API reads a row back after each write. Use `DATABASE_URL` to connect to an existing instance.
 
 ## SQLite [#sqlite]
 

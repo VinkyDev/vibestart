@@ -7,7 +7,13 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import { hasBackend, hasWebApp, proxiesToHono } from "#/app.ts";
+import {
+  databaseName,
+  hasBackend,
+  hasWebApp,
+  proxiesToHono,
+  sqlDatabase,
+} from "#/app.ts";
 import { toolchainVersions } from "#/catalog.ts";
 import { joinWords, quote } from "#/format.ts";
 import {
@@ -351,7 +357,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
       ? ["`BETTER_AUTH_URL` (the public origin)", "`BETTER_AUTH_SECRET`"]
       : []),
   ];
-  const starts = ctx.has("postgres") ? "starts PostgreSQL, " : "";
+  const starts = sqlDatabase(ctx).server ? `starts ${databaseName(ctx)}, ` : "";
   const app = appServed(ctx);
   if (ctx.stack.database === undefined) {
     return [

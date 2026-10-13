@@ -63,6 +63,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
@@ -72,6 +73,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
+/** @typedef {{}} Desc_MysqlInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
 /** @typedef {{}} Desc_OpenapiInputs */
@@ -112,6 +114,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
+/** @typedef {{}} Fit_MysqlInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
 /** @typedef {{}} Fit_None_ApiInputs */
@@ -185,6 +188,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
 /** @typedef {{}} None_ApiInputs */
@@ -200,6 +204,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Not_Found_HomeInputs */
 /** @typedef {{}} Not_Found_TitleInputs */
 /** @typedef {{}} Not_VerifiedInputs */
+/** @typedef {{}} Note_Any_MysqlInputs */
 /** @typedef {{}} Note_Any_PostgresInputs */
 /** @typedef {{}} Note_Auth_SecretInputs */
 /** @typedef {{ path: NonNullable<unknown> }} Note_Sqlite_FileInputs */
@@ -1204,6 +1209,20 @@ export const deployment_image = /** @type {((inputs: Deployment_ImageInputs, opt
 /**
 * | output |
 * | --- |
+* | "{name} image, with MySQL via Compose" |
+*
+* @param {Deployment_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_mysql = /** @type {((inputs: Deployment_MysqlInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_MysqlInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_mysql(inputs)
+	return __en.deployment_mysql(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "{name} image, with PostgreSQL via Compose" |
 *
 * @param {Deployment_PostgresInputs} inputs
@@ -1326,6 +1345,20 @@ export const desc_hono = /** @type {((inputs?: Desc_HonoInputs, options?: { loca
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_hono(inputs)
 	return __en.desc_hono(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "MySQL server, run by Docker Compose in development" |
+*
+* @param {Desc_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_mysql = /** @type {((inputs?: Desc_MysqlInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_MysqlInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_mysql(inputs)
+	return __en.desc_mysql(inputs)
 });
 /**
 * | output |
@@ -1887,6 +1920,20 @@ export const fit_hono = /** @type {((inputs?: Fit_HonoInputs, options?: { locale
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_hono(inputs)
 	return __en.fit_hono(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "For production apps on MySQL hosting." |
+*
+* @param {Fit_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_mysql = /** @type {((inputs?: Fit_MysqlInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_MysqlInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_mysql(inputs)
+	return __en.fit_mysql(inputs)
 });
 /**
 * | output |
@@ -2926,6 +2973,20 @@ export const learn_about = /** @type {((inputs: Learn_AboutInputs, options?: { l
 /**
 * | output |
 * | --- |
+* | "MySQL server" |
+*
+* @param {Mysql_ProcessInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mysql_process = /** @type {((inputs?: Mysql_ProcessInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mysql_ProcessInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mysql_process(inputs)
+	return __en.mysql_process(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Docs" |
 *
 * @param {Nav_DocsInputs} inputs
@@ -3132,6 +3193,20 @@ export const not_verified = /** @type {((inputs?: Not_VerifiedInputs, options?: 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.not_verified(inputs)
 	return __en.not_verified(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "or point DATABASE_URL at any MySQL" |
+*
+* @param {Note_Any_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const note_any_mysql = /** @type {((inputs?: Note_Any_MysqlInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Note_Any_MysqlInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.note_any_mysql(inputs)
+	return __en.note_any_mysql(inputs)
 });
 /**
 * | output |

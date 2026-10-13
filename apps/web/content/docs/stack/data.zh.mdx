@@ -5,16 +5,23 @@ description: 数据库选择、表结构迁移和用户会话。
 
 这些选择决定应用的数据保存在哪里，以及用户如何登录。会话与其他数据存储在同一个数据库中。
 
-| 数据库     | 运行方式             | 适用场景                       |
-| ---------- | -------------------- | ------------------------------ |
-| SQLite     | 服务进程内的单个文件 | 本地开发、原型、单机部署       |
-| PostgreSQL | 独立的数据库服务     | 并发写入、多实例部署、生产环境 |
+| 数据库     | 运行方式             | 适用场景                        |
+| ---------- | -------------------- | ------------------------------- |
+| SQLite     | 服务进程内的单个文件 | 本地开发、原型、单机部署        |
+| PostgreSQL | 独立的数据库服务     | 并发写入、多实例部署、生产环境  |
+| MySQL      | 独立的数据库服务     | 已在使用 MySQL 的团队与托管环境 |
 
 ## PostgreSQL [#postgres]
 
 <Tech href="https://www.postgresql.org" icon="postgres" />
 
 PostgreSQL 是独立运行的关系型数据库，提供事务、约束和并发访问能力。生成项目包含本地开发的 Compose 配置，也可以通过 `DATABASE_URL` 连接已有实例。
+
+## MySQL [#mysql]
+
+<Tech href="https://www.mysql.com" icon="mysql" />
+
+MySQL 与 PostgreSQL 一样作为独立的关系型数据库服务运行。生成项目包含 MySQL 8.4 的 Compose 配置，并通过 `mysql2` 连接。MySQL 不支持 `RETURNING`，因此示例 API 在每次写入后重新读取该行。也可以通过 `DATABASE_URL` 连接已有实例。
 
 ## SQLite [#sqlite]
 

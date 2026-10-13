@@ -14,6 +14,17 @@ import { tintClass } from "#/lib/roles.ts";
 import { chosen, integrationOf } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
+// A database server runs beside the image in Compose; SQLite lives inside it.
+const deploymentLabel = (database: string | undefined, name: string) => {
+  if (database === "postgres") {
+    return m.deployment_postgres({ name });
+  }
+  if (database === "mysql") {
+    return m.deployment_mysql({ name });
+  }
+  return m.deployment_image({ name });
+};
+
 export const Boxes = ({
   boxes,
   stack,
@@ -116,9 +127,7 @@ export const DeploymentFrame = ({
             initial={{ left: origin.x + 20, top: origin.y + 8 }}
             transition={spring}
           >
-            {stack.database === "postgres"
-              ? m.deployment_postgres({ name })
-              : m.deployment_image({ name })}
+            {deploymentLabel(stack.database, name)}
           </motion.span>
         </motion.div>
       )}

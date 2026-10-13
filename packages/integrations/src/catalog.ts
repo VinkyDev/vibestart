@@ -104,6 +104,7 @@ export const catalog = {
   db: {
     "drizzle-kit": "1.0.0-rc.4",
     "drizzle-orm": "1.0.0-rc.4",
+    mysql2: "^3.24.5",
     postgres: "^3.4.9",
   },
 } satisfies Catalog;

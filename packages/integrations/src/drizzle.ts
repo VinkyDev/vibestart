@@ -8,7 +8,13 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import { exampleVariant, hasTables, serverApp, stackHeadline } from "#/app.ts";
+import {
+  exampleVariant,
+  hasTables,
+  serverApp,
+  sqlDatabase,
+  stackHeadline,
+} from "#/app.ts";
 import { commentedShell } from "#/format.ts";
 import { templateFiles } from "#/templates.ts";
 import {
@@ -58,7 +64,7 @@ if (existsSync(serverEnvFile)) {
 
 export default defineConfig({
   dbCredentials: { url: process.env.DATABASE_URL ?? "" },
-  dialect: "postgresql",
+  dialect: "${ctx.has("mysql") ? "mysql" : "postgresql"}",
   out: "./src/migrations",
   schema: "./src/schema",
 });
@@ -73,6 +79,11 @@ const schemaConvention = (ctx: Context) =>
           'SQLite stores booleans and timestamps as integers (`integer({ mode: "boolean" })`, `integer({ mode: "timestamp_ms" })`). The driver is synchronous: `db.run()` and the migrator return values; query builders (`select`, `insert`, …) are still awaited.',
         ]
       : []),
+    ...(ctx.has("mysql")
+      ? [
+          "MySQL has no `returning`: read a row back after a write (`$returningId()` on insert), and give a column that is indexed or unique a bounded `varchar`.",
+        ]
+      : []),
     ...(ctx.has("better-auth")
       ? [
           "The Better Auth tables in `schema/auth.ts` match the fields Better Auth expects; read its docs before adding a plugin.",
@@ -81,7 +92,8 @@ const schemaConvention = (ctx: Context) =>
   ].join(" ");
 
 const packageOwns = (ctx: Context) => {
-  const dialect = ctx.has("sqlite") ? " for SQLite" : "";
+  const { id, name } = sqlDatabase(ctx);
+  const dialect = id === "postgres" ? "" : ` for ${name}`;
   const tables = ctx.has("better-auth") ? ", including Better Auth tables" : "";
   return `Drizzle schema${dialect} (\`src/schema/\`${tables}), relations, migrations (\`src/migrations/\`), \`createDb\``;
 };

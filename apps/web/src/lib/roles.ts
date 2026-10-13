@@ -211,6 +211,7 @@ const fits = {
   electron: () => m.fit_electron(),
   expo: () => m.fit_expo(),
   hono: () => m.fit_hono(),
+  mysql: () => m.fit_mysql(),
   next: () => m.fit_next(),
   openapi: () => m.fit_openapi(),
   orpc: () => m.fit_orpc(),

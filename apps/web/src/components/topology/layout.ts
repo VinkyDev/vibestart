@@ -205,12 +205,13 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       rect: around([blocks.backend, ...hosted], boxPadding, boxLabel),
     });
   }
-  if (stack.database === "postgres") {
+  if (stack.database === "postgres" || stack.database === "mysql") {
     boxes.push({
       deployed: true,
       group: "database",
       id: "database",
-      label: m.postgres_process(),
+      label:
+        stack.database === "mysql" ? m.mysql_process() : m.postgres_process(),
       node: false,
       rect: around([blocks.database], boxPadding, boxLabel),
     });
