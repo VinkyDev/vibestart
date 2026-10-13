@@ -46,6 +46,9 @@ const e2eVariant = (ctx: Context) => {
   return hasBackend(ctx) ? "health" : "home";
 };
 
+// These servers cap a database name, so their test database names are bounded.
+const sqlServerIds = new Set(["mysql", "postgres"]);
+
 const usesTestDatabase = (ctx: Context) =>
   ctx.stack.database !== undefined &&
   (hasWebApp(ctx) || hasIntegrationTests(ctx));
@@ -298,6 +301,9 @@ const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
           ctx,
           `${ormId(ctx)}/${chosenDatabase(ctx).id}/testing`
         ),
+        ...(sqlServerIds.has(chosenDatabase(ctx).id)
+          ? templateFiles(ctx, `testing/database/${chosenDatabase(ctx).id}`)
+          : []),
         contribute(packageJson, {
           exports: { "./testing": "./src/testing.ts" },
           path: "packages/db",
