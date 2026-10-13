@@ -13,6 +13,7 @@ import {
   hasBackend,
   hasWebApp,
   serverApp,
+  sqlDatabase,
   todosExample,
 } from "#/app.ts";
 import { joinWords, markdownTable } from "#/format.ts";
@@ -124,7 +125,7 @@ const e2eStack = (ctx: Context) => {
       : [
           ctx.has("sqlite")
             ? "a fresh SQLite file"
-            : "a fresh PostgreSQL database",
+            : `a fresh ${databaseName(ctx)} database`,
         ]),
     ...(ctx.has("hono") ? ["the real Hono server"] : []),
   ];
@@ -146,8 +147,8 @@ const isolationSentences = (ctx: Context, runner: BrowserRunner) => [
     : []),
   ...(usesTestDatabase(ctx)
     ? [
-        ctx.has("postgres")
-          ? `Test databases are created beside \`DATABASE_URL\` from \`${serverApp(ctx).dir}/.env\`, so the tests need PostgreSQL running.`
+        sqlDatabase(ctx).server
+          ? `Test databases are created beside \`DATABASE_URL\` from \`${serverApp(ctx).dir}/.env\`, so the tests need ${databaseName(ctx)} running.`
           : "Test databases are SQLite files in the system temp directory with the real migrations applied.",
         ctx.has("better-auth")
           ? "Tests sign up a new user with `signUp()`, so they share no rows."
@@ -255,10 +256,7 @@ const integrationTests = (ctx: Context) => [
 const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
   ...(usesTestDatabase(ctx)
     ? [
-        ...templateFiles(
-          ctx,
-          `testing/database/${ctx.has("sqlite") ? "sqlite" : "postgres"}`
-        ),
+        ...templateFiles(ctx, `testing/database/${sqlDatabase(ctx).id}`),
         contribute(packageJson, {
           exports: { "./testing": "./src/testing.ts" },
           path: "packages/db",

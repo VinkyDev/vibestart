@@ -74,9 +74,19 @@ const postgresUrl =
   process.env.STACKS_POSTGRES_URL ??
   `postgres://${userInfo().username}@localhost:5432/postgres`;
 
+// A server's own `mysql` database always exists, like Postgres's `postgres`.
+const mysqlUrl =
+  process.env.STACKS_MYSQL_URL ?? "mysql://root:mysql@localhost:3306/mysql";
+
+const serverUrls: Record<string, string> = {
+  mysql: mysqlUrl,
+  postgres: postgresUrl,
+};
+
 const writeEnvFiles = (dir: string) => {
   materializeEnvFromExamples(dir, {
     authSecret: "local-secret-that-is-at-least-32-characters",
+    mysqlDatabaseUrl: mysqlUrl,
     postgresDatabaseUrl: postgresUrl,
   });
 };
@@ -218,6 +228,7 @@ const smokeStack = ({
   const logFile = `${dir}.smoke.log`;
   const log = openSync(logFile, "w");
   const { database } = stack;
+  const server = database === "postgres" || database === "mysql";
   const script = [
     'import assert from "node:assert/strict";',
     'const { app } = await import("./apps/server/src/app.ts");',
@@ -232,7 +243,7 @@ const smokeStack = ({
           "  await migrateDatabase(db);",
         ]
       : []),
-    ...(database === "postgres"
+    ...(server
       ? []
       : [
           '  const response = await app.request("http://localhost/api/health");',
@@ -264,10 +275,10 @@ const smokeStack = ({
       : []),
     "} finally {",
     ...(database === "sqlite" ? ["  db.$client.close();"] : []),
-    ...(database === "postgres" ? ["  await db.$client.end();"] : []),
+    ...(server ? ["  await db.$client.end();"] : []),
     "}",
-    database === "postgres"
-      ? 'console.log("Runtime imports passed; live PostgreSQL requests require stacks verify.");'
+    server
+      ? 'console.log("Runtime imports passed; live database requests require stacks verify.");'
       : 'console.log("Runtime imports and in-memory Hono requests passed; no server started.");',
   ].join("\n");
   const runtime = stack.runtime === "bun" ? "bun" : "node";
@@ -284,7 +295,7 @@ const smokeStack = ({
     DATABASE_URL:
       database === "sqlite"
         ? path.join(dir, "runtime-smoke.sqlite")
-        : postgresUrl,
+        : serverUrls[database ?? "postgres"],
     BETTER_AUTH_SECRET: "smoke-secret-that-is-at-least-32-characters",
     BETTER_AUTH_URL: "http://localhost:3000",
   };
@@ -391,7 +402,8 @@ Every stack is a Linux task under each package manager, covered by any pass that
 package managers by default. --package-manager narrows the matrix.
 Bun is required to install or run Bun package-manager or Hono-runtime combinations.
 verify runs --jobs stacks at a time (default ${defaultJobs}), each on its own test ports.
-Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres).`;
+Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres), and MySQL
+stacks STACKS_MYSQL_URL (default mysql://root:mysql@localhost:3306/mysql).`;
 
 const selectTasks = (
   selected: readonly Platform[],

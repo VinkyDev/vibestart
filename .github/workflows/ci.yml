@@ -79,6 +79,17 @@ jobs:
           --health-interval 2s
           --health-timeout 5s
           --health-retries 15
+      mysql:
+        image: ${{ matrix.platform == 'linux' && 'mysql:8.4' || '' }}
+        env:
+          MYSQL_ROOT_PASSWORD: mysql
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -pmysql"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 30
     defaults:
       run:
         shell: bash
@@ -103,6 +114,13 @@ jobs:
           & "$env:PGBIN\pg_isready.exe" --host localhost --timeout 60
           if ($LASTEXITCODE -ne 0) { throw "PostgreSQL is not accepting connections" }
           "STACKS_POSTGRES_URL=postgres://postgres:root@localhost:5432/postgres" >> $env:GITHUB_ENV
+      # Service containers run only on Linux, so Windows installs MySQL; root's password matches the container's.
+      - if: runner.os == 'Windows'
+        name: Start MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.4"
+          root-password: mysql
       - run: vp install
       # Chromium's system libraries. Each project's own runner installs the browser build its version needs.
       - if: runner.os == 'Linux'

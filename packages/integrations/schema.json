@@ -30,7 +30,10 @@
         "router": { "type": "string", "enum": ["tanstack-router"] },
         "backend": { "type": "string", "enum": ["hono", "self"] },
         "api": { "type": "string", "enum": ["orpc", "openapi"] },
-        "database": { "type": "string", "enum": ["postgres", "sqlite"] },
+        "database": {
+          "type": "string",
+          "enum": ["postgres", "mysql", "sqlite"]
+        },
         "orm": { "type": "string", "enum": ["drizzle"] },
         "auth": { "type": "string", "enum": ["better-auth"] },
         "ui": { "type": "string", "enum": ["shadcn"] },

@@ -64,6 +64,9 @@ export type CurrentInputs = {};
 export type Deployment_ImageInputs = {
     name: NonNullable<unknown>;
 };
+export type Deployment_MysqlInputs = {
+    name: NonNullable<unknown>;
+};
 export type Deployment_PostgresInputs = {
     name: NonNullable<unknown>;
 };
@@ -75,6 +78,7 @@ export type Desc_E2eInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
 export type Desc_HonoInputs = {};
+export type Desc_MysqlInputs = {};
 export type Desc_NextInputs = {};
 export type Desc_NodeInputs = {};
 export type Desc_OpenapiInputs = {};
@@ -119,6 +123,7 @@ export type Fit_DockerInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
 export type Fit_HonoInputs = {};
+export type Fit_MysqlInputs = {};
 export type Fit_NextInputs = {};
 export type Fit_NodeInputs = {};
 export type Fit_None_ApiInputs = {};
@@ -208,6 +213,7 @@ export type LanguageInputs = {};
 export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
+export type Mysql_ProcessInputs = {};
 export type Nav_DocsInputs = {};
 export type Nav_StudioInputs = {};
 export type None_ApiInputs = {};
@@ -223,6 +229,7 @@ export type Not_Found_BodyInputs = {};
 export type Not_Found_HomeInputs = {};
 export type Not_Found_TitleInputs = {};
 export type Not_VerifiedInputs = {};
+export type Note_Any_MysqlInputs = {};
 export type Note_Any_PostgresInputs = {};
 export type Note_Auth_SecretInputs = {};
 export type Note_Sqlite_FileInputs = {
@@ -461,6 +468,7 @@ export declare const create_agent_trigger: (inputs: Create_Agent_TriggerInputs) 
 export declare const create_it: (inputs: Create_ItInputs) => LocalizedString;
 export declare const current: (inputs: CurrentInputs) => LocalizedString;
 export declare const deployment_image: (inputs: Deployment_ImageInputs) => LocalizedString;
+export declare const deployment_mysql: (inputs: Deployment_MysqlInputs) => LocalizedString;
 export declare const deployment_postgres: (inputs: Deployment_PostgresInputs) => LocalizedString;
 export declare const desc_better_auth: (inputs: Desc_Better_AuthInputs) => LocalizedString;
 export declare const desc_bun: (inputs: Desc_BunInputs) => LocalizedString;
@@ -470,6 +478,7 @@ export declare const desc_e2e: (inputs: Desc_E2eInputs) => LocalizedString;
 export declare const desc_electron: (inputs: Desc_ElectronInputs) => LocalizedString;
 export declare const desc_expo: (inputs: Desc_ExpoInputs) => LocalizedString;
 export declare const desc_hono: (inputs: Desc_HonoInputs) => LocalizedString;
+export declare const desc_mysql: (inputs: Desc_MysqlInputs) => LocalizedString;
 export declare const desc_next: (inputs: Desc_NextInputs) => LocalizedString;
 export declare const desc_node: (inputs: Desc_NodeInputs) => LocalizedString;
 export declare const desc_openapi: (inputs: Desc_OpenapiInputs) => LocalizedString;
@@ -510,6 +519,7 @@ export declare const fit_docker: (inputs: Fit_DockerInputs) => LocalizedString;
 export declare const fit_electron: (inputs: Fit_ElectronInputs) => LocalizedString;
 export declare const fit_expo: (inputs: Fit_ExpoInputs) => LocalizedString;
 export declare const fit_hono: (inputs: Fit_HonoInputs) => LocalizedString;
+export declare const fit_mysql: (inputs: Fit_MysqlInputs) => LocalizedString;
 export declare const fit_next: (inputs: Fit_NextInputs) => LocalizedString;
 export declare const fit_node: (inputs: Fit_NodeInputs) => LocalizedString;
 export declare const fit_none_api: (inputs: Fit_None_ApiInputs) => LocalizedString;
@@ -585,6 +595,7 @@ export declare const knip_scope_desktop: (inputs: Knip_Scope_DesktopInputs) => L
 export declare const knip_scope_mobile: (inputs: Knip_Scope_MobileInputs) => LocalizedString;
 export declare const language: (inputs: LanguageInputs) => LocalizedString;
 export declare const learn_about: (inputs: Learn_AboutInputs) => LocalizedString;
+export declare const mysql_process: (inputs: Mysql_ProcessInputs) => LocalizedString;
 export declare const nav_docs: (inputs: Nav_DocsInputs) => LocalizedString;
 export declare const nav_studio: (inputs: Nav_StudioInputs) => LocalizedString;
 export declare const none_api: (inputs: None_ApiInputs) => LocalizedString;
@@ -600,6 +611,7 @@ export declare const not_found_body: (inputs: Not_Found_BodyInputs) => Localized
 export declare const not_found_home: (inputs: Not_Found_HomeInputs) => LocalizedString;
 export declare const not_found_title: (inputs: Not_Found_TitleInputs) => LocalizedString;
 export declare const not_verified: (inputs: Not_VerifiedInputs) => LocalizedString;
+export declare const note_any_mysql: (inputs: Note_Any_MysqlInputs) => LocalizedString;
 export declare const note_any_postgres: (inputs: Note_Any_PostgresInputs) => LocalizedString;
 export declare const note_auth_secret: (inputs: Note_Auth_SecretInputs) => LocalizedString;
 export declare const note_sqlite_file: (inputs: Note_Sqlite_FileInputs) => LocalizedString;

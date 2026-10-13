@@ -64,6 +64,9 @@ export type CurrentInputs = {};
 export type Deployment_ImageInputs = {
     name: NonNullable<unknown>;
 };
+export type Deployment_MysqlInputs = {
+    name: NonNullable<unknown>;
+};
 export type Deployment_PostgresInputs = {
     name: NonNullable<unknown>;
 };
@@ -75,6 +78,7 @@ export type Desc_E2eInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
 export type Desc_HonoInputs = {};
+export type Desc_MysqlInputs = {};
 export type Desc_NextInputs = {};
 export type Desc_NodeInputs = {};
 export type Desc_OpenapiInputs = {};
@@ -119,6 +123,7 @@ export type Fit_DockerInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
 export type Fit_HonoInputs = {};
+export type Fit_MysqlInputs = {};
 export type Fit_NextInputs = {};
 export type Fit_NodeInputs = {};
 export type Fit_None_ApiInputs = {};
@@ -208,6 +213,7 @@ export type LanguageInputs = {};
 export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
+export type Mysql_ProcessInputs = {};
 export type Nav_DocsInputs = {};
 export type Nav_StudioInputs = {};
 export type None_ApiInputs = {};
@@ -223,6 +229,7 @@ export type Not_Found_BodyInputs = {};
 export type Not_Found_HomeInputs = {};
 export type Not_Found_TitleInputs = {};
 export type Not_VerifiedInputs = {};
+export type Note_Any_MysqlInputs = {};
 export type Note_Any_PostgresInputs = {};
 export type Note_Auth_SecretInputs = {};
 export type Note_Sqlite_FileInputs = {
@@ -1257,6 +1264,20 @@ export declare const deployment_image: ((inputs: Deployment_ImageInputs, options
 /**
 * | output |
 * | --- |
+* | "{name} image, with MySQL via Compose" |
+*
+* @param {Deployment_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const deployment_mysql: ((inputs: Deployment_MysqlInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_MysqlInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "{name} image, with PostgreSQL via Compose" |
 *
 * @param {Deployment_PostgresInputs} inputs
@@ -1378,6 +1399,20 @@ export declare const desc_expo: ((inputs?: Desc_ExpoInputs, options?: {
 export declare const desc_hono: ((inputs?: Desc_HonoInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_HonoInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "MySQL server, run by Docker Compose in development" |
+*
+* @param {Desc_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_mysql: ((inputs?: Desc_MysqlInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_MysqlInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1939,6 +1974,20 @@ export declare const fit_expo: ((inputs?: Fit_ExpoInputs, options?: {
 export declare const fit_hono: ((inputs?: Fit_HonoInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_HonoInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "For production apps on MySQL hosting." |
+*
+* @param {Fit_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_mysql: ((inputs?: Fit_MysqlInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_MysqlInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -2978,6 +3027,20 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "MySQL server" |
+*
+* @param {Mysql_ProcessInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mysql_process: ((inputs?: Mysql_ProcessInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mysql_ProcessInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "Docs" |
 *
 * @param {Nav_DocsInputs} inputs
@@ -3183,6 +3246,20 @@ export declare const not_found_title: ((inputs?: Not_Found_TitleInputs, options?
 export declare const not_verified: ((inputs?: Not_VerifiedInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Not_VerifiedInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "or point DATABASE_URL at any MySQL" |
+*
+* @param {Note_Any_MysqlInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const note_any_mysql: ((inputs?: Note_Any_MysqlInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Note_Any_MysqlInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

@@ -61,6 +61,7 @@
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
@@ -70,6 +71,7 @@
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
+/** @typedef {{}} Desc_MysqlInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
 /** @typedef {{}} Desc_OpenapiInputs */
@@ -110,6 +112,7 @@
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
+/** @typedef {{}} Fit_MysqlInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
 /** @typedef {{}} Fit_None_ApiInputs */
@@ -183,6 +186,7 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
 /** @typedef {{}} None_ApiInputs */
@@ -198,6 +202,7 @@
 /** @typedef {{}} Not_Found_HomeInputs */
 /** @typedef {{}} Not_Found_TitleInputs */
 /** @typedef {{}} Not_VerifiedInputs */
+/** @typedef {{}} Note_Any_MysqlInputs */
 /** @typedef {{}} Note_Any_PostgresInputs */
 /** @typedef {{}} Note_Auth_SecretInputs */
 /** @typedef {{ path: NonNullable<unknown> }} Note_Sqlite_FileInputs */
@@ -595,6 +600,10 @@ export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => L
 	return /** @type {LocalizedString} */ (`${i?.name} image`)
 };
 
+export const deployment_mysql = /** @type {(inputs: Deployment_MysqlInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} image, with MySQL via Compose`)
+};
+
 export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} image, with PostgreSQL via Compose`)
 };
@@ -629,6 +638,10 @@ export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString
 
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Standalone API server built on Hono`)
+};
+
+export const desc_mysql = /** @type {(inputs: Desc_MysqlInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`MySQL server, run by Docker Compose in development`)
 };
 
 export const desc_next = /** @type {(inputs: Desc_NextInputs) => LocalizedString} */ () => {
@@ -791,6 +804,10 @@ export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} 
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For an API that mobile apps or other services share.`)
+};
+
+export const fit_mysql = /** @type {(inputs: Fit_MysqlInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For production apps on MySQL hosting.`)
 };
 
 export const fit_next = /** @type {(inputs: Fit_NextInputs) => LocalizedString} */ () => {
@@ -1098,6 +1115,10 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`About ${i?.name}`)
 };
 
+export const mysql_process = /** @type {(inputs: Mysql_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`MySQL server`)
+};
+
 export const nav_docs = /** @type {(inputs: Nav_DocsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Docs`)
 };
@@ -1156,6 +1177,10 @@ export const not_found_title = /** @type {(inputs: Not_Found_TitleInputs) => Loc
 
 export const not_verified = /** @type {(inputs: Not_VerifiedInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Not yet verified at this version`)
+};
+
+export const note_any_mysql = /** @type {(inputs: Note_Any_MysqlInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`or point DATABASE_URL at any MySQL`)
 };
 
 export const note_any_postgres = /** @type {(inputs: Note_Any_PostgresInputs) => LocalizedString} */ () => {

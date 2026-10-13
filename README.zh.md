@@ -61,7 +61,7 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 | 移动端         | Expo(React Native),iOS 与 Android                   |
 | 后端           | Hono,或框架自带服务                                 |
 | API            | oRPC、OpenAPI,或不选                                |
-| 数据库         | PostgreSQL 或 SQLite(Drizzle),或不选                |
+| 数据库         | PostgreSQL、MySQL 或 SQLite(Drizzle),或不选         |
 | Auth           | Better Auth                                         |
 | 部署           | Docker                                              |
 | UI             | shadcn(Base UI)与 Tailwind 4                        |

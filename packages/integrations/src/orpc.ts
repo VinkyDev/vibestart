@@ -7,7 +7,7 @@ import {
 } from "@vibestart/core";
 
 import {
-  apiVariant,
+  apiTemplates,
   clientComponent,
   databaseCheck,
   hasWebApp,
@@ -78,7 +78,7 @@ export const orpc = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "orpc/common", { except: [routerPath] }),
     router(ctx),
-    ...templateFiles(ctx, `orpc/${apiVariant(ctx)}`),
+    ...apiTemplates(ctx, "orpc", "packages/api/src/routers/todos.ts"),
     file("packages/api/src/routers/health.ts", renderHealth(ctx)),
     ...(hasWebApp(ctx) ? [apiStatus(ctx)] : []),
     contribute(packageJson, {

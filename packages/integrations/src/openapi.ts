@@ -7,7 +7,7 @@ import {
 } from "@vibestart/core";
 
 import {
-  apiVariant,
+  apiTemplates,
   databaseCheck,
   databaseName,
   hasWebApp,
@@ -99,7 +99,7 @@ export const openapi = defineIntegration({
       except:
         ctx.stack.database === undefined ? ["packages/api/src/index.ts"] : [],
     }),
-    ...templateFiles(ctx, `openapi/${apiVariant(ctx)}`),
+    ...apiTemplates(ctx, "openapi", "packages/api/src/routes/todos.ts"),
     file("packages/api/src/routes/health.ts", renderHealth(ctx)),
     ...(hasWebApp(ctx) && todosExample(ctx) ? webFiles(ctx) : []),
     contribute(packageJson, {

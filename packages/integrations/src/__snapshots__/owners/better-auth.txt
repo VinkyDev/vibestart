@@ -1,4 +1,12 @@
-# apps/web/src/app/api/auth/[...all]/route.ts · 16 stacks
+# apps/web/src/app/api/auth/[...all]/route.ts · 24 stacks
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -23,72 +31,15 @@ const handleAuth = async (request: Request) =>
 export const GET = handleAuth;
 export const POST = handleAuth;
 
-# apps/web/src/app/login/page.tsx · 40 stacks
-#   next-hono-openapi-postgres-better-auth-bun-docker
-#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-docker
-#   next-hono-openapi-postgres-better-auth-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker
-#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-postgres-better-auth-expo-docker
-#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-bun-docker
-#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-docker
-#   next-hono-openapi-sqlite-better-auth-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-sqlite-better-auth-expo-docker
-#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   next-hono-orpc-postgres-better-auth-bun-docker
-#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-docker
-#   next-hono-orpc-postgres-better-auth-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker
-#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-postgres-better-auth-expo-docker
-#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-bun-docker
-#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-docker
-#   next-hono-orpc-sqlite-better-auth-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   next-hono-orpc-sqlite-better-auth-expo-docker
-#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   next-self-orpc-postgres-better-auth-docker
-#   next-self-orpc-postgres-better-auth-docker-e2e
-#   next-self-orpc-postgres-better-auth-expo-docker
-#   next-self-orpc-postgres-better-auth-expo-docker-e2e
-#   next-self-orpc-sqlite-better-auth-docker
-#   next-self-orpc-sqlite-better-auth-docker-e2e
-#   next-self-orpc-sqlite-better-auth-expo-docker
-#   next-self-orpc-sqlite-better-auth-expo-docker-e2e
-import type { Route } from "next";
-import { redirect } from "next/navigation";
-
-import { AuthForm } from "#src/components/auth-form.tsx";
-import { getSession } from "#src/server/session.ts";
-
-const redirectTargets: Route[] = ["/", "/todos"];
-
-const safeRedirect = (value: string | string[] | undefined) =>
-  redirectTargets.find((target) => target === value) ?? "/todos";
-
-const LoginPage = async ({ searchParams }: PageProps<"/login">) => {
-  const { redirect: target } = await searchParams;
-  const redirectTo = safeRedirect(target);
-
-  if (await getSession()) {
-    redirect(redirectTo);
-  }
-
-  return <AuthForm redirectTo={redirectTo} />;
-};
-
-export default LoginPage;
-
-# apps/web/src/app/login/page.tsx · 24 stacks
+# apps/web/src/app/login/page.tsx · 36 stacks
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
 #   next-hono-postgres-better-auth-bun-docker
 #   next-hono-postgres-better-auth-bun-docker-e2e
 #   next-hono-postgres-better-auth-docker
@@ -105,6 +56,10 @@ export default LoginPage;
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
 #   next-self-postgres-better-auth-docker
 #   next-self-postgres-better-auth-docker-e2e
 #   next-self-postgres-better-auth-expo-docker
@@ -137,7 +92,15 @@ const LoginPage = async ({ searchParams }: PageProps<"/login">) => {
 
 export default LoginPage;
 
-# apps/web/src/components/auth-form.tsx · 64 stacks
+# apps/web/src/app/login/page.tsx · 60 stacks
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -154,6 +117,107 @@ export default LoginPage;
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-better-auth-expo-docker
+#   next-self-orpc-postgres-better-auth-expo-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-expo-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker-e2e
+import type { Route } from "next";
+import { redirect } from "next/navigation";
+
+import { AuthForm } from "#src/components/auth-form.tsx";
+import { getSession } from "#src/server/session.ts";
+
+const redirectTargets: Route[] = ["/", "/todos"];
+
+const safeRedirect = (value: string | string[] | undefined) =>
+  redirectTargets.find((target) => target === value) ?? "/todos";
+
+const LoginPage = async ({ searchParams }: PageProps<"/login">) => {
+  const { redirect: target } = await searchParams;
+  const redirectTo = safeRedirect(target);
+
+  if (await getSession()) {
+    redirect(redirectTo);
+  }
+
+  return <AuthForm redirectTo={redirectTo} />;
+};
+
+export default LoginPage;
+
+# apps/web/src/components/auth-form.tsx · 96 stacks
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -186,6 +250,14 @@ export default LoginPage;
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -338,7 +410,39 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
   );
 };
 
-# apps/web/src/components/auth-form.tsx · 160 stacks
+# apps/web/src/components/auth-form.tsx · 240 stacks
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -371,6 +475,22 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -435,6 +555,22 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -451,6 +587,14 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -483,6 +627,14 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -627,7 +779,23 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
   );
 };
 
-# apps/web/src/components/user-menu.tsx · 64 stacks
+# apps/web/src/components/user-menu.tsx · 96 stacks
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -644,6 +812,14 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -676,6 +852,14 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -766,7 +950,39 @@ export const UserMenu = ({ user }: UserMenuProps) => {
   );
 };
 
-# apps/web/src/components/user-menu.tsx · 160 stacks
+# apps/web/src/components/user-menu.tsx · 240 stacks
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -799,6 +1015,22 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -863,6 +1095,22 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 #   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -879,6 +1127,14 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -911,6 +1167,14 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -994,7 +1258,23 @@ export const UserMenu = () => {
   );
 };
 
-# apps/web/src/lib/auth-client.ts · 64 stacks
+# apps/web/src/lib/auth-client.ts · 96 stacks
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -1011,6 +1291,14 @@ export const UserMenu = () => {
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -1043,6 +1331,14 @@ export const UserMenu = () => {
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -1063,7 +1359,39 @@ import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient();
 
-# apps/web/src/lib/auth.ts · 96 stacks
+# apps/web/src/lib/auth.ts · 144 stacks
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -1096,6 +1424,22 @@ export const authClient = createAuthClient();
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -1174,7 +1518,23 @@ export const getSession = async (): Promise<Session | null> => {
   return data;
 };
 
-# apps/web/src/lib/auth.ts · 48 stacks
+# apps/web/src/lib/auth.ts · 72 stacks
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -1191,6 +1551,14 @@ export const getSession = async (): Promise<Session | null> => {
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -1248,7 +1616,15 @@ export const getSession = createServerFn({ method: "GET" }).handler(
   }
 );
 
-# apps/web/src/lib/auth.ts · 16 stacks
+# apps/web/src/lib/auth.ts · 24 stacks
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -1277,7 +1653,23 @@ export const getSession = createServerFn({ method: "GET" }).handler(
   async () => await auth.api.getSession({ headers: getRequestHeaders() })
 );
 
-# apps/web/src/routes/_authenticated.tsx · 104 stacks
+# apps/web/src/routes/_authenticated.tsx · 156 stacks
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -1310,6 +1702,22 @@ export const getSession = createServerFn({ method: "GET" }).handler(
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -1342,6 +1750,14 @@ export const getSession = createServerFn({ method: "GET" }).handler(
 #   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -1358,6 +1774,14 @@ export const getSession = createServerFn({ method: "GET" }).handler(
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -1374,6 +1798,10 @@ export const getSession = createServerFn({ method: "GET" }).handler(
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -1393,7 +1821,23 @@ export const Route = createFileRoute("/_authenticated")({
   },
 });
 
-# apps/web/src/routes/_authenticated/todos.tsx · 104 stacks
+# apps/web/src/routes/_authenticated/todos.tsx · 156 stacks
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -1426,6 +1870,22 @@ export const Route = createFileRoute("/_authenticated")({
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -1458,6 +1918,14 @@ export const Route = createFileRoute("/_authenticated")({
 #   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-expo-docker
 #   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -1474,6 +1942,14 @@ export const Route = createFileRoute("/_authenticated")({
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -1490,6 +1966,10 @@ export const Route = createFileRoute("/_authenticated")({
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -1630,7 +2110,15 @@ export const Route = createFileRoute("/_authenticated/todos")({
   component: TodosPage,
 });
 
-# apps/web/src/routes/api/auth/$.ts · 16 stacks
+# apps/web/src/routes/api/auth/$.ts · 24 stacks
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -1658,148 +2146,23 @@ export const Route = createFileRoute("/api/auth/$")({
   server: { handlers: { GET: handleAuth, POST: handleAuth } },
 });
 
-# apps/web/src/routes/login.tsx · 104 stacks
-#   spa-hono-openapi-postgres-better-auth-bun-docker
-#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-docker
-#   spa-hono-openapi-postgres-better-auth-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-docker
-#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-docker
-#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-docker
-#   spa-hono-openapi-sqlite-better-auth-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-docker
-#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-bun-docker
-#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-docker
-#   spa-hono-orpc-postgres-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-docker
-#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-docker
-#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-docker
-#   spa-hono-orpc-sqlite-better-auth-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-docker
-#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-self-orpc-sqlite-better-auth-docker
-#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
-#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
-#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
-
-import { AuthForm } from "#src/components/auth-form.tsx";
-
-const sameOriginPath = /^\/(?!\/)/u;
-
-const isSameOriginRedirect = (value: unknown): value is string =>
-  typeof value === "string" && sameOriginPath.test(value);
-
-const validateSearch = (search: {
-  redirect?: unknown;
-}): { redirect?: string } =>
-  isSameOriginRedirect(search.redirect) ? { redirect: search.redirect } : {};
-
-const LoginPage = () => {
-  const router = useRouter();
-  const search = Route.useSearch();
-
-  const handleSuccess = async () => {
-    await router.invalidate();
-    await router.navigate({ href: search.redirect ?? "/todos" });
-  };
-
-  return <AuthForm onSuccess={handleSuccess} />;
-};
-
-export const Route = createFileRoute("/login")({
-  validateSearch,
-  beforeLoad: ({ context, search }) => {
-    if (context.session) {
-      throw redirect({ href: search.redirect ?? "/todos" });
-    }
-  },
-  component: LoginPage,
-});
-
-# apps/web/src/routes/login.tsx · 56 stacks
+# apps/web/src/routes/login.tsx · 84 stacks
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -1832,6 +2195,14 @@ export const Route = createFileRoute("/login")({
 #   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-bun-docker
 #   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-postgres-better-auth-docker
@@ -1848,6 +2219,10 @@ export const Route = createFileRoute("/login")({
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
@@ -1892,7 +2267,216 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
-# apps/web/src/server/session.ts · 48 stacks
+# apps/web/src/routes/login.tsx · 156 stacks
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+
+import { AuthForm } from "#src/components/auth-form.tsx";
+
+const sameOriginPath = /^\/(?!\/)/u;
+
+const isSameOriginRedirect = (value: unknown): value is string =>
+  typeof value === "string" && sameOriginPath.test(value);
+
+const validateSearch = (search: {
+  redirect?: unknown;
+}): { redirect?: string } =>
+  isSameOriginRedirect(search.redirect) ? { redirect: search.redirect } : {};
+
+const LoginPage = () => {
+  const router = useRouter();
+  const search = Route.useSearch();
+
+  const handleSuccess = async () => {
+    await router.invalidate();
+    await router.navigate({ href: search.redirect ?? "/todos" });
+  };
+
+  return <AuthForm onSuccess={handleSuccess} />;
+};
+
+export const Route = createFileRoute("/login")({
+  validateSearch,
+  beforeLoad: ({ context, search }) => {
+    if (context.session) {
+      throw redirect({ href: search.redirect ?? "/todos" });
+    }
+  },
+  component: LoginPage,
+});
+
+# apps/web/src/server/session.ts · 72 stacks
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -1909,6 +2493,14 @@ export const Route = createFileRoute("/login")({
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -1964,7 +2556,15 @@ export const getSession = cache(async () => {
   return data;
 });
 
-# apps/web/src/server/session.ts · 16 stacks
+# apps/web/src/server/session.ts · 24 stacks
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -1993,6 +2593,142 @@ export const getSession = cache(async () => {
 });
 
 # packages/auth/src/index.ts · 42 stacks
+#   hono-mysql-better-auth-bun-docker
+#   hono-mysql-better-auth-docker
+#   hono-openapi-mysql-better-auth-bun-docker
+#   hono-openapi-mysql-better-auth-docker
+#   hono-orpc-mysql-better-auth-bun-docker
+#   hono-orpc-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    secret,
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 42 stacks
+#   hono-mysql-better-auth-expo-bun-docker
+#   hono-mysql-better-auth-expo-docker
+#   hono-openapi-mysql-better-auth-expo-bun-docker
+#   hono-openapi-mysql-better-auth-expo-docker
+#   hono-orpc-mysql-better-auth-expo-bun-docker
+#   hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    secret,
+    trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 42 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-bun-docker
@@ -2265,6 +3001,69 @@ export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
 # packages/auth/src/index.ts · 4 stacks
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    plugins: [nextCookies()],
+    secret,
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo(), nextCookies()],
+    secret,
+    trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-postgres-better-auth-docker
@@ -2385,6 +3184,85 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     plugins: [expo(), nextCookies()],
     secret,
     trustedOrigins: ["my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 12 stacks
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    secret,
+    trustedOrigins: [rendererOrigin],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 12 stacks
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    secret,
+    trustedOrigins: [rendererOrigin, "my-app://"],
   });
 
 export type Auth = ReturnType<typeof createAuth>;
@@ -2543,6 +3421,69 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
     plugins: [expo()],
     secret,
     trustedOrigins: [rendererOrigin, "my-app://"],
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { tanstackStartCookies } from "better-auth/tanstack-start";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    plugins: [tanstackStartCookies()],
+    secret,
+  });
+
+export type Auth = ReturnType<typeof createAuth>;
+export type Session = Auth["$Infer"]["Session"];
+
+# packages/auth/src/index.ts · 4 stacks
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { tanstackStartCookies } from "better-auth/tanstack-start";
+
+import type { Database } from "@my-app/db";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  db: Database;
+  baseURL: string;
+  secret: string;
+}
+
+export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
+  betterAuth({
+    baseURL,
+    database: drizzleAdapter(db, { provider: "mysql", schema }),
+    emailAndPassword: { enabled: true },
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo(), tanstackStartCookies()],
+    secret,
+    trustedOrigins: ["my-app://"],
   });
 
 export type Auth = ReturnType<typeof createAuth>;
@@ -2674,7 +3615,15 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
 export type Auth = ReturnType<typeof createAuth>;
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/tsconfig.json · 248 stacks
+# packages/auth/tsconfig.json · 372 stacks
+#   hono-mysql-better-auth-bun-docker
+#   hono-mysql-better-auth-docker
+#   hono-mysql-better-auth-expo-bun-docker
+#   hono-mysql-better-auth-expo-docker
+#   hono-openapi-mysql-better-auth-bun-docker
+#   hono-openapi-mysql-better-auth-docker
+#   hono-openapi-mysql-better-auth-expo-bun-docker
+#   hono-openapi-mysql-better-auth-expo-docker
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -2683,6 +3632,10 @@ export type Session = Auth["$Infer"]["Session"];
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
 #   hono-openapi-sqlite-better-auth-expo-docker
+#   hono-orpc-mysql-better-auth-bun-docker
+#   hono-orpc-mysql-better-auth-docker
+#   hono-orpc-mysql-better-auth-expo-bun-docker
+#   hono-orpc-mysql-better-auth-expo-docker
 #   hono-orpc-postgres-better-auth-bun-docker
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-bun-docker
@@ -2699,6 +3652,22 @@ export type Session = Auth["$Infer"]["Session"];
 #   hono-sqlite-better-auth-docker
 #   hono-sqlite-better-auth-expo-bun-docker
 #   hono-sqlite-better-auth-expo-docker
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   next-hono-openapi-postgres-better-auth-bun-docker
 #   next-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   next-hono-openapi-postgres-better-auth-docker
@@ -2715,6 +3684,14 @@ export type Session = Auth["$Infer"]["Session"];
 #   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-better-auth-expo-docker
 #   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   next-hono-orpc-postgres-better-auth-bun-docker
 #   next-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   next-hono-orpc-postgres-better-auth-docker
@@ -2747,6 +3724,14 @@ export type Session = Auth["$Infer"]["Session"];
 #   next-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   next-hono-sqlite-better-auth-expo-docker
 #   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -2763,6 +3748,38 @@ export type Session = Auth["$Infer"]["Session"];
 #   next-self-sqlite-better-auth-docker-e2e
 #   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -2795,6 +3812,22 @@ export type Session = Auth["$Infer"]["Session"];
 #   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-expo-docker
 #   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -2859,6 +3892,22 @@ export type Session = Auth["$Infer"]["Session"];
 #   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-expo-docker
 #   spa-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -2875,6 +3924,14 @@ export type Session = Auth["$Infer"]["Session"];
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
 #   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-orpc-postgres-better-auth-docker
@@ -2907,6 +3964,14 @@ export type Session = Auth["$Infer"]["Session"];
 #   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-sqlite-better-auth-expo-docker
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -2927,6 +3992,209 @@ export type Session = Auth["$Infer"]["Session"];
   "extends": "@my-app/config/typescript/node.json",
   "include": ["src"]
 }
+
+# packages/db/src/schema/auth.ts · 124 stacks
+#   hono-mysql-better-auth-bun-docker
+#   hono-mysql-better-auth-docker
+#   hono-mysql-better-auth-expo-bun-docker
+#   hono-mysql-better-auth-expo-docker
+#   hono-openapi-mysql-better-auth-bun-docker
+#   hono-openapi-mysql-better-auth-docker
+#   hono-openapi-mysql-better-auth-expo-bun-docker
+#   hono-openapi-mysql-better-auth-expo-docker
+#   hono-orpc-mysql-better-auth-bun-docker
+#   hono-orpc-mysql-better-auth-docker
+#   hono-orpc-mysql-better-auth-expo-bun-docker
+#   hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+import {
+  boolean,
+  index,
+  snakeCase,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/mysql-core";
+
+// MySQL indexes a bounded column only, so ids, keys, and lookups are `varchar`.
+const id = () => varchar({ length: 36 });
+
+const timestamps = {
+  createdAt: timestamp({ fsp: 3 }).notNull().defaultNow(),
+  updatedAt: timestamp({ fsp: 3 })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+};
+
+export const user = snakeCase.table("user", {
+  email: varchar({ length: 255 }).notNull().unique(),
+  emailVerified: boolean().notNull().default(false),
+  id: id().primaryKey(),
+  image: text(),
+  name: text().notNull(),
+  ...timestamps,
+});
+
+export const session = snakeCase.table(
+  "session",
+  {
+    expiresAt: timestamp({ fsp: 3 }).notNull(),
+    id: id().primaryKey(),
+    ipAddress: text(),
+    token: varchar({ length: 255 }).notNull().unique(),
+    userAgent: text(),
+    userId: id()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [index("session_user_id_idx").on(table.userId)]
+);
+
+export const account = snakeCase.table(
+  "account",
+  {
+    accessToken: text(),
+    accessTokenExpiresAt: timestamp({ fsp: 3 }),
+    accountId: text().notNull(),
+    id: id().primaryKey(),
+    idToken: text(),
+    password: text(),
+    providerId: text().notNull(),
+    refreshToken: text(),
+    refreshTokenExpiresAt: timestamp({ fsp: 3 }),
+    scope: text(),
+    userId: id()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [index("account_user_id_idx").on(table.userId)]
+);
+
+export const verification = snakeCase.table(
+  "verification",
+  {
+    expiresAt: timestamp({ fsp: 3 }).notNull(),
+    id: id().primaryKey(),
+    identifier: varchar({ length: 255 }).notNull(),
+    value: text().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("verification_identifier_idx").on(table.identifier)]
+);
 
 # packages/db/src/schema/auth.ts · 124 stacks
 #   hono-openapi-postgres-better-auth-bun-docker

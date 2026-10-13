@@ -147,10 +147,10 @@ describe("choosing a stack", () => {
     });
     expect(typo.message).toContain("Unknown option --databse.");
 
-    const unknown = await run("--database", "mysql");
+    const unknown = await run("--database", "oracle");
     expect(unknown.exitCode).toBe(1);
     expect(unknown.message).toContain(
-      '--database is one of postgres, sqlite, none; got "mysql"'
+      '--database is one of postgres, mysql, sqlite, none; got "oracle"'
     );
   });
 
