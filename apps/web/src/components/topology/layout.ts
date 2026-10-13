@@ -14,9 +14,10 @@ export interface Rect {
 }
 
 export const blocks = {
-  auth: { height: 148, width: 236, x: 680, y: 372 },
-  backend: { height: 232, width: 236, x: 680, y: 90 },
-  database: { height: 232, width: 196, x: 1048, y: 90 },
+  auth: { height: 148, width: 220, x: 650, y: 372 },
+  backend: { height: 232, width: 220, x: 650, y: 90 },
+  // Room between the server and the database for the ORM capsule, the widest on the stage.
+  database: { height: 232, width: 184, x: 1060, y: 90 },
   framework: { height: 232, width: 252, x: 196, y: 90 },
   visitors: { height: 56, width: 56, x: 28, y: 178 },
 } as const satisfies Record<string, Rect>;
@@ -56,6 +57,14 @@ export interface Layout {
   readonly height: number;
 }
 
+// A framework that serves the API itself shares its process box with the server and auth.
+const webBoxBlocks = (stack: Stack): Rect[] => [
+  blocks.framework,
+  ...(stack.backend === "self"
+    ? [blocks.backend, ...(stack.auth === undefined ? [] : [blocks.auth])]
+    : []),
+];
+
 /**
  * Where everything sits for `stack`. The clients take room only when chosen: a chosen client gets a block in
  * its process box, and the others fold into a row each beneath, so the stage grows only with what it shows.
@@ -63,13 +72,7 @@ export interface Layout {
  */
 export const layoutOf = (stack: Stack): Layout => {
   const web = stack.framework !== undefined;
-  // A framework that serves the API itself shares its process box with the server and auth.
-  const inWebBox = [
-    blocks.framework,
-    ...(stack.backend === "self"
-      ? [blocks.backend, ...(stack.auth === undefined ? [] : [blocks.auth])]
-      : []),
-  ];
+  const inWebBox = webBoxBlocks(stack);
   let floor = web
     ? Math.max(...inWebBox.map((rect) => rect.y + rect.height)) + boxPadding
     : frameworkFold.y + frameworkFold.height;
@@ -383,8 +386,12 @@ export const apiAnchor: Point = midpoint(
 /** Between the web app's box and the desktop shell's, where the capsule naming what the shell loads sits. */
 export const distAnchor = (stack: Stack): Point => {
   const shell = layoutOf(stack).blocks.desktop.rect;
+  const inWebBox = webBoxBlocks(stack);
+  // The capsule sits midway between what is drawn: the web app's process box, or the deployment frame around it.
   const webFloor =
-    blocks.framework.y + blocks.framework.height + boxPadding + framePadding;
+    Math.max(...inWebBox.map((rect) => rect.y + rect.height)) +
+    boxPadding +
+    (stack.deployment === undefined ? 0 : framePadding);
   return {
     x: top(blocks.framework).x,
     y: (webFloor + shell.y - boxPadding - boxLabel) / 2,
