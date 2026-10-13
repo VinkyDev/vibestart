@@ -1,7 +1,7 @@
 import type { Context, Contribution } from "@vibestart/core";
 import { contribute, file } from "@vibestart/core";
 
-import { sqlDatabase } from "#/app.ts";
+import { chosenDatabase } from "#/app.ts";
 import { knipEntries } from "#/knip.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ignoredFiles, readmeCommandNotes } from "#/vite-plus/slots.ts";
@@ -47,7 +47,7 @@ const e2eConfig = (ctx: Context) => {
   }
   return file(
     e2eConfigPath,
-    sqlDatabase(ctx).server
+    chosenDatabase(ctx).server
       ? config
       : config.replace(forwardedVariables, '["CI"]')
   );

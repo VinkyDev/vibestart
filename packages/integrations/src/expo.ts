@@ -320,8 +320,24 @@ const iconDependencies = contribute(packageJson, {
   path: "apps/mobile",
 });
 
+const todosScreenPath = "apps/mobile/src/app/todos.tsx";
+
+// A MongoDB todo's id is already a string key.
+const todosScreen = (ctx: Context) => {
+  const content = templateContent(ctx, "expo/todos", todosScreenPath);
+  if (!ctx.has("mongodb")) {
+    return file(todosScreenPath, content);
+  }
+  const keyed = content.replace("String(todo.id)", "todo.id");
+  if (keyed === content) {
+    throw new Error(`expo/todos/${todosScreenPath} has no numeric key`);
+  }
+  return file(todosScreenPath, keyed);
+};
+
 const todosFiles = (ctx: Context) => [
-  ...templateFiles(ctx, "expo/todos"),
+  ...templateFiles(ctx, "expo/todos", { except: [todosScreenPath] }),
+  todosScreen(ctx),
   iconDependencies,
 ];
 

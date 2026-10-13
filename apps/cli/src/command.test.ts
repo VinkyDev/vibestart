@@ -133,6 +133,7 @@ describe("choosing a stack", () => {
           { flags: ["--database postgres"] },
           { flags: ["--database mysql"] },
           { flags: ["--database sqlite"] },
+          { flags: ["--database mongodb"] },
           { flags: ["--auth none"] },
         ],
         violations: [{ integration: "drizzle", type: "missing-capability" }],
@@ -151,7 +152,7 @@ describe("choosing a stack", () => {
     const unknown = await run("--database", "oracle");
     expect(unknown.exitCode).toBe(1);
     expect(unknown.message).toContain(
-      '--database is one of postgres, mysql, sqlite, none; got "oracle"'
+      '--database is one of postgres, mysql, sqlite, mongodb, none; got "oracle"'
     );
   });
 

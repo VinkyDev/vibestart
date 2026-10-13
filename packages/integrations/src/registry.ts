@@ -9,6 +9,8 @@ import { electron } from "#/electron.ts";
 import { expo } from "#/expo.ts";
 import { hono } from "#/hono.ts";
 import { knip } from "#/knip.ts";
+import { mongodb } from "#/mongodb.ts";
+import { mongoose } from "#/mongoose.ts";
 import { mysql } from "#/mysql.ts";
 import { next } from "#/next.ts";
 import { node } from "#/node.ts";
@@ -40,6 +42,8 @@ export const registry = defineRegistry({
     "single-page-app": "a single-page app",
     rpc: "a typed RPC layer",
     "database-server": "a database server (PostgreSQL or MySQL)",
+    "document-database": "a document database",
+    "document-orm": "a document ODM",
     "sql-database": "a SQL database",
     "sql-orm": "a SQL ORM",
     "ui-components": "a UI component library",
@@ -60,8 +64,10 @@ export const registry = defineRegistry({
     postgres,
     mysql,
     sqlite,
+    mongodb,
     drizzle,
     prisma,
+    mongoose,
     betterAuth,
     shadcn,
     electron,

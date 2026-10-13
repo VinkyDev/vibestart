@@ -12,7 +12,7 @@ import {
   hasBackend,
   hasWebApp,
   proxiesToHono,
-  sqlDatabase,
+  chosenDatabase,
 } from "#/app.ts";
 import { toolchainVersions } from "#/catalog.ts";
 import { joinWords, quote } from "#/format.ts";
@@ -357,7 +357,9 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
       ? ["`BETTER_AUTH_URL` (the public origin)", "`BETTER_AUTH_SECRET`"]
       : []),
   ];
-  const starts = sqlDatabase(ctx).server ? `starts ${databaseName(ctx)}, ` : "";
+  const starts = chosenDatabase(ctx).server
+    ? `starts ${databaseName(ctx)}, `
+    : "";
   const app = appServed(ctx);
   if (ctx.stack.database === undefined) {
     return [

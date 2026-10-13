@@ -17,6 +17,8 @@
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
+/** @typedef {{}} Cap_Document_DatabaseInputs */
+/** @typedef {{}} Cap_Document_OrmInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -62,6 +64,7 @@
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
@@ -72,6 +75,8 @@
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
+/** @typedef {{}} Desc_MongodbInputs */
+/** @typedef {{}} Desc_MongooseInputs */
 /** @typedef {{}} Desc_MysqlInputs */
 /** @typedef {{}} Desc_NextInputs */
 /** @typedef {{}} Desc_NodeInputs */
@@ -115,6 +120,8 @@
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
+/** @typedef {{}} Fit_MongodbInputs */
+/** @typedef {{}} Fit_MongooseInputs */
 /** @typedef {{}} Fit_MysqlInputs */
 /** @typedef {{}} Fit_NextInputs */
 /** @typedef {{}} Fit_NodeInputs */
@@ -190,6 +197,7 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mongodb_ProcessInputs */
 /** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
 /** @typedef {{}} Nav_StudioInputs */
@@ -206,6 +214,7 @@
 /** @typedef {{}} Not_Found_HomeInputs */
 /** @typedef {{}} Not_Found_TitleInputs */
 /** @typedef {{}} Not_VerifiedInputs */
+/** @typedef {{}} Note_Any_MongodbInputs */
 /** @typedef {{}} Note_Any_MysqlInputs */
 /** @typedef {{}} Note_Any_PostgresInputs */
 /** @typedef {{}} Note_Auth_SecretInputs */
@@ -426,6 +435,14 @@ export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs
 	return /** @type {LocalizedString} */ (`数据库服务（PostgreSQL 或 MySQL）`)
 };
 
+export const cap_document_database = /** @type {(inputs: Cap_Document_DatabaseInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`文档数据库`)
+};
+
+export const cap_document_orm = /** @type {(inputs: Cap_Document_OrmInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`文档 ODM`)
+};
+
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`前端框架`)
 };
@@ -611,6 +628,10 @@ export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => L
 	return /** @type {LocalizedString} */ (`${i?.name} 镜像`)
 };
 
+export const deployment_mongodb = /** @type {(inputs: Deployment_MongodbInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} 镜像，Compose 运行 MongoDB`)
+};
+
 export const deployment_mysql = /** @type {(inputs: Deployment_MysqlInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} 镜像，Compose 运行 MySQL`)
 };
@@ -649,6 +670,14 @@ export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString
 
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`基于 Hono 的独立 API 服务`)
+};
+
+export const desc_mongodb = /** @type {(inputs: Desc_MongodbInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`MongoDB 数据库服务，开发时由 Docker Compose 运行`)
+};
+
+export const desc_mongoose = /** @type {(inputs: Desc_MongooseInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Mongoose 9，为 MongoDB 定义 schema 与 model`)
 };
 
 export const desc_mysql = /** @type {(inputs: Desc_MysqlInputs) => LocalizedString} */ () => {
@@ -821,6 +850,14 @@ export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} 
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合同时服务移动端或其他服务的 API`)
+};
+
+export const fit_mongodb = /** @type {(inputs: Fit_MongodbInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合结构多变、无需固定表结构的文档数据`)
+};
+
+export const fit_mongoose = /** @type {(inputs: Fit_MongooseInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合在 MongoDB 上定义 schema 与 model，是 MongoDB 唯一可选的 ODM`)
 };
 
 export const fit_mysql = /** @type {(inputs: Fit_MysqlInputs) => LocalizedString} */ () => {
@@ -1134,6 +1171,10 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`了解 ${i?.name}`)
 };
 
+export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`MongoDB 服务`)
+};
+
 export const mysql_process = /** @type {(inputs: Mysql_ProcessInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`MySQL 服务`)
 };
@@ -1198,6 +1239,10 @@ export const not_verified = /** @type {(inputs: Not_VerifiedInputs) => Localized
 	return /** @type {LocalizedString} */ (`当前版本尚未验证`)
 };
 
+export const note_any_mongodb = /** @type {(inputs: Note_Any_MongodbInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`或将 DATABASE_URL 指向任意 MongoDB`)
+};
+
 export const note_any_mysql = /** @type {(inputs: Note_Any_MysqlInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`或将 DATABASE_URL 指向任意 MySQL`)
 };
@@ -1219,7 +1264,7 @@ export const orm = /** @type {(inputs: OrmInputs) => LocalizedString} */ () => {
 };
 
 export const orm_about = /** @type {(inputs: Orm_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`定义 schema、生成迁移并执行查询。Drizzle 支持所有数据库；Prisma 需要数据库服务。`)
+	return /** @type {LocalizedString} */ (`定义 schema、生成迁移并执行查询。Drizzle 支持所有 SQL 数据库；Prisma 需要 PostgreSQL 或 MySQL；MongoDB 使用 Mongoose。`)
 };
 
 export const orm_none = /** @type {(inputs: Orm_NoneInputs) => LocalizedString} */ () => {

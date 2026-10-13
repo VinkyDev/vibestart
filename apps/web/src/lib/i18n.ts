@@ -34,6 +34,8 @@ const capabilityPhrases = {
   rpc: () => m.cap_rpc(),
   "single-page-app": () => m.cap_single_page_app(),
   "database-server": () => m.cap_database_server(),
+  "document-database": () => m.cap_document_database(),
+  "document-orm": () => m.cap_document_orm(),
   "sql-database": () => m.cap_sql_database(),
   "sql-orm": () => m.cap_sql_orm(),
   "ui-components": () => m.cap_ui_components(),
@@ -69,6 +71,8 @@ const descriptions = {
   electron: () => m.desc_electron(),
   expo: () => m.desc_expo(),
   hono: () => m.desc_hono(),
+  mongodb: () => m.desc_mongodb(),
+  mongoose: () => m.desc_mongoose(),
   mysql: () => m.desc_mysql(),
   next: () => m.desc_next(),
   node: () => m.desc_node(),
@@ -103,6 +107,7 @@ export const addonDescription = (addon: AddonInfo) =>
 export const noteText = ({ id, values }: GettingStartedNote) =>
   translate(
     {
+      "any-mongodb": () => m.note_any_mongodb(),
       "any-mysql": () => m.note_any_mysql(),
       "any-postgres": () => m.note_any_postgres(),
       "auth-secret": () => m.note_auth_secret(),

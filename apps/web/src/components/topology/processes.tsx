@@ -22,6 +22,9 @@ const deploymentLabel = (database: string | undefined, name: string) => {
   if (database === "mysql") {
     return m.deployment_mysql({ name });
   }
+  if (database === "mongodb") {
+    return m.deployment_mongodb({ name });
+  }
   return m.deployment_image({ name });
 };
 

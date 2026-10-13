@@ -11,6 +11,7 @@ import {
   clientComponent,
   databaseCheck,
   importBlock,
+  ormDependencies,
   hasWebApp,
   serverApp,
   stackHeadline,
@@ -85,11 +86,7 @@ export const orpc = defineIntegration({
       dependencies: [
         ...(ctx.stack.database === undefined
           ? []
-          : [
-              `${ctx.scope}/db`,
-              ...(ctx.has("prisma") ? [] : ["drizzle-orm"]),
-              "zod",
-            ]),
+          : [`${ctx.scope}/db`, ...ormDependencies(ctx), "zod"]),
         "@orpc/server",
       ],
       devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],

@@ -16,6 +16,8 @@ export type Api_Client_MobileInputs = {};
 export type Api_ClientsInputs = {};
 export type Api_Clients_SameInputs = {};
 export type Cap_Database_ServerInputs = {};
+export type Cap_Document_DatabaseInputs = {};
+export type Cap_Document_OrmInputs = {};
 export type Cap_Frontend_FrameworkInputs = {};
 export type Cap_Fullstack_FrameworkInputs = {};
 export type Cap_Hono_ServerInputs = {};
@@ -65,6 +67,9 @@ export type CurrentInputs = {};
 export type Deployment_ImageInputs = {
     name: NonNullable<unknown>;
 };
+export type Deployment_MongodbInputs = {
+    name: NonNullable<unknown>;
+};
 export type Deployment_MysqlInputs = {
     name: NonNullable<unknown>;
 };
@@ -79,6 +84,8 @@ export type Desc_E2eInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
 export type Desc_HonoInputs = {};
+export type Desc_MongodbInputs = {};
+export type Desc_MongooseInputs = {};
 export type Desc_MysqlInputs = {};
 export type Desc_NextInputs = {};
 export type Desc_NodeInputs = {};
@@ -126,6 +133,8 @@ export type Fit_DrizzleInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
 export type Fit_HonoInputs = {};
+export type Fit_MongodbInputs = {};
+export type Fit_MongooseInputs = {};
 export type Fit_MysqlInputs = {};
 export type Fit_NextInputs = {};
 export type Fit_NodeInputs = {};
@@ -217,6 +226,7 @@ export type LanguageInputs = {};
 export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
+export type Mongodb_ProcessInputs = {};
 export type Mysql_ProcessInputs = {};
 export type Nav_DocsInputs = {};
 export type Nav_StudioInputs = {};
@@ -233,6 +243,7 @@ export type Not_Found_BodyInputs = {};
 export type Not_Found_HomeInputs = {};
 export type Not_Found_TitleInputs = {};
 export type Not_VerifiedInputs = {};
+export type Note_Any_MongodbInputs = {};
 export type Note_Any_MysqlInputs = {};
 export type Note_Any_PostgresInputs = {};
 export type Note_Auth_SecretInputs = {};
@@ -650,6 +661,34 @@ export declare const api_clients_same: ((inputs?: Api_Clients_SameInputs, option
 export declare const cap_database_server: ((inputs?: Cap_Database_ServerInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Database_ServerInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "a document database" |
+*
+* @param {Cap_Document_DatabaseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const cap_document_database: ((inputs?: Cap_Document_DatabaseInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Document_DatabaseInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "a document ODM" |
+*
+* @param {Cap_Document_OrmInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const cap_document_orm: ((inputs?: Cap_Document_OrmInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Document_OrmInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1285,6 +1324,20 @@ export declare const deployment_image: ((inputs: Deployment_ImageInputs, options
 /**
 * | output |
 * | --- |
+* | "{name} image, with MongoDB via Compose" |
+*
+* @param {Deployment_MongodbInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const deployment_mongodb: ((inputs: Deployment_MongodbInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_MongodbInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "{name} image, with MySQL via Compose" |
 *
 * @param {Deployment_MysqlInputs} inputs
@@ -1420,6 +1473,34 @@ export declare const desc_expo: ((inputs?: Desc_ExpoInputs, options?: {
 export declare const desc_hono: ((inputs?: Desc_HonoInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_HonoInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "MongoDB server, run by Docker Compose in development" |
+*
+* @param {Desc_MongodbInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_mongodb: ((inputs?: Desc_MongodbInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_MongodbInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Mongoose 9 schemas and models for MongoDB" |
+*
+* @param {Desc_MongooseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_mongoose: ((inputs?: Desc_MongooseInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_MongooseInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -2023,6 +2104,34 @@ export declare const fit_expo: ((inputs?: Fit_ExpoInputs, options?: {
 export declare const fit_hono: ((inputs?: Fit_HonoInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_HonoInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "For documents whose shape varies, without a fixed schema." |
+*
+* @param {Fit_MongodbInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_mongodb: ((inputs?: Fit_MongodbInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_MongodbInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "For schemas and models on MongoDB, the only ODM it offers." |
+*
+* @param {Fit_MongooseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_mongoose: ((inputs?: Fit_MongooseInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_MongooseInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -3090,6 +3199,20 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "MongoDB server" |
+*
+* @param {Mongodb_ProcessInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mongodb_process: ((inputs?: Mongodb_ProcessInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mongodb_ProcessInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "MySQL server" |
 *
 * @param {Mysql_ProcessInputs} inputs
@@ -3314,6 +3437,20 @@ export declare const not_verified: ((inputs?: Not_VerifiedInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "or point DATABASE_URL at any MongoDB" |
+*
+* @param {Note_Any_MongodbInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const note_any_mongodb: ((inputs?: Note_Any_MongodbInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Note_Any_MongodbInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "or point DATABASE_URL at any MySQL" |
 *
 * @param {Note_Any_MysqlInputs} inputs
@@ -3384,7 +3521,7 @@ export declare const orm: ((inputs?: OrmInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Defines the schema, writes migrations, and runs the queries. Drizzle works with every database; Prisma needs a database server." |
+* | "Defines the schema, writes migrations, and runs the queries. Drizzle works with every SQL database; Prisma needs PostgreSQL or MySQL; MongoDB uses Mongoose." |
 *
 * @param {Orm_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
