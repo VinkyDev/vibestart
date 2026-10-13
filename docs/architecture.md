@@ -105,7 +105,7 @@ A **task** is one stack on one platform: every verified stack on Linux under eac
 
 Records live on the orphan `verification` branch as `<platform>/<fingerprint>.json`. CI on `main` is its only writer, and a record, once written, is never rewritten, so writers never conflict. Runs on a developer's machine record nothing: a local `verify` is for debugging, and a pass on another machine says nothing about CI's environment.
 
-`vp run stacks pull` clones the store and writes the records for the current output to `packages/integrations/verification.json`, which Git ignores. The CLI and the Studio embed that file when they are built, so "Verified" needs no backend service; a build without it shows every stack unverified. `vp run stacks check` reports each task `CURRENT` (naming the covering task when it is another), `STALE`, or `MISSING` against that file and exits 1 unless all are current. Release runs `pull` and `check` before it packs, and attaches the file to the GitHub release.
+`vp run stacks pull` clones the store and writes the records for the current output to `packages/integrations/verification.json`, which Git ignores. The CLI and the Studio embed that file when they are built, so "Verified" needs no backend service; a build without it shows every stack unverified. `vp run stacks check` reports each task `CURRENT` (naming the covering task when it is another), `STALE`, or `MISSING` against that file and exits 1 unless all are current. Release runs `pull` and `check` before it packs, attaches the file to the GitHub release, and then POSTs the Studio deploy hook, which builds `main`.
 
 ### CI
 
@@ -115,7 +115,7 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the fewest tasks whose passes cover every task no record covers. Linux tasks split across up to eight shards; the Windows tasks run on a single runner. A change that touches no generated output plans no job.
 3. `verify` runs each planned job. Linux uses a PostgreSQL 18 service container; Windows starts the PostgreSQL 17 its runner image ships. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
 4. `ci`, the one required check, passes when `ready` and `plan` passed and `verify` passed or had nothing to run.
-5. On `main`, `record` adds every pass that matches `main`'s output to the store, then triggers the Studio's deploy hook (`CLOUDFLARE_DEPLOY_HOOK`), since the build for that commit may have embedded the records before they existed.
+5. On `main`, `record` adds every pass that matches `main`'s output to the store.
 
 **Evidence.** On a pull request, `plan` downloads the results of the branch's latest runs; on `main`, those of the pull request merged as that commit. A run re-uploads the results it reused, so the latest runs carry all of a branch's evidence. Only runs from this repository count: a fork controls the workflow its pull request runs. A result counts only when its platform and fingerprint match a task at the current output, so a stale branch or a later merge re-runs only what covers the facets that changed. Each `main` commit runs to the end instead of being cancelled, so no merge's evidence is dropped.
 

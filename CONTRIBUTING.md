@@ -57,7 +57,7 @@ The `/update-deps` agent skill (`.agents/skills/update-deps`) runs this whole fl
 1. Set `version` in `apps/cli/package.json` and merge it to `main` with `vp run ready` passing.
 2. Push a tag that equals the version: `git tag -a v0.1.0-beta.2 -m v0.1.0-beta.2 && git push origin v0.1.0-beta.2`.
 3. The workflow runs `vp run ready`, pulls the verification records and stops unless every stack has one at the current output, packs with pnpm, and publishes through npm trusted publishing, with provenance and no token or one-time password. A prerelease suffix goes to the `beta` dist-tag, anything else to `latest`.
-4. It then installs the published version with `npx` and `pnpm dlx`, and creates the GitHub release with generated notes.
+4. It then creates the GitHub release with generated notes, and POSTs `CLOUDFLARE_DEPLOY_HOOK`. That hook builds `main` on Workers Builds, which is how the Studio is published.
 
 Never move or delete a pushed tag, and never force-push `main`; fix a bad release with a new version and `npm deprecate` on the bad one. One-time setup: on npmjs.com, open `vibestart-cli` → Settings → Trusted publisher and add GitHub repository `VinkyDev/vibestart`, workflow `release.yml`.
 
@@ -65,7 +65,7 @@ Never move or delete a pushed tag, and never force-push `main`; fix a bad releas
 
 - The `Protect main` ruleset requires the `ci` check from GitHub Actions, and requires a branch to be up to date before it merges, so the records of a pull request match `main`'s output after the merge. It also forbids deleting or force-pushing `main`.
 - The `Protect verification store` ruleset forbids deleting or force-pushing `verification`; `record` only fast-forwards it. A personal repository cannot make GitHub Actions the branch's only writer, so do not push to it by hand.
-- The Studio's Cloudflare build runs the `@vibestart/web` `build` script, which pulls the records before `vp build`. The repository secret `CLOUDFLARE_DEPLOY_HOOK` holds a Workers Builds deploy hook for `main` (Worker → Settings → Builds → Deploy Hooks); `record` calls it after it adds records.
+- The Studio's Cloudflare build runs the `@vibestart/web` `build` script, which pulls the records before `vp build`. Automatic builds are off. The repository secret `CLOUDFLARE_DEPLOY_HOOK` holds a Workers Builds deploy hook for `main` (Worker → Settings → Builds → Deploy Hooks); `release.yml` calls it after the package is published.
 
 ## Pull requests
 

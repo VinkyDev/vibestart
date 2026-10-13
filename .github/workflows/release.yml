@@ -48,3 +48,15 @@ jobs:
         run: |
           case "$VERSION" in *-*) flag=--prerelease ;; *) flag= ;; esac
           gh release create "$VERSION" packages/integrations/verification.json --verify-tag --title "$VERSION" --generate-notes $flag
+
+  # Workers Builds listens for branches. The hook builds main once this tag has published.
+  studio:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy the Studio
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: |
+          test -n "$CLOUDFLARE_DEPLOY_HOOK"
+          curl --fail --silent --show-error --retry 3 -X POST "$CLOUDFLARE_DEPLOY_HOOK"

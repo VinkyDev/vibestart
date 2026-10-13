@@ -167,8 +167,6 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
-    env:
-      CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7
@@ -186,8 +184,7 @@ jobs:
           path: ${{ runner.temp }}/results
       - run: vp run stacks record "$RUNNER_TEMP/results" .store
       # Another main commit may record at the same time. Records are separate files, and one already there is kept.
-      - id: push
-        name: Push new records
+      - name: Push new records
         working-directory: .store
         run: |
           git add .
@@ -197,14 +194,9 @@ jobs:
           git commit --quiet -m "Record verification of ${GITHUB_SHA}"
           for attempt in 1 2 3; do
             if git push origin HEAD:verification; then
-              echo "pushed=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             git fetch --depth 1 origin verification
             git rebase -X ours --onto FETCH_HEAD HEAD~1
           done
           exit 1
-      # Studio embeds the records at build time; the build for this commit may have finished before them.
-      - if: steps.push.outputs.pushed == 'true' && env.CLOUDFLARE_DEPLOY_HOOK != ''
-        name: Rebuild the Studio
-        run: curl --fail --silent --show-error --retry 3 -X POST "$CLOUDFLARE_DEPLOY_HOOK"
