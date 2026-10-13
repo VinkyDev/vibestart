@@ -73,6 +73,15 @@ describe("the Expo app", () => {
     expect(server).toContain('trustedOrigins: ["acme://"],');
   });
 
+  it("runs a Hono server in development, so Expo Go's exp:// origin can sign in", async () => {
+    const hono = await project("hono-sqlite-better-auth-expo");
+    expect(hono("apps/server/.env.example")).toContain(
+      "NODE_ENV=development\n"
+    );
+    const self = await project("next-self-orpc-sqlite-better-auth-expo");
+    expect(self("apps/web/.env.example")).not.toContain("NODE_ENV");
+  });
+
   it.each([
     ["hono-orpc-sqlite-expo", false],
     ["hono-openapi-sqlite-better-auth-expo", true],
