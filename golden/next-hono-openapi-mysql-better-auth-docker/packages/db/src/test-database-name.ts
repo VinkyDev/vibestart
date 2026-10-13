@@ -1,9 +1,14 @@
-// MySQL limits a database name to 64 characters.
-const maxCharacters = 64;
+const suffixBytes = "_test_".length + 8;
 
-/** A random name for a test database beside `configured`, whose prefix is cut to fit the identifier limit. */
+// Fits both MySQL's 64 characters and PostgreSQL's 63 bytes.
+const maxBytes = 63;
+
+const byteLength = (value: string) => new TextEncoder().encode(value).length;
+
 export const testDatabaseName = (configured: string) => {
-  const suffix = `_test_${crypto.randomUUID().slice(0, 8)}`;
-  const prefix = Array.from(configured).slice(0, maxCharacters - suffix.length);
-  return `${prefix.join("")}${suffix}`;
+  const characters = Array.from(configured);
+  while (byteLength(characters.join("")) + suffixBytes > maxBytes) {
+    characters.pop();
+  }
+  return `${characters.join("")}_test_${crypto.randomUUID().slice(0, 8)}`;
 };
