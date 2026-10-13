@@ -28,7 +28,7 @@ describe("the registry", () => {
     ["mongodb", ["mongoose"]],
   ])("offers %s the ORMs %j", (database, orms) => {
     const offered = new Set(
-      resolve(registry, { database }).stacks.map(({ orm }) => orm)
+      resolve(registry, { database }).stacks.map(({ orm }) => String(orm))
     );
     expect([...offered].toSorted((a, b) => a.localeCompare(b))).toStrictEqual(
       orms
