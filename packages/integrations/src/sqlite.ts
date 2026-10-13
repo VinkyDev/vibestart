@@ -1,6 +1,6 @@
 import { contribute, defineIntegration } from "@vibestart/core";
 
-import { serverEnv, stackHeadline } from "#/app.ts";
+import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
 import { composeAppVolumes, composeVolumes, dockerRuntime } from "#/docker.ts";
 import {
   ignoredFiles,
@@ -29,8 +29,8 @@ export const sqlite = defineIntegration({
     contribute(stackHeadline, "SQLite"),
     contribute(readmeLayers, {
       choice: ctx.has("bun")
-        ? "SQLite through Bun's compatible `node:sqlite`, Drizzle ORM v1"
-        : "SQLite through Node's built-in `node:sqlite`, Drizzle ORM v1",
+        ? `SQLite through Bun's compatible \`node:sqlite\`, ${ormRelease(ctx)}`
+        : `SQLite through Node's built-in \`node:sqlite\`, ${ormRelease(ctx)}`,
       layer: "Database",
     }),
   ],

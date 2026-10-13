@@ -7,7 +7,7 @@ TanStack Start · oRPC · PostgreSQL · Prisma · Better Auth · Node · Docker,
 | Framework | TanStack Start (SSR, file routes, server routes), React 19        |
 | Data      | TanStack Query with SSR dehydration, Tailwind CSS 4               |
 | API       | oRPC (end-to-end types, no codegen) plus OpenAPI at `/api`        |
-| Database  | PostgreSQL 18, Drizzle ORM v1                                     |
+| Database  | PostgreSQL 18, Prisma ORM 7                                       |
 | Auth      | Better Auth, email and password, sessions in PostgreSQL           |
 | UI        | shadcn/ui on Base UI, in `packages/ui`                            |
 | Deploy    | Docker: one Nitro server, one image, no `node_modules` at runtime |

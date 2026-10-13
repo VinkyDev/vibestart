@@ -5,7 +5,7 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import { serverEnv, stackHeadline } from "#/app.ts";
+import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
 import {
   composeEnv,
   composeServices,
@@ -56,7 +56,7 @@ export const mysql = defineIntegration({
       contribute(readmeTagline, "MySQL"),
       contribute(stackHeadline, "MySQL"),
       contribute(readmeLayers, {
-        choice: "MySQL 8.4, Drizzle ORM v1",
+        choice: `MySQL 8.4, ${ormRelease(ctx)}`,
         layer: "Database",
       }),
       contribute(gettingStarted, {

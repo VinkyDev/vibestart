@@ -185,6 +185,10 @@ export const ormId = (ctx: Context) =>
 export const ormName = (ctx: Context) =>
   ctx.has("prisma") ? "Prisma" : "Drizzle";
 
+/** The ORM as the README's layers table names it, with its major version. */
+export const ormRelease = (ctx: Context) =>
+  ctx.has("prisma") ? "Prisma ORM 7" : "Drizzle ORM v1";
+
 export const databaseFlow = (ctx: Context) =>
   ctx.stack.database === undefined
     ? ""

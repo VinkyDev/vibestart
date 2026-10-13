@@ -5,7 +5,7 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import { serverEnv, stackHeadline } from "#/app.ts";
+import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
 import {
   composeEnv,
   composeServices,
@@ -58,7 +58,7 @@ export const postgres = defineIntegration({
       contribute(readmeTagline, "PostgreSQL"),
       contribute(stackHeadline, "PostgreSQL"),
       contribute(readmeLayers, {
-        choice: "PostgreSQL 18, Drizzle ORM v1",
+        choice: `PostgreSQL 18, ${ormRelease(ctx)}`,
         layer: "Database",
       }),
       contribute(gettingStarted, {
