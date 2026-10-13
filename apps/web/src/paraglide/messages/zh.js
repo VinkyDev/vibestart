@@ -749,7 +749,7 @@ export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => Localized
 };
 
 export const desktop_dist_pill = /** @type {(inputs: Desktop_Dist_PillInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`apps/web/dist`)
+	return /** @type {LocalizedString} */ (`前端页面`)
 };
 
 export const docs_anchor = /** @type {(inputs: Docs_AnchorInputs) => LocalizedString} */ () => {

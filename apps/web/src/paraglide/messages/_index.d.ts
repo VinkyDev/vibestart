@@ -1744,7 +1744,7 @@ export declare const desktop_dist: ((inputs?: Desktop_DistInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "apps/web/dist" |
+* | "the web app" |
 *
 * @param {Desktop_Dist_PillInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

@@ -1687,7 +1687,7 @@ export const desktop_dist = /** @type {((inputs?: Desktop_DistInputs, options?: 
 /**
 * | output |
 * | --- |
-* | "apps/web/dist" |
+* | "the web app" |
 *
 * @param {Desktop_Dist_PillInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
