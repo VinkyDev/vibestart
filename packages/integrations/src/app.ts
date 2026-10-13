@@ -142,6 +142,9 @@ export const serverUrl: EnvVariable = {
 export const apiVariant = (ctx: Context) =>
   ctx.stack.database === undefined ? "stateless" : authVariant(ctx);
 
+export const todosExample = (ctx: Context) =>
+  ctx.stack.api !== undefined && ctx.stack.database !== undefined;
+
 /**
  * The API's template set. MySQL has no `returning`, so its todos module, at `todos`, reads a row back after
  * each write.
@@ -153,9 +156,6 @@ export const apiTemplates = (ctx: Context, set: string, todos: string) =>
         ...templateFiles(ctx, `${set}/mysql-${authVariant(ctx)}`),
       ]
     : templateFiles(ctx, `${set}/${apiVariant(ctx)}`);
-
-export const todosExample = (ctx: Context) =>
-  ctx.stack.api !== undefined && ctx.stack.database !== undefined;
 
 /** `auth` adds accounts to the todos; `account` is accounts alone; `none` has no data. */
 export const exampleVariant = (ctx: Context) => {

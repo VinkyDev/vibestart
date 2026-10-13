@@ -78,10 +78,10 @@ const postgresUrl =
 const mysqlUrl =
   process.env.STACKS_MYSQL_URL ?? "mysql://root:mysql@localhost:3306/mysql";
 
-const serverUrls: Record<string, string> = {
+const serverUrls = {
   mysql: mysqlUrl,
   postgres: postgresUrl,
-};
+} as const;
 
 const writeEnvFiles = (dir: string) => {
   materializeEnvFromExamples(dir, {
@@ -295,7 +295,7 @@ const smokeStack = ({
     DATABASE_URL:
       database === "sqlite"
         ? path.join(dir, "runtime-smoke.sqlite")
-        : serverUrls[database ?? "postgres"],
+        : serverUrls[database === "mysql" ? "mysql" : "postgres"],
     BETTER_AUTH_SECRET: "smoke-secret-that-is-at-least-32-characters",
     BETTER_AUTH_URL: "http://localhost:3000",
   };
