@@ -10,6 +10,7 @@ import {
 import { hasBackend, hasWebApp, stackHeadline, todosExample } from "#/app.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
+import { openapiQueriesContent } from "#/openapi.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides, ultracitePresets } from "#/ultracite.ts";
 import {
@@ -278,7 +279,7 @@ const openapiFiles = (ctx: Context) => [
   file(
     "apps/mobile/src/lib/api.ts",
     replaceOnce(
-      templateContent(ctx, "openapi/web", openapiQueriesPath),
+      openapiQueriesContent(ctx),
       "export const createQueries",
       "const createQueries",
       `openapi/web/${openapiQueriesPath}`

@@ -256,13 +256,28 @@ const anonymousTodosTest = (ctx: Context, set: string) => {
   return file(todosTestPath, named);
 };
 
+// An OpenAPI path carries a todo's ObjectId as the string it already is.
+const stringIdTodosTest = (ctx: Context, set: string) => {
+  const content = templateContent(ctx, set, todosTestPath);
+  const passed = content.replaceAll("String(todo.id)", "todo.id");
+  if (passed === content) {
+    throw new Error(`${set}/${todosTestPath} converts no todo id`);
+  }
+  return file(todosTestPath, passed);
+};
+
+const mongodbTodosTest = (ctx: Context, set: string) => {
+  if (ctx.has("openapi")) {
+    return stringIdTodosTest(ctx, set);
+  }
+  return ctx.has("better-auth") ? anonymousTodosTest(ctx, set) : undefined;
+};
+
 const integrationTestFiles = (ctx: Context) => {
   const set = `testing/integration/${apiStyle(ctx)}-${authVariant(ctx)}`;
-  return ctx.has("mongodb") && ctx.has("orpc") && ctx.has("better-auth")
-    ? [
-        ...templateFiles(ctx, set, { except: [todosTestPath] }),
-        anonymousTodosTest(ctx, set),
-      ]
+  const todosTest = ctx.has("mongodb") ? mongodbTodosTest(ctx, set) : undefined;
+  return todosTest
+    ? [...templateFiles(ctx, set, { except: [todosTestPath] }), todosTest]
     : templateFiles(ctx, set);
 };
 

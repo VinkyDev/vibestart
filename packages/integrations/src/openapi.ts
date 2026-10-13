@@ -77,10 +77,15 @@ const withStringIds = (content: string) => {
   return passed;
 };
 
+/** The typed queries over the todo routes, which the web and mobile apps share. */
+export const openapiQueriesContent = (ctx: Context) => {
+  const template = templateContent(ctx, "openapi/web", queriesPath);
+  return ctx.has("mongodb") ? withStringIds(template) : template;
+};
+
 // Only Next.js builds a second set of queries, for its Server Components.
 const queries = (ctx: Context) => {
-  const template = templateContent(ctx, "openapi/web", queriesPath);
-  const content = ctx.has("mongodb") ? withStringIds(template) : template;
+  const content = openapiQueriesContent(ctx);
   return file(
     queriesPath,
     ctx.has("next")

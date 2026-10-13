@@ -20245,11 +20245,94 @@ export const resolveApiUrl = ({ configured, hostUri, dev }: ApiUrlSource) => {
   throw new Error("Set EXPO_PUBLIC_API_URL to the API origin for this build.");
 };
 
-# apps/mobile/src/lib/api.ts · 216 stacks
+# apps/mobile/src/lib/api.ts · 36 stacks
 #   hono-openapi-mongodb-better-auth-expo-bun-docker
 #   hono-openapi-mongodb-better-auth-expo-docker
 #   hono-openapi-mongodb-expo-bun-docker
 #   hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
+import { parseResponse } from "hono/client";
+
+import { createClient } from "#src/lib/client.ts";
+
+type Client = ReturnType<typeof createClient>;
+
+const mutation = <Input, Output>(
+  mutationFn: (input: Input) => Promise<Output>
+) => ({
+  mutationOptions: (
+    options: Pick<UseMutationOptions<Output, Error, Input>, "onSuccess"> = {}
+  ) => mutationOptions({ ...options, mutationFn }),
+});
+
+const todosKey = ["todos"] as const;
+
+const createQueries = (client: Client) => ({
+  todos: {
+    create: mutation(
+      async (json: { title: string }) =>
+        await parseResponse(client.todos.$post({ json }))
+    ),
+    delete: mutation(
+      async ({ id }: { id: string }) =>
+        await parseResponse(client.todos[":id"].$delete({ param: { id } }))
+    ),
+    key: () => todosKey,
+    list: {
+      queryOptions: () =>
+        queryOptions({
+          queryFn: async () => await parseResponse(client.todos.$get()),
+          queryKey: [...todosKey, "list"],
+        }),
+    },
+    update: mutation(
+      async ({ completed, id }: { completed: boolean; id: string }) =>
+        await parseResponse(
+          client.todos[":id"].$patch({
+            json: { completed },
+            param: { id },
+          })
+        )
+    ),
+  },
+});
+
+export const api = createQueries(createClient());
+
+# apps/mobile/src/lib/api.ts · 180 stacks
 #   hono-openapi-mysql-better-auth-expo-bun-docker
 #   hono-openapi-mysql-better-auth-expo-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -20270,14 +20353,6 @@ export const resolveApiUrl = ({ configured, hostUri, dev }: ApiUrlSource) => {
 #   hono-openapi-sqlite-better-auth-expo-docker
 #   hono-openapi-sqlite-expo-bun-docker
 #   hono-openapi-sqlite-expo-docker
-#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
-#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
-#   next-hono-openapi-mongodb-better-auth-expo-docker
-#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
-#   next-hono-openapi-mongodb-expo-bun-docker
-#   next-hono-openapi-mongodb-expo-bun-docker-e2e
-#   next-hono-openapi-mongodb-expo-docker
-#   next-hono-openapi-mongodb-expo-docker-e2e
 #   next-hono-openapi-mysql-better-auth-expo-bun-docker
 #   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   next-hono-openapi-mysql-better-auth-expo-docker
@@ -20318,22 +20393,6 @@ export const resolveApiUrl = ({ configured, hostUri, dev }: ApiUrlSource) => {
 #   next-hono-openapi-sqlite-expo-bun-docker-e2e
 #   next-hono-openapi-sqlite-expo-docker
 #   next-hono-openapi-sqlite-expo-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
-#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-expo-docker
-#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-openapi-mongodb-electron-expo-bun-docker
-#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-electron-expo-docker
-#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
-#   spa-hono-openapi-mongodb-expo-bun-docker
-#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-expo-docker
-#   spa-hono-openapi-mongodb-expo-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
@@ -20414,14 +20473,6 @@ export const resolveApiUrl = ({ configured, hostUri, dev }: ApiUrlSource) => {
 #   spa-hono-openapi-sqlite-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-openapi-sqlite-expo-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
-#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-expo-docker
-#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
