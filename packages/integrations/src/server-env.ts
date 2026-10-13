@@ -7,6 +7,8 @@ export interface MaterializeEnvOptions {
   readonly postgresDatabaseUrl?: string;
   /** Replaces a `mysql://…` `DATABASE_URL` (stack verification uses the runner's MySQL). */
   readonly mysqlDatabaseUrl?: string;
+  /** Replaces a `mongodb://…` `DATABASE_URL` (stack verification uses the runner's MongoDB). */
+  readonly mongodbDatabaseUrl?: string;
   readonly overwrite?: boolean;
 }
 
@@ -14,6 +16,7 @@ export const materializeEnvFromExamples = (
   projectRoot: string,
   {
     authSecret,
+    mongodbDatabaseUrl,
     mysqlDatabaseUrl,
     overwrite = true,
     postgresDatabaseUrl,
@@ -43,6 +46,12 @@ export const materializeEnvFromExamples = (
       env = env.replace(
         /^DATABASE_URL=mysql:.*$/mu,
         `DATABASE_URL=${mysqlDatabaseUrl}`
+      );
+    }
+    if (mongodbDatabaseUrl !== undefined) {
+      env = env.replace(
+        /^DATABASE_URL=mongodb:.*$/mu,
+        `DATABASE_URL=${mongodbDatabaseUrl}`
       );
     }
     writeFileSync(target, env);

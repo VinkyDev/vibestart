@@ -13,12 +13,12 @@ import {
   hasBackend,
   hasWebApp,
   serverApp,
-  sqlDatabase,
+  chosenDatabase,
   todosExample,
   ormId,
 } from "#/app.ts";
 import { joinWords, markdownTable } from "#/format.ts";
-import { templateFiles } from "#/templates.ts";
+import { templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
 import {
   agentsSections,
@@ -148,7 +148,7 @@ const isolationSentences = (ctx: Context, runner: BrowserRunner) => [
     : []),
   ...(usesTestDatabase(ctx)
     ? [
-        sqlDatabase(ctx).server
+        chosenDatabase(ctx).server
           ? `Test databases are created beside \`DATABASE_URL\` from \`${serverApp(ctx).dir}/.env\`, so the tests need ${databaseName(ctx)} running.`
           : "Test databases are SQLite files in the system temp directory with the real migrations applied.",
         ctx.has("better-auth")
@@ -241,11 +241,48 @@ const browserTests = (ctx: Context, runner: BrowserRunner) => [
   }),
 ];
 
+const todosTestPath = "packages/api/tests/integration/todos.test.ts";
+
+// An anonymous caller names some todo; on MongoDB that is an ObjectId.
+const anonymousTodosTest = (ctx: Context, set: string) => {
+  const content = templateContent(ctx, set, todosTestPath);
+  const named = content.replaceAll(
+    "id: 1 }",
+    'id: "0123456789abcdef01234567" }'
+  );
+  if (named === content) {
+    throw new Error(`${set}/${todosTestPath} names no todo id 1`);
+  }
+  return file(todosTestPath, named);
+};
+
+// An OpenAPI path carries a todo's ObjectId as the string it already is.
+const stringIdTodosTest = (ctx: Context, set: string) => {
+  const content = templateContent(ctx, set, todosTestPath);
+  const passed = content.replaceAll("String(todo.id)", "todo.id");
+  if (passed === content) {
+    throw new Error(`${set}/${todosTestPath} converts no todo id`);
+  }
+  return file(todosTestPath, passed);
+};
+
+const mongodbTodosTest = (ctx: Context, set: string) => {
+  if (ctx.has("openapi")) {
+    return stringIdTodosTest(ctx, set);
+  }
+  return ctx.has("better-auth") ? anonymousTodosTest(ctx, set) : undefined;
+};
+
+const integrationTestFiles = (ctx: Context) => {
+  const set = `testing/integration/${apiStyle(ctx)}-${authVariant(ctx)}`;
+  const todosTest = ctx.has("mongodb") ? mongodbTodosTest(ctx, set) : undefined;
+  return todosTest
+    ? [...templateFiles(ctx, set, { except: [todosTestPath] }), todosTest]
+    : templateFiles(ctx, set);
+};
+
 const integrationTests = (ctx: Context) => [
-  ...templateFiles(
-    ctx,
-    `testing/integration/${apiStyle(ctx)}-${authVariant(ctx)}`
-  ),
+  ...integrationTestFiles(ctx),
   contribute(testProjects, {
     // The tests read the server's `.env` as the server does; PostgreSQL creates test databases beside its `DATABASE_URL`.
     envDir: serverApp(ctx).dir,
@@ -257,7 +294,10 @@ const integrationTests = (ctx: Context) => [
 const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
   ...(usesTestDatabase(ctx)
     ? [
-        ...templateFiles(ctx, `${ormId(ctx)}/${sqlDatabase(ctx).id}/testing`),
+        ...templateFiles(
+          ctx,
+          `${ormId(ctx)}/${chosenDatabase(ctx).id}/testing`
+        ),
         contribute(packageJson, {
           exports: { "./testing": "./src/testing.ts" },
           path: "packages/db",

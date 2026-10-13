@@ -78,7 +78,12 @@ const postgresUrl =
 const mysqlUrl =
   process.env.STACKS_MYSQL_URL ?? "mysql://root:mysql@localhost:3306/mysql";
 
+// MongoDB creates a database on its first write, so any name serves; each test file adds a suffix to it.
+const mongodbUrl =
+  process.env.STACKS_MONGODB_URL ?? "mongodb://localhost:27017/stacks";
+
 const serverUrls = {
+  mongodb: mongodbUrl,
   mysql: mysqlUrl,
   postgres: postgresUrl,
 } as const;
@@ -86,6 +91,7 @@ const serverUrls = {
 const writeEnvFiles = (dir: string) => {
   materializeEnvFromExamples(dir, {
     authSecret: "local-secret-that-is-at-least-32-characters",
+    mongodbDatabaseUrl: mongodbUrl,
     mysqlDatabaseUrl: mysqlUrl,
     postgresDatabaseUrl: postgresUrl,
   });
@@ -216,6 +222,9 @@ const closeStatement = ({ database, orm }: Stack) => {
   if (orm === "prisma") {
     return "await db.$disconnect();";
   }
+  if (orm === "mongoose") {
+    return "await db.connection.close();";
+  }
   if (database === "sqlite") {
     return "db.$client.close();";
   }
@@ -241,7 +250,7 @@ const smokeStack = ({
   const logFile = `${dir}.smoke.log`;
   const log = openSync(logFile, "w");
   const { database } = stack;
-  const server = database === "postgres" || database === "mysql";
+  const server = database !== undefined && database !== "sqlite";
   const script = [
     'import assert from "node:assert/strict";',
     'const { app } = await import("./apps/server/src/app.ts");',
@@ -307,7 +316,11 @@ const smokeStack = ({
     DATABASE_URL:
       database === "sqlite"
         ? path.join(dir, "runtime-smoke.sqlite")
-        : serverUrls[database === "mysql" ? "mysql" : "postgres"],
+        : serverUrls[
+            database === "mysql" || database === "mongodb"
+              ? database
+              : "postgres"
+          ],
     BETTER_AUTH_SECRET: "smoke-secret-that-is-at-least-32-characters",
     BETTER_AUTH_URL: "http://localhost:3000",
   };
@@ -414,8 +427,9 @@ Every stack is a Linux task under each package manager, covered by any pass that
 package managers by default. --package-manager narrows the matrix.
 Bun is required to install or run Bun package-manager or Hono-runtime combinations.
 verify runs --jobs stacks at a time (default ${defaultJobs}), each on its own test ports.
-Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres), and MySQL
-stacks STACKS_MYSQL_URL (default mysql://root:mysql@localhost:3306/mysql).`;
+Postgres stacks use STACKS_POSTGRES_URL (default postgres://$USER@localhost:5432/postgres), MySQL
+stacks STACKS_MYSQL_URL (default mysql://root:mysql@localhost:3306/mysql), and MongoDB stacks
+STACKS_MONGODB_URL (default mongodb://localhost:27017/stacks).`;
 
 const selectTasks = (
   selected: readonly Platform[],

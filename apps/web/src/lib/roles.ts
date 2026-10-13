@@ -222,6 +222,8 @@ export const addLabel = (kind: Decision) => addLabels[optional(kind)]();
 const fits = {
   bun: () => m.fit_bun(),
   drizzle: () => m.fit_drizzle(),
+  mongodb: () => m.fit_mongodb(),
+  mongoose: () => m.fit_mongoose(),
   prisma: () => m.fit_prisma(),
   node: () => m.fit_node(),
   "better-auth": () => m.fit_better_auth(),

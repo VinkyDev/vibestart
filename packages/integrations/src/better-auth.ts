@@ -42,6 +42,37 @@ const cookiePlugins = [
   },
 ];
 
+// Without a `client`, the MongoDB adapter runs no transactions, which a standalone server does not support.
+const authAdapter = (ctx: Context) => {
+  if (ctx.has("mongoose")) {
+    return {
+      call: "mongodbAdapter(db.connection.getClient().db())",
+      dependency: "@better-auth/mongo-adapter",
+      statement: 'import { mongodbAdapter } from "@better-auth/mongo-adapter";',
+    };
+  }
+  const { id } = sqlDatabase(ctx);
+  if (ctx.has("prisma")) {
+    const provider = {
+      mysql: "mysql",
+      postgres: "postgresql",
+      sqlite: "sqlite",
+    };
+    return {
+      call: `prismaAdapter(db, { provider: "${provider[id]}" })`,
+      dependency: "@better-auth/prisma-adapter",
+      statement: 'import { prismaAdapter } from "@better-auth/prisma-adapter";',
+    };
+  }
+  const provider = { mysql: "mysql", postgres: "pg", sqlite: "sqlite" };
+  return {
+    call: `drizzleAdapter(db, { provider: "${provider[id]}", schema })`,
+    dependency: "@better-auth/drizzle-adapter",
+    statement:
+      'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
+  };
+};
+
 const renderAuthIndex = (ctx: Context) => {
   const plugin = ctx.has("self")
     ? cookiePlugins.find(({ framework }) => ctx.has(framework))
@@ -56,22 +87,17 @@ const renderAuthIndex = (ctx: Context) => {
     ...(ctx.has("electron") ? ["rendererOrigin"] : []),
     ...(mobile ? [quote(`${ctx.name}://`)] : []),
   ];
-  const prisma = ctx.has("prisma");
-  const provider = prisma
-    ? { mysql: "mysql", postgres: "postgresql", sqlite: "sqlite" }
-    : { mysql: "mysql", postgres: "pg", sqlite: "sqlite" };
+  const adapter = authAdapter(ctx);
   return [
-    prisma
-      ? 'import { prismaAdapter } from "@better-auth/prisma-adapter";'
-      : 'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
+    adapter.statement,
     ...(mobile ? ['import { expo } from "@better-auth/expo";'] : []),
     'import { betterAuth } from "better-auth";',
     ...(plugin === undefined ? [] : [plugin.statement]),
     "",
     `import type { Database } from "${ctx.scope}/db";`,
-    ...(prisma
-      ? []
-      : [`import * as schema from "${ctx.scope}/db/schema/auth";`]),
+    ...(ctx.has("drizzle")
+      ? [`import * as schema from "${ctx.scope}/db/schema/auth";`]
+      : []),
     ...(ctx.has("electron")
       ? [`import { rendererOrigin } from "${ctx.scope}/electron";`, ""]
       : []),
@@ -85,9 +111,7 @@ const renderAuthIndex = (ctx: Context) => {
     "export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>",
     "  betterAuth({",
     "    baseURL,",
-    prisma
-      ? `    database: prismaAdapter(db, { provider: "${provider[sqlDatabase(ctx).id]}" }),`
-      : `    database: drizzleAdapter(db, { provider: "${provider[sqlDatabase(ctx).id]}", schema }),`,
+    `    database: ${adapter.call},`,
     "    emailAndPassword: { enabled: true },",
     ...(mobile
       ? [
@@ -198,9 +222,7 @@ export const betterAuth = defineIntegration({
     file("packages/auth/src/index.ts", renderAuthIndex(ctx)),
     contribute(packageJson, {
       dependencies: [
-        ctx.has("prisma")
-          ? "@better-auth/prisma-adapter"
-          : "@better-auth/drizzle-adapter",
+        authAdapter(ctx).dependency,
         ...(ctx.has("expo") ? ["@better-auth/expo"] : []),
         `${ctx.scope}/db`,
         "better-auth",
@@ -291,5 +313,5 @@ export const betterAuth = defineIntegration({
   name: "Better Auth",
   description: "Email and password sign-in, with sessions in the database",
   homepage: "https://better-auth.com",
-  requires: ["sql-orm"],
+  requires: [["sql-orm", "document-orm"]],
 });
