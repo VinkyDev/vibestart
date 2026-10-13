@@ -39,6 +39,7 @@ import {
   batchesOf,
   cloneStore,
   currentRecords,
+  pendingTasks,
   projectionOf,
   readRecords,
   tasks,
@@ -49,6 +50,7 @@ import {
   platforms,
   verification,
   verifiedGeneration,
+  verifiedFingerprint,
   verifiedStacks,
   vouchesFor,
 } from "#/verification.ts";
@@ -115,14 +117,6 @@ interface StackRun extends Task {
   index: number;
   out: string;
 }
-
-/** Whether a record in `verification.json` vouches for the task's current output. */
-const isCurrent = async ({
-  label,
-  packageManager,
-  platform: name,
-  stack,
-}: Task) => await vouchesFor(verification[name][label], stack, packageManager);
 
 const browserRunners = new Map([
   ["e2e", e2e],
@@ -378,20 +372,22 @@ const usage = `Usage: vp run stacks <command> [pattern] [--out <dir>] [--force] 
                      read the verification store (the \`verification\` branch, which only CI on main writes)
                      and the records under <dir>, and write the records for the current output to
                      packages/integrations/verification.json, which the CLI and the Studio embed
-  check [pattern]    compare that file with the current output of every task, Linux and Windows;
-                     no installs, services, or writes
+  check [pattern]    report whether a record in that file covers the current output of every task,
+                     Linux and Windows; no installs, services, or writes
   verify [pattern]   generate, install, set up, and run \`vp run ready\` in each matching task of this
                      platform, skipping tasks verified at their current output (--force reruns them).
                      On Linux and Windows each pass is written to <out>/results; CI records them
   smoke [pattern]    install Hono stacks, check, unit-test, build, and exercise modules/handlers without listening; no record
   goldens            regenerate golden/* from generator output
-  plan               print the CI jobs for the tasks verification.json does not cover, as JSON
+  plan               print, as JSON, the CI jobs whose passes would cover every task verification.json
+                     does not: the fewest stacks that add a pass to each uncovered facet
   evidence <dir>     on CI, copy the records of this pull request's earlier runs (or, on main, of the merged
                      pull request's runs) that match the current output to <dir>
   record <results> <store>
                      on CI, add the records under <results> that match the current output to a store checkout
 
-Every stack is a Linux task; the goldens are also Windows tasks. gen, check, and verify include both
+Every stack is a Linux task under each package manager, covered by any pass that shares its facets
+(docs/architecture.md); the goldens are also Windows tasks. gen, check, and verify include both
 package managers by default. --package-manager narrows the matrix.
 Bun is required to install or run Bun package-manager or Hono-runtime combinations.
 verify runs --jobs stacks at a time (default ${defaultJobs}), each on its own test ports.
@@ -431,20 +427,40 @@ const selectStacks = async (
       }))
   );
 
+/** A Linux task is current when a record covers it; a Windows task, when its own record does. */
+const statusOf = async (task: Task) => {
+  if (task.platform === "windows") {
+    const record = verification.windows[task.label];
+    if (record === undefined) {
+      return "MISSING";
+    }
+    return (await vouchesFor(record, task.stack, task.packageManager))
+      ? "CURRENT"
+      : "STALE";
+  }
+  const entry = verification.coverage[task.packageManager][task.label];
+  if (entry === undefined || verification.linux[entry.by] === undefined) {
+    return "MISSING";
+  }
+  const current = await verifiedFingerprint(task.stack, task.packageManager);
+  if (entry.fingerprint !== current) {
+    return "STALE";
+  }
+  return entry.by === task.label ? "CURRENT" : `CURRENT by ${entry.by}`;
+};
+
 const checkTasks = async (selected: readonly Task[]) => {
-  const results = await Promise.all(
+  const statuses = await Promise.all(
     selected.map(async (task) => {
-      const current = await isCurrent(task);
-      let status = "MISSING";
-      if (verification[task.platform][task.label] !== undefined) {
-        status = current ? "CURRENT" : "STALE";
-      }
+      const status = await statusOf(task);
       print(`${task.platform} ${task.label} ${status}`);
-      return current;
+      return status;
     })
   );
-  const current = results.filter(Boolean).length;
-  print(`${current} of ${selected.length} tasks verified at current output`);
+  const current = statuses.filter((status) =>
+    status.startsWith("CURRENT")
+  ).length;
+  print(`${current} of ${selected.length} tasks covered at current output`);
   return current === selected.length ? 0 : 1;
 };
 
@@ -478,18 +494,19 @@ const pull = async (evidence: string | undefined) => {
     "@vibestart"
   );
   writeFileSync(projectionPath, code);
-  for (const name of platforms) {
+  for (const packageManager of ["pnpm", "bun"] as const) {
+    const covered = Object.values(projection.coverage[packageManager]);
     print(
-      `${Object.keys(projection[name]).length} of ${tasks.filter((task) => task.platform === name).length} ${name} tasks verified at current output`
+      `${covered.length} of ${verifiedStacks.length} stacks under ${packageManager} covered by ${new Set(covered.map(({ by }) => by)).size} Linux records`
     );
   }
+  print(
+    `${Object.keys(projection.windows).length} of ${tasks.filter((task) => task.platform === "windows").length} goldens verified on Windows`
+  );
 };
 
 const plan = async () => {
-  const pending = await Promise.all(
-    tasks.map(async (task) => ((await isCurrent(task)) ? [] : [task]))
-  );
-  print(JSON.stringify(batchesOf(pending.flat())));
+  print(JSON.stringify(batchesOf(await pendingTasks(verification))));
 };
 
 interface Options {

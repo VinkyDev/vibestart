@@ -5,16 +5,22 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import { goldens } from "#/goldens.ts";
+import { taskLabel } from "#/stack-label.ts";
 import {
   batchesOf,
   currentRecords,
+  pendingTasks,
   projectionOf,
   readRecords,
   tasks,
   writeRecords,
 } from "#/verification-store.ts";
 import type { StackVerification } from "#/verification.ts";
-import { verifiedFingerprint } from "#/verification.ts";
+import {
+  emptyProjection,
+  verifiedFingerprint,
+  verifiedStacks,
+} from "#/verification.ts";
 
 const dirs: string[] = [];
 const tempDir = () => {
@@ -42,6 +48,14 @@ describe("verification tasks", () => {
     expect(
       windows.filter((task) => !linuxLabels.has(task.label))
     ).toStrictEqual([]);
+  });
+
+  it("offer every verified stack under each package manager on Linux", () => {
+    expect(linux.map((task) => task.label).toSorted()).toStrictEqual(
+      verifiedStacks
+        .flatMap((stack) => [taskLabel(stack), taskLabel(stack, "bun")])
+        .toSorted()
+    );
   });
 
   it("name each output once per platform", () => {
@@ -148,9 +162,66 @@ describe("records of the current output", () => {
     ]);
     const current = await currentRecords(records);
     expect([...current.keys()]).toStrictEqual([`linux/${hash}`]);
-    await expect(projectionOf(records)).resolves.toStrictEqual({
-      linux: { [task.label]: recordOf(hash) },
-      windows: {},
+    const projection = await projectionOf(records);
+    expect(projection.linux).toStrictEqual({ [task.label]: recordOf(hash) });
+    expect(projection.windows).toStrictEqual({});
+    expect(projection.coverage[task.packageManager][task.label]).toStrictEqual({
+      by: task.label,
+      fingerprint: hash,
     });
+  });
+});
+
+const plan = await pendingTasks(emptyProjection());
+
+const planned = (packageManager: string) =>
+  plan.filter(
+    (task) =>
+      task.platform === "linux" && task.packageManager === packageManager
+  );
+
+describe(pendingTasks, () => {
+  it("runs every golden on both platforms", () => {
+    const pnpm = new Set(planned("pnpm").map((task) => task.label));
+    expect(
+      Object.keys(goldens).filter((label) => !pnpm.has(label))
+    ).toStrictEqual([]);
+    expect(
+      plan
+        .filter((task) => task.platform === "windows")
+        .map((task) => task.label)
+        .toSorted()
+    ).toStrictEqual(Object.keys(goldens).toSorted());
+  });
+
+  // The point of coverage: a store emptied by a dependency update re-runs a fraction of the stacks.
+  it("covers every stack with a fraction of them", () => {
+    expect(planned("pnpm").length).toBeLessThan(verifiedStacks.length / 2);
+    expect(planned("bun").length).toBeLessThan(verifiedStacks.length / 10);
+  });
+
+  it("leaves nothing pending once the planned tasks pass", async () => {
+    const records = new Map(
+      await Promise.all(
+        plan.map(async (task) => {
+          const hash = await verifiedFingerprint(
+            task.stack,
+            task.packageManager
+          );
+          return [`${task.platform}/${hash}`, recordOf(hash)] as const;
+        })
+      )
+    );
+    const projection = await projectionOf(records);
+    await expect(pendingTasks(projection)).resolves.toStrictEqual([]);
+    for (const packageManager of ["pnpm", "bun"] as const) {
+      expect(
+        Object.keys(projection.coverage[packageManager]).toSorted()
+      ).toStrictEqual(
+        verifiedStacks
+          .map((stack) => taskLabel(stack, packageManager))
+          .toSorted()
+      );
+    }
   });
 });

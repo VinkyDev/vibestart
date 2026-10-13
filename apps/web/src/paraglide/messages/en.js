@@ -999,7 +999,7 @@ export const home_title_rest = /** @type {(inputs: Home_Title_RestInputs) => Loc
 };
 
 export const home_verify_body = /** @type {(inputs: Home_Verify_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Every stack is installed, checked, tested and built from scratch. The output that passed keeps a fingerprint, so you can check what you get.`)
+	return /** @type {LocalizedString} */ (`Every file of every stack is installed, checked, tested and built from scratch in a stack CI runs. The output that passed keeps a fingerprint, so you can check what you get.`)
 };
 
 export const home_verify_follow = /** @type {(inputs: Home_Verify_FollowInputs) => LocalizedString} */ () => {
@@ -1510,11 +1510,11 @@ export const verified = /** @type {(inputs: VerifiedInputs) => LocalizedString} 
 export const verified_passed = /** @type {((inputs: Verified_PassedInputs) => LocalizedString) & { parts: (inputs: Verified_PassedInputs) => import('../runtime.js').MessagePart[] }} */ (
 	/* @__PURE__ */ Object.assign(
 		/** @type {(inputs: Verified_PassedInputs) => LocalizedString} */ (() => {
-			return /** @type {LocalizedString} */ (`vp run ready passed on this exact output`)
+			return /** @type {LocalizedString} */ (`vp run ready passed on every file of this exact output`)
 		}),
 		{
 			parts: /** @type {(inputs: Verified_PassedInputs) => import('../runtime.js').MessagePart[]} */ (() => {
-				return /** @type {import('../runtime.js').MessagePart[]} */ ([{ type: "markup-start", name: "code", options: {}, attributes: {} }, { type: "text", value: "vp run ready" }, { type: "markup-end", name: "code", options: {}, attributes: {} }, { type: "text", value: " passed on this exact output" }])
+				return /** @type {import('../runtime.js').MessagePart[]} */ ([{ type: "markup-start", name: "code", options: {}, attributes: {} }, { type: "text", value: "vp run ready" }, { type: "markup-end", name: "code", options: {}, attributes: {} }, { type: "text", value: " passed on every file of this exact output" }])
 			})
 		}
 	)
