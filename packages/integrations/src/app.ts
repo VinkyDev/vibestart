@@ -182,8 +182,7 @@ export const hasTables = (ctx: Context) =>
 export const ormId = (ctx: Context) =>
   ctx.has("prisma") ? "prisma" : "drizzle";
 
-export const ormName = (ctx: Context) =>
-  ctx.has("prisma") ? "Prisma" : "Drizzle";
+const ormName = (ctx: Context) => (ctx.has("prisma") ? "Prisma" : "Drizzle");
 
 /** The ORM as the README's layers table names it, with its major version. */
 export const ormRelease = (ctx: Context) =>
