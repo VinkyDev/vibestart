@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import { resolve } from "@vibestart/core";
+
 import { registry } from "#/registry.ts";
 
 describe("the registry", () => {
@@ -16,5 +18,24 @@ describe("the registry", () => {
     for (const { homepage } of linked) {
       expect(new URL(homepage ?? "").protocol).toBe("https:");
     }
+  });
+
+  // Prisma's SQLite drivers are native modules, which the bundled image cannot carry.
+  it.each([
+    ["postgres", ["drizzle", "prisma"]],
+    ["mysql", ["drizzle", "prisma"]],
+    ["sqlite", ["drizzle"]],
+    ["mongodb", ["mongoose"]],
+  ])("offers %s the ORMs %j", (database, orms) => {
+    const offered = new Set(
+      resolve(registry, { database }).stacks.map(({ orm }) => orm)
+    );
+    expect([...offered].toSorted()).toStrictEqual(orms);
+  });
+
+  it("signs users in on MongoDB as on a SQL database", () => {
+    expect(
+      resolve(registry, { auth: "better-auth", database: "mongodb" }).stacks
+    ).not.toHaveLength(0);
   });
 });
