@@ -2516,6 +2516,7 @@ import { db } from "#src/server/context.ts";
 
 const health = async () => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return Response.json({ status: "ok" });
 };
 
@@ -2547,6 +2548,7 @@ import { db } from "#src/server/context.ts";
 
 const health = async () => {
   await db.execute(sql`select 1`);
+
   return Response.json({ status: "ok" });
 };
 
@@ -2577,6 +2579,7 @@ import { db } from "#src/server/context.ts";
 
 const health = async () => {
   await db.$queryRaw`select 1`;
+
   return Response.json({ status: "ok" });
 };
 
@@ -2600,6 +2603,7 @@ import { db } from "#src/server/context.ts";
 
 const health = () => {
   db.run(sql`select 1`);
+
   return Response.json({ status: "ok" });
 };
 

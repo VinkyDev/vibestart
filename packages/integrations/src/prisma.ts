@@ -193,6 +193,7 @@ const lockStatements = (ctx: Context) =>
       ].join("\n")
     : [
         "    await tx.$executeRawUnsafe(\"SELECT GET_LOCK('prisma_migrate', -1)\");",
+        "",
         "    try {",
         "      await applyInOrder(tx, await pending(tx));",
         "    } finally {",

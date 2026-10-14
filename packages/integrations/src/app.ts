@@ -305,6 +305,7 @@ export const selfHealthRoute = (ctx: Context) => {
   const handler = [
     `${check.async ? "async " : ""}() => {`,
     `  ${check.statement}`,
+    "",
     '  return Response.json({ status: "ok" });',
     "};",
   ];

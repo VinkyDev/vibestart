@@ -1942,6 +1942,7 @@ export const migrateDatabase = async (db: Database) => {
     await db.$transaction(
       async (tx) => {
         await tx.$executeRawUnsafe("SELECT GET_LOCK('prisma_migrate', -1)");
+
         try {
           await applyInOrder(tx, await pending(tx));
         } finally {
