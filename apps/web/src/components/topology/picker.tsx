@@ -25,6 +25,7 @@ const Delta = ({
     from,
     use(loadProject(to, addons, from.packageManager ?? "pnpm"))
   );
+
   return (
     <span className="flex gap-1.5 text-xs font-medium tabular-nums">
       {added.size > 0 && <span className="text-added">+{added.size}</span>}
@@ -151,6 +152,7 @@ export const Picker = ({
 }) => {
   const { about, question } = roles[kind];
   const current = stack[kind] ?? null;
+
   return (
     <div
       className={cn(tintClass[kind], "flex flex-col gap-0.5")}
@@ -169,6 +171,7 @@ export const Picker = ({
         .map((integration) => {
           const id = integration?.id ?? null;
           const option = outcome(stack, kind, id);
+
           return (
             option !== undefined && (
               <Row

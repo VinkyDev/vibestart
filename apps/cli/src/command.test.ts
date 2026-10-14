@@ -26,21 +26,26 @@ const failureSchema = z.object({ error: z.object({ message: z.string() }) });
 
 const run = async (...rawArgs: string[]) => {
   const writes: string[] = [];
+
   const write = vi
     .spyOn(process.stdout, "write")
     .mockImplementation((chunk: string | Uint8Array) => {
       writes.push(String(chunk));
+
       return true;
     });
+
   try {
     await runCommand(command, { rawArgs: [...rawArgs, "--json"] });
   } finally {
     write.mockRestore();
   }
+
   const { exitCode } = process;
   process.exitCode = undefined;
   const output: unknown = JSON.parse(writes.join(""));
   const failure = failureSchema.safeParse(output);
+
   return {
     exitCode,
     message: failure.success ? failure.data.error.message : undefined,
@@ -54,6 +59,7 @@ const previewSchema = z.object({
 
 const dryRunPaths = async (directory: string, ...flags: string[]) => {
   const { output } = await run(directory, ...restApi, ...flags, "--dry-run");
+
   return previewSchema.parse(output).files.map((file) => file.path);
 };
 
@@ -67,9 +73,11 @@ describe("--list", () => {
       "stacks.length",
       legalStacks(registry).length
     );
+
     const listing = z.object({
       stacks: z.array(z.object({ verifiedAt: z.iso.datetime().nullable() })),
     });
+
     expect(listing.safeParse(output).success).toBeTruthy();
   });
 });
@@ -88,6 +96,7 @@ describe("choosing a stack", () => {
       "--auth",
       "none",
     ];
+
     const selected = await run(...choices, "--testing", "e2e");
     expect(selected.exitCode).toBe(0);
     expect(selected.output).toHaveProperty("stack.testing", "e2e");
@@ -125,6 +134,7 @@ describe("choosing a stack", () => {
       "--database",
       "none"
     );
+
     expect(exitCode).toBe(1);
     expect(output).toMatchObject({
       error: {
@@ -190,6 +200,7 @@ describe("package manager and runtime flags", () => {
         runtime,
         "--dry-run"
       );
+
       expect(result.output).toMatchObject({
         ok: true,
         packageManager,
@@ -209,6 +220,7 @@ describe("package manager and runtime flags", () => {
       "bun",
       "--dry-run"
     );
+
     expect(unsupported.output).toMatchObject({
       ok: false,
       error: { code: "illegal-stack" },
@@ -262,6 +274,7 @@ describe("creating a project", async () => {
       "--no-install",
       "--no-git"
     );
+
     expect(created).toMatchObject({
       exitCode: 0,
       output: {
@@ -296,6 +309,7 @@ describe("creating a project", async () => {
 
   it("wraps a single-page app in Electron only when asked", async () => {
     const target = path.join(root, "desktop");
+
     const spaFlags = [
       "--framework",
       "spa",
@@ -308,6 +322,7 @@ describe("creating a project", async () => {
       "--auth",
       "better-auth",
     ];
+
     const { output } = await run(
       target,
       ...spaFlags,
@@ -315,6 +330,7 @@ describe("creating a project", async () => {
       "electron",
       "--dry-run"
     );
+
     expect(previewSchema.parse(output).files).toContainEqual({
       path: "apps/desktop/package.json",
     });
@@ -338,6 +354,7 @@ describe("creating a project", async () => {
     await expect(dryRunPaths(target, "--mobile", "expo")).resolves.toContain(
       "apps/mobile/app.json"
     );
+
     const mobileOnly = [
       "--framework",
       "none",
@@ -346,6 +363,7 @@ describe("creating a project", async () => {
       "--mobile",
       "expo",
     ];
+
     const alone = await run(target, ...mobileOnly, "--dry-run");
     expect(alone.output).toMatchObject({ label: "expo", ok: true });
     await expect(
@@ -369,6 +387,7 @@ describe("creating a project", async () => {
       addons: ["knip", "ultracite"],
       ok: true,
     });
+
     const ultracite = await run(
       target,
       ...restApi,
@@ -376,9 +395,11 @@ describe("creating a project", async () => {
       "ultracite",
       "--dry-run"
     );
+
     expect(ultracite.output).toMatchObject({ addons: ["ultracite"], ok: true });
     const knip = await run(target, ...restApi, "--addons", "knip", "--dry-run");
     expect(knip.output).toMatchObject({ addons: ["knip"], ok: true });
+
     const { output } = await run(
       target,
       ...restApi,
@@ -386,6 +407,7 @@ describe("creating a project", async () => {
       "none",
       "--dry-run"
     );
+
     expect(output).toMatchObject({ addons: [], ok: true });
     const result = z.object({ verification: z.unknown() });
     expect(result.parse(output).verification).toStrictEqual(
@@ -400,6 +422,7 @@ describe("creating a project", async () => {
       directory,
       "--dry-run"
     );
+
     expect(output).toMatchObject({ label: "hono-openapi-sqlite", ok: true });
   });
 });

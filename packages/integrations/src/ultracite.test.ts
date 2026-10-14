@@ -7,6 +7,7 @@ import { registry } from "#/registry.ts";
 import { verifiedName } from "#/verification.ts";
 
 const selections = [[], ["knip"], ["ultracite"], defaultAddons(registry)];
+
 const cases = Object.entries(goldens).flatMap(([name, stack]) =>
   selections.map((addons) => ({
     addons,
@@ -22,8 +23,10 @@ describe("independent quality extensions", () => {
       { addons, channel: "recommended", stack },
       { name: verifiedName }
     );
+
     const text = (filePath: string) =>
       files.find(({ path }) => path === filePath)?.content ?? "";
+
     const preset = addons.includes("ultracite");
     const knip = addons.includes("knip");
     const shadcn = preset && stack.ui === "shadcn";

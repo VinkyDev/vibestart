@@ -62,9 +62,11 @@ const rangePattern =
 
 const split = (range: string) => {
   const { prefix = "", version = "" } = rangePattern.exec(range)?.groups ?? {};
+
   if (valid(version) === null) {
     throw new Error(`${range} is not a version behind ^, ~, or an npm: alias`);
   }
+
   return { prefix, version };
 };
 
@@ -98,6 +100,7 @@ const followers: ReadonlyMap<string, Follower> = new Map([
         const range =
           releases.packument("vite-plus").versions[vitePlus]?.dependencies
             ?.oxfmt;
+
         return range === undefined ? undefined : minVersion(range)?.version;
       },
     },
@@ -112,6 +115,7 @@ const followers: ReadonlyMap<string, Follower> = new Map([
         const range =
           releases.packument("vite-plus").versions[vitePlus]?.dependencies
             ?.vite;
+
         return range === undefined ? undefined : split(range).version;
       },
     },
@@ -126,11 +130,14 @@ const channelOf = (version: string) =>
 
 const newest = (version: string, packument: Packument) => {
   const { latest } = packument.distTags;
+
   const stable =
     latest !== undefined && prerelease(latest) === null && gt(latest, version)
       ? latest
       : undefined;
+
   const channel = channelOf(version);
+
   if (channel === undefined && latest !== undefined && gt(version, latest)) {
     // Expo tags an SDK beta `next` with a stable-looking version while `latest` holds the previous SDK.
     const [top = version] = [
@@ -142,19 +149,24 @@ const newest = (version: string, packument: Packument) => {
           major(tag) === major(version)
       ),
     ].toSorted(rcompare);
+
     return { rule: "tag ahead of latest" as const, version: top };
   }
+
   if (channel === undefined) {
     return { rule: "latest" as const, version: stable ?? version };
   }
+
   const onChannel = Object.keys(packument.versions).filter(
     (candidate) => valid(candidate) !== null && channelOf(candidate) === channel
   );
+
   const [top = version] = [
     version,
     ...onChannel,
     ...(stable === undefined ? [] : [stable]),
   ].toSorted(rcompare);
+
   return { rule: "prerelease channel" as const, version: top };
 };
 
@@ -174,6 +186,7 @@ export const targetsOf = async (
   selected: (name: string) => boolean = () => true
 ): Promise<readonly Target[]> => {
   const targets = new Map<string, Target>();
+
   const settle = (pin: Pin, rule: Rule, next: string | undefined) => {
     const current = currentOf(pin);
     const { prefix, version } = split(current);
@@ -194,6 +207,7 @@ export const targetsOf = async (
 
   for (const pin of pins.filter(({ name }) => !followers.has(name))) {
     const { version } = split(currentOf(pin));
+
     const { rule, version: next } =
       pin.name === "node"
         ? {
@@ -201,52 +215,69 @@ export const targetsOf = async (
             version: gt(releases.nodeLts, version) ? releases.nodeLts : version,
           }
         : newest(version, releases.packument(pin.name));
+
     settle(pin, rule, selected(pin.name) ? next : undefined);
   }
+
   for (const pin of pins) {
     const follower = followers.get(pin.name);
+
     if (follower === undefined) {
       continue;
     }
+
     const followed = targets.get(follower.source);
+
     if (followed === undefined) {
       throw new Error(
         `${pin.name} follows ${follower.source}, which no file pins`
       );
     }
+
     if (!selected(pin.name) && !selected(followed.name)) {
       settle(pin, follower.rule, undefined);
       continue;
     }
+
     const next = follower.version(split(followed.target).version, releases);
+
     if (next === undefined) {
       throw new Error(
         `No ${pin.name} goes with ${followed.name} ${followed.target}`
       );
     }
+
     settle(pin, follower.rule, next);
   }
+
   const expo = targets.get("expo");
+
   if (expo !== undefined) {
     const modules = await releases.expoModules(split(expo.target).version);
+
     for (const pin of pins) {
       const range = modules[pin.name];
+
       if (range === undefined) {
         continue;
       }
+
       if (!selected(pin.name) && !selected(expo.name)) {
         settle(pin, "expo SDK", undefined);
         continue;
       }
+
       const next = maxSatisfying(
         Object.keys(releases.packument(pin.name).versions),
         range
       );
+
       if (next === null) {
         throw new Error(
           `No ${pin.name} is in ${range}, the range expo ${expo.target} names`
         );
       }
+
       settle(pin, "expo SDK", next);
     }
   }

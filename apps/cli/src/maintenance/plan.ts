@@ -33,15 +33,19 @@ export const planUpdate = (
 ): Plan => {
   const previous = contents(base);
   const next = contents(target);
+
   const maintained = new Set(
     maintenanceFiles([...target.files, ...base.files]).map(({ path }) => path)
   );
+
   const changes: FileChange[] = [];
+
   for (const path of maintained) {
     const before = previous.get(path) ?? null;
     const after = next.get(path) ?? null;
     const local = readText(cwd, path);
     const change = mergeFile(path, before, local, after);
+
     // An already selected capability with missing infrastructure is damaged, not an add/no-op.
     if (local === null && before !== null && before === after) {
       changes.push({ ...change, after, conflict: true });
@@ -49,8 +53,10 @@ export const planUpdate = (
       changes.push(change);
     }
   }
+
   const targetRecord = next.get(recordFile) ?? "";
   const recorded: unknown = parse(targetRecord);
+
   if (
     !z.object({ version: z.literal(target.version) }).safeParse(recorded)
       .success
@@ -59,7 +65,9 @@ export const planUpdate = (
       `Release ${target.version} does not record its version in ${recordFile}, so later upgrades could not find their base; choose a later release.`
     );
   }
+
   const record = readText(cwd, recordFile);
+
   // Comments and formatting are the project's; only a change to the recorded data is written.
   if (!isDeepStrictEqual(parse(record ?? ""), recorded)) {
     changes.push({
@@ -69,16 +77,19 @@ export const planUpdate = (
       path: recordFile,
     });
   }
+
   const manual = [...new Set([...previous.keys(), ...next.keys()])]
     .filter((path) => !maintained.has(path) && path !== recordFile)
     .flatMap((path) => {
       const before = previous.get(path) ?? null;
       const after = next.get(path) ?? null;
+
       return before === after || readText(cwd, path) === after
         ? []
         : [{ after, before, path }];
     })
     .toSorted((a, b) => (a.path < b.path ? -1 : 1));
+
   for (const change of changes) {
     if (
       change.conflict ||
@@ -87,14 +98,17 @@ export const planUpdate = (
     ) {
       continue;
     }
+
     const errors: ParseError[] = [];
     parse(change.after, errors, { allowTrailingComma: true });
+
     if (errors.length > 0) {
       throw new MaintenanceError(
         `Merge would produce invalid JSONC: ${change.path}`
       );
     }
   }
+
   return {
     changes,
     conflicts: changes.filter((change) => change.conflict),

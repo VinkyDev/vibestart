@@ -20,6 +20,7 @@ export const CreateTerminal = ({
   readonly invalid: boolean;
 }) => {
   const { copied, copy } = useCopy();
+
   return (
     <div className="bg-foreground/[0.04] relative rounded-2xl p-4">
       <button

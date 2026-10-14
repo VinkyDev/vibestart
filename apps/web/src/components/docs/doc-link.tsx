@@ -15,6 +15,7 @@ export const DocLink = ({
   readonly url: string;
 }) => {
   const { hash, splat } = docsTarget(url);
+
   return (
     <Link
       activeOptions={{ exact: true }}

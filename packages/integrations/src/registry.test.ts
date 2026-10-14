@@ -10,11 +10,11 @@ describe("the registry", () => {
     const linked = [...registry.integrations, ...registry.addons].filter(
       ({ id }) => id !== "self"
     );
+
     expect(
-      linked
-        .filter(({ homepage }) => homepage === undefined)
-        .map(({ id }) => id)
+      linked.flatMap(({ homepage, id }) => (homepage === undefined ? [id] : []))
     ).toStrictEqual([]);
+
     for (const { homepage } of linked) {
       expect(new URL(homepage ?? "").protocol).toBe("https:");
     }
@@ -30,6 +30,7 @@ describe("the registry", () => {
     const offered = new Set(
       resolve(registry, { database }).stacks.map(({ orm }) => String(orm))
     );
+
     expect([...offered].toSorted((a, b) => a.localeCompare(b))).toStrictEqual(
       orms
     );

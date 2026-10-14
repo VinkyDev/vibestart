@@ -52,16 +52,20 @@ const transpilePattern = /^ {2}transpilePackages: \[\n(?: {4}.*\n)+ {2}\],\n/mu;
 // Next.js compiles the workspace packages the app imports at runtime: beside Hono, only the UI.
 const nextConfig = (ctx: Context) => {
   const config = templateContent(ctx, "next/common", nextConfigPath);
+
   if (!transpilePattern.test(config)) {
     throw new Error(`next/common/${nextConfigPath} has no transpilePackages`);
   }
+
   const self = ctx.has("self");
+
   const packages = [
     ...(self && ctx.stack.api !== undefined ? ["api"] : []),
     ...(self && ctx.has("better-auth") ? ["auth"] : []),
     ...(self && ctx.stack.database !== undefined ? ["db"] : []),
     "ui",
   ].map((name) => `"${ctx.scope}/${name}"`);
+
   return file(
     nextConfigPath,
     config.replace(
@@ -114,10 +118,12 @@ const clientConvention = (ctx: Context) => {
     ...(ctx.stack.api === undefined ? [] : ["`api`"]),
     ...(ctx.has("better-auth") ? ["`authClient`"] : []),
   ];
+
   const listed =
     clientOnly.length > 2
       ? `${clientOnly.slice(0, -1).join(", ")}, and ${clientOnly.at(-1)}`
       : clientOnly.join(" and ");
+
   return `A file is a Server Component until it starts with \`"use client"\`. ${listed} belong in client components. A server-only module imports \`"server-only"\`, so a client import fails the build.`;
 };
 
@@ -130,6 +136,7 @@ const selfServices = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return [];
   }
+
   return ctx.has("better-auth")
     ? ["`env`, lazily created `db` and `auth`, `getSession`"]
     : ["`env`, lazily created `db`"];
@@ -228,6 +235,7 @@ const prefetchNote = (ctx: Context, mutates: string) =>
 // The server query utilities prefetch the todo example's pages; nothing else renders API data on the server.
 const honoApi = (ctx: Context) => {
   const todos = todosExample(ctx);
+
   if (ctx.has("orpc")) {
     return [
       ...templateFiles(ctx, "next/hono-orpc", {
@@ -236,6 +244,7 @@ const honoApi = (ctx: Context) => {
       ...(todos ? [contribute(agentsNotes, prefetchNote(ctx, "`/rpc`"))] : []),
     ];
   }
+
   return ctx.has("openapi") && todos
     ? [contribute(agentsNotes, prefetchNote(ctx, "`/api`"))]
     : [];
@@ -243,10 +252,13 @@ const honoApi = (ctx: Context) => {
 
 const honoContributions = (ctx: Context) => {
   const auth = ctx.has("better-auth");
+
   const routes = ctx.has("orpc")
     ? "`/rpc/*` and `/api/*` route handlers"
     : "`/api/*` route handler";
+
   const forward = ctx.has("orpc") ? "forward" : "forwards";
+
   return [
     ...templateFiles(ctx, "next/hono"),
     file("apps/web/src/server/env.ts", renderEnvModule([serverUrl], true)),
@@ -276,9 +288,11 @@ const backendContributions = (ctx: Context) => {
   if (ctx.has("self")) {
     return selfContributions(ctx);
   }
+
   if (ctx.has("hono")) {
     return honoContributions(ctx);
   }
+
   return [
     contribute(
       agentsNotes,
@@ -294,6 +308,7 @@ export const next = defineIntegration({
   contribute: (ctx) => {
     const auth = ctx.has("better-auth");
     const database = webMigrates(ctx);
+
     return [
       ...templateFiles(ctx, "next/common", {
         except: [navLinksPath, nextConfigPath],

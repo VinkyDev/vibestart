@@ -35,6 +35,7 @@ const Technologies = ({ entry }: { readonly entry: StackEntry }) => (
     {decisions.map((kind) => {
       const integration =
         kind === "testing" ? e2eRunner(entry.stack) : chosen(entry.stack, kind);
+
       return (
         integration !== undefined && (
           <li

@@ -57,6 +57,7 @@ const Highlighted = ({ text }: { readonly text: string }) => (
       .split(/(?<marked><mark>.*?<\/mark>)/u)
       .map((part, index) => {
         const marked = /^<mark>(?<word>.*)<\/mark>$/u.exec(part)?.groups?.word;
+
         return marked === undefined ? (
           part
         ) : (
@@ -99,15 +100,19 @@ export const Search = () => {
         event.target instanceof HTMLElement &&
         (event.target.isContentEditable ||
           ["INPUT", "SELECT", "TEXTAREA"].includes(event.target.tagName));
+
       const shortcut =
         (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
         (event.key === "/" && !typing);
+
       if (shortcut) {
         event.preventDefault();
         setOpen((current) => !current);
       }
     };
+
     window.addEventListener("keydown", onKey);
+
     return () => {
       window.removeEventListener("keydown", onKey);
     };
@@ -116,13 +121,17 @@ export const Search = () => {
   const search = (next: string) => {
     setQuery(next);
     latest.current = next;
+
     if (next.trim() === "") {
       setResults(pages);
+
       return;
     }
+
     startSearch(async () => {
       const { searchDocs } = await loadSearch();
       const found = rowsOf(await searchDocs(next));
+
       // A slower search for an earlier query must not replace a newer one's results.
       if (latest.current === next) {
         startSearch(() => {
@@ -142,6 +151,7 @@ export const Search = () => {
     <Dialog.Root
       onOpenChange={(next) => {
         setOpen(next);
+
         if (!next) {
           search("");
         }
@@ -213,6 +223,7 @@ export const Search = () => {
                   {(row: Row) => {
                     const Icon = icons[row.type];
                     const nested = row.type !== "page" && query !== "";
+
                     return (
                       <Autocomplete.Item
                         className={cn(

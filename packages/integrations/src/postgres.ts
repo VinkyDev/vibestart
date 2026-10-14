@@ -18,6 +18,7 @@ import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 export const postgres = defineIntegration({
   contribute: (ctx) => {
     const database = ctx.name.replaceAll("-", "_");
+
     return [
       contribute(serverEnv, {
         example: `postgres://postgres:postgres@localhost:5432/${database}`,

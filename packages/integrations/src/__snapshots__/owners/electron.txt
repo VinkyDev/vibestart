@@ -661,6 +661,7 @@ const webDist = path.join(import.meta.dirname, "../../web/dist");
 const renderer = path.join(import.meta.dirname, "../dist/renderer");
 
 await rm(renderer, { force: true, recursive: true });
+
 await cp(webDist, renderer, { recursive: true });
 
 # apps/desktop/scripts/dev.ts · 316 stacks
@@ -995,6 +996,7 @@ const electron = z.string().parse(createRequire(import.meta.url)("electron"));
 const isUp = async () => {
   try {
     await fetch(rendererUrl);
+
     return true;
   } catch {
     return false;
@@ -1021,8 +1023,11 @@ const app = spawn(electron, ["."], {
 const stop = () => {
   app.kill();
 };
+
 process.on("SIGINT", stop);
+
 process.on("SIGTERM", stop);
+
 app.on("exit", (code) => process.exit(code ?? 0));
 
 # apps/desktop/src/main/config.ts · 4 stacks
@@ -1690,19 +1695,25 @@ import { createMainWindow } from "#src/main/window.ts";
 
 const origin = (name: string, parse: (value: string) => string | null) => {
   const value = process.env[name];
+
   if (value === undefined || value === "") {
     return null;
   }
+
   const parsed = parse(value);
+
   if (parsed === null) {
     throw new Error(`${name} is not a valid origin: ${value}`);
   }
+
   return parsed;
 };
 
 const devOrigin = origin("ELECTRON_RENDERER_URL", parseLoopbackOrigin);
+
 const apiOrigin =
   origin("API_ORIGIN", parseHttpOrigin) ?? parseHttpOrigin(defaultApiOrigin);
+
 if (apiOrigin === null) {
   throw new Error(`defaultApiOrigin is not an origin: ${defaultApiOrigin}`);
 }
@@ -1716,12 +1727,14 @@ const open = () =>
 
 const start = () => {
   setupIpc(devOrigin);
+
   if (devOrigin === null) {
     serveRenderer({
       apiOrigin,
       rendererRoot: path.join(import.meta.dirname, "../renderer"),
     });
   }
+
   open();
 };
 
@@ -2083,6 +2096,7 @@ export const setupIpc = (devOrigin: string | null) => {
     if (!isTrustedUrl(event.senderFrame?.url ?? "", devOrigin)) {
       throw new Error("Untrusted IPC sender");
     }
+
     return versions();
   });
 };
@@ -2421,12 +2435,16 @@ import {
 } from "#src/main/renderer-route.ts";
 
 const root = mkdtempSync(path.join(tmpdir(), "renderer-"));
+
 mkdirSync(path.join(root, "assets"));
+
 writeFileSync(path.join(root, "index.html"), "<html></html>");
+
 writeFileSync(path.join(root, "assets", "app.js"), "");
 
 const fileOf = (requestUrl: string) => {
   const url = parseRendererUrl(requestUrl);
+
   return url === null ? null : rendererFile(url, root);
 };
 
@@ -2838,6 +2856,7 @@ const parseUrl = (value: string) => {
 
 export const parseHttpOrigin = (value: string) => {
   const url = parseUrl(value);
+
   return url?.protocol === "http:" || url?.protocol === "https:"
     ? url.origin
     : null;
@@ -2845,6 +2864,7 @@ export const parseHttpOrigin = (value: string) => {
 
 export const parseLoopbackOrigin = (value: string) => {
   const origin = parseHttpOrigin(value);
+
   return origin !== null && loopbackHosts.has(new URL(origin).hostname)
     ? origin
     : null;
@@ -2852,6 +2872,7 @@ export const parseLoopbackOrigin = (value: string) => {
 
 export const parseRendererUrl = (requestUrl: string) => {
   const url = parseUrl(requestUrl);
+
   return url?.protocol === "https:" && url.hostname === rendererHost
     ? url
     : null;
@@ -2862,9 +2883,11 @@ export const isTrustedUrl = (
   devOrigin: string | null = null
 ) => {
   const url = parseUrl(value);
+
   if (url === null) {
     return false;
   }
+
   return (
     parseRendererUrl(value) !== null ||
     (devOrigin !== null && url.origin === devOrigin)
@@ -2873,6 +2896,7 @@ export const isTrustedUrl = (
 
 export const isExternalUrl = (value: string) => {
   const url = parseUrl(value);
+
   return (
     url !== null &&
     externalProtocols.has(url.protocol) &&
@@ -2894,23 +2918,30 @@ const isFile = (filePath: string) =>
 // A path without an extension is a client-side route and gets `index.html`. Nothing outside `root` is served.
 export const rendererFile = (url: URL, root: string) => {
   let pathname: string;
+
   try {
     pathname = decodeURIComponent(url.pathname);
   } catch {
     return null;
   }
+
   if (pathname.includes("\0")) {
     return null;
   }
+
   const mapped = path.resolve(root, `.${pathname}`);
   const relative = path.relative(root, mapped);
+
   if (relative.startsWith("..") || path.isAbsolute(relative)) {
     return null;
   }
+
   if (isFile(mapped)) {
     return mapped;
   }
+
   const index = path.join(root, "index.html");
+
   return path.extname(pathname) === "" && isFile(index) ? index : null;
 };
 
@@ -3267,6 +3298,7 @@ const proxy = async (
   // Better Auth checks `Origin` against `BETTER_AUTH_URL` and `trustedOrigins`, not the upstream API host.
   headers.set("origin", clientOrigin);
   headers.delete("referer");
+
   const init: ProxyInit = {
     // The session cookie belongs to the API's origin, so `net.fetch` keeps it in the session's cookie jar.
     credentials: "include",
@@ -3274,10 +3306,12 @@ const proxy = async (
     method: request.method,
     redirect: "manual",
   };
+
   if (request.method !== "GET" && request.method !== "HEAD") {
     init.body = request.body;
     init.duplex = "half";
   }
+
   try {
     return await net.fetch(rewriteToOrigin(url, apiOrigin), init);
   } catch {
@@ -3294,19 +3328,25 @@ export const serveRenderer = ({
 }) => {
   protocol.handle("https", async (request) => {
     const url = parseRendererUrl(request.url);
+
     if (url === null) {
       return await net.fetch(request, { bypassCustomProtocolHandlers: true });
     }
+
     if (isApiPath(url.pathname, apiPaths)) {
       return await proxy(request, apiOrigin, url.origin);
     }
+
     const file = rendererFile(url, rendererRoot);
+
     if (file === null) {
       return notFound();
     }
+
     const response = await net.fetch(pathToFileURL(file).href);
     const headers = new Headers(response.headers);
     headers.set("content-security-policy", contentSecurityPolicy);
+
     return new Response(response.body, { headers, status: response.status });
   });
 };
@@ -3667,6 +3707,7 @@ export const createMainWindow = ({
 
   win.webContents.setWindowOpenHandler((details) => {
     openOutside(details.url);
+
     return { action: "deny" };
   });
   win.webContents.on("will-navigate", (event, target) => {
@@ -3677,6 +3718,7 @@ export const createMainWindow = ({
   });
 
   void win.loadURL(url);
+
   return win;
 };
 

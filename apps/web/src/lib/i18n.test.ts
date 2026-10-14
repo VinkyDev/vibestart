@@ -60,6 +60,7 @@ describe("messages", () => {
       .flatMap((kind) =>
         optionsOf(kind).map((option) => fitOf(kind, option?.id ?? null))
       );
+
     expect(fits).not.toContain("");
   });
 

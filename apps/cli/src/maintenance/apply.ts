@@ -13,11 +13,13 @@ export const assertCleanWorktree = async (cwd: string) => {
     cwd,
     reject: false,
   });
+
   if (status.failed) {
     throw new MaintenanceError(
       "Writes need the project in a Git repository, so the change can be reviewed and undone. Run git init and commit the project first."
     );
   }
+
   if (status.stdout.trim() !== "") {
     throw new MaintenanceError(
       "Commit or stash your changes first. A write starts from a clean Git worktree, so git diff shows exactly what it changed."
@@ -31,6 +33,7 @@ export const writePlan = (cwd: string, plan: Plan) => {
       throw new MaintenanceError(`Changed since planning: ${change.path}`);
     }
   }
+
   try {
     for (const change of plan.changes) {
       writeText(cwd, change.path, change.after, modeOf(cwd, change.path));
@@ -47,13 +50,17 @@ export const checksOf = (cwd: string, plan: Plan, fullCheck: boolean) => {
   if (fullCheck) {
     return [["run", "ready"]];
   }
+
   const steps = [["check"]];
+
   if (plan.target.blueprint.addons.includes("knip")) {
     steps.push(["run", "knip"]);
   }
+
   if (/name:\s*["']unit["']/u.test(readText(cwd, "vite.config.ts") ?? "")) {
     steps.push(["test", "--project", "unit", "--passWithNoTests"]);
   }
+
   return steps;
 };
 
@@ -70,6 +77,7 @@ const runVp = async (cwd: string, args: readonly string[]) => {
     reject: false,
     stdin: "ignore",
   });
+
   if (result.failed) {
     throw new MaintenanceError(
       `vp ${args.join(" ")} failed:\n${result.all.slice(-12_000)}\nThe files are written. Fix the cause and rerun the step, or undo: ${undoHint}`

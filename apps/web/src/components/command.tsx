@@ -63,6 +63,7 @@ export const Command = ({
   readonly project: Project;
 }) => {
   const nameError = projectNameError(name);
+
   const words = commandWords(
     flagsOf(entry.stack),
     name,
@@ -70,6 +71,7 @@ export const Command = ({
     addons,
     packageManager
   );
+
   const steps = [
     { run: `cd ${name}` },
     ...project.gettingStarted,

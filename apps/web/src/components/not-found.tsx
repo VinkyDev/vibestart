@@ -23,11 +23,13 @@ const parted = { x: 2.6, y: -6.8 } as const;
 
 const PartedMark = () => {
   const clip = useId();
+
   const slide = {
     animate: parted,
     initial: { x: 0, y: 0 },
     transition: { damping: 14, delay: 0.5, stiffness: 90, type: "spring" },
   } as const;
+
   return (
     <svg
       aria-hidden

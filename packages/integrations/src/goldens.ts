@@ -30,9 +30,11 @@ export const goldens: Record<string, Stack> = Object.fromEntries(
     const stack = legalStacks(registry).find(
       (legal) => stackLabel(legal) === label
     );
+
     if (stack === undefined) {
       throw new Error(`Golden ${label} is not a legal stack`);
     }
+
     return [label, stack];
   })
 );
@@ -41,6 +43,7 @@ export const goldenRoot = (golden: string) => `${repoRoot}golden/${golden}/`;
 
 export const goldenPaths = (golden: string) => {
   const root = goldenRoot(golden);
+
   return execFileSync(
     "git",
     ["ls-files", "-z", "--cached", "--others", "--exclude-standard"],

@@ -51,6 +51,7 @@ const Page = ({
   readonly progress: number;
 }) => {
   const seen = progress >= mode.seen;
+
   return (
     <div className="bg-background/60 border-border flex h-36 flex-col overflow-hidden rounded-xl border">
       <div className="border-border flex h-6 shrink-0 items-center gap-1 border-b px-2.5">
@@ -105,6 +106,7 @@ const Metric = ({
   readonly progress: number;
 }) => {
   const reached = progress >= at;
+
   return (
     <li
       className={cn(
@@ -129,6 +131,7 @@ const Lane = ({
   readonly progress: number;
 }) => {
   const phase = mode.phases.findLast((candidate) => progress >= candidate.at);
+
   return (
     <section className="flex min-w-0 flex-col gap-3">
       <h4 className="flex items-baseline justify-between gap-2">
@@ -174,6 +177,7 @@ export const RenderRace = () => {
     first: frame,
     from: frames,
   });
+
   const progress = played / frames;
 
   return (

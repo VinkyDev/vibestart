@@ -34,6 +34,7 @@ const fall = (layer: number) =>
     stiffness: 120,
     type: "spring",
   }) as const;
+
 const height = -7;
 
 const Mark = ({ inView }: { readonly inView: boolean }) => {
@@ -44,12 +45,15 @@ const Mark = ({ inView }: { readonly inView: boolean }) => {
   const back = { x, y };
   // The front stroke and the clearing it cuts share one drop, so the gap is always where the stroke is.
   const drop = useMotionValue(height);
+
   const front = {
     x: useTransform(x, (value) => value * 2.2),
     y: useTransform(() => y.get() * 2.2 + drop.get()),
   };
+
   useEffect(() => {
     const falling = inView ? animate(drop, 0, fall(1)) : undefined;
+
     return () => {
       falling?.stop();
     };

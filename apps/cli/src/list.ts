@@ -27,6 +27,7 @@ export const listing = async () => ({
   stacks: await Promise.all(
     legalStacks(registry).map(async (stack) => {
       const verification = await verificationOf(stack, defaultAddons(registry));
+
       return {
         label: stackLabel(stack),
         stack,
@@ -43,6 +44,7 @@ const columns = (
   indent: string
 ) => {
   const width = Math.max(...rows.map(([left]) => left.length));
+
   return rows.map(
     ([left, right]) => `${indent}${left.padEnd(width)}  ${right}`
   );

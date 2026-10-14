@@ -24,6 +24,7 @@ const mount =
       context: {},
       prefix,
     });
+
     return matched
       ? c.newResponse(response.body, response)
       : await c.notFound();

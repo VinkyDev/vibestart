@@ -9,6 +9,7 @@ export const protectedProcedure = publicProcedure.use(
     if (!context.session) {
       throw new ORPCError("UNAUTHORIZED");
     }
+
     return await next({ context: { session: context.session } });
   }
 );

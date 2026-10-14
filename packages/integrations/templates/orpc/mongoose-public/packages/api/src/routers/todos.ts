@@ -15,19 +15,23 @@ export const todosRouter = {
     .input(z.object({ title: z.string().trim().min(1).max(200) }))
     .handler(async ({ context, input }) => {
       const created = await context.db.todos.create(input);
+
       return toTodo(created.toObject());
     }),
 
   delete: publicProcedure.input(todoId).handler(async ({ context, input }) => {
     const row = await context.db.todos.findByIdAndDelete(input.id).lean();
+
     if (row === null) {
       throw notFound();
     }
+
     return toTodo(row);
   }),
 
   list: publicProcedure.handler(async ({ context }) => {
     const rows = await context.db.todos.find().sort({ _id: 1 }).lean();
+
     return rows.map(toTodo);
   }),
 
@@ -37,9 +41,11 @@ export const todosRouter = {
       const row = await context.db.todos
         .findByIdAndUpdate(id, data, { returnDocument: "after" })
         .lean();
+
       if (row === null) {
         throw notFound();
       }
+
       return toTodo(row);
     }),
 };

@@ -12,6 +12,7 @@ const generatedFiles = [
   "packages/db/src/generated/**",
   "packages/db/src/migrations/**",
 ];
+
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({

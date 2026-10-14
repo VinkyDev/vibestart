@@ -95,14 +95,17 @@ export const todoRoutes = ({ db }: Services) => {
     )
     .openapi(createTodo, async (c) => {
       const row = await db.todo.create({ data: c.req.valid("json") });
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(
         await db.todo.update({ data: values, where: { id: row.id } }),
         200
@@ -110,10 +113,13 @@ export const todoRoutes = ({ db }: Services) => {
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       await db.todo.delete({ where: { id: row.id } });
+
       return c.json(row, 200);
     });
 };

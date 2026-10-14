@@ -221,7 +221,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.$client.promise().end();
 
 # apps/server/src/migrate.ts · 216 stacks
@@ -447,7 +449,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.$client.end();
 
 # apps/server/src/migrate.ts · 216 stacks
@@ -673,7 +677,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 migrateDatabase(db);
+
 db.$client.close();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -699,7 +705,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { readEnv } from "#src/server/env.ts";
 
 const db = createDb(readEnv().DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.$client.promise().end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -725,7 +733,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { readEnv } from "#src/server/env.ts";
 
 const db = createDb(readEnv().DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.$client.end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -751,7 +761,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { readEnv } from "#src/server/env.ts";
 
 const db = createDb(readEnv().DATABASE_URL);
+
 migrateDatabase(db);
+
 db.$client.close();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -777,7 +789,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/server/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.$client.promise().end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -803,7 +817,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/server/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.$client.end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -829,7 +845,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/server/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 migrateDatabase(db);
+
 db.$client.close();
 
 # packages/db/drizzle.config.ts · 216 stacks
@@ -2470,6 +2488,7 @@ import { relations } from "#src/relations.ts";
 export const createDb = (path: string) => {
   const db = drizzle({ connection: { path, timeout: 5000 }, relations });
   db.$client.exec("pragma journal_mode = wal");
+
   return db;
 };
 

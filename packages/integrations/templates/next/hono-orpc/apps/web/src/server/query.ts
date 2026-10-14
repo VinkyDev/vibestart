@@ -14,6 +14,7 @@ const serverClient: AppRouterClient = createORPCClient(
   new RPCLink({
     headers: async () => {
       const requestHeaders = await headers();
+
       return { cookie: requestHeaders.get("cookie") ?? "" };
     },
     url: () => `${readEnv().SERVER_URL}/rpc`,

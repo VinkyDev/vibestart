@@ -8,6 +8,7 @@ import {
 } from "#/maintenance/commands.ts";
 
 const rawArgs = process.argv.slice(2);
+
 if (isMaintenanceCommand(rawArgs[0])) {
   process.exitCode = await maintenanceCommand(rawArgs);
 } else {

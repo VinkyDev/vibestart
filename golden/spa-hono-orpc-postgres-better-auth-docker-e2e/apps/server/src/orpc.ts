@@ -23,10 +23,12 @@ const mount =
   ) =>
   async (c: HonoContext) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     const { matched, response } = await handler.handle(c.req.raw, {
       context: { db, session },
       prefix,
     });
+
     return matched
       ? c.newResponse(response.body, response)
       : await c.notFound();

@@ -2770,8 +2770,8 @@ export const home_title = /** @type {((inputs?: Home_TitleInputs, options?: { lo
 		{
 			parts: /** @type {(inputs?: Home_TitleInputs, options?: { locale?: "en" | "zh" }) => import('../runtime.js').MessagePart[]} */ ((inputs = {}, options = {}) => {
 				const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-				if (locale === "zh") return typeof __zh.home_title.parts === "function" ? __zh.home_title.parts(inputs) : [{ type: "text", value: __zh.home_title(inputs) }]
-				return typeof __en.home_title.parts === "function" ? __en.home_title.parts(inputs) : [{ type: "text", value: __en.home_title(inputs) }]
+				if (locale === "zh") return /** @type {{ parts?: (inputs: Home_TitleInputs) => import('../runtime.js').MessagePart[] }} */ (__zh.home_title).parts?.(inputs) ?? [{ type: "text", value: __zh.home_title(inputs) }]
+				return /** @type {{ parts?: (inputs: Home_TitleInputs) => import('../runtime.js').MessagePart[] }} */ (__en.home_title).parts?.(inputs) ?? [{ type: "text", value: __en.home_title(inputs) }]
 			})
 		}
 	)
@@ -3663,8 +3663,8 @@ export const previewing = /** @type {((inputs: PreviewingInputs, options?: { loc
 		{
 			parts: /** @type {(inputs: PreviewingInputs, options?: { locale?: "en" | "zh" }) => import('../runtime.js').MessagePart[]} */ ((inputs, options = {}) => {
 				const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-				if (locale === "zh") return typeof __zh.previewing.parts === "function" ? __zh.previewing.parts(inputs) : [{ type: "text", value: __zh.previewing(inputs) }]
-				return typeof __en.previewing.parts === "function" ? __en.previewing.parts(inputs) : [{ type: "text", value: __en.previewing(inputs) }]
+				if (locale === "zh") return /** @type {{ parts?: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[] }} */ (__zh.previewing).parts?.(inputs) ?? [{ type: "text", value: __zh.previewing(inputs) }]
+				return /** @type {{ parts?: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[] }} */ (__en.previewing).parts?.(inputs) ?? [{ type: "text", value: __en.previewing(inputs) }]
 			})
 		}
 	)
@@ -4668,8 +4668,8 @@ export const verified_passed = /** @type {((inputs?: Verified_PassedInputs, opti
 		{
 			parts: /** @type {(inputs?: Verified_PassedInputs, options?: { locale?: "en" | "zh" }) => import('../runtime.js').MessagePart[]} */ ((inputs = {}, options = {}) => {
 				const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-				if (locale === "zh") return typeof __zh.verified_passed.parts === "function" ? __zh.verified_passed.parts(inputs) : [{ type: "text", value: __zh.verified_passed(inputs) }]
-				return typeof __en.verified_passed.parts === "function" ? __en.verified_passed.parts(inputs) : [{ type: "text", value: __en.verified_passed(inputs) }]
+				if (locale === "zh") return /** @type {{ parts?: (inputs: Verified_PassedInputs) => import('../runtime.js').MessagePart[] }} */ (__zh.verified_passed).parts?.(inputs) ?? [{ type: "text", value: __zh.verified_passed(inputs) }]
+				return /** @type {{ parts?: (inputs: Verified_PassedInputs) => import('../runtime.js').MessagePart[] }} */ (__en.verified_passed).parts?.(inputs) ?? [{ type: "text", value: __en.verified_passed(inputs) }]
 			})
 		}
 	)

@@ -42,10 +42,12 @@ export const stackEntries = async (): Promise<StackEntry[]> =>
   await Promise.all(
     [...legal].map(async ([label, stack]) => {
       const addons = defaultAddons(registry);
+
       const [verification, bunVerification] = await Promise.all([
         verificationOf(stack, addons),
         verificationOf(stack, addons, "bun"),
       ]);
+
       return {
         label,
         stack,
@@ -67,9 +69,11 @@ export const stackEntries = async (): Promise<StackEntry[]> =>
  */
 const subsets = (ids: readonly string[]) => {
   let sets: string[][] = [[]];
+
   for (const id of ids.toReversed()) {
     sets = sets.flatMap((set) => [[id, ...set], set]);
   }
+
   return sets;
 };
 
@@ -89,9 +93,11 @@ export const project = async (label: string, key: string): Promise<Project> => {
   const stack = legal.get(label);
   const selection = projectSets.get(key);
   const addons = selection?.addons;
+
   if (stack === undefined || addons === undefined || selection === undefined) {
     throw new Error(`No legal stack is labeled "${label}" with add-ons ${key}`);
   }
+
   const { files, gettingStarted, setup } = await generate(
     registry,
     {
@@ -102,6 +108,7 @@ export const project = async (label: string, key: string): Promise<Project> => {
     },
     { name: previewName }
   );
+
   return {
     files,
     gettingStarted,
@@ -117,17 +124,22 @@ export const stackPreview = async (label: string): Promise<StackPreview> => {
       async (key) => [key, await project(label, key)] as const
     )
   );
+
   const contents: string[] = [];
   const indexes = new Map<string, number>();
+
   const intern = (content: string) => {
     let index = indexes.get(content);
+
     if (index === undefined) {
       index = contents.length;
       contents.push(content);
       indexes.set(content, index);
     }
+
     return index;
   };
+
   const projects = Object.fromEntries(
     generated.map(([key, { files, ...rest }]) => [
       key,
@@ -140,5 +152,6 @@ export const stackPreview = async (label: string): Promise<StackPreview> => {
       },
     ])
   );
+
   return { contents, projects };
 };

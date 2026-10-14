@@ -13,6 +13,7 @@ const project: Pick<Project, "blueprint" | "name"> = {
   },
   name: "business",
 };
+
 const exported = ({
   addons = project.blueprint.addons,
   name = project.name,

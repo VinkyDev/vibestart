@@ -42,6 +42,7 @@ export const snapshotSchema = z.strictObject({
   schemaVersion: z.literal(1),
   version: z.string(),
 });
+
 export type Snapshot = z.infer<typeof snapshotSchema>;
 
 const exactVersion = /^\d+\.\d+\.\d+(?:-[\w.-]+)?$/u;
@@ -75,6 +76,7 @@ type JsonValue =
   | null
   | readonly JsonValue[]
   | { readonly [key: string]: JsonValue | undefined };
+
 export const serialize = (value: JsonValue) =>
   `${JSON.stringify(value, null, 2)}\n`;
 
@@ -84,6 +86,7 @@ export const normalizeInput = (input: Blueprint) => ({
   packageManager: input.packageManager ?? "pnpm",
   stack: input.stack,
 });
+
 /** The choices a release generates from, as the `snapshot` protocol exchanges them. */
 export type Input = ReturnType<typeof normalizeInput>;
 
@@ -114,6 +117,7 @@ export const projectOf = (
   blueprint: Blueprint & { readonly name?: string; readonly version?: string }
 ): Project => {
   const provenance = provenanceSchema.safeParse(blueprint);
+
   if (!provenance.success) {
     throw new MaintenanceError(
       [
@@ -122,5 +126,6 @@ export const projectOf = (
       ].join("\n")
     );
   }
+
   return { ...provenance.data, blueprint: normalizeInput(blueprint) };
 };

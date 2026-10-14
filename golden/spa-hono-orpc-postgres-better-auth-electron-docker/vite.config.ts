@@ -8,6 +8,7 @@ import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, loadEnv } from "vite-plus";
 
 const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
+
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({

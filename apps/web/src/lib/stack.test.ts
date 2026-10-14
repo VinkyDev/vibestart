@@ -21,9 +21,11 @@ import {
 
 const entry = (label: string) => {
   const found = stacks.find((candidate) => candidate.label === label);
+
   if (found === undefined) {
     throw new Error(`No stack ${label}`);
   }
+
   return found;
 };
 
@@ -77,6 +79,7 @@ describe("desktop shell", () => {
       "desktop",
       "electron"
     );
+
     expect(next?.entry.stack.framework).toBe("spa");
   });
 });

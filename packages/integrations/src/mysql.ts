@@ -17,6 +17,7 @@ import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 export const mysql = defineIntegration({
   contribute: (ctx) => {
     const database = ctx.name.replaceAll("-", "_");
+
     return [
       contribute(serverEnv, {
         example: `mysql://root:mysql@localhost:3306/${database}`,

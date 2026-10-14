@@ -11,9 +11,11 @@ const stackNamed = (label: string): Stack => {
   const stack = legalStacks(registry).find(
     (legal) => stackLabel(legal) === label
   );
+
   if (stack === undefined) {
     throw new Error(`${label} is not a legal stack`);
   }
+
   return stack;
 };
 
@@ -27,11 +29,14 @@ const project = async (label: string, name = "my-app") => {
     },
     { name }
   );
+
   return (filePath: string) => {
     const found = files.find(({ path }) => path === filePath);
+
     if (found === undefined) {
       throw new Error(`${label} has no ${filePath}`);
     }
+
     return found.content;
   };
 };
@@ -39,6 +44,7 @@ const project = async (label: string, name = "my-app") => {
 describe("the Expo app", () => {
   it("takes its scheme from the project name, and its store ids without the dashes", async () => {
     const text = await project("expo", "acme-2-go");
+
     const { expo } = z
       .object({
         expo: z.object({
@@ -48,6 +54,7 @@ describe("the Expo app", () => {
         }),
       })
       .parse(JSON.parse(text("apps/mobile/app.json")));
+
     expect({
       android: expo.android.package,
       ios: expo.ios.bundleIdentifier,
@@ -61,9 +68,11 @@ describe("the Expo app", () => {
 
   it("signs in with the scheme the server trusts as its origin", async () => {
     const text = await project("hono-sqlite-better-auth-expo", "acme");
+
     const { expo } = z
       .object({ expo: z.object({ plugins: z.array(z.string()) }) })
       .parse(JSON.parse(text("apps/mobile/app.json")));
+
     expect(expo.plugins).toContain("expo-secure-store");
     expect(text("apps/mobile/src/lib/auth-client.ts")).toContain(
       'const scheme = "acme";'
@@ -97,9 +106,11 @@ describe("the Expo app", () => {
 
   it("is a project on its own, started with dev:mobile", async () => {
     const text = await project("expo");
+
     const { scripts } = z
       .object({ scripts: z.record(z.string(), z.string()) })
       .parse(JSON.parse(text("package.json")));
+
     expect(scripts.dev).toBeUndefined();
     expect(scripts["dev:mobile"]).toBe("vp run --filter @my-app/mobile start");
     expect(text("README.md")).toContain("vp install\nvp run dev:mobile\n");
@@ -124,6 +135,7 @@ describe("the Expo app", () => {
       project("expo"),
       project("spa-expo"),
     ]);
+
     expect(alone("vite.config.ts")).not.toContain("shadcn/no-restyle");
     expect(beside("vite.config.ts")).toContain('"shadcn/no-restyle": "off"');
   });

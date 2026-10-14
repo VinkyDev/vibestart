@@ -64,15 +64,17 @@ describe("the pins of this repository and the projects it generates", () => {
       [...new Set(pin.ranges.values())],
     ])
   );
+
   const only = (name: string) => {
     const [range, ...others] = pins.get(name) ?? [];
     expect(others).toStrictEqual([]);
+
     return range ?? "";
   };
 
   it("pins each package to one range everywhere", () => {
     expect(
-      [...pins].filter(([, ranges]) => ranges.length > 1).map(([name]) => name)
+      [...pins].flatMap(([name, ranges]) => (ranges.length > 1 ? [name] : []))
     ).toStrictEqual([]);
   });
 
@@ -90,6 +92,7 @@ describe("the pins of this repository and the projects it generates", () => {
           )
         )
       );
+
     expect(only("oxfmt")).toBe(
       minVersion(vitePlus.dependencies.oxfmt)?.version
     );

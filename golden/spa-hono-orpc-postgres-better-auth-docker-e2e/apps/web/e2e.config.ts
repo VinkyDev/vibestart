@@ -7,6 +7,7 @@ import { e2eBaseURL } from "./tests/support/server.ts";
 const forwarded = Object.fromEntries(
   ["CI", "DATABASE_URL"].flatMap((name) => {
     const value = process.env[name];
+
     return value === undefined ? [] : [[name, value] as const];
   })
 );

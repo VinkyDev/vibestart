@@ -29,6 +29,7 @@ describe("package manager and Hono runtime", () => {
         framework: "spa",
         runtime,
       });
+
       const generation = await generate(
         registry,
         {
@@ -39,12 +40,15 @@ describe("package manager and Hono runtime", () => {
         },
         { name: "my-app" }
       );
+
       const files = new Map(
         generation.files.map((file) => [file.path, file.content])
       );
+
       const root = manifest.parse(
         JSON.parse(files.get("package.json") ?? "{}")
       );
+
       expect({
         manager: root.devEngines.packageManager.name,
         pnpmWorkspace: files.has("pnpm-workspace.yaml"),

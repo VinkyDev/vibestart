@@ -58,6 +58,7 @@ export const humanUi = (live: boolean): Ui => ({
   step: (title) => {
     if (live) {
       const task = taskLog({ limit: 12, title });
+
       return {
         failed: () => {
           task.error(`${title} failed`, { showLog: true });
@@ -70,7 +71,9 @@ export const humanUi = (live: boolean): Ui => ({
         },
       };
     }
+
     log.step(title);
+
     return {
       failed: (output) => {
         log.error(`${title} failed:\n${output}`);

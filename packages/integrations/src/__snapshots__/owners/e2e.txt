@@ -180,6 +180,7 @@ import { e2eBaseURL } from "./tests/support/server.ts";
 const forwarded = Object.fromEntries(
   ["CI"].flatMap((name) => {
     const value = process.env[name];
+
     return value === undefined ? [] : [[name, value] as const];
   })
 );
@@ -776,6 +777,7 @@ import { e2eBaseURL } from "./tests/support/server.ts";
 const forwarded = Object.fromEntries(
   ["CI", "DATABASE_URL"].flatMap((name) => {
     const value = process.env[name];
+
     return value === undefined ? [] : [[name, value] as const];
   })
 );
@@ -2006,9 +2008,11 @@ export const signUp = async (email = uniqueEmail()) => {
     headers: { "content-type": "application/json", origin: e2eBaseURL },
     method: "POST",
   });
+
   if (!response.ok) {
     throw new Error(`Sign up failed with ${response.status}`);
   }
+
   return { email };
 };
 
@@ -2131,13 +2135,16 @@ export const signUp = async (email = uniqueEmail()) => {
     headers: { "content-type": "application/json", origin: e2eBaseURL },
     method: "POST",
   });
+
   if (!response.ok) {
     throw new Error(`Sign up failed with ${response.status}`);
   }
+
   const cookie = response.headers
     .getSetCookie()
     .map((header) => header.split(";")[0])
     .join("; ");
+
   return {
     client: hc<Api>(`${e2eBaseURL}/api`, { headers: { cookie } }),
     email,
@@ -2286,16 +2293,20 @@ export const signUp = async (email = uniqueEmail()) => {
     headers: { "content-type": "application/json", origin: e2eBaseURL },
     method: "POST",
   });
+
   if (!response.ok) {
     throw new Error(`Sign up failed with ${response.status}`);
   }
+
   const cookie = response.headers
     .getSetCookie()
     .map((header) => header.split(";")[0])
     .join("; ");
+
   const client: AppRouterClient = createORPCClient(
     new RPCLink({ headers: { cookie }, url: `${e2eBaseURL}/rpc` })
   );
+
   return { client, email };
 };
 
@@ -3028,6 +3039,7 @@ import { Agent, setGlobalDispatcher } from "undici";
 
 // Node 24's bundled Undici can crash on macOS socket QoS calls (nodejs/undici#5544), so tests use the catalog's fixed dispatcher.
 const dispatcher = new Agent();
+
 setGlobalDispatcher(dispatcher);
 
 export const closeTestHttp = async () => {
@@ -3053,6 +3065,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3078,10 +3091,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3092,18 +3107,21 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
 export const startTestServer = async (baseURL: string) => {
   const { port } = new URL(baseURL);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
   };
@@ -3121,6 +3139,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3152,6 +3171,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3182,10 +3202,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3196,12 +3218,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -3209,9 +3233,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -3243,6 +3269,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3274,6 +3301,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3299,10 +3327,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3313,12 +3343,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -3326,9 +3358,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -3358,6 +3392,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3397,6 +3432,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3427,10 +3463,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3441,12 +3479,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -3454,10 +3494,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -3500,6 +3542,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3539,6 +3582,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3564,10 +3608,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3578,12 +3624,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -3591,10 +3639,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -3632,6 +3682,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3671,6 +3722,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3701,10 +3753,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3715,12 +3769,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -3728,10 +3784,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -3769,6 +3827,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3808,6 +3867,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3833,10 +3893,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3847,12 +3909,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -3860,10 +3924,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -3899,6 +3965,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -3950,6 +4017,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -3980,10 +4048,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -3994,12 +4064,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4007,10 +4079,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4053,6 +4127,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4104,6 +4179,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4129,10 +4205,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4143,12 +4221,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4156,10 +4236,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4197,6 +4279,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4248,6 +4331,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4278,10 +4362,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4292,12 +4378,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4305,10 +4393,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4346,6 +4436,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4397,6 +4488,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4422,10 +4514,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4436,12 +4530,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4449,10 +4545,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4488,6 +4586,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4526,6 +4625,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4551,10 +4651,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4565,12 +4667,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4578,9 +4682,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4611,6 +4717,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4649,6 +4756,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4674,10 +4782,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4688,12 +4798,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4701,9 +4813,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4729,6 +4843,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4755,6 +4870,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4780,10 +4896,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4794,12 +4912,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4807,8 +4927,10 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -4833,6 +4955,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4871,6 +4994,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -4896,10 +5020,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -4910,12 +5036,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -4923,9 +5051,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -4956,6 +5086,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -4994,6 +5125,7 @@ const waitForServer = async (url: string, attempts = 300): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5019,10 +5151,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5033,12 +5167,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5046,9 +5182,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -5074,6 +5212,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5100,6 +5239,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5125,10 +5265,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5139,18 +5281,21 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
 export const startTestServer = async (baseURL: string) => {
   const { port } = new URL(baseURL);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
   };
@@ -5174,6 +5319,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5211,6 +5357,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5241,10 +5388,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5255,12 +5404,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5268,9 +5419,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -5305,6 +5458,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5342,6 +5496,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5367,10 +5522,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5381,12 +5538,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5394,9 +5553,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -5429,6 +5590,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5480,6 +5642,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5510,10 +5673,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5524,12 +5689,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5537,10 +5704,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -5586,6 +5755,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5637,6 +5807,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5662,10 +5833,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5676,12 +5849,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5689,10 +5864,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -5733,6 +5910,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5784,6 +5962,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5814,10 +5993,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5828,12 +6009,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5841,10 +6024,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -5885,6 +6070,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -5936,6 +6122,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -5961,10 +6148,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -5975,12 +6164,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -5988,10 +6179,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -6030,6 +6223,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -6105,6 +6299,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -6135,10 +6330,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -6149,12 +6346,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -6162,10 +6361,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -6211,6 +6412,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -6286,6 +6488,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -6311,10 +6514,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -6325,12 +6530,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -6338,10 +6545,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -6382,6 +6591,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -6457,6 +6667,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -6487,10 +6698,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -6501,12 +6714,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -6514,10 +6729,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -6558,6 +6775,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -6633,6 +6851,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -6658,10 +6877,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -6672,12 +6893,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -6685,10 +6908,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -6727,6 +6952,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -6758,6 +6984,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -6788,10 +7015,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -6802,12 +7031,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -6815,9 +7046,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -6852,6 +7085,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -6883,6 +7117,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -6908,10 +7143,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -6922,12 +7159,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -6935,9 +7174,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -6970,6 +7211,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7009,6 +7251,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7039,10 +7282,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7053,12 +7298,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7066,10 +7313,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7115,6 +7364,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7154,6 +7404,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7179,10 +7430,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7193,12 +7446,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7206,10 +7461,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7250,6 +7507,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7289,6 +7547,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7319,10 +7578,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7333,12 +7594,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7346,10 +7609,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7390,6 +7655,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7429,6 +7695,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7454,10 +7721,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7468,12 +7737,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7481,10 +7752,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7523,6 +7796,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7574,6 +7848,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7604,10 +7879,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7618,12 +7895,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7631,10 +7910,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7680,6 +7961,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7731,6 +8013,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7756,10 +8039,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7770,12 +8055,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7783,10 +8070,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7827,6 +8116,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -7878,6 +8168,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -7908,10 +8199,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -7922,12 +8215,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -7935,10 +8230,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -7979,6 +8276,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -8030,6 +8328,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -8055,10 +8354,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -8069,12 +8370,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -8082,10 +8385,12 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const webPort = Number(new URL(baseURL).port);
   const serverPort = String(webPort + 1);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -8124,6 +8429,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -8162,6 +8468,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -8187,10 +8494,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -8201,12 +8510,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -8214,9 +8525,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -8252,6 +8565,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -8290,6 +8604,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -8315,10 +8630,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -8329,12 +8646,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -8342,9 +8661,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -8376,6 +8697,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -8402,6 +8724,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -8427,10 +8750,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -8441,12 +8766,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -8454,8 +8781,10 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await closeTestHttp();
@@ -8486,6 +8815,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -8524,6 +8854,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -8549,10 +8880,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -8563,12 +8896,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -8576,9 +8911,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -8614,6 +8951,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -8652,6 +8990,7 @@ const waitForServer = async (url: string, attempts = 100): Promise<void> => {
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(`Server did not become healthy at ${url}`);
       }
@@ -8677,10 +9016,12 @@ const stop = async (child: ChildProcess) => {
   ) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal:
       process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync(
@@ -8691,12 +9032,14 @@ const stop = async (child: ChildProcess) => {
         timeout: 5000,
       }
     );
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 
@@ -8704,9 +9047,11 @@ export const startTestServer = async (baseURL: string) => {
   if (existsSync(envFile)) {
     process.loadEnvFile(envFile);
   }
+
   const { port } = new URL(baseURL);
   const database = await createTestDatabase();
   const children: ChildProcess[] = [];
+
   const stopAll = async () => {
     await Promise.all(children.map(stop));
     await database.remove();
@@ -8738,6 +9083,7 @@ export const startTestServer = async (baseURL: string) => {
     await stopAll();
     throw error;
   }
+
   return stopAll;
 };
 
@@ -9482,7 +9828,9 @@ const stopped = Promise.race([
   once(process, "SIGINT"),
   once(process, "SIGTERM"),
 ]);
+
 const stop = await startTestServer(e2eBaseURL);
+
 try {
   await stopped;
 } finally {
@@ -9519,6 +9867,7 @@ const param = { id: "1" };
 const createTodo = async (client: Client, title: string) => {
   const response = await client.todos.$post({ json: { title } });
   expect(response.status).toBe(201);
+
   return await parseResponse(response);
 };
 
@@ -9641,6 +9990,7 @@ import { api, client } from "../support/api.ts";
 const createTodo = async (title: string) => {
   const response = await client.todos.$post({ json: { title } });
   expect(response.status).toBe(201);
+
   return await parseResponse(response);
 };
 
@@ -9788,6 +10138,7 @@ const param = { id: "1" };
 const createTodo = async (client: Client, title: string) => {
   const response = await client.todos.$post({ json: { title } });
   expect(response.status).toBe(201);
+
   return await parseResponse(response);
 };
 
@@ -9974,6 +10325,7 @@ import { api, client } from "../support/api.ts";
 const createTodo = async (title: string) => {
   const response = await client.todos.$post({ json: { title } });
   expect(response.status).toBe(201);
+
   return await parseResponse(response);
 };
 
@@ -10559,6 +10911,7 @@ import type { Api } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
+
 afterAll(remove);
 
 const auth = createAuth({
@@ -10586,6 +10939,7 @@ export const signUp = async () => {
     },
     returnHeaders: true,
   });
+
   return createClient(
     headers
       .getSetCookie()
@@ -10701,6 +11055,7 @@ import type { Api } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
+
 afterAll(remove);
 
 export const api = createApi({ db });
@@ -10840,6 +11195,7 @@ import type { Context } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
+
 afterAll(remove);
 
 const auth = createAuth({
@@ -10862,10 +11218,12 @@ export const signUp = async () => {
     },
     returnHeaders: true,
   });
+
   const cookie = headers
     .getSetCookie()
     .map((header) => header.split(";")[0])
     .join("; ");
+
   return createClient(
     await auth.api.getSession({ headers: new Headers({ cookie }) })
   );
@@ -11001,6 +11359,7 @@ import { appRouter } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
+
 afterAll(remove);
 
 /** Calls the procedures in this process, through their middleware and validation. */
@@ -11582,13 +11941,16 @@ import { migrateDatabase } from "#src/migrate.ts";
  */
 export const createTestDatabase = async () => {
   const { DATABASE_URL } = process.env;
+
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not set");
   }
+
   const url = new URL(DATABASE_URL);
   url.pathname = `${url.pathname}_test_${crypto.randomUUID().slice(0, 8)}`;
 
   const db = createDb(url.href);
+
   const remove = async () => {
     try {
       await db.connection.dropDatabase();
@@ -11596,6 +11958,7 @@ export const createTestDatabase = async () => {
       await db.connection.close();
     }
   };
+
   try {
     await migrateDatabase(db);
   } catch (error) {
@@ -11725,6 +12088,7 @@ import { testDatabaseName } from "#src/test-database-name.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
+
   try {
     await admin.$client.promise().query(statement);
   } finally {
@@ -11738,9 +12102,11 @@ const runAsAdmin = async (adminUrl: URL, statement: string) => {
  */
 export const createTestDatabase = async () => {
   const { DATABASE_URL } = process.env;
+
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not set");
   }
+
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(adminUrl.pathname.slice(1));
@@ -11748,6 +12114,7 @@ export const createTestDatabase = async () => {
 
   await runAsAdmin(adminUrl, `create database \`${name}\``);
   const db = createDb(url.href);
+
   const remove = async () => {
     try {
       await db.$client.promise().end();
@@ -11755,6 +12122,7 @@ export const createTestDatabase = async () => {
       await runAsAdmin(adminUrl, `drop database \`${name}\``);
     }
   };
+
   try {
     await migrateDatabase(db);
   } catch (error) {
@@ -11884,6 +12252,7 @@ import { testDatabaseName } from "#src/test-database-name.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
+
   try {
     await admin.$executeRawUnsafe(statement);
   } finally {
@@ -11897,9 +12266,11 @@ const runAsAdmin = async (adminUrl: URL, statement: string) => {
  */
 export const createTestDatabase = async () => {
   const { DATABASE_URL } = process.env;
+
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not set");
   }
+
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(adminUrl.pathname.slice(1));
@@ -11907,6 +12278,7 @@ export const createTestDatabase = async () => {
 
   await runAsAdmin(adminUrl, `create database \`${name}\``);
   const db = createDb(url.href);
+
   const remove = async () => {
     try {
       await db.$disconnect();
@@ -11914,6 +12286,7 @@ export const createTestDatabase = async () => {
       await runAsAdmin(adminUrl, `drop database \`${name}\``);
     }
   };
+
   try {
     await migrateDatabase(db);
   } catch (error) {
@@ -12043,6 +12416,7 @@ import { testDatabaseName } from "#src/test-database-name.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
+
   try {
     await admin.$client.unsafe(statement);
   } finally {
@@ -12056,9 +12430,11 @@ const runAsAdmin = async (adminUrl: URL, statement: string) => {
  */
 export const createTestDatabase = async () => {
   const { DATABASE_URL } = process.env;
+
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not set");
   }
+
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(adminUrl.pathname.slice(1));
@@ -12066,6 +12442,7 @@ export const createTestDatabase = async () => {
 
   await runAsAdmin(adminUrl, `create database "${name}"`);
   const db = createDb(url.href);
+
   const remove = async () => {
     try {
       await db.$client.end();
@@ -12073,6 +12450,7 @@ export const createTestDatabase = async () => {
       await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
     }
   };
+
   try {
     await migrateDatabase(db);
   } catch (error) {
@@ -12202,6 +12580,7 @@ import { testDatabaseName } from "#src/test-database-name.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
+
   try {
     await admin.$executeRawUnsafe(statement);
   } finally {
@@ -12215,9 +12594,11 @@ const runAsAdmin = async (adminUrl: URL, statement: string) => {
  */
 export const createTestDatabase = async () => {
   const { DATABASE_URL } = process.env;
+
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not set");
   }
+
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(adminUrl.pathname.slice(1));
@@ -12225,6 +12606,7 @@ export const createTestDatabase = async () => {
 
   await runAsAdmin(adminUrl, `create database "${name}"`);
   const db = createDb(url.href);
+
   const remove = async () => {
     try {
       await db.$disconnect();
@@ -12232,6 +12614,7 @@ export const createTestDatabase = async () => {
       await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
     }
   };
+
   try {
     await migrateDatabase(db);
   } catch (error) {

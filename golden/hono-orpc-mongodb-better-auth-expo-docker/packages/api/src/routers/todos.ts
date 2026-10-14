@@ -19,6 +19,7 @@ export const todosRouter = {
         ...input,
         userId: context.session.user.id,
       });
+
       return toTodo(created.toObject());
     }),
 
@@ -29,9 +30,11 @@ export const todosRouter = {
       const row = await context.db.todos
         .findOneAndDelete({ _id: input.id, userId: context.session.user.id })
         .lean();
+
       if (row === null) {
         throw notFound();
       }
+
       return toTodo(row);
     }),
 
@@ -40,6 +43,7 @@ export const todosRouter = {
       .find({ userId: context.session.user.id })
       .sort({ _id: 1 })
       .lean();
+
     return rows.map(toTodo);
   }),
 
@@ -51,9 +55,11 @@ export const todosRouter = {
           returnDocument: "after",
         })
         .lean();
+
       if (row === null) {
         throw notFound();
       }
+
       return toTodo(row);
     }),
 };

@@ -82,9 +82,11 @@ export const verifiedBlueprint = (
     channel: "recommended",
     stack,
   };
+
   if (packageManager === "bun") {
     return { ...blueprint, packageManager };
   }
+
   return blueprint;
 };
 
@@ -112,10 +114,12 @@ export const verifiedOutput = async (
 ) => {
   const label = taskLabel(stack, packageManager);
   let pending = outputs.get(label);
+
   if (pending === undefined) {
     pending = (async () => {
       const generation = await verifiedGeneration(stack, packageManager);
       const facetsOf = packageManager === "bun" ? bunFacets : pnpmFacets;
+
       return {
         facets: facetsOf(stack, generation),
         fingerprint: await fingerprint(generation),
@@ -123,6 +127,7 @@ export const verifiedOutput = async (
     })();
     outputs.set(label, pending);
   }
+
   return await pending;
 };
 
@@ -131,6 +136,7 @@ export const verifiedFingerprint = async (
   packageManager: PackageManager = "pnpm"
 ) => {
   const output = await verifiedOutput(stack, packageManager);
+
   return output.fingerprint;
 };
 
@@ -158,7 +164,9 @@ const matchOf = async (
 ): Promise<VerificationMatch | undefined> => {
   const entry =
     projection.coverage[packageManager][taskLabel(stack, packageManager)];
+
   const record = entry === undefined ? undefined : projection.linux[entry.by];
+
   return entry !== undefined &&
     record !== undefined &&
     entry.fingerprint === (await verifiedFingerprint(stack, packageManager))
@@ -176,10 +184,13 @@ export const verificationOf = async (
   if (!defaultsCover(registry, addons)) {
     return undefined;
   }
+
   const subject = verifiedAs(stack);
   const sources = await matchOf(projection, subject, "pnpm");
+
   if (sources === undefined || packageManager !== "bun") {
     return sources;
   }
+
   return await matchOf(projection, subject, "bun");
 };

@@ -12,6 +12,7 @@ import { createContext } from "#src/server/orpc.ts";
 const serverClient: AppRouterClient = createRouterClient(appRouter, {
   context: async () => {
     await headers();
+
     return createContext();
   },
 });

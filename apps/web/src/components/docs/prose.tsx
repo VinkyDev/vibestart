@@ -42,6 +42,7 @@ const Heading = ({
 );
 
 const internal = ["/", "/studio"] as const;
+
 const isInternal = (href: string): href is (typeof internal)[number] =>
   internal.some((path) => path === href);
 
@@ -50,6 +51,7 @@ const Anchor = ({ children, className, href = "" }: ComponentProps<"a">) => {
     "text-foreground decoration-foreground/25 hover:decoration-foreground font-medium underline underline-offset-4 transition-colors",
     className
   );
+
   if (href.startsWith("/docs")) {
     return (
       <DocLink className={style} url={href}>
@@ -57,6 +59,7 @@ const Anchor = ({ children, className, href = "" }: ComponentProps<"a">) => {
       </DocLink>
     );
   }
+
   if (isInternal(href)) {
     return (
       <Link className={style} to={href}>
@@ -64,6 +67,7 @@ const Anchor = ({ children, className, href = "" }: ComponentProps<"a">) => {
       </Link>
     );
   }
+
   if (href.startsWith("#")) {
     return (
       <a className={style} href={href}>
@@ -71,6 +75,7 @@ const Anchor = ({ children, className, href = "" }: ComponentProps<"a">) => {
       </a>
     );
   }
+
   return (
     <a
       className={cn(style, "group/link whitespace-nowrap")}
@@ -94,6 +99,7 @@ const CodeBlock = ({
 }: ComponentProps<"pre"> & { readonly title?: string }) => {
   const code = useRef<HTMLPreElement>(null);
   const { copied, copy } = useCopy();
+
   return (
     <figure className="bg-card shadow-rest group/code relative my-6 overflow-hidden rounded-xl">
       {title !== undefined && (
@@ -211,6 +217,7 @@ export const Callout = ({
   readonly type?: keyof typeof callouts;
 }) => {
   const { icon: Icon, tint } = callouts[type];
+
   return (
     <aside
       className={cn(

@@ -1661,6 +1661,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return c.json({ status: "ok" });
 };
 
@@ -1700,6 +1701,7 @@ import { db } from "#src/context.ts";
 
 const health = async (c: Context) => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return c.json({ status: "ok" });
 };
 
@@ -1761,6 +1763,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.execute(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -1821,6 +1824,7 @@ import { db } from "#src/context.ts";
 
 const health = async (c: Context) => {
   await db.execute(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -1881,6 +1885,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.$queryRaw`select 1`;
+
   return c.json({ status: "ok" });
 };
 
@@ -1940,6 +1945,7 @@ import { db } from "#src/context.ts";
 
 const health = async (c: Context) => {
   await db.$queryRaw`select 1`;
+
   return c.json({ status: "ok" });
 };
 
@@ -2576,6 +2582,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = (c: Context) => {
   db.run(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -2616,6 +2623,7 @@ import { db } from "#src/context.ts";
 
 const health = (c: Context) => {
   db.run(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -2716,6 +2724,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return c.json({ status: "ok" });
 };
 
@@ -2757,6 +2766,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return c.json({ status: "ok" });
 };
 
@@ -2796,6 +2806,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = async (c: Context) => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return c.json({ status: "ok" });
 };
 
@@ -2834,6 +2845,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = async (c: Context) => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return c.json({ status: "ok" });
 };
 
@@ -2883,6 +2895,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.execute(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -2933,6 +2946,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.execute(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -2981,6 +2995,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = async (c: Context) => {
   await db.execute(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -3028,6 +3043,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = async (c: Context) => {
   await db.execute(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -3076,6 +3092,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.$queryRaw`select 1`;
+
   return c.json({ status: "ok" });
 };
 
@@ -3125,6 +3142,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = async (c: Context) => {
   await db.$queryRaw`select 1`;
+
   return c.json({ status: "ok" });
 };
 
@@ -3172,6 +3190,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = async (c: Context) => {
   await db.$queryRaw`select 1`;
+
   return c.json({ status: "ok" });
 };
 
@@ -3218,6 +3237,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = async (c: Context) => {
   await db.$queryRaw`select 1`;
+
   return c.json({ status: "ok" });
 };
 
@@ -3945,6 +3965,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = (c: Context) => {
   db.run(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -3987,6 +4008,7 @@ const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
 const health = (c: Context) => {
   db.run(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -4027,6 +4049,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = (c: Context) => {
   db.run(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -4066,6 +4089,7 @@ const publicDir = fileURLToPath(new URL("public", import.meta.url));
 
 const health = (c: Context) => {
   db.run(sql`select 1`);
+
   return c.json({ status: "ok" });
 };
 
@@ -7065,9 +7089,11 @@ import { env } from "#src/env.ts";
 
 const server = serve({ fetch: app.fetch, port: env.PORT });
 const { port } = server;
+
 console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 await server.stop();
 
 # apps/server/src/index.ts · 54 stacks
@@ -7137,7 +7163,9 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
 
 # apps/server/src/index.ts · 108 stacks
@@ -7259,10 +7287,13 @@ import { env } from "#src/env.ts";
 
 const server = serve({ fetch: app.fetch, port: env.PORT });
 const { port } = server;
+
 console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 await server.stop();
+
 await db.connection.close();
 
 # apps/server/src/index.ts · 108 stacks
@@ -7387,8 +7418,11 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
+
 await db.connection.close();
 
 # apps/server/src/index.ts · 108 stacks
@@ -7510,10 +7544,13 @@ import { env } from "#src/env.ts";
 
 const server = serve({ fetch: app.fetch, port: env.PORT });
 const { port } = server;
+
 console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 await server.stop();
+
 await db.$client.promise().end();
 
 # apps/server/src/index.ts · 108 stacks
@@ -7638,8 +7675,11 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
+
 await db.$client.promise().end();
 
 # apps/server/src/index.ts · 216 stacks
@@ -7869,10 +7909,13 @@ import { env } from "#src/env.ts";
 
 const server = serve({ fetch: app.fetch, port: env.PORT });
 const { port } = server;
+
 console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 await server.stop();
+
 await db.$disconnect();
 
 # apps/server/src/index.ts · 216 stacks
@@ -8105,8 +8148,11 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
+
 await db.$disconnect();
 
 # apps/server/src/index.ts · 108 stacks
@@ -8228,10 +8274,13 @@ import { env } from "#src/env.ts";
 
 const server = serve({ fetch: app.fetch, port: env.PORT });
 const { port } = server;
+
 console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 await server.stop();
+
 await db.$client.end();
 
 # apps/server/src/index.ts · 108 stacks
@@ -8356,8 +8405,11 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
+
 await db.$client.end();
 
 # apps/server/src/index.ts · 108 stacks
@@ -8479,10 +8531,13 @@ import { env } from "#src/env.ts";
 
 const server = serve({ fetch: app.fetch, port: env.PORT });
 const { port } = server;
+
 console.log(`Server listening on http://localhost:${port}`);
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 await server.stop();
+
 db.$client.close();
 
 # apps/server/src/index.ts · 108 stacks
@@ -8607,8 +8662,11 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
+
 db.$client.close();
 
 # apps/server/src/orpc.ts · 36 stacks
@@ -8674,6 +8732,7 @@ const mount =
       context: {},
       prefix,
     });
+
     return matched
       ? c.newResponse(response.body, response)
       : await c.notFound();
@@ -8944,10 +9003,12 @@ const mount =
   ) =>
   async (c: HonoContext) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     const { matched, response } = await handler.handle(c.req.raw, {
       context: { db, session },
       prefix,
     });
+
     return matched
       ? c.newResponse(response.body, response)
       : await c.notFound();
@@ -9221,6 +9282,7 @@ const mount =
       context: { db },
       prefix,
     });
+
     return matched
       ? c.newResponse(response.body, response)
       : await c.notFound();

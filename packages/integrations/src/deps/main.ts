@@ -26,11 +26,13 @@ const print = (line: string) => {
 
 const table = (rows: readonly (readonly string[])[]) => {
   const widths: number[] = [];
+
   for (const row of rows) {
     for (const [index, cell] of row.entries()) {
       widths[index] = Math.max(widths[index] ?? 0, cell.length);
     }
   }
+
   for (const row of rows) {
     print(
       row
@@ -43,6 +45,7 @@ const table = (rows: readonly (readonly string[])[]) => {
 
 const report = (targets: readonly Target[]) => {
   const behind = targets.filter(isBehind);
+
   if (behind.length > 0) {
     table([
       ["package", "current", "target", "bump", "rule", "pinned in"],
@@ -57,11 +60,13 @@ const report = (targets: readonly Target[]) => {
     ]);
     print("");
   }
+
   for (const { current, deprecated, name } of targets) {
     if (deprecated !== undefined) {
       print(`${name}@${current} is deprecated: ${deprecated}`);
     }
   }
+
   print(`${behind.length} of ${targets.length} pins behind`);
 };
 
@@ -104,20 +109,27 @@ const refresh: readonly Step[] = [
 
 const update = (targets: readonly Target[]) => {
   const moving = targets.filter(isBehind);
+
   if (moving.length === 0) {
     print("Every pin is at its target");
+
     return 0;
   }
+
   const ranges = new Map(moving.map((target) => [target.name, target.target]));
+
   for (const file of pinFiles()) {
     file.write(ranges);
   }
+
   for (const target of moving) {
     print(`${target.name}: ${target.current} → ${target.target}`);
   }
+
   for (const step of refresh) {
     const command = ["vp", ...step.args].join(" ");
     print(`\n$ ${command}${step.cwd === "" ? "" : `  (in ${step.cwd})`}`);
+
     try {
       execFileSync("vp", step.args, {
         cwd: `${repoRoot}${step.cwd}`,
@@ -128,12 +140,15 @@ const update = (targets: readonly Target[]) => {
       print(
         `\n${command} failed. The moved pins stay in the working tree to fix or revert.`
       );
+
       return 1;
     }
   }
+
   print(
     `\nMoved ${moving.length} pins. Repository checks passed; CI verifies the stacks on the pull request.`
   );
+
   return 0;
 };
 
@@ -145,12 +160,17 @@ export const main = async (args: readonly string[]) => {
       json: { default: false, type: "boolean" },
     },
   });
+
   const [command, pattern] = positionals;
+
   if (command !== undefined && command !== "update") {
     print(usage);
+
     return 1;
   }
+
   const pins = pinsOf(pinFiles());
+
   const releases = await fetchReleases(
     pins
       .filter(
@@ -160,14 +180,18 @@ export const main = async (args: readonly string[]) => {
       )
       .map(({ name }) => name)
   );
+
   const matches =
     pattern === undefined
       ? () => true
       : (name: string) => new RegExp(pattern, "u").test(name);
+
   const targets = await targetsOf(pins, releases, matches);
+
   if (command === "update") {
     return update(targets);
   }
+
   if (values.json) {
     print(
       JSON.stringify(
@@ -183,5 +207,6 @@ export const main = async (args: readonly string[]) => {
   } else {
     report(targets);
   }
+
   return targets.some(isBehind) ? 1 : 0;
 };

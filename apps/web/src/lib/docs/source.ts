@@ -24,6 +24,7 @@ export const groupOf = groupNames(nav);
 
 export const docsTarget = (url: string) => {
   const [path = "", hash] = url.split("#");
+
   return { hash, splat: path.replace(/^\/docs\/?/u, "") };
 };
 

@@ -23,18 +23,21 @@ const pagesIn = (nodes: readonly PageTree.Node[]): NavPage[] =>
     if (node.type === "page") {
       return [pageOf(node)];
     }
+
     if (node.type === "folder") {
       return [
         ...(node.index ? [pageOf(node.index)] : []),
         ...pagesIn(node.children),
       ];
     }
+
     return [];
   });
 
 export const navGroups = (tree: PageTree.Root): NavGroup[] => {
   const groups: { name: string | undefined; pages: NavPage[] }[] = [];
   let current: { name: string | undefined; pages: NavPage[] } | undefined;
+
   for (const node of tree.children) {
     if (node.type === "separator") {
       current = { name: text.parse(node.name), pages: [] };
@@ -49,6 +52,7 @@ export const navGroups = (tree: PageTree.Root): NavGroup[] => {
       current.pages.push(pageOf(node));
     }
   }
+
   return groups.filter((group) => group.pages.length > 0);
 };
 
@@ -62,6 +66,7 @@ export const groupNames = (groups: readonly NavGroup[]) =>
 export const neighbours = (groups: readonly NavGroup[], url: string) => {
   const pages = groups.flatMap((group) => group.pages);
   const index = pages.findIndex((page) => page.url === url);
+
   return index === -1
     ? { next: undefined, previous: undefined }
     : { next: pages[index + 1], previous: pages[index - 1] };

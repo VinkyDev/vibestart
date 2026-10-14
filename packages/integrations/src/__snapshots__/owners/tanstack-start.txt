@@ -871,8 +871,10 @@ export const handleRequestError: Connect.ErrorHandleFunction = (
     (response.destroyed && !response.writableEnded)
   ) {
     response.destroy();
+
     return;
   }
+
   next(error);
 };
 
@@ -2514,6 +2516,7 @@ import { db } from "#src/server/context.ts";
 
 const health = async () => {
   await db.connection.getClient().db().command({ ping: 1 });
+
   return Response.json({ status: "ok" });
 };
 
@@ -2545,6 +2548,7 @@ import { db } from "#src/server/context.ts";
 
 const health = async () => {
   await db.execute(sql`select 1`);
+
   return Response.json({ status: "ok" });
 };
 
@@ -2575,6 +2579,7 @@ import { db } from "#src/server/context.ts";
 
 const health = async () => {
   await db.$queryRaw`select 1`;
+
   return Response.json({ status: "ok" });
 };
 
@@ -2598,6 +2603,7 @@ import { db } from "#src/server/context.ts";
 
 const health = () => {
   db.run(sql`select 1`);
+
   return Response.json({ status: "ok" });
 };
 
@@ -7499,12 +7505,15 @@ const TodosPage = () => {
       await queryClient.invalidateQueries({ queryKey: api.todos.key() });
     },
   };
+
   const createTodo = useMutation(
     api.todos.create.mutationOptions(invalidateTodos)
   );
+
   const updateTodo = useMutation(
     api.todos.update.mutationOptions(invalidateTodos)
   );
+
   const deleteTodo = useMutation(
     api.todos.delete.mutationOptions(invalidateTodos)
   );
@@ -8222,6 +8231,7 @@ const mount =
         prefix,
         context: createContext(),
       });
+
       return response ?? new Response("Not Found", { status: 404 });
     });
 
@@ -8307,6 +8317,7 @@ const mount =
         prefix,
         context: await createContext(request.headers),
       });
+
       return response ?? new Response("Not Found", { status: 404 });
     });
 
@@ -8389,6 +8400,7 @@ const mount =
         prefix,
         context: createContext(),
       });
+
       return response ?? new Response("Not Found", { status: 404 });
     });
 
@@ -8734,6 +8746,7 @@ import { env } from "#src/server/env.ts";
 
 export const proxyToServer = async ({ request }: { request: Request }) => {
   const { pathname, search } = new URL(request.url);
+
   try {
     return await proxy(new URL(`${pathname}${search}`, env.SERVER_URL), {
       raw: request,
@@ -8744,6 +8757,7 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
     if (request.signal.aborted) {
       return new Response(null, { status: 499 });
     }
+
     throw error;
   }
 };
@@ -9322,13 +9336,16 @@ describe("request cancellation", () => {
     const controller = new AbortController();
     controller.abort();
     let calls = 0;
+
     const response = await handleRequest(
       new Request(url, { signal: controller.signal }),
       async () => {
         calls += 1;
+
         return await Promise.resolve(new Response("ok"));
       }
     );
+
     expect({ calls, status: response.status }).toStrictEqual({
       calls: 0,
       status: 499,
@@ -9342,11 +9359,13 @@ describe("request cancellation", () => {
     Object.defineProperty(request, "signal", {
       get: () => {
         listening = true;
+
         return controller.signal;
       },
     });
     await handleRequest(request, async () => {
       expect(listening).toBeTruthy();
+
       return await Promise.resolve(new Response("ok"));
     });
   });
@@ -9354,6 +9373,7 @@ describe("request cancellation", () => {
   it("contains cancellation while asynchronous context is loading", async () => {
     const controller = new AbortController();
     const error = new DOMException("The request was aborted.", "AbortError");
+
     const response = await handleRequest(
       new Request(url, { signal: controller.signal }),
       async () => {
@@ -9362,23 +9382,28 @@ describe("request cancellation", () => {
         throw error;
       }
     );
+
     expect(response.status).toBe(499);
   });
 
   it("contains a request body stream error after the client disconnects", async () => {
     const controller = new AbortController();
     const stream = new TransformStream();
+
     const init = {
       body: stream.readable,
       duplex: "half",
       method: "POST",
       signal: controller.signal,
     };
+
     const request = new Request(url, init);
+
     const response = handleRequest(
       request,
       async () => new Response(await request.text())
     );
+
     const error = Object.assign(new Error("aborted"), { code: "ECONNRESET" });
     controller.abort(error);
     await stream.writable.abort(error);
@@ -9461,15 +9486,18 @@ export const handleRequest = async (
 ): Promise<Response> => {
   // srvx initializes its abort listener lazily; capture the signal before any async context lookup.
   const { signal } = request;
+
   if (signal.aborted) {
     return new Response(null, { status: 499 });
   }
+
   try {
     return await handle();
   } catch (error) {
     if (signal.aborted) {
       return new Response(null, { status: 499 });
     }
+
     throw error;
   }
 };

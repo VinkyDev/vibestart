@@ -6,9 +6,11 @@ import { authClient } from "#src/lib/auth-client.ts";
 
 export const UserMenu = () => {
   const { data: session } = authClient.useSession();
+
   if (!session) {
     return null;
   }
+
   return (
     <View className="flex-row items-center justify-between">
       <Text className="text-muted-foreground">{session.user.email}</Text>

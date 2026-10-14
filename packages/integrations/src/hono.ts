@@ -38,6 +38,7 @@ import {
 // Beside a full-stack framework, whose dev server takes :3000, the API listens on :3001.
 const port = (ctx: Context) => {
   const value = hasWebApp(ctx) && !ctx.has("spa") ? 3001 : 3000;
+
   return {
     example: String(value),
     name: "PORT",
@@ -50,10 +51,13 @@ const healthHandler = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return ['const health = (c: Context) => c.json({ status: "ok" });'];
   }
+
   const check = databaseCheck(ctx, "db");
+
   return [
     `const health = ${check.async ? "async " : ""}(c: Context) => {`,
     `  ${check.statement}`,
+    "",
     '  return c.json({ status: "ok" });',
     "};",
   ];
@@ -63,8 +67,10 @@ const apiRoutes = (ctx: Context) => {
   if (ctx.has("orpc")) {
     return ['  .all("/rpc/*", rpc)', '  .all("/api/*", openApi)'];
   }
+
   const services = ctx.has("better-auth") ? "{ auth, db }" : "{ db }";
   const created = ctx.stack.database === undefined ? "" : services;
+
   return ctx.has("openapi")
     ? [`  .route("/api", createApi(${created}))`]
     : ['  .get("/api/health", health)'];
@@ -74,6 +80,7 @@ const routes = (ctx: Context) => {
   const auth = ctx.has("better-auth")
     ? ['  .on(["GET", "POST"], "/api/auth/*", authHandler)']
     : [];
+
   const lines = [
     "export const app = new Hono()",
     "  .use(logger())",
@@ -81,6 +88,7 @@ const routes = (ctx: Context) => {
     ...auth,
     ...apiRoutes(ctx),
   ];
+
   return [...lines.slice(0, -1), `${lines.at(-1)};`];
 };
 
@@ -88,6 +96,7 @@ const closeDatabase = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return [];
   }
+
   // The SQLite driver closes synchronously.
   return [closeDatabaseStatement(ctx)];
 };
@@ -96,10 +105,12 @@ const contextImport = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return [];
   }
+
   const names = [
     ...(ctx.has("better-auth") ? ["auth"] : []),
     ...(ctx.has("orpc") ? [] : ["db"]),
   ].join(", ");
+
   return names === "" ? [] : [`import { ${names} } from "#src/context.ts";`];
 };
 
@@ -108,6 +119,7 @@ const renderApp = (ctx: Context) => {
   const api = ctx.stack.api !== undefined;
   // The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
   const spa = ctx.has("spa");
+
   return [
     ...(spa
       ? [
@@ -185,6 +197,7 @@ const renderIndex = (ctx: Context) =>
       ? [
           "const server = serve({ fetch: app.fetch, port: env.PORT });",
           "const { port } = server;",
+          "",
         ]
       : [
           "const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {",
@@ -193,15 +206,18 @@ const renderIndex = (ctx: Context) =>
     ...(ctx.has("bun") ? [] : ["});"]),
     "",
     'await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);',
-    ...(ctx.has("bun")
-      ? ["await server.stop();"]
-      : ["server.close();", 'await once(server, "close");']),
-    ...closeDatabase(ctx),
+    ...[
+      ...(ctx.has("bun")
+        ? ["await server.stop();"]
+        : ["server.close();", 'await once(server, "close");']),
+      ...closeDatabase(ctx),
+    ].flatMap((statement) => ["", statement]),
     "",
   ].join("\n");
 
 const renderTsconfig = (ctx: Context) => {
   const include = ["src", "vite.config.ts"];
+
   return `{
   "extends": "${ctx.scope}/config/typescript/node.json",
 ${ctx.has("bun") ? '  "compilerOptions": { "types": ["node", "bun"] },\n' : ""}  "include": [${include.map((path) => `"${path}"`).join(", ")}]
@@ -213,6 +229,7 @@ const services = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return "`env`";
   }
+
   return ctx.has("better-auth")
     ? "`env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`"
     : "`env`, the shared `db`";
@@ -222,6 +239,7 @@ const apiOwns = (ctx: Context) => {
   if (ctx.has("orpc")) {
     return ["oRPC at `/rpc`", "OpenAPI and docs at `/api`"];
   }
+
   return ctx.has("openapi")
     ? ["mounts `packages/api` at `/api`"]
     : ["the routes, including `/api/health`"];
@@ -233,6 +251,7 @@ const owns = (ctx: Context) => {
     ...apiOwns(ctx),
     ...(ctx.has("spa") ? ["the built SPA in production"] : []),
   ];
+
   return `Hono on ${ctx.has("bun") ? "Bun" : "Node"}: ${parts.join(", ")}`;
 };
 
@@ -257,6 +276,7 @@ const standalone = (ctx: Context) => {
   if (ctx.has("openapi")) {
     return openapiStandalone(ctx);
   }
+
   return ctx.has("orpc")
     ? [
         contribute(
@@ -282,6 +302,7 @@ const standalone = (ctx: Context) => {
 
 const renderViteConfig = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
+
   return [
     'import { defineConfig } from "vite-plus";',
     "",
@@ -309,6 +330,7 @@ const middlewareOverride = (ctx: Context) => {
     "apps/server/src/**",
     ...(ctx.has("openapi") ? ["packages/api/src/**"] : []),
   ];
+
   return `{
   // Hono middleware awaits \`next()\`, which is not a Node.js error-first callback.
   files: [${files.map((glob) => `"${glob}"`).join(", ")}],
@@ -339,6 +361,7 @@ const runtimeDependencies = (ctx: Context): string[] => {
   if (!ctx.has("bun")) {
     return ["@hono/node-server"];
   }
+
   return ctx.has("spa") ? ["@hono/bun"] : [];
 };
 

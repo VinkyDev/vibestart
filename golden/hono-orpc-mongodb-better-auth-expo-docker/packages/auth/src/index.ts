@@ -22,4 +22,5 @@ export const createAuth = ({ db, baseURL, secret }: AuthOptions) =>
   });
 
 export type Auth = ReturnType<typeof createAuth>;
+
 export type Session = Auth["$Infer"]["Session"];

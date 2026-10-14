@@ -70,6 +70,7 @@ const manifestSchema = z.looseObject({
 
 const manifestFacets = (file: GeneratedFile) => {
   const manifest = manifestSchema.parse(JSON.parse(file.content));
+
   return [
     ...[
       manifest.dependencies,
@@ -107,11 +108,13 @@ export interface Candidate {
 
 const gainOf = (candidate: Candidate, pending: ReadonlySet<string>) => {
   let gain = 0;
+
   for (const facet of candidate.facets) {
     if (pending.has(facet)) {
       gain += 1;
     }
   }
+
   return gain;
 };
 
@@ -127,37 +130,47 @@ export const coverPlan = (
 ) => {
   const ordered = candidates.toSorted((a, b) => a.label.localeCompare(b.label));
   const pending = new Set(ordered.flatMap(({ facets }) => [...facets]));
+
   const take = (candidate: Candidate) => {
     for (const facet of candidate.facets) {
       pending.delete(facet);
     }
   };
+
   for (const candidate of ordered.filter(({ label }) => passed.has(label))) {
     take(candidate);
   }
+
   const chosen = ordered.filter(
     ({ label }) => pinned.has(label) && !passed.has(label)
   );
+
   for (const candidate of chosen) {
     take(candidate);
   }
+
   while (pending.size > 0) {
     let best: Candidate | undefined;
     let bestGain = 0;
+
     for (const candidate of ordered) {
       const gain = gainOf(candidate, pending);
+
       if (gain > bestGain) {
         best = candidate;
         bestGain = gain;
       }
     }
+
     // Each pending facet belongs to some candidate, so one always gains.
     if (best === undefined) {
       throw new Error("A pending facet belongs to no candidate");
     }
+
     chosen.push(best);
     take(best);
   }
+
   return chosen.map(({ label }) => label);
 };
 
@@ -172,28 +185,36 @@ export const coveredBy = (
   const witnesses = candidates
     .filter(({ label }) => passed.has(label))
     .toSorted((a, b) => a.label.localeCompare(b.label));
+
   const vouched = new Set(witnesses.flatMap(({ facets }) => [...facets]));
   const result = new Map<string, string>();
+
   for (const candidate of candidates) {
     if (passed.has(candidate.label)) {
       result.set(candidate.label, candidate.label);
       continue;
     }
+
     if (![...candidate.facets].every((facet) => vouched.has(facet))) {
       continue;
     }
+
     let best: Candidate | undefined;
     let bestShared = -1;
+
     for (const witness of witnesses) {
       const shared = gainOf(witness, candidate.facets);
+
       if (shared > bestShared) {
         best = witness;
         bestShared = shared;
       }
     }
+
     if (best !== undefined) {
       result.set(candidate.label, best.label);
     }
   }
+
   return result;
 };

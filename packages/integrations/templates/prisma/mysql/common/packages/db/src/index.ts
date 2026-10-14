@@ -7,6 +7,7 @@ import { PrismaClient } from "#src/generated/client.ts";
 const withPublicKeyRetrieval = (url: string) => {
   const parsed = new URL(url);
   parsed.searchParams.set("allowPublicKeyRetrieval", "true");
+
   return parsed.href;
 };
 

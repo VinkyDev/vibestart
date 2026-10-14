@@ -59,26 +59,32 @@ const formatLikeProject =
   (ctx: Context): Formatter =>
   async (filePath, content, read) => {
     const [preset] = read(fmtPresets);
+
     const ignored = [
       ...(preset?.config.ignorePatterns ?? []),
       ...read(generatedFiles).map(({ glob }) => glob),
     ];
+
     if (
       !formattedFile.test(filePath) ||
       ignored.some((pattern) => path.matchesGlob(filePath, pattern))
     ) {
       return content;
     }
+
     const { code, errors } = await formatWithProjectConfig(
       filePath,
       content,
       ctx.scope,
       preset?.config ?? {}
     );
+
     const [error] = errors;
+
     if (error !== undefined) {
       throw new Error(`${filePath} does not parse: ${error.message}`);
     }
+
     return code;
   };
 
@@ -99,6 +105,7 @@ const testStep = (read: ReadSlot) => ({
 
 const orderedReadySteps = (read: ReadSlot): Omit<ReadyStep, "phase">[] => {
   const steps = read(readySteps);
+
   return [
     ...steps.filter((step) => step.phase === "prepare"),
     checkStep,
@@ -131,12 +138,15 @@ const renderViteConfig = (ctx: Context, read: ReadSlot) => {
   const [fmt] = read(fmtPresets);
   const generated = read(generatedFiles).map(({ glob }) => quote(glob));
   const vendored = read(vendoredFiles).map(quote);
+
   const plugins = [
     ...read(lintPlugins),
     { name: "vite-plus", specifier: "vite-plus/oxlint-plugin" },
   ];
+
   const overrides = read(lintOverrides);
   const projects = read(testProjects);
+
   const unitTests = [...read(unitTestSources), "packages/*/src"].map((source) =>
     quote(`${source}/**/*.test.ts`)
   );
@@ -150,13 +160,14 @@ const renderViteConfig = (ctx: Context, read: ReadSlot) => {
     ),
     `import { ${projects.length > 0 ? "defineConfig, loadEnv" : "defineConfig"} } from "vite-plus";`,
     "",
-    ...(generated.length > 0
-      ? [`const generatedFiles = [${generated.join(", ")}];`]
-      : []),
-    ...(vendored.length > 0
-      ? [`const vendoredFiles = [${vendored.join(", ")}];`]
-      : []),
-    "",
+    ...[
+      ...(generated.length > 0
+        ? [`const generatedFiles = [${generated.join(", ")}];`]
+        : []),
+      ...(vendored.length > 0
+        ? [`const vendoredFiles = [${vendored.join(", ")}];`]
+        : []),
+    ].flatMap((declaration) => [declaration, ""]),
     "export default defineConfig({",
     "  fmt: {",
     ...(fmt === undefined ? [] : [`    ...${fmt.name},`]),
@@ -280,12 +291,15 @@ const renderGitignore = (read: ReadSlot) =>
 
 const renderAgents = (read: ReadSlot) => {
   const generated = read(generatedFiles);
+
   const generatedLabels = generated.flatMap(({ label }) =>
     label === undefined ? [] : [`\`${label}\``]
   );
+
   const generatedNotes = generated.flatMap(({ note }) =>
     note === undefined ? [] : [` ${note}`]
   );
+
   const conventions = [
     ...read(agentsConventions),
     ...(generatedLabels.length === 0
@@ -329,6 +343,7 @@ const hasDevServers = (ctx: Context) => hasWebApp(ctx) || hasBackend(ctx);
 
 const devCommands = (ctx: Context): (readonly [string, string?])[] => {
   const servers = hasDevServers(ctx);
+
   return [
     ...(servers ? [["vp run dev"] as const] : []),
     ...(ctx.has("expo")
@@ -343,6 +358,7 @@ const devCommands = (ctx: Context): (readonly [string, string?])[] => {
 
 const renderReadme = (ctx: Context, read: ReadSlot) => {
   const steps = orderedReadySteps(read);
+
   const commands = commentedShell([
     ...steps.map((step) => [step.command, step.description] as const),
     [
@@ -390,12 +406,15 @@ const packageEngines = (
   ctx: Context
 ): NonNullable<PackageJsonContribution["engines"]> => {
   const engines = { node: toolchainVersions.node };
+
   if (ctx.packageManager !== "bun") {
     return { ...engines, pnpm: toolchainVersions.pnpm };
   }
+
   if (!ctx.has("bun")) {
     return { ...engines, bun: `>=${toolchainVersions.bun}` };
   }
+
   return engines;
 };
 

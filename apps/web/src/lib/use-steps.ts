@@ -18,6 +18,7 @@ export const useSteps = ({ count, first, from = 0, next = first }: Pace) => {
           setStep(step + 1);
         }, wait)
       : undefined;
+
     return () => {
       clearTimeout(timer);
     };
@@ -26,5 +27,6 @@ export const useSteps = ({ count, first, from = 0, next = first }: Pace) => {
   const replay = () => {
     setStep(0);
   };
+
   return [step, replay] as const;
 };

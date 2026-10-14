@@ -37,6 +37,7 @@ export const createMainWindow = ({
 
   win.webContents.setWindowOpenHandler((details) => {
     openOutside(details.url);
+
     return { action: "deny" };
   });
   win.webContents.on("will-navigate", (event, target) => {
@@ -47,5 +48,6 @@ export const createMainWindow = ({
   });
 
   void win.loadURL(url);
+
   return win;
 };

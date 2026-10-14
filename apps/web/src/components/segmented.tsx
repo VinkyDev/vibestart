@@ -33,6 +33,7 @@ export const Segmented = <T extends string>({
   >
     {options.map((option) => {
       const current = option.value === value;
+
       return (
         <button
           aria-pressed={current}

@@ -14,6 +14,7 @@ export const Stepper = ({
   readonly onChange: (step: number) => void;
 }) => {
   const last = current === count - 1;
+
   return (
     <>
       <Button

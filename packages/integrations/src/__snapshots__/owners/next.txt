@@ -1782,6 +1782,7 @@ import { getServices } from "#src/server/context.ts";
 
 export const GET = async () => {
   await getServices().db.connection.getClient().db().command({ ping: 1 });
+
   return Response.json({ status: "ok" });
 };
 
@@ -1808,6 +1809,7 @@ import { getServices } from "#src/server/context.ts";
 
 export const GET = async () => {
   await getServices().db.execute(sql`select 1`);
+
   return Response.json({ status: "ok" });
 };
 
@@ -1832,6 +1834,7 @@ import { getServices } from "#src/server/context.ts";
 
 export const GET = async () => {
   await getServices().db.$queryRaw`select 1`;
+
   return Response.json({ status: "ok" });
 };
 
@@ -1850,6 +1853,7 @@ import { getServices } from "#src/server/context.ts";
 
 export const GET = () => {
   getServices().db.run(sql`select 1`);
+
   return Response.json({ status: "ok" });
 };
 
@@ -8761,12 +8765,15 @@ export const TodoList = () => {
       await queryClient.invalidateQueries({ queryKey: api.todos.key() });
     },
   };
+
   const createTodo = useMutation(
     api.todos.create.mutationOptions(invalidateTodos)
   );
+
   const updateTodo = useMutation(
     api.todos.update.mutationOptions(invalidateTodos)
   );
+
   const deleteTodo = useMutation(
     api.todos.delete.mutationOptions(invalidateTodos)
   );
@@ -9009,12 +9016,15 @@ export const TodoList = () => {
       await queryClient.invalidateQueries({ queryKey: api.todos.key() });
     },
   };
+
   const createTodo = useMutation(
     api.todos.create.mutationOptions(invalidateTodos)
   );
+
   const updateTodo = useMutation(
     api.todos.update.mutationOptions(invalidateTodos)
   );
+
   const deleteTodo = useMutation(
     api.todos.delete.mutationOptions(invalidateTodos)
   );
@@ -9727,7 +9737,9 @@ export const getQueryClient = () => {
   if (environmentManager.isServer()) {
     return createQueryClient();
   }
+
   browserQueryClient ??= createQueryClient();
+
   return browserQueryClient;
 };
 
@@ -9789,11 +9801,13 @@ import { readEnv } from "#src/server/env.ts";
 const createServices = () => {
   const env = readEnv();
   const db = createDb(env.DATABASE_URL);
+
   const auth = createAuth({
     baseURL: env.BETTER_AUTH_URL,
     db,
     secret: env.BETTER_AUTH_SECRET,
   });
+
   return { auth, db };
 };
 
@@ -9801,6 +9815,7 @@ let services: ReturnType<typeof createServices> | undefined;
 
 export const getServices = () => {
   services ??= createServices();
+
   return services;
 };
 
@@ -9864,6 +9879,7 @@ let services: ReturnType<typeof createServices> | undefined;
 
 export const getServices = () => {
   services ??= createServices();
+
   return services;
 };
 
@@ -10375,6 +10391,7 @@ const mount =
       context: {},
       prefix,
     });
+
     return response ?? new Response("Not Found", { status: 404 });
   };
 
@@ -10442,6 +10459,7 @@ export const createContext = async (
   requestHeaders: Headers
 ): Promise<Context> => {
   const { db, auth } = getServices();
+
   return {
     db,
     session: await auth.api.getSession({ headers: requestHeaders }),
@@ -10464,6 +10482,7 @@ const mount =
       context: await createContext(request.headers),
       prefix,
     });
+
     return response ?? new Response("Not Found", { status: 404 });
   };
 
@@ -10545,6 +10564,7 @@ const mount =
       context: createContext(),
       prefix,
     });
+
     return response ?? new Response("Not Found", { status: 404 });
   };
 
@@ -10891,6 +10911,7 @@ import { readEnv } from "#src/server/env.ts";
 
 export const proxyToServer = async (request: Request) => {
   const { pathname, search } = new URL(request.url);
+
   try {
     return await proxy(new URL(`${pathname}${search}`, readEnv().SERVER_URL), {
       raw: request,
@@ -10901,6 +10922,7 @@ export const proxyToServer = async (request: Request) => {
     if (request.signal.aborted) {
       return new Response(null, { status: 499 });
     }
+
     throw error;
   }
 };
@@ -11019,6 +11041,7 @@ const serverClient: AppRouterClient = createORPCClient(
   new RPCLink({
     headers: async () => {
       const requestHeaders = await headers();
+
       return { cookie: requestHeaders.get("cookie") ?? "" };
     },
     url: () => `${readEnv().SERVER_URL}/rpc`,
@@ -11114,6 +11137,7 @@ import { createContext } from "#src/server/orpc.ts";
 const serverClient: AppRouterClient = createRouterClient(appRouter, {
   context: async () => {
     await headers();
+
     return createContext();
   },
 });

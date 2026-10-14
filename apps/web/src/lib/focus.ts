@@ -33,6 +33,7 @@ export const restoreFocus = (
 export const useFocusTarget = (target: NonNullable<Focus>) => {
   const { setFocus } = useFocus();
   const enclosing = use(FocusScope);
+
   return {
     enter: () => {
       setFocus(target);
@@ -48,9 +49,11 @@ export const focusesOwner = (focus: Focus, owner: string): boolean => {
   if (focus === null) {
     return true;
   }
+
   if ("owner" in focus) {
     return focus.owner === owner;
   }
+
   return groupOf(owner) === focus.group;
 };
 

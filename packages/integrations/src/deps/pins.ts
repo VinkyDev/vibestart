@@ -18,12 +18,15 @@ export const setPin = (text: string, key: string, from: string, to: string) => {
     `^(\\s*"?${escapeRegExp(key)}"?: "?)${escapeRegExp(from)}("?,?)$`,
     "gmu"
   );
+
   const found = text.match(line)?.length ?? 0;
+
   if (found !== 1) {
     throw new Error(
       `Expected one line pinning ${key} to ${from}, found ${found}`
     );
   }
+
   return text.replace(line, (_, head: string, tail: string) =>
     [head, to, tail].join("")
   );
@@ -36,24 +39,30 @@ const setPins = (
   keyOf: (name: string) => string = (name) => name
 ) => {
   let next = text;
+
   for (const [name, to] of ranges) {
     const from = pins.get(name);
+
     if (from !== undefined && from !== to) {
       next = setPin(next, keyOf(name), from, to);
     }
   }
+
   return next;
 };
 
 const catalogBlock = /^catalog:\n(?<entries>(?:(?: {2}.*)?\n)+)/mu;
+
 const catalogEntry =
   /^ {2}(?<quote>"?)(?<name>[^\s"#]+)\k<quote>: (?<range>\S+)$/gmu;
 
 export const workspaceCatalog = (yaml: string): ReadonlyMap<string, string> => {
   const entries = catalogBlock.exec(yaml)?.groups?.entries;
+
   if (entries === undefined) {
     throw new Error("pnpm-workspace.yaml has no catalog");
   }
+
   return new Map(
     [...entries.matchAll(catalogEntry)].map(({ groups }) => [
       groups?.name ?? "",
@@ -73,6 +82,7 @@ const workspaceFile = (): PinFile => {
   const path = "pnpm-workspace.yaml";
   const file = fileAt(path);
   const pins = workspaceCatalog(file.read());
+
   return {
     path,
     pins,
@@ -93,9 +103,11 @@ const toolchainKeys: ReadonlyMap<string, string> = new Map([
 const generatedFile = (): PinFile => {
   const path = "packages/integrations/src/catalog.ts";
   const file = fileAt(path);
+
   const packages = Object.values(catalog)
     .flatMap((group) => Object.entries(group))
     .filter(([name]) => name !== "vite" && !toolchainKeys.has(name));
+
   const pins = new Map([
     ...packages,
     ["bun", toolchainVersions.bun],
@@ -103,6 +115,7 @@ const generatedFile = (): PinFile => {
     ["pnpm", toolchainVersions.pnpm],
     ["vite-plus", toolchainVersions.vitePlus],
   ]);
+
   return {
     path,
     pins,
@@ -134,15 +147,18 @@ const manifestFile = (): PinFile => {
   const path = "package.json";
   const file = fileAt(path);
   const manifest = manifestSchema.parse(JSON.parse(file.read()));
+
   const pins = new Map([
     ["node", manifest.engines.node],
     ["pnpm", manifest.engines.pnpm],
   ]);
+
   if (manifest.devEngines.packageManager.version !== manifest.engines.pnpm) {
     throw new Error(
       "package.json pins pnpm differently in engines and devEngines"
     );
   }
+
   return {
     path,
     pins,
@@ -177,11 +193,13 @@ export interface Pin {
 
 export const pinsOf = (files: readonly PinFile[]): readonly Pin[] => {
   const names = [...new Set(files.flatMap((file) => [...file.pins.keys()]))];
+
   return names.toSorted().map((name) => ({
     name,
     ranges: new Map(
       files.flatMap((file) => {
         const range = file.pins.get(name);
+
         return range === undefined ? [] : [[file.path, range] as const];
       })
     ),

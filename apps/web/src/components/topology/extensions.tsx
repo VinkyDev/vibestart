@@ -21,14 +21,17 @@ export const Extensions = ({ choosing }: { readonly choosing: Choosing }) => {
   const { addons, baseline, onAddons } = choosing;
   const [open, setOpen] = useState(false);
   const { enter, leave } = useFocusTarget({ group: "foundation" });
+
   const names = registry.addons
     .filter(({ id }) => addons.includes(id))
     .map(({ name }) => name);
+
   return registry.addons.length === 0 ? null : (
     <Popover
       open={open}
       onOpenChange={(next) => {
         setOpen(next);
+
         if (next) {
           enter();
         } else {
@@ -78,6 +81,7 @@ export const Extensions = ({ choosing }: { readonly choosing: Choosing }) => {
             <legend className="sr-only">{m.addons()}</legend>
             {registry.addons.map((addon) => {
               const taken = addons.includes(addon.id);
+
               return (
                 <div
                   className="hover:bg-foreground/[0.04] flex items-center gap-2 rounded-xl px-2 transition-colors"

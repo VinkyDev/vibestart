@@ -22,6 +22,7 @@ export const serverApi = createQueries(
     fetch: fetchFromServer,
     headers: async () => {
       const requestHeaders = await headers();
+
       return { cookie: requestHeaders.get("cookie") ?? "" };
     },
   })

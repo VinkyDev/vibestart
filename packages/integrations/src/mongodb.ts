@@ -17,6 +17,7 @@ import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 export const mongodb = defineIntegration({
   contribute: (ctx) => {
     const database = ctx.name.replaceAll("-", "_");
+
     return [
       contribute(serverEnv, {
         example: `mongodb://localhost:27017/${database}`,

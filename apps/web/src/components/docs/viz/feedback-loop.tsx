@@ -68,6 +68,7 @@ const Gate = ({
   readonly state: GateState;
 }) => {
   const Icon = gate.icon;
+
   return (
     <li
       className={cn(
@@ -125,11 +126,14 @@ export const FeedbackLoop = ({
     if (index < settled) {
       return index === catcher && !fixed ? "failed" : "passed";
     }
+
     if (index === settled && running) {
       return "running";
     }
+
     return running ? "idle" : "skipped";
   };
+
   const caught = !fixed && !running;
 
   return (

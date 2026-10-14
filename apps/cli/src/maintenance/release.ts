@@ -21,10 +21,12 @@ export const runningVersion = packageJson.version;
 
 export const currentSnapshot = async (name: string, input: Input) => {
   const blueprint = createBlueprintSchema(registry).parse(input);
+
   const generation = await generate(registry, blueprint, {
     name,
     version: runningVersion,
   });
+
   return snapshotOf(runningVersion, name, blueprint, generation.files);
 };
 
@@ -35,16 +37,19 @@ export const verifiedSnapshot = (
   { blueprint, name }: Pick<Project, "blueprint" | "name">
 ) => {
   const snapshot = snapshotSchema.parse(JSON.parse(output));
+
   if (snapshot.version !== version || snapshot.name !== name) {
     throw new MaintenanceError(
       "Requested release returned a different identity."
     );
   }
+
   if (serialize(snapshot.blueprint) !== serialize(blueprint)) {
     throw new MaintenanceError(
       `Release ${version} changed the project's choices without a migration.`
     );
   }
+
   return snapshot;
 };
 
@@ -60,12 +65,14 @@ export const snapshotAt = async (
   if (version === runningVersion) {
     return await currentSnapshot(name, blueprint);
   }
+
   if (!versionSchema.safeParse(version).success) {
     throw new MaintenanceError(
       "--to expects an exact version, such as 1.2.3 or 1.2.3-beta.1.",
       2
     );
   }
+
   const result = await execa(
     "npm",
     [
@@ -83,11 +90,13 @@ export const snapshotAt = async (
       reject: false,
     }
   );
+
   if (result.failed) {
     throw new MaintenanceError(
       `Release ${version} could not export its templates: ${result.stderr}`
     );
   }
+
   return verifiedSnapshot(result.stdout, version, { blueprint, name });
 };
 
@@ -96,9 +105,11 @@ export const latestVersion = async () => {
     "https://registry.npmjs.org/vibestart-cli/latest",
     { signal: AbortSignal.timeout(8000) }
   );
+
   if (!response.ok) {
     return null;
   }
+
   return z.object({ version: versionSchema }).parse(await response.json())
     .version;
 };

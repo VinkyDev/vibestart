@@ -26,6 +26,7 @@ export const Path = ({
   readonly title: string;
 }) => {
   const { icon: Icon, tint } = readers[reader];
+
   return (
     <section
       className={cn(

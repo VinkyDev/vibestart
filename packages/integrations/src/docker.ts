@@ -83,13 +83,17 @@ const nodeRuntime = (ctx: Context, read: ReadSlot) => {
   const copies = runtime.flatMap((part) => part.copies ?? []);
   const runs = runtime.flatMap((part) => part.runs ?? []);
   const volumes = runtime.flatMap((part) => part.volumes ?? []);
+
   const [cmd, ...extraCmds] = runtime.flatMap((part) =>
     part.cmd === undefined ? [] : [part.cmd]
   );
+
   if (cmd === undefined || extraCmds.length > 0) {
     throw new Error("Exactly one integration must set the Docker CMD");
   }
+
   const health = hasBackend(ctx) ? "/api/health" : "/";
+
   return [
     [
       ctx.has("bun")
@@ -125,9 +129,11 @@ const deployedPackages = (ctx: Context) => [
 
 const renderDockerfile = (ctx: Context, read: ReadSlot) => {
   const node = ctx.has("node") || ctx.has("bun");
+
   const filters = deployedPackages(ctx)
     .map((name) => `--filter "${name}..."`)
     .join(" ");
+
   const packagePaths = read(packageJson)
     .map((pkg) => pkg.path)
     .filter(
@@ -198,9 +204,11 @@ const dependsOn = (dependencies: readonly (readonly [string, string])[]) =>
 const renderCompose = (ctx: Context, read: ReadSlot) => {
   const { name } = ctx;
   const database = ctx.stack.database !== undefined;
+
   const migrated = database
     ? [["migrate", "service_completed_successfully"] as const]
     : [];
+
   const servers = read(composeServers);
   const appEnv = servers.flatMap((server) => server.appEnv);
   const services = read(composeServices);
@@ -268,6 +276,7 @@ const renderCompose = (ctx: Context, read: ReadSlot) => {
 
 export const renderDevCompose = (ctx: Context, read: ReadSlot) => {
   const volumes = read(composeVolumes);
+
   return `${[
     `name: ${ctx.name}`,
     ["services:", ...read(composeServices).map((service) => service.yaml)].join(
@@ -293,12 +302,15 @@ const deployChoice = (ctx: Context) => {
   if (!ctx.has("node") && !ctx.has("bun")) {
     return "Docker: nginx serving the static build";
   }
+
   if (proxiesToHono(ctx)) {
     return `Docker: the ${ctx.has("next") ? "Next.js standalone" : "Nitro"} server and the Hono server from one image${ctx.has("sqlite") ? ", SQLite on a volume" : ""}`;
   }
+
   const image = ctx.has("next")
     ? "Next.js standalone server"
     : `${ctx.has("tanstack-start") ? "one Nitro server, one image" : "one self-contained image"}, no \`node_modules\` at runtime`;
+
   return `Docker: ${image}${ctx.has("sqlite") ? ", SQLite on a volume" : ""}`;
 };
 
@@ -306,6 +318,7 @@ const serverServes = (ctx: Context, routes: readonly string[]) => {
   if (ctx.has("spa")) {
     return [...routes, "the SPA"];
   }
+
   return hasWebApp(ctx) ? ["the pages", ...routes] : routes;
 };
 
@@ -313,6 +326,7 @@ const appServed = (ctx: Context) => {
   if (ctx.has("spa")) {
     return "the API and the web app";
   }
+
   return hasWebApp(ctx) ? "the app" : "the API";
 };
 
@@ -326,6 +340,7 @@ const apiRoutes = (ctx: Context) => {
   if (ctx.has("orpc")) {
     return ["`/rpc`", "`/api`"];
   }
+
   return ctx.has("openapi") ? ["`/api`"] : ["`/api/health`"];
 };
 
@@ -333,34 +348,45 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
   if (!ctx.has("node") && !ctx.has("bun")) {
     return staticProduction;
   }
+
   const auth = ctx.has("better-auth");
+
   const [cmd] = read(dockerRuntime).flatMap((part) =>
     part.cmd === undefined ? [] : [part.cmd]
   );
+
   const routes = hasBackend(ctx)
     ? [...apiRoutes(ctx), ...(auth ? ["`/api/auth`"] : [])]
     : [];
+
   const server = `\`${cmd?.join(" ")}\``;
   const [apiServer] = read(composeServers);
   const pageRoutes = apiServer === undefined ? routes : [];
+
   const pages = ctx.has("next")
     ? `${server} is the Next.js standalone server for ${joinWords(["the pages", ...pageRoutes])}`
     : `${server} serves ${joinWords(serverServes(ctx, pageRoutes))}`;
+
   const forwarded = ctx.has("orpc") ? "`/rpc` and `/api`" : "`/api`";
+
   const serves =
     apiServer === undefined
       ? `${pages}.`
       : `\`${apiServer.command.join(" ")}\` (the \`${apiServer.name}\` service) serves ${joinWords(routes)};\n- ${pages}, and forwards ${forwarded} to it at \`SERVER_URL\`.`;
+
   const variables = [
     "`DATABASE_URL`",
     ...(auth
       ? ["`BETTER_AUTH_URL` (the public origin)", "`BETTER_AUTH_SECRET`"]
       : []),
   ];
+
   const starts = chosenDatabase(ctx).server
     ? `starts ${databaseName(ctx)}, `
     : "";
+
   const app = appServed(ctx);
+
   if (ctx.stack.database === undefined) {
     return [
       "## Production",
@@ -376,6 +402,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
           ]),
     ].join("\n\n");
   }
+
   return [
     "## Production",
     `\`\`\`sh\n${auth ? "BETTER_AUTH_SECRET=$(openssl rand -base64 32) " : ""}docker compose up --build\n\`\`\``,

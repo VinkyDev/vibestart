@@ -20,6 +20,7 @@ describe("the golden projects", () => {
     const used = new Set(
       Object.values(goldens).flatMap((stack) => Object.values(stack))
     );
+
     expect(
       registry.integrations
         .map((integration) => integration.id)
@@ -31,6 +32,7 @@ describe("the golden projects", () => {
 describe.each(generations)("$golden", ({ generation, golden, stack }) => {
   const { files, setup } = generation;
   const setupWrites = setup.flatMap((command) => command.writes);
+
   const expected = new Map(
     goldenPaths(golden)
       .filter(
@@ -41,6 +43,7 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
         readFileSync(`${goldenRoot(golden)}${file}`, "utf-8"),
       ])
   );
+
   const generated = new Map(files.map((file) => [file.path, file.content]));
 
   it("runs install, then generates the database client, route types or the route tree, and the initial migration", () => {

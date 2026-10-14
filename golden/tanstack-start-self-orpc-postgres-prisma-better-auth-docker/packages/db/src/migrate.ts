@@ -33,6 +33,7 @@ const executeInOrder = async (
   if (statement === undefined) {
     return;
   }
+
   await db.$executeRawUnsafe(statement);
   await executeInOrder(db, rest);
 };
@@ -48,6 +49,7 @@ const applyMigration = async (db: Session, name: string) => {
     path.join(migrationsFolder, name, "migration.sql"),
     "utf-8"
   );
+
   const id = randomUUID();
   const checksum = createHash("sha256").update(script).digest("hex");
   await db.$executeRaw`INSERT INTO _prisma_migrations (id, checksum, migration_name) VALUES (${id}, ${checksum}, ${name})`;
@@ -59,26 +61,32 @@ const applyInOrder = async (db: Session, [name, ...rest]: string[]) => {
   if (name === undefined) {
     return;
   }
+
   await applyMigration(db, name);
   await applyInOrder(db, rest);
 };
 
 const pending = async (db: Session) => {
   await db.$executeRawUnsafe(historyTable);
+
   const unresolved = await db.$queryRaw<
     { migration_name: string }[]
   >`SELECT migration_name FROM _prisma_migrations WHERE finished_at IS NULL AND rolled_back_at IS NULL`;
+
   if (unresolved.length > 0) {
     const names = unresolved.map((row) => row.migration_name).join(", ");
     throw new Error(
       `Migration ${names} failed: repair the schema, then mark it with \`prisma migrate resolve\` before migrating again`
     );
   }
+
   const finished = await db.$queryRaw<
     { migration_name: string }[]
   >`SELECT migration_name FROM _prisma_migrations WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL`;
+
   const applied = new Set(finished.map((row) => row.migration_name));
   const entries = await readdir(migrationsFolder, { withFileTypes: true });
+
   return entries
     .filter((entry) => entry.isDirectory() && !applied.has(entry.name))
     .map((entry) => entry.name)

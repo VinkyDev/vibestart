@@ -111,6 +111,7 @@ export const defineIntegration = ({
 
 export const defineSlot = <T>(id: string): Slot<T> => {
   const collected = new WeakMap<Context, T[]>();
+
   return {
     add: (generation, value) => {
       const values = collected.get(generation) ?? [];

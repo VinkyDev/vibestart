@@ -116,13 +116,16 @@ const addonsFlag = z
   .transform((value, context) => {
     const ids = value === none ? [] : value.split(",");
     const unknown = ids.filter((id) => !addonIds.includes(id));
+
     if (unknown.length > 0) {
       context.addIssue({
         code: "custom",
         message: `--addons takes ${addonIds.join(", ")}, or ${none}; got ${unknown.map((id) => JSON.stringify(id)).join(", ")}`,
       });
+
       return z.NEVER;
     }
+
     return addonsInOrder(registry, ids);
   });
 
@@ -181,11 +184,14 @@ const invalid = (message: string) =>
 /** citty keeps unknown flags as values, so a typo would pass unnoticed. */
 const assertKnownFlags = (rawArgs: readonly string[]) => {
   const known = new Set(Object.keys(args));
+
   for (const token of rawArgs) {
     if (token === "--") {
       return;
     }
+
     const name = /^--(?:no-)?(?<name>[^=]+)/u.exec(token)?.groups?.name;
+
     if (token.startsWith("-") && (name === undefined || !known.has(name))) {
       throw invalid(`Unknown option ${token}.`);
     }
@@ -197,19 +203,23 @@ export const parseOptions = (
   rawArgs: readonly string[]
 ): Options => {
   assertKnownFlags(rawArgs);
+
   const result = argsSchema.safeParse({
     ...parsed,
     kinds: Object.fromEntries(
       registry.kinds.map((kind) => [kind.id, parsed[kind.id]])
     ),
   });
+
   if (!result.success) {
     throw invalid(
       `${result.error.issues.map((issue) => issue.message).join(".\n")}.`
     );
   }
+
   const { data } = result;
   const json = data.json === true;
+
   return {
     addons: data.addons,
     packageManager: data["package-manager"],

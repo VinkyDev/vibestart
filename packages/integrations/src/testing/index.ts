@@ -40,9 +40,11 @@ const hasIntegrationTests = todosExample;
 // The todos example, accounts alone, a server's health, or the pages alone.
 const e2eVariant = (ctx: Context) => {
   const example = exampleVariant(ctx);
+
   if (example !== "none") {
     return example;
   }
+
   return hasBackend(ctx) ? "health" : "home";
 };
 
@@ -54,9 +56,11 @@ const e2eServers = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return "the dev server";
   }
+
   if (ctx.stack.database === undefined) {
     return "the real web app and API server";
   }
+
   return ctx.has("hono")
     ? `the real web app, API, and ${databaseName(ctx)}`
     : `the real server and ${databaseName(ctx)}`;
@@ -65,6 +69,7 @@ const e2eServers = (ctx: Context) => {
 const integrationRow = (ctx: Context) => {
   const sessions = ctx.has("better-auth") ? "real sessions, " : "";
   const authorization = ctx.has("better-auth") ? "authorization, " : "";
+
   return ctx.has("openapi")
     ? [
         "Integration",
@@ -116,6 +121,7 @@ const frontServer = (ctx: Context) => {
   if (ctx.has("next")) {
     return "`next dev` in its own `.next-test-<port>`, beside any running dev server";
   }
+
   return ctx.has("spa") && ctx.has("hono") ? "Vite" : "`vp dev`";
 };
 
@@ -130,6 +136,7 @@ const e2eStack = (ctx: Context) => {
         ]),
     ...(ctx.has("hono") ? ["the real Hono server"] : []),
   ];
+
   return ctx.has("hono")
     ? `${joinWords([...parts, `${frontServer(ctx)} in front`])}, with the same proxy and origin as development`
     : joinWords([...parts, frontServer(ctx)]);
@@ -161,11 +168,13 @@ const isolationSentences = (ctx: Context, runner: BrowserRunner) => [
 // One paragraph, or none for a project whose tests touch no server or database.
 const isolation = (ctx: Context, runner: BrowserRunner) => {
   const sentences = isolationSentences(ctx, runner);
+
   return sentences.length === 0 ? [] : [sentences.join(" ")];
 };
 
 const practice = (ctx: Context, runner: BrowserRunner) => {
   const web = hasWebApp(ctx);
+
   return [
     ...(web ? runner.practice : []),
     ...(hasIntegrationTests(ctx)
@@ -199,6 +208,7 @@ const renderTestsSection = (ctx: Context, runner: BrowserRunner) =>
 
 const support = (ctx: Context) => {
   const variant = e2eVariant(ctx);
+
   return [
     file("apps/web/tests/support/server.ts", renderTestServer(ctx)),
     ...(variant === "account"
@@ -246,13 +256,16 @@ const todosTestPath = "packages/api/tests/integration/todos.test.ts";
 // An anonymous caller names some todo; on MongoDB that is an ObjectId.
 const anonymousTodosTest = (ctx: Context, set: string) => {
   const content = templateContent(ctx, set, todosTestPath);
+
   const named = content.replaceAll(
     "id: 1 }",
     'id: "0123456789abcdef01234567" }'
   );
+
   if (named === content) {
     throw new Error(`${set}/${todosTestPath} names no todo id 1`);
   }
+
   return file(todosTestPath, named);
 };
 
@@ -260,9 +273,11 @@ const anonymousTodosTest = (ctx: Context, set: string) => {
 const stringIdTodosTest = (ctx: Context, set: string) => {
   const content = templateContent(ctx, set, todosTestPath);
   const passed = content.replaceAll("String(todo.id)", "todo.id");
+
   if (passed === content) {
     throw new Error(`${set}/${todosTestPath} converts no todo id`);
   }
+
   return file(todosTestPath, passed);
 };
 
@@ -270,12 +285,14 @@ const mongodbTodosTest = (ctx: Context, set: string) => {
   if (ctx.has("openapi")) {
     return stringIdTodosTest(ctx, set);
   }
+
   return ctx.has("better-auth") ? anonymousTodosTest(ctx, set) : undefined;
 };
 
 const integrationTestFiles = (ctx: Context) => {
   const set = `testing/integration/${apiStyle(ctx)}-${authVariant(ctx)}`;
   const todosTest = ctx.has("mongodb") ? mongodbTodosTest(ctx, set) : undefined;
+
   return todosTest
     ? [...templateFiles(ctx, set, { except: [todosTestPath] }), todosTest]
     : templateFiles(ctx, set);

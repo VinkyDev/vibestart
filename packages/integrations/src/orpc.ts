@@ -30,6 +30,7 @@ const routerPath = "packages/api/src/index.ts";
 // Without the todo example the router holds the health procedure alone.
 const router = (ctx: Context) => {
   const content = templateContent(ctx, "orpc/common", routerPath);
+
   return file(
     routerPath,
     todosExample(ctx)
@@ -60,7 +61,9 @@ const renderHealth = (ctx: Context) => {
       "",
     ].join("\n");
   }
+
   const check = databaseCheck(ctx, "context.db");
+
   return [
     ...importBlock(check.imports),
     'import { publicProcedure } from "#src/procedures.ts";',
@@ -69,6 +72,7 @@ const renderHealth = (ctx: Context) => {
     '  .route({ method: "GET", path: "/health" })',
     `  .handler(${check.async ? "async " : ""}({ context }) => {`,
     `    ${check.statement}`,
+    "",
     '    return { status: "ok" as const };',
     "  });",
     "",

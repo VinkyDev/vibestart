@@ -31,6 +31,7 @@ export const Tech = ({
   readonly paired?: TechIcon;
 }) => {
   const icons = paired === undefined ? [icon] : [icon, paired];
+
   return (
     <p className="-mt-1 mb-5">
       <a

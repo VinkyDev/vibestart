@@ -57,6 +57,7 @@ const evidenceBranch = (github: Github) => {
           )
           .filter((pull) => pull.merge_commit_sha === github.GITHUB_SHA)
           .map((pull) => pull.head);
+
   return heads.find((head) => head.repo?.full_name === github.GITHUB_REPOSITORY)
     ?.ref;
 };
@@ -72,10 +73,13 @@ export const downloadEvidence = (log: (line: string) => void) => {
   const dir = mkdtempSync(path.join(tmpdir(), "vibestart-evidence-"));
   const github = githubSchema.parse(process.env);
   const branch = evidenceBranch(github);
+
   if (branch === undefined) {
     log("No pull request branch of this repository vouches for this run");
+
     return dir;
   }
+
   const runs = runsSchema
     .parse(
       JSON.parse(
@@ -90,8 +94,10 @@ export const downloadEvidence = (log: (line: string) => void) => {
         run.head_repository?.full_name === github.GITHUB_REPOSITORY &&
         String(run.id) !== github.GITHUB_RUN_ID
     );
+
   for (const run of runs) {
     const target = path.join(dir, String(run.id));
+
     try {
       gh([
         "run",
@@ -110,5 +116,6 @@ export const downloadEvidence = (log: (line: string) => void) => {
       log(`${branch} run ${run.id} left no results`);
     }
   }
+
   return dir;
 };

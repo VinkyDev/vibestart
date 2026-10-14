@@ -39,15 +39,19 @@ export const options = (args: readonly string[]) => {
         yes: { default: false, type: "boolean", short: "y" },
       },
     });
+
     if (parsed.values["no-install"] && parsed.values["full-check"]) {
       throw new Error("--no-install and --full-check cannot be combined");
     }
+
     return parsed;
   } catch (error) {
     throw new MaintenanceError(String(error), 2);
   }
 };
+
 export type Options = ReturnType<typeof options>["values"];
+
 export const interactive = () =>
   process.stdin.isTTY && process.stdout.isTTY && process.env.CI !== "true";
 
@@ -55,13 +59,16 @@ export const approve = async (values: Options) => {
   if (values.yes) {
     return;
   }
+
   if (!interactive() || values.json) {
     throw new MaintenanceError(
       "Use --yes to apply the displayed plan, or --dry-run to inspect it.",
       2
     );
   }
+
   const answer = await confirm({ message: "Apply this plan?" });
+
   if (isCancel(answer) || !answer) {
     throw new MaintenanceError("Cancelled", 130);
   }
@@ -78,9 +85,11 @@ export const validateOptions = (
       2
     );
   }
+
   if (values.check && values["dry-run"]) {
     throw new MaintenanceError("Choose --check or --dry-run.", 2);
   }
+
   const restricted = [
     { used: values.to !== undefined, commands: ["upgrade"], flag: "--to" },
     { used: values.list, commands: ["add"], flag: "--list" },
@@ -97,9 +106,11 @@ export const validateOptions = (
       flag: "--no-install/--full-check",
     },
   ];
+
   const invalid = restricted.find(
     (item) => item.used && !item.commands.includes(command)
   );
+
   if (invalid !== undefined) {
     throw new MaintenanceError(
       `${invalid.flag} is not supported by ${command}.`,

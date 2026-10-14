@@ -47,6 +47,7 @@ describe("project installation", () => {
         async (command) =>
           await Promise.resolve(command !== "vp" || globalVitePlus)
       );
+
       const result = await create(
         {
           addons: [],
@@ -72,20 +73,25 @@ describe("project installation", () => {
         jsonUi,
         "test"
       );
+
       const commands = result.steps.map(({ run }) => run);
+
       const installs = commands.filter(
         (run) =>
           run === "vp install" ||
           run === "bun install" ||
           run.startsWith("npx --yes pnpm@")
       );
+
       expect(installs).toHaveLength(1);
+
       const expected = globalVitePlus
         ? /^vp install$/u
         : new RegExp(
             packageManager === "bun" ? "^bun install$" : "^npx --yes pnpm@",
             "u"
           );
+
       expect(installs[0]).toMatch(expected);
       expect(commands).toContain("vp run db:generate --name init");
       expect(commands.slice(-2)).toStrictEqual(["vp fmt", "vp check"]);

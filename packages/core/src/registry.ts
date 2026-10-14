@@ -34,17 +34,20 @@ const findDuplicate = (values: readonly string[]) =>
 
 export const defineRegistry = (registry: Registry): Registry => {
   const kindIds = registry.kinds.map((kind) => kind.id);
+
   // `Context.has` takes either, so an add-on and an integration share one namespace.
   const integrationIds = [
     ...registry.integrations.map((i) => i.id),
     ...registry.addons.map((addon) => addon.id),
   ];
+
   const duplicate =
     findDuplicate(kindIds) ??
     findDuplicate(integrationIds) ??
     findDuplicate(
       Object.values(registry.catalog).flatMap((group) => Object.keys(group))
     );
+
   if (duplicate !== undefined) {
     throw new Error(`Registry declares "${duplicate}" twice`);
   }
@@ -55,6 +58,7 @@ export const defineRegistry = (registry: Registry): Registry => {
         `Integration "${integration.id}" has unknown kind "${integration.kind}"`
       );
     }
+
     for (const capability of [
       ...integration.provides,
       ...integration.requires.flatMap(alternatives),
@@ -87,9 +91,11 @@ export const getIntegration = <I extends IntegrationInfo>(
   id: string
 ): I => {
   const integration = registry.integrations.find((i) => i.id === id);
+
   if (integration === undefined) {
     throw new Error(`Unknown integration "${id}"`);
   }
+
   return integration;
 };
 
@@ -123,6 +129,7 @@ export const addonsInOrder = (
       throw new Error(`Unknown add-on "${id}"`);
     }
   }
+
   return registry.addons
     .filter((addon) => ids.includes(addon.id))
     .map((addon) => addon.id);

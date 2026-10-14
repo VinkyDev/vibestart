@@ -37,6 +37,8 @@ export const getQueryClient = () => {
   if (environmentManager.isServer()) {
     return createQueryClient();
   }
+
   browserQueryClient ??= createQueryClient();
+
   return browserQueryClient;
 };

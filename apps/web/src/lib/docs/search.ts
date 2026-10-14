@@ -9,6 +9,7 @@ const server = initAdvancedSearch({
       source.getPages(getLocale()).map(async (page) => {
         const group = groupOf.get(page.url);
         const { structuredData } = await page.data.load();
+
         return {
           breadcrumbs: group === undefined ? [] : [group],
           description: page.data.description,

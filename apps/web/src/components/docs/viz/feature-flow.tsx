@@ -98,6 +98,7 @@ const files = [
 
 const PathName = ({ path }: { readonly path: string }) => {
   const cut = path.lastIndexOf("/") + 1;
+
   return (
     <span className="min-w-0 truncate">
       <span className="text-muted-foreground">{path.slice(0, cut)}</span>

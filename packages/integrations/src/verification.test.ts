@@ -18,9 +18,11 @@ const stack = legalStacks(registry).find(
   (candidate) =>
     candidate.deployment === undefined && candidate.backend === "hono"
 );
+
 if (stack === undefined) {
   throw new Error("No Hono stack without a deployment");
 }
+
 const sibling = verifiedAs(stack);
 const witness = "some-covering-stack";
 const addons = defaultAddons(registry);
@@ -41,17 +43,20 @@ const covering = async (
 ): Promise<Projection> => {
   const projection = emptyProjection();
   projection.linux[witness] = record;
+
   const fingerprints = await Promise.all(
     managers.map(
       async (packageManager) => await fingerprintOf(sibling, packageManager)
     )
   );
+
   for (const [index, packageManager] of managers.entries()) {
     projection.coverage[packageManager][taskLabel(sibling, packageManager)] = {
       by: witness,
       fingerprint: fingerprints[index] ?? "",
     };
   }
+
   return projection;
 };
 

@@ -34,12 +34,15 @@ export const mergeFile = (
   if (target === base || target === null || local === target) {
     return { after: local, before: local, conflict: false, path };
   }
+
   if (local === base) {
     return { after: target, before: local, conflict: false, path };
   }
+
   if (local === null) {
     return { after: target, before: local, conflict: true, path };
   }
+
   if (base === null) {
     return {
       after: conflictMarkers(local, base, target),
@@ -48,8 +51,10 @@ export const mergeFile = (
       path,
     };
   }
+
   if (/\.jsonc?$/u.test(path)) {
     const merged = mergeJson(base, local, target);
+
     return {
       after: merged.conflict
         ? conflictMarkers(local, base, target)
@@ -59,6 +64,7 @@ export const mergeFile = (
       path,
     };
   }
+
   const merged = mergeDiff3(
     local.split("\n"),
     base.split("\n"),
@@ -67,6 +73,7 @@ export const mergeFile = (
       label: { a: "project", o: "previous template", b: "target template" },
     }
   );
+
   return {
     after: merged.result.join("\n"),
     before: local,
@@ -84,6 +91,7 @@ export const diffText = ({
     before?.split("\n") ?? [],
     after?.split("\n") ?? []
   );
+
   return [
     `--- ${before === null ? "/dev/null" : path}`,
     `+++ ${after === null ? "/dev/null" : path}`,

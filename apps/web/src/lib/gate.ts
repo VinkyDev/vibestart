@@ -24,10 +24,13 @@ const manifestSchema = z.object({
 
 const readyCommands = (project: Project): readonly string[] => {
   const manifest = project.files.find((file) => file.path === "package.json");
+
   if (manifest === undefined) {
     return [];
   }
+
   const { scripts } = manifestSchema.parse(JSON.parse(manifest.content));
+
   return scripts?.ready?.split("&&").map((command) => command.trim()) ?? [];
 };
 

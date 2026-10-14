@@ -32,8 +32,10 @@ import {
 // drizzle-kit runs from `packages/db`, so it loads the server's `.env` itself.
 const drizzleConfig = (ctx: Context) => {
   const { dir } = serverApp(ctx);
+
   if (ctx.has("sqlite")) {
     const webDir = `../../${dir}`;
+
     return `import { existsSync } from "node:fs";
 import path from "node:path";
 
@@ -56,6 +58,7 @@ export default defineConfig({
 });
 `;
   }
+
   return `import { existsSync } from "node:fs";
 
 import { defineConfig } from "drizzle-kit";
@@ -99,6 +102,7 @@ const packageOwns = (ctx: Context) => {
   const { id, name } = sqlDatabase(ctx);
   const dialect = id === "postgres" ? "" : ` for ${name}`;
   const tables = ctx.has("better-auth") ? ", including Better Auth tables" : "";
+
   return `Drizzle schema${dialect} (\`src/schema/\`${tables}), relations, migrations (\`src/migrations/\`), \`createDb\``;
 };
 
@@ -106,6 +110,7 @@ export const drizzle = defineIntegration({
   contribute: (ctx) => {
     const { dir } = serverApp(ctx);
     const database = sqlDatabase(ctx).id;
+
     return [
       ...templateFiles(ctx, "drizzle/common"),
       ...templateFiles(ctx, `drizzle/${database}/common`),

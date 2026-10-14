@@ -60,11 +60,14 @@ const fadeWidth = 32;
  */
 const reveal = (option: HTMLLabelElement | null) => {
   const options = option?.parentElement ?? null;
+
   if (option === null || options === null) {
     return;
   }
+
   const start = option.offsetLeft - fadeWidth;
   const end = option.offsetLeft + option.offsetWidth + fadeWidth;
+
   if (start < options.scrollLeft) {
     options.scrollTo({ left: start });
   } else if (end > options.scrollLeft + options.clientWidth) {
@@ -86,6 +89,7 @@ const Layer = ({
   readonly stack: Stack;
 }) => {
   const current = stack[kind] ?? null;
+
   return (
     <motion.div
       aria-label={roles[kind].role}
@@ -120,6 +124,7 @@ const Layer = ({
           const id = option?.id ?? null;
           const checked = id === current;
           const reachable = checked || outcome(stack, kind, id) !== undefined;
+
           return (
             <label
               className={cn(
@@ -181,17 +186,21 @@ const Halo = ({ stack }: { readonly stack: Stack }) => (
 
 export const Composer = () => {
   const { compose, entry } = useComposed();
+
   const [adjustment, setAdjustment] = useState<Adjustment>({
     changes: [],
     version: 0,
   });
+
   const words = commandWords(flagsOf(entry.stack), previewName, "pnpm");
 
   const choose = (kind: Decision, id: string | null) => {
     const next = outcome(entry.stack, kind, id);
+
     if (next === undefined) {
       return;
     }
+
     compose(next.entry.stack);
     setAdjustment({ changes: next.changes, version: adjustment.version + 1 });
   };

@@ -83,6 +83,7 @@ export class IllegalStackError extends Error {
 }
 
 export const maxProjectNameLength = 50;
+
 const projectName = new RegExp(
   `^[a-z][a-z0-9-]{0,${maxProjectNameLength - 1}}$`,
   "u"
@@ -107,10 +108,13 @@ export const generate = async (
 ): Promise<Generation> => {
   const { name, version } = options;
   const nameError = projectNameError(name);
+
   if (nameError !== undefined) {
     throw new Error(nameError);
   }
+
   const violations = check(registry, blueprint.stack);
+
   if (violations.length > 0) {
     throw new IllegalStackError(violations);
   }
@@ -118,6 +122,7 @@ export const generate = async (
   const integrations = selectedIntegrations(registry, blueprint.stack);
   const addonIds = addonsInOrder(registry, blueprint.addons);
   const addons = registry.addons.filter((addon) => addonIds.includes(addon.id));
+
   const ctx: Context = {
     packageManager: blueprint.packageManager ?? "pnpm",
     addons: addonIds,
@@ -125,8 +130,10 @@ export const generate = async (
       if (registry.addons.some((addon) => addon.id === id)) {
         return addonIds.includes(id);
       }
+
       // A misspelled id would otherwise read as an integration the stack left out.
       getIntegration(registry, id);
+
       return integrations.some((integration) => integration.id === id);
     },
     name,
@@ -135,11 +142,13 @@ export const generate = async (
   };
 
   const read: ReadSlot = (slot) => slot.values(ctx);
+
   const owned: {
     path: string;
     owner: string;
     render: (read: ReadSlot) => string;
   }[] = [];
+
   // Add-ons after the stack, so a slot lists what the stack contributes first.
   for (const integration of [...integrations, ...addons]) {
     for (const contribution of integration.contribute(ctx)) {
@@ -159,6 +168,7 @@ export const generate = async (
     scope: ctx.scope,
     workspaceContributions: read(pnpmWorkspace),
   });
+
   const coreFiles = [
     ...packages,
     ...(ctx.packageManager === "bun"
@@ -189,6 +199,7 @@ export const generate = async (
   ].map(({ path, content }) => ({ content, owner: "core", path }));
 
   const files = new Map<string, GeneratedFile>();
+
   for (const generated of [
     ...coreFiles,
     ...owned.map(({ path, owner, render }) => ({
@@ -198,18 +209,22 @@ export const generate = async (
     })),
   ]) {
     const existing = files.get(generated.path);
+
     if (existing !== undefined) {
       throw new Error(
         `${generated.path} is contributed by both ${existing.owner} and ${generated.owner}`
       );
     }
+
     files.set(generated.path, generated);
   }
 
   const [format, ...otherFormatters] = read(formatter);
+
   if (otherFormatters.length > 0) {
     throw new Error("More than one integration formats the project");
   }
+
   return {
     files: await Promise.all(
       [...files.values()]

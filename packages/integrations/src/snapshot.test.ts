@@ -27,15 +27,18 @@ const add = (
 
 const owners = new Map<string, Map<string, Map<string, string[]>>>();
 const setups = new Map<string, string[]>();
+
 for (const { files, label, setup } of generations) {
   for (const file of files) {
     const paths =
       owners.get(file.owner) ?? new Map<string, Map<string, string[]>>();
+
     owners.set(file.owner, paths);
     const variants = paths.get(file.path) ?? new Map<string, string[]>();
     paths.set(file.path, variants);
     add(variants, file.content, label);
   }
+
   add(
     setups,
     `${setup.map((command) => `${command.run}  # writes ${command.writes.join(", ")}`).join("\n")}\n`,
@@ -72,10 +75,12 @@ describe("stack snapshots", () => {
 
   it.each([...owners.keys()].toSorted())("%s", async (owner) => {
     const paths = owners.get(owner) ?? new Map<string, Map<string, string[]>>();
+
     const rendered = [...paths]
       .toSorted(([a], [b]) => a.localeCompare(b))
       .flatMap(([file, variants]) => render(file, variants))
       .join("\n");
+
     await expect(rendered).toMatchFileSnapshot(
       `__snapshots__/owners/${owner}.txt`
     );

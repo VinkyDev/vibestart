@@ -13,6 +13,7 @@ const electron = z.string().parse(createRequire(import.meta.url)("electron"));
 const isUp = async () => {
   try {
     await fetch(rendererUrl);
+
     return true;
   } catch {
     return false;
@@ -39,6 +40,9 @@ const app = spawn(electron, ["."], {
 const stop = () => {
   app.kill();
 };
+
 process.on("SIGINT", stop);
+
 process.on("SIGTERM", stop);
+
 app.on("exit", (code) => process.exit(code ?? 0));

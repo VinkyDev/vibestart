@@ -6,6 +6,7 @@ import { api, client } from "../support/api.ts";
 const createTodo = async (title: string) => {
   const response = await client.todos.$post({ json: { title } });
   expect(response.status).toBe(201);
+
   return await parseResponse(response);
 };
 

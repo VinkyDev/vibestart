@@ -11,6 +11,7 @@ const purpose = (command: string, gate: Gate): string | undefined => {
   if (command.startsWith("vp run db:generate")) {
     return m.gate_migrate();
   }
+
   const purposes = new Map([
     ["vp build apps/web", () => m.gate_build_web()],
     ["vp check", () => m.gate_check()],
@@ -21,6 +22,7 @@ const purpose = (command: string, gate: Gate): string | undefined => {
     ["vp run typegen", () => m.gate_typegen()],
     ["vp test", () => m.gate_test({ count: gate.tests })],
   ]);
+
   return purposes.get(command)?.();
 };
 
@@ -75,13 +77,16 @@ export const Steps = ({
     <ol className="flex flex-col">
       {gate.commands.map((command, index) => {
         let state: "done" | "next" | "pending" = "pending";
+
         if (index < done) {
           state = "done";
         } else if (index === done && replaying) {
           state = "next";
         }
+
         const last = index === gate.commands.length - 1;
         const said = purpose(command, gate);
+
         return (
           <li
             className={cn("relative flex gap-3.5", !last && "pb-3.5")}

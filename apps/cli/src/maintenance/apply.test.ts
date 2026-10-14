@@ -9,6 +9,7 @@ import { readText, writeText } from "#/maintenance/files.ts";
 import { snapshotOf } from "#/maintenance/model.ts";
 
 const roots: string[] = [];
+
 const change = (file: string, before: string, after: string) => ({
   after,
   before,
@@ -28,6 +29,7 @@ describe("writing a plan", () => {
     roots.push(cwd);
     writeText(cwd, "package.json", "{}\n");
     writeText(cwd, "Dockerfile", "FROM edited-after-planning\n");
+
     const plan = {
       changes: [
         change("package.json", "{}\n", '{"private":true}\n'),
@@ -42,6 +44,7 @@ describe("writing a plan", () => {
         []
       ),
     };
+
     expect(() => {
       writePlan(cwd, plan);
     }).toThrow("Changed since planning: Dockerfile");

@@ -15,12 +15,16 @@ import {
 } from "#src/main/renderer-route.ts";
 
 const root = mkdtempSync(path.join(tmpdir(), "renderer-"));
+
 mkdirSync(path.join(root, "assets"));
+
 writeFileSync(path.join(root, "index.html"), "<html></html>");
+
 writeFileSync(path.join(root, "assets", "app.js"), "");
 
 const fileOf = (requestUrl: string) => {
   const url = parseRendererUrl(requestUrl);
+
   return url === null ? null : rendererFile(url, root);
 };
 

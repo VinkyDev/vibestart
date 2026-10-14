@@ -17,6 +17,7 @@ const Nav = ({
   readonly onNavigate?: () => void;
 }) => {
   const { pathname } = useLocation();
+
   return (
     <nav aria-label={m.docs_nav()} className="flex flex-col gap-6">
       {nav.map((group, index) => (

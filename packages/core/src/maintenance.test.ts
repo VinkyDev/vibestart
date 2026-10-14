@@ -35,10 +35,13 @@ describe("three-way template maintenance", () => {
 
   it("preserves JSONC comments and custom scripts while updating a nearby catalog key", () => {
     const base = '{"catalog":{"hono":"1"},"scripts":{"ready":"vp check"}}';
+
     const local =
       '{// business configuration\n"catalog":{"hono":"1"},"scripts":{"ready":"vp check","business":"test"}}';
+
     const target =
       '{"catalog":{"hono":"2"},"scripts":{"ready":"vp check && knip"}}';
+
     const result = mergeFile("package.json", base, local, target);
     expect(result.conflict).toBeFalsy();
     expect(result.after).toContain("// business configuration");

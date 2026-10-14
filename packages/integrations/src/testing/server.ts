@@ -10,11 +10,13 @@ const warmUp = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return [];
   }
+
   const routes = [
     "/",
     ...(ctx.has("better-auth") ? ["/login"] : []),
     ...(todosExample(ctx) ? ["/todos"] : []),
   ].map((route) => `"${route}"`);
+
   return [
     `    await Promise.all([${routes.join(", ")}].map(async (route) => {`,
     `      const response = await fetch(\`\${baseURL}\${route}\`);`,
@@ -56,6 +58,7 @@ const loadEnv = (ctx: Context) =>
         "  if (existsSync(envFile)) {",
         "    process.loadEnvFile(envFile);",
         "  }",
+        "",
       ]
     : [];
 
@@ -95,14 +98,17 @@ const singleServerBody = (ctx: Context) => ({
 // A failed start stops what it started, so no server outlives the run holding its port.
 const startBody = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
+
   const { ports, starts } = ctx.has("hono")
     ? separateServerBody(ctx)
     : singleServerBody(ctx);
+
   return [
     ...loadEnv(ctx),
     ...ports,
     ...(database ? ["  const database = await createTestDatabase();"] : []),
     "  const children: ChildProcess[] = [];",
+    "",
     "  const stopAll = async () => {",
     "    await Promise.all(children.map(stop));",
     ...(database ? ["    await database.remove();"] : []),
@@ -117,6 +123,7 @@ const startBody = (ctx: Context) => {
     "    await stopAll();",
     "    throw error;",
     "  }",
+    "",
     "  return stopAll;",
   ];
 };
@@ -163,6 +170,7 @@ const helpers = (
     async () => {
       const response = await fetch(url);
       await response.arrayBuffer();
+
       if (!response.ok) {
         throw new Error(\`Server did not become healthy at \${url}\`);
       }
@@ -184,21 +192,25 @@ const stop = async (child: ChildProcess) => {
   if (child.pid === undefined || child.exitCode !== null || child.signalCode !== null) {
     return;
   }
+
   const exited = once(child, "exit", {
     signal: process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
   });
+
   if (process.platform === "win32") {
     // taskkill may report already-exited descendants as errors.
     const result = spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
       stdio: "ignore",
       timeout: 5000,
     });
+
     if (result.error || result.status !== 0) {
       child.kill();
     }
   } else {
     process.kill(-child.pid, "SIGTERM");
   }
+
   await exited;
 };
 `;

@@ -19,16 +19,21 @@ const { files } = await generate(
   },
   { name: "test-app" }
 );
+
 const server = files.find(
   (file) => file.path === "apps/web/tests/support/server.ts"
 );
+
 const stopSource = server?.content.match(
   /const stop = async[\s\S]+?(?=\nexport const startTestServer)/u
 )?.[0];
+
 if (stopSource === undefined) {
   throw new Error("Generated test server has no stop helper");
 }
+
 const code = `${stripTypeScriptTypes(stopSource)}\nstop(child);`;
+
 type TaskkillResult = Pick<SpawnSyncReturns<Buffer>, "status" | "error">;
 
 const harness = (platform = "win32") => {
@@ -36,17 +41,22 @@ const harness = (platform = "win32") => {
     pid: 1234,
     kill: vi.fn<ChildProcess["kill"]>(() => false),
   });
+
   const taskkill = vi.fn<() => TaskkillResult>(() => ({
     status: 0,
   }));
+
   const kill = vi.fn<typeof process.kill>();
   const controller = new AbortController();
+
   const timeout = vi.fn<typeof AbortSignal.timeout>((delay) => {
     setTimeout(() => {
       controller.abort();
     }, delay);
+
     return controller.signal;
   });
+
   const context = {
     child,
     AbortSignal: { timeout },
@@ -54,6 +64,7 @@ const harness = (platform = "win32") => {
     process: { platform, kill },
     spawnSync: taskkill,
   };
+
   return {
     child,
     taskkill,
@@ -83,9 +94,11 @@ describe("generated test-server teardown", () => {
       const h = harness();
       h.taskkill.mockReturnValue({ status });
       let completed = false;
+
       const stopped = h.stop().then(() => {
         completed = true;
       });
+
       await vi.advanceTimersByTimeAsync(100);
       expect(completed).toBeFalsy();
       expect(h.taskkill).toHaveBeenCalledWith(
@@ -111,6 +124,7 @@ describe("generated test-server teardown", () => {
     h.taskkill.mockReturnValue(result);
     h.child.kill.mockImplementation(() => {
       h.exit();
+
       return true;
     });
     await h.stop();

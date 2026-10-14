@@ -4,6 +4,7 @@ export const strokes = {
   back: "M9.5 7.5 16 24.5",
   front: "M22.5 7.5 16 24.5",
 } as const;
+
 export const strokeWidth = 6.5;
 export const backInk = 0.42;
 
@@ -16,6 +17,7 @@ export const clearing =
 
 export const Logo = ({ className }: { readonly className?: string }) => {
   const clip = useId();
+
   return (
     <svg
       aria-hidden

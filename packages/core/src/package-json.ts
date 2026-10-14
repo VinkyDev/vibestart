@@ -59,12 +59,14 @@ const setOnce = <T>(
     if (target.has(key)) {
       throw new Error(`${where}: "${key}" is contributed twice`);
     }
+
     target.set(key, value);
   }
 };
 
 const collectPackages = (contributions: readonly PackageJsonContribution[]) => {
   const packages = new Map<string, Package>();
+
   for (const contribution of contributions) {
     const pkg = packages.get(contribution.path) ?? {
       dependencies: new Set(),
@@ -78,6 +80,7 @@ const collectPackages = (contributions: readonly PackageJsonContribution[]) => {
       peerDependencies: new Set(),
       scripts: new Map(),
     };
+
     packages.set(contribution.path, pkg);
     const where = `${contribution.path}/package.json`;
 
@@ -85,8 +88,10 @@ const collectPackages = (contributions: readonly PackageJsonContribution[]) => {
       if (pkg.main !== undefined) {
         throw new Error(`${where}: main is contributed twice`);
       }
+
       pkg.main = contribution.main;
     }
+
     setOnce(pkg.imports, Object.entries(contribution.imports ?? {}), where);
     setOnce(pkg.exports, Object.entries(contribution.exports ?? {}), where);
     setOnce(pkg.engines, Object.entries(contribution.engines ?? {}), where);
@@ -102,22 +107,28 @@ const collectPackages = (contributions: readonly PackageJsonContribution[]) => {
       Object.entries(contribution.derivedScripts ?? {}),
       where
     );
+
     for (const name of contribution.dependencies ?? []) {
       pkg.dependencies.add(name);
     }
+
     for (const name of contribution.devDependencies ?? []) {
       pkg.devDependencies.add(name);
     }
+
     for (const name of contribution.peerDependencies ?? []) {
       pkg.peerDependencies.add(name);
     }
+
     if (contribution.devEngines !== undefined) {
       if (pkg.devEngines !== undefined) {
         throw new Error(`${where}: devEngines is contributed twice`);
       }
+
       pkg.devEngines = contribution.devEngines;
     }
   }
+
   return [...packages.values()];
 };
 
@@ -149,9 +160,12 @@ export const renderPackageJsons = (
   const catalogNames = new Set(
     Object.values(catalog).flatMap((group) => Object.keys(group))
   );
+
   const packages = collectPackages(contributions);
+
   const packageName = (path: string) =>
     path === "." ? name : `${scope}/${path.split("/").at(-1)}`;
+
   const workspaceNames = new Set(
     packages
       .filter((pkg) => pkg.path !== ".")
@@ -160,30 +174,37 @@ export const renderPackageJsons = (
 
   const rendered = packages.map((pkg) => {
     const used = new Set<string>();
+
     const spec = (dependency: string) => {
       if (workspaceNames.has(dependency)) {
         return "workspace:*";
       }
+
       if (!catalogNames.has(dependency)) {
         throw new Error(
           `${pkg.path}/package.json depends on "${dependency}", which is neither a workspace package nor in the catalog`
         );
       }
+
       used.add(dependency);
+
       return "catalog:";
     };
+
     // A runtime dependency already satisfies a development-time one.
     const devDependencies = new Set(
       [...pkg.devDependencies].filter(
         (dependency) => !pkg.dependencies.has(dependency)
       )
     );
+
     const specs = (names: ReadonlySet<string>) =>
       Object.fromEntries(
         [...names]
           .toSorted()
           .map((dependency) => [dependency, spec(dependency)])
       );
+
     const scripts = new Map(
       [...pkg.scripts].map(([key, render]) => [key, render(read)])
     );
@@ -208,8 +229,9 @@ export const renderPackageJsons = (
       ["devEngines", pkg.devEngines, pkg.devEngines !== undefined],
       ["engines", Object.fromEntries(pkg.engines), pkg.engines.size > 0],
     ];
+
     const manifest = Object.fromEntries(
-      fields.filter((field) => field[2]).map(([key, value]) => [key, value])
+      fields.flatMap(([key, value, present]) => (present ? [[key, value]] : []))
     );
 
     return {
@@ -218,7 +240,9 @@ export const renderPackageJsons = (
       path: pkg.path === "." ? "package.json" : `${pkg.path}/package.json`,
     };
   });
+
   const root = rendered.find((pkg) => pkg.path === "package.json");
+
   if (packageManager === "bun" && root !== undefined) {
     Object.assign(
       root.manifest,
@@ -230,6 +254,7 @@ export const renderPackageJsons = (
       )
     );
   }
+
   return rendered.map(({ manifest, ...pkg }) => ({
     ...pkg,
     content: `${JSON.stringify(manifest, null, 2)}\n`,

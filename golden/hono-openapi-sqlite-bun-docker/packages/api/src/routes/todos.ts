@@ -98,9 +98,11 @@ export const todoRoutes = ({ db }: Services) =>
         .insert(todos)
         .values(c.req.valid("json"))
         .returning();
+
       if (created === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(created, 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -109,6 +111,7 @@ export const todoRoutes = ({ db }: Services) =>
         .set(c.req.valid("json"))
         .where(eq(todos.id, c.req.valid("param").id))
         .returning();
+
       return updated === undefined
         ? c.json(todoNotFound, 404)
         : c.json(updated, 200);
@@ -118,6 +121,7 @@ export const todoRoutes = ({ db }: Services) =>
         .delete(todos)
         .where(eq(todos.id, c.req.valid("param").id))
         .returning();
+
       return deleted === undefined
         ? c.json(todoNotFound, 404)
         : c.json(deleted, 200);

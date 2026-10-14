@@ -9,6 +9,7 @@ const home = getRouteApi("/");
 export const useComposed = () => {
   const search = home.useSearch();
   const navigate = home.useNavigate();
+
   return {
     compose: (stack: Stack) => {
       void navigate({
