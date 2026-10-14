@@ -21,29 +21,24 @@ const { testDatabaseName } = z
     )
   );
 
-const bytes = (value: string) => new TextEncoder().encode(value).length;
-const suffix = /_test_[0-9a-f]{8}$/u;
-
-// PostgreSQL allows 63 bytes of UTF-8, which is within MySQL's 64 characters.
+// PostgreSQL allows 63 bytes and MySQL 64 characters; word characters read the same in SQL and URLs.
 describe("testDatabaseName", () => {
   it.each([
     "app",
-    "a".repeat(63),
     "a".repeat(100),
-    "数据库".repeat(40),
-    "😀".repeat(40),
-  ])("fits the identifier limit for %s", (configured) => {
-    const name = testDatabaseName(configured);
-    expect(bytes(name)).toBeLessThanOrEqual(63);
-    expect(name).toMatch(suffix);
-  });
+    encodeURIComponent("数据库".repeat(40)),
+    encodeURIComponent('a"b`c?d#e f%g'),
+  ])(
+    "names a word-character database within the limit for %s",
+    (configured) => {
+      expect(testDatabaseName(configured)).toMatch(
+        /^\w{0,49}_test_[0-9a-f]{8}$/u
+      );
+    }
+  );
 
-  it("keeps a name that fits and cuts one that does not between characters", () => {
-    const long = "数据库".repeat(40);
-    expect(testDatabaseName("app")).toMatch(/^app_test_/u);
-    expect(
-      long.startsWith(testDatabaseName(long).replace(suffix, ""))
-    ).toBeTruthy();
+  it("keeps a name that fits", () => {
+    expect(testDatabaseName("my_app")).toMatch(/^my_app_test_/u);
   });
 
   it("randomizes the name", () => {

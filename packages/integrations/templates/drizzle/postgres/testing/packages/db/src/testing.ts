@@ -22,17 +22,16 @@ export const createTestDatabase = async () => {
   }
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
-  const name = testDatabaseName(decodeURIComponent(adminUrl.pathname.slice(1)));
-  const sqlName = name.replaceAll('"', '""');
+  const name = testDatabaseName(adminUrl.pathname.slice(1));
   url.pathname = `/${name}`;
 
-  await runAsAdmin(adminUrl, `create database "${sqlName}"`);
+  await runAsAdmin(adminUrl, `create database "${name}"`);
   const db = createDb(url.href);
   const remove = async () => {
     try {
       await db.$client.end();
     } finally {
-      await runAsAdmin(adminUrl, `drop database "${sqlName}" with (force)`);
+      await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
     }
   };
   try {
