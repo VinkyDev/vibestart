@@ -12,13 +12,13 @@ export const NavLinks = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-4 text-sm">
+    <nav className="flex gap-1 text-sm">
       {links.map(({ href, label }) => (
         <Link
           className={
             pathname === href
-              ? "text-foreground font-medium"
-              : "text-muted-foreground hover:text-foreground transition-colors"
+              ? "bg-muted text-foreground rounded-md px-2.5 py-1 font-medium"
+              : "text-muted-foreground hover:text-foreground rounded-md px-2.5 py-1 font-medium transition-colors"
           }
           href={href}
           key={href}

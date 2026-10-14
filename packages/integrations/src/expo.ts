@@ -7,7 +7,13 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import { hasBackend, hasWebApp, stackHeadline, todosExample } from "#/app.ts";
+import {
+  hasBackend,
+  hasWebApp,
+  listStack,
+  stackHeadline,
+  todosExample,
+} from "#/app.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
 import { openapiQueriesContent } from "#/openapi.ts";
@@ -132,33 +138,32 @@ const rootLayout = (ctx: Context) => {
   );
 };
 
-const linkClass = 'className="text-primary underline"';
+// A tappable row; `href` is the attribute's value as written in JSX, a string literal or `{expression}`, and `label` is JSX text.
+const linkRow = (href: string, label: string) => [
+  `<Link asChild href=${href}>`,
+  '<Pressable className="flex-row items-center justify-between active:opacity-60">',
+  `<Text className="text-primary font-semibold">${label}</Text>`,
+  '<ChevronRight className="text-primary" size={18} />',
+  "</Pressable>",
+  "</Link>",
+];
 
 // Signed out, the home screen offers the sign-in; signed in, the todos when there are any.
 const accountCard = (todos: boolean) => [
   "<Card>",
   "<UserMenu />",
   ...(todos
-    ? [
-        `<Link ${linkClass} href={session === null ? "/login" : "/todos"}>`,
-        '{session === null ? "Sign in to keep todos" : "Open your todos"}',
-        "</Link>",
-      ]
-    : [
-        "{session === null && (",
-        `<Link ${linkClass} href="/login">`,
-        "Sign in",
-        "</Link>",
-        ")}",
-      ]),
+    ? linkRow(
+        '{session === null ? "/login" : "/todos"}',
+        '{session === null ? "Sign in to keep todos" : "Open your todos"}'
+      )
+    : ["{session === null && (", ...linkRow('"/login"', "Sign in"), ")}"]),
   "</Card>",
 ];
 
 const todosCard = [
   "<Card>",
-  `<Link ${linkClass} href="/todos">`,
-  "Open the todos",
-  "</Link>",
+  ...linkRow('"/todos"', "Open the todos"),
   "</Card>",
 ];
 
@@ -167,26 +172,35 @@ const homeScreen = (ctx: Context) =>
     const auth = ctx.has("better-auth");
     const todos = todosExample(ctx);
 
+    const links = auth || todos;
+
+    const listed = listStack(read(stackHeadline));
+
     const content = [
-      '<ScrollView className="bg-background" contentContainerClassName="gap-4 p-4">',
-      "<Card>",
-      `<Text className="text-2xl font-semibold">${ctx.name}</Text>`,
-      `<Text className="text-muted-foreground">${read(stackHeadline).join(" · ")}</Text>`,
+      '<ScrollView className="bg-background" contentContainerClassName="gap-6 px-5 py-8">',
+      '<View className="gap-3">',
+      `<Text className="text-4xl font-semibold tracking-tight">${ctx.name}</Text>`,
+      `<Text className="text-muted-foreground leading-6">${listed} on Vite+.</Text>`,
       ...(hasBackend(ctx) ? ["<ApiStatus />"] : []),
-      "</Card>",
+      "</View>",
       ...(auth ? accountCard(todos) : []),
       ...(!auth && todos ? todosCard : []),
       "</ScrollView>",
     ];
 
     return [
-      ...(auth || todos ? ['import { Link } from "expo-router";'] : []),
-      'import { ScrollView } from "react-native";',
+      ...(links
+        ? [
+            'import { Link } from "expo-router";',
+            'import { ChevronRight } from "lucide-react-native";',
+          ]
+        : []),
+      `import { ${links ? "Pressable, ScrollView, View" : "ScrollView, View"} } from "react-native";`,
       "",
       ...(hasBackend(ctx)
         ? ['import { ApiStatus } from "#src/components/api-status.tsx";']
         : []),
-      'import { Card } from "#src/components/ui/card.tsx";',
+      ...(links ? ['import { Card } from "#src/components/ui/card.tsx";'] : []),
       'import { Text } from "#src/components/ui/text.tsx";',
       ...(auth
         ? [
