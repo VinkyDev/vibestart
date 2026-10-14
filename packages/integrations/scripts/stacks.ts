@@ -11,4 +11,5 @@ const { module } = await runnerImport<typeof Stacks>("/src/stacks.ts", {
   ...config,
   root: path.dirname(import.meta.dirname),
 });
+
 process.exitCode = await module.main(process.argv.slice(2));

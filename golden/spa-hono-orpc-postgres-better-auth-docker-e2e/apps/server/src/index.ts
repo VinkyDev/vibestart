@@ -11,6 +11,9 @@ const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {
 });
 
 await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
+
 server.close();
+
 await once(server, "close");
+
 await db.$client.end();

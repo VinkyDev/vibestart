@@ -6,6 +6,7 @@ import { Badge } from "@my-app/ui/components/badge";
 
 const checkHealth = async () => {
   const response = await fetch("/api/health");
+
   return response.ok;
 };
 

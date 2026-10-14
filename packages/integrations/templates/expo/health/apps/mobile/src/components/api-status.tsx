@@ -5,6 +5,7 @@ import { apiUrl } from "#src/env.ts";
 
 const checkHealth = async () => {
   const response = await fetch(`${apiUrl}/api/health`);
+
   return response.ok;
 };
 

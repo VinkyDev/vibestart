@@ -26,34 +26,41 @@ export const materializeEnvFromExamples = (
     cwd: projectRoot,
   })) {
     const target = path.join(projectRoot, example.replace(/\.example$/u, ""));
+
     if (!overwrite && existsSync(target)) {
       continue;
     }
+
     let env = readFileSync(path.join(projectRoot, example), "utf-8");
+
     if (authSecret !== undefined) {
       env = env.replace(
         /^BETTER_AUTH_SECRET=.*$/mu,
         `BETTER_AUTH_SECRET=${authSecret}`
       );
     }
+
     if (postgresDatabaseUrl !== undefined) {
       env = env.replace(
         /^DATABASE_URL=postgres:.*$/mu,
         `DATABASE_URL=${postgresDatabaseUrl}`
       );
     }
+
     if (mysqlDatabaseUrl !== undefined) {
       env = env.replace(
         /^DATABASE_URL=mysql:.*$/mu,
         `DATABASE_URL=${mysqlDatabaseUrl}`
       );
     }
+
     if (mongodbDatabaseUrl !== undefined) {
       env = env.replace(
         /^DATABASE_URL=mongodb:.*$/mu,
         `DATABASE_URL=${mongodbDatabaseUrl}`
       );
     }
+
     writeFileSync(target, env);
   }
 };

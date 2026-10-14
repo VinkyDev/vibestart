@@ -44,11 +44,13 @@ const Studio = () => {
   const [preview, setPreview] = useState<StackEntry | null>(null);
   const [name, setName] = useState(previewName);
   const [openPath, setOpenPath] = useState<string | null>(null);
+
   const [tracked, setTracked] = useState<{
     readonly delta: FileDelta | undefined;
     readonly project: typeof project;
     readonly version: number;
   }>({ delta: undefined, project, version: 0 });
+
   if (tracked.project !== project) {
     setTracked({
       delta: fileDelta(tracked.project, project),
@@ -56,9 +58,11 @@ const Studio = () => {
       version: tracked.version + 1,
     });
   }
+
   const file = project.files.find((candidate) => candidate.path === openPath);
   const previewing = preview !== null && preview.label !== entry.label;
   const shown = previewing ? preview.stack : entry.stack;
+
   const choosing: Choosing = {
     baseline: entry.stack,
     addons,
@@ -176,6 +180,7 @@ export const Route = createFileRoute("/studio")({
   component: Studio,
   loader: async ({ deps }) => {
     const entry = entryFromFlags(deps.flags);
+
     return {
       addons: deps.addons,
       entry,

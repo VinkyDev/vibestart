@@ -13,6 +13,7 @@ export const Verification = () => {
   const card = useRef<HTMLDivElement>(null);
   // The record loads the stack's files, so it waits until the reader reaches it.
   const reached = useInView(card, { amount: 0.25, once: true });
+
   const subject =
     stacks.find((candidate) => candidate.label === entry.verification?.label) ??
     entry;

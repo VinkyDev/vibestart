@@ -42,9 +42,11 @@ const fetchPreview = async (label: string) => {
   const response = await fetch(
     `${import.meta.env.BASE_URL}${previewPath(label)}`
   );
+
   if (!response.ok) {
     throw new Error(`No preview of ${label}: HTTP ${response.status}`);
   }
+
   return previewSchema.parse(await response.json());
 };
 
@@ -54,6 +56,7 @@ const cached = <T>(
   create: () => Promise<T>
 ) => {
   let promise = cache.get(key);
+
   if (promise === undefined) {
     promise = (async () => {
       try {
@@ -65,6 +68,7 @@ const cached = <T>(
     })();
     cache.set(key, promise);
   }
+
   return promise;
 };
 
@@ -76,17 +80,22 @@ const expand = async (label: string, key: string): Promise<Project> => {
     label,
     async () => await fetchPreview(label)
   );
+
   const project = projects[key];
+
   if (project === undefined) {
     throw new Error(`No project of ${label} with add-ons ${key}`);
   }
+
   return {
     ...project,
     files: project.files.map((file) => {
       const content = contents[file.content];
+
       if (content === undefined) {
         throw new Error(`${label} ${key} ${file.path} has no content`);
       }
+
       return { ...file, content };
     }),
   };
@@ -100,6 +109,7 @@ export const loadProject = (
   packageManager: "pnpm" | "bun" = "pnpm"
 ) => {
   const key = projectKey(addons, packageManager);
+
   return cached(
     loaded,
     `${entry.label}/${key}`,
@@ -116,6 +126,7 @@ export interface FileDelta {
 export const fileDelta = (from: Project, to: Project): FileDelta => {
   const before = new Map(from.files.map((file) => [file.path, file.content]));
   const after = new Set(to.files.map((file) => file.path));
+
   return {
     added: new Set(
       to.files.filter((file) => !before.has(file.path)).map((file) => file.path)
@@ -124,6 +135,7 @@ export const fileDelta = (from: Project, to: Project): FileDelta => {
       to.files
         .filter((file) => {
           const content = before.get(file.path);
+
           return content !== undefined && content !== file.content;
         })
         .map((file) => file.path)
@@ -182,18 +194,24 @@ const nodesOf = (directory: MutableDirectory, prefix: string): TreeNode[] => [
 
 export const fileTree = (files: readonly GeneratedFile[]): TreeNode[] => {
   const root = emptyDirectory();
+
   for (const file of files) {
     const segments = file.path.split("/");
     let directory = root;
+
     for (const segment of segments.slice(0, -1)) {
       let child = directory.directories.get(segment);
+
       if (child === undefined) {
         child = emptyDirectory();
         directory.directories.set(segment, child);
       }
+
       directory = child;
     }
+
     directory.files.push(file);
   }
+
   return nodesOf(root, "");
 };

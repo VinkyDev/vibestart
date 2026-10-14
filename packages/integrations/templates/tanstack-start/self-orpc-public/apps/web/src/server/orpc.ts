@@ -28,6 +28,7 @@ const mount =
         prefix,
         context: createContext(),
       });
+
       return response ?? new Response("Not Found", { status: 404 });
     });
 

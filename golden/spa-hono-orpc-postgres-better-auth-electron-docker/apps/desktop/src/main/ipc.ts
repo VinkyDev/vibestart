@@ -18,6 +18,7 @@ export const setupIpc = (devOrigin: string | null) => {
     if (!isTrustedUrl(event.senderFrame?.url ?? "", devOrigin)) {
       throw new Error("Untrusted IPC sender");
     }
+
     return versions();
   });
 };

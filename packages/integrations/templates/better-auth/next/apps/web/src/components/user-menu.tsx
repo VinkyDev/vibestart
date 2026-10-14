@@ -24,6 +24,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const pathname = usePathname();
+
   const signOut = useMutation({
     mutationFn: async () => {
       await authClient.signOut();

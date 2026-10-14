@@ -32,12 +32,15 @@ export const TodoList = () => {
       await queryClient.invalidateQueries({ queryKey: api.todos.key() });
     },
   };
+
   const createTodo = useMutation(
     api.todos.create.mutationOptions(invalidateTodos)
   );
+
   const updateTodo = useMutation(
     api.todos.update.mutationOptions(invalidateTodos)
   );
+
   const deleteTodo = useMutation(
     api.todos.delete.mutationOptions(invalidateTodos)
   );

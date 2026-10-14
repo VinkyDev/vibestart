@@ -11,9 +11,11 @@ export const sqlDatabase = (ctx: Context) => {
   if (ctx.has("mysql")) {
     return { id: "mysql", name: "MySQL", server: true } as const;
   }
+
   if (ctx.has("postgres")) {
     return { id: "postgres", name: "PostgreSQL", server: true } as const;
   }
+
   return { id: "sqlite", name: "SQLite", server: false } as const;
 };
 
@@ -38,7 +40,9 @@ export const serverApp = (ctx: Context) => {
       src: "apps/server/src",
     };
   }
+
   const lazy = ctx.has("next");
+
   return {
     dir: "apps/web",
     envImport: lazy
@@ -70,6 +74,7 @@ export const renderEnvModule = (
   const server = variables
     .toSorted((a, b) => (a.name < b.name ? -1 : 1))
     .map(({ name, schema }) => `${name}: ${schema},`);
+
   const options = [
     "emptyStringAsUndefined: true,",
     "runtimeEnv: process.env,",
@@ -77,6 +82,7 @@ export const renderEnvModule = (
     ...server.map((line) => `  ${line}`),
     "},",
   ];
+
   const body = lazy
     ? [
         "export const readEnv = () =>",
@@ -89,6 +95,7 @@ export const renderEnvModule = (
         ...options.map((line) => `  ${line}`),
         "});",
       ];
+
   return [
     'import { createEnv } from "@t3-oss/env-core";',
     'import { z } from "zod";',
@@ -104,6 +111,7 @@ export const renderEnvExample = (variables: readonly EnvVariable[]) =>
 /** `run` migrates and closes `db`, in the driver's sync or async form. */
 export const migrationEntry = (ctx: Context, run: readonly string[]) => {
   const { envImport, read, src } = serverApp(ctx);
+
   return file(
     `${src}/migrate.ts`,
     [
@@ -113,7 +121,8 @@ export const migrationEntry = (ctx: Context, run: readonly string[]) => {
       envImport,
       "",
       `const db = createDb(${read("DATABASE_URL")});`,
-      ...run,
+      // Each statement stands apart, as Ultracite's readable-spacing rule asks.
+      ...run.flatMap((statement) => ["", statement]),
       "",
     ].join("\n")
   );
@@ -127,12 +136,14 @@ export const packConfig = (ctx: Context, path: string, content: string) => {
   if (!content.includes(migrationCopy)) {
     throw new Error(`${path} does not copy the migrations`);
   }
+
   return ctx.has("mongodb") ? content.replace(migrationCopy, "") : content;
 };
 
 export const environmentConvention = (ctx: Context, loading: string) => {
   const { dir, lazy, src } = serverApp(ctx);
   const reads = lazy ? "`readEnv()`" : "`env`";
+
   return {
     text: [
       `Declare every server variable in \`${src}/env.ts\` and add it to \`${dir}/.env.example\`. Code reads ${reads}.`,
@@ -188,6 +199,7 @@ const todosModule = (ctx: Context) => {
   if (ctx.has("prisma") || ctx.has("mongoose")) {
     return `${ormId(ctx)}-${authVariant(ctx)}`;
   }
+
   // MySQL has no `returning`, so Drizzle reads a row back after each write.
   return ctx.has("mysql") ? `drizzle-mysql-${authVariant(ctx)}` : undefined;
 };
@@ -195,6 +207,7 @@ const todosModule = (ctx: Context) => {
 /** The API's template set, with the todos module at `todos` written for the stack's ORM and database. */
 export const apiTemplates = (ctx: Context, set: string, todos: string) => {
   const module = todosExample(ctx) ? todosModule(ctx) : undefined;
+
   return module === undefined
     ? templateFiles(ctx, `${set}/${apiVariant(ctx)}`)
     : [
@@ -208,6 +221,7 @@ export const exampleVariant = (ctx: Context) => {
   if (todosExample(ctx)) {
     return authVariant(ctx);
   }
+
   return ctx.has("better-auth") ? "account" : "none";
 };
 
@@ -237,6 +251,7 @@ export const databaseCheck = (ctx: Context, db: string) => {
       statement: `await ${db}.connection.getClient().db().command({ ping: 1 });`,
     };
   }
+
   if (ctx.has("prisma")) {
     return {
       async: true,
@@ -245,10 +260,12 @@ export const databaseCheck = (ctx: Context, db: string) => {
       statement: `await ${db}.$queryRaw\`select 1\`;`,
     };
   }
+
   const drizzle = {
     dependencies: ["drizzle-orm"],
     imports: ['import { sql } from "drizzle-orm";'],
   };
+
   return ctx.has("sqlite")
     ? { ...drizzle, async: false, statement: `${db}.run(sql\`select 1\`);` }
     : {
@@ -267,12 +284,15 @@ export const closeDatabase = (ctx: Context, db = "db") => {
   if (ctx.has("mongoose")) {
     return `await ${db}.connection.close();`;
   }
+
   if (ctx.has("prisma")) {
     return `await ${db}.$disconnect();`;
   }
+
   if (ctx.has("sqlite")) {
     return `${db}.$client.close();`;
   }
+
   return ctx.has("mysql")
     ? `await ${db}.$client.promise().end();`
     : `await ${db}.$client.end();`;
@@ -281,12 +301,14 @@ export const closeDatabase = (ctx: Context, db = "db") => {
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
   const check = databaseCheck(ctx, next ? "getServices().db" : "db");
+
   const handler = [
     `${check.async ? "async " : ""}() => {`,
     `  ${check.statement}`,
     '  return Response.json({ status: "ok" });',
     "};",
   ];
+
   if (next) {
     return file(
       "apps/web/src/app/api/health/route.ts",
@@ -299,6 +321,7 @@ export const selfHealthRoute = (ctx: Context) => {
       ].join("\n")
     );
   }
+
   return file(
     "apps/web/src/routes/api/health.ts",
     [
@@ -324,11 +347,14 @@ export const clientComponent = (ctx: Context, content: string) =>
 export const homePage = (ctx: Context, path: string, route: boolean) =>
   renderFile(path, (read) => {
     const names = read(stackHeadline);
+
     const listed =
       names.length > 1
         ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`
         : names.join("");
+
     const status = hasBackend(ctx);
+
     const cardParts = [
       "Card",
       ...(status ? ["CardContent"] : []),
@@ -336,6 +362,7 @@ export const homePage = (ctx: Context, path: string, route: boolean) =>
       "CardHeader",
       "CardTitle",
     ];
+
     return [
       ...(route
         ? ['import { createFileRoute } from "@tanstack/react-router";', ""]
@@ -379,14 +406,17 @@ const linksPattern =
 export const navigation = (ctx: Context, set: string, path: string) => {
   const content = templateContent(ctx, set, path);
   const entries = linksPattern.exec(content)?.groups?.entries;
+
   if (entries === undefined) {
     throw new Error(`${set}/${path} has no links array`);
   }
+
   const links = entries
     .trimEnd()
     .split("\n")
     .map((line) => line.trim().slice(0, -1))
     .filter((link) => todosExample(ctx) || !link.includes('"/todos"'));
+
   return file(
     path,
     content.replace(

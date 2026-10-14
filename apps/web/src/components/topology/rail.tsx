@@ -159,6 +159,7 @@ const EndToEndTests = ({
   readonly stack: Stack;
 }) => {
   const runner = e2eRunner(stack);
+
   return (
     <DecisionTrigger
       choosing={choosing}
@@ -188,13 +189,17 @@ export const Rail = ({
   readonly stack: Stack;
 }) => {
   const { focus } = useFocus();
+
   const { enter: enterDeployment, leave: leaveDeployment } = useFocusTarget({
     group: "deployment",
   });
+
   const foundation = selected(stack).filter(
     (integration) => groupOf(integration.id) === "foundation"
   );
+
   const deployment = chosen(stack, "deployment");
+
   return (
     <motion.div
       animate={{ opacity: 1, top: rect.y, y: 0 }}

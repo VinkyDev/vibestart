@@ -24,6 +24,7 @@ export const blocks = {
 
 /** The apps beside the web app that call the same API: they stack under it, in the column of clients. */
 const clients = ["desktop", "mobile"] as const;
+
 type Client = (typeof clients)[number];
 
 type BlockKind = "framework" | "backend" | "database" | "auth" | Client;
@@ -41,13 +42,16 @@ const frameLabel = 22;
 const frameworkFold: Rect = { height: 64, width: 252, x: 196, y: 254 };
 const clientHeight = 148;
 const foldHeight = 56;
+
 // Room between the web app and the desktop shell for the capsule naming what the shell loads.
 const shellGap = 66;
 const clientGap = 32;
 const foldGap = 12;
+
 // The server column ends with the deployment frame around the server and its auth.
 const serverFloor =
   blocks.auth.y + blocks.auth.height + boxPadding + framePadding;
+
 const railGap = 48;
 const railHeight = 92;
 
@@ -73,16 +77,20 @@ const webBoxBlocks = (stack: Stack): Rect[] => [
 export const layoutOf = (stack: Stack): Layout => {
   const web = stack.framework !== undefined;
   const inWebBox = webBoxBlocks(stack);
+
   let floor = web
     ? Math.max(...inWebBox.map((rect) => rect.y + rect.height)) + boxPadding
     : frameworkFold.y + frameworkFold.height;
+
   const placed: Partial<Record<Client, Placed>> = {};
+
   for (const client of clients.filter((kind) => stack[kind] !== undefined)) {
     const top =
       floor +
       (client === "desktop" ? shellGap : clientGap) +
       boxPadding +
       boxLabel;
+
     placed[client] = {
       folded: false,
       rect: {
@@ -94,7 +102,9 @@ export const layoutOf = (stack: Stack): Layout => {
     };
     floor = top + clientHeight + boxPadding;
   }
+
   let gap = clientGap;
+
   for (const client of clients.filter((kind) => stack[kind] === undefined)) {
     const top = floor + gap;
     placed[client] = {
@@ -109,7 +119,9 @@ export const layoutOf = (stack: Stack): Layout => {
     floor = top + foldHeight;
     gap = foldGap;
   }
+
   const railTop = Math.max(floor, serverFloor) + railGap + 34;
+
   return {
     blocks: {
       auth: { folded: false, rect: blocks.auth },
@@ -137,6 +149,7 @@ const around = (
   const top = Math.min(...rects.map((rect) => rect.y));
   const right = Math.max(...rects.map((rect) => rect.x + rect.width));
   const bottom = Math.max(...rects.map((rect) => rect.y + rect.height));
+
   return {
     height: bottom - top + padding * 2 + label,
     width: right - left + padding * 2,
@@ -165,12 +178,15 @@ const webLabel = (
   if (self) {
     return m.process_with_api({ name });
   }
+
   if (desktop) {
     return m.runs_in_electron();
   }
+
   if (browser) {
     return m.runs_in_browser();
   }
+
   return m.process({ name });
 };
 
@@ -194,11 +210,14 @@ const databaseProcess = (database: string | undefined) =>
 export const processBoxes = (stack: Stack): ProcessBox[] => {
   const { blocks: placed } = layoutOf(stack);
   const framework = chosen(stack, "framework");
+
   const hosted = [
     ...(has(stack, "auth") ? [blocks.auth] : []),
     ...(stack.database === "sqlite" ? [blocks.database] : []),
   ];
+
   const boxes: ProcessBox[] = [];
+
   if (framework !== undefined) {
     const self = stack.backend === "self";
     const browser = framework.id === "spa";
@@ -215,6 +234,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       ),
     });
   }
+
   if (stack.backend === "hono") {
     boxes.push({
       deployed: true,
@@ -225,7 +245,9 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       rect: around([blocks.backend, ...hosted], boxPadding, boxLabel),
     });
   }
+
   const server = databaseProcess(stack.database);
+
   if (server !== undefined) {
     boxes.push({
       deployed: true,
@@ -236,6 +258,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       rect: around([blocks.database], boxPadding, boxLabel),
     });
   }
+
   if (has(stack, "desktop")) {
     boxes.push({
       deployed: false,
@@ -246,6 +269,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       rect: around([placed.desktop.rect], boxPadding, boxLabel),
     });
   }
+
   if (has(stack, "mobile")) {
     boxes.push({
       deployed: false,
@@ -256,6 +280,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
       rect: around([placed.mobile.rect], boxPadding, boxLabel),
     });
   }
+
   return boxes;
 };
 
@@ -280,20 +305,24 @@ export const deploymentFrame = (
   const deployed = boxes.filter((box) => box.deployed);
   const web = deployed.find((box) => box.id === "web");
   const rest = deployed.filter((box) => box !== web);
+
   if (deployed.length === 0) {
     return undefined;
   }
+
   const whole = around(
     deployed.map((box) => box.rect),
     framePadding,
     frameLabel
   );
+
   const sides = {
     bottom: whole.y + whole.height,
     left: whole.x,
     right: whole.x + whole.width,
     top: whole.y,
   };
+
   if (web === undefined || rest.length === 0) {
     return [
       { x: sides.left, y: sides.top },
@@ -302,9 +331,11 @@ export const deploymentFrame = (
       { x: sides.left, y: sides.bottom },
     ];
   }
+
   const step = Math.min(...rest.map((box) => box.rect.x)) - framePadding;
   const webBottom = web.rect.y + web.rect.height + framePadding;
   const notch = Math.min(webBottom, sides.bottom);
+
   return [
     { x: sides.left, y: sides.top },
     { x: sides.right, y: sides.top },
@@ -318,12 +349,14 @@ export const deploymentFrame = (
 export const roundedPath = (points: readonly Point[], radius: number) => {
   const toward = (from: Point, to: Point) => {
     const distance = Math.hypot(to.x - from.x, to.y - from.y);
+
     return {
       distance,
       x: distance === 0 ? 0 : (to.x - from.x) / distance,
       y: distance === 0 ? 0 : (to.y - from.y) / distance,
     };
   };
+
   const corners = points.map((point, index) => {
     const before = points[(index + points.length - 1) % points.length] ?? point;
     const after = points[(index + 1) % points.length] ?? point;
@@ -331,6 +364,7 @@ export const roundedPath = (points: readonly Point[], radius: number) => {
     const forward = toward(point, after);
     const reach = Math.min(radius, back.distance / 2, forward.distance / 2);
     const clockwise = back.x * forward.y - back.y * forward.x < 0 ? 1 : 0;
+
     return {
       end: { x: point.x + forward.x * reach, y: point.y + forward.y * reach },
       reach,
@@ -338,6 +372,7 @@ export const roundedPath = (points: readonly Point[], radius: number) => {
       sweep: clockwise,
     };
   });
+
   return `${corners
     .map(
       ({ end, reach, start, sweep }, index) =>
@@ -350,11 +385,14 @@ const right = (rect: Rect): Point => ({
   x: rect.x + rect.width,
   y: rect.y + rect.height / 2,
 });
+
 const left = (rect: Rect): Point => ({
   x: rect.x,
   y: rect.y + rect.height / 2,
 });
+
 const top = (rect: Rect): Point => ({ x: rect.x + rect.width / 2, y: rect.y });
+
 const bottom = (rect: Rect): Point => ({
   x: rect.x + rect.width / 2,
   y: rect.y + rect.height,
@@ -387,11 +425,13 @@ export const apiAnchor: Point = midpoint(
 export const distAnchor = (stack: Stack): Point => {
   const shell = layoutOf(stack).blocks.desktop.rect;
   const inWebBox = webBoxBlocks(stack);
+
   // The capsule sits midway between what is drawn: the web app's process box, or the deployment frame around it.
   const webFloor =
     Math.max(...inWebBox.map((rect) => rect.y + rect.height)) +
     boxPadding +
     (stack.deployment === undefined ? 0 : framePadding);
+
   return {
     x: top(blocks.framework).x,
     y: (webFloor + shell.y - boxPadding - boxLabel) / 2,
@@ -404,21 +444,26 @@ const lanes: Record<Client, number> = {
   desktop: apiAnchor.x - 12,
   mobile: apiAnchor.x + 12,
 };
+
 const laneRadius = 18;
 
 const clientWire = (rect: Rect, lane: number, meetsLine: boolean) => {
   const start = right(rect);
   const turn = `L ${lane - laneRadius} ${start.y} Q ${lane} ${start.y} ${lane} ${start.y - laneRadius}`;
+
   if (meetsLine) {
     // A wire from the web app or the visitors runs through the capsule, which covers where the lane ends.
     const end = { x: lane, y: apiAnchor.y };
+
     return {
       end,
       path: `M ${start.x} ${start.y} ${turn} L ${end.x} ${end.y}`,
       start,
     };
   }
+
   const end = left(blocks.backend);
+
   return {
     end,
     path: `M ${start.x} ${start.y} ${turn} L ${lane} ${end.y + laneRadius} Q ${lane} ${end.y} ${lane + laneRadius} ${end.y} L ${end.x} ${end.y}`,
@@ -440,6 +485,7 @@ export const edges = (stack: Stack): Edge[] => {
   const meetsLine = framework || backend;
   const authRight = right(blocks.auth);
   const databaseBottom = bottom(blocks.database);
+
   const all: (Edge | false)[] = [
     framework && {
       ...line(right(blocks.visitors), left(blocks.framework)),
@@ -508,5 +554,6 @@ export const edges = (stack: Stack): Edge[] => {
         to: "database",
       },
   ];
+
   return all.filter((edge) => edge !== false);
 };

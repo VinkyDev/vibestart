@@ -11,6 +11,7 @@ const described = new Set(["README.md", "vibestart.jsonc"]);
 
 const pairs = legalStacks(registry).flatMap((stack) => {
   const sibling = verifiedAs(stack);
+
   return sibling === stack
     ? []
     : [{ label: stackLabel(stack), sibling, stack }];
@@ -23,18 +24,23 @@ describe("a stack without a deployment is its Docker sibling without Docker", ()
       verifiedGeneration(stack),
       verifiedGeneration(sibling),
     ]);
+
     const dockerFiles = new Map(docker.files.map((file) => [file.path, file]));
+
     const changed = bare.files.flatMap((file) => {
       const counterpart = dockerFiles.get(file.path);
+
       if (counterpart === undefined) {
         return [file.path];
       }
+
       return counterpart.content === file.content ||
         counterpart.owner === "docker" ||
         described.has(file.path)
         ? []
         : [file.path];
     });
+
     expect(changed).toStrictEqual([]);
     expect(bare.setup).toStrictEqual(docker.setup);
   });
@@ -62,12 +68,15 @@ const filtered = (dockerfile: string, command: string) =>
 describe("the Docker build installs and builds the apps the image runs, and no other", () => {
   it.each(dockerStacks)("$label", async ({ stack }) => {
     const { files } = await verifiedGeneration(stack);
+
     const dockerfile =
       files.find((file) => file.path === "Dockerfile")?.content ?? "";
+
     const copied = apps(
       dockerfile,
       /^COPY --from=build \/app\/apps\/(?<app>[^/]+)\//gmu
     );
+
     expect(copied).not.toStrictEqual([]);
     expect(filtered(dockerfile, "vp install")).toStrictEqual(copied);
     expect(filtered(dockerfile, "vp run")).toStrictEqual(copied);

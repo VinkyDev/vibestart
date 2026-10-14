@@ -15,13 +15,16 @@ export const useFontsReady = (ref: RefObject<HTMLElement | null>) => {
   useEffect(() => {
     const element = ref.current;
     let settled = false;
+
     const settle = () => {
       if (!settled) {
         settled = true;
         setReady(true);
       }
     };
+
     const timer = setTimeout(settle, patience);
+
     const load = async (target: HTMLElement) => {
       const style = getComputedStyle(target);
       // A face that fails to load is waited for no longer than one that loads.
@@ -33,11 +36,13 @@ export const useFontsReady = (ref: RefObject<HTMLElement | null>) => {
       ]);
       settle();
     };
+
     if (element === null) {
       settle();
     } else {
       void load(element);
     }
+
     return () => {
       settled = true;
       clearTimeout(timer);

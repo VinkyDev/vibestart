@@ -37,15 +37,18 @@ const contentOf = ({ files }: Generation, filePath: string) =>
 /** Whether `part` is `whole` with some items left out, the rest in order. */
 const isSubsequence = (part: readonly string[], whole: readonly string[]) => {
   let at = 0;
+
   for (const item of whole) {
     if (item === part[at]) {
       at += 1;
     }
   }
+
   return at === part.length;
 };
 
 const defaults = defaultAddons(registry);
+
 const cases = verifiedStacks.flatMap((stack) =>
   [...defaults.map((addon) => [addon]), defaults].map((removed) => ({
     removed,
@@ -59,13 +62,16 @@ const canonical = async (filePath: string, content: string) => {
   if (!/\.(?:css|html|js|json|jsonc|md|mjs|ts|tsx|ya?ml)$/u.test(filePath)) {
     return content;
   }
+
   const { code, errors } = await formatWithProjectConfig(
     filePath,
     content,
     `@${verifiedName}`,
     { ...oxfmt, objectWrap: "collapse" }
   );
+
   expect(errors).toStrictEqual([]);
+
   return code;
 };
 
@@ -73,6 +79,7 @@ const canonical = async (filePath: string, content: string) => {
 describe("leaving out a default add-on removes only its own checks", () => {
   it.each(cases)("$label", async ({ removed, stack }) => {
     const full = verifiedBlueprint(stack);
+
     const [taken, left] = await Promise.all([
       generate(registry, full, { name: verifiedName }),
       generate(
@@ -81,6 +88,7 @@ describe("leaving out a default add-on removes only its own checks", () => {
         { name: verifiedName }
       ),
     ]);
+
     expect(left.setup).toStrictEqual(taken.setup);
 
     const leftPaths = new Set(left.files.map((file) => file.path));
@@ -99,6 +107,7 @@ describe("leaving out a default add-on removes only its own checks", () => {
     ).toStrictEqual([]);
 
     const manifests = new Set(["package.json", "pnpm-workspace.yaml"]);
+
     const changed = left.files.filter(
       (file) =>
         file.content !== contentOf(taken, file.path) &&
@@ -106,10 +115,13 @@ describe("leaving out a default add-on removes only its own checks", () => {
         !manifests.has(file.path) &&
         !(removed.includes("ultracite") && file.path === "vite.config.ts")
     );
+
     const testConfig = (generation: Generation) => {
       const config = contentOf(generation, "vite.config.ts");
+
       return `export default {\n${config.slice(config.indexOf("\n  test: {") + 1).replace(/\}\);\s*$/u, "};")}`;
     };
+
     const compared = [
       ...changed.map((file) => ({
         path: file.path,
@@ -122,6 +134,7 @@ describe("leaving out a default add-on removes only its own checks", () => {
         after: testConfig(left),
       },
     ];
+
     const normalized = await Promise.all(
       compared.map(async ({ path, before, after }) => ({
         path,
@@ -129,6 +142,7 @@ describe("leaving out a default add-on removes only its own checks", () => {
         after: await canonical(path, after),
       }))
     );
+
     expect(
       normalized.map(({ path, after }) => ({ path, content: after }))
     ).toStrictEqual(

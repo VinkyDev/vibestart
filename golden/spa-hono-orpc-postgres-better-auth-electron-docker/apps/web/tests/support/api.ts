@@ -19,15 +19,19 @@ export const signUp = async (email = uniqueEmail()) => {
     headers: { "content-type": "application/json", origin: e2eBaseURL },
     method: "POST",
   });
+
   if (!response.ok) {
     throw new Error(`Sign up failed with ${response.status}`);
   }
+
   const cookie = response.headers
     .getSetCookie()
     .map((header) => header.split(";")[0])
     .join("; ");
+
   const client: AppRouterClient = createORPCClient(
     new RPCLink({ headers: { cookie }, url: `${e2eBaseURL}/rpc` })
   );
+
   return { client, email };
 };

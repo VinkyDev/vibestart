@@ -100,28 +100,37 @@ export const todoRoutes = ({ db }: Services) => {
         .insert(todos)
         .values(c.req.valid("json"))
         .$returningId();
+
       const row =
         created === undefined ? undefined : await findTodo(created.id);
+
       if (row === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.update(todos).set(values).where(eq(todos.id, row.id));
+
       return c.json({ ...row, ...values }, 200);
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.delete(todos).where(eq(todos.id, row.id));
+
       return c.json(row, 200);
     });
 };

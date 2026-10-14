@@ -19,13 +19,16 @@ describe("request cancellation", () => {
     const controller = new AbortController();
     controller.abort();
     let calls = 0;
+
     const response = await handleRequest(
       new Request(url, { signal: controller.signal }),
       async () => {
         calls += 1;
+
         return await Promise.resolve(new Response("ok"));
       }
     );
+
     expect({ calls, status: response.status }).toStrictEqual({
       calls: 0,
       status: 499,
@@ -39,11 +42,13 @@ describe("request cancellation", () => {
     Object.defineProperty(request, "signal", {
       get: () => {
         listening = true;
+
         return controller.signal;
       },
     });
     await handleRequest(request, async () => {
       expect(listening).toBeTruthy();
+
       return await Promise.resolve(new Response("ok"));
     });
   });
@@ -51,6 +56,7 @@ describe("request cancellation", () => {
   it("contains cancellation while asynchronous context is loading", async () => {
     const controller = new AbortController();
     const error = new DOMException("The request was aborted.", "AbortError");
+
     const response = await handleRequest(
       new Request(url, { signal: controller.signal }),
       async () => {
@@ -59,23 +65,28 @@ describe("request cancellation", () => {
         throw error;
       }
     );
+
     expect(response.status).toBe(499);
   });
 
   it("contains a request body stream error after the client disconnects", async () => {
     const controller = new AbortController();
     const stream = new TransformStream();
+
     const init = {
       body: stream.readable,
       duplex: "half",
       method: "POST",
       signal: controller.signal,
     };
+
     const request = new Request(url, init);
+
     const response = handleRequest(
       request,
       async () => new Response(await request.text())
     );
+
     const error = Object.assign(new Error("aborted"), { code: "ECONNRESET" });
     controller.abort(error);
     await stream.writable.abort(error);

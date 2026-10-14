@@ -9,9 +9,11 @@ const todoId = z.object({ id: z.int().positive() });
 // A write finds the user's row first: someone else's todo is not found either.
 const findOrNotFound = async (db: Database, id: number, userId: string) => {
   const row = await db.todo.findFirst({ where: { id, userId } });
+
   if (row === null) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -31,7 +33,9 @@ export const todosRouter = {
       input.id,
       context.session.user.id
     );
+
     await context.db.todo.delete({ where: { id: todo.id } });
+
     return todo;
   }),
 
@@ -51,6 +55,7 @@ export const todosRouter = {
         id,
         context.session.user.id
       );
+
       return await context.db.todo.update({ data, where: { id: todo.id } });
     }),
 };

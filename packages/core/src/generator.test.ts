@@ -74,6 +74,7 @@ describe(generate, () => {
     const { files } = await generate(registryWith("vp"), blueprint, {
       name: "my-app",
     });
+
     expect(files.find((file) => file.path === "has.txt")?.content).toBe("true");
   });
 
@@ -82,6 +83,7 @@ describe(generate, () => {
       withAddons(["lint"]),
       withAddons([]),
     ]);
+
     expect(taken.files.map(({ owner, path }) => [path, owner])).toContainEqual([
       "lint.txt",
       "lint",
@@ -97,6 +99,7 @@ describe(generate, () => {
       { ...blueprint, addons: ["lint"] },
       { name: "my-app" }
     );
+
     expect(files.find((f) => f.path === "vibestart.jsonc")?.content).toContain(
       '"addons": ["lint"],'
     );

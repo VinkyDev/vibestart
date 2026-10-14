@@ -54,6 +54,7 @@ export const renderPnpmWorkspace = ({
     const entries = Object.entries(versions)
       .filter(([dependency]) => usedDependencies.has(dependency))
       .toSorted(([a], [b]) => (a < b ? -1 : 1));
+
     return entries.length === 0
       ? []
       : [section([`  # ${group}`, ...mapping(Object.fromEntries(entries))])];
@@ -61,9 +62,11 @@ export const renderPnpmWorkspace = ({
 
   const overrides = merged(contributions.map((c) => c.overrides));
   const allowBuilds = merged(contributions.map((c) => c.allowBuilds));
+
   const allowAny = contributions.flatMap(
     (c) => c.peerDependencyRules?.allowAny ?? []
   );
+
   const allowedVersions = merged(
     contributions.map((c) => c.peerDependencyRules?.allowedVersions)
   );
@@ -73,12 +76,15 @@ export const renderPnpmWorkspace = ({
     "catalogMode: prefer",
     section(["catalog:", groups.join("\n\n")]),
   ];
+
   if (Object.keys(overrides).length > 0) {
     sections.push(section(["overrides:", ...mapping(overrides)]));
   }
+
   if (Object.keys(allowBuilds).length > 0) {
     sections.push(section(["allowBuilds:", ...mapping(allowBuilds)]));
   }
+
   if (allowAny.length > 0 || Object.keys(allowedVersions).length > 0) {
     sections.push(
       section([

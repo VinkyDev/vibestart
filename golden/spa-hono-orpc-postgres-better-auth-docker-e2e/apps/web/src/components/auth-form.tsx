@@ -34,15 +34,18 @@ const copy = {
 
 const formValue = (form: FormData, name: string) => {
   const value = form.get(name);
+
   if (value === null || value instanceof File) {
     return "";
   }
+
   return value;
 };
 
 const authenticate = async (mode: Mode, form: FormData) => {
   const email = formValue(form, "email");
   const password = formValue(form, "password");
+
   const { error } =
     mode === "sign-in"
       ? await authClient.signIn.email({ email, password })
@@ -51,6 +54,7 @@ const authenticate = async (mode: Mode, form: FormData) => {
           password,
           name: formValue(form, "name"),
         });
+
   if (error) {
     throw new Error(error.message ?? error.statusText);
   }
@@ -59,6 +63,7 @@ const authenticate = async (mode: Mode, form: FormData) => {
 export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (form: FormData) => {
       await authenticate(mode, form);

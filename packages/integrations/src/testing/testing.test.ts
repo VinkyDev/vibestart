@@ -17,6 +17,7 @@ const journeysOf = (runner: string) =>
     Object.entries(journeys).flatMap(([path, content]) => {
       const [, owner, variant] =
         /testing\/(?<owner>[^/]+)\/(?<variant>[^/]+)\//u.exec(path) ?? [];
+
       return owner === runner && variant !== undefined
         ? [
             [
@@ -32,6 +33,7 @@ const journeysOf = (runner: string) =>
 
 const filesOf = async (stack: Stack) => {
   const { files } = await verifiedGeneration(stack);
+
   return new Map(files.map(({ path, content }) => [path, content]));
 };
 
@@ -92,9 +94,11 @@ describe("an e2e stack differs from its Playwright sibling only in the runner's 
       filesOf(stack),
       filesOf({ ...stack, testing: "playwright" }),
     ]);
+
     const changed = [...new Set([...e2e.keys(), ...playwright.keys()])].filter(
       (path) => e2e.get(path) !== playwright.get(path)
     );
+
     expect(changed.filter((path) => !ownedByRunner(path))).toStrictEqual([]);
   });
 });

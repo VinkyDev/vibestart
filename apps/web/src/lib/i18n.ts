@@ -17,9 +17,11 @@ const translate = (
   id: string
 ) => {
   const message = Object.hasOwn(messages, id) ? messages[id] : undefined;
+
   if (message === undefined) {
     throw new Error(`No message for ${id}`);
   }
+
   return message();
 };
 
@@ -125,10 +127,12 @@ const units = [
 export const relativeTime = (iso: string) => {
   const elapsed = Date.parse(iso) - Date.now();
   const format = new Intl.RelativeTimeFormat(getLocale(), { numeric: "auto" });
+
   for (const [unit, milliseconds] of units) {
     if (Math.abs(elapsed) >= milliseconds) {
       return format.format(Math.round(elapsed / milliseconds), unit);
     }
   }
+
   return m.just_now();
 };

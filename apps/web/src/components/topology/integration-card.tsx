@@ -65,14 +65,18 @@ export const IntegrationCard = ({
   const [mode, setMode] = useState<"idle" | "hover" | "pinned" | "dismissed">(
     "idle"
   );
+
   const open = mode === "hover" || mode === "pinned";
   const pinned = mode === "pinned";
   const { focus } = useFocus();
   const { enter, leave } = useFocusTarget({ owner: integration.id });
+
   const focused =
     focus !== null && "owner" in focus && focus.owner === integration.id;
+
   const why =
     "kind" in integration ? whyIncluded(stack, integration) : undefined;
+
   const { homepage } = integration;
 
   return (
@@ -80,18 +84,23 @@ export const IntegrationCard = ({
       onOpenChange={(next, eventDetails) => {
         if (eventDetails.reason === "trigger-press" && open && !pinned) {
           setMode("pinned");
+
           if (!next) {
             eventDetails.cancel();
           }
+
           return;
         }
+
         if (
           (pinned || mode === "dismissed") &&
           eventDetails.reason === "trigger-hover"
         ) {
           eventDetails.cancel();
+
           return;
         }
+
         if (next) {
           setMode(eventDetails.reason === "trigger-press" ? "pinned" : "hover");
           enter();
@@ -120,12 +129,14 @@ export const IntegrationCard = ({
           if (mode === "dismissed") {
             setMode("idle");
           }
+
           enter();
         }}
         onPointerLeave={() => {
           if (mode === "dismissed") {
             setMode("idle");
           }
+
           if (!open) {
             leave();
           }

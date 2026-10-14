@@ -80,9 +80,11 @@ describe(pnpmFacets, () => {
 
   it("takes every three choices together, Docker aside", async () => {
     const stack = compose(registry, { deployment: "docker" });
+
     const choices = [
       ...pnpmFacets(stack, await verifiedGeneration(stack)),
     ].filter((facet) => facet.startsWith("choices "));
+
     const kinds = registry.kinds.length - 1;
     expect(choices).toHaveLength((kinds * (kinds - 1) * (kinds - 2)) / 6);
     expect(choices.some((facet) => facet.includes("deployment="))).toBeFalsy();

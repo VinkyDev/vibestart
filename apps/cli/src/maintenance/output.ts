@@ -23,6 +23,7 @@ export const maintenanceText = (
       "",
     ].join("\n");
   }
+
   if ("issues" in result) {
     const lines = [
       result.status === "healthy"
@@ -30,24 +31,30 @@ export const maintenanceText = (
         : "Maintenance state needs attention:",
       `Project template: ${result.release}`,
     ];
+
     if (offline) {
       lines.push("npm latest: not queried (--offline).");
     } else {
       lines.push(`npm latest: ${result.latest ?? "lookup unavailable"}`);
     }
+
     lines.push(
       ...result.issues.map((issue) => `  - ${issue}`),
       ...result.conflicts.map((file) => `  - Conflict: ${file}`)
     );
+
     if (result.updates === null || result.manual === null) {
       lines.push(
         `Template changes with this CLI: not compared (--offline; release ${result.release} comes from npm)`
       );
+
       return `${lines.join("\n")}\n`;
     }
+
     lines.push(
       `Template changes with this CLI: ${result.updates} to apply, ${result.manual} to port by hand`
     );
+
     if (
       result.updates > 0 ||
       result.manual > 0 ||
@@ -57,15 +64,19 @@ export const maintenanceText = (
         "Inspect the plan in the project directory: vibestart upgrade --dry-run"
       );
     }
+
     return `${lines.join("\n")}\n`;
   }
+
   const lines = [summaries.get(result.status) ?? result.status];
   lines.push(
     ...result.conflicts.map((file) => `  - Conflict: ${file}`),
     ...result.manual.map(({ path }) => `  - Port by hand: ${path}`)
   );
+
   if (result.next !== undefined) {
     lines.push(`Next (in the project directory): ${result.next}`);
   }
+
   return `${lines.join("\n")}\n`;
 };

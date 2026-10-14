@@ -66,6 +66,7 @@ const Table = ({ migrated }: { readonly migrated: boolean }) => {
     "completed",
     ...(migrated ? ["due_date"] : []),
   ];
+
   return (
     <figure className="border-border bg-background/50 min-w-0 overflow-hidden rounded-xl border">
       <figcaption className="text-fine text-muted-foreground border-border flex h-8 items-center gap-2 border-b px-3 font-mono">

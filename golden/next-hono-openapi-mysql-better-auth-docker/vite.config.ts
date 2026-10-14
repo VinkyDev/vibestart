@@ -13,6 +13,7 @@ const generatedFiles = [
   "**/next-env.d.ts",
   "packages/db/src/migrations/**",
 ];
+
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({

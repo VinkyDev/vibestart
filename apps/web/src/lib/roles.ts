@@ -190,6 +190,7 @@ const optional = (kind: Decision): OptionalDecision => {
   if (!isOptionalDecision(kind)) {
     throw new Error(`Every stack chooses a ${kind}`);
   }
+
   return kind;
 };
 
@@ -201,6 +202,7 @@ export const changeText = ({ kind, to }: Change) => {
       ? noneName(kind)
       : `${roles[kind].role} → ${integrationOf(to).name}`;
   }
+
   return `${kindLabel(kind)} → ${to === null ? m.none_token() : integrationOf(to).name}`;
 };
 
@@ -263,9 +265,11 @@ export const fitOf = (kind: Decision, id: string | null): string => {
   if (id === null) {
     return noneFits[optional(kind)]();
   }
+
   if (!hasFit(id)) {
     throw new Error(`No fit for ${id}`);
   }
+
   return fits[id]();
 };
 
@@ -294,10 +298,13 @@ export const groupOf = (owner: string): Group => {
   if (owner === "core" || addonOf(owner) !== undefined) {
     return "foundation";
   }
+
   const { kind } = integrationOf(owner);
+
   if (isMappedKind(kind)) {
     return groupOfKind[kind];
   }
+
   return "foundation";
 };
 

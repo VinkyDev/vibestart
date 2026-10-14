@@ -62,9 +62,11 @@ export const Journey = ({
 }) => {
   const [index, setIndex] = useState(0);
   const step = steps[index];
+
   if (step === undefined) {
     return null;
   }
+
   const active = "at" in step ? [step.at] : [step.from, step.to];
   const layout = layouts[path.length];
 
@@ -118,6 +120,7 @@ export const Journey = ({
             {path.map((place) => {
               const { icon: Icon, label, tint } = places[place];
               const on = active.includes(place);
+
               return (
                 <li
                   className={cn(tint, "flex flex-col items-center gap-2.5")}

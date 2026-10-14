@@ -29,7 +29,7 @@ vp test        # unit and integration tests (Vitest)
 vp run ready   # check + knip + test + production build
 ```
 
-Hono requires Bun 1.4.2 or newer on PATH. Install it from https://bun.sh before running the server or its tests. Vite+ and full-stack web frameworks continue to run on Node.js.
+Hono requires Bun 1.4.3 or newer on PATH. Install it from https://bun.sh before running the server or its tests. Vite+ and full-stack web frameworks continue to run on Node.js.
 
 ## Database
 

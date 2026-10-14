@@ -51,8 +51,10 @@ const chooseTarget = async ({ directory, interactive }: Options) => {
   if (directory === undefined && interactive) {
     return targetOf(await promptName((name) => targetError(targetOf(name))));
   }
+
   const target = targetOf(directory ?? "my-app");
   assertTarget(target);
+
   return target;
 };
 
@@ -71,7 +73,9 @@ const given = async (options: Options): Promise<Given> => {
       packageManager: options.packageManager,
     };
   }
+
   const recipe = await loadRecipe(options.recipe);
+
   return {
     addons: options.addons ?? recipe.addons,
     packageManager: options.packageManager ?? recipe.packageManager,
@@ -89,20 +93,26 @@ const chooseStack = async (
 ): Promise<Stack> => {
   const resolution = resolve(registry, choices);
   const [only, ...others] = resolution.stacks;
+
   if (only === undefined) {
     throw illegalStack(resolution);
   }
+
   if (others.length === 0) {
     return only;
   }
+
   if (options.interactive) {
     return await promptCompose(choices);
   }
+
   const defaulted = resolve(registry, withDefaults(registry, choices)).stacks;
   const [chosen, ...rest] = defaulted;
+
   if (chosen === undefined || rest.length > 0) {
     throw incompleteStack(chosen === undefined ? resolution.stacks : defaulted);
   }
+
   return chosen;
 };
 
@@ -114,14 +124,17 @@ const installVitePlus = {
 const relativeTime = (iso: string) => {
   const seconds = (Date.parse(iso) - Date.now()) / 1000;
   const format = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
   const units = [
     ["day", 86_400],
     ["hour", 3600],
     ["minute", 60],
   ] as const;
+
   const [unit, size] = units.find(
     ([, length]) => Math.abs(seconds) >= length
   ) ?? ["second", 1];
+
   return format.format(Math.round(seconds / size), unit);
 };
 
@@ -129,7 +142,9 @@ const chooseAddons = async (options: Options, addons: Given["addons"]) => {
   if (addons !== undefined) {
     return addons;
   }
+
   const defaults = defaultAddons(registry);
+
   return options.interactive
     ? addonsInOrder(registry, await promptAddons(defaults))
     : defaults;
@@ -151,9 +166,11 @@ const summary = (
       const integration = registry.integrations.find(
         (candidate) => candidate.id === stack[kind.id]
       );
+
       if (integration === undefined) {
         return [];
       }
+
       return kind.id === "testing"
         ? testRows(stack, kind.name, integration.name)
         : [[kind.name, integration.name]];
@@ -167,7 +184,9 @@ const summary = (
         .join(", ") || "None",
     ],
   ];
+
   const width = Math.max(...rows.map(([kind = ""]) => kind.length));
+
   return [
     ...rows.map(([kind = "", name = ""]) => `${kind.padEnd(width)}  ${name}`),
     "",
@@ -182,6 +201,7 @@ const nextStepsText = (steps: readonly NextStep[]) => {
   const width = Math.max(
     ...steps.map((step) => (step.note === undefined ? 0 : step.run.length))
   );
+
   return steps
     .map((step) =>
       step.note === undefined
@@ -217,9 +237,11 @@ const bunInstallationSteps = async (
   stack: Stack
 ): Promise<NextStep[]> => {
   const needsBun = packageManager === "bun" || stack.runtime === "bun";
+
   if (!needsBun || (await hasCommand("bun"))) {
     return [];
   }
+
   return [
     {
       run: `curl -fsSL https://bun.sh/install | bash -s "bun-v${toolchainVersions.bun}"`,
@@ -245,6 +267,7 @@ const installProject = async (
   ui: Ui
 ): Promise<StepResult[]> => {
   const steps: StepResult[] = [];
+
   if (!vitePlus) {
     ui.warn(
       `Vite+ is not installed, so ${packageManager} installs the project and its own \`vp\` runs the rest.`
@@ -259,19 +282,25 @@ const installProject = async (
       )
     );
   }
+
   const projectStep = async (run: string) =>
     await runStep(ui, directory, run, { localBin: !vitePlus });
+
   // The bootstrap install already ran prepare and wrote the selected manager's lockfile.
   const setup = vitePlus
     ? setupCommands
     : setupCommands.filter(({ run }) => run !== "vp install");
+
   for (const { run } of setup) {
     steps.push(await projectStep(run));
   }
+
   steps.push(await projectStep("vp fmt"));
+
   if (check) {
     steps.push(await projectStep("vp check"));
   }
+
   return steps;
 };
 
@@ -285,12 +314,15 @@ export const create = async (
   const start = await given(options);
   let stack = await chooseStack(options, start.choices);
   let addons = await chooseAddons(options, start.addons);
+
   let packageManager =
     start.packageManager ??
     (options.interactive ? await promptPackageManager() : "pnpm");
+
   let match = await verificationOf(stack, addons, packageManager);
   let verification = match?.record;
   ui.note("Your stack", summary(stack, addons, verification, packageManager));
+
   while (
     options.interactive &&
     (await promptDecision(options.dryRun)) === "customize"
@@ -308,9 +340,11 @@ export const create = async (
     { addons, channel: "recommended", packageManager, stack },
     { name: target.name, version }
   );
+
   const relative = path.relative(process.cwd(), target.directory);
   const vitePlus = await hasCommand("vp");
   const installBun = await bunInstallationSteps(packageManager, stack);
+
   const nextSteps: NextStep[] = [
     ...installBun,
     ...(vitePlus ? [] : [installVitePlus]),
@@ -322,6 +356,7 @@ export const create = async (
     })),
     { run: "vp run dev" },
   ];
+
   const result = {
     packageManager,
     addons,
@@ -334,12 +369,14 @@ export const create = async (
     steps: [],
     verification: verification ?? null,
   };
+
   if (options.dryRun) {
     ui.note(
       `${generation.files.length} files`,
       generation.files.map((file) => `${file.path}  (${file.owner})`).join("\n")
     );
     ui.outro("Dry run: nothing was written.");
+
     return {
       ...result,
       files: generation.files.map((file) => ({
@@ -356,6 +393,7 @@ export const create = async (
   ui.info(`Wrote ${generation.files.length} files to ${target.directory}`);
 
   const steps: StepResult[] = [];
+
   if (options.git) {
     if (await hasCommand("git")) {
       steps.push(await runStep(ui, target.directory, "git init"));
@@ -363,6 +401,7 @@ export const create = async (
       ui.warn("git is not installed, so the project is not a repository yet.");
     }
   }
+
   if (options.install) {
     steps.push(
       ...(await installProject(
@@ -380,5 +419,6 @@ export const create = async (
 
   ui.note("Next steps", nextStepsText(nextSteps));
   ui.outro(`${target.name} is ready.`);
+
   return { ...result, steps };
 };

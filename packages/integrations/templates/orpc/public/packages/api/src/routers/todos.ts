@@ -11,6 +11,7 @@ const firstOrNotFound = <T>([row]: T[]) => {
   if (row === undefined) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 

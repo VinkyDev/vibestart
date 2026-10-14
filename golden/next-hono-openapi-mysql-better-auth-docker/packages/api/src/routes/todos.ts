@@ -105,11 +105,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     if (!session) {
       throw new HTTPException(401, {
         res: c.json({ message: "Sign in first" }, 401),
       });
     }
+
     c.set("userId", session.user.id);
     await next();
   });
@@ -124,6 +126,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
       });
+
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
@@ -131,30 +134,39 @@ export const todoRoutes = ({ auth, db }: Services) => {
         .insert(todos)
         .values({ ...c.req.valid("json"), userId: c.var.userId })
         .$returningId();
+
       const row =
         created === undefined
           ? undefined
           : await findTodo(created.id, c.var.userId);
+
       if (row === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id, c.var.userId);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.update(todos).set(values).where(eq(todos.id, row.id));
+
       return c.json({ ...row, ...values }, 200);
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id, c.var.userId);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.delete(todos).where(eq(todos.id, row.id));
+
       return c.json(row, 200);
     });
 };

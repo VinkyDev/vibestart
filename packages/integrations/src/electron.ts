@@ -26,6 +26,7 @@ const apiPaths = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return [];
   }
+
   return ctx.has("orpc") ? ["/rpc", "/api"] : ["/api"];
 };
 
@@ -50,6 +51,7 @@ const architecture = (ctx: Context) => {
           " and "
         )} to \`API_ORIGIN\` (default \`${defaultApiOrigin}\`) while keeping the renderer's \`Origin\` header${ctx.has("better-auth") ? "; `packages/auth` lists `https://app.localhost` in `trustedOrigins` for the packaged window" : ""}. In development the window loads the Vite dev server, which proxies the same paths through :5173.`
     : "";
+
   return `The desktop app wraps \`apps/web\`: \`vp run dev\` starts the web dev server and opens it in an Electron window; \`vp run package:desktop\` builds the web app and packages the installer with electron-builder. The window loads \`https://app.localhost/\`, an origin the main process answers itself from \`apps/web/dist\` with the SPA fallback.${api} Restart \`vp run dev\` after changing main or preload code. Main, preload, and the renderer share the IPC contract in \`packages/electron\`; the renderer reads it from \`window.desktop\`.`;
 };
 

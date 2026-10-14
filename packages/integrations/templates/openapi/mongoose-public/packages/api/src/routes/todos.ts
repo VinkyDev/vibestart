@@ -91,10 +91,12 @@ export const todoRoutes = ({ db }: Services) =>
   new OpenAPIHono()
     .openapi(listTodos, async (c) => {
       const rows = await db.todos.find().sort({ _id: 1 }).lean();
+
       return c.json(rows.map(toTodo), 200);
     })
     .openapi(createTodo, async (c) => {
       const created = await db.todos.create(c.req.valid("json"));
+
       return c.json(toTodo(created.toObject()), 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -103,17 +105,21 @@ export const todoRoutes = ({ db }: Services) =>
           returnDocument: "after",
         })
         .lean();
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(toTodo(row), 200);
     })
     .openapi(deleteTodo, async (c) => {
       const row = await db.todos
         .findByIdAndDelete(c.req.valid("param").id)
         .lean();
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(toTodo(row), 200);
     });

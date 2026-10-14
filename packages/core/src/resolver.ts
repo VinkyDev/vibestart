@@ -69,6 +69,7 @@ export const selectedIntegrations = <I extends IntegrationInfo>(
 ): I[] =>
   registry.kinds.flatMap((kind) => {
     const id = stack[kind.id];
+
     return id === undefined ? [] : [getIntegration(registry, id)];
   });
 
@@ -88,6 +89,7 @@ export const needs = (
 ) => {
   const accepted = alternatives(requirement);
   const own = (capability: string) => integration.provides.includes(capability);
+
   return (
     accepted.some(own) &&
     accepted.every(
@@ -99,24 +101,31 @@ export const needs = (
 
 export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
   const integrations = selectedIntegrations(registry, stack);
+
   const describe = (capability: string) =>
     registry.capabilities[capability] ?? capability;
+
   const kindName = (id: string) =>
     registry.kinds.find((kind) => kind.id === id)?.name ?? id;
 
   const missingKinds = [
-    ...registry.kinds.filter((kind) => !kind.optional).map((kind) => [kind.id]),
+    ...registry.kinds.flatMap((kind) => (kind.optional ? [] : [[kind.id]])),
     ...(registry.kindGroups ?? []),
-  ]
-    .filter((kinds) => kinds.every((kind) => stack[kind] === undefined))
-    .map((kinds): Violation => ({
-      kinds,
-      reason: `${joinNames(kinds.map(kindName), "or")} is required.`,
-      type: "missing-kind",
-    }));
+  ].flatMap((kinds): Violation[] =>
+    kinds.every((kind) => stack[kind] === undefined)
+      ? [
+          {
+            kinds,
+            reason: `${joinNames(kinds.map(kindName), "or")} is required.`,
+            type: "missing-kind",
+          },
+        ]
+      : []
+  );
 
   const provided = (capability: string) =>
     integrations.some((i) => i.provides.includes(capability));
+
   const missingCapabilities = integrations.flatMap((integration) =>
     integration.requires
       .map(alternatives)
@@ -130,10 +139,12 @@ export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
   );
 
   const capabilities = [...new Set(integrations.flatMap((i) => i.provides))];
+
   const sharedCapabilities = capabilities.flatMap((capability): Violation[] => {
     const providers = integrations.filter((i) =>
       i.provides.includes(capability)
     );
+
     return providers.length > 1
       ? [
           {
@@ -172,20 +183,24 @@ export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
 
 const allStacks = (registry: RegistryInfo): Stack[] => {
   let stacks: Stack[] = [{}];
+
   for (const kind of registry.kinds) {
     const options: (string | undefined)[] = integrationsOfKind(
       registry,
       kind.id
     ).map((i) => i.id);
+
     if (kind.optional) {
       options.push(undefined);
     }
+
     stacks = stacks.flatMap((stack) =>
       options.map((id) =>
         id === undefined ? stack : { ...stack, [kind.id]: id }
       )
     );
   }
+
   return stacks;
 };
 
@@ -203,13 +218,16 @@ const checkedStacksCache = new WeakMap<RegistryInfo, StackSpace>();
 
 const stackSpace = (registry: RegistryInfo): StackSpace => {
   const cached = checkedStacksCache.get(registry);
+
   if (cached !== undefined) {
     return cached;
   }
+
   const checked = allStacks(registry).map((stack) => ({
     stack,
     violations: check(registry, stack),
   }));
+
   const space = {
     checked,
     // Every caller shares this array, so a caller that sorts or splices it fails instead of changing later results.
@@ -219,7 +237,9 @@ const stackSpace = (registry: RegistryInfo): StackSpace => {
         .map(({ stack }) => stack)
     ),
   };
+
   checkedStacksCache.set(registry, space);
+
   return space;
 };
 
@@ -242,6 +262,7 @@ const assertOffered = (registry: RegistryInfo, choices: Choices) => {
       id === null
         ? registry.kinds.some((k) => k.id === kind && k.optional)
         : integrationsOfKind(registry, kind).some((i) => i.id === id);
+
     if (!offered) {
       throw new Error(
         `The registry offers no ${id === null ? "empty choice" : `"${id}"`} for kind "${kind}"`
@@ -262,9 +283,12 @@ export const resolve = (
 ): Resolution => {
   assertOffered(registry, choices);
   const pairs = decided(choices);
+
   const matches = (stack: Stack) =>
     pairs.every(([kind, id]) => (stack[kind] ?? null) === id);
+
   const stacks = legalStacks(registry).filter(matches);
+
   if (stacks.length > 0) {
     return { fixes: [], stacks, violations: [] };
   }
@@ -272,20 +296,26 @@ export const resolve = (
   const consistent = stackSpace(registry).checked.filter(({ stack }) =>
     matches(stack)
   );
+
   const [closest] = consistent.toSorted(
     (a, b) => a.violations.length - b.violations.length
   );
+
   // Every offered choice appears in some combination, so `assertOffered` leaves one consistent.
   if (closest === undefined) {
     throw new Error("No combination is consistent with the choices");
   }
+
   const { keep } = options;
+
   const candidates = legalStacks(registry)
     .filter(
       (legal) => keep === undefined || (legal[keep] ?? null) === choices[keep]
     )
     .map((legal) => changes(choices, legal));
+
   const fewest = Math.min(...candidates.map((fix) => fix.length));
+
   const fixes = new Map(
     candidates
       .filter((fix) => fix.length === fewest)
@@ -305,9 +335,11 @@ export const kindOptions = (
   kind: string
 ): KindOption[] => {
   const optional = registry.kinds.find((k) => k.id === kind)?.optional;
+
   if (optional === undefined) {
     throw new Error(`Unknown kind "${kind}"`);
   }
+
   return [
     ...integrationsOfKind(registry, kind),
     ...(optional ? [null] : []),
@@ -325,21 +357,24 @@ export const withDefaults = (
   choices: Choices
 ): Choices => {
   let current = choices;
+
   for (const kind of registry.kinds) {
     if (current[kind.id] === undefined && kind.default !== undefined) {
       const tentative = { ...current, [kind.id]: kind.default };
+
       if (resolve(registry, tentative).stacks.length > 0) {
         current = tentative;
       }
     }
   }
+
   return current;
 };
 
 export const openChoices = (options: readonly KindOption[]) =>
-  options
-    .filter(({ violations }) => violations.length === 0)
-    .map(({ integration }) => integration?.id ?? null);
+  options.flatMap(({ integration, violations }) =>
+    violations.length === 0 ? [integration?.id ?? null] : []
+  );
 
 /** Where a kind starts among its open choices: on `preferred` when it is open, else on the first. Undefined when none is open. */
 export const startingChoice = (
@@ -350,35 +385,46 @@ export const startingChoice = (
 
 export const compose = (registry: RegistryInfo, fixed: Choices): Stack => {
   const choices: Record<string, string | null> = {};
+
   for (const [kind, id] of Object.entries(fixed)) {
     if (id !== undefined) {
       choices[kind] = id;
     }
   }
+
   assertOffered(registry, choices);
+
   for (const kind of registry.kinds) {
     if (choices[kind.id] !== undefined) {
       continue;
     }
+
     // The open choices `kindOptions` would find, without the violations it works out for the others.
     const left = legalStacks(registry).filter((stack) =>
       Object.entries(choices).every(([k, id]) => (stack[k] ?? null) === id)
     );
+
     const open = [
       ...integrationsOfKind(registry, kind.id).map(({ id }) => id),
       ...(kind.optional ? [null] : []),
     ].filter((id) => left.some((stack) => (stack[kind.id] ?? null) === id));
+
     const start = startingChoice(open, kind.default);
+
     if (start === undefined) {
       throw new Error(`The choices leave no option of ${kind.id} open`);
     }
+
     choices[kind.id] = start;
   }
+
   const [stack] = resolve(registry, choices).stacks;
+
   if (stack === undefined) {
     throw new Error(
       "Every kind was chosen from options that leave a legal stack"
     );
   }
+
   return stack;
 };

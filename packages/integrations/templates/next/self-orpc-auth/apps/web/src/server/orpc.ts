@@ -13,6 +13,7 @@ export const createContext = async (
   requestHeaders: Headers
 ): Promise<Context> => {
   const { db, auth } = getServices();
+
   return {
     db,
     session: await auth.api.getSession({ headers: requestHeaders }),
@@ -35,6 +36,7 @@ const mount =
       context: await createContext(request.headers),
       prefix,
     });
+
     return response ?? new Response("Not Found", { status: 404 });
   };
 

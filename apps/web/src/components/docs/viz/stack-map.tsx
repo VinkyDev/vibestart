@@ -85,6 +85,7 @@ const marks = new Map<string, TechIcon>([
 
 const Mark = ({ id }: { readonly id: string }) => {
   const icon = marks.get(id);
+
   return icon === undefined ? (
     <Server
       className="text-muted-foreground size-4 shrink-0"
@@ -97,9 +98,11 @@ const Mark = ({ id }: { readonly id: string }) => {
 
 const pageOf = (id: string) => {
   const page = pages.get(id);
+
   if (page === undefined) {
     throw new Error(`No docs page explains ${id}`);
   }
+
   return page;
 };
 
@@ -109,6 +112,7 @@ export const StackMap = () => (
       const integrations = registry.integrations.filter(
         (integration) => groupOf(integration.id) === group
       );
+
       return (
         <section
           className={cn(

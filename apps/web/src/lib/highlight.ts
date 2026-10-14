@@ -45,19 +45,25 @@ const isExtension = (
 
 const grammarOf = (path: string): Grammar | undefined => {
   const name = path.split("/").at(-1) ?? path;
+
   if (name === "Dockerfile") {
     return "dockerfile";
   }
+
   if (name.startsWith(".env")) {
     return "dotenv";
   }
+
   if (name.startsWith("tsconfig") || path.startsWith(".vscode/")) {
     return "jsonc";
   }
+
   const extension = name.split(".").at(-1) ?? "";
+
   if (isExtension(extension)) {
     return byExtension[extension];
   }
+
   return undefined;
 };
 
@@ -71,14 +77,17 @@ const tokenize = async ({ content, path }: GeneratedFile) => {
   });
   const shiki = await highlighter;
   const grammar = grammarOf(path);
+
   if (grammar === undefined) {
     return content
       .split("\n")
       .map((line): ThemedToken[] => [{ content: line, offset: 0 }]);
   }
+
   if (!shiki.getLoadedLanguages().includes(grammar)) {
     await shiki.loadLanguage(grammars[grammar]());
   }
+
   return shiki.codeToTokens(content, { lang: grammar, theme }).tokens;
 };
 
@@ -86,9 +95,11 @@ const tokenized = new WeakMap<GeneratedFile, Promise<ThemedToken[][]>>();
 
 export const tokensOf = (file: GeneratedFile) => {
   let tokens = tokenized.get(file);
+
   if (tokens === undefined) {
     tokens = tokenize(file);
     tokenized.set(file, tokens);
   }
+
   return tokens;
 };

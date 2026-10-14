@@ -117,6 +117,7 @@ const Progress = ({ stage }: { readonly stage: Stage }) => (
   <ol className="flex items-center gap-2 text-xs">
     {stages.map((label, index) => {
       const failing = index === 1 && stage === 1;
+
       return (
         <li className="flex items-center gap-2" key={index}>
           {index > 0 && (
@@ -201,14 +202,18 @@ const Code = ({
 }) => {
   const failed = stage === 1;
   const fixed = stage === 2;
+
   const rows = example.lines
     .map((line, index) => ({ ...line, index }))
     .filter(({ kind }) => fixed || kind !== "added");
+
   const pointed = rows.findIndex(
     ({ flagged, kind }) => flagged === true || kind === "removed"
   );
+
   const fixedAt = rows.findLastIndex(({ kind }) => kind === "added");
   const at = failed ? pointed : fixedAt;
+
   // The fix writes lines the change did not have, so the file reserves their rows from the start.
   const pending = fixed
     ? 0
@@ -218,6 +223,7 @@ const Code = ({
     <pre className="sm:text-snippet grid grid-cols-[2.5rem_minmax(0,1fr)] py-4 font-mono text-xs leading-6 sm:grid-cols-[2.75rem_minmax(0,1fr)]">
       {rows.map(({ flagged, index, kind, text }, row) => {
         const wrong = failed && (flagged === true || kind === "removed");
+
         return [
           <span
             aria-hidden
@@ -292,6 +298,7 @@ export const ChangeDemo = ({ scenario }: { readonly scenario: Scenario }) => {
 
   let Icon = Play;
   let label = m.change_demo_run();
+
   if (failed) {
     Icon = Wrench;
     label = m.change_demo_apply();
@@ -303,6 +310,7 @@ export const ChangeDemo = ({ scenario }: { readonly scenario: Scenario }) => {
   let verdict = (
     <span className="text-muted-foreground">{m.change_demo_pending()}</span>
   );
+
   if (failed) {
     verdict = (
       <span className="text-removed flex items-center gap-1.5 font-medium">

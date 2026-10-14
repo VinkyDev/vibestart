@@ -14,19 +14,25 @@ import { createMainWindow } from "#src/main/window.ts";
 
 const origin = (name: string, parse: (value: string) => string | null) => {
   const value = process.env[name];
+
   if (value === undefined || value === "") {
     return null;
   }
+
   const parsed = parse(value);
+
   if (parsed === null) {
     throw new Error(`${name} is not a valid origin: ${value}`);
   }
+
   return parsed;
 };
 
 const devOrigin = origin("ELECTRON_RENDERER_URL", parseLoopbackOrigin);
+
 const apiOrigin =
   origin("API_ORIGIN", parseHttpOrigin) ?? parseHttpOrigin(defaultApiOrigin);
+
 if (apiOrigin === null) {
   throw new Error(`defaultApiOrigin is not an origin: ${defaultApiOrigin}`);
 }
@@ -40,12 +46,14 @@ const open = () =>
 
 const start = () => {
   setupIpc(devOrigin);
+
   if (devOrigin === null) {
     serveRenderer({
       apiOrigin,
       rendererRoot: path.join(import.meta.dirname, "../renderer"),
     });
   }
+
   open();
 };
 

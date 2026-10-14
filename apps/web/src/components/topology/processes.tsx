@@ -19,12 +19,15 @@ const deploymentLabel = (database: string | undefined, name: string) => {
   if (database === "postgres") {
     return m.deployment_postgres({ name });
   }
+
   if (database === "mysql") {
     return m.deployment_mysql({ name });
   }
+
   if (database === "mongodb") {
     return m.deployment_mongodb({ name });
   }
+
   return m.deployment_image({ name });
 };
 
@@ -38,6 +41,7 @@ export const Boxes = ({
   readonly stack: Stack;
 }) => {
   const runtime = chosen(stack, "runtime");
+
   return (
     <AnimatePresence>
       {boxes.map((box) => (
@@ -101,9 +105,11 @@ export const DeploymentFrame = ({
 }) => {
   const points =
     stack.deployment === undefined ? undefined : deploymentFrame(boxes);
+
   const path = points === undefined ? "" : roundedPath(points, 34);
   const origin = points?.[0];
   const name = chosen(stack, "deployment")?.name ?? "";
+
   return (
     <AnimatePresence>
       {points !== undefined && origin !== undefined && (

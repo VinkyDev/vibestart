@@ -25,13 +25,16 @@ describe(loadProject, () => {
 
   it("asks again after a failed request, and keeps a loaded project", async () => {
     const [entry] = stacks;
+
     if (entry === undefined) {
       throw new Error("The registry has no legal stack");
     }
+
     const fetch = vi
       .fn<typeof globalThis.fetch>()
       .mockRejectedValueOnce(new TypeError("Failed to fetch"))
       .mockResolvedValue(Response.json(preview));
+
     vi.stubGlobal("fetch", fetch);
 
     await expect(loadProject(entry)).rejects.toThrow("Failed to fetch");

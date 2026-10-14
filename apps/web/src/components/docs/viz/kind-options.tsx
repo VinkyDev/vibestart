@@ -18,6 +18,7 @@ const defaultOf = (kind: Kind) => {
       <span className="text-muted-foreground">{m.viz_kind_follows()}</span>
     );
   }
+
   return <Value>{kind.default ?? none}</Value>;
 };
 

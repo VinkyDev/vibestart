@@ -7,16 +7,20 @@ import { spring } from "#/lib/motion.ts";
 
 const storageKey = (group: string) => `vibestart:docs-tab:${group}`;
 const listeners = new Set<() => void>();
+
 const subscribe = (listener: () => void) => {
   listeners.add(listener);
   window.addEventListener("storage", listener);
+
   return () => {
     listeners.delete(listener);
     window.removeEventListener("storage", listener);
   };
 };
+
 const remember = (group: string, value: string) => {
   localStorage.setItem(storageKey(group), value);
+
   for (const listener of listeners) {
     listener();
   }
@@ -33,12 +37,14 @@ export const Tabs = ({
 }) => {
   const id = useId();
   const [local, setLocal] = useState(items[0]);
+
   const stored = useSyncExternalStore(
     subscribe,
     () =>
       group === undefined ? null : localStorage.getItem(storageKey(group)),
     () => null
   );
+
   const value =
     stored !== null && items.includes(stored) ? stored : (local ?? "");
 
@@ -47,6 +53,7 @@ export const Tabs = ({
       className="bg-card shadow-rest my-6 overflow-hidden rounded-xl"
       onValueChange={(next: string) => {
         setLocal(next);
+
         if (group !== undefined) {
           remember(group, next);
         }

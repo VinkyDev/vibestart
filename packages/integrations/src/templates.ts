@@ -20,9 +20,11 @@ const withName = (ctx: Context, content: string) =>
 
 export const templateContent = (ctx: Context, set: string, path: string) => {
   const content = templates[`${root}${set}/${path}`];
+
   if (content === undefined) {
     throw new Error(`Template ${set}/${path} does not exist`);
   }
+
   return withName(ctx, content);
 };
 
@@ -39,17 +41,21 @@ export const templateFiles = (
   } = {}
 ): Contribution[] => {
   const prefix = `${root}${set}/`;
+
   const files = Object.entries(templates).filter(([key]) =>
     key.startsWith(prefix)
   );
+
   if (files.length === 0) {
     throw new Error(`Template set "${set}" is empty`);
   }
+
   for (const path of except) {
     if (templates[`${prefix}${path}`] === undefined) {
       throw new Error(`Template ${set}/${path} does not exist`);
     }
   }
+
   return files
     .map(([key, content]) => [key.slice(prefix.length), content] as const)
     .filter(([path]) => !except.includes(path))

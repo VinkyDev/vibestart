@@ -16,9 +16,11 @@ export const getSession = createServerFn({ method: "GET" }).handler(
         headers: { cookie: getRequestHeaders().get("cookie") ?? "" },
       },
     });
+
     if (error) {
       throw new Error(error.message ?? error.statusText);
     }
+
     return data;
   }
 );

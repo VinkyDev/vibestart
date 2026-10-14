@@ -28,6 +28,7 @@ export const FingerprintCheck = ({
   const [computed, setComputed] = useState<string | undefined>();
   const [hashing, setHashing] = useState(false);
   const matches = computed === recorded;
+
   const check = async () => {
     setHashing(true);
     setComputed(await fingerprint(project));

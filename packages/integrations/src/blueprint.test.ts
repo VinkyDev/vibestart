@@ -19,6 +19,7 @@ describe("blueprint", () => {
       JSON.stringify(blueprintJsonSchema(registry)),
       "@vibestart"
     );
+
     await expect(code).toMatchFileSnapshot("../schema.json");
   });
 
@@ -27,6 +28,7 @@ describe("blueprint", () => {
       channel: "recommended",
       stack,
     });
+
     expect(result.addons).toStrictEqual(defaultAddons(registry));
   });
 
@@ -36,6 +38,7 @@ describe("blueprint", () => {
       channel: "recommended",
       stack,
     });
+
     expect(result.success).toBeFalsy();
   });
 
@@ -55,6 +58,7 @@ describe("blueprint", () => {
       channel: "recommended",
       stack: { frontend: "vue" },
     });
+
     expect(result.success).toBeFalsy();
   });
 });

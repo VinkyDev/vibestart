@@ -57,17 +57,21 @@ export type Flags = Partial<Record<Decision, string>>;
 
 const kindOf = (id: string) => {
   const kind = registry.kinds.find((k) => k.id === id);
+
   if (kind === undefined) {
     throw new Error(`The registry has no kind "${id}"`);
   }
+
   return kind;
 };
 
 export const integrationOf = (id: string): IntegrationInfo => {
   const integration = registry.integrations.find((i) => i.id === id);
+
   if (integration === undefined) {
     throw new Error(`The registry has no integration "${id}"`);
   }
+
   return integration;
 };
 
@@ -79,6 +83,7 @@ export const chosen = (
   kind: string
 ): IntegrationInfo | undefined => {
   const id = stack[kind];
+
   return id === undefined ? undefined : integrationOf(id);
 };
 
@@ -105,11 +110,13 @@ const entryOf = (choices: Choices): StackEntry => {
       (kind) => (candidate.stack[kind] ?? null) === (choices[kind] ?? null)
     )
   );
+
   if (entry === undefined) {
     throw new Error(
       `No legal stack has the decisions ${JSON.stringify(choices)}`
     );
   }
+
   return entry;
 };
 
@@ -133,6 +140,7 @@ export const searchSchema = z.object({
   testing: flag,
   packageManager: z.preprocess((value) => {
     const parsed = packageManagerSchema.safeParse(value);
+
     return parsed.success ? parsed.data : undefined;
   }, packageManagerSchema),
 });
@@ -143,12 +151,15 @@ export const parseFlags = (search: Search): Flags =>
   Object.fromEntries(
     decisions.flatMap((kind) => {
       const value = search[kind];
+
       const offered = optionsOf(kind).map(
         (integration) => integration?.id ?? none
       );
+
       if (value === undefined || !offered.includes(value)) {
         return [];
       }
+
       return [[kind, value]];
     })
   );
@@ -157,25 +168,32 @@ export const entryFromFlags = (flags: Flags): StackEntry => {
   const choices: Choices = mapValues(flags, (value) =>
     value === none ? null : value
   );
+
   const { fixes, stacks: legal } = resolve(registry, choices);
   const [only] = legal;
+
   if (legal.length === 1 && only !== undefined) {
     return entryOf(decisionsOf(only));
   }
+
   const [fix] = fixes;
+
   const fixed =
     legal.length > 0 || fix === undefined
       ? choices
       : applied(choices, fix.changes);
+
   return entryOf(decisionsOf(compose(registry, fixed)));
 };
 
 export const flagsOf = (stack: Stack): Flags => {
   let choices = decisionsOf(stack);
+
   for (const kind of decisions) {
     const fewer = omit(choices, [kind]);
     const { stacks: left } = resolve(registry, fewer);
     const [only] = left;
+
     if (
       left.length === 1 &&
       only !== undefined &&
@@ -184,12 +202,15 @@ export const flagsOf = (stack: Stack): Flags => {
       choices = fewer;
     }
   }
+
   if (choices.runtime === "node") {
     choices = omit(choices, ["runtime"]);
   }
+
   if (choices.testing === "playwright") {
     choices = omit(choices, ["testing"]);
   }
+
   return mapValues(choices, (id) => id ?? none);
 };
 
@@ -197,9 +218,11 @@ export const verifiedAddons = defaultAddons(registry);
 
 export const parseAddons = (value?: string): readonly string[] => {
   const ids = value === undefined || value === none ? [] : value.split(",");
+
   const offered = ids.every((id) =>
     registry.addons.some((addon) => addon.id === id)
   );
+
   return value === undefined || !offered
     ? verifiedAddons
     : addonsInOrder(registry, ids);
@@ -207,6 +230,7 @@ export const parseAddons = (value?: string): readonly string[] => {
 
 export const addonsFlag = (addons: readonly string[]) => {
   const value = addons.length === 0 ? none : addons.join(",");
+
   return isEqual(addons, verifiedAddons) ? undefined : value;
 };
 
@@ -218,6 +242,7 @@ export const verificationWith = (
   if (!defaultsCover(registry, addons)) {
     return null;
   }
+
   return packageManager === "bun"
     ? (entry.bunVerification ?? null)
     : entry.verification;
@@ -239,10 +264,12 @@ export const commandWords = (
   packageManager: "pnpm" | "bun" = "pnpm"
 ) => {
   const addonsValue = addonsFlag(addons);
+
   return {
     flags: [
       ...decisions.flatMap((kind) => {
         const value = flags[kind];
+
         return value === undefined ? [] : [{ kind, value }];
       }),
       ...(packageManager === "bun"
@@ -276,13 +303,17 @@ export const outcome = (
 ): Outcome | undefined => {
   const choices = { ...decisionsOf(stack), [kind]: id };
   const { fixes, stacks: legal } = resolve(registry, choices, { keep: kind });
+
   if (legal.length > 0) {
     return { changes: [], entry: entryOf(choices) };
   }
+
   const [fix] = fixes;
+
   if (fix === undefined) {
     return undefined;
   }
+
   return {
     changes: fix.changes,
     entry: entryOf(applied(choices, fix.changes)),
@@ -299,6 +330,7 @@ export const whyIncluded = (
   integration: IntegrationInfo
 ): string | undefined => {
   const integrations = selected(stack);
+
   const needed = integrations.flatMap((other) =>
     other.requires
       .filter((requirement) => needs(requirement, integration, integrations))
@@ -306,11 +338,14 @@ export const whyIncluded = (
       .filter((capability) => integration.provides.includes(capability))
       .map((capability) => ({ capability, other }))
   );
+
   if (needed.length === 0) {
     return undefined;
   }
+
   const capabilities = uniq(needed.map(({ capability }) => capability));
   const names = uniq(needed.map(({ other }) => other.name));
+
   return m.why_included({
     capabilities: list(
       "conjunction",

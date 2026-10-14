@@ -1120,6 +1120,7 @@ export const serverApi = createQueries(
     fetch: fetchFromServer,
     headers: async () => {
       const requestHeaders = await headers();
+
       return { cookie: requestHeaders.get("cookie") ?? "" };
     },
   })
@@ -1795,6 +1796,7 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.connection.getClient().db().command({ ping: 1 });
+
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -1892,6 +1894,7 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.execute(sql`select 1`);
+
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -1988,6 +1991,7 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.$queryRaw`select 1`;
+
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -2085,6 +2089,7 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.execute(sql`select 1`);
+
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -2181,6 +2186,7 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.$queryRaw`select 1`;
+
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -2278,6 +2284,7 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, (c) => {
     db.run(sql`select 1`);
+
     return c.json({ status: "ok" as const }, 200);
   });
 
@@ -2424,11 +2431,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     if (!session) {
       throw new HTTPException(401, {
         res: c.json({ message: "Sign in first" }, 401),
       });
     }
+
     c.set("userId", session.user.id);
     await next();
   });
@@ -2440,6 +2449,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
         .find({ userId: c.var.userId })
         .sort({ _id: 1 })
         .lean();
+
       return c.json(rows.map(toTodo), 200);
     })
     .openapi(createTodo, async (c) => {
@@ -2447,6 +2457,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
         ...c.req.valid("json"),
         userId: c.var.userId,
       });
+
       return c.json(toTodo(created.toObject()), 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -2457,9 +2468,11 @@ export const todoRoutes = ({ auth, db }: Services) => {
           { returnDocument: "after" }
         )
         .lean();
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(toTodo(row), 200);
     })
     .openapi(deleteTodo, async (c) => {
@@ -2469,9 +2482,11 @@ export const todoRoutes = ({ auth, db }: Services) => {
           userId: c.var.userId,
         })
         .lean();
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(toTodo(row), 200);
     });
 };
@@ -2606,10 +2621,12 @@ export const todoRoutes = ({ db }: Services) =>
   new OpenAPIHono()
     .openapi(listTodos, async (c) => {
       const rows = await db.todos.find().sort({ _id: 1 }).lean();
+
       return c.json(rows.map(toTodo), 200);
     })
     .openapi(createTodo, async (c) => {
       const created = await db.todos.create(c.req.valid("json"));
+
       return c.json(toTodo(created.toObject()), 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -2618,18 +2635,22 @@ export const todoRoutes = ({ db }: Services) =>
           returnDocument: "after",
         })
         .lean();
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(toTodo(row), 200);
     })
     .openapi(deleteTodo, async (c) => {
       const row = await db.todos
         .findByIdAndDelete(c.req.valid("param").id)
         .lean();
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(toTodo(row), 200);
     });
 
@@ -2777,11 +2798,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     if (!session) {
       throw new HTTPException(401, {
         res: c.json({ message: "Sign in first" }, 401),
       });
     }
+
     c.set("userId", session.user.id);
     await next();
   });
@@ -2796,6 +2819,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
       });
+
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
@@ -2803,30 +2827,39 @@ export const todoRoutes = ({ auth, db }: Services) => {
         .insert(todos)
         .values({ ...c.req.valid("json"), userId: c.var.userId })
         .$returningId();
+
       const row =
         created === undefined
           ? undefined
           : await findTodo(created.id, c.var.userId);
+
       if (row === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id, c.var.userId);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.update(todos).set(values).where(eq(todos.id, row.id));
+
       return c.json({ ...row, ...values }, 200);
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id, c.var.userId);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.delete(todos).where(eq(todos.id, row.id));
+
       return c.json(row, 200);
     });
 };
@@ -2971,28 +3004,37 @@ export const todoRoutes = ({ db }: Services) => {
         .insert(todos)
         .values(c.req.valid("json"))
         .$returningId();
+
       const row =
         created === undefined ? undefined : await findTodo(created.id);
+
       if (row === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.update(todos).set(values).where(eq(todos.id, row.id));
+
       return c.json({ ...row, ...values }, 200);
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === undefined) {
         return c.json(todoNotFound, 404);
       }
+
       await db.delete(todos).where(eq(todos.id, row.id));
+
       return c.json(row, 200);
     });
 };
@@ -3174,11 +3216,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     if (!session) {
       throw new HTTPException(401, {
         res: c.json({ message: "Sign in first" }, 401),
       });
     }
+
     c.set("userId", session.user.id);
     await next();
   });
@@ -3193,20 +3237,24 @@ export const todoRoutes = ({ auth, db }: Services) => {
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
       });
+
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
       const row = await db.todo.create({
         data: { ...c.req.valid("json"), userId: c.var.userId },
       });
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id, c.var.userId);
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(
         await db.todo.update({ data: values, where: { id: row.id } }),
         200
@@ -3214,10 +3262,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id, c.var.userId);
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       await db.todo.delete({ where: { id: row.id } });
+
       return c.json(row, 200);
     });
 };
@@ -3392,14 +3443,17 @@ export const todoRoutes = ({ db }: Services) => {
     )
     .openapi(createTodo, async (c) => {
       const row = await db.todo.create({ data: c.req.valid("json") });
+
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
       const values = c.req.valid("json");
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       return c.json(
         await db.todo.update({ data: values, where: { id: row.id } }),
         200
@@ -3407,10 +3461,13 @@ export const todoRoutes = ({ db }: Services) => {
     })
     .openapi(deleteTodo, async (c) => {
       const row = await findTodo(c.req.valid("param").id);
+
       if (row === null) {
         return c.json(todoNotFound, 404);
       }
+
       await db.todo.delete({ where: { id: row.id } });
+
       return c.json(row, 200);
     });
 };
@@ -3595,11 +3652,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     if (!session) {
       throw new HTTPException(401, {
         res: c.json({ message: "Sign in first" }, 401),
       });
     }
+
     c.set("userId", session.user.id);
     await next();
   });
@@ -3610,6 +3669,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
       });
+
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
@@ -3617,9 +3677,11 @@ export const todoRoutes = ({ auth, db }: Services) => {
         .insert(todos)
         .values({ ...c.req.valid("json"), userId: c.var.userId })
         .returning();
+
       if (created === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(created, 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -3633,6 +3695,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
           )
         )
         .returning();
+
       return updated === undefined
         ? c.json(todoNotFound, 404)
         : c.json(updated, 200);
@@ -3647,6 +3710,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
           )
         )
         .returning();
+
       return deleted === undefined
         ? c.json(todoNotFound, 404)
         : c.json(deleted, 200);
@@ -3826,9 +3890,11 @@ export const todoRoutes = ({ db }: Services) =>
         .insert(todos)
         .values(c.req.valid("json"))
         .returning();
+
       if (created === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(created, 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -3837,6 +3903,7 @@ export const todoRoutes = ({ db }: Services) =>
         .set(c.req.valid("json"))
         .where(eq(todos.id, c.req.valid("param").id))
         .returning();
+
       return updated === undefined
         ? c.json(todoNotFound, 404)
         : c.json(updated, 200);
@@ -3846,6 +3913,7 @@ export const todoRoutes = ({ db }: Services) =>
         .delete(todos)
         .where(eq(todos.id, c.req.valid("param").id))
         .returning();
+
       return deleted === undefined
         ? c.json(todoNotFound, 404)
         : c.json(deleted, 200);

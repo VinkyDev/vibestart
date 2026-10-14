@@ -18,12 +18,14 @@ export interface Target {
 
 export const targetOf = (input: string): Target => {
   const directory = path.resolve(input);
+
   return { directory, name: path.basename(directory) };
 };
 
 /** A project goes into a directory that is missing or empty, so nothing of the user's is overwritten. */
 const nameError = (name: string) => {
   const error = projectNameError(name);
+
   return error === undefined
     ? undefined
     : `${error}. The directory's name is the project name.`;
@@ -40,10 +42,13 @@ export const targetError = ({ directory, name }: Target) =>
 
 export const assertTarget = ({ directory, name }: Target) => {
   const invalidName = nameError(name);
+
   if (invalidName !== undefined) {
     throw new CliError({ code: "invalid-option" }, invalidName);
   }
+
   const occupied = directoryError(directory);
+
   if (occupied !== undefined) {
     throw new CliError({ code: "directory-not-empty", directory }, occupied);
   }
@@ -64,6 +69,7 @@ export const writeFiles = async (
 
 export const hasCommand = async (command: string) => {
   const result = await execa(command, ["--version"], { reject: false });
+
   return !result.failed;
 };
 
@@ -86,6 +92,7 @@ export const runStep = async (
 ): Promise<StepResult> => {
   const view = ui.step(run);
   const started = performance.now();
+
   const subprocess = execa(run, {
     all: true,
     cwd,
@@ -94,11 +101,14 @@ export const runStep = async (
     shell: true,
     stdin: "ignore",
   });
+
   for await (const line of subprocess.iterable({ from: "all" })) {
     view.line(line);
   }
+
   const result = await subprocess;
   const seconds = (performance.now() - started) / 1000;
+
   if (result.failed) {
     const output = result.all.split("\n").slice(-outputTail).join("\n");
     view.failed(output);
@@ -113,6 +123,8 @@ export const runStep = async (
       `\`${run}\` failed in ${cwd} (exit code ${String(result.exitCode)}).`
     );
   }
+
   view.passed(seconds);
+
   return { run, seconds: Math.round(seconds * 10) / 10 };
 };

@@ -10,10 +10,13 @@ import { queryClient } from "#src/lib/query-client.ts";
 const RootLayout = () => {
   // The guards decide which screens exist, so they wait for the stored session.
   const { data: session, isPending } = authClient.useSession();
+
   if (isPending) {
     return null;
   }
+
   const signedIn = session !== null;
+
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>

@@ -16,12 +16,14 @@ import { currentSnapshot, runningVersion } from "#/maintenance/release.ts";
 import { loadRecipe } from "#/stack.ts";
 
 const roots: string[] = [];
+
 const git = async (cwd: string, ...args: string[]) =>
   await execa(
     "git",
     ["-c", "user.name=test", "-c", "user.email=test@example.com", ...args],
     { cwd }
   );
+
 const commit = async (cwd: string) => {
   await git(cwd, "add", "-A");
   await git(cwd, "commit", "--quiet", "--allow-empty", "-m", "edit");
@@ -34,6 +36,7 @@ const fixture = async (
 ) => {
   const cwd = mkdtempSync(path.join(tmpdir(), "vibestart-commands-"));
   roots.push(cwd);
+
   const [stack] = resolve(
     registry,
     withDefaults(registry, {
@@ -45,22 +48,27 @@ const fixture = async (
       runtime,
     })
   ).stacks;
+
   if (stack === undefined) {
     throw new Error("Expected legal stack");
   }
+
   const base = await currentSnapshot("business", {
     addons: [],
     channel: "recommended",
     packageManager,
     stack,
   });
+
   for (const file of base.files) {
     writeText(cwd, file.path, file.content);
   }
+
   if (repository) {
     await git(cwd, "init", "--quiet");
     await commit(cwd);
   }
+
   return { base, cwd };
 };
 
@@ -70,24 +78,32 @@ const outputSchema = z.object({
   ok: z.boolean(),
   status: z.string(),
 });
+
 const capture = async (...args: string[]) => {
   const output: string[] = [];
+
   const write = vi
     .spyOn(process.stdout, "write")
     .mockImplementation((chunk) => {
       output.push(String(chunk));
+
       return true;
     });
+
   let exitCode: number;
+
   try {
     exitCode = await maintenanceCommand(args);
   } finally {
     write.mockRestore();
   }
+
   return { exitCode, output: output.join("") };
 };
+
 const run = async (...args: string[]) => {
   const result = await capture(...args, "--json");
+
   return {
     exitCode: result.exitCode,
     output: outputSchema.parse(JSON.parse(result.output)),
@@ -160,6 +176,7 @@ describe("project maintenance CLI", () => {
 
   it("names the installation and checks that deferred installation leaves", async () => {
     const { cwd } = await fixture("pnpm", "node");
+
     const result = await capture(
       "add",
       "knip",
@@ -168,6 +185,7 @@ describe("project maintenance CLI", () => {
       "--yes",
       "--no-install"
     );
+
     expect(result.exitCode).toBe(0);
     expect(result.output).toContain("Installation and checks were not run");
     expect(result.output).toContain(
@@ -215,6 +233,7 @@ describe("project maintenance CLI", () => {
         "custom business implementation"
       );
       await commit(cwd);
+
       const result = await run(
         "add",
         "knip",
@@ -225,6 +244,7 @@ describe("project maintenance CLI", () => {
         "--yes",
         "--no-install"
       );
+
       expect(result.output).toMatchObject({
         ok: true,
         status: "needs-install",
@@ -258,6 +278,7 @@ describe("project maintenance CLI", () => {
   it("writes only from a clean Git worktree", async () => {
     const dirty = await fixture("pnpm", "node");
     writeText(dirty.cwd, "apps/server/src/app.ts", "uncommitted");
+
     const refused = await run(
       "add",
       "knip",
@@ -266,9 +287,11 @@ describe("project maintenance CLI", () => {
       "--yes",
       "--no-install"
     );
+
     expect(refused.exitCode).toBe(1);
     expect(refused.output.error).toContain("Commit or stash");
     const untracked = await fixture("pnpm", "node", { repository: false });
+
     const outside = await run(
       "add",
       "knip",
@@ -277,6 +300,7 @@ describe("project maintenance CLI", () => {
       "--yes",
       "--no-install"
     );
+
     expect(outside.exitCode).toBe(1);
     expect(outside.output.error).toContain("Git repository");
     expect(readText(untracked.cwd, "knip.jsonc")).toBeNull();

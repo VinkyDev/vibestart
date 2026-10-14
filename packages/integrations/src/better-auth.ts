@@ -51,20 +51,25 @@ const authAdapter = (ctx: Context) => {
       statement: 'import { mongodbAdapter } from "@better-auth/mongo-adapter";',
     };
   }
+
   const { id } = sqlDatabase(ctx);
+
   if (ctx.has("prisma")) {
     const provider = {
       mysql: "mysql",
       postgres: "postgresql",
       sqlite: "sqlite",
     };
+
     return {
       call: `prismaAdapter(db, { provider: "${provider[id]}" })`,
       dependency: "@better-auth/prisma-adapter",
       statement: 'import { prismaAdapter } from "@better-auth/prisma-adapter";',
     };
   }
+
   const provider = { mysql: "mysql", postgres: "pg", sqlite: "sqlite" };
+
   return {
     call: `drizzleAdapter(db, { provider: "${provider[id]}", schema })`,
     dependency: "@better-auth/drizzle-adapter",
@@ -77,17 +82,22 @@ const renderAuthIndex = (ctx: Context) => {
   const plugin = ctx.has("self")
     ? cookiePlugins.find(({ framework }) => ctx.has(framework))
     : undefined;
+
   const mobile = ctx.has("expo");
+
   // The cookie plugins go last: they read the cookies the other plugins set.
   const plugins = [
     ...(mobile ? ["expo()"] : []),
     ...(plugin === undefined ? [] : [plugin.call]),
   ];
+
   const trustedOrigins = [
     ...(ctx.has("electron") ? ["rendererOrigin"] : []),
     ...(mobile ? [quote(`${ctx.name}://`)] : []),
   ];
+
   const adapter = authAdapter(ctx);
+
   return [
     adapter.statement,
     ...(mobile ? ['import { expo } from "@better-auth/expo";'] : []),
@@ -126,6 +136,7 @@ const renderAuthIndex = (ctx: Context) => {
     "  });",
     "",
     "export type Auth = ReturnType<typeof createAuth>;",
+    "",
     'export type Session = Auth["$Infer"]["Session"];',
     "",
   ].join("\n");
@@ -136,13 +147,17 @@ const home = (ctx: Context) => (todosExample(ctx) ? "/todos" : "/");
 
 const protectedPage = (ctx: Context) => {
   const boundary = ctx.has("orpc") ? "the procedure" : "the server route";
+
   if (ctx.has("next")) {
     return `A page that needs a user calls \`getSession()\` and \`redirect("/login?redirect=…")\` when the session is missing. Add the page to \`redirectTargets\` in \`src/app/login/page.tsx\`; any other redirect value falls back to \`${home(ctx)}\`. The page hide is UX, and ${boundary} is the security boundary.`;
   }
+
   const guard = todosExample(ctx)
     ? "Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=…`."
     : 'The route\'s `beforeLoad` throws `redirect({ to: "/login", search: { redirect: location.href } })` when `context.session` is missing; several such routes share a pathless `_authenticated.tsx` layout that does it once.';
+
   const layout = `${guard} The session sits on the route context (\`context.session\`), loaded once per navigation in \`__root.tsx\``;
+
   return ctx.has("spa")
     ? `${layout} from \`/api/auth/get-session\`. This is an SPA: the page hide is UX, and ${boundary} is the security boundary. Sign-out clears the Query cache.`
     : `${layout}. The page hide is UX, and ${boundary} is the security boundary.`;
@@ -152,6 +167,7 @@ const authorization = (ctx: Context) => {
   if (ctx.has("orpc")) {
     return "A procedure that reads or writes user data is a `protectedProcedure` and scopes every query by `context.session.user.id`. Someone else's row is `NOT_FOUND`, which does not reveal that the id exists. Each new protected procedure gets an integration test as an anonymous caller and as another user.";
   }
+
   return ctx.has("openapi")
     ? "A route module that reads or writes user data guards its whole sub-app with a session middleware, as `packages/api/src/routes/todos.ts` does: it throws `HTTPException` 401 without a session and sets `c.var.userId`. Each route declares that 401, scopes every query by `c.var.userId`, and answers 404 for someone else's row, which does not reveal that the id exists. Each new protected route gets an integration test as an anonymous caller and as another user."
     : "A server route that reads or writes user data gets the session with `auth.api.getSession({ headers })`, answers 401 without one, and scopes every query by the session's user id. Each new protected route is tested as an anonymous caller and as another user.";
@@ -174,24 +190,30 @@ const loginTemplate = (ctx: Context) =>
 const loginPage = (ctx: Context) => {
   const { path, set } = loginTemplate(ctx);
   const content = templateContent(ctx, set, path);
+
   if (todosExample(ctx)) {
     return file(path, content);
   }
+
   const page = content
     .replace('["/", "/todos"]', '["/"]')
     .replaceAll('"/todos"', '"/"');
+
   if (page === content) {
     throw new Error(`${set}/${path} has no /todos redirect`);
   }
+
   return file(path, page);
 };
 
 // A full-stack framework either runs Better Auth itself or asks Hono for the session.
 const appSets = (ctx: Context) => {
   const server = ctx.has("hono") ? "hono" : "self";
+
   if (ctx.has("next")) {
     return ["better-auth/next", `better-auth/next-${server}`];
   }
+
   return ctx.has("tanstack-start")
     ? [`better-auth/tanstack-start-${server}`]
     : ["better-auth/spa"];
@@ -207,6 +229,7 @@ const webSets = (ctx: Context) => [
 
 const webFiles = (ctx: Context) => {
   const login = loginTemplate(ctx);
+
   return [
     ...webSets(ctx).flatMap((set) =>
       templateFiles(ctx, set, { except: set === login.set ? [login.path] : [] })

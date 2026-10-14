@@ -11,9 +11,11 @@ const todoId = z.object({ id: z.int().positive() });
 // MySQL has no `returning`, so a write finds the user's row by id first. Someone else's todo is not found either.
 const findOrNotFound = async (db: Database, id: number, userId: string) => {
   const row = await db.query.todos.findFirst({ where: { id, userId } });
+
   if (row === undefined) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -22,13 +24,16 @@ export const todosRouter = {
     .input(z.object({ title: z.string().trim().min(1).max(200) }))
     .handler(async ({ context, input }) => {
       const userId = context.session.user.id;
+
       const [created] = await context.db
         .insert(todos)
         .values({ ...input, userId })
         .$returningId();
+
       if (created === undefined) {
         throw new Error("The insert returned no id");
       }
+
       return await findOrNotFound(context.db, created.id, userId);
     }),
 
@@ -38,7 +43,9 @@ export const todosRouter = {
       input.id,
       context.session.user.id
     );
+
     await context.db.delete(todos).where(eq(todos.id, todo.id));
+
     return todo;
   }),
 
@@ -57,7 +64,9 @@ export const todosRouter = {
         id,
         context.session.user.id
       );
+
       await context.db.update(todos).set(values).where(eq(todos.id, todo.id));
+
       return { ...todo, ...values };
     }),
 };

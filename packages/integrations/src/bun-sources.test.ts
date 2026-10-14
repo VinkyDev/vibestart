@@ -21,13 +21,16 @@ describe("Bun and pnpm generate the same sources and tests", () => {
         verifiedGeneration(stack, "pnpm"),
         verifiedGeneration(stack, "bun"),
       ]);
+
       const pnpmFiles = new Map(pnpm.files.map((file) => [file.path, file]));
       const bunFiles = new Map(bun.files.map((file) => [file.path, file]));
+
       const changed = [...new Set([...pnpmFiles.keys(), ...bunFiles.keys()])]
         .filter(
           (path) => pnpmFiles.get(path)?.content !== bunFiles.get(path)?.content
         )
         .filter((path) => !bunOwned.has(path));
+
       expect(changed).toStrictEqual([]);
     }
   );

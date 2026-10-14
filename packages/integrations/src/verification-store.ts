@@ -69,12 +69,14 @@ const packageManagers = [
 const lane = async (packageManager: PackageManager): Promise<Candidate[]> =>
   await Promise.all(
     tasks
-      .filter(
-        (task) =>
-          task.platform === "linux" && task.packageManager === packageManager
+      .flatMap((task) =>
+        task.platform === "linux" && task.packageManager === packageManager
+          ? [task]
+          : []
       )
       .map(async (task) => {
         const { facets } = await verifiedOutput(task.stack, packageManager);
+
         return { facets, label: task.label };
       })
   );
@@ -112,6 +114,7 @@ export const cloneStore = () => {
     ],
     { stdio: "inherit" }
   );
+
   return dir;
 };
 
@@ -123,30 +126,37 @@ const recordPath = new RegExp(
 /** The records in the store layout under each directory, at any depth, by key. */
 export const readRecords = (dirs: readonly string[]) => {
   const records = new Map<string, StackVerification>();
+
   for (const dir of dirs) {
     // download-artifact leaves the path uncreated when a run uploaded nothing.
     if (!existsSync(dir)) {
       continue;
     }
+
     for (const entry of readdirSync(dir, {
       encoding: "utf-8",
       recursive: true,
     })) {
       const key = recordPath.exec(entry.split(path.sep).join("/"))?.groups?.key;
+
       if (key === undefined) {
         continue;
       }
+
       const record = verificationSchema.valueType.parse(
         JSON.parse(readFileSync(path.join(dir, entry), "utf-8"))
       );
+
       if (!key.endsWith(`/${record.fingerprint}`)) {
         throw new Error(
           `${path.join(dir, entry)} records fingerprint ${record.fingerprint}`
         );
       }
+
       records.set(key, record);
     }
   }
+
   return records;
 };
 
@@ -156,14 +166,17 @@ export const writeRecords = (
   records: ReadonlyMap<string, StackVerification>
 ) => {
   let written = 0;
+
   for (const [key, record] of records) {
     const file = path.join(dir, `${key}.json`);
+
     if (!existsSync(file)) {
       mkdirSync(path.dirname(file), { recursive: true });
       writeFileSync(file, `${JSON.stringify(record, null, 2)}\n`);
       written += 1;
     }
   }
+
   return written;
 };
 
@@ -172,9 +185,11 @@ export const currentRecords = async (
   records: ReadonlyMap<string, StackVerification>
 ) => {
   const keys = await Promise.all(tasks.map(keyOf));
+
   return new Map(
     keys.flatMap((key) => {
       const record = records.get(key);
+
       return record === undefined ? [] : [[key, record] as const];
     })
   );
@@ -190,7 +205,9 @@ export const projectionOf = async (
       task,
     }))
   );
+
   const projection = emptyProjection();
+
   for (const { record, task } of entries.toSorted((a, b) =>
     a.task.label.localeCompare(b.task.label)
   )) {
@@ -198,38 +215,48 @@ export const projectionOf = async (
       projection[task.platform][task.label] = record;
     }
   }
+
   const passed = new Set(Object.keys(projection.linux));
+
   const lanes = await Promise.all(
     packageManagers.map(async (packageManager) => {
       const witnesses = coveredBy(await lane(packageManager), passed);
+
       const covered = await Promise.all(
         tasks
-          .filter(
-            (task) =>
-              task.platform === "linux" &&
+          .flatMap((task) => {
+            const by = witnesses.get(task.label);
+
+            return task.platform === "linux" &&
               task.packageManager === packageManager &&
-              witnesses.has(task.label)
-          )
-          .map(async (task) => ({
-            by: witnesses.get(task.label) ?? "",
+              by !== undefined
+              ? [{ by, task }]
+              : [];
+          })
+          .map(async ({ by, task }) => ({
+            by,
             fingerprint: await verifiedFingerprint(task.stack, packageManager),
             label: task.label,
           }))
       );
+
       return { covered, packageManager };
     })
   );
+
   for (const { covered, packageManager } of lanes) {
     for (const { by, fingerprint, label } of covered) {
       projection.coverage[packageManager][label] = { by, fingerprint };
     }
   }
+
   return projection;
 };
 
 /** The tasks to run so that the projection covers every Linux task and has every golden's Windows record. */
 export const pendingTasks = async (projection: Projection) => {
   const passed = new Set(Object.keys(projection.linux));
+
   const lanes = await Promise.all(
     packageManagers.map(async (packageManager) =>
       coverPlan(
@@ -239,7 +266,9 @@ export const pendingTasks = async (projection: Projection) => {
       )
     )
   );
+
   const planned = new Set(lanes.flat().map((label) => `linux ${label}`));
+
   return tasks.filter((task) =>
     task.platform === "windows"
       ? projection.windows[task.label] === undefined
@@ -265,14 +294,16 @@ const stacksPerShard = 12;
 export const batchesOf = (pending: readonly Task[]) =>
   platforms.flatMap((platform) => {
     const labels = pending
-      .filter((task) => task.platform === platform)
-      .map((task) => task.label)
+      .flatMap((task) => (task.platform === platform ? [task.label] : []))
       .toSorted();
+
     const { jobs, runner, shards: maxShards } = capacity[platform];
+
     const shards = Math.min(
       maxShards,
       Math.ceil(labels.length / stacksPerShard)
     );
+
     return Array.from({ length: shards }, (_, shard) => ({
       jobs,
       name: `${platform}-${shard}`,

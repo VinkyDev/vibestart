@@ -9,6 +9,7 @@ import type { Api } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
+
 afterAll(remove);
 
 const auth = createAuth({
@@ -36,6 +37,7 @@ export const signUp = async () => {
     },
     returnHeaders: true,
   });
+
   return createClient(
     headers
       .getSetCookie()

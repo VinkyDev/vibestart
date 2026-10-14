@@ -3,12 +3,18 @@ export type RelativeTimeFormatUnit = "year" | "years" | "quarter" | "quarters" |
  * @typedef {"year" | "years" | "quarter" | "quarters" | "month" | "months" | "week" | "weeks" | "day" | "days" | "hour" | "hours" | "minute" | "minutes" | "second" | "seconds"} RelativeTimeFormatUnit
  */
 /**
+ * Selects the plural category of "input - options.offset". The offset
+ * comes from ICU MessageFormat 1 "{count, plural, offset:1 ...}" and does not
+ * change exact matches like "=0", which compare the input itself.
+ *
  * @param {import("./runtime.js").Locale} locale
  * @param {unknown} input
- * @param {Intl.PluralRulesOptions} [options]
+ * @param {Intl.PluralRulesOptions & { offset?: unknown }} [options]
  * @returns {string}
  */
-export declare function plural(locale: import("./runtime.js").Locale, input: unknown, options?: Intl.PluralRulesOptions): string;
+export declare function plural(locale: import("./runtime.js").Locale, input: unknown, options?: Intl.PluralRulesOptions & {
+    offset?: unknown;
+}): string;
 /**
  * @param {import("./runtime.js").Locale} locale
  * @param {unknown} input
@@ -16,6 +22,20 @@ export declare function plural(locale: import("./runtime.js").Locale, input: unk
  * @returns {string}
  */
 export declare function number(locale: import("./runtime.js").Locale, input: unknown, options?: Intl.NumberFormatOptions): string;
+/**
+ * Formats "#" in ICU MessageFormat 1 plurals: the number "input - options.offset",
+ * formatted like number(). The offset comes from "{count, plural, offset:1 ...}".
+ * An input that is not a finite number (or a numeric string) is displayed as is,
+ * without subtracting the offset.
+ *
+ * @param {import("./runtime.js").Locale} locale
+ * @param {unknown} input
+ * @param {{ offset?: unknown }} [options]
+ * @returns {string}
+ */
+export declare function icuPound(locale: import("./runtime.js").Locale, input: unknown, options?: {
+    offset?: unknown;
+}): string;
 /**
  * @param {import("./runtime.js").Locale} locale
  * @param {unknown} input

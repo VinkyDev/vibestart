@@ -48,7 +48,9 @@ const renderHealth = (ctx: Context) => {
       "",
     ].join("\n");
   }
+
   const check = databaseCheck(ctx, "db");
+
   return [
     'import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";',
     ...check.imports,
@@ -59,6 +61,7 @@ const renderHealth = (ctx: Context) => {
     "export const healthRoutes = ({ db }: Services) =>",
     `  new OpenAPIHono().openapi(health, ${check.async ? "async " : ""}(c) => {`,
     `    ${check.statement}`,
+    "",
     '    return c.json({ status: "ok" as const }, 200);',
     "  });",
     "",
@@ -71,21 +74,25 @@ const queriesPath = "apps/web/src/lib/api.ts";
 const withStringIds = (content: string) => {
   const typed = content.replaceAll("id: number", "id: string");
   const passed = typed.replaceAll("{ id: String(id) }", "{ id }");
+
   if (typed === content || passed === typed) {
     throw new Error(`openapi/web/${queriesPath} has no numeric todo id`);
   }
+
   return passed;
 };
 
 /** The typed queries over the todo routes, which the web and mobile apps share. */
 export const openapiQueriesContent = (ctx: Context) => {
   const template = templateContent(ctx, "openapi/web", queriesPath);
+
   return ctx.has("mongodb") ? withStringIds(template) : template;
 };
 
 // Only Next.js builds a second set of queries, for its Server Components.
 const queries = (ctx: Context) => {
   const content = openapiQueriesContent(ctx);
+
   return file(
     queriesPath,
     ctx.has("next")

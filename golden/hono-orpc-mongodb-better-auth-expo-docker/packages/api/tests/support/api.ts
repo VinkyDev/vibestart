@@ -9,6 +9,7 @@ import type { Context } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
+
 afterAll(remove);
 
 const auth = createAuth({
@@ -31,10 +32,12 @@ export const signUp = async () => {
     },
     returnHeaders: true,
   });
+
   const cookie = headers
     .getSetCookie()
     .map((header) => header.split(";")[0])
     .join("; ");
+
   return createClient(
     await auth.api.getSession({ headers: new Headers({ cookie }) })
   );

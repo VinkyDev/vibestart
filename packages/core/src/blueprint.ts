@@ -12,6 +12,7 @@ export const blueprintSchemaUrl = "https://vibestart.net/schema.json";
 
 export const channels = ["recommended"] as const;
 export const packageManagers = ["pnpm", "bun"] as const;
+
 export type PackageManager = (typeof packageManagers)[number];
 
 export interface Blueprint {
@@ -26,16 +27,21 @@ export interface Blueprint {
 const kindIds = (registry: Registry, kind: string) => {
   const integrations = integrationsOfKind(registry, kind);
   const [first, ...rest] = integrations.map((integration) => integration.id);
+
   if (first === undefined) {
     throw new Error(`Kind "${kind}" has no integrations`);
   }
+
   const current = z.enum([first, ...rest]);
+
   const renames = new Map(
     integrations.flatMap((integration) =>
       (integration.formerIds ?? []).map((former) => [former, integration.id])
     )
   );
+
   const [firstFormer, ...otherFormer] = renames.keys();
+
   return firstFormer === undefined
     ? current
     : current.or(
@@ -50,13 +56,16 @@ export const createBlueprintSchema = (registry: Registry) => {
   const stack = Object.fromEntries(
     registry.kinds.map((kind) => {
       const ids = kindIds(registry, kind.id);
+
       return [kind.id, kind.optional ? ids.optional() : ids];
     })
   );
 
   const [firstAddon, ...otherAddons] = registry.addons.map((addon) => addon.id);
+
   const addonId =
     firstAddon === undefined ? z.never() : z.enum([firstAddon, ...otherAddons]);
+
   return z.strictObject({
     $schema: z.string().optional(),
     name: z.string().optional().meta({
@@ -95,6 +104,7 @@ export const renderBlueprint = (
 ) => {
   const entries = registry.kinds.flatMap((kind) => {
     const id = blueprint.stack[kind.id];
+
     return id === undefined ? [] : [`    "${kind.id}": "${id}",`];
   });
 

@@ -11,8 +11,10 @@ export const signUp = async (email = uniqueEmail()) => {
     headers: { "content-type": "application/json", origin: e2eBaseURL },
     method: "POST",
   });
+
   if (!response.ok) {
     throw new Error(`Sign up failed with ${response.status}`);
   }
+
   return { email };
 };

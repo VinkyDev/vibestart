@@ -59,6 +59,7 @@ import httpSmoke from "../templates/testing/http-smoke/http-smoke.mjs.txt?raw";
 
 const writeProject = (dir: string, { files }: Generation) => {
   rmSync(dir, { force: true, recursive: true });
+
   for (const file of files) {
     mkdirSync(path.dirname(path.join(dir, file.path)), { recursive: true });
     writeFileSync(path.join(dir, file.path), file.content);
@@ -148,6 +149,7 @@ const browserInstall = (stack: Stack) => {
     stack.framework === undefined || stack.testing === undefined
       ? undefined
       : browserRunners.get(stack.testing);
+
   return runner === undefined
     ? []
     : [
@@ -167,8 +169,10 @@ const verifyStack = async ({
   // The output this run writes is the output its record vouches for, so it is generated once and compared here.
   const generation = await verifiedGeneration(stack, packageManager);
   const hash = await fingerprint(generation);
+
   if (!force && verification[taskPlatform][label]?.fingerprint === hash) {
     print(`${label} verified at this output`);
+
     return true;
   }
 
@@ -178,29 +182,36 @@ const verifyStack = async ({
   const logFile = `${dir}.log`;
   const log = openSync(logFile, "w");
   const started = Date.now();
+
   const commands = [
     "git init -q",
     ...generation.setup.map((command) => command.run),
     ...browserInstall(stack),
     "vp run ready",
   ];
+
   const child = spawn(commands.join(" && "), {
     cwd: dir,
     env: { ...projectEnv, ...testPorts(index) },
     shell: true,
     stdio: ["ignore", log, log],
   });
+
   await once(child, "exit");
   closeSync(log);
   const passed = child.exitCode === 0;
   const seconds = Math.round((Date.now() - started) / 1000);
+
   if (!passed) {
     print(`${label} FAIL (${seconds}s), see ${logFile}`);
     // On CI the log file stays on the runner, so the reason has to reach the job output.
     print(logTail(logFile));
+
     return false;
   }
+
   print(`${label} PASS (${seconds}s)`);
+
   // After each stack, so an interrupted run keeps what it verified.
   if (hostPlatform !== undefined) {
     const record: StackVerification = {
@@ -209,11 +220,13 @@ const verifyStack = async ({
       seconds,
       verifiedAt: new Date().toISOString(),
     };
+
     writeRecords(
       path.join(out, "results"),
       new Map([[`${hostPlatform}/${hash}`, record]])
     );
   }
+
   return true;
 };
 
@@ -222,12 +235,15 @@ const closeStatement = ({ database, orm }: Stack) => {
   if (orm === "prisma") {
     return "await db.$disconnect();";
   }
+
   if (orm === "mongoose") {
     return "await db.connection.close();";
   }
+
   if (database === "sqlite") {
     return "db.$client.close();";
   }
+
   return database === "mysql"
     ? "await db.$client.promise().end();"
     : "await db.$client.end();";
@@ -251,6 +267,7 @@ const smokeStack = ({
   const log = openSync(logFile, "w");
   const { database } = stack;
   const server = database !== undefined && database !== "sqlite";
+
   const script = [
     'import assert from "node:assert/strict";',
     'const { app } = await import("./apps/server/src/app.ts");',
@@ -302,7 +319,9 @@ const smokeStack = ({
       ? 'console.log("Runtime imports passed; live database requests require stacks verify.");'
       : 'console.log("Runtime imports and in-memory Hono requests passed; no server started.");',
   ].join("\n");
+
   const runtime = stack.runtime === "bun" ? "bun" : "node";
+
   const commands = [
     "git init -q",
     ...generation.setup.map((command) => command.run),
@@ -311,6 +330,7 @@ const smokeStack = ({
     "vp test --project unit --passWithNoTests",
     "vp run build",
   ];
+
   const env = {
     ...projectEnv,
     DATABASE_URL:
@@ -324,13 +344,17 @@ const smokeStack = ({
     BETTER_AUTH_SECRET: "smoke-secret-that-is-at-least-32-characters",
     BETTER_AUTH_URL: "http://localhost:3000",
   };
+
   let passed = true;
+
   try {
     for (const command of commands) {
       execSync(command, { cwd: dir, env, stdio: ["ignore", log, log] });
     }
+
     // Write the transient probe only after project lint and Knip; it is not application source.
     writeFileSync(path.join(dir, "runtime-smoke.mjs"), script);
+
     // Only the e2e support of a web app installs the fixed Undici dispatcher.
     if (stack.framework !== undefined) {
       writeFileSync(path.join(dir, "http-smoke.mjs"), httpSmoke);
@@ -340,6 +364,7 @@ const smokeStack = ({
         stdio: ["ignore", log, log],
       });
     }
+
     execSync(`${runtime} runtime-smoke.mjs`, {
       cwd: dir,
       env,
@@ -350,7 +375,9 @@ const smokeStack = ({
   } finally {
     closeSync(log);
   }
+
   print(`${label} smoke ${passed ? "PASS" : "FAIL"}, see ${logFile}`);
+
   return passed;
 };
 
@@ -362,6 +389,7 @@ const syncGoldens = async () => {
     rmSync(goldenRoot(stale), { force: true, recursive: true });
     print(`deleted golden/${stale}`);
   }
+
   await Promise.all(
     Object.entries(goldens).map(async ([golden, stack]) => {
       const generation = await verifiedGeneration(stack);
@@ -369,6 +397,7 @@ const syncGoldens = async () => {
       const created = !existsSync(root);
       const setupWrites = generation.setup.flatMap((command) => command.writes);
       const generated = new Set(generation.files.map((file) => file.path));
+
       for (const stale of created
         ? []
         : goldenPaths(golden).filter(
@@ -379,10 +408,12 @@ const syncGoldens = async () => {
         rmSync(`${root}${stale}`);
         print(`${golden}: deleted ${stale}`);
       }
+
       for (const file of generation.files) {
         mkdirSync(path.dirname(`${root}${file.path}`), { recursive: true });
         writeFileSync(`${root}${file.path}`, file.content);
       }
+
       if (created) {
         for (const command of generation.setup) {
           print(`${golden}: ${command.run}`);
@@ -451,13 +482,12 @@ const selectStacks = async (
   await Promise.all(
     managers
       .flatMap((packageManager) =>
-        stacks.map((stack) => ({
-          label: taskLabel(stack, packageManager),
-          packageManager,
-          stack,
-        }))
+        stacks.flatMap((stack) => {
+          const label = taskLabel(stack, packageManager);
+
+          return matches(label) ? [{ label, packageManager, stack }] : [];
+        })
       )
-      .filter(({ label }) => matches(label))
       .map(async ({ label, packageManager, stack }) => ({
         generation: await verifiedGeneration(stack, packageManager),
         label,
@@ -469,21 +499,28 @@ const selectStacks = async (
 const statusOf = async (task: Task) => {
   if (task.platform === "windows") {
     const record = verification.windows[task.label];
+
     if (record === undefined) {
       return "MISSING";
     }
+
     return (await vouchesFor(record, task.stack, task.packageManager))
       ? "CURRENT"
       : "STALE";
   }
+
   const entry = verification.coverage[task.packageManager][task.label];
+
   if (entry === undefined || verification.linux[entry.by] === undefined) {
     return "MISSING";
   }
+
   const current = await verifiedFingerprint(task.stack, task.packageManager);
+
   if (entry.fingerprint !== current) {
     return "STALE";
   }
+
   return entry.by === task.label ? "CURRENT" : `CURRENT by ${entry.by}`;
 };
 
@@ -492,13 +529,17 @@ const checkTasks = async (selected: readonly Task[]) => {
     selected.map(async (task) => {
       const status = await statusOf(task);
       print(`${task.platform} ${task.label} ${status}`);
+
       return status;
     })
   );
+
   const current = statuses.filter((status) =>
     status.startsWith("CURRENT")
   ).length;
+
   print(`${current} of ${selected.length} tasks covered at current output`);
+
   return current === selected.length ? 0 : 1;
 };
 
@@ -509,35 +550,45 @@ const verifyTasks = async (
   if (hostPlatform === undefined) {
     print(`Runs on ${platform()} write no results`);
   }
+
   const verify = limitAsync(verifyStack, jobs);
+
   const results = await Promise.all(
     selected.map(
       async (task, index) => await verify({ ...task, force, index, out })
     )
   );
+
   const passed = results.filter(Boolean).length;
   print(`${passed} of ${selected.length} stacks pass`);
+
   return passed === selected.length ? 0 : 1;
 };
 
 const pull = async (evidence: string | undefined) => {
   const store = cloneStore();
+
   const projection = await projectionOf(
     readRecords(evidence === undefined ? [store] : [store, evidence])
   );
+
   rmSync(store, { force: true, recursive: true });
+
   const { code } = await formatWithProjectConfig(
     projectionPath,
     JSON.stringify(projection),
     "@vibestart"
   );
+
   writeFileSync(projectionPath, code);
+
   for (const packageManager of ["pnpm", "bun"] as const) {
     const covered = Object.values(projection.coverage[packageManager]);
     print(
       `${covered.length} of ${verifiedStacks.length} stacks under ${packageManager} covered by ${new Set(covered.map(({ by }) => by)).size} Linux records`
     );
   }
+
   print(
     `${Object.keys(projection.windows).length} of ${tasks.filter((task) => task.platform === "windows").length} goldens verified on Windows`
   );
@@ -560,50 +611,68 @@ const runStackCommand = async (
   values: Options
 ) => {
   const requested = values["package-manager"];
+
   if (requested !== "pnpm" && requested !== "bun" && requested !== "all") {
     print("--package-manager is pnpm, bun, or all");
+
     return 1;
   }
+
   const jobs = Number(values.jobs);
+
   if (!Number.isInteger(jobs) || jobs < 1) {
     print(`--jobs must be a positive integer, got ${values.jobs}`);
+
     return 1;
   }
+
   const managers: readonly PackageManager[] =
     requested === "all" ? ["pnpm", "bun"] : [requested];
+
   const matching = pattern === undefined ? undefined : new RegExp(pattern, "u");
+
   const matches = (label: string) =>
     matching === undefined || matching.test(label);
+
   if (command === "check") {
     return await checkTasks(selectTasks(platforms, managers, matches));
   }
+
   mkdirSync(values.out, { recursive: true });
+
   if (command === "verify") {
     return await verifyTasks(
       selectTasks([hostPlatform ?? "linux"], managers, matches),
       { force: values.force, jobs, out: values.out }
     );
   }
+
   if (command === "gen") {
     const selected = await selectStacks(
       legalStacks(registry),
       managers,
       matches
     );
+
     for (const { generation, label } of selected) {
       writeProject(path.join(values.out, label), generation);
     }
+
     print(`${selected.length} stacks in ${values.out}`);
+
     return 0;
   }
+
   const selected = await selectStacks(
     verifiedStacks.filter((stack) => stack.backend === "hono"),
     managers,
     matches
   );
+
   const results = selected.map(({ generation, label, stack }) =>
     smokeStack({ generation, label, stack, out: values.out })
   );
+
   return results.every(Boolean) ? 0 : 1;
 };
 
@@ -619,39 +688,56 @@ export const main = async (args: readonly string[]) => {
       out: { default: path.join(tmpdir(), "vibestart-stacks"), type: "string" },
     },
   });
+
   const [command = "", first, second] = positionals;
+
   if (command === "goldens") {
     await syncGoldens();
+
     return 0;
   }
+
   if (command === "pull") {
     await pull(values.evidence);
+
     return 0;
   }
+
   if (command === "plan") {
     await plan();
+
     return 0;
   }
+
   if (command === "evidence" && first !== undefined) {
     mkdirSync(first, { recursive: true });
+
     const written = writeRecords(
       first,
       await currentRecords(readRecords([downloadEvidence(print)]))
     );
+
     print(`${written} records from earlier runs vouch for the current output`);
+
     return 0;
   }
+
   if (command === "record" && first !== undefined && second !== undefined) {
     const written = writeRecords(
       second,
       await currentRecords(readRecords([first]))
     );
+
     print(`${written} new records`);
+
     return 0;
   }
+
   if (["gen", "check", "verify", "smoke"].includes(command)) {
     return await runStackCommand(command, first, values);
   }
+
   print(usage);
+
   return command === "" ? 0 : 1;
 };

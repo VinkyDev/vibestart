@@ -41,9 +41,11 @@ const releases: Releases = {
   expoModules: async (expo) => {
     await Promise.resolve();
     const modules = expoModules.get(expo);
+
     if (modules === undefined) {
       throw new Error(`no fixture for expo ${expo}`);
     }
+
     return modules;
   },
   nodeLts: "24.22.0",
@@ -74,9 +76,11 @@ const releases: Releases = {
         },
       }),
     }[name];
+
     if (found === undefined) {
       throw new Error(`no fixture for ${name}`);
     }
+
     return found;
   },
 };
@@ -92,6 +96,7 @@ const targetOf = async (
   selected?: (name: string) => boolean
 ) => {
   const targets = await targetsOf(pins, releases, selected);
+
   return targets.find((target) => target.name === name)?.target;
 };
 
@@ -116,11 +121,13 @@ describe("where a pin moves", () => {
     await expect(
       targetOf([pin("electron-builder", "^26.17.0")], "electron-builder")
     ).resolves.toBe("^26.17.0");
+
     // Expo tags an SDK beta `next` while `latest` holds the previous SDK.
     const beta: Releases = {
       ...releases,
       expoModules: async () => {
         await Promise.resolve();
+
         return {};
       },
       packument: () => ({
@@ -133,6 +140,7 @@ describe("where a pin moves", () => {
         versions: { "57.0.27": {}, "58.0.7": {}, "58.0.8": {} },
       }),
     };
+
     await expect(
       targetsOf([pin("expo", "58.0.7")], beta)
     ).resolves.toMatchObject([{ target: "58.0.8" }]);
@@ -145,10 +153,12 @@ describe("where a pin moves", () => {
     await expect(
       targetOf([pin("nitro", "3.0.260903-beta")], "nitro")
     ).resolves.toBe("3.0.260910-beta");
+
     const released: Releases = {
       ...releases,
       packument: () => packument("1.0.0", ["1.0.0-rc.5"]),
     };
+
     await expect(
       targetsOf([pin("drizzle-orm", "1.0.0-rc.4")], released)
     ).resolves.toMatchObject([{ target: "1.0.0" }]);
@@ -166,6 +176,7 @@ describe("where a pin moves", () => {
       pin("oxfmt", "0.70.0"),
       pin("vite", "npm:@voidzero-dev/vite-plus-core@1.0.0"),
     ];
+
     await expect(targetOf(pins, "vite-plus")).resolves.toBe("1.1.0");
     await expect(targetOf(pins, "oxfmt")).resolves.toBe("0.71.0");
     await expect(targetOf(pins, "vite")).resolves.toBe(
@@ -179,6 +190,7 @@ describe("where a pin moves", () => {
       pin("vite-plus", "1.0.0"),
       pin("oxfmt", "0.70.0"),
     ];
+
     await expect(targetOf(pins, "electron", vitePlusOnly)).resolves.toBe(
       "^44.4.5"
     );
@@ -196,6 +208,7 @@ describe("where a pin moves", () => {
       pin("react-native", "0.88.0-rc.4"),
       pin("expo-router", "~58.0.17"),
     ];
+
     await expect(targetOf(pins, "react")).resolves.toBe("19.3.1");
     await expect(targetOf(pins, "react-native")).resolves.toBe("0.88.0");
     await expect(targetOf(pins, "expo-router")).resolves.toBe("~58.0.19");
@@ -211,6 +224,7 @@ describe("where a pin moves", () => {
       [pin("electron", "^44.5.1", "^44.4.5")],
       releases
     );
+
     const behind = targets.filter(isBehind).map(({ target }) => target);
     expect(behind).toStrictEqual(["^44.5.1"]);
   });

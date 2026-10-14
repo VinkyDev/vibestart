@@ -11,6 +11,7 @@ describe("Bun dependency build policy", () => {
         { allowBuilds: { electron: !allowed, esbuild: false } },
         { allowBuilds: { electron: allowed } },
       ]);
+
       expect(workspace.trustedDependencies.includes("electron")).toBe(allowed);
       expect(workspace.trustedDependencies).not.toContain("esbuild");
       expect(workspace.trustedDependencies).toContain("vite-plus");

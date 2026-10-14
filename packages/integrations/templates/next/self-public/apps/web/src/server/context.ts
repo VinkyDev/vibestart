@@ -9,5 +9,6 @@ let services: ReturnType<typeof createServices> | undefined;
 
 export const getServices = () => {
   services ??= createServices();
+
   return services;
 };

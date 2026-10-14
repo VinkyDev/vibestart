@@ -221,7 +221,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.connection.close();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -247,7 +249,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { readEnv } from "#src/server/env.ts";
 
 const db = createDb(readEnv().DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.connection.close();
 
 # apps/web/src/server/migrate.ts · 16 stacks
@@ -273,7 +277,9 @@ import { migrateDatabase } from "@my-app/db/migrate";
 import { env } from "#src/server/env.ts";
 
 const db = createDb(env.DATABASE_URL);
+
 await migrateDatabase(db);
+
 await db.connection.close();
 
 # packages/db/src/index.ts · 88 stacks
@@ -370,6 +376,7 @@ import mongoose from "mongoose";
 // `migrateDatabase` builds the indexes once, at deploy, rather than every connection at startup.
 export const createDb = (url: string) => {
   const connection = mongoose.createConnection(url, { autoIndex: false });
+
   return { connection };
 };
 
@@ -545,6 +552,7 @@ export { toTodo } from "#src/schema/todos.ts";
 // `migrateDatabase` builds the indexes once, at deploy, rather than every connection at startup.
 export const createDb = (url: string) => {
   const connection = mongoose.createConnection(url, { autoIndex: false });
+
   return { connection, todos: connection.model("Todo", todoSchema) };
 };
 

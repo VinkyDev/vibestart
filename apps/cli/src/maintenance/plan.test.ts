@@ -11,12 +11,14 @@ import { snapshotOf } from "#/maintenance/model.ts";
 import { planUpdate } from "#/maintenance/plan.ts";
 
 const roots: string[] = [];
+
 const blueprint = {
   addons: [],
   channel: "recommended",
   packageManager: "bun",
   stack: {},
 } as const;
+
 const release = (version: string, source: string) =>
   snapshotOf(version, "example", blueprint, [
     {
@@ -31,12 +33,15 @@ const release = (version: string, source: string) =>
     },
     { content: source, owner: "hono", path: "apps/server/src/app.ts" },
   ]);
+
 const project = (files: readonly Pick<GeneratedFile, "path" | "content">[]) => {
   const cwd = mkdtempSync(path.join(tmpdir(), "vibestart-plan-"));
   roots.push(cwd);
+
   for (const file of files) {
     writeText(cwd, file.path, file.content);
   }
+
   return cwd;
 };
 
@@ -76,6 +81,7 @@ describe("upgrade plans", () => {
   it("refuses a target release whose record would leave later upgrades without a base", () => {
     const base = release("1.0.0", "export const app = 1;\n");
     const target = release("1.1.0", "export const app = 1;\n");
+
     const unrecorded = {
       ...target,
       files: target.files.map((file) =>
@@ -84,6 +90,7 @@ describe("upgrade plans", () => {
           : file
       ),
     };
+
     expect(() => planUpdate(project(base.files), base, unrecorded)).toThrow(
       "does not record its version"
     );
@@ -91,9 +98,11 @@ describe("upgrade plans", () => {
 
   it("does not mistake missing managed files for a no-op", () => {
     const base = release("1.0.0", "export const app = 1;\n");
+
     const cwd = project(
       base.files.filter((file) => file.path !== "package.json")
     );
+
     expect(
       planUpdate(cwd, base, base).conflicts.map((item) => item.path)
     ).toStrictEqual(["package.json"]);

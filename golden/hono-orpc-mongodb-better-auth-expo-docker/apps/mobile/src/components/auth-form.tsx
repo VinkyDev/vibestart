@@ -12,12 +12,14 @@ export const AuthForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { error, isPending, mutate, reset } = useMutation({
     mutationFn: async () => {
       const result =
         mode === "sign-in"
           ? await authClient.signIn.email({ email, password })
           : await authClient.signUp.email({ email, name, password });
+
       if (result.error) {
         throw new Error(result.error.message ?? result.error.statusText);
       }

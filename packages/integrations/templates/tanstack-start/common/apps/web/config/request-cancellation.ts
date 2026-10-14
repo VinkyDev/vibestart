@@ -11,8 +11,10 @@ export const handleRequestError: Connect.ErrorHandleFunction = (
     (response.destroyed && !response.writableEnded)
   ) {
     response.destroy();
+
     return;
   }
+
   next(error);
 };
 

@@ -40,11 +40,13 @@ const forwardedVariables = '["CI", "DATABASE_URL"]';
 // SQLite test databases are temporary files; a database server creates them beside the shell's `DATABASE_URL`.
 const e2eConfig = (ctx: Context) => {
   const config = templateContent(ctx, "testing/e2e/runner", e2eConfigPath);
+
   if (!config.includes(forwardedVariables)) {
     throw new Error(
       `testing/e2e/runner/${e2eConfigPath} does not forward ${forwardedVariables}`
     );
   }
+
   return file(
     e2eConfigPath,
     chosenDatabase(ctx).server

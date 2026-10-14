@@ -1,4 +1,5 @@
 export type { Blueprint, PackageManager } from "#/blueprint.ts";
+
 export {
   blueprintJsonSchema,
   blueprintSchemaUrl,
@@ -7,6 +8,7 @@ export {
   createBlueprintSchema,
   renderBlueprint,
 } from "#/blueprint.ts";
+
 export type {
   Formatter,
   GeneratedFile,
@@ -16,6 +18,7 @@ export type {
   SetupCommand,
   SetupStage,
 } from "#/generator.ts";
+
 export {
   formatter,
   generate,
@@ -25,6 +28,7 @@ export {
   projectNameError,
   setupCommand,
 } from "#/generator.ts";
+
 export type {
   Addon,
   AddonInfo,
@@ -38,6 +42,7 @@ export type {
   Slot,
   Stack,
 } from "#/integration.ts";
+
 export {
   alternatives,
   contribute,
@@ -47,17 +52,24 @@ export {
   file,
   renderFile,
 } from "#/integration.ts";
+
 export type { PackageJsonContribution } from "#/package-json.ts";
+
 export { packageJson } from "#/package-json.ts";
+
 export type { PnpmWorkspaceContribution } from "#/pnpm-workspace.ts";
+
 export { pnpmWorkspace } from "#/pnpm-workspace.ts";
+
 export type { Catalog, Registry, RegistryInfo } from "#/registry.ts";
+
 export {
   addonsInOrder,
   defaultAddons,
   defaultsCover,
   defineRegistry,
 } from "#/registry.ts";
+
 export type {
   Change,
   Choices,
@@ -66,6 +78,7 @@ export type {
   Resolution,
   Violation,
 } from "#/resolver.ts";
+
 export {
   check,
   choicesOf,
@@ -78,8 +91,11 @@ export {
   startingChoice,
   withDefaults,
 } from "#/resolver.ts";
+
 export type { Verification } from "#/verification.ts";
+
 export { fingerprint, verificationSchema } from "#/verification.ts";
 
 export { diffText, mergeFile } from "#/maintenance.ts";
+
 export type { FileChange } from "#/maintenance.ts";

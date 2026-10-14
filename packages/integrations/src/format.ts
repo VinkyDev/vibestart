@@ -25,6 +25,7 @@ export const commentedShell = (
       comment === undefined ? 0 : command.length
     )
   );
+
   return lines
     .map(([command, comment]) =>
       comment === undefined

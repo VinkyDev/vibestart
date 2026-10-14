@@ -104,11 +104,13 @@ export const todoRoutes = ({ auth, db }: Services) => {
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
     if (!session) {
       throw new HTTPException(401, {
         res: c.json({ message: "Sign in first" }, 401),
       });
     }
+
     c.set("userId", session.user.id);
     await next();
   });
@@ -119,6 +121,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
       });
+
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
@@ -126,9 +129,11 @@ export const todoRoutes = ({ auth, db }: Services) => {
         .insert(todos)
         .values({ ...c.req.valid("json"), userId: c.var.userId })
         .returning();
+
       if (created === undefined) {
         throw new Error("The insert returned no row");
       }
+
       return c.json(created, 201);
     })
     .openapi(updateTodo, async (c) => {
@@ -142,6 +147,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
           )
         )
         .returning();
+
       return updated === undefined
         ? c.json(todoNotFound, 404)
         : c.json(updated, 200);
@@ -156,6 +162,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
           )
         )
         .returning();
+
       return deleted === undefined
         ? c.json(todoNotFound, 404)
         : c.json(deleted, 200);

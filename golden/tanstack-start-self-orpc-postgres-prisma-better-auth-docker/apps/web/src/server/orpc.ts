@@ -32,6 +32,7 @@ const mount =
         prefix,
         context: await createContext(request.headers),
       });
+
       return response ?? new Response("Not Found", { status: 404 });
     });
 

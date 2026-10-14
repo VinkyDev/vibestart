@@ -16,6 +16,7 @@ export const importStacks = async () => {
     oxc: { exclude: ["**/templates/**"] },
     root: path.dirname(import.meta.dirname),
   });
+
   return imported.module;
 };
 
@@ -27,26 +28,33 @@ export const importStacks = async () => {
  */
 export const vibestart = (): Plugin => {
   let stacks: Promise<typeof Stacks> | undefined;
+
   const loadStacks = async () => {
     stacks ??= importStacks();
+
     return await stacks;
   };
 
   return {
     configureServer: (server) => {
       const { base } = server.config;
+
       const fileAt = async (url: string) => {
         const loaded = await loadStacks();
+
         if (url === `${base}${loaded.blueprintSchema.path}`) {
           return loaded.blueprintSchema.source;
         }
+
         const label = loaded.stackLabels.find(
           (candidate) => url === `${base}${previewPath(candidate)}`
         );
+
         return label === undefined
           ? undefined
           : JSON.stringify(await loaded.stackPreview(label));
       };
+
       const serveFile = async (
         url: string | undefined,
         response: ServerResponse,
@@ -55,22 +63,30 @@ export const vibestart = (): Plugin => {
         // Every file this plugin serves is JSON; other requests skip loading the generator.
         if (url?.startsWith(base) !== true || !url.endsWith(".json")) {
           next();
+
           return;
         }
+
         let file: string | undefined;
+
         try {
           file = await fileAt(url);
         } catch (error) {
           next(error);
+
           return;
         }
+
         if (file === undefined) {
           next();
+
           return;
         }
+
         response.setHeader("Content-Type", "application/json");
         response.end(file);
       };
+
       server.middlewares.use((request, response, next) => {
         void serveFile(request.url, response, next);
       });
@@ -82,6 +98,7 @@ export const vibestart = (): Plugin => {
         source: loaded.blueprintSchema.source,
         type: "asset",
       });
+
       // A few stacks at a time: each generates every project it previews at once.
       const emit = limitAsync(async (label: string) => {
         this.emitFile({
@@ -90,13 +107,16 @@ export const vibestart = (): Plugin => {
           type: "asset",
         });
       }, 2);
+
       await Promise.all(loaded.stackLabels.map(emit));
     },
     load: async (id) => {
       if (id !== resolved) {
         return null;
       }
+
       const loaded = await loadStacks();
+
       return [
         `export const previewName = ${JSON.stringify(loaded.previewName)};`,
         `export const registry = ${JSON.stringify(loaded.registryInfo)};`,

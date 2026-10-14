@@ -10,6 +10,7 @@ export const formatWithProjectConfig = async (
 ) => {
   // CLI-only ignores are handled by the generator before it calls the native formatter.
   const { ignorePatterns: _ignorePatterns, ...options } = preset;
+
   return await format(path, content, {
     ...options,
     proseWrap: "preserve",

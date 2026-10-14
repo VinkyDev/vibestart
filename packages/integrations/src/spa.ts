@@ -33,10 +33,13 @@ const flow = (ctx: Context) => {
   if (ctx.has("orpc")) {
     return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\` → \`api.*\` (\`src/lib/api.ts\`) → \`POST /rpc/*\` → \`packages/api\` procedure${databaseFlow(ctx)}.`;
   }
+
   if (!ctx.has("openapi")) {
     return "`vp run dev` serves the web app on :5173 and the server on :3000.";
   }
+
   const client = todosExample(ctx) ? " → `api.*` (`src/lib/api.ts`)" : "";
+
   return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\`${client} → \`/api/*\` → \`packages/api\` route${databaseFlow(ctx)}.`;
 };
 
@@ -44,6 +47,7 @@ const requestFlow = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return "`vp run dev` serves the app on :5173. `vp run build` writes static files to `apps/web/dist`; there is no server.";
   }
+
   return ctx.has("better-auth")
     ? `${flow(ctx)} In development Vite proxies ${proxied(ctx)} (including \`/api/auth\`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: \`BETTER_AUTH_URL\` is the browser-facing origin (\`http://localhost:5173\` in development), and Better Auth rejects auth requests whose \`Origin\` differs from it.`
     : `${flow(ctx)} In development Vite proxies ${proxied(ctx)} to the server; in production the server serves the SPA itself, so everything is same-origin.`;
@@ -53,10 +57,12 @@ const open = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return ["Open http://localhost:5173."];
   }
+
   const docs =
     ctx.stack.api === undefined
       ? ""
       : " API docs are at http://localhost:5173/api.";
+
   return ctx.has("better-auth")
     ? [
         `Open http://localhost:5173 and create an account.${docs}`,
@@ -70,10 +76,13 @@ const viteConfig = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return templateFiles(ctx, "spa/static");
   }
+
   const config = templateContent(ctx, "spa/proxy", viteConfigPath);
+
   if (!config.includes(rpcProxy)) {
     throw new Error(`spa/proxy/${viteConfigPath} has no /rpc proxy`);
   }
+
   return [
     file(
       viteConfigPath,

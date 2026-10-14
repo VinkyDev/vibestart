@@ -18,6 +18,7 @@ import {
 export const ultracitePresets = defineSlot<{ name: string; module: string }>(
   "ultracite/presets"
 );
+
 export const ultraciteOverrides = defineSlot<string>("ultracite/overrides");
 
 export const ultracite = defineAddon({

@@ -23,9 +23,11 @@ import {
 } from "#/verification.ts";
 
 const dirs: string[] = [];
+
 const tempDir = () => {
   const dir = mkdtempSync(path.join(tmpdir(), "vibestart-store-test-"));
   dirs.push(dir);
+
   return dir;
 };
 
@@ -76,6 +78,7 @@ describe(batchesOf, () => {
       ...Array.from({ length: 8 }, (_, shard) => `linux-${shard}`),
       "windows-0",
     ]);
+
     for (const task of tasks) {
       expect(
         batches.filter(
@@ -150,16 +153,20 @@ describe("the store layout", () => {
 describe("records of the current output", () => {
   it("keep only the records whose platform and fingerprint match a task", async () => {
     const task = linux.find(({ label }) => !Object.hasOwn(goldens, label));
+
     if (task === undefined) {
       throw new Error("Every Linux task is a golden");
     }
+
     const hash = await verifiedFingerprint(task.stack, task.packageManager);
     const stale = "e".repeat(64);
+
     const records = new Map([
       [`linux/${hash}`, recordOf(hash)],
       [`windows/${hash}`, recordOf(hash)],
       [`linux/${stale}`, recordOf(stale)],
     ]);
+
     const current = await currentRecords(records);
     expect([...current.keys()]).toStrictEqual([`linux/${hash}`]);
     const projection = await projectionOf(records);
@@ -208,12 +215,15 @@ describe(pendingTasks, () => {
             task.stack,
             task.packageManager
           );
+
           return [`${task.platform}/${hash}`, recordOf(hash)] as const;
         })
       )
     );
+
     const projection = await projectionOf(records);
     await expect(pendingTasks(projection)).resolves.toStrictEqual([]);
+
     for (const packageManager of ["pnpm", "bun"] as const) {
       expect(
         Object.keys(projection.coverage[packageManager]).toSorted()

@@ -27,6 +27,7 @@ const mount =
       context: createContext(),
       prefix,
     });
+
     return response ?? new Response("Not Found", { status: 404 });
   };
 

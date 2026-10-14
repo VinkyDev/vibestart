@@ -12,13 +12,14 @@ export const bunWorkspace = (
   const allowBuilds = Object.fromEntries(
     contributions.flatMap((part) => Object.entries(part.allowBuilds ?? {}))
   );
+
   return {
     workspaces: {
       packages: [
         ...new Set(
-          packagePaths
-            .filter((path) => path !== ".")
-            .map((path) => `${path.split("/").slice(0, -1).join("/")}/*`)
+          packagePaths.flatMap((path) =>
+            path === "." ? [] : [`${path.split("/").slice(0, -1).join("/")}/*`]
+          )
         ),
       ].toSorted(),
       catalog: Object.fromEntries(

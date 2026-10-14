@@ -33,24 +33,32 @@ const main = async (
 ): Promise<number> => {
   // Read before parsing, so an invalid option is reported as JSON too.
   const json = rawArgs.includes("--json");
+
   const ui = json
     ? jsonUi
     : humanUi(process.stdout.isTTY && process.env.CI !== "true");
+
   try {
     const options = parseOptions(parsed, rawArgs);
+
     if (options.list) {
       const listed = await listing();
+
       if (json) {
         printJson({ ok: true, ...listed });
       } else {
         process.stdout.write(listingText(listed));
       }
+
       return 0;
     }
+
     const result = await create(options, ui, packageJson.version);
+
     if (json) {
       printJson({ ok: true, ...result });
     }
+
     return 0;
   } catch (error) {
     if (!(error instanceof CliError)) {
@@ -59,10 +67,13 @@ const main = async (
           error: { code: "internal", message: String(error) },
           ok: false,
         });
+
         return 1;
       }
+
       throw error;
     }
+
     if (json) {
       printJson({
         error: { ...error.failure, message: error.message },
@@ -71,6 +82,7 @@ const main = async (
     } else {
       ui.error(error);
     }
+
     return error.failure.code === "cancelled" ? 130 : 1;
   }
 };

@@ -125,6 +125,7 @@ const relocatedPages = new Map([
   ["concepts/deployment", "stack/delivery#docker"],
   ["concepts/engineering", "stack/toolchain#vite-plus"],
 ]);
+
 // The first page once held why vibestart exists and how it tests; those sections have pages of their own.
 const introductionSections = new Map([
   ["conventions", "why#conventions"],
@@ -133,6 +134,7 @@ const introductionSections = new Map([
   ["typescript", "why#typescript"],
   ["verification", "why#verification"],
 ]);
+
 const creationSections = new Set([
   "interactive",
   "kinds",
@@ -153,15 +155,19 @@ export const Route = createFileRoute("/_docs/docs/$")({
   beforeLoad: ({ params, location }) => {
     const slug = params._splat?.replace(/\/$/u, "") ?? "";
     let target = relocatedPages.get(slug);
+
     if (slug === "") {
       target = introductionSections.get(location.hash);
     }
+
     if (slug === "cli" && creationSections.has(location.hash)) {
       target = `cli/create#${location.hash}`;
     }
+
     if (slug === "cli" && location.hash === "maintenance") {
       target = "cli#workflow";
     }
+
     if (target !== undefined) {
       const [next = "", hash] = target.split("#");
       throw redirect({
@@ -177,10 +183,13 @@ export const Route = createFileRoute("/_docs/docs/$")({
       params._splat?.split("/").filter(Boolean),
       getLocale()
     );
+
     if (page === undefined) {
       throw notFound();
     }
+
     const { body, toc } = await page.data.load();
+
     return { body, page, toc };
   },
   head: ({ loaderData }) => ({

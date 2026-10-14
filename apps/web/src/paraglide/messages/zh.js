@@ -364,7 +364,6 @@
 /** @typedef {{}} Viz_Tests_TypicalInputs */
 /** @typedef {{}} Viz_UsableInputs */
 /** @typedef {{ count: NonNullable<unknown>, names: NonNullable<unknown>, capabilities: NonNullable<unknown> }} Why_IncludedInputs */
-import * as registry from "../registry.js"
 
 
 export const add_api = /** @type {(inputs: Add_ApiInputs) => LocalizedString} */ () => {
@@ -821,7 +820,7 @@ export const extensions_none = /** @type {(inputs: Extensions_NoneInputs) => Loc
 };
 
 export const file_count = /** @type {(inputs: File_CountInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("zh", i?.count, {});return /** @type {LocalizedString} */ (`${i?.count} 个文件`)
+	return /** @type {LocalizedString} */ (`${i?.count} 个文件`)
 };
 
 export const fit_better_auth = /** @type {(inputs: Fit_Better_AuthInputs) => LocalizedString} */ () => {
@@ -957,7 +956,7 @@ export const gate_checking = /** @type {(inputs: Gate_CheckingInputs) => Localiz
 };
 
 export const gate_e2e = /** @type {(inputs: Gate_E2eInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("zh", i?.count, {});return /** @type {LocalizedString} */ (`${i?.count} 条端到端浏览器测试`)
+	return /** @type {LocalizedString} */ (`${i?.count} 条端到端浏览器测试`)
 };
 
 export const gate_fingerprint = /** @type {(inputs: Gate_FingerprintInputs) => LocalizedString} */ () => {
@@ -989,7 +988,7 @@ export const gate_passed = /** @type {(inputs: Gate_PassedInputs) => LocalizedSt
 };
 
 export const gate_test = /** @type {(inputs: Gate_TestInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("zh", i?.count, {});return /** @type {LocalizedString} */ (`${i?.count} 个单元与集成测试`)
+	return /** @type {LocalizedString} */ (`${i?.count} 个单元与集成测试`)
 };
 
 export const gate_typegen = /** @type {(inputs: Gate_TypegenInputs) => LocalizedString} */ () => {
@@ -1854,5 +1853,5 @@ export const viz_usable = /** @type {(inputs: Viz_UsableInputs) => LocalizedStri
 };
 
 export const why_included = /** @type {(inputs: Why_IncludedInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("zh", i?.count, {});return /** @type {LocalizedString} */ (`${i?.names}需要${i?.capabilities}。`)
+	return /** @type {LocalizedString} */ (`${i?.names}需要${i?.capabilities}。`)
 };

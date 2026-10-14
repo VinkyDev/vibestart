@@ -12,9 +12,12 @@ export const resolveApiUrl = ({ configured, hostUri, dev }: ApiUrlSource) => {
   if (configured !== undefined) {
     return configured;
   }
+
   const host = hostUri?.split(":")[0];
+
   if (dev && host !== undefined && host !== "") {
     return `http://${host}:${apiPort}`;
   }
+
   throw new Error("Set EXPO_PUBLIC_API_URL to the API origin for this build.");
 };

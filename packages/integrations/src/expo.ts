@@ -56,9 +56,11 @@ const renderAppJson = (ctx: Context) =>
 const rootLayout = (ctx: Context) => {
   const query = hasBackend(ctx);
   const auth = ctx.has("better-auth");
+
   const todos = todosExample(ctx)
     ? ['<Stack.Screen name="todos" options={{ title: "Todos" }} />']
     : [];
+
   const navigation = [
     "<Stack>",
     `<Stack.Screen name="index" options={{ title: ${quote(ctx.name)} }} />`,
@@ -75,6 +77,7 @@ const rootLayout = (ctx: Context) => {
     "</Stack>",
     '<StatusBar style="auto" />',
   ];
+
   const tree = [
     "<SafeAreaProvider>",
     ...(query
@@ -86,6 +89,7 @@ const rootLayout = (ctx: Context) => {
       : navigation),
     "</SafeAreaProvider>",
   ];
+
   return file(
     "apps/mobile/src/app/_layout.tsx",
     [
@@ -108,10 +112,13 @@ const rootLayout = (ctx: Context) => {
             "const RootLayout = () => {",
             "// The guards decide which screens exist, so they wait for the stored session.",
             "const { data: session, isPending } = authClient.useSession();",
+            "",
             "if (isPending) {",
             "return null;",
             "}",
+            "",
             "const signedIn = session !== null;",
+            "",
             "return (",
             ...tree,
             ");",
@@ -159,6 +166,7 @@ const homeScreen = (ctx: Context) =>
   renderFile("apps/mobile/src/app/index.tsx", (read) => {
     const auth = ctx.has("better-auth");
     const todos = todosExample(ctx);
+
     const content = [
       '<ScrollView className="bg-background" contentContainerClassName="gap-4 p-4">',
       "<Card>",
@@ -170,6 +178,7 @@ const homeScreen = (ctx: Context) =>
       ...(!auth && todos ? todosCard : []),
       "</ScrollView>",
     ];
+
     return [
       ...(auth || todos ? ['import { Link } from "expo-router";'] : []),
       'import { ScrollView } from "react-native";',
@@ -190,6 +199,7 @@ const homeScreen = (ctx: Context) =>
         ? [
             "const Home = () => {",
             "const { data: session } = authClient.useSession();",
+            "",
             "return (",
             ...content,
             ");",
@@ -216,9 +226,11 @@ const replaceOnce = (
   where: string
 ) => {
   const parts = content.split(from);
+
   if (parts.length !== 2) {
     throw new Error(`${where} must hold ${from} once`);
   }
+
   return parts.join(to);
 };
 
@@ -232,15 +244,19 @@ const withSession = (
   call: readonly [from: string, to: (options: string) => string]
 ) => {
   const content = templateContent(ctx, set, path);
+
   if (!ctx.has("better-auth")) {
     return file(path, content);
   }
+
   const options = [
     "// Native fetch has no cookie jar: Better Auth's Expo client keeps the session, and each request sends it.",
     'fetch: async (input: RequestInfo | URL, init?: RequestInit) => await fetch(input, { ...init, credentials: "omit" }),',
     "headers: async () => ({ cookie: await authClient.getCookie() }),",
   ].join("\n");
+
   const where = `${set}/${path}`;
+
   return file(
     path,
     replaceOnce(
@@ -326,13 +342,17 @@ const todosScreenPath = "apps/mobile/src/app/todos.tsx";
 // A MongoDB todo's id is already a string key.
 const todosScreen = (ctx: Context) => {
   const content = templateContent(ctx, "expo/todos", todosScreenPath);
+
   if (!ctx.has("mongodb")) {
     return file(todosScreenPath, content);
   }
+
   const keyed = content.replace("String(todo.id)", "todo.id");
+
   if (keyed === content) {
     throw new Error(`expo/todos/${todosScreenPath} has no numeric key`);
   }
+
   return file(todosScreenPath, keyed);
 };
 
@@ -371,6 +391,7 @@ const sessionSender = (ctx: Context) => {
   if (ctx.has("orpc")) {
     return "`src/lib/api.ts` sends";
   }
+
   return ctx.has("openapi") && todosExample(ctx)
     ? "`src/lib/client.ts` sends"
     : "a request to the API sends";

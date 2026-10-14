@@ -17,6 +17,7 @@ const answer = <T>(value: T | typeof CANCEL_SYMBOL): T => {
   if (isCancel(value)) {
     throw new CliError({ code: "cancelled" }, "Cancelled.");
   }
+
   return value;
 };
 
@@ -32,6 +33,7 @@ export const promptName = async (
         validate(value === undefined || value === "" ? "my-app" : value),
     })
   );
+
   return name === "" ? "my-app" : name;
 };
 
@@ -45,25 +47,31 @@ export const promptCompose = async (
   initial?: Stack
 ): Promise<Stack> => {
   const choices: Record<string, string | null> = {};
+
   for (const [kind, id] of Object.entries(fixed)) {
     if (id !== undefined) {
       choices[kind] = id;
     }
   }
+
   for (const kind of registry.kinds) {
     if (choices[kind.id] !== undefined) {
       continue;
     }
+
     const options = kindOptions(registry, choices, kind.id);
     const open = openChoices(options);
+
     const start = startingChoice(
       open,
       initial === undefined ? kind.default : (initial[kind.id] ?? null)
     );
+
     if (open.length === 1 && start !== undefined) {
       choices[kind.id] = start;
       continue;
     }
+
     choices[kind.id] = answer(
       await select<string | null>({
         initialValue: start ?? null,
@@ -80,6 +88,7 @@ export const promptCompose = async (
       })
     );
   }
+
   return compose(registry, choices);
 };
 

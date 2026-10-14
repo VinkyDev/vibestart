@@ -25,12 +25,15 @@ const Row = ({
 }) => {
   const [open, setOpen] = useState(false);
   const current = useRef<HTMLButtonElement>(null);
+
   const integration =
     kind === "testing" ? e2eRunner(baseline) : chosen(baseline, kind);
+
   return (
     <Dialog.Root
       onOpenChange={(next) => {
         setOpen(next);
+
         if (!next) {
           onPreview(null);
         }
@@ -120,6 +123,7 @@ export const StackList = ({
       .map(({ name }) => name),
     "Vitest",
   ];
+
   return (
     <section
       aria-labelledby="stack-list-title"

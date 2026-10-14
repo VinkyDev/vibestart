@@ -45,11 +45,13 @@ const packBlock = /^ {2}pack: \{\n(?: {4}.*\n)+ {2}\},\n/mu;
 // `vp pack` bundles the migration entry, so only a web app that migrates keeps the `pack` block.
 const viteConfig = (ctx: Context) => {
   const config = templateContent(ctx, "tanstack-start/common", viteConfigPath);
+
   if (!packBlock.test(config)) {
     throw new Error(
       `tanstack-start/common/${viteConfigPath} has no pack block`
     );
   }
+
   return file(
     viteConfigPath,
     webMigrates(ctx)
@@ -92,10 +94,12 @@ const serverConvention = (ctx: Context) => {
     ...(ctx.has("openapi") && todosExample(ctx) ? ["`src/lib/client.ts`"] : []),
     ...(ctx.has("better-auth") ? ["`src/lib/auth.ts`"] : []),
   ];
+
   const example =
     modules.length === 0
       ? ""
       : `, as ${joinWords(modules)} ${modules.length === 1 ? "does" : "do"}`;
+
   return `Server-only code lives in \`src/server/\`. A module that also runs in the browser touches \`#src/server/*\` only inside a \`createServerFn\` handler or a \`createIsomorphicFn().server()\` branch${example}. The Start compiler strips those branches from the client bundle; any other use ships the driver and secrets to the browser.`;
 };
 
@@ -103,6 +107,7 @@ const selfServices = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return [];
   }
+
   return ctx.has("better-auth")
     ? ["`env`, the shared `db` and `auth` instances"]
     : ["`env`, the shared `db`"];
@@ -179,10 +184,13 @@ const selfContributions = (ctx: Context) => [
 
 const honoNote = (ctx: Context) => {
   const auth = ctx.has("better-auth");
+
   const routes = ctx.has("orpc")
     ? "`/rpc/*` and `/api/*` server routes"
     : "`/api/*` server route";
+
   const forward = ctx.has("orpc") ? "forward" : "forwards";
+
   return [
     `\`vp run dev\` serves the app on :3000 and the API server (\`apps/server\`) on :3001. The browser talks only to the app: its ${routes}${auth ? " (including `/api/auth`)" : ""} ${forward} to the API server at \`SERVER_URL\`, so ${auth ? "session cookies are first-party and " : ""}there is no CORS configuration.`,
     ...(ctx.has("orpc")
@@ -223,9 +231,11 @@ const backendContributions = (ctx: Context) => {
   if (ctx.has("self")) {
     return selfContributions(ctx);
   }
+
   if (ctx.has("hono")) {
     return honoContributions(ctx);
   }
+
   return [
     contribute(
       agentsNotes,
@@ -238,6 +248,7 @@ export const tanstackStart = defineIntegration({
   contribute: (ctx) => {
     const auth = ctx.has("better-auth");
     const database = webMigrates(ctx);
+
     return [
       ...templateFiles(ctx, "tanstack-start/common", {
         except: [viteConfigPath],

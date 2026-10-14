@@ -73,10 +73,12 @@ export const ToolDetails = ({
         </>
       );
     }
+
     case "vitest": {
       // Integration tests pin the todo example, which needs both an API and a database.
       const integration =
         stack.api !== undefined && stack.database !== undefined;
+
       return (
         <>
           <p>
@@ -93,6 +95,7 @@ export const ToolDetails = ({
         </>
       );
     }
+
     case "e2e":
     case "playwright": {
       return (
@@ -109,6 +112,7 @@ export const ToolDetails = ({
         </>
       );
     }
+
     case "ultracite": {
       return (
         <>
@@ -117,6 +121,7 @@ export const ToolDetails = ({
         </>
       );
     }
+
     case "knip": {
       return (
         <>
@@ -131,6 +136,7 @@ export const ToolDetails = ({
         </>
       );
     }
+
     default: {
       return null;
     }

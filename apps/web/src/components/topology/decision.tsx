@@ -30,6 +30,7 @@ export interface Choosing {
 const pinned = (element: Element) => {
   const opened = element.getBoundingClientRect();
   const { scrollX, scrollY } = window;
+
   return {
     contextElement: element,
     getBoundingClientRect: () =>
@@ -62,13 +63,16 @@ export const DecisionTrigger = ({
   const current = useRef<HTMLButtonElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const [anchor, setAnchor] = useState<ReturnType<typeof pinned>>();
+
   return (
     <Popover
       onOpenChange={(next) => {
         if (next && trigger.current !== null) {
           setAnchor(pinned(trigger.current));
         }
+
         setOpen(next);
+
         if (!next) {
           onPreview(null);
         }

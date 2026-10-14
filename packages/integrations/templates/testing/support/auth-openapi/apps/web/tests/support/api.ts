@@ -20,12 +20,15 @@ export const signUp = async (email = uniqueEmail()) => {
     headers: { "content-type": "application/json", origin: e2eBaseURL },
     method: "POST",
   });
+
   if (!response.ok) {
     throw new Error(`Sign up failed with ${response.status}`);
   }
+
   const cookie = response.headers
     .getSetCookie()
     .map((header) => header.split(";")[0])
     .join("; ");
+
   return { client: hc<Api>(`${e2eBaseURL}/api`, { headers: { cookie } }), email };
 };

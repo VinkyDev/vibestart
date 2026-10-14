@@ -9,6 +9,7 @@ import { authClient } from "#src/lib/auth-client.ts";
 
 const Home = () => {
   const { data: session } = authClient.useSession();
+
   return (
     <ScrollView className="bg-background" contentContainerClassName="gap-4 p-4">
       <Card>

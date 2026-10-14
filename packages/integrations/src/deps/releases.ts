@@ -40,6 +40,7 @@ const nodeIndexSchema = z.array(
 const registry = (
   process.env.npm_config_registry ?? "https://registry.npmjs.org/"
 ).replace(/\/?$/u, "/");
+
 const nodeDist = process.env.NODEJS_ORG_MIRROR ?? "https://nodejs.org/dist";
 
 // The registry serves metadata, not files; a CDN that mirrors it serves one file of a published package.
@@ -53,10 +54,13 @@ const getJson = async (
   await retry(
     async () => {
       const response = await fetch(url, { headers });
+
       if (!response.ok) {
         throw new Error(`GET ${url}: ${response.status}`);
       }
+
       const body: unknown = await response.json();
+
       return body;
     },
     { delay: 1000, retries: 3 }
@@ -82,14 +86,18 @@ export const fetchReleases = async (
     ),
     getJson(`${nodeDist}/index.json`),
   ]);
+
   const byName = new Map(packuments);
+
   // The index lists releases newest first.
   const lts = nodeIndexSchema
     .parse(nodeIndex)
     .find((release) => release.lts !== false);
+
   if (lts === undefined) {
     throw new Error(`${nodeDist}/index.json lists no LTS release`);
   }
+
   return {
     expoModules: async (expo) =>
       z
@@ -102,9 +110,11 @@ export const fetchReleases = async (
     nodeLts: lts.version.replace(/^v/u, ""),
     packument: (name) => {
       const packument = byName.get(name);
+
       if (packument === undefined) {
         throw new Error(`${name} was not fetched`);
       }
+
       return packument;
     },
   };

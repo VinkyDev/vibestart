@@ -26,6 +26,7 @@ import {
 
 const renderIndex = (ctx: Context) => {
   const todos = todosExample(ctx);
+
   return [
     'import mongoose from "mongoose";',
     "",
@@ -36,6 +37,7 @@ const renderIndex = (ctx: Context) => {
     "// `migrateDatabase` builds the indexes once, at deploy, rather than every connection at startup.",
     "export const createDb = (url: string) => {",
     "  const connection = mongoose.createConnection(url, { autoIndex: false });",
+    "",
     todos
       ? '  return { connection, todos: connection.model("Todo", todoSchema) };'
       : "  return { connection };",
@@ -58,6 +60,7 @@ const authIndexes = [
 
 const renderMigrate = (ctx: Context) => {
   const auth = ctx.has("better-auth");
+
   return [
     'import type { Database } from "#src/index.ts";',
     "",
@@ -97,6 +100,7 @@ const schemaConvention = (ctx: Context) =>
 export const mongoose = defineIntegration({
   contribute: (ctx) => {
     const { dir } = serverApp(ctx);
+
     return [
       ...templateFiles(ctx, "mongoose/common"),
       file("packages/db/src/index.ts", renderIndex(ctx)),

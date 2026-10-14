@@ -409,6 +409,7 @@ describe(compose, () => {
         kind.id === "backend" ? { ...kind, default: null } : kind
       ),
     });
+
     expect(compose(withDefault, { framework: "static" })).toStrictEqual({
       framework: "static",
       toolchain: "vp",

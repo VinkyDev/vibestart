@@ -6,6 +6,7 @@ export const useTimeout = (callback: () => void, delay: number | undefined) => {
   useEffect(() => {
     const timer =
       delay === undefined ? undefined : setTimeout(onTimeout, delay);
+
     return () => {
       clearTimeout(timer);
     };

@@ -26,18 +26,23 @@ const iconOf = (name: string) => {
   if (name === "Dockerfile" || name.startsWith("docker-compose")) {
     return Container;
   }
+
   if (name.endsWith(".sql")) {
     return Database;
   }
+
   if (name.endsWith(".json") || name.endsWith(".jsonc")) {
     return Braces;
   }
+
   if (name.endsWith(".md")) {
     return FileText;
   }
+
   if (/\.(?:tsx?|css|html)$/u.test(name)) {
     return FileCode2;
   }
+
   return Settings2;
 };
 
@@ -91,9 +96,11 @@ export const FileTree = ({
   const toggle = (path: string) => {
     setToggled((current) => {
       const next = new Set(current);
+
       if (!next.delete(path)) {
         next.add(path);
       }
+
       return next;
     });
   };
@@ -130,15 +137,19 @@ export const FileTree = ({
           {rows.map(({ depth, node }) => {
             const owners = ownersUnder(node);
             let lit: boolean | undefined;
+
             if (focus !== null) {
               lit = owners.some((owner) => focusesOwner(focus, owner));
             }
+
             const added = delta?.added.has(node.path) === true;
             const changed = delta?.changed.has(node.path) === true;
             let Icon = iconOf(node.name);
+
             if (node.type === "directory") {
               Icon = collapsed(node.path) ? Folder : FolderOpen;
             }
+
             return (
               <motion.button
                 animate={{
@@ -158,8 +169,10 @@ export const FileTree = ({
                 onClick={() => {
                   if (node.type === "directory") {
                     toggle(node.path);
+
                     return;
                   }
+
                   onOpen(node.path === openPath ? null : node.path);
                 }}
                 onPointerEnter={() => {

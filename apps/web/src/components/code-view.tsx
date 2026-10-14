@@ -29,6 +29,7 @@ const Gutter = ({ count }: { readonly count: number }) => (
 
 const Highlighted = ({ file }: { readonly file: GeneratedFile }) => {
   const lines = use(tokensOf(file));
+
   return (
     <div className="flex min-w-max">
       <Gutter count={lines.length} />
@@ -53,6 +54,7 @@ const Highlighted = ({ file }: { readonly file: GeneratedFile }) => {
 
 const Plain = ({ file }: { readonly file: GeneratedFile }) => {
   const lines = file.content.split("\n");
+
   return (
     <div className="text-foreground/70 flex min-w-max">
       <Gutter count={lines.length} />
@@ -78,7 +80,9 @@ export const CodeView = ({
         onClose();
       }
     };
+
     window.addEventListener("keydown", close);
+
     return () => {
       window.removeEventListener("keydown", close);
     };

@@ -16,11 +16,13 @@ const foreignFiles = [
   "reference/**",
   "packages/integrations/templates/**",
 ];
+
 const generatedFiles = [
   "**/routeTree.gen.ts",
   "apps/web/.source/**",
   "apps/web/src/paraglide/**",
 ];
+
 const vendoredFiles = ["packages/ui/src/components/**"];
 
 export default defineConfig({

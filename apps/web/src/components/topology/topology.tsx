@@ -37,12 +37,14 @@ const useFit = (stageHeight: number) => {
     readonly height: number;
     readonly settled: boolean;
   }>();
+
   const ref = useCallback((element: HTMLDivElement | null) => {
     if (element === null) {
       return () => {
         // React already ran the previous element's cleanup.
       };
     }
+
     const observer = new ResizeObserver(([entry]) => {
       if (entry !== undefined) {
         const { height, width } = entry.contentRect;
@@ -53,15 +55,19 @@ const useFit = (stageHeight: number) => {
         }));
       }
     });
+
     observer.observe(element);
+
     return () => {
       observer.disconnect();
     };
   }, []);
+
   const scale =
     room === undefined
       ? 1
       : Math.min(room.width / stageWidth, room.height / stageHeight, 1.25);
+
   return { ref, scale, settled: room?.settled === true };
 };
 
@@ -77,6 +83,7 @@ const ApiClients = ({ stack }: { readonly stack: Stack }) =>
 const Visitors = ({ stack }: { readonly stack: Stack }) => {
   const browser = stack.framework !== undefined;
   const Icon = browser ? Globe : TerminalSquare;
+
   return (
     <motion.div
       animate={{ opacity: 1, scale: 1 }}
@@ -145,13 +152,17 @@ export const Topology = ({
   const { enter: enterApi, leave: leaveApi } = useFocusTarget({ group: "api" });
   const boxes = processBoxes(shown);
   const included = selected(shown);
+
   const chipsOf = (kind: string) => {
     if (kind !== "framework") {
       return [];
     }
+
     const kinds: readonly string[] = frameworkChips;
+
     return included.filter((integration) => kinds.includes(integration.kind));
   };
+
   const api = chosen(shown, "api");
   const orm = chosen(shown, "orm");
 
@@ -183,6 +194,7 @@ export const Topology = ({
           ] as const
         ).map((kind, index) => {
           const { folded, rect } = layout.blocks[kind];
+
           return (
             <Block
               chips={chipsOf(kind)}

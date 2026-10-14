@@ -6,5 +6,6 @@ export const health = publicProcedure
   .route({ method: "GET", path: "/health" })
   .handler(async ({ context }) => {
     await context.db.execute(sql`select 1`);
+
     return { status: "ok" as const };
   });

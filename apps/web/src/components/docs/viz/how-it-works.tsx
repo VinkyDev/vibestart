@@ -33,6 +33,7 @@ const Choose = () => (
     {decisions
       .flatMap((kind) => {
         const integration = chosen(recommended, kind);
+
         return integration === undefined ? [] : [{ integration, kind }];
       })
       .map(({ integration, kind }, order) => (
@@ -71,6 +72,7 @@ const Generate = () => (
   <ul className="font-mono text-xs">
     {tree.map(({ depth, folder, name }, order) => {
       const Icon = folder ? Folder : FileText;
+
       return (
         <motion.li
           className={cn(
@@ -184,6 +186,7 @@ export const HowItWorks = ({
           setIndex((index + 1) % stages.length);
         }, dwell)
       : undefined;
+
     return () => {
       clearTimeout(timer);
     };
@@ -209,6 +212,7 @@ export const HowItWorks = ({
       <ol className="border-border grid grid-cols-4 border-b">
         {stages.map((candidate, order) => {
           const on = order === index;
+
           return (
             <li className="min-w-0" key={candidate.title}>
               <button

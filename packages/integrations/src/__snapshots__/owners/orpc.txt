@@ -1209,6 +1209,7 @@ export const appRouter = {
 };
 
 export type AppRouter = typeof appRouter;
+
 export type AppRouterClient = RouterClient<AppRouter>;
 
 # packages/api/src/index.ts · 528 stacks
@@ -1753,6 +1754,7 @@ export const appRouter = {
 };
 
 export type AppRouter = typeof appRouter;
+
 export type AppRouterClient = RouterClient<AppRouter>;
 
 # packages/api/src/procedures.ts · 308 stacks
@@ -2346,6 +2348,7 @@ export const protectedProcedure = publicProcedure.use(
     if (!context.session) {
       throw new ORPCError("UNAUTHORIZED");
     }
+
     return await next({ context: { session: context.session } });
   }
 );
@@ -2496,6 +2499,7 @@ export const health = publicProcedure
   .route({ method: "GET", path: "/health" })
   .handler(async ({ context }) => {
     await context.db.connection.getClient().db().command({ ping: 1 });
+
     return { status: "ok" as const };
   });
 
@@ -2684,6 +2688,7 @@ export const health = publicProcedure
   .route({ method: "GET", path: "/health" })
   .handler(async ({ context }) => {
     await context.db.execute(sql`select 1`);
+
     return { status: "ok" as const };
   });
 
@@ -2870,6 +2875,7 @@ export const health = publicProcedure
   .route({ method: "GET", path: "/health" })
   .handler(async ({ context }) => {
     await context.db.$queryRaw`select 1`;
+
     return { status: "ok" as const };
   });
 
@@ -2970,6 +2976,7 @@ export const health = publicProcedure
   .route({ method: "GET", path: "/health" })
   .handler(({ context }) => {
     context.db.run(sql`select 1`);
+
     return { status: "ok" as const };
   });
 
@@ -3039,6 +3046,7 @@ export const todosRouter = {
         ...input,
         userId: context.session.user.id,
       });
+
       return toTodo(created.toObject());
     }),
 
@@ -3049,9 +3057,11 @@ export const todosRouter = {
       const row = await context.db.todos
         .findOneAndDelete({ _id: input.id, userId: context.session.user.id })
         .lean();
+
       if (row === null) {
         throw notFound();
       }
+
       return toTodo(row);
     }),
 
@@ -3060,6 +3070,7 @@ export const todosRouter = {
       .find({ userId: context.session.user.id })
       .sort({ _id: 1 })
       .lean();
+
     return rows.map(toTodo);
   }),
 
@@ -3071,9 +3082,11 @@ export const todosRouter = {
           returnDocument: "after",
         })
         .lean();
+
       if (row === null) {
         throw notFound();
       }
+
       return toTodo(row);
     }),
 };
@@ -3141,19 +3154,23 @@ export const todosRouter = {
     .input(z.object({ title: z.string().trim().min(1).max(200) }))
     .handler(async ({ context, input }) => {
       const created = await context.db.todos.create(input);
+
       return toTodo(created.toObject());
     }),
 
   delete: publicProcedure.input(todoId).handler(async ({ context, input }) => {
     const row = await context.db.todos.findByIdAndDelete(input.id).lean();
+
     if (row === null) {
       throw notFound();
     }
+
     return toTodo(row);
   }),
 
   list: publicProcedure.handler(async ({ context }) => {
     const rows = await context.db.todos.find().sort({ _id: 1 }).lean();
+
     return rows.map(toTodo);
   }),
 
@@ -3163,9 +3180,11 @@ export const todosRouter = {
       const row = await context.db.todos
         .findByIdAndUpdate(id, data, { returnDocument: "after" })
         .lean();
+
       if (row === null) {
         throw notFound();
       }
+
       return toTodo(row);
     }),
 };
@@ -3229,9 +3248,11 @@ const todoId = z.object({ id: z.int().positive() });
 // MySQL has no `returning`, so a write finds the user's row by id first. Someone else's todo is not found either.
 const findOrNotFound = async (db: Database, id: number, userId: string) => {
   const row = await db.query.todos.findFirst({ where: { id, userId } });
+
   if (row === undefined) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -3240,13 +3261,16 @@ export const todosRouter = {
     .input(z.object({ title: z.string().trim().min(1).max(200) }))
     .handler(async ({ context, input }) => {
       const userId = context.session.user.id;
+
       const [created] = await context.db
         .insert(todos)
         .values({ ...input, userId })
         .$returningId();
+
       if (created === undefined) {
         throw new Error("The insert returned no id");
       }
+
       return await findOrNotFound(context.db, created.id, userId);
     }),
 
@@ -3258,7 +3282,9 @@ export const todosRouter = {
         input.id,
         context.session.user.id
       );
+
       await context.db.delete(todos).where(eq(todos.id, todo.id));
+
       return todo;
     }),
 
@@ -3277,7 +3303,9 @@ export const todosRouter = {
         id,
         context.session.user.id
       );
+
       await context.db.update(todos).set(values).where(eq(todos.id, todo.id));
+
       return { ...todo, ...values };
     }),
 };
@@ -3341,9 +3369,11 @@ const todoId = z.object({ id: z.int().positive() });
 // MySQL has no `returning`, so a write finds its row by id.
 const findOrNotFound = async (db: Database, id: number) => {
   const row = await db.query.todos.findFirst({ where: { id } });
+
   if (row === undefined) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -3355,15 +3385,18 @@ export const todosRouter = {
         .insert(todos)
         .values(input)
         .$returningId();
+
       if (created === undefined) {
         throw new Error("The insert returned no id");
       }
+
       return await findOrNotFound(context.db, created.id);
     }),
 
   delete: publicProcedure.input(todoId).handler(async ({ context, input }) => {
     const todo = await findOrNotFound(context.db, input.id);
     await context.db.delete(todos).where(eq(todos.id, todo.id));
+
     return todo;
   }),
 
@@ -3376,6 +3409,7 @@ export const todosRouter = {
     .handler(async ({ context, input: { id, ...values } }) => {
       const todo = await findOrNotFound(context.db, id);
       await context.db.update(todos).set(values).where(eq(todos.id, todo.id));
+
       return { ...todo, ...values };
     }),
 };
@@ -3481,9 +3515,11 @@ const todoId = z.object({ id: z.int().positive() });
 // A write finds the user's row first: someone else's todo is not found either.
 const findOrNotFound = async (db: Database, id: number, userId: string) => {
   const row = await db.todo.findFirst({ where: { id, userId } });
+
   if (row === null) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -3505,7 +3541,9 @@ export const todosRouter = {
         input.id,
         context.session.user.id
       );
+
       await context.db.todo.delete({ where: { id: todo.id } });
+
       return todo;
     }),
 
@@ -3525,6 +3563,7 @@ export const todosRouter = {
         id,
         context.session.user.id
       );
+
       return await context.db.todo.update({ data, where: { id: todo.id } });
     }),
 };
@@ -3629,9 +3668,11 @@ const todoId = z.object({ id: z.int().positive() });
 
 const findOrNotFound = async (db: Database, id: number) => {
   const row = await db.todo.findUnique({ where: { id } });
+
   if (row === null) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -3646,6 +3687,7 @@ export const todosRouter = {
   delete: publicProcedure.input(todoId).handler(async ({ context, input }) => {
     const todo = await findOrNotFound(context.db, input.id);
     await context.db.todo.delete({ where: { id: todo.id } });
+
     return todo;
   }),
 
@@ -3658,6 +3700,7 @@ export const todosRouter = {
     .input(todoId.extend({ completed: z.boolean() }))
     .handler(async ({ context, input: { id, ...data } }) => {
       const todo = await findOrNotFound(context.db, id);
+
       return await context.db.todo.update({ data, where: { id: todo.id } });
     }),
 };
@@ -3765,6 +3808,7 @@ const firstOrNotFound = <T>([row]: T[]) => {
   if (row === undefined) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 
@@ -3916,6 +3960,7 @@ const firstOrNotFound = <T>([row]: T[]) => {
   if (row === undefined) {
     throw new ORPCError("NOT_FOUND", { message: "Todo not found" });
   }
+
   return row;
 };
 

@@ -4,6 +4,7 @@ import { testDatabaseName } from "#src/test-database-name.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
+
   try {
     await admin.$executeRawUnsafe(statement);
   } finally {
@@ -17,9 +18,11 @@ const runAsAdmin = async (adminUrl: URL, statement: string) => {
  */
 export const createTestDatabase = async () => {
   const { DATABASE_URL } = process.env;
+
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not set");
   }
+
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(adminUrl.pathname.slice(1));
@@ -27,6 +30,7 @@ export const createTestDatabase = async () => {
 
   await runAsAdmin(adminUrl, `create database \`${name}\``);
   const db = createDb(url.href);
+
   const remove = async () => {
     try {
       await db.$disconnect();
@@ -34,6 +38,7 @@ export const createTestDatabase = async () => {
       await runAsAdmin(adminUrl, `drop database \`${name}\``);
     }
   };
+
   try {
     await migrateDatabase(db);
   } catch (error) {

@@ -19,5 +19,6 @@ const health = createRoute({
 export const healthRoutes = ({ db }: Services) =>
   new OpenAPIHono().openapi(health, async (c) => {
     await db.execute(sql`select 1`);
+
     return c.json({ status: "ok" as const }, 200);
   });

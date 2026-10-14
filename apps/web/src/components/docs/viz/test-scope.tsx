@@ -45,6 +45,7 @@ export const TestScope = ({
   readonly text: Readonly<Record<Layer, string>>;
 }) => {
   const [chosen, setChosen] = useState<Layer>("e2e");
+
   const layer =
     layers.find((candidate) => candidate.id === chosen) ?? layers[0];
 
@@ -67,6 +68,7 @@ export const TestScope = ({
         <ol className="grid grid-cols-4 gap-2">
           {row.map((place) => {
             const { icon: Icon, label, tint } = places[place];
+
             return (
               <li
                 className={cn(tint, "flex flex-col items-center gap-1.5")}
@@ -97,6 +99,7 @@ export const TestScope = ({
           </li>
           {layers.map((candidate) => {
             const on = candidate.id === chosen;
+
             return (
               <li
                 className="relative grid grid-cols-4 gap-2"

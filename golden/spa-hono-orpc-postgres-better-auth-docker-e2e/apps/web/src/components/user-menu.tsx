@@ -18,6 +18,7 @@ export const UserMenu = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { session } = useRouteContext({ from: "__root__" });
+
   const signOut = useMutation({
     mutationFn: async () => {
       await authClient.signOut();
