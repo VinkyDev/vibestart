@@ -138,9 +138,9 @@ const rootLayout = (ctx: Context) => {
   );
 };
 
-// A tappable row that opens `href`, a JSX expression; `label` is its JSX text.
+// A tappable row; `href` is the attribute's value as written in JSX, a string literal or `{expression}`, and `label` is JSX text.
 const linkRow = (href: string, label: string) => [
-  `<Link asChild href={${href}}>`,
+  `<Link asChild href=${href}>`,
   '<Pressable className="flex-row items-center justify-between active:opacity-60">',
   `<Text className="text-primary font-semibold">${label}</Text>`,
   '<ChevronRight className="text-primary" size={18} />',
@@ -154,7 +154,7 @@ const accountCard = (todos: boolean) => [
   "<UserMenu />",
   ...(todos
     ? linkRow(
-        'session === null ? "/login" : "/todos"',
+        '{session === null ? "/login" : "/todos"}',
         '{session === null ? "Sign in to keep todos" : "Open your todos"}'
       )
     : ["{session === null && (", ...linkRow('"/login"', "Sign in"), ")}"]),

@@ -8,7 +8,21 @@ import { Input } from "#src/components/ui/input.tsx";
 import { Text } from "#src/components/ui/text.tsx";
 import { api } from "#src/lib/api.ts";
 
-const Separator = () => <View className="bg-border ml-12 h-px" />;
+const Separator = () => <View className="border-border ml-12 border-t" />;
+
+const emptyTitle = ({
+  isError,
+  isPending,
+}: {
+  isError: boolean;
+  isPending: boolean;
+}) => {
+  if (isError) {
+    return "Could not load the todos.";
+  }
+
+  return isPending ? "Loading…" : "No todos yet.";
+};
 
 const Todos = () => {
   const [title, setTitle] = useState("");
@@ -72,10 +86,14 @@ const Todos = () => {
         keyExtractor={(todo) => todo.id}
         ListEmptyComponent={
           <View className="items-center gap-1 px-4 py-10">
-            <Text className="font-medium">
-              {todos.isPending ? "Loading…" : "No todos yet."}
+            <Text
+              className={
+                todos.isError ? "text-destructive font-medium" : "font-medium"
+              }
+            >
+              {emptyTitle(todos)}
             </Text>
-            {!todos.isPending && (
+            {todos.isSuccess && (
               <Text className="text-muted-foreground text-center text-sm">
                 Each one you add is saved through the API.
               </Text>
