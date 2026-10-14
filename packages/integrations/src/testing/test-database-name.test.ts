@@ -22,10 +22,9 @@ const { testDatabaseName } = z
   );
 
 const bytes = (value: string) => new TextEncoder().encode(value).length;
-const characters = (value: string) => value.match(/./gsu)?.length ?? 0;
 const suffix = /_test_[0-9a-f]{8}$/u;
 
-// MySQL allows 64 characters and PostgreSQL 63 bytes of UTF-8; 63 bytes satisfies both.
+// PostgreSQL allows 63 bytes of UTF-8, which is within MySQL's 64 characters.
 describe("testDatabaseName", () => {
   it.each([
     "app",
@@ -33,10 +32,9 @@ describe("testDatabaseName", () => {
     "a".repeat(100),
     "数据库".repeat(40),
     "😀".repeat(40),
-  ])("fits both identifier limits for %s", (configured) => {
+  ])("fits the identifier limit for %s", (configured) => {
     const name = testDatabaseName(configured);
     expect(bytes(name)).toBeLessThanOrEqual(63);
-    expect(characters(name)).toBeLessThanOrEqual(64);
     expect(name).toMatch(suffix);
   });
 

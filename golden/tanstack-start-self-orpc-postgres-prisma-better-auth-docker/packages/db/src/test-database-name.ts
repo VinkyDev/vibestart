@@ -1,17 +1,14 @@
-const suffixBytes = "_test_".length + 8;
-
-// Fits both MySQL's 64 characters and PostgreSQL's 63 bytes.
-const maxBytes = 63;
-
-const byteLength = (value: string) => new TextEncoder().encode(value).length;
+const encoder = new TextEncoder();
 
 export const testDatabaseName = (configured: string) => {
+  const suffix = `_test_${crypto.randomUUID().slice(0, 8)}`;
   let prefix = "";
   for (const character of configured) {
-    if (byteLength(prefix + character) + suffixBytes > maxBytes) {
+    // PostgreSQL's 63-byte limit also keeps MySQL under its 64 characters.
+    if (encoder.encode(prefix + character + suffix).length > 63) {
       break;
     }
     prefix += character;
   }
-  return `${prefix}_test_${crypto.randomUUID().slice(0, 8)}`;
+  return prefix + suffix;
 };
