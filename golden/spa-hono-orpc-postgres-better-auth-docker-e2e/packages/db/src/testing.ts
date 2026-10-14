@@ -1,5 +1,6 @@
 import { createDb } from "#src/index.ts";
 import { migrateDatabase } from "#src/migrate.ts";
+import { testDatabaseName } from "#src/test-database-name.ts";
 
 const runAsAdmin = async (adminUrl: URL, statement: string) => {
   const admin = createDb(adminUrl.href);
@@ -21,8 +22,8 @@ export const createTestDatabase = async () => {
   }
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
-  url.pathname = `${adminUrl.pathname}_test_${crypto.randomUUID().slice(0, 8)}`;
-  const name = url.pathname.slice(1);
+  const name = testDatabaseName(adminUrl.pathname.slice(1));
+  url.pathname = `/${name}`;
 
   await runAsAdmin(adminUrl, `create database "${name}"`);
   const db = createDb(url.href);

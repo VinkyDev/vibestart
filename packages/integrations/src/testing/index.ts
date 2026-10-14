@@ -298,6 +298,9 @@ const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
           ctx,
           `${ormId(ctx)}/${chosenDatabase(ctx).id}/testing`
         ),
+        ...(["mysql", "postgres"].includes(chosenDatabase(ctx).id)
+          ? templateFiles(ctx, "testing/database")
+          : []),
         contribute(packageJson, {
           exports: { "./testing": "./src/testing.ts" },
           path: "packages/db",
