@@ -28,6 +28,16 @@ export const AuthForm = () => {
 
   return (
     <View className="gap-3">
+      <View className="mb-3 gap-1">
+        <Text className="text-3xl font-semibold tracking-tight">
+          {mode === "sign-in" ? "Welcome back" : "Create your account"}
+        </Text>
+        <Text className="text-muted-foreground">
+          {mode === "sign-in"
+            ? "Sign in with your email and password."
+            : "Sign up with your email and a password."}
+        </Text>
+      </View>
       {mode === "sign-up" && (
         <Input
           autoComplete="name"

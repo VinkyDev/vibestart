@@ -344,50 +344,48 @@ export const selfHealthRoute = (ctx: Context) => {
 export const clientComponent = (ctx: Context, content: string) =>
   ctx.has("next") ? `"use client";\n\n${content}` : content;
 
+/** The stack's names as one English list: "A, B and C". */
+export const listStack = (names: readonly string[]) =>
+  names.length > 1
+    ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`
+    : names.join("");
+
 /** `route` wraps the page in a TanStack file route. */
 export const homePage = (ctx: Context, path: string, route: boolean) =>
   renderFile(path, (read) => {
-    const names = read(stackHeadline);
-
-    const listed =
-      names.length > 1
-        ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`
-        : names.join("");
+    const listed = listStack(read(stackHeadline));
 
     const status = hasBackend(ctx);
-
-    const cardParts = [
-      "Card",
-      ...(status ? ["CardContent"] : []),
-      "CardDescription",
-      "CardHeader",
-      "CardTitle",
-    ];
 
     return [
       ...(route
         ? ['import { createFileRoute } from "@tanstack/react-router";', ""]
         : []),
-      `import { ${cardParts.join(", ")} } from "${ctx.scope}/ui/components/card";`,
-      "",
       ...(status
         ? ['import { ApiStatus } from "#src/components/api-status.tsx";', ""]
         : []),
       "const HomePage = () => (",
-      "  <Card>",
-      "    <CardHeader>",
-      `      <CardTitle>${ctx.name}</CardTitle>`,
-      `      <CardDescription>${listed} on Vite+.</CardDescription>`,
-      "    </CardHeader>",
+      '  <section className="grid gap-10 sm:py-8">',
+      '    <div className="grid gap-5">',
       ...(status
         ? [
-            '    <CardContent className="flex items-center justify-between">',
-            "      <span>API status</span>",
-            "      <ApiStatus />",
-            "    </CardContent>",
+            '      <div className="text-muted-foreground flex items-center gap-2 text-sm">',
+            "        API",
+            "        <ApiStatus />",
+            "      </div>",
           ]
         : []),
-      "  </Card>",
+      '      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">',
+      `        ${ctx.name}`,
+      "      </h1>",
+      '      <p className="text-muted-foreground max-w-xl text-lg text-pretty">',
+      `        ${listed} on Vite+.`,
+      "      </p>",
+      "    </div>",
+      '    <p className="text-muted-foreground border-t pt-6 text-sm">',
+      `      Edit <code className="text-foreground font-mono">${path}</code> and save to see it change.`,
+      "    </p>",
+      "  </section>",
       ");",
       "",
       ...(route

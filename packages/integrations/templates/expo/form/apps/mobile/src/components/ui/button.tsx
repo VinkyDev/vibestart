@@ -7,19 +7,19 @@ import type { PressableProps } from "react-native";
 import { Text } from "#src/components/ui/text.tsx";
 
 const buttonVariants = cva(
-  "h-11 flex-row items-center justify-center rounded-md px-4 active:opacity-80 disabled:opacity-50",
+  "h-12 flex-row items-center justify-center rounded-xl px-5 active:opacity-80 disabled:opacity-40",
   {
     defaultVariants: { variant: "default" },
     variants: {
       variant: {
         default: "bg-primary",
-        outline: "border-border bg-background border",
+        outline: "border-border bg-card border",
       },
     },
   }
 );
 
-const labelVariants = cva("text-sm font-medium", {
+const labelVariants = cva("text-base font-semibold", {
   defaultVariants: { variant: "default" },
   variants: {
     variant: {

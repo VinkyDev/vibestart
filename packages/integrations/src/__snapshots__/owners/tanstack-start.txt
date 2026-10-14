@@ -1841,7 +1841,7 @@ const RootDocument = ({ children }: { children: ReactNode }) => (
 const RootLayout = () => (
   <div className="grid min-h-svh grid-rows-[auto_1fr]">
     <Header />
-    <main className="mx-auto w-full max-w-2xl px-4 py-8">
+    <main className="mx-auto w-full max-w-2xl px-4 py-10 sm:py-14">
       <Outlet />
     </main>
   </div>
@@ -2099,7 +2099,7 @@ const RootDocument = ({ children }: { children: ReactNode }) => (
 const RootLayout = () => (
   <div className="grid min-h-svh grid-rows-[auto_1fr]">
     <Header />
-    <main className="mx-auto w-full max-w-2xl px-4 py-8">
+    <main className="mx-auto w-full max-w-2xl px-4 py-10 sm:py-14">
       <Outlet />
     </main>
   </div>
@@ -2616,20 +2616,24 @@ export const Route = createFileRoute("/api/health")({
 #   tanstack-start-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start on Vite+.</CardDescription>
-    </CardHeader>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2641,20 +2645,24 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start and Expo on Vite+.</CardDescription>
-    </CardHeader>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start and Expo on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2668,27 +2676,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start and Hono on Vite+.</CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start and Hono on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2702,27 +2713,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start, Hono and Expo on Vite+.</CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start, Hono and Expo on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2736,29 +2750,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mongodb-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MongoDB, Mongoose and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2772,29 +2787,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MongoDB, Mongoose, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2808,29 +2824,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mongodb-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MongoDB and Mongoose on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2844,29 +2861,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mongodb-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MongoDB, Mongoose and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2880,29 +2898,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2916,29 +2935,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2952,29 +2972,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -2988,29 +3009,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3024,29 +3046,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3060,29 +3083,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL, Prisma, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3096,29 +3120,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3132,29 +3157,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-mysql-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, MySQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3168,29 +3194,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono and OpenAPI on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3204,29 +3231,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3240,30 +3268,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MongoDB, Mongoose and Better Auth on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3277,30 +3306,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MongoDB, Mongoose, Better Auth and Expo
         on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3314,29 +3344,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mongodb-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MongoDB and Mongoose on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3350,29 +3381,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MongoDB, Mongoose and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3386,29 +3418,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3422,30 +3455,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3459,29 +3493,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3495,29 +3530,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3531,29 +3567,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3567,30 +3604,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL, Prisma, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3604,29 +3642,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3640,29 +3679,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-mysql-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, MySQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3676,30 +3716,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL, Drizzle and Better Auth on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3713,30 +3754,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL, Drizzle, Better Auth and Expo
         on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3750,29 +3792,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3786,29 +3829,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3822,30 +3866,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL, Prisma and Better Auth on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3859,30 +3904,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL, Prisma, Better Auth and Expo
         on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3896,29 +3942,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3932,29 +3979,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-postgres-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, PostgreSQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -3968,29 +4016,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, SQLite, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4004,30 +4053,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, SQLite, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4041,29 +4091,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-sqlite-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, SQLite and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4077,29 +4128,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-openapi-sqlite-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, OpenAPI, SQLite, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4113,27 +4165,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start, Hono and oRPC on Vite+.</CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start, Hono and oRPC on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4147,29 +4202,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4183,29 +4239,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MongoDB, Mongoose and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4219,30 +4276,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MongoDB, Mongoose, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4256,29 +4314,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mongodb-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MongoDB and Mongoose on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4292,29 +4351,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MongoDB, Mongoose and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4328,29 +4388,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4364,30 +4425,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4401,29 +4463,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4437,29 +4500,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4473,29 +4537,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4509,30 +4574,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL, Prisma, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4546,29 +4612,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4582,29 +4649,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-mysql-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, MySQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4618,30 +4686,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL, Drizzle and Better Auth on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4655,30 +4724,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4692,29 +4762,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4728,29 +4799,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4764,29 +4836,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4800,30 +4873,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL, Prisma, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4837,29 +4911,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4873,29 +4948,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-postgres-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, PostgreSQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4909,29 +4985,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, SQLite, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4945,30 +5022,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, SQLite, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -4982,29 +5060,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-sqlite-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, SQLite and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5018,29 +5097,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-orpc-sqlite-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, oRPC, SQLite, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5054,29 +5134,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5090,30 +5171,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5127,29 +5209,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5163,29 +5246,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5199,29 +5283,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5235,29 +5320,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL, Prisma, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5271,29 +5357,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5307,29 +5394,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-postgres-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, PostgreSQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5343,29 +5431,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-sqlite-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, SQLite, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5379,29 +5468,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, SQLite, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5415,29 +5505,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-sqlite-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, SQLite and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5451,29 +5542,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-hono-sqlite-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, Hono, SQLite, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5485,29 +5577,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mongodb-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MongoDB, Mongoose and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5519,29 +5612,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MongoDB, Mongoose, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5553,29 +5647,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mongodb-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MongoDB and Mongoose on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5587,29 +5682,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mongodb-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MongoDB, Mongoose and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5621,29 +5717,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5655,29 +5752,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5689,29 +5787,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5723,29 +5822,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5757,29 +5857,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5791,29 +5892,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL, Prisma, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5825,29 +5927,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5859,29 +5962,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-mysql-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, MySQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5893,27 +5997,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start and oRPC on Vite+.</CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start and oRPC on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5925,27 +6032,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>TanStack Start, oRPC and Expo on Vite+.</CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        TanStack Start, oRPC and Expo on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5957,29 +6067,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MongoDB, Mongoose and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -5991,29 +6102,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MongoDB, Mongoose, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6025,29 +6137,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mongodb-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MongoDB and Mongoose on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6059,29 +6172,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mongodb-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MongoDB, Mongoose and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6093,29 +6207,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6127,29 +6242,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6161,29 +6277,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6195,29 +6312,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6229,29 +6347,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6263,29 +6382,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL, Prisma, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6297,29 +6417,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6331,29 +6452,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, MySQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6365,29 +6487,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6399,30 +6522,31 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL, Drizzle, Better Auth and Expo on
         Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6434,29 +6558,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6468,29 +6593,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6502,29 +6628,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6536,29 +6663,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL, Prisma, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6570,29 +6698,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6604,29 +6733,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, PostgreSQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6638,29 +6768,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, SQLite, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6672,29 +6803,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, SQLite, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6706,29 +6838,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, SQLite and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6740,29 +6873,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, oRPC, SQLite, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6774,29 +6908,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6808,29 +6943,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6842,29 +6978,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6876,29 +7013,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6910,29 +7048,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL, Prisma and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6944,29 +7083,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-prisma-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL, Prisma, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -6978,29 +7118,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-prisma-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL and Prisma on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -7012,29 +7153,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-postgres-prisma-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, PostgreSQL, Prisma and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -7046,29 +7188,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, SQLite, Drizzle and Better Auth on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -7080,29 +7223,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, SQLite, Drizzle, Better Auth and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -7114,29 +7258,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-sqlite-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, SQLite and Drizzle on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -7148,29 +7293,30 @@ export const Route = createFileRoute("/")({
 #   tanstack-start-self-sqlite-expo-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
-
 import { ApiStatus } from "#src/components/api-status.tsx";
 
 const HomePage = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>my-app</CardTitle>
-      <CardDescription>
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         TanStack Start, SQLite, Drizzle and Expo on Vite+.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <span>API status</span>
-      <ApiStatus />
-    </CardContent>
-  </Card>
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
 );
 
 export const Route = createFileRoute("/")({
@@ -7483,13 +7629,7 @@ import { useState } from "react";
 import type { SubmitEvent } from "react";
 
 import { Button } from "@my-app/ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
+import { Card, CardContent } from "@my-app/ui/components/card";
 import { Checkbox } from "@my-app/ui/components/checkbox";
 import { Input } from "@my-app/ui/components/input";
 
@@ -7518,6 +7658,8 @@ const TodosPage = () => {
     api.todos.delete.mutationOptions(invalidateTodos)
   );
 
+  const done = todos.filter((todo) => todo.completed).length;
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     createTodo.mutate(
@@ -7531,13 +7673,22 @@ const TodosPage = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Todos</CardTitle>
-        <CardDescription>Shared by everyone who opens the app.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
+    <section className="grid gap-6">
+      <div className="flex items-end justify-between gap-4">
+        <div className="grid gap-1">
+          <h1 className="text-3xl font-semibold tracking-tight">Todos</h1>
+          <p className="text-muted-foreground text-sm">
+            Shared by everyone who opens the app.
+          </p>
+        </div>
+        {todos.length > 0 && (
+          <p className="text-muted-foreground text-sm tabular-nums">
+            {done} of {todos.length} done
+          </p>
+        )}
+      </div>
+      <Card>
+        <CardContent>
           <form className="flex gap-2" onSubmit={handleSubmit}>
             <Input
               aria-label="New todo"
@@ -7554,50 +7705,53 @@ const TodosPage = () => {
               Add
             </Button>
           </form>
-          {todos.length === 0 ? (
-            <p className="text-muted-foreground py-4 text-center text-sm">
-              No todos yet.
+        </CardContent>
+        {todos.length === 0 ? (
+          <div className="grid gap-1 border-t px-4 pt-10 pb-6 text-center">
+            <p className="text-sm font-medium">No todos yet.</p>
+            <p className="text-muted-foreground text-sm">
+              Each one you add is saved through the API.
             </p>
-          ) : (
-            <ul className="grid gap-1">
-              {todos.map((todo) => (
-                <li
-                  className="hover:bg-muted/50 flex items-center gap-3 rounded-md px-2 py-1.5"
-                  key={todo.id}
+          </div>
+        ) : (
+          <ul className="-mb-4 divide-y border-t">
+            {todos.map((todo) => (
+              <li
+                className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors"
+                key={todo.id}
+              >
+                <Checkbox
+                  aria-label={todo.title}
+                  checked={todo.completed}
+                  onCheckedChange={(completed) => {
+                    updateTodo.mutate({ id: todo.id, completed });
+                  }}
+                />
+                <span
+                  className={
+                    todo.completed
+                      ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
+                      : "flex-1 text-sm"
+                  }
                 >
-                  <Checkbox
-                    aria-label={todo.title}
-                    checked={todo.completed}
-                    onCheckedChange={(completed) => {
-                      updateTodo.mutate({ id: todo.id, completed });
-                    }}
-                  />
-                  <span
-                    className={
-                      todo.completed
-                        ? "text-muted-foreground flex-1 text-sm line-through"
-                        : "flex-1 text-sm"
-                    }
-                  >
-                    {todo.title}
-                  </span>
-                  <Button
-                    aria-label={`Delete ${todo.title}`}
-                    onClick={() => {
-                      deleteTodo.mutate({ id: todo.id });
-                    }}
-                    size="icon-sm"
-                    variant="ghost"
-                  >
-                    <Trash2Icon />
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+                  {todo.title}
+                </span>
+                <Button
+                  aria-label={`Delete ${todo.title}`}
+                  onClick={() => {
+                    deleteTodo.mutate({ id: todo.id });
+                  }}
+                  size="icon-sm"
+                  variant="ghost"
+                >
+                  <Trash2Icon className="text-muted-foreground" />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+    </section>
   );
 };
 

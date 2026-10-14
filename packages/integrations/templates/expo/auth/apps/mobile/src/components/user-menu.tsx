@@ -17,6 +17,7 @@ export const UserMenu = () => {
       <Pressable
         accessibilityLabel="Sign out"
         accessibilityRole="button"
+        hitSlop={8}
         onPress={async () => {
           await authClient.signOut();
         }}
