@@ -11463,11 +11463,14 @@ const maxBytes = 63;
 const byteLength = (value: string) => new TextEncoder().encode(value).length;
 
 export const testDatabaseName = (configured: string) => {
-  const characters = Array.from(configured);
-  while (byteLength(characters.join("")) + suffixBytes > maxBytes) {
-    characters.pop();
+  let prefix = "";
+  for (const character of configured) {
+    if (byteLength(prefix + character) + suffixBytes > maxBytes) {
+      break;
+    }
+    prefix += character;
   }
-  return `${characters.join("")}_test_${crypto.randomUUID().slice(0, 8)}`;
+  return `${prefix}_test_${crypto.randomUUID().slice(0, 8)}`;
 };
 
 # packages/db/src/testing.ts · 112 stacks
@@ -11754,15 +11757,16 @@ export const createTestDatabase = async () => {
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(decodeURIComponent(adminUrl.pathname.slice(1)));
+  const sqlName = name.replaceAll("`", "``");
   url.pathname = `/${name}`;
 
-  await runAsAdmin(adminUrl, `create database \`${name}\``);
+  await runAsAdmin(adminUrl, `create database \`${sqlName}\``);
   const db = createDb(url.href);
   const remove = async () => {
     try {
       await db.$client.promise().end();
     } finally {
-      await runAsAdmin(adminUrl, `drop database \`${name}\``);
+      await runAsAdmin(adminUrl, `drop database \`${sqlName}\``);
     }
   };
   try {
@@ -11913,15 +11917,16 @@ export const createTestDatabase = async () => {
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(decodeURIComponent(adminUrl.pathname.slice(1)));
+  const sqlName = name.replaceAll("`", "``");
   url.pathname = `/${name}`;
 
-  await runAsAdmin(adminUrl, `create database \`${name}\``);
+  await runAsAdmin(adminUrl, `create database \`${sqlName}\``);
   const db = createDb(url.href);
   const remove = async () => {
     try {
       await db.$disconnect();
     } finally {
-      await runAsAdmin(adminUrl, `drop database \`${name}\``);
+      await runAsAdmin(adminUrl, `drop database \`${sqlName}\``);
     }
   };
   try {
@@ -12072,15 +12077,16 @@ export const createTestDatabase = async () => {
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(decodeURIComponent(adminUrl.pathname.slice(1)));
+  const sqlName = name.replaceAll('"', '""');
   url.pathname = `/${name}`;
 
-  await runAsAdmin(adminUrl, `create database "${name}"`);
+  await runAsAdmin(adminUrl, `create database "${sqlName}"`);
   const db = createDb(url.href);
   const remove = async () => {
     try {
       await db.$client.end();
     } finally {
-      await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
+      await runAsAdmin(adminUrl, `drop database "${sqlName}" with (force)`);
     }
   };
   try {
@@ -12231,15 +12237,16 @@ export const createTestDatabase = async () => {
   const adminUrl = new URL(DATABASE_URL);
   const url = new URL(adminUrl);
   const name = testDatabaseName(decodeURIComponent(adminUrl.pathname.slice(1)));
+  const sqlName = name.replaceAll('"', '""');
   url.pathname = `/${name}`;
 
-  await runAsAdmin(adminUrl, `create database "${name}"`);
+  await runAsAdmin(adminUrl, `create database "${sqlName}"`);
   const db = createDb(url.href);
   const remove = async () => {
     try {
       await db.$disconnect();
     } finally {
-      await runAsAdmin(adminUrl, `drop database "${name}" with (force)`);
+      await runAsAdmin(adminUrl, `drop database "${sqlName}" with (force)`);
     }
   };
   try {

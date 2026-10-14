@@ -6,9 +6,12 @@ const maxBytes = 63;
 const byteLength = (value: string) => new TextEncoder().encode(value).length;
 
 export const testDatabaseName = (configured: string) => {
-  const characters = Array.from(configured);
-  while (byteLength(characters.join("")) + suffixBytes > maxBytes) {
-    characters.pop();
+  let prefix = "";
+  for (const character of configured) {
+    if (byteLength(prefix + character) + suffixBytes > maxBytes) {
+      break;
+    }
+    prefix += character;
   }
-  return `${characters.join("")}_test_${crypto.randomUUID().slice(0, 8)}`;
+  return `${prefix}_test_${crypto.randomUUID().slice(0, 8)}`;
 };
