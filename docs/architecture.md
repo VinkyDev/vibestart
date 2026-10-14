@@ -105,7 +105,7 @@ A **task** is one stack on one platform: every verified stack on Linux under eac
 
 Records live on the orphan `verification` branch as `<platform>/<fingerprint>.json`. CI on `main` is its only writer, and a record, once written, is never rewritten, so writers never conflict. Runs on a developer's machine record nothing: a local `verify` is for debugging, and a pass on another machine says nothing about CI's environment.
 
-`vp run stacks pull` clones the store and writes the records for the current output to `packages/integrations/verification.json`, which Git ignores. The CLI and the Studio embed that file when they are built, so "Verified" needs no backend service; a build without it shows every stack unverified. `vp run stacks check` reports each task `CURRENT` (naming the covering task when it is another), `STALE`, or `MISSING` against that file and exits 1 unless all are current. Release runs `pull` and `check` before it packs, attaches the file to the GitHub release, and then POSTs the Studio deploy hook, which builds `main`.
+`vp run stacks pull` clones the store and writes the records for the current output to `packages/integrations/verification.json`, which Git ignores. The CLI embeds that file when it is packed, so "Verified" needs no backend service; a build without it shows every stack unverified. `vp run stacks check` reports each task `CURRENT` (naming the covering task when it is another), `STALE`, or `MISSING` against that file and exits 1 unless all are current. Release runs `pull` and `check` before it packs, attaches the file to the GitHub release, and then POSTs the Studio deploy hook. That build downloads the attached file and embeds it; it does not generate the stacks again.
 
 ### CI
 

@@ -6,6 +6,10 @@ export { materializeEnvFromExamples } from "#/server-env.ts";
 
 export { stackLabel } from "#/stack-label.ts";
 
-export { verificationOf, verifiedAs } from "#/verification.ts";
+export {
+  recordedVerification,
+  verificationOf,
+  verifiedAs,
+} from "#/verification.ts";
 
 export { maintenanceFiles } from "#/maintenance.ts";

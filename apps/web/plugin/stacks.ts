@@ -8,7 +8,11 @@ import {
   generate,
   legalStacks,
 } from "@vibestart/core";
-import { registry, stackLabel, verificationOf } from "@vibestart/integrations";
+import {
+  recordedVerification,
+  registry,
+  stackLabel,
+} from "@vibestart/integrations";
 
 import type { Project, StackEntry, StackPreview } from "../src/lib/project.ts";
 import { projectKey } from "../src/lib/project.ts";
@@ -44,8 +48,8 @@ export const stackEntries = async (): Promise<StackEntry[]> =>
       const addons = defaultAddons(registry);
 
       const [verification, bunVerification] = await Promise.all([
-        verificationOf(stack, addons),
-        verificationOf(stack, addons, "bun"),
+        recordedVerification(stack, addons),
+        recordedVerification(stack, addons, "bun"),
       ]);
 
       return {
