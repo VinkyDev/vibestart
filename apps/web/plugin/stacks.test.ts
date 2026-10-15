@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import { fingerprint } from "@vibestart/core";
+
 import { noteText } from "../src/lib/i18n.ts";
 import { projectKey } from "../src/lib/project.ts";
 import { verifiedAddons } from "../src/lib/stack.ts";
@@ -34,6 +36,19 @@ describe(stackPreview, () => {
 
     expect(expanded).toStrictEqual(generated);
     expect(Object.keys(projects)).toHaveLength(8);
+  });
+
+  it("carries the record the fingerprint check compares its default project to", async () => {
+    const label = "spa-hono-orpc-postgres-better-auth-docker-e2e";
+    const { verification } = await stackPreview(label);
+
+    // A checkout without `stacks pull` records nothing, and the preview carries no record.
+    const expected =
+      verification === null
+        ? null
+        : await fingerprint(await project(label, defaultKey));
+
+    expect(verification?.fingerprint ?? null).toBe(expected);
   });
 });
 

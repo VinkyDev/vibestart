@@ -1,11 +1,11 @@
 import { ArrowUp } from "lucide-react";
 import { useInView } from "motion/react";
 import { Suspense, useRef } from "react";
-import { stacks } from "virtual:vibestart";
 
 import { Reveal } from "#/components/home/reveal.tsx";
 import { useComposed } from "#/components/home/use-composed.ts";
 import { Placeholder, Record } from "#/components/home/verification/record.tsx";
+import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
 
 export const Verification = () => {

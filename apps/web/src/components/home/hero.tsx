@@ -4,7 +4,6 @@ import type { Variants } from "motion/react";
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { useRef } from "react";
-import { stacks } from "virtual:vibestart";
 
 import { buttonVariants } from "@vibestart/ui/components/button";
 import { cn } from "@vibestart/ui/lib/utils";
@@ -13,6 +12,7 @@ import { Composer } from "#/components/home/composer.tsx";
 import { CopyCommand } from "#/components/home/copy-command.tsx";
 import { useFontsReady } from "#/lib/fonts.ts";
 import { ease } from "#/lib/motion.ts";
+import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
 
 const rise: Variants = {

@@ -7,26 +7,22 @@ import { FingerprintCheck } from "#/components/home/verification/fingerprint-che
 import { Steps } from "#/components/home/verification/steps.tsx";
 import { gateOf } from "#/lib/gate.ts";
 import { relativeTime } from "#/lib/i18n.ts";
-import type { StackEntry, StackVerification } from "#/lib/project.ts";
-import { loadProject } from "#/lib/projects.ts";
+import type { StackEntry } from "#/lib/project.ts";
+import { loadProject, loadVerification } from "#/lib/projects.ts";
 import { tintClass } from "#/lib/roles.ts";
 import { chosen, decisions, e2eRunner } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
-const Status = ({
-  verification,
-}: {
-  readonly verification: StackVerification | null;
-}) =>
-  verification === null ? (
-    <span className="text-muted-foreground bg-muted flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs">
-      <ShieldQuestion className="size-3.5" strokeWidth={1.75} />
-      {m.not_verified()}
-    </span>
-  ) : (
+const Status = ({ verified }: { readonly verified: boolean }) =>
+  verified ? (
     <span className="bg-added/10 text-added flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium">
       <ShieldCheck className="size-3.5" strokeWidth={1.75} />
       {m.gate_verified()}
+    </span>
+  ) : (
+    <span className="text-muted-foreground bg-muted flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs">
+      <ShieldQuestion className="size-3.5" strokeWidth={1.75} />
+      {m.not_verified()}
     </span>
   );
 
@@ -59,14 +55,18 @@ export const Record = ({
   readonly subject: StackEntry;
 }) => {
   const project = use(loadProject(subject));
+
+  // `subject` is the stack whose task passed, so its preview carries the record `entry` names.
+  const verification =
+    entry.verification === null ? null : use(loadVerification(subject));
+
   const gate = gateOf(project);
-  const { verification } = entry;
 
   return (
     <div className="flex flex-col gap-7 p-6 sm:p-8">
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-          <Status verification={verification} />
+          <Status verified={verification !== null} />
           {verification !== null && (
             <p
               className="text-muted-foreground text-xs tabular-nums"

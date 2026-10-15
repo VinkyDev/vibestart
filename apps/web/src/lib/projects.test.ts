@@ -1,10 +1,10 @@
-import { stacks } from "virtual:vibestart";
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 import type { StackPreview } from "#/lib/project.ts";
 import { projectKey } from "#/lib/project.ts";
 import { loadProject } from "#/lib/projects.ts";
 import { verifiedAddons } from "#/lib/stack.ts";
+import { stacks } from "#/lib/stacks.ts";
 
 const preview: StackPreview = {
   contents: ["{}"],
@@ -13,9 +13,12 @@ const preview: StackPreview = {
       files: [{ content: 0, owner: "core", path: "package.json" }],
       gettingStarted: [],
       packageManager: "pnpm",
-      setup: [],
+      setup: [
+        { run: "vp install", stage: "install", writes: ["pnpm-lock.yaml"] },
+      ],
     },
   },
+  verification: null,
 };
 
 describe(loadProject, () => {
@@ -42,6 +45,10 @@ describe(loadProject, () => {
     expect(project.files).toStrictEqual([
       { content: "{}", owner: "core", path: "package.json" },
     ]);
+    // The fingerprint check hashes the setup, so every field the generator wrote survives.
+    expect(project.setup).toStrictEqual(
+      preview.projects[projectKey(verifiedAddons)]?.setup
+    );
     expect(loadProject(entry)).toBe(loadProject(entry));
     expect(fetch).toHaveBeenCalledTimes(2);
   });

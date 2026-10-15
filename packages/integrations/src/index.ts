@@ -12,4 +12,6 @@ export {
   verifiedAs,
 } from "#/verification.ts";
 
+export type { VerificationMatch } from "#/verification.ts";
+
 export { maintenanceFiles } from "#/maintenance.ts";

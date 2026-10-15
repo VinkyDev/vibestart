@@ -1,7 +1,7 @@
 import { uniq } from "es-toolkit/array";
 import { mapValues, omit } from "es-toolkit/object";
 import { isEqual } from "es-toolkit/predicate";
-import { registry, stacks } from "virtual:vibestart";
+import { registry } from "virtual:vibestart";
 import { z } from "zod";
 
 import type {
@@ -24,6 +24,7 @@ import {
 
 import { capabilityText, list } from "#/lib/i18n.ts";
 import type { StackEntry, StackVerification } from "#/lib/project.ts";
+import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
 
 const optionalDecisions = [
