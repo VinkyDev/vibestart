@@ -57,6 +57,8 @@ const cases = verifiedStacks.flatMap((stack) =>
   }))
 );
 
+const collapsed = { ...oxfmt, objectWrap: "collapse" } as const;
+
 // Removing a formatting preset may reflow code, but must not change its contents.
 const canonical = async (filePath: string, content: string) => {
   if (!/\.(?:css|html|js|json|jsonc|md|mjs|ts|tsx|ya?ml)$/u.test(filePath)) {
@@ -67,7 +69,7 @@ const canonical = async (filePath: string, content: string) => {
     filePath,
     content,
     `@${verifiedName}`,
-    { ...oxfmt, objectWrap: "collapse" }
+    collapsed
   );
 
   expect(errors).toStrictEqual([]);

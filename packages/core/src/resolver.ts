@@ -501,20 +501,22 @@ export const compose = (registry: RegistryInfo, fixed: Choices): Stack => {
 
   assertOffered(registry, choices);
 
+  // The open choices `kindOptions` would find, without the violations it works out for the others.
+  let left = legalStacks(registry).filter((stack) =>
+    Object.entries(choices).every(([k, id]) => (stack[k] ?? null) === id)
+  );
+
   for (const kind of registry.kinds) {
     if (choices[kind.id] !== undefined) {
       continue;
     }
 
-    // The open choices `kindOptions` would find, without the violations it works out for the others.
-    const left = legalStacks(registry).filter((stack) =>
-      Object.entries(choices).every(([k, id]) => (stack[k] ?? null) === id)
-    );
+    const taken = new Set(left.map((stack) => stack[kind.id] ?? null));
 
     const open = [
       ...integrationsOfKind(registry, kind.id).map(({ id }) => id),
       ...(kind.optional ? [null] : []),
-    ].filter((id) => left.some((stack) => (stack[kind.id] ?? null) === id));
+    ].filter((id) => taken.has(id));
 
     const start = startingChoice(open, kind.default);
 
@@ -523,6 +525,7 @@ export const compose = (registry: RegistryInfo, fixed: Choices): Stack => {
     }
 
     choices[kind.id] = start;
+    left = left.filter((stack) => (stack[kind.id] ?? null) === start);
   }
 
   const [stack] = resolve(registry, choices).stacks;
