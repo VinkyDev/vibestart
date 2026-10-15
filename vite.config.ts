@@ -12,6 +12,7 @@ import { defineConfig } from "vite-plus";
 // Agent skills are installed from upstream and pinned by hash in `skills-lock.json`, so reformatting one makes it drift.
 const foreignFiles = [
   ".agents/skills/**",
+  ".claude/skills/**",
   "golden/**",
   "reference/**",
   "packages/integrations/templates/**",
