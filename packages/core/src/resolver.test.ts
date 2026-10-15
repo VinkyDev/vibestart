@@ -261,6 +261,40 @@ describe(legalStacks, () => {
       { backend: "hono", runtime: "node", toolchain: "vp" },
     ]);
   });
+
+  it("finds the few legal stacks among millions of combinations", () => {
+    // 5^9 combinations, of which a legal stack picks exactly one provider of the single capability.
+    const kinds = Array.from({ length: 9 }, (_, k) => `kind${k}`);
+
+    const wide = defineRegistry({
+      addons: [],
+      capabilities: { server: "a server" },
+      catalog: {},
+      integrations: [
+        integration("vp", "toolchain", { requires: ["server"] }),
+        ...kinds.flatMap((kind) =>
+          Array.from({ length: 4 }, (_, i) =>
+            integration(`${kind}-${i}`, kind, { provides: ["server"] })
+          )
+        ),
+      ],
+      kinds: [
+        { id: "toolchain", name: "Toolchain", optional: false },
+        ...kinds.map((id) => ({ id, name: id, optional: true })),
+      ],
+    });
+
+    const start = performance.now();
+    const legal = legalStacks(wide);
+    const closest = resolve(wide, { kind0: "kind0-0", kind1: "kind1-0" });
+
+    expect(legal).toHaveLength(36);
+    expect(closest.violations.map(({ type }) => type)).toStrictEqual([
+      "shared-capability",
+    ]);
+    // Visiting every combination takes seconds; the browser runs this before its first paint.
+    expect(performance.now() - start).toBeLessThan(1000);
+  });
 });
 
 describe(resolve, () => {
