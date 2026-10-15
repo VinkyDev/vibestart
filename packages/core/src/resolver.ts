@@ -181,70 +181,183 @@ export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
   ];
 };
 
-const allStacks = (registry: RegistryInfo): Stack[] => {
-  let stacks: Stack[] = [{}];
+/**
+ * What a partial stack already gets wrong, counting only violations no later choice removes: an empty kind
+ * group, a requirement no remaining kind can provide, and a capability two integrations provide.
+ */
+const unavoidableViolations = (
+  chosen: readonly IntegrationInfo[],
+  emptyKinds: ReadonlySet<string>,
+  kindGroups: readonly (readonly string[])[],
+  laterCapabilities: ReadonlySet<string>
+) => {
+  const provided = new Set<string>();
+  const shared = new Set<string>();
 
-  for (const kind of registry.kinds) {
-    const options: (string | undefined)[] = integrationsOfKind(
-      registry,
-      kind.id
-    ).map((i) => i.id);
+  for (const integration of chosen) {
+    for (const capability of new Set(integration.provides)) {
+      if (provided.has(capability)) {
+        shared.add(capability);
+      }
 
-    if (kind.optional) {
-      options.push(undefined);
+      provided.add(capability);
     }
-
-    stacks = stacks.flatMap((stack) =>
-      options.map((id) =>
-        id === undefined ? stack : { ...stack, [kind.id]: id }
-      )
-    );
   }
 
-  return stacks;
+  const emptyGroups = kindGroups.filter((group) =>
+    group.every((kind) => emptyKinds.has(kind))
+  ).length;
+
+  const unmet = chosen.flatMap((integration) =>
+    integration.requires
+      .map(alternatives)
+      .filter(
+        (accepted) =>
+          !accepted.some(
+            (capability) =>
+              provided.has(capability) || laterCapabilities.has(capability)
+          )
+      )
+  ).length;
+
+  return emptyGroups + unmet + shared.size;
 };
 
-interface CheckedStack {
-  readonly stack: Stack;
-  readonly violations: readonly Violation[];
-}
+/**
+ * Visits every stack consistent with the choices, in registry order: kinds as they are listed, and within a kind
+ * its integrations, then the empty choice. A branch is skipped once its unavoidable violations reach `ceiling()`,
+ * so a visit looking for legal or near-legal stacks reaches a sliver of the full product of kinds.
+ */
+const visitConsistentStacks = (
+  registry: RegistryInfo,
+  choices: Choices,
+  ceiling: () => number,
+  visit: (stack: Stack) => void
+) => {
+  const options = registry.kinds.map(
+    (kind): (IntegrationInfo | undefined)[] => {
+      const choice = choices[kind.id];
 
-interface StackSpace {
-  readonly checked: readonly CheckedStack[];
-  readonly legal: readonly Stack[];
-}
+      if (choice === null) {
+        return [undefined];
+      }
 
-const checkedStacksCache = new WeakMap<RegistryInfo, StackSpace>();
+      const integrations = integrationsOfKind(registry, kind.id);
 
-const stackSpace = (registry: RegistryInfo): StackSpace => {
-  const cached = checkedStacksCache.get(registry);
+      if (choice !== undefined) {
+        return integrations.filter((i) => i.id === choice);
+      }
+
+      return kind.optional ? [...integrations, undefined] : integrations;
+    }
+  );
+
+  const laterCapabilities = options.map(
+    (_, index) =>
+      new Set(
+        options
+          .slice(index + 1)
+          .flat()
+          .flatMap((integration) => integration?.provides ?? [])
+      )
+  );
+
+  const kindGroups = registry.kindGroups ?? [];
+  const chosen: IntegrationInfo[] = [];
+  const emptyKinds = new Set<string>();
+
+  const extend = (index: number, stack: Stack) => {
+    const kind = registry.kinds[index];
+
+    if (kind === undefined) {
+      visit(stack);
+
+      return;
+    }
+
+    const later = laterCapabilities[index] ?? new Set<string>();
+
+    for (const integration of options[index] ?? []) {
+      if (integration === undefined) {
+        emptyKinds.add(kind.id);
+      } else {
+        chosen.push(integration);
+      }
+
+      if (
+        unavoidableViolations(chosen, emptyKinds, kindGroups, later) < ceiling()
+      ) {
+        extend(
+          index + 1,
+          integration === undefined
+            ? stack
+            : { ...stack, [kind.id]: integration.id }
+        );
+      }
+
+      if (integration === undefined) {
+        emptyKinds.delete(kind.id);
+      } else {
+        chosen.pop();
+      }
+    }
+  };
+
+  extend(0, {});
+};
+
+const legalStacksCache = new WeakMap<RegistryInfo, readonly Stack[]>();
+
+export const legalStacks = (registry: RegistryInfo): readonly Stack[] => {
+  const cached = legalStacksCache.get(registry);
 
   if (cached !== undefined) {
     return cached;
   }
 
-  const checked = allStacks(registry).map((stack) => ({
-    stack,
-    violations: check(registry, stack),
-  }));
+  // Every caller shares this array, so a caller that sorts or splices it fails instead of changing later results.
+  const legal: Stack[] = [];
 
-  const space = {
-    checked,
-    // Every caller shares this array, so a caller that sorts or splices it fails instead of changing later results.
-    legal: Object.freeze(
-      checked
-        .filter(({ violations }) => violations.length === 0)
-        .map(({ stack }) => stack)
-    ),
-  };
+  visitConsistentStacks(
+    registry,
+    {},
+    () => 1,
+    (stack) => {
+      if (check(registry, stack).length === 0) {
+        legal.push(stack);
+      }
+    }
+  );
 
-  checkedStacksCache.set(registry, space);
+  const frozen = Object.freeze(legal);
 
-  return space;
+  legalStacksCache.set(registry, frozen);
+
+  return frozen;
 };
 
-export const legalStacks = (registry: RegistryInfo): readonly Stack[] =>
-  stackSpace(registry).legal;
+/** The first consistent stack, in registry order, with the fewest violations. */
+const closestStack = (registry: RegistryInfo, choices: Choices) => {
+  let closest: { stack: Stack; violations: Violation[] } | undefined;
+
+  visitConsistentStacks(
+    registry,
+    choices,
+    () => closest?.violations.length ?? Infinity,
+    (stack) => {
+      const violations = check(registry, stack);
+
+      if (
+        closest === undefined ||
+        violations.length < closest.violations.length
+      ) {
+        closest = { stack, violations };
+      }
+    }
+  );
+
+  return closest;
+};
 
 export const choicesOf = (registry: RegistryInfo, stack: Stack): Choices =>
   Object.fromEntries(
@@ -293,13 +406,7 @@ export const resolve = (
     return { fixes: [], stacks, violations: [] };
   }
 
-  const consistent = stackSpace(registry).checked.filter(({ stack }) =>
-    matches(stack)
-  );
-
-  const [closest] = consistent.toSorted(
-    (a, b) => a.violations.length - b.violations.length
-  );
+  const closest = closestStack(registry, choices);
 
   // Every offered choice appears in some combination, so `assertOffered` leaves one consistent.
   if (closest === undefined) {
