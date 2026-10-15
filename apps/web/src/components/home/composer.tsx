@@ -5,7 +5,7 @@ import { CornerDownRight } from "lucide-react";
 import type { Variants } from "motion/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { previewName, stacks } from "virtual:vibestart";
+import { previewName } from "virtual:vibestart";
 
 import type { Change, Stack } from "@vibestart/core";
 import { buttonVariants } from "@vibestart/ui/components/button";
@@ -25,6 +25,7 @@ import {
   optionsOf,
   outcome,
 } from "#/lib/stack.ts";
+import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
 
 const technologies = sumBy(

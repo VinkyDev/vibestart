@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { GeneratedFile } from "@vibestart/core";
+import { verificationSchema } from "@vibestart/core";
 
 import type { Project, StackEntry, StackPreview } from "#/lib/project.ts";
 import { previewPath, projectKey } from "#/lib/project.ts";
@@ -32,10 +33,15 @@ const previewSchema: z.ZodType<StackPreview> = z.object({
       ),
       packageManager: z.enum(["pnpm", "bun"]),
       setup: z.array(
-        z.object({ run: z.string(), writes: z.array(z.string()) })
+        z.object({
+          run: z.string(),
+          stage: z.enum(["install", "generate", "build"]).optional(),
+          writes: z.array(z.string()),
+        })
       ),
     })
   ),
+  verification: verificationSchema.valueType.nullable(),
 });
 
 const fetchPreview = async (label: string) => {
@@ -99,6 +105,17 @@ const expand = async (label: string, key: string): Promise<Project> => {
       return { ...file, content };
     }),
   };
+};
+
+/** The stack's own pnpm record with the default add-ons, in full. */
+export const loadVerification = async (entry: StackEntry) => {
+  const { verification } = await cached(
+    previews,
+    entry.label,
+    async () => await fetchPreview(entry.label)
+  );
+
+  return verification;
 };
 
 const loaded = new Map<string, Promise<Project>>();

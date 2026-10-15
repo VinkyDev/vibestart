@@ -1,4 +1,3 @@
-import { stacks } from "virtual:vibestart";
 import { describe, expect, it } from "vite-plus/test";
 
 import {
@@ -18,6 +17,7 @@ import {
   verifiedAddons,
   whyIncluded,
 } from "#/lib/stack.ts";
+import { stacks } from "#/lib/stacks.ts";
 
 const entry = (label: string) => {
   const found = stacks.find((candidate) => candidate.label === label);

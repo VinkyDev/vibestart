@@ -1,6 +1,6 @@
 import { omit } from "es-toolkit/object";
 
-import type { RegistryInfo } from "@vibestart/core";
+import type { RegistryInfo, Stack } from "@vibestart/core";
 import {
   blueprintJsonSchema,
   blueprintSchemaUrl,
@@ -13,8 +13,14 @@ import {
   registry,
   stackLabel,
 } from "@vibestart/integrations";
+import type { VerificationMatch } from "@vibestart/integrations";
 
-import type { Project, StackEntry, StackPreview } from "../src/lib/project.ts";
+import type {
+  Project,
+  StackEntries,
+  StackPreview,
+  StackVerification,
+} from "../src/lib/project.ts";
 import { projectKey } from "../src/lib/project.ts";
 
 /** The name the CLI gives a project when it is not asked for one. */
@@ -42,30 +48,58 @@ export const blueprintSchema = {
 
 export const stackLabels = [...legal.keys()];
 
-export const stackEntries = async (): Promise<StackEntry[]> =>
-  await Promise.all(
-    [...legal].map(async ([label, stack]) => {
-      const addons = defaultAddons(registry);
+const defaultVerification = async (stack: Stack) => {
+  const addons = defaultAddons(registry);
 
-      const [verification, bunVerification] = await Promise.all([
-        recordedVerification(stack, addons),
-        recordedVerification(stack, addons, "bun"),
-      ]);
+  return await Promise.all([
+    recordedVerification(stack, addons),
+    recordedVerification(stack, addons, "bun"),
+  ]);
+};
 
-      return {
-        label,
-        stack,
-        bunVerification:
-          bunVerification === undefined
-            ? null
-            : { ...bunVerification.record, label: bunVerification.label },
-        verification:
-          verification === undefined
-            ? null
-            : { ...verification.record, label: verification.label },
-      };
-    })
+/**
+ * Every legal stack with what its first render shows of each record. Thousands of stacks share a few hundred
+ * records, so each summary is held once in `summaries` and a stack names it by index.
+ */
+export const stackEntries = async (): Promise<StackEntries> => {
+  const summaries: StackVerification[] = [];
+  const indexes = new Map<string, number>();
+
+  const intern = (match: VerificationMatch | undefined) => {
+    if (match === undefined) {
+      return null;
+    }
+
+    const summary = { label: match.label, verifiedAt: match.record.verifiedAt };
+    const key = JSON.stringify(summary);
+    let index = indexes.get(key);
+
+    if (index === undefined) {
+      index = summaries.length;
+      summaries.push(summary);
+      indexes.set(key, index);
+    }
+
+    return index;
+  };
+
+  const matches = await Promise.all(
+    [...legal].map(
+      async ([label, stack]) =>
+        [label, stack, await defaultVerification(stack)] as const
+    )
   );
+
+  return {
+    stacks: matches.map(([label, stack, [verification, bunVerification]]) => ({
+      bunVerification: intern(bunVerification),
+      label,
+      stack,
+      verification: intern(verification),
+    })),
+    summaries,
+  };
+};
 
 /**
  * Every set of add-ons. A preview is generated ahead for each, so their count doubles with
@@ -121,8 +155,17 @@ export const project = async (label: string, key: string): Promise<Project> => {
   };
 };
 
-/** In the order of `projectSets`, so a build writes the same bytes for the same output. */
+/**
+ * In the order of `projectSets`, so a build writes the same bytes for the same output. The stack's own pnpm
+ * record rides along: the verification card loads this preview to show it.
+ */
 export const stackPreview = async (label: string): Promise<StackPreview> => {
+  const stack = legal.get(label);
+
+  if (stack === undefined) {
+    throw new Error(`No legal stack is labeled "${label}"`);
+  }
+
   const generated = await Promise.all(
     [...projectSets.keys()].map(
       async (key) => [key, await project(label, key)] as const
@@ -157,5 +200,7 @@ export const stackPreview = async (label: string): Promise<StackPreview> => {
     ])
   );
 
-  return { contents, projects };
+  const [verification] = await defaultVerification(stack);
+
+  return { contents, projects, verification: verification?.record ?? null };
 };

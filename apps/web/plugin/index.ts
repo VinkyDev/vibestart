@@ -21,7 +21,7 @@ export const importStacks = async () => {
 };
 
 /**
- * Serves the registry and every legal stack as `virtual:vibestart`, each stack's preview as a JSON file at
+ * Serves the registry and every legal stack, each naming its verification summary by index, as `virtual:vibestart`, each stack's preview as a JSON file at
  * `previewPath`, and `vibestart.jsonc`'s JSON Schema at the path of `blueprintSchemaUrl`. The generator formats with oxfmt's native binding, so it runs here in Node, not in the browser.
  * Previews are files, not modules: hundreds of them, each holding whole projects, would make the bundler parse
  * and keep every one.
@@ -120,7 +120,7 @@ export const vibestart = (): Plugin => {
       return [
         `export const previewName = ${JSON.stringify(loaded.previewName)};`,
         `export const registry = ${JSON.stringify(loaded.registryInfo)};`,
-        `export const stacks = ${JSON.stringify(await loaded.stackEntries())};`,
+        `export const stackEntries = ${JSON.stringify(await loaded.stackEntries())};`,
       ].join("\n");
     },
     name: "vibestart",
