@@ -27,6 +27,13 @@ export const cookieName = "PARAGLIDE_LOCALE";
 export const cookieMaxAge = 34560000;
 /** @type {string} */
 export const cookieDomain = "";
+// Casts instead of `@type` tags: with a tag, TS narrows `cookieSecure` to its
+// initializer in the bundled runtime.js and the `=== true` / `=== "auto"`
+// checks in set-locale.js fail checkJs. `cookieSameSite` uses the same form
+// for consistency.
+export const cookieSameSite = 
+/** @type {"lax" | "strict" | "none" | undefined} */ (undefined);
+export const cookieSecure = /** @type {boolean | "auto"} */ (false);
 /** @type {string} */
 export const localStorageKey = "PARAGLIDE_LOCALE";
 /**
@@ -244,7 +251,13 @@ function resolveLocaleWithStrategies(strategyToUse, urlForUrlStrategy) {
         else if (TREE_SHAKE_LOCAL_STORAGE_STRATEGY_USED &&
             strat === "localStorage" &&
             !isServer) {
-            locale = localStorage.getItem(localStorageKey) ?? undefined;
+            try {
+                locale = localStorage.getItem(localStorageKey) ?? undefined;
+            }
+            catch {
+                // localStorage throws when storage access is denied
+                locale = undefined;
+            }
         }
         else if (isCustomStrategy(strat) && customClientStrategies.has(strat)) {
             const handler = customClientStrategies.get(strat);
@@ -416,10 +429,23 @@ export let setLocale = (newLocale, options) => {
                 continue;
             }
             // set the cookie
-            const cookieString = `${cookieName}=${newLocale}; path=/; max-age=${cookieMaxAge}`;
-            document.cookie = cookieDomain
-                ? `${cookieString}; domain=${cookieDomain}`
-                : cookieString;
+            let cookieString = `${cookieName}=${newLocale}; path=/; max-age=${cookieMaxAge}`;
+            if (cookieDomain) {
+                cookieString += `; domain=${cookieDomain}`;
+            }
+            if (cookieSameSite) {
+                cookieString += `; samesite=${cookieSameSite}`;
+            }
+            if (cookieSecure === true ||
+                (cookieSecure === "auto" && window.location?.protocol === "https:")) {
+                cookieString += "; secure";
+            }
+            try {
+                document.cookie = cookieString;
+            }
+            catch {
+                // document.cookie throws in sandboxed iframes and other opaque origins
+            }
             clearLocaleCookieCache();
         }
         else if (strat === "baseLocale") {
@@ -445,7 +471,12 @@ export let setLocale = (newLocale, options) => {
             strat === "localStorage" &&
             typeof window !== "undefined") {
             // set the localStorage
-            localStorage.setItem(localStorageKey, newLocale);
+            try {
+                localStorage.setItem(localStorageKey, newLocale);
+            }
+            catch {
+                // localStorage throws when storage access is denied
+            }
         }
         else if (isCustomStrategy(strat) && customClientStrategies.has(strat)) {
             const handler = customClientStrategies.get(strat);
@@ -829,13 +860,22 @@ export function extractLocaleFromCookie() {
     if (cachedLocaleFromCookie !== noCachedLocale) {
         return cachedLocaleFromCookie;
     }
-    const match = document.cookie.match(localeCookiePattern);
+    let match;
+    try {
+        match = document.cookie.match(localeCookiePattern);
+    }
+    catch {
+        // document.cookie throws in sandboxed iframes and other opaque origins
+        return;
+    }
     const locale = match?.[1];
     cachedLocaleFromCookie = toLocale(locale);
     scheduleLocaleCookieCacheClear();
     return cachedLocaleFromCookie;
 }
 
+// qvalue grammar from https://www.rfc-editor.org/rfc/rfc9110#section-12.4.2
+const qvaluePattern = /^(?:0(?:\.\d{0,3})?|1(?:\.0{0,3})?)$/;
 /**
  * Extracts a locale from the accept-language header.
  *
@@ -852,18 +892,21 @@ export function extractLocaleFromHeader(request) {
     const acceptLanguageHeader = request.headers.get("accept-language");
     if (acceptLanguageHeader) {
         // Parse language preferences with their q-values and base language codes
-        const languages = acceptLanguageHeader
-            .split(",")
+        const languages = splitOutsideQuotes(acceptLanguageHeader, ",")
             .map((lang) => {
-            const [tag, q = "1"] = lang.trim().split(";q=");
+            const [tag = "", ...params] = splitOutsideQuotes(lang, ";").map((p) => p.trim());
+            const weight = params.find((param) => /^q(?:\s|=|$)/i.test(param));
+            const q = weight ? weight.replace(/^q\s*=\s*/i, "") : "1";
             // Get both the full tag and base language code
-            const baseTag = tag?.split("-")[0];
+            const baseTag = tag.split("-")[0];
             return {
                 fullTag: tag,
                 baseTag,
-                q: Number(q),
+                q: qvaluePattern.test(q) ? Number(q) : 0,
             };
         })
+            // Skip ranges that are not acceptable (q=0) or have an invalid weight
+            .filter((lang) => lang.q > 0)
             .sort((a, b) => b.q - a.q);
         for (const lang of languages) {
             const fullLocale = toLocale(lang.fullTag);
@@ -878,6 +921,43 @@ export function extractLocaleFromHeader(request) {
         return undefined;
     }
     return undefined;
+}
+/**
+ * Splits on a separator that is not inside a quoted string, since parameter
+ * values may be quoted strings that contain `,` or `;`.
+ *
+ * @param {string} value
+ * @param {string} separator
+ * @returns {string[]}
+ */
+function splitOutsideQuotes(value, separator) {
+    /** @type {string[]} */
+    const parts = [];
+    let start = 0;
+    // Index of the quote that opened the current quoted string, or -1
+    let quoteStart = -1;
+    for (let i = 0; i < value.length; i++) {
+        const char = value[i];
+        if (quoteStart !== -1 && char === "\\") {
+            i++;
+        }
+        else if (char === '"') {
+            quoteStart = quoteStart === -1 ? i : -1;
+        }
+        else if (quoteStart === -1 && char === separator) {
+            parts.push(value.slice(start, i));
+            start = i + 1;
+        }
+    }
+    if (quoteStart === -1) {
+        parts.push(value.slice(start));
+        return parts;
+    }
+    // A quote that is never closed would swallow everything after it, so only
+    // the text from that quote on is split as if it weren't quoted
+    const [rest = "", ...tail] = value.slice(quoteStart).split(separator);
+    parts.push(value.slice(start, quoteStart) + rest, ...tail);
+    return parts;
 }
 
 /**
@@ -1875,6 +1955,10 @@ function normalizeUrl(url) {
  * // Cross-origin links remain absolute
  * localizeHref("https://other-site.com/about")
  * // => "https://other-site.com/de/about"
+ *
+ * // Protocol-relative links stay protocol-relative
+ * localizeHref("//other-site.com/about")
+ * // => "//other-site.com/de/about"
  * ```
  *
  * For server-side URL localization (e.g., in middleware), use `localizeUrl()`
@@ -1890,6 +1974,10 @@ export function localizeHref(href, options) {
     const locale = options?.locale ?? currentLocale;
     const url = new URL(href, getUrlOrigin());
     const localized = localizeUrl(url, { locale });
+    const protocolRelativeHref = serializeProtocolRelativeHref(href, url, localized);
+    if (protocolRelativeHref !== undefined) {
+        return protocolRelativeHref;
+    }
     // if the origin is identical and the href is relative,
     // return the relative path
     if (href.startsWith("/") && url.origin === localized.origin) {
@@ -1938,6 +2026,10 @@ export function localizeHref(href, options) {
  * // Cross-origin links remain absolute
  * deLocalizeHref("https://example.com/de/about")
  * // => "https://example.com/about"
+ *
+ * // Protocol-relative links stay protocol-relative
+ * deLocalizeHref("//example.com/de/about")
+ * // => "//example.com/about"
  * ```
  *
  * For server-side URL de-localization (e.g., in middleware), use `deLocalizeUrl()`
@@ -1949,12 +2041,60 @@ export function localizeHref(href, options) {
 export function deLocalizeHref(href) {
     const url = new URL(href, getUrlOrigin());
     const deLocalized = deLocalizeUrl(url);
+    const protocolRelativeHref = serializeProtocolRelativeHref(href, url, deLocalized);
+    if (protocolRelativeHref !== undefined) {
+        return protocolRelativeHref;
+    }
     // If the origin is identical and the href is relative,
     // return the relative path instead of the full URL.
     if (href.startsWith("/") && url.origin === deLocalized.origin) {
         return deLocalized.pathname + deLocalized.search + deLocalized.hash;
     }
     return deLocalized.href;
+}
+/**
+ * @param {string} href
+ * @param {URL} url
+ * @param {URL} localized
+ * @returns {string | undefined} The serialized href, or undefined if it is not protocol-relative.
+ */
+function serializeProtocolRelativeHref(href, url, localized) {
+    const first = href.charCodeAt(0);
+    const second = href.charCodeAt(1);
+    if (first > 0x20 && first !== 0x2f && first !== 0x5c)
+        return undefined;
+    if (first === 0x2f && second > 0x20 && second !== 0x2f && second !== 0x5c)
+        return undefined;
+    // URL parsing removes tabs/newlines and trims leading C0 controls and spaces.
+    const normalizedHref = href.replace(/[\t\n\r]/g, "");
+    let start = 0;
+    while (normalizedHref.charCodeAt(start) <= 0x20)
+        start++;
+    let end = normalizedHref.length;
+    while (end > start && normalizedHref.charCodeAt(end - 1) <= 0x20)
+        end--;
+    const relativeHref = normalizedHref.slice(start, end);
+    // Special schemes also treat backslashes as authority separators.
+    const specialScheme = /^(https?|wss?|ftp|file):$/.test(url.protocol);
+    const separators = specialScheme ? /^[/\\]{2}/ : /^\/\//;
+    if (!separators.test(relativeHref))
+        return undefined;
+    // Keep configured protocol and port changes independent of the page's scheme.
+    if (localized.protocol !== url.protocol || localized.port !== url.port) {
+        return localized.href;
+    }
+    // Otherwise leave the scheme to the page, including outside server middleware.
+    const result = localized.href.slice(localized.protocol.length);
+    if (localized.port || url.protocol === "file:" || !url.hostname)
+        return result;
+    // URL drops default ports. Recover an explicit port from the original authority.
+    const authority = (specialScheme ? relativeHref.replace(/^[/\\]+/, "") : relativeHref.slice(2)).split(specialScheme ? /[/\\?#]/ : /[/?#]/, 1)[0];
+    const port = authority?.match(/:(\d+)$/)?.[1];
+    if (port === undefined)
+        return result;
+    const pathStart = result.indexOf("/", 2);
+    const authorityEnd = pathStart === -1 ? result.length : pathStart;
+    return `${result.slice(0, authorityEnd)}:${Number(port)}${result.slice(authorityEnd)}`;
 }
 
 /**

@@ -22,6 +22,8 @@ export declare const cookieName: string;
 export declare const cookieMaxAge: number;
 /** @type {string} */
 export declare const cookieDomain: string;
+export declare const cookieSameSite: "lax" | "strict" | "none" | undefined;
+export declare const cookieSecure: boolean | "auto";
 /** @type {string} */
 export declare const localStorageKey: string;
 /**
@@ -658,6 +660,10 @@ export declare function shouldRedirect(input?: ShouldRedirectInput): Promise<Sho
  * // Cross-origin links remain absolute
  * localizeHref("https://other-site.com/about")
  * // => "https://other-site.com/de/about"
+ *
+ * // Protocol-relative links stay protocol-relative
+ * localizeHref("//other-site.com/about")
+ * // => "//other-site.com/de/about"
  * ```
  *
  * For server-side URL localization (e.g., in middleware), use `localizeUrl()`
@@ -703,6 +709,10 @@ export declare function localizeHref(href: string, options?: {
  * // Cross-origin links remain absolute
  * deLocalizeHref("https://example.com/de/about")
  * // => "https://example.com/about"
+ *
+ * // Protocol-relative links stay protocol-relative
+ * deLocalizeHref("//example.com/de/about")
+ * // => "//example.com/about"
  * ```
  *
  * For server-side URL de-localization (e.g., in middleware), use `deLocalizeUrl()`

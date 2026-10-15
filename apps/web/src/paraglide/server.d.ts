@@ -10,13 +10,13 @@
  * This middleware performs several key functions:
  *
  * 1. Determines the locale for the incoming request using configured strategies
- * 2. Handles URL localization and redirects (only for document requests)
+ * 2. Handles URL localization and redirects (only for document requests by default)
  * 3. Maintains locale state using AsyncLocalStorage to prevent request interference
  *
  * When URL strategy is used:
  *
  * - The locale is extracted from the URL for all request types
- * - If URL doesn't match the determined locale, redirects to localized URL (only for document requests)
+ * - If URL doesn't match the determined locale, redirects to localized URL (only for document requests by default)
  * - De-localizes URLs before passing to server (e.g., `/fr/about` → `/about`)
  *
  * @see https://paraglidejs.com/middleware
@@ -31,8 +31,13 @@
  *   - `locale`: The determined locale for this request.
  * @param {{
  *   effectiveRequestUrl?: string | URL | ((request: Request) => string | URL),
+ *   redirect?: "document" | "navigation",
  *   onRedirect?: (response: Response) => void
  * }} [options] - Options to control middleware behavior. `effectiveRequestUrl` sets the effective request URL used for route matching, URL-based locale detection, redirects, and `getUrlOrigin()`.
+ *   `redirect` defaults to `"document"`, which requires `Sec-Fetch-Dest: document`.
+ *   Unrecognized values keep that default behavior.
+ *   `"navigation"` only redirects GET/HEAD requests, accepting either that destination
+ *   or an absent destination with an explicit `Accept` header that allows `text/html`.
  * @returns {Promise<Response>}
  *
  * @example
@@ -94,5 +99,6 @@ export declare function paraglideMiddleware<T>(request: Request, resolve: (args:
     locale: import("./runtime.js").Locale;
 }) => T | Promise<T>, options?: {
     effectiveRequestUrl?: string | URL | ((request: Request) => string | URL);
+    redirect?: "document" | "navigation";
     onRedirect?: (response: Response) => void;
 }): Promise<Response>;
