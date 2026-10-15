@@ -14,6 +14,26 @@ export const templatePaths = Object.keys(templates).map((key) =>
   key.slice(root.length)
 );
 
+/** Set → its templates as `[path within the set, content]`. A set may nest in another, so each is read once by prefix. */
+const templateSets = new Map<string, readonly (readonly [string, string])[]>();
+
+const templateSet = (set: string) => {
+  let files = templateSets.get(set);
+
+  if (files === undefined) {
+    const prefix = `${root}${set}/`;
+
+    files = Object.entries(templates).flatMap(([key, content]) =>
+      key.startsWith(prefix)
+        ? [[key.slice(prefix.length), content] as const]
+        : []
+    );
+    templateSets.set(set, files);
+  }
+
+  return files;
+};
+
 // Templates are verbatim files of a project named `my-app`.
 const withName = (ctx: Context, content: string) =>
   content.replaceAll("my-app", ctx.name);
@@ -41,10 +61,7 @@ export const templateFiles = (
   } = {}
 ): Contribution[] => {
   const prefix = `${root}${set}/`;
-
-  const files = Object.entries(templates).filter(([key]) =>
-    key.startsWith(prefix)
-  );
+  const files = templateSet(set);
 
   if (files.length === 0) {
     throw new Error(`Template set "${set}" is empty`);
@@ -57,7 +74,6 @@ export const templateFiles = (
   }
 
   return files
-    .map(([key, content]) => [key.slice(prefix.length), content] as const)
     .filter(([path]) => !except.includes(path))
     .map(([path, content]) =>
       file(

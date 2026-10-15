@@ -54,6 +54,21 @@ import agentsVitePlus from "./agents-vite-plus.md?raw";
 
 const formattedFile = /\.(?:css|html|js|json|jsonc|md|mjs|ts|tsx|ya?ml)$/u;
 
+// `path.matchesGlob` compiles its patterns on every call, and every generation asks about the same paths.
+const ignoredPaths = new Map<string, boolean>();
+
+const isIgnored = (filePath: string, patterns: readonly string[]) => {
+  const key = `${patterns.join("\0")}\0\0${filePath}`;
+  let ignored = ignoredPaths.get(key);
+
+  if (ignored === undefined) {
+    ignored = patterns.some((pattern) => path.matchesGlob(filePath, pattern));
+    ignoredPaths.set(key, ignored);
+  }
+
+  return ignored;
+};
+
 /** Formats like the generated project's `vp check`, so a file skipped here is one its `fmt` ignores too. */
 const formatLikeProject =
   (ctx: Context): Formatter =>
@@ -65,10 +80,7 @@ const formatLikeProject =
       ...read(generatedFiles).map(({ glob }) => glob),
     ];
 
-    if (
-      !formattedFile.test(filePath) ||
-      ignored.some((pattern) => path.matchesGlob(filePath, pattern))
-    ) {
+    if (!formattedFile.test(filePath) || isIgnored(filePath, ignored)) {
       return content;
     }
 
