@@ -5,7 +5,7 @@ import oxfmt from "ultracite/oxfmt";
 type Formatted = ReturnType<typeof format>;
 
 // Stacks share most of their files, so one formatting serves every generation that renders the same file.
-const formatted = new WeakMap<OxfmtConfig, Map<string, Formatted>>();
+const formatted = new Map<string, Formatted>();
 
 export const formatWithProjectConfig = async (
   path: string,
@@ -13,15 +13,9 @@ export const formatWithProjectConfig = async (
   scope: string,
   preset: OxfmtConfig = oxfmt
 ) => {
-  let cache = formatted.get(preset);
-
-  if (cache === undefined) {
-    cache = new Map();
-    formatted.set(preset, cache);
-  }
-
-  const key = `${scope}\0${path}\0${content}`;
-  const cached = cache.get(key);
+  // The options themselves, not the preset object, so a preset changed between calls is formatted afresh.
+  const key = JSON.stringify([preset, scope, path, content]);
+  const cached = formatted.get(key);
 
   if (cached !== undefined) {
     return await cached;
@@ -52,7 +46,7 @@ export const formatWithProjectConfig = async (
     },
   });
 
-  cache.set(key, pending);
+  formatted.set(key, pending);
 
   return await pending;
 };
