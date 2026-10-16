@@ -22,6 +22,7 @@ const mount =
   ) =>
   async (c: HonoContext<AppEnv>) => {
     const { db } = c.var.services;
+
     const { matched, response } = await handler.handle(c.req.raw, {
       context: { db },
       prefix,
