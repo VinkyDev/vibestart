@@ -255,15 +255,28 @@ describe("creating a project", async () => {
         .object({ verification: verificationSchema.valueType.nullable() })
         .safeParse(output).success
     ).toBeTruthy();
-    expect(
-      z
-        .object({
-          files: z.array(z.object({ owner: z.string(), path: z.string() })),
-        })
-        .parse(output).files
-    ).toContainEqual({ owner: "core", path: "vibestart.jsonc" });
+
+    const preview = z
+      .object({
+        fileCount: z.number(),
+        files: z.array(z.object({ owner: z.string(), path: z.string() })),
+      })
+      .parse(output);
+
+    expect(preview.files).toContainEqual({
+      owner: "core",
+      path: "vibestart.jsonc",
+    });
+    expect(preview.files).toContainEqual({
+      owner: "environment",
+      path: "apps/server/.env",
+    });
+    expect(preview.fileCount).toBe(preview.files.length);
     await expect(
       readFile(path.join(directory, "vibestart.jsonc"))
+    ).rejects.toThrow("ENOENT");
+    await expect(
+      readFile(path.join(directory, "apps/server/.env"))
     ).rejects.toThrow("ENOENT");
   });
 

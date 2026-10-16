@@ -143,7 +143,7 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
   return {
     text: [
-      `Declare every server variable in \`${src}/env.ts\` and list it, with a local value, under Environment in \`README.md\`. Code reads ${reads}.`,
+      `Declare every server variable in \`${src}/env.ts\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}.`,
       loading,
       ...(ctx.has("sqlite")
         ? [`\`DATABASE_URL\` resolves from the \`${dir}\` directory.`]

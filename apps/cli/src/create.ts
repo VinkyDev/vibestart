@@ -18,6 +18,7 @@ import {
 import {
   materializeEnv,
   registry,
+  renderEnvFiles,
   stackLabel,
   toolchainVersions,
   verificationOf,
@@ -341,6 +342,14 @@ export const create = async (
     { name: target.name, version }
   );
 
+  const files = [
+    ...generation.files.map(({ owner, path }) => ({ owner, path })),
+    ...renderEnvFiles(generation.read).map(({ path }) => ({
+      owner: "environment",
+      path,
+    })),
+  ];
+
   const relative = path.relative(process.cwd(), target.directory);
   const vitePlus = await hasCommand("vp");
   const installBun = await bunInstallationSteps(packageManager, stack);
@@ -361,7 +370,7 @@ export const create = async (
     packageManager,
     addons,
     dryRun: options.dryRun,
-    fileCount: generation.files.length,
+    fileCount: files.length,
     label: stackLabel(stack),
     nextSteps,
     project: target,
@@ -372,17 +381,14 @@ export const create = async (
 
   if (options.dryRun) {
     ui.note(
-      `${generation.files.length} files`,
-      generation.files.map((file) => `${file.path}  (${file.owner})`).join("\n")
+      `${files.length} files`,
+      files.map((file) => `${file.path}  (${file.owner})`).join("\n")
     );
     ui.outro("Dry run: nothing was written.");
 
     return {
       ...result,
-      files: generation.files.map((file) => ({
-        owner: file.owner,
-        path: file.path,
-      })),
+      files,
     };
   }
 
@@ -390,7 +396,7 @@ export const create = async (
   materializeEnv(target.directory, generation.read, {
     authSecret: randomBytes(32).toString("base64"),
   });
-  ui.info(`Wrote ${generation.files.length} files to ${target.directory}`);
+  ui.info(`Wrote ${files.length} files to ${target.directory}`);
 
   const steps: StepResult[] = [];
 

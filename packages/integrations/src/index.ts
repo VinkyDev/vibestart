@@ -2,7 +2,7 @@ export { toolchainVersions } from "#/catalog.ts";
 
 export { registry } from "#/registry.ts";
 
-export { materializeEnv } from "#/env-files.ts";
+export { materializeEnv, renderEnvFiles } from "#/env-files.ts";
 
 export { stackLabel } from "#/stack-label.ts";
 

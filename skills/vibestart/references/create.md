@@ -17,6 +17,8 @@ npx --yes vibestart-cli create my-app --framework spa --backend hono --api orpc 
 
 Inspect `ok`, `stack`, `addons`, `packageManager`, `files`, and `nextSteps`. When the resolved plan matches the request, run the same command without `--dry-run`. The `create` keyword is optional. Neither form accepts `--yes`, `--cwd`, or `--full-check`.
 
+The preview lists ignored local `.env` paths as well as tracked project files; `fileCount` includes both. It shows paths and owners, never environment values. Keep real environment values in ignored `.env` files and only safe examples in the README.
+
 If the preview reports `incomplete-stack`, supply the remaining choices. If it reports `illegal-stack`, inspect the reported fixes and choose one consistent with the user's requirements. Do not retry by dropping their requested capabilities.
 
 ## Package manager, runtime, and extensions
