@@ -343,10 +343,13 @@ export const create = async (
   );
 
   const files = [
-    ...generation.files.map(({ owner, path }) => ({ owner, path })),
-    ...renderEnvFiles(generation.read).map(({ path }) => ({
+    ...generation.files.map((file) => ({
+      owner: file.owner,
+      path: file.path,
+    })),
+    ...renderEnvFiles(generation.read).map((file) => ({
       owner: "environment",
-      path,
+      path: file.path,
     })),
   ];
 

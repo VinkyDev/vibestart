@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -243,12 +243,14 @@ describe("creating a project", async () => {
 
   it("a dry run resolves the stack and lists the files, writing nothing", async () => {
     const { exitCode, output } = await run(directory, ...restApi, "--dry-run");
-    expect(exitCode).toBe(0);
-    expect(output).toMatchObject({
-      dryRun: true,
-      label: "hono-openapi-sqlite",
-      project: { directory, name: "my-api" },
-      steps: [],
+    expect({ exitCode, output }).toMatchObject({
+      exitCode: 0,
+      output: {
+        dryRun: true,
+        label: "hono-openapi-sqlite",
+        project: { directory, name: "my-api" },
+        steps: [],
+      },
     });
     expect(
       z
@@ -263,21 +265,14 @@ describe("creating a project", async () => {
       })
       .parse(output);
 
-    expect(preview.files).toContainEqual({
-      owner: "core",
-      path: "vibestart.jsonc",
+    expect(preview).toMatchObject({
+      fileCount: preview.files.length,
+      files: expect.arrayContaining([
+        { owner: "core", path: "vibestart.jsonc" },
+        { owner: "environment", path: "apps/server/.env" },
+      ]),
     });
-    expect(preview.files).toContainEqual({
-      owner: "environment",
-      path: "apps/server/.env",
-    });
-    expect(preview.fileCount).toBe(preview.files.length);
-    await expect(
-      readFile(path.join(directory, "vibestart.jsonc"))
-    ).rejects.toThrow("ENOENT");
-    await expect(
-      readFile(path.join(directory, "apps/server/.env"))
-    ).rejects.toThrow("ENOENT");
+    await expect(readdir(directory)).rejects.toThrow("ENOENT");
   });
 
   it("writes the project, then refuses to write over it", async () => {
