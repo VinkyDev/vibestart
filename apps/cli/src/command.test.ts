@@ -243,10 +243,19 @@ describe("creating a project", async () => {
 
   it("a dry run resolves the stack and lists the files, writing nothing", async () => {
     const { exitCode, output } = await run(directory, ...restApi, "--dry-run");
+
+    const preview = z
+      .object({
+        fileCount: z.number(),
+        files: z.array(z.object({ owner: z.string(), path: z.string() })),
+      })
+      .parse(output);
+
     expect({ exitCode, output }).toMatchObject({
       exitCode: 0,
       output: {
         dryRun: true,
+        fileCount: preview.files.length,
         label: "hono-openapi-sqlite",
         project: { directory, name: "my-api" },
         steps: [],
@@ -258,19 +267,13 @@ describe("creating a project", async () => {
         .safeParse(output).success
     ).toBeTruthy();
 
-    const preview = z
-      .object({
-        fileCount: z.number(),
-        files: z.array(z.object({ owner: z.string(), path: z.string() })),
-      })
-      .parse(output);
-
-    expect(preview).toMatchObject({
-      fileCount: preview.files.length,
-      files: expect.arrayContaining([
-        { owner: "core", path: "vibestart.jsonc" },
-        { owner: "environment", path: "apps/server/.env" },
-      ]),
+    expect(preview.files).toContainEqual({
+      owner: "core",
+      path: "vibestart.jsonc",
+    });
+    expect(preview.files).toContainEqual({
+      owner: "environment",
+      path: "apps/server/.env",
     });
     await expect(readdir(directory)).rejects.toThrow("ENOENT");
   });
