@@ -14,6 +14,7 @@ import {
   stackHeadline,
   todosExample,
 } from "#/app.ts";
+import { envFiles } from "#/env-files.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
 import { openapiQueriesContent } from "#/openapi.ts";
@@ -226,12 +227,14 @@ const homeScreen = (ctx: Context) =>
     ].join("\n");
   });
 
-const envExample = [
-  "# The API origin of a release build. Leave it empty in development: the app reaches the server",
-  "# on the machine Metro runs on, at port 3000.",
-  "EXPO_PUBLIC_API_URL=",
-  "",
-].join("\n");
+const apiUrl = {
+  comment: [
+    "The API origin of a release build. Leave it empty in development: the app reaches the server",
+    "on the machine Metro runs on, at port 3000.",
+  ],
+  example: "",
+  name: "EXPO_PUBLIC_API_URL",
+};
 
 const replaceOnce = (
   content: string,
@@ -331,7 +334,7 @@ const backendFiles = (ctx: Context) => [
   ...templateFiles(ctx, "expo/backend"),
   ...(ctx.has("orpc") ? orpcFiles(ctx) : templateFiles(ctx, "expo/health")),
   ...(ctx.has("openapi") && todosExample(ctx) ? openapiFiles(ctx) : []),
-  file("apps/mobile/.env.example", envExample),
+  contribute(envFiles, { lines: () => [apiUrl], path: "apps/mobile/.env" }),
   contribute(packageJson, {
     dependencies: ["@tanstack/react-query", "zod"],
     path: "apps/mobile",

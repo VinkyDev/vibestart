@@ -35,7 +35,7 @@ vite.config.ts         检查配置与项目任务
 | 页面或路由           | `apps/web/src/routes/`，需要登录的页面放在 `_authenticated/` 下               |
 | API 操作             | `packages/api/src/routers/` 中的路由，并在 `packages/api/src/index.ts` 中注册 |
 | 数据表               | `packages/db/src/schema/`，修改后生成迁移                                     |
-| 服务端配置           | `apps/server/src/env.ts` 与 `apps/server/.env.example`                        |
+| 服务端配置           | `apps/server/src/env.ts` 与 `README.md` 的 Environment 一节                   |
 | 共享组件             | `packages/ui`                                                                 |
 | 浏览器测试或集成测试 | `apps/web/tests/e2e/` 或 `packages/api/tests/integration/`                    |
 
@@ -57,10 +57,10 @@ pnpm 项目在 `pnpm-workspace.yaml` 中声明 workspace 和共享版本目录�
 
 ## 环境变量 [#env]
 
-`.env.example` 列出应用需要的配置项。CLI 会将它复制为 `.env`，并生成认证密钥。服务启动时会校验环境变量，缺少必要的值时会给出明确的错误并停止。
+每个应用读取各自目录下的 `.env`。CLI 会写入这些文件，填入本地值和随机生成的认证密钥；`README.md` 的 Environment 一节列出了它们，新克隆的仓库可据此重建。服务启动时会校验环境变量，缺少必要的值时会给出明确的错误并停止。
 
 <Callout type="warn">
-  `.env` 文件包含密钥，已被 Git 忽略。新增配置项时，请修改 `.env.example`
+  `.env` 文件包含密钥，已被 Git 忽略。新增配置项时，请在 `README.md` 中列出
   并提交，不要写入真实的值。
 </Callout>
 

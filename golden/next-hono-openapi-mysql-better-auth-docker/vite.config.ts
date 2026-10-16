@@ -58,7 +58,7 @@ export default defineConfig({
     overrides: [
       {
         // Hono middleware awaits `next()`, which is not a Node.js error-first callback.
-        files: ["apps/server/src/**", "packages/api/src/**"],
+        files: ["apps/server/src/**", "packages/api/**"],
         rules: { "node/callback-return": "off" },
       },
     ],

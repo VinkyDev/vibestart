@@ -18,7 +18,6 @@ import {
   homePage,
   navigation,
   packConfig,
-  renderEnvExample,
   renderEnvModule,
   selfHealthRoute,
   serverEnv,
@@ -29,6 +28,7 @@ import {
   databaseCheck,
 } from "#/app.ts";
 import { dockerRuntime } from "#/docker.ts";
+import { envFiles } from "#/env-files.ts";
 import { markdownTable } from "#/format.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
@@ -179,9 +179,10 @@ const selfEnvironment = (ctx: Context) => [
   renderFile("apps/web/src/server/env.ts", (read) =>
     renderEnvModule(read(serverEnv), true)
   ),
-  renderFile("apps/web/.env.example", (read) =>
-    renderEnvExample(read(serverEnv))
-  ),
+  contribute(envFiles, {
+    lines: (read) => read(serverEnv),
+    path: "apps/web/.env",
+  }),
   contribute(packageJson, {
     dependencies: ["@t3-oss/env-core", "zod"],
     path: "apps/web",
@@ -262,7 +263,7 @@ const honoContributions = (ctx: Context) => {
   return [
     ...templateFiles(ctx, "next/hono"),
     file("apps/web/src/server/env.ts", renderEnvModule([serverUrl], true)),
-    file("apps/web/.env.example", renderEnvExample([serverUrl])),
+    contribute(envFiles, { lines: () => [serverUrl], path: "apps/web/.env" }),
     contribute(packageJson, {
       dependencies: ["@t3-oss/env-core", "hono", "server-only", "zod"],
       path: "apps/web",

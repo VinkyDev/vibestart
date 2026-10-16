@@ -26,6 +26,28 @@ The API listens on http://localhost:3000. API docs are at http://localhost:3000/
 
 `vp run dev:mobile` prints a QR code: scan it with Expo Go on a phone on the same network as this machine, or press `i` or `a` for a simulator. The app reaches the server on port 3000 of this machine, so let the firewall pass it; a release build takes the server's origin from `EXPO_PUBLIC_API_URL` in `apps/mobile/.env`.
 
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=mongodb://localhost:27017/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+NODE_ENV=development
+PORT=3000
+```
+
+`apps/mobile/.env`
+
+```dotenv
+# The API origin of a release build. Leave it empty in development: the app reaches the server
+# on the machine Metro runs on, at port 3000.
+EXPO_PUBLIC_API_URL=
+```
+
 ## Commands
 
 ```sh

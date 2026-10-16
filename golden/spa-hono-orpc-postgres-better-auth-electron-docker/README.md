@@ -29,6 +29,19 @@ The browser always talks to one origin: in development Vite proxies `/rpc` and `
 
 `vp run dev` also opens the app in an Electron window. `vp run package:desktop` writes the installer to `apps/desktop/release`.
 
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:5173
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3000
+```
+
 ## Commands
 
 ```sh

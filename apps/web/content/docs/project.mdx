@@ -35,7 +35,7 @@ For the example stack above:
 | A page or route              | `apps/web/src/routes/`; pages for signed-in users go under `_authenticated/`       |
 | An API operation             | A router in `packages/api/src/routers/`, registered in `packages/api/src/index.ts` |
 | A table                      | `packages/db/src/schema/`, then generate a migration                               |
-| A server setting             | `apps/server/src/env.ts` and `apps/server/.env.example`                            |
+| A server setting             | `apps/server/src/env.ts` and the Environment section of `README.md`                |
 | A shared component           | `packages/ui`                                                                      |
 | Browser or integration tests | `apps/web/tests/e2e/` or `packages/api/tests/integration/`                         |
 
@@ -57,11 +57,11 @@ pnpm projects declare their workspaces and a catalog of shared versions in `pnpm
 
 ## Environment variables [#env]
 
-`.env.example` lists the settings an application needs. The CLI copies it to `.env` and generates the authentication secret. Servers validate their environment at startup and stop with a clear error if a value is missing.
+Each application reads the `.env` in its own directory. The CLI writes these files with local values and a generated authentication secret, and the Environment section of `README.md` lists them, so a fresh clone can recreate them. Servers validate their environment at startup and stop with a clear error if a value is missing.
 
 <Callout type="warn">
-  `.env` files contain secrets and are excluded from Git. Commit changes to
-  `.env.example` instead, without real values.
+  `.env` files contain secrets and are excluded from Git. When you add a
+  setting, list it in `README.md` instead, without real values.
 </Callout>
 
 ## Project tasks [#scripts]

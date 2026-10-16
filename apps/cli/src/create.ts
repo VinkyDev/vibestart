@@ -16,7 +16,7 @@ import {
   withDefaults,
 } from "@vibestart/core";
 import {
-  materializeEnvFromExamples,
+  materializeEnv,
   registry,
   stackLabel,
   toolchainVersions,
@@ -387,7 +387,7 @@ export const create = async (
   }
 
   await writeFiles(target.directory, generation.files);
-  materializeEnvFromExamples(target.directory, {
+  materializeEnv(target.directory, generation.read, {
     authSecret: randomBytes(32).toString("base64"),
   });
   ui.info(`Wrote ${generation.files.length} files to ${target.directory}`);

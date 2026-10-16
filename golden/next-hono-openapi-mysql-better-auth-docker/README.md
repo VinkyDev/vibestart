@@ -25,6 +25,25 @@ vp run dev
 
 Open http://localhost:3000 and create an account. API docs are at http://localhost:3000/api.
 
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.
+
+`apps/web/.env`
+
+```dotenv
+SERVER_URL=http://localhost:3001
+```
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=mysql://root:mysql@localhost:3306/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+PORT=3001
+```
+
 ## Commands
 
 ```sh

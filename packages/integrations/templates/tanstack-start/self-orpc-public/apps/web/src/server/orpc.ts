@@ -6,10 +6,10 @@ import { ORPCError, onError } from "@orpc/server";
 import { RPCHandler } from "@orpc/server/fetch";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 
-import { db } from "#src/server/context.ts";
+import { getServices } from "#src/server/context.ts";
 import { handleRequest } from "#src/server/request.ts";
 
-export const createContext = (): Context => ({ db });
+export const createContext = (): Context => ({ db: getServices().db });
 
 const logServerError = (cause: unknown) => {
   if (!(cause instanceof ORPCError) || cause.status >= 500) {

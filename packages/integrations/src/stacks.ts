@@ -26,12 +26,12 @@ import { limitAsync } from "es-toolkit/promise";
 import type { Generation, PackageManager, Stack } from "@vibestart/core";
 import { fingerprint, legalStacks } from "@vibestart/core";
 
+import { materializeEnv } from "#/env-files.ts";
 import { downloadEvidence } from "#/evidence.ts";
 import { goldenPaths, goldenRoot, goldens } from "#/goldens.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
-import { materializeEnvFromExamples } from "#/server-env.ts";
 import { taskLabel } from "#/stack-label.ts";
 import { e2e, playwright } from "#/testing/runners.ts";
 import type { Task } from "#/verification-store.ts";
@@ -89,8 +89,8 @@ const serverUrls = {
   postgres: postgresUrl,
 } as const;
 
-const writeEnvFiles = (dir: string) => {
-  materializeEnvFromExamples(dir, {
+const writeEnvFiles = (dir: string, generation: Generation) => {
+  materializeEnv(dir, generation.read, {
     authSecret: "local-secret-that-is-at-least-32-characters",
     mongodbDatabaseUrl: mongodbUrl,
     mysqlDatabaseUrl: mysqlUrl,
@@ -178,7 +178,7 @@ const verifyStack = async ({
 
   const dir = path.join(out, label);
   writeProject(dir, generation);
-  writeEnvFiles(dir);
+  writeEnvFiles(dir, generation);
   const logFile = `${dir}.log`;
   const log = openSync(logFile, "w");
   const started = Date.now();
@@ -262,7 +262,7 @@ const smokeStack = ({
 }) => {
   const dir = path.join(out, label);
   writeProject(dir, generation);
-  writeEnvFiles(dir);
+  writeEnvFiles(dir, generation);
   const logFile = `${dir}.smoke.log`;
   const log = openSync(logFile, "w");
   const { database } = stack;

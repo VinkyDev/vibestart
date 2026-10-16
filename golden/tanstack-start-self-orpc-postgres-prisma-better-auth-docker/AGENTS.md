@@ -49,7 +49,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 | Path                  | Owns                                                                                                            |
 | --------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `apps/web`            | TanStack Start app: SSR file routes, server routes, server functions; e2e tests in `tests/e2e/`                 |
-| `apps/web/src/server` | Server-only code: `env`, the shared `db` and `auth` instances, oRPC handlers, the migration entry               |
+| `apps/web/src/server` | Server-only code: `env`, `getServices()` with `db` and `auth`, oRPC handlers, the migration entry               |
 | `packages/api`        | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type the web client is typed from    |
 | `packages/db`         | Prisma schema (`src/schema/*.prisma`, including Better Auth models), migrations (`src/migrations/`), `createDb` |
 | `packages/auth`       | Better Auth configuration (`createAuth`) and the `Session` type                                                 |
@@ -70,7 +70,7 @@ A route `loader` or component calls `api.*` from `src/lib/api.ts`. During SSR th
 ## Conventions
 
 - **Server.** Server-only code lives in `src/server/`. A module that also runs in the browser touches `#src/server/*` only inside a `createServerFn` handler or a `createIsomorphicFn().server()` branch, as `src/lib/api.ts` and `src/lib/auth.ts` do. The Start compiler strips those branches from the client bundle; any other use ships the driver and secrets to the browser.
-- **Environment.** Declare every server variable in `apps/web/src/server/env.ts` and add it to `apps/web/.env.example`. Code reads `env`. Vite loads `.env` in development; production gets the variables from the platform.
+- **Environment.** Declare every server variable in `apps/web/src/server/env.ts` and list it, with a local value, under Environment in `README.md`. Code reads `env`. Vite loads `.env` in development; production gets the variables from the platform.
 - **Procedure.** Add it on a router in `packages/api/src/routers/` and register that router in `packages/api/src/index.ts`. Validate input with Zod, read the database from `context.db`, and throw `ORPCError` for an expected failure. The web client takes the new type with no codegen step.
 - **Schema.** Edit a model in `packages/db/src/schema/*.prisma`, then run `vp run db:generate --name <change>`: Prisma diffs the schema against the database and writes a migration folder under `src/migrations/`, which you commit. A committed migration stays as generated. Validate input with Zod; Prisma has no `check` constraints. The client is generated into `src/generated/` (`vp run db:client`, which `vp run ready` and the build run first) and is not committed. Import `PrismaClient` types from `#src/generated/client.ts` inside `packages/db` and `Database` from the package elsewhere. The Better Auth models in `schema/auth.prisma` match the fields Better Auth expects; read its docs before adding a plugin.
 - **Authorization.** A procedure that reads or writes user data is a `protectedProcedure` and scopes every query by `context.session.user.id`. Someone else's row is `NOT_FOUND`, which does not reveal that the id exists. Each new protected procedure gets an integration test as an anonymous caller and as another user.

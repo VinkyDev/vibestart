@@ -1,3 +1,4 @@
+import { Hono } from "hono";
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
@@ -5,7 +6,7 @@ import { createAuth } from "@my-app/auth";
 import { createTestDatabase } from "@my-app/db/testing";
 
 import { createApi } from "#src/index.ts";
-import type { Api } from "#src/index.ts";
+import type { Api, ApiEnv } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
@@ -18,7 +19,13 @@ const auth = createAuth({
   secret: "test-secret-that-is-at-least-32-characters",
 });
 
-export const api = createApi({ auth, db });
+// Stands in for the server, which sets the request's services before the API runs.
+export const api = new Hono<ApiEnv>()
+  .use(async (c, next) => {
+    c.set("services", { auth, db });
+    await next();
+  })
+  .route("/", createApi());
 
 /** Sends each request to the API in this process, through its routing, validation, and serialization. */
 export const createClient = (cookie?: string) =>

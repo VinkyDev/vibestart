@@ -105,9 +105,6 @@ export const renderEnvModule = (
   ].join("\n");
 };
 
-export const renderEnvExample = (variables: readonly EnvVariable[]) =>
-  variables.map(({ name, example }) => `${name}=${example}\n`).join("");
-
 /** `run` migrates and closes `db`, in the driver's sync or async form. */
 export const migrationEntry = (ctx: Context, run: readonly string[]) => {
   const { envImport, read, src } = serverApp(ctx);
@@ -146,7 +143,7 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
   return {
     text: [
-      `Declare every server variable in \`${src}/env.ts\` and add it to \`${dir}/.env.example\`. Code reads ${reads}.`,
+      `Declare every server variable in \`${src}/env.ts\` and list it, with a local value, under Environment in \`README.md\`. Code reads ${reads}.`,
       loading,
       ...(ctx.has("sqlite")
         ? [`\`DATABASE_URL\` resolves from the \`${dir}\` directory.`]
@@ -300,7 +297,7 @@ export const closeDatabase = (ctx: Context, db = "db") => {
 
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
-  const check = databaseCheck(ctx, next ? "getServices().db" : "db");
+  const check = databaseCheck(ctx, "getServices().db");
 
   const handler = [
     `${check.async ? "async " : ""}() => {`,
@@ -329,7 +326,7 @@ export const selfHealthRoute = (ctx: Context) => {
       'import { createFileRoute } from "@tanstack/react-router";',
       ...check.imports,
       "",
-      'import { db } from "#src/server/context.ts";',
+      'import { getServices } from "#src/server/context.ts";',
       "",
       `const health = ${handler.join("\n")}`,
       "",

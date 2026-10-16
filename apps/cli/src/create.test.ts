@@ -19,8 +19,7 @@ vi.mock(import("#/project.ts"), async (importOriginal) => ({
 
 vi.mock(import("@vibestart/integrations"), async (importOriginal) => ({
   ...(await importOriginal()),
-  materializeEnvFromExamples:
-    vi.fn<typeof Integrations.materializeEnvFromExamples>(),
+  materializeEnv: vi.fn<typeof Integrations.materializeEnv>(),
   verificationOf: vi.fn<typeof Integrations.verificationOf>(),
 }));
 
