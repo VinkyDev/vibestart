@@ -20,6 +20,7 @@ import {
 
 import { hasBackend, hasWebApp } from "#/app.ts";
 import { toolchainVersions } from "#/catalog.ts";
+import { envFiles, renderEnvLines } from "#/env-files.ts";
 import { commentedShell, joinWords, markdownTable, quote } from "#/format.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { templateFiles } from "#/templates.ts";
@@ -291,7 +292,6 @@ const renderGitignore = (read: ReadSlot) =>
     "",
     ".env",
     ".env.*",
-    "!.env.example",
     "",
     ".DS_Store",
     ".idea",
@@ -368,6 +368,29 @@ const devCommands = (ctx: Context): (readonly [string, string?])[] => {
   ];
 };
 
+// Git ignores every `.env`, so a fresh clone recreates them from this section.
+const renderEnvironment = (read: ReadSlot) => {
+  const files = read(envFiles);
+
+  if (files.length === 0) {
+    return [];
+  }
+
+  return [
+    "## Environment",
+    "Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.",
+    ...files.map((envFile) =>
+      [
+        `\`${envFile.path}\``,
+        "",
+        "```dotenv",
+        renderEnvLines(envFile.lines(read)),
+        "```",
+      ].join("\n")
+    ),
+  ];
+};
+
 const renderReadme = (ctx: Context, read: ReadSlot) => {
   const steps = orderedReadySteps(read);
 
@@ -407,6 +430,7 @@ const renderReadme = (ctx: Context, read: ReadSlot) => {
       "```",
     ].join("\n"),
     ...read(readmeOpen),
+    ...renderEnvironment(read),
     "## Commands",
     ["```sh", commands, "```"].join("\n"),
     ...read(readmeCommandNotes),

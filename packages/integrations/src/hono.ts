@@ -16,13 +16,13 @@ import {
   environmentConvention,
   hasWebApp,
   proxiesToHono,
-  renderEnvExample,
   renderEnvModule,
   serverEnv,
   stackHeadline,
   closeDatabase as closeDatabaseStatement,
 } from "#/app.ts";
 import { composeServers, dockerRuntime } from "#/docker.ts";
+import { envFiles } from "#/env-files.ts";
 import { templateFiles } from "#/templates.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import {
@@ -52,10 +52,10 @@ const healthHandler = (ctx: Context) => {
     return ['const health = (c: Context) => c.json({ status: "ok" });'];
   }
 
-  const check = databaseCheck(ctx, "db");
+  const check = databaseCheck(ctx, "c.var.services.db");
 
   return [
-    `const health = ${check.async ? "async " : ""}(c: Context) => {`,
+    `const health = ${check.async ? "async " : ""}(c: Context<AppEnv>) => {`,
     `  ${check.statement}`,
     "",
     '  return c.json({ status: "ok" });',
@@ -68,23 +68,23 @@ const apiRoutes = (ctx: Context) => {
     return ['  .all("/rpc/*", rpc)', '  .all("/api/*", openApi)'];
   }
 
-  const services = ctx.has("better-auth") ? "{ auth, db }" : "{ db }";
-  const created = ctx.stack.database === undefined ? "" : services;
-
   return ctx.has("openapi")
-    ? [`  .route("/api", createApi(${created}))`]
+    ? ['  .route("/api", createApi())']
     : ['  .get("/api/health", health)'];
 };
 
 const routes = (ctx: Context) => {
+  const database = ctx.stack.database !== undefined;
+
   const auth = ctx.has("better-auth")
     ? ['  .on(["GET", "POST"], "/api/auth/*", authHandler)']
     : [];
 
   const lines = [
-    "export const app = new Hono()",
+    `export const app = new Hono${database ? "<AppEnv>" : ""}()`,
     "  .use(logger())",
     "  .use(secureHeaders())",
+    ...(database ? ["  .use(services)"] : []),
     ...auth,
     ...apiRoutes(ctx),
   ];
@@ -100,42 +100,22 @@ const closeDatabase = (ctx: Context) => {
   return [closeDatabaseStatement(ctx)];
 };
 
-const contextImport = (ctx: Context) => {
-  if (ctx.stack.database === undefined) {
-    return [];
-  }
+const contextImports = (ctx: Context) =>
+  ctx.stack.database === undefined
+    ? []
+    : [
+        'import { services } from "#src/context.ts";',
+        'import type { AppEnv } from "#src/context.ts";',
+      ];
 
-  const names = [
-    ...(ctx.has("better-auth") ? ["auth"] : []),
-    ...(ctx.has("orpc") ? [] : ["db"]),
-  ].join(", ");
-
-  return names === "" ? [] : [`import { ${names} } from "#src/context.ts";`];
-};
-
+// `app` holds no runtime-specific code, so any runtime can serve it; `src/index.ts` binds it to this one.
 const renderApp = (ctx: Context) => {
   const auth = ctx.has("better-auth");
   const api = ctx.stack.api !== undefined;
-  // The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
-  const spa = ctx.has("spa");
 
   return [
-    ...(spa
-      ? [
-          'import { existsSync } from "node:fs";',
-          'import { fileURLToPath } from "node:url";',
-        ]
-      : []),
-    "",
     ...(ctx.has("openapi")
       ? [`import { createApi } from "${ctx.scope}/api";`]
-      : []),
-    ...(spa
-      ? [
-          ctx.has("bun")
-            ? 'import { serveStatic } from "@hono/bun";'
-            : 'import { serveStatic } from "@hono/node-server/serve-static";',
-        ]
       : []),
     ...(!api && ctx.stack.database !== undefined
       ? databaseCheck(ctx, "db").imports
@@ -145,46 +125,62 @@ const renderApp = (ctx: Context) => {
     'import { logger } from "hono/logger";',
     'import { secureHeaders } from "hono/secure-headers";',
     "",
-    ...contextImport(ctx),
+    ...contextImports(ctx),
     ...(ctx.has("orpc")
       ? ['import { openApi, rpc } from "#src/orpc.ts";']
       : []),
     "",
-    ...(spa
-      ? [
-          'const publicDir = fileURLToPath(new URL("public", import.meta.url));',
-          "",
-        ]
-      : []),
     ...(auth
       ? [
-          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
+          "const authHandler = async (c: Context<AppEnv>) =>",
+          "  await c.var.services.auth.handler(c.req.raw);",
           "",
         ]
       : []),
     ...(api ? [] : [...healthHandler(ctx), ""]),
     ...routes(ctx),
     "",
-    ...(spa
-      ? [
-          "if (existsSync(publicDir)) {",
-          "  app",
-          "    .use(serveStatic({ root: publicDir }))",
-          '    .get("*", serveStatic({ root: publicDir, path: "index.html" }));',
-          "}",
-          "",
-        ]
-      : []),
   ].join("\n");
 };
+
+// The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
+const staticImports = (ctx: Context) =>
+  ctx.has("spa")
+    ? [
+        ctx.has("bun")
+          ? 'import { serveStatic } from "@hono/bun";'
+          : 'import { serveStatic } from "@hono/node-server/serve-static";',
+      ]
+    : [];
+
+const serveSpa = (ctx: Context) =>
+  ctx.has("spa")
+    ? [
+        'const publicDir = fileURLToPath(new URL("public", import.meta.url));',
+        "",
+        "if (existsSync(publicDir)) {",
+        "  app",
+        "    .use(serveStatic({ root: publicDir }))",
+        '    .get("*", serveStatic({ root: publicDir, path: "index.html" }));',
+        "}",
+        "",
+      ]
+    : [];
 
 const renderIndex = (ctx: Context) =>
   [
     'import { once } from "node:events";',
+    ...(ctx.has("spa")
+      ? [
+          'import { existsSync } from "node:fs";',
+          'import { fileURLToPath } from "node:url";',
+        ]
+      : []),
     "",
     ctx.has("bun")
       ? 'import { serve } from "bun";'
       : 'import { serve } from "@hono/node-server";',
+    ...staticImports(ctx),
     "",
     'import { app } from "#src/app.ts";',
     ...(ctx.stack.database === undefined
@@ -192,6 +188,7 @@ const renderIndex = (ctx: Context) =>
       : ['import { db } from "#src/context.ts";']),
     'import { env } from "#src/env.ts";',
     "",
+    ...serveSpa(ctx),
     ...(ctx.has("bun")
       ? [
           "const server = serve({ fetch: app.fetch, port: env.PORT });",
@@ -230,8 +227,8 @@ const services = (ctx: Context) => {
   }
 
   return ctx.has("better-auth")
-    ? "`env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`"
-    : "`env`, the shared `db`";
+    ? "`env`, the `services` middleware that hands each request `db` and `auth`, Better Auth at `/api/auth`"
+    : "`env`, the `services` middleware that hands each request `db`";
 };
 
 const apiOwns = (ctx: Context) => {
@@ -327,7 +324,7 @@ const renderViteConfig = (ctx: Context) => {
 const middlewareOverride = (ctx: Context) => {
   const files = [
     "apps/server/src/**",
-    ...(ctx.has("openapi") ? ["packages/api/src/**"] : []),
+    ...(ctx.has("openapi") ? ["packages/api/**"] : []),
   ];
 
   return `{
@@ -379,9 +376,10 @@ export const hono = defineIntegration({
     renderFile("apps/server/src/env.ts", (read) =>
       renderEnvModule([...read(serverEnv), port(ctx)], false)
     ),
-    renderFile("apps/server/.env.example", (read) =>
-      renderEnvExample([...read(serverEnv), port(ctx)])
-    ),
+    contribute(envFiles, {
+      lines: (read) => [...read(serverEnv), port(ctx)],
+      path: "apps/server/.env",
+    }),
     contribute(packageJson, {
       dependencies: [
         ...runtimeDependencies(ctx),

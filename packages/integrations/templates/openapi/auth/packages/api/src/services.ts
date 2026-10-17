@@ -5,3 +5,8 @@ export interface Services {
   auth: Auth;
   db: Database;
 }
+
+// The server sets `services` on every request before a route runs.
+export interface ApiEnv {
+  Variables: { services: Services };
+}

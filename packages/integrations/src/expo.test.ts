@@ -4,6 +4,7 @@ import { z } from "zod";
 import type { Stack } from "@vibestart/core";
 import { defaultAddons, generate, legalStacks } from "@vibestart/core";
 
+import { renderEnvFiles } from "#/env-files.ts";
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
 
@@ -17,6 +18,20 @@ const stackNamed = (label: string): Stack => {
   }
 
   return stack;
+};
+
+const envOf = async (label: string, filePath: string) => {
+  const { read } = await generate(
+    registry,
+    {
+      addons: defaultAddons(registry),
+      channel: "recommended",
+      stack: stackNamed(label),
+    },
+    { name: "my-app" }
+  );
+
+  return renderEnvFiles(read).find(({ path }) => path === filePath)?.content;
 };
 
 const project = async (label: string, name = "my-app") => {
@@ -83,12 +98,19 @@ describe("the Expo app", () => {
   });
 
   it("runs a Hono server in development, so Expo Go's exp:// origin can sign in", async () => {
-    const hono = await project("hono-sqlite-better-auth-expo");
-    expect(hono("apps/server/.env.example")).toContain(
-      "NODE_ENV=development\n"
+    const hono = await envOf(
+      "hono-sqlite-better-auth-expo",
+      "apps/server/.env"
     );
-    const self = await project("next-self-orpc-sqlite-better-auth-expo");
-    expect(self("apps/web/.env.example")).not.toContain("NODE_ENV");
+
+    expect(hono).toContain("NODE_ENV=development\n");
+
+    const self = await envOf(
+      "next-self-orpc-sqlite-better-auth-expo",
+      "apps/web/.env"
+    );
+
+    expect(self).not.toContain("NODE_ENV");
   });
 
   it.each([

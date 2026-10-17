@@ -1,6 +1,6 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
-import type { Services } from "#src/services.ts";
+import type { ApiEnv, Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -85,41 +85,46 @@ const deleteTodo = createRoute({
 
 const todoNotFound = { message: "Todo not found" };
 
-export const todoRoutes = ({ db }: Services) => {
-  const findTodo = async (id: number) =>
-    await db.todo.findUnique({ where: { id } });
+const findTodo = async (db: Services["db"], id: number) =>
+  await db.todo.findUnique({ where: { id } });
 
-  return new OpenAPIHono()
-    .openapi(listTodos, async (c) =>
-      c.json(await db.todo.findMany({ orderBy: { id: "asc" } }), 200)
-    )
-    .openapi(createTodo, async (c) => {
-      const row = await db.todo.create({ data: c.req.valid("json") });
+export const todoRoutes = () =>
+  new OpenAPIHono<ApiEnv>()
+  .openapi(listTodos, async (c) =>
+    c.json(await c.var.services.db.todo.findMany({ orderBy: { id: "asc" } }), 200)
+  )
+  .openapi(createTodo, async (c) => {
+    const { db } = c.var.services;
 
-      return c.json(row, 201);
-    })
-    .openapi(updateTodo, async (c) => {
-      const values = c.req.valid("json");
-      const row = await findTodo(c.req.valid("param").id);
+    const row = await db.todo.create({ data: c.req.valid("json") });
 
-      if (row === null) {
-        return c.json(todoNotFound, 404);
-      }
+    return c.json(row, 201);
+  })
+  .openapi(updateTodo, async (c) => {
+    const { db } = c.var.services;
 
-      return c.json(
-        await db.todo.update({ data: values, where: { id: row.id } }),
-        200
-      );
-    })
-    .openapi(deleteTodo, async (c) => {
-      const row = await findTodo(c.req.valid("param").id);
+    const values = c.req.valid("json");
+    const row = await findTodo(db, c.req.valid("param").id);
 
-      if (row === null) {
-        return c.json(todoNotFound, 404);
-      }
+    if (row === null) {
+      return c.json(todoNotFound, 404);
+    }
 
-      await db.todo.delete({ where: { id: row.id } });
+    return c.json(
+      await db.todo.update({ data: values, where: { id: row.id } }),
+      200
+    );
+  })
+  .openapi(deleteTodo, async (c) => {
+    const { db } = c.var.services;
 
-      return c.json(row, 200);
-    });
-};
+    const row = await findTodo(db, c.req.valid("param").id);
+
+    if (row === null) {
+      return c.json(todoNotFound, 404);
+    }
+
+    await db.todo.delete({ where: { id: row.id } });
+
+    return c.json(row, 200);
+  });

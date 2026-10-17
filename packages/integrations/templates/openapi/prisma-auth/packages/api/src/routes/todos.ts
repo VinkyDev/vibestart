@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { HTTPException } from "hono/http-exception";
 
-import type { Services } from "#src/services.ts";
+import type { ApiEnv, Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -96,12 +96,21 @@ const deleteTodo = createRoute({
 
 const todoNotFound = { message: "Todo not found" };
 
-export const todoRoutes = ({ auth, db }: Services) => {
-  const routes = new OpenAPIHono<{ Variables: { userId: string } }>();
+// The session check below sets `userId` beside the `services` the server provides.
+interface TodoEnv {
+  Variables: ApiEnv["Variables"] & { userId: string };
+}
+
+// A write finds the user's row first: someone else's todo is not found either.
+const findTodo = async (db: Services["db"], id: number, userId: string) =>
+  await db.todo.findFirst({ where: { id, userId } });
+
+export const todoRoutes = () => {
+  const routes = new OpenAPIHono<TodoEnv>();
 
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
-    const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    const session = await c.var.services.auth.api.getSession({ headers: c.req.raw.headers });
 
     if (!session) {
       throw new HTTPException(401, {
@@ -113,12 +122,10 @@ export const todoRoutes = ({ auth, db }: Services) => {
     await next();
   });
 
-  // A write finds the user's row first: someone else's todo is not found either.
-  const findTodo = async (id: number, userId: string) =>
-    await db.todo.findFirst({ where: { id, userId } });
-
   return routes
     .openapi(listTodos, async (c) => {
+      const { db } = c.var.services;
+
       const rows = await db.todo.findMany({
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
@@ -127,13 +134,17 @@ export const todoRoutes = ({ auth, db }: Services) => {
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
+      const { db } = c.var.services;
+
       const row = await db.todo.create({ data: { ...c.req.valid("json"), userId: c.var.userId } });
 
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
+      const { db } = c.var.services;
+
       const values = c.req.valid("json");
-      const row = await findTodo(c.req.valid("param").id, c.var.userId);
+      const row = await findTodo(db, c.req.valid("param").id, c.var.userId);
 
       if (row === null) {
         return c.json(todoNotFound, 404);
@@ -145,7 +156,9 @@ export const todoRoutes = ({ auth, db }: Services) => {
       );
     })
     .openapi(deleteTodo, async (c) => {
-      const row = await findTodo(c.req.valid("param").id, c.var.userId);
+      const { db } = c.var.services;
+
+      const row = await findTodo(db, c.req.valid("param").id, c.var.userId);
 
       if (row === null) {
         return c.json(todoNotFound, 404);

@@ -294,7 +294,6 @@ const renderDockerignore = (read: ReadSlot) =>
     ...read(ignoredFiles).map((pattern) => `**/${pattern}`),
     "**/.env",
     "**/.env.*",
-    "!**/.env.example",
     "",
   ].join("\n");
 

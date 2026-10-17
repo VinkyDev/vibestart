@@ -49,17 +49,17 @@ const renderHealth = (ctx: Context) => {
     ].join("\n");
   }
 
-  const check = databaseCheck(ctx, "db");
+  const check = databaseCheck(ctx, "c.var.services.db");
 
   return [
     'import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";',
     ...check.imports,
     "",
-    'import type { Services } from "#src/services.ts";',
+    'import type { ApiEnv } from "#src/services.ts";',
     "",
     ...healthRoute(`The server and ${databaseName(ctx)} answer`),
-    "export const healthRoutes = ({ db }: Services) =>",
-    `  new OpenAPIHono().openapi(health, ${check.async ? "async " : ""}(c) => {`,
+    "export const healthRoutes = () =>",
+    `  new OpenAPIHono<ApiEnv>().openapi(health, ${check.async ? "async " : ""}(c) => {`,
     `    ${check.statement}`,
     "",
     '    return c.json({ status: "ok" as const }, 200);',
@@ -150,7 +150,7 @@ export const openapi = defineIntegration({
       path: "packages/api",
     }),
     contribute(agentsConventions, {
-      text: `Declare it with \`createRoute\` in a module under \`packages/api/src/routes/\`, with a Zod schema for every request part and every response status, and mount that module in \`packages/api/src/index.ts\`. ${ctx.stack.database === undefined ? "Pass what a route needs through `createApi`'s parameters" : "Read the database from the `db` the routes are created with"}, and answer an expected failure with its declared status. The OpenAPI document and ${hasWebApp(ctx) ? "the web client's" : "`hono/client`'s"} types follow with no codegen step.`,
+      text: `Declare it with \`createRoute\` in a module under \`packages/api/src/routes/\`, with a Zod schema for every request part and every response status, and mount that module in \`packages/api/src/index.ts\`. ${ctx.stack.database === undefined ? "Pass what a route needs through `createApi`'s parameters" : "Read the database from `c.var.services.db`, which the server sets on every request"}, and answer an expected failure with its declared status. The OpenAPI document and ${hasWebApp(ctx) ? "the web client's" : "`hono/client`'s"} types follow with no codegen step.`,
       title: "Route",
     }),
     contribute(readmeTagline, "OpenAPI"),

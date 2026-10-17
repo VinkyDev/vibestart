@@ -46,14 +46,14 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 ## Map
 
-| Path              | Owns                                                                                                                              |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/server`     | Hono on Node: `env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`, oRPC at `/rpc`, OpenAPI and docs at `/api` |
-| `packages/api`    | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type clients are typed from                            |
-| `packages/db`     | Mongoose schemas (`src/schema/`), index builds (`src/migrate.ts`), `createDb`                                                     |
-| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                                   |
-| `apps/mobile`     | Expo Router screens, mobile UI components, and the Uniwind theme                                                                  |
-| `packages/config` | Shared TypeScript presets                                                                                                         |
+| Path              | Owns                                                                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/server`     | Hono on Node: `env`, the `services` middleware that hands each request `db` and `auth`, Better Auth at `/api/auth`, oRPC at `/rpc`, OpenAPI and docs at `/api` |
+| `packages/api`    | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type clients are typed from                                                         |
+| `packages/db`     | Mongoose schemas (`src/schema/`), index builds (`src/migrate.ts`), `createDb`                                                                                  |
+| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                                                                |
+| `apps/mobile`     | Expo Router screens, mobile UI components, and the Uniwind theme                                                                                               |
+| `packages/config` | Shared TypeScript presets                                                                                                                                      |
 
 `vp run dev` serves the API on :3000. Request flow: client → `POST /rpc/*` → `packages/api` procedure → Mongoose → MongoDB. `/api/*` serves the same procedures as OpenAPI, with reference docs at `/api`.
 
@@ -61,7 +61,7 @@ The mobile app in `apps/mobile` runs on Expo with Expo Router: each file in `src
 
 ## Conventions
 
-- **Environment.** Declare every server variable in `apps/server/src/env.ts` and add it to `apps/server/.env.example`. Code reads `env`. Node loads `.env` in development; production gets the variables from the platform.
+- **Environment.** Declare every server variable in `apps/server/src/env.ts` and list it, with a safe example value, under Environment in `README.md`. Keep real values in the ignored `.env` file. Code reads `env`. Node loads `.env` in development; production gets the variables from the platform.
 - **Procedure.** Add it on a router in `packages/api/src/routers/` and register that router in `packages/api/src/index.ts`. Validate input with Zod, read the database from `context.db`, and throw `ORPCError` for an expected failure. Clients typed from `AppRouterClient` take the new type with no codegen step.
 - **Schema.** Each collection is a Mongoose schema in `packages/db/src/schema/`, registered as a model in `createDb`. MongoDB has no migrations: a new field is optional, or has a default, so documents written before it still read. `vp run db:migrate` builds the indexes the schemas declare; run it after adding or removing one. Queries return plain objects (`.lean()`). The API exposes an `ObjectId` as a 24-character hex string `id`; validate one with Zod before a query uses it. Better Auth's adapter owns the `user`, `session`, `account`, and `verification` collections; read its docs before adding a plugin.
 - **Authorization.** A procedure that reads or writes user data is a `protectedProcedure` and scopes every query by `context.session.user.id`. Someone else's row is `NOT_FOUND`, which does not reveal that the id exists. Each new protected procedure gets an integration test as an anonymous caller and as another user.

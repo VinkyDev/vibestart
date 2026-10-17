@@ -14,7 +14,6 @@ import {
   environmentConvention,
   hasBackend,
   homePage,
-  renderEnvExample,
   renderEnvModule,
   selfHealthRoute,
   serverEnv,
@@ -26,6 +25,7 @@ import {
   databaseCheck,
 } from "#/app.ts";
 import { dockerRuntime } from "#/docker.ts";
+import { envFiles } from "#/env-files.ts";
 import { joinWords, markdownTable } from "#/format.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import {
@@ -109,8 +109,8 @@ const selfServices = (ctx: Context) => {
   }
 
   return ctx.has("better-auth")
-    ? ["`env`, the shared `db` and `auth` instances"]
-    : ["`env`, the shared `db`"];
+    ? ["`env`, `getServices()` with `db` and `auth`"]
+    : ["`env`, `getServices()` with `db`"];
 };
 
 const selfServerOwns = (ctx: Context) =>
@@ -133,7 +133,7 @@ const selfApi = (ctx: Context) =>
     : [
         selfHealthRoute(ctx),
         contribute(packageJson, {
-          dependencies: databaseCheck(ctx, "db").dependencies,
+          dependencies: databaseCheck(ctx, "getServices().db").dependencies,
           path: "apps/web",
         }),
       ];
@@ -144,9 +144,10 @@ const selfEnvironment = (ctx: Context) => [
   renderFile("apps/web/src/server/env.ts", (read) =>
     renderEnvModule(read(serverEnv), false)
   ),
-  renderFile("apps/web/.env.example", (read) =>
-    renderEnvExample(read(serverEnv))
-  ),
+  contribute(envFiles, {
+    lines: (read) => read(serverEnv),
+    path: "apps/web/.env",
+  }),
   contribute(packageJson, {
     dependencies: ["@t3-oss/env-core", "zod"],
     path: "apps/web",
@@ -210,7 +211,7 @@ const honoContributions = (ctx: Context) => [
   ...templateFiles(ctx, "tanstack-start/hono"),
   ...(ctx.has("orpc") ? templateFiles(ctx, "tanstack-start/hono-orpc") : []),
   file("apps/web/src/server/env.ts", renderEnvModule([serverUrl], false)),
-  file("apps/web/.env.example", renderEnvExample([serverUrl])),
+  contribute(envFiles, { lines: () => [serverUrl], path: "apps/web/.env" }),
   contribute(packageJson, {
     dependencies: ["@t3-oss/env-core", "hono", "zod"],
     path: "apps/web",
