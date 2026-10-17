@@ -98,6 +98,7 @@ export default defineConfig({
       {
         // React's `use` suspends on one stable promise per key. An async function would return a new promise every call.
         files: [
+          "apps/web/src/lib/cached.ts",
           "apps/web/src/lib/highlight.ts",
           "apps/web/src/lib/projects.ts",
         ],

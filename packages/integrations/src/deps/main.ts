@@ -18,7 +18,8 @@ const usage = `Usage: vp run deps [update] [pattern] [--json]
                      snapshots, and vp run ready. CI verifies the stacks on the pull request.
 
 Pins live in pnpm-workspace.yaml (this repository), packages/integrations/src/catalog.ts
-(generated projects), and package.json (the Node.js and pnpm this repository runs).`;
+(generated projects), package.json (the Node.js and pnpm this repository runs), and
+.github/workflows/ci.yml (the Bun CI verifies Bun stacks with).`;
 
 const print = (line: string) => {
   process.stdout.write(`${line}\n`);

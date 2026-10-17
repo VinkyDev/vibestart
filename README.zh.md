@@ -82,7 +82,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--<kind> <choice>`                                          | 决定某一类选择(`--framework`、`--backend`、`--api`、`--database`、`--orm`、`--auth`、`--desktop`、`--mobile`、`--deployment` 等)。`none` 表示可选项留空。 |
 | `--addons <ids\|none>`                                       | 选择扩展,逗号分隔。默认启用 Knip 与 Ultracite;`none` 两者都不要。                                                                                         |
-| `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.2 及以上安装依赖。                                                                                                                |
+| `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.3 及以上安装依赖。                                                                                                                |
 | `--runtime <node\|bun>`                                      | Hono 服务运行在 Node.js(默认)或 Bun 上。                                                                                                                  |
 | `--recipe <path\|url>`                                       | 从 `vibestart.jsonc` 开始;`kind` 参数优先于它。                                                                                                           |
 | `--list`                                                     | 列出所有选择类别、选项与全部合法技术栈。                                                                                                                  |

@@ -42,7 +42,7 @@ Integrations declare `provides` and `requires` as capability strings. Four rules
 3. A capability has at most one provider, so Next.js and TanStack Router (both `router`) exclude each other, as do Hono and `self` (both `http-server`).
 4. An `auxiliary` integration exists only to satisfy another's `requires`; a static SPA cannot carry a Node runtime. A requirement another alternative already meets does not count, so Docker beside Next.js does not justify `self`.
 
-Each violation carries a `reason`. The suggested fix is found by enumeration: among all legal stacks, the one that differs from the current stack in the fewest kinds, optionally keeping the kind just changed. Legal stacks number in the hundreds, so enumeration is cheap and no constraint solver is needed.
+Each violation carries a `reason`. The suggested fix is found by enumeration: among all legal stacks, the one that differs from the current stack in the fewest kinds, optionally keeping the kind just changed. Legal stacks number in the thousands out of hundreds of thousands of combinations, so `legalStacks` searches the kinds depth-first and drops a branch once a violation no later kind can remove appears; the legal stacks are then few enough to compare directly, and no constraint solver is needed.
 
 ## Contributions
 
@@ -97,7 +97,7 @@ Two classes stand outside the facets:
 
 ### Running at scale
 
-`verify` runs stacks concurrently (`--jobs`). Each takes its own e2e ports from 20000 through `E2E_TEST_PORT`, below the ephemeral ranges of Linux and macOS; integration tests run in process and listen on none. PostgreSQL stacks use `STACKS_POSTGRES_URL`.
+`verify` runs stacks concurrently (`--jobs`). Each takes its own e2e ports from 20000 through `E2E_TEST_PORT`, below the ephemeral ranges of Linux and macOS; integration tests run in process and listen on none. Database stacks reach their server at `STACKS_POSTGRES_URL`, `STACKS_MYSQL_URL`, or `STACKS_MONGODB_URL`.
 
 ### The store
 
@@ -113,7 +113,7 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 
 1. `ready` runs `vp run ready`.
 2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the fewest tasks whose passes cover every task no record covers. Linux tasks split across up to eight shards; the Windows tasks run on a single runner. A change that touches no generated output plans no job.
-3. `verify` runs each planned job. Linux uses a PostgreSQL 18 service container; Windows starts the PostgreSQL 17 its runner image ships. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
+3. `verify` runs each planned job. Linux runs PostgreSQL 18, MySQL 8.4, and MongoDB 8 as service containers; Windows starts the PostgreSQL 17 its runner image ships, and installs MySQL 8.4 and MongoDB 7.0. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
 4. `ci`, the one required check, passes when `ready` and `plan` passed and `verify` passed or had nothing to run.
 5. On `main`, `record` adds every pass that matches `main`'s output to the store.
 

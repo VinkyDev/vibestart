@@ -28,9 +28,19 @@ release. Add a tool name to select part of the graph. For example, run
 
 # Project
 
-vibestart generates a project from a stack. The generator and the projects it writes follow one toolchain: Vite+, pnpm catalog, `@vibestart/config` TypeScript presets, Oxlint, and Knip. A web app for this repo will live in `apps/*` and extend `@vibestart/config/typescript/react.json`.
+vibestart generates a project from a stack. The generator and the projects it writes follow one toolchain: Vite+, pnpm catalog, `@vibestart/config` TypeScript presets, Oxlint, and Knip. The Studio in `apps/web` is the web app; it extends `@vibestart/config/typescript/react.json`.
 
 Code, the opening of Tests, and Done are the text every generated project receives: `packages/integrations/src/vite-plus/agents-code.md`, `packages/integrations/src/testing/agents-tests-intro.md`, and `packages/integrations/src/vite-plus/agents-done.md`. Change a rule in its file, and `src/vite-plus/agents.test.ts` holds this file to the same text.
+
+## Context
+
+Read what the task needs; each file owns its subject.
+
+- `docs/architecture.md`: how a stack becomes a project and how output is verified, with the decisions behind it.
+- `GLOSSARY.md`: the domain terms. Use them in code, tests, and reviews.
+- `REVIEW.md`: what counts as Important in review and what to leave out.
+- Skills in `.agents/skills/`: `explain` before changing a module you have not read, `add-integration` for a new stack choice, `update-deps` for versions, and `self-review` before a pull request. `self-review` dispatches the read-only `reviewer` agent in `.agents/agents/`.
+- `docs/review-evals/`: bugs that reached `main`, kept to test review rules against.
 
 ## Code
 
@@ -54,6 +64,8 @@ Converge on the simplest durable design that meets current requirements, and lan
 | `packages/core`         | Blueprint schema, resolver, and generator. Core returns a virtual file tree                       |
 | `packages/integrations` | Integrations, the catalog, templates, golden comparison, and the verification store               |
 | `packages/config`       | Shared TypeScript presets: `typescript/node.json` for Node, `typescript/react.json` for a web app |
+| `apps/web`              | The Studio: the stack picker, previews of generated files, and the en/zh docs in `content/docs`   |
+| `packages/ui`           | The Studio's shadcn components and styles                                                         |
 | `golden/`               | Checked-in generated projects. Each is its own workspace and runs its own `vp check`              |
 
 ## Conventions
@@ -63,7 +75,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 - **Lint.** Templates and `golden/` are linted as generated output, so `vp run stacks verify` is where a template meets the rules. In this repo, turn a misfiring rule off in `lint.overrides` of the root `vite.config.ts`. In a generated project, the integration that owns the library contributes `lintOverrides`.
 - **TypeScript.** A package extends `@vibestart/config` and lists it as a devDependency. Node code uses `typescript/node.json`. Web code uses `typescript/react.json`.
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
-- **Dependencies.** A package has one range across `pnpm-workspace.yaml`, the generated catalog in `packages/integrations/src/catalog.ts`, and the `package.json` engines, and `src/deps/pins.test.ts` holds them to it. Move versions with `vp run deps update`; CI on the pull request verifies every stack they reach.
+- **Dependencies.** A package has one range across `pnpm-workspace.yaml`, the generated catalog in `packages/integrations/src/catalog.ts`, the `package.json` engines, and CI's `bun-version`, and `src/deps/pins.test.ts` holds them to it. Move versions with `vp run deps update`; CI on the pull request verifies every stack they reach.
 - **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.
 
 ## Tests
@@ -88,3 +100,5 @@ While iterating, run `vp test <file>` or `vp test --changed`. Refresh snapshots 
 ## Done
 
 The change is done when every modified path works end to end, every rule in this file holds in every modified file, and `vp run ready` passes.
+
+Before you report it, review the whole diff in a fresh context when your tools allow one: read the failure and cleanup paths, a second run against existing state, and every caller of what changed, and fix what you find.

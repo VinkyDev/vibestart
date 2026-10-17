@@ -1,0 +1,58 @@
+[
+  {
+    "id": "postgres-test-db-leak",
+    "introduced": "b65a219b",
+    "fixed": ["59912641", "adb105a6"],
+    "paths": [
+      "packages/integrations/templates/testing/database/postgres/packages/db/src/testing.ts"
+    ],
+    "expect": "A failed CREATE, DROP, or migration leaves the admin client open or the test database behind: cleanup is not in `finally`, and `remove` is never returned when migration throws.",
+    "class": "cleanup on failure paths"
+  },
+  {
+    "id": "mysql-test-db-name",
+    "introduced": "1c713c15",
+    "fixed": ["7c9e9abd"],
+    "paths": [
+      "packages/integrations/templates/testing/database/mysql/packages/db/src/testing.ts"
+    ],
+    "expect": "The test database name is the configured name plus `_test_<8 chars>`, unbounded and quoted with backticks without escaping: a long DATABASE_URL name exceeds MySQL's 64-character identifier limit, and a backtick in it breaks the statement.",
+    "class": "identifier bounds and escaping"
+  },
+  {
+    "id": "rejected-preview-cached",
+    "introduced": "d58caaf8",
+    "fixed": ["53379c52"],
+    "paths": ["apps/web/src/lib/projects.ts"],
+    "expect": "The previews map stores the fetch promise before it settles and never deletes it, so one failed request makes every later visit to that stack fail until reload.",
+    "class": "cache holds a rejected promise"
+  },
+  {
+    "id": "missing-results-dir",
+    "introduced": "ffb4ecde",
+    "fixed": ["e88e18ae"],
+    "paths": ["packages/integrations/src/verification-store.ts"],
+    "expect": "`readRecords` calls `readdirSync` on every directory it is given; download-artifact leaves the directory uncreated when a run uploaded nothing, so the CI job throws ENOENT instead of reading no records.",
+    "class": "CI store edge case"
+  },
+  {
+    "id": "private-package-version",
+    "introduced": "c650f26e",
+    "fixed": ["8442485c"],
+    "paths": [
+      "packages/config/package.json",
+      "packages/core/package.json",
+      "packages/integrations/package.json"
+    ],
+    "expect": "The CLI bundles these workspace packages, and pnpm cannot pack a workspace dependency without a version, so the release pack fails.",
+    "class": "release packaging"
+  },
+  {
+    "id": "oxfmt-rejected-format-cached",
+    "introduced": "43f2c5ed",
+    "fixed": [],
+    "paths": ["packages/integrations/src/oxfmt.ts"],
+    "expect": "`formatted.set(key, pending)` keeps a rejected format promise, so one failure is returned for that content for the life of the process.",
+    "class": "cache holds a rejected promise"
+  }
+]
