@@ -75,7 +75,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 - **Lint.** Templates and `golden/` are linted as generated output, so `vp run stacks verify` is where a template meets the rules. In this repo, turn a misfiring rule off in `lint.overrides` of the root `vite.config.ts`. In a generated project, the integration that owns the library contributes `lintOverrides`.
 - **TypeScript.** A package extends `@vibestart/config` and lists it as a devDependency. Node code uses `typescript/node.json`. Web code uses `typescript/react.json`.
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
-- **Dependencies.** A package has one range across `pnpm-workspace.yaml`, the generated catalog in `packages/integrations/src/catalog.ts`, and the `package.json` engines, and `src/deps/pins.test.ts` holds them to it. Move versions with `vp run deps update`; CI on the pull request verifies every stack they reach.
+- **Dependencies.** A package has one range across `pnpm-workspace.yaml`, the generated catalog in `packages/integrations/src/catalog.ts`, the `package.json` engines, and CI's `bun-version`, and `src/deps/pins.test.ts` holds them to it. Move versions with `vp run deps update`; CI on the pull request verifies every stack they reach.
 - **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.
 
 ## Tests

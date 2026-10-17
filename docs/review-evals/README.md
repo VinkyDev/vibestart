@@ -10,7 +10,7 @@ Give the `reviewer` subagent the introducing commit, scoped to the case's paths,
 git diff <introduced>^ <introduced> -- <paths>
 ```
 
-Ask it to review that diff against the tree at `<introduced>` (`git worktree add /tmp/eval <introduced>`). A case passes when the reviewer reports the expected finding as Important, at the file in `paths`. A case fails when the finding is missing, tagged Nit, or arrives buried among noise.
+Ask it to read the code from a worktree at `<introduced>` (`git worktree add /tmp/eval <introduced>`) and to load `REVIEW.md`, `AGENTS.md`, and `GLOSSARY.md` from the current checkout, since the introducing commit predates the rules under test. A case passes when the reviewer reports the expected finding as Important, at the file in `paths`. A case fails when the finding is missing, tagged Nit, or arrives buried among noise.
 
 Score a run as caught out of total, plus the count of Important findings that are not the case's bug. Compare that score before and after the change to the review rules.
 

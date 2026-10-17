@@ -9,7 +9,7 @@ Important is a finding that would ship a broken or misleading project, break a p
 - Generated code that fails on a path CI does not run: a failure or cleanup path, a second run, Windows, a mobile client, an error or empty state in a UI template.
 - A cache or memo that holds a rejected promise, a mutable shared value, or a key that misses an input.
 - A change to the CLI's flags, `--json` fields, error codes, statuses, or exit codes that `skills/vibestart/` and `apps/web/content/docs/cli/` do not match. A renamed field is breaking for anyone who scripts the CLI.
-- A change to the fingerprint inputs (generated files, setup commands, the preview schema) that the PR does not mention, since it re-verifies every stack it reaches.
+- A change to the fingerprint inputs (generated files other than `.md`, and setup commands) that the PR does not mention, since it re-verifies every stack it reaches.
 - Docs or Studio text that says something the code does not do, or an `en` page whose `zh` sibling now says something else. Docs that lie are bugs here.
 - Release and packaging: what `vp pm pack` publishes from `apps/cli`, `release.yml`, and anything that runs only on a tag.
 

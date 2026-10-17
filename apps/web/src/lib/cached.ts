@@ -15,6 +15,9 @@ export const cached = <K, T>(
 
   if (promise === undefined) {
     promise = (async () => {
+      // Yield first, so a `create` that throws synchronously still rejects after `set` and is evicted.
+      await Promise.resolve();
+
       try {
         return await create();
       } catch (error) {

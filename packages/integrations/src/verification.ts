@@ -128,7 +128,12 @@ export const verifiedOutput = async (
     outputs.set(label, pending);
   }
 
-  return await pending;
+  try {
+    return await pending;
+  } catch (error) {
+    outputs.delete(label);
+    throw error;
+  }
 };
 
 export const verifiedFingerprint = async (

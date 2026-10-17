@@ -34,7 +34,7 @@ reviews:
         Core returns a virtual file tree and must not touch the disk or spawn processes. Resolver changes must keep every legal stack legal unless the PR says otherwise; check `resolver.test.ts` covers the new case.
     - path: "apps/cli/src/**"
       instructions: |
-        A change to a command, flag, `--json` field, result status, exit code, or recovery message is a contract change. It must land with the matching change in `skills/vibestart/` and `apps/web/content/docs/cli/` (both en and zh). Maintenance commands must refuse a dirty worktree.
+        A change to a command, flag, `--json` field, result status, exit code, or recovery message is a contract change. It must land with the matching change in `skills/vibestart/` and `apps/web/content/docs/cli/` (both en and zh). A maintenance write must refuse a dirty worktree; previews (`--dry-run`, `--check`, `doctor`) need none.
     - path: "skills/vibestart/**"
       instructions: |
         The skill ships separately from the CLI and must discover the running release's capabilities rather than assume them. Every command, flag, and status it names must exist in `apps/cli/src`.

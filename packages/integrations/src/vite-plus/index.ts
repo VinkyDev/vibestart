@@ -332,7 +332,7 @@ const renderAgents = (read: ReadSlot) => {
   return `${[
     agentsVitePlus.trimEnd(),
     "# Project",
-    "`vibestart.jsonc` records the stack this project was created with. The vibestart CLI maintains the project from that record, so change it only through the CLI: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source as manual changes to port.",
+    "`vibestart.jsonc` records the stack this project was created with. When it also records the `name` and `version` of the vibestart release that generated the project, the vibestart CLI maintains the project from it: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. Leave `vibestart.jsonc` as the CLI wrote it. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source, which is yours to edit, as manual changes to port.",
     agentsCode.trimEnd(),
     "## Map",
     markdownTable(
