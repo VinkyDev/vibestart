@@ -27,7 +27,7 @@ A generated project is an ordinary repository with no runtime dependency on Vibe
 
 ## Requirements
 
-Node.js 22.12 or newer. The CLI installs the project with pnpm (the default) or Bun 1.4.2 or newer; with pnpm absent it runs pnpm through `npx`.
+Node.js 22.12 or newer. The CLI installs the project with pnpm (the default) or Bun 1.4.3 or newer; with pnpm absent it runs pnpm through `npx`.
 
 ## Options
 

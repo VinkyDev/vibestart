@@ -244,9 +244,7 @@ export const verificationWith = (
     return null;
   }
 
-  return packageManager === "bun"
-    ? (entry.bunVerification ?? null)
-    : entry.verification;
+  return packageManager === "bun" ? entry.bunVerification : entry.verification;
 };
 
 export type PackageRunner = "pnpm" | "npm" | "bun";

@@ -28,7 +28,7 @@ release. Add a tool name to select part of the graph. For example, run
 
 # Project
 
-The architecture this project was created with is recorded in `vibestart.jsonc`.
+`vibestart.jsonc` records the stack this project was created with. The vibestart CLI maintains the project from that record, so change it only through the CLI: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source as manual changes to port.
 
 ## Code
 
@@ -104,3 +104,5 @@ While iterating, run the narrowest set that covers the change: `vp test --projec
 ## Done
 
 The change is done when every modified path works end to end, every rule in this file holds in every modified file, and `vp run ready` passes.
+
+Before you report it, review the whole diff in a fresh context when your tools allow one: read the failure and cleanup paths, a second run against existing state, and every caller of what changed, and fix what you find.

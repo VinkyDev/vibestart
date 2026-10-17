@@ -23,7 +23,7 @@ const Delta = ({
 }) => {
   const { added, changed, removed } = fileDelta(
     from,
-    use(loadProject(to, addons, from.packageManager ?? "pnpm"))
+    use(loadProject(to, addons, from.packageManager))
   );
 
   return (

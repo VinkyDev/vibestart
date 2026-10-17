@@ -7,7 +7,7 @@ import type {
 } from "@vibestart/core";
 
 export interface Project {
-  readonly packageManager?: "pnpm" | "bun";
+  readonly packageManager: "pnpm" | "bun";
   readonly files: readonly GeneratedFile[];
   readonly setup: readonly SetupCommand[];
   readonly gettingStarted: readonly GettingStartedStep[];
@@ -20,7 +20,7 @@ export interface StackVerification {
 }
 
 export interface StackEntry {
-  readonly bunVerification?: StackVerification | null;
+  readonly bunVerification: StackVerification | null;
   readonly label: string;
   readonly stack: Stack;
   readonly verification: StackVerification | null;

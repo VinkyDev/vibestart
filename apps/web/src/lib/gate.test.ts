@@ -36,6 +36,7 @@ const project: Project = {
     ),
   ],
   gettingStarted: [],
+  packageManager: "pnpm",
   setup: [{ run: "vp run db:generate --name init", writes: [] }],
 };
 

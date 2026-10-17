@@ -28,7 +28,7 @@ vp run stacks verify       # run `vp run ready` in each stack without a current 
 ```
 
 - Push, and the pull request's CI verifies every stack your change reaches: on Linux every stack, on Windows the goldens. A change that alters no generated output, documentation included, verifies nothing. Records come only from CI and land on the `verification` branch when the pull request merges; nobody commits them.
-- `stacks verify` reproduces a CI failure locally. It runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`) and Chromium, which each project's browser runner installs before its tests. Bun stacks need Bun 1.4.2 or newer.
+- `stacks verify` reproduces a CI failure locally. It runs against real services: PostgreSQL at `STACKS_POSTGRES_URL` (default `postgres://$USER@localhost:5432/postgres`), MySQL at `STACKS_MYSQL_URL` (default `mysql://root:mysql@localhost:3306/mysql`), MongoDB at `STACKS_MONGODB_URL` (default `mongodb://localhost:27017/stacks`), and Chromium, which each project's browser runner installs before its tests. Bun stacks need Bun 1.4.3 or newer.
 - `stacks check` and `stacks verify` take a name pattern and `--package-manager pnpm|bun`. `check` exits 1 when a record is stale or missing and never installs or writes.
 - `vp test` and `vp run ready` need no records; `pull` is for the CLI and Studio builds and for `check`.
 - Add representatives in `packages/integrations/src/goldens.ts`; see [CI architecture](docs/architecture.md#ci) for planning, evidence, and environment preparation.
@@ -72,3 +72,5 @@ Never move or delete a pushed tag, and never force-push `main`; fix a bad releas
 - Keep a change focused, and carry it through every layer it touches.
 - Update the CLI skill (`skills/vibestart/`) and docs when commands, flags, or result states change.
 - Run `vp run ready` before you push.
+- Fill the pull request template: Evidence holds output, not a claim, and Merge Danger names the door and the blast radius. Review follows `REVIEW.md`, which CodeRabbit reads too; an agent runs the `self-review` skill (`.agents/skills/self-review`) before it opens or updates a pull request.
+- When review or a user finds a bug that reached `main`, add it to `docs/review-evals/cases.json` after the fix lands.

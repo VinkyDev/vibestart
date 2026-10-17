@@ -180,10 +180,36 @@ const manifestFile = (): PinFile => {
   };
 };
 
+const ciBun = /^\s*bun-version: (?<version>\S+)$/mu;
+
+/** CI installs the Bun that the Bun stacks it verifies require. */
+const ciFile = (): PinFile => {
+  const path = ".github/workflows/ci.yml";
+  const file = fileAt(path);
+  const version = ciBun.exec(file.read())?.groups?.version;
+
+  if (version === undefined) {
+    throw new Error(`${path} installs no Bun`);
+  }
+
+  const pins = new Map([["bun", version]]);
+
+  return {
+    path,
+    pins,
+    write: (ranges) => {
+      file.write(
+        setPins(file.read(), pins, ranges, (name) => `${name}-version`)
+      );
+    },
+  };
+};
+
 export const pinFiles = (): readonly PinFile[] => [
   workspaceFile(),
   generatedFile(),
   manifestFile(),
+  ciFile(),
 ];
 
 export interface Pin {

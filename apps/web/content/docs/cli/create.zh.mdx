@@ -115,7 +115,7 @@ bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth
 
 用于启动 CLI 的命令（`pnpm dlx`、`npx` 或 `bunx`）不决定项目的包管理器。`--package-manager` 优先于配方；两者都未指定时，采用交互中的选择或默认的 pnpm。在工作台中，包管理器在创建面板中选择，运行时在 Hono 的进程框中选择。
 
-使用 Bun 时，workspace 与 catalog 位于根目录的 `package.json`，锁文件为 `bun.lock`；使用 pnpm 时则为 `pnpm-workspace.yaml` 和 `pnpm-lock.yaml`。两者都通过 `vp install` 安装依赖。运行在 Bun 上的 Hono 开发时使用 `bun --watch`，生产环境使用 `bun dist/index.mjs`，并自动加载 `.env`。生成的项目要求 Bun 1.4.2 或更高版本。每种包管理器与运行时的组合都单独验证。
+使用 Bun 时，workspace 与 catalog 位于根目录的 `package.json`，锁文件为 `bun.lock`；使用 pnpm 时则为 `pnpm-workspace.yaml` 和 `pnpm-lock.yaml`。两者都通过 `vp install` 安装依赖。运行在 Bun 上的 Hono 开发时使用 `bun --watch`，生产环境使用 `bun dist/index.mjs`，并自动加载 `.env`。生成的项目要求 Bun 1.4.3 或更高版本。每种包管理器与运行时的组合都单独验证。
 
 ## 扩展 [#addons]
 

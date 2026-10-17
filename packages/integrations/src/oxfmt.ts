@@ -48,5 +48,10 @@ export const formatWithProjectConfig = async (
 
   formatted.set(key, pending);
 
-  return await pending;
+  try {
+    return await pending;
+  } catch (error) {
+    formatted.delete(key);
+    throw error;
+  }
 };

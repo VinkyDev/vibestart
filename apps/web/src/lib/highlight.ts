@@ -4,6 +4,8 @@ import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
 import type { GeneratedFile } from "@vibestart/core";
 
+import { cached } from "#/lib/cached.ts";
+
 const theme = "vitesse-light";
 
 const grammars = {
@@ -69,13 +71,27 @@ const grammarOf = (path: string): Grammar | undefined => {
 
 let highlighter: Promise<HighlighterCore> | undefined;
 
-const tokenize = async ({ content, path }: GeneratedFile) => {
+const loadHighlighter = async () => {
   highlighter ??= createHighlighterCore({
     engine: createJavaScriptRegexEngine(),
     langs: [],
     themes: [import("shiki/themes/vitesse-light.mjs")],
   });
-  const shiki = await highlighter;
+  const pending = highlighter;
+
+  try {
+    return await pending;
+  } catch (error) {
+    if (highlighter === pending) {
+      highlighter = undefined;
+    }
+
+    throw error;
+  }
+};
+
+const tokenize = async ({ content, path }: GeneratedFile) => {
+  const shiki = await loadHighlighter();
   const grammar = grammarOf(path);
 
   if (grammar === undefined) {
@@ -93,13 +109,5 @@ const tokenize = async ({ content, path }: GeneratedFile) => {
 
 const tokenized = new WeakMap<GeneratedFile, Promise<ThemedToken[][]>>();
 
-export const tokensOf = (file: GeneratedFile) => {
-  let tokens = tokenized.get(file);
-
-  if (tokens === undefined) {
-    tokens = tokenize(file);
-    tokenized.set(file, tokens);
-  }
-
-  return tokens;
-};
+export const tokensOf = (file: GeneratedFile) =>
+  cached(tokenized, file, async () => await tokenize(file));

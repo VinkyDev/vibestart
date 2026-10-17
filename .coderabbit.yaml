@@ -1,7 +1,59 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# Review rules live in REVIEW.md and AGENTS.md, which CodeRabbit reads by default.
+# This file adds what those cannot: which paths to skip and per-path focus.
+tone_instructions: "Report only what REVIEW.md calls Important, with file:line evidence and the runtime condition that triggers it. At most 3 nits. Never suggest a fallback, retry, or compatibility path."
+knowledge_base:
+  code_guidelines:
+    filePatterns:
+      - "GLOSSARY.md"
+      - "docs/architecture.md"
 reviews:
+  profile: quiet
+  poem: false
+  in_progress_fortune: false
+  auto_review:
+    auto_incremental_review: true
+    drafts: false
   path_filters:
     - "!packages/integrations/src/__snapshots__/**"
+    - "!packages/integrations/schema.json"
     - "!golden/**"
     - "!apps/web/src/paraglide/**"
+    - "!apps/web/src/routeTree.gen.ts"
+    - "!packages/ui/src/components/**"
     - "!**/pnpm-lock.yaml"
+  path_instructions:
+    - path: "packages/integrations/templates/**"
+      instructions: |
+        This file is rendered into generated projects and linted as their code, not this repo's. Check the path a user's project hits at runtime: teardown in `finally` on every failure path, a second run against existing state, Windows paths and process trees, and identifier length and escaping for database names. A template branch that depends on a sibling choice must handle every sibling of that kind. Name the stack that renders the file.
+    - path: "packages/integrations/src/**"
+      instructions: |
+        An integration declares `provides` and `requires` capabilities and contributes files or slot values; one owner per path. A changed `ctx.has` branch must cover every sibling of the kind. A change to what feeds a fingerprint (file content outside .md, setup commands) invalidates verification records; the PR must say so. A memoized promise must evict on rejection, and a cache key must include every input that changes the value.
+    - path: "packages/core/src/**"
+      instructions: |
+        Core returns a virtual file tree and must not touch the disk or spawn processes. Resolver changes must keep every legal stack legal unless the PR says otherwise; check `resolver.test.ts` covers the new case.
+    - path: "apps/cli/src/**"
+      instructions: |
+        A change to a command, flag, `--json` field, result status, exit code, or recovery message is a contract change. It must land with the matching change in `skills/vibestart/` and `apps/web/content/docs/cli/` (both en and zh). Maintenance commands must refuse a dirty worktree.
+    - path: "skills/vibestart/**"
+      instructions: |
+        The skill ships separately from the CLI and must discover the running release's capabilities rather than assume them. Every command, flag, and status it names must exist in `apps/cli/src`.
+    - path: "apps/web/content/docs/**"
+      instructions: |
+        Each page has an English `.mdx` and a Chinese `.zh.mdx`. A change to one must be mirrored in the other. A claim about behavior must match the current code; name the file that contradicts it.
+    - path: "apps/web/src/**"
+      instructions: |
+        A client-only SPA. Check loading, error, and empty states, and that UI state stays consistent with the URL and the selected stack. A cached fetch must not keep a rejected promise.
+    - path: ".github/workflows/**"
+      instructions: |
+        Only CI on `main` may write the `verification` branch. Check pinned action versions, token permissions, and that a pull request from a fork cannot reach secrets. `ci` is the one required check; a new job must feed it.
+  pre_merge_checks:
+    custom_checks:
+      - name: "Pull request template"
+        mode: warning
+        instructions: |
+          Pass when the description fills Evidence with command output, a named test, or a screenshot, and Merge Danger with the door (one-way or two-way) and the blast radius. Fail when either is empty or only restates the summary.
+      - name: "CLI contract alignment"
+        mode: warning
+        instructions: |
+          Pass when the change touches no command, flag, `--json` field, status, or exit code in `apps/cli/src`. Otherwise pass only when `skills/vibestart/` and `apps/web/content/docs/cli/` change to match.
