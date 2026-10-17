@@ -4,7 +4,7 @@ description: Move the pinned dependencies to their latest targets, verify, and o
 disable-model-invocation: true
 ---
 
-Land a dependency update as one reviewed pull request. Read "Keeping dependencies current" in `CONTRIBUTING.md` for what a pin is and how the three pin files stay in step.
+Land a dependency update as one reviewed pull request. Read "Keeping dependencies current" in `CONTRIBUTING.md` for what a pin is and how the pin files stay in step.
 
 1. **Branch.** Start from an up-to-date, clean `main`, then create `deps/update-<YYYY-MM-DD>`. Done when `git status` is clean on the new branch.
 2. **Survey.** Run `vp run deps`. Exit 0 means every pin is at its target: report that and stop. Otherwise read the table; a major `bump` or a deprecated pin is where a breaking change hides.

@@ -97,7 +97,6 @@ const closeDatabase = (ctx: Context) => {
     return [];
   }
 
-  // The SQLite driver closes synchronously.
   return [closeDatabaseStatement(ctx)];
 };
 

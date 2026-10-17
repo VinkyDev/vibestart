@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 60,
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -n \"$f\" ] && command -v vp >/dev/null || exit 0; cd \"$CLAUDE_PROJECT_DIR\" && out=$(vp check --fix --no-error-on-unmatched-pattern \"$f\" 2>&1) || { printf '%s\\n' \"$out\" >&2; exit 2; }"
+          }
+        ]
+      }
+    ]
+  }
+}

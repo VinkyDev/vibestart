@@ -301,7 +301,7 @@ const integrationTestFiles = (ctx: Context) => {
 const integrationTests = (ctx: Context) => [
   ...integrationTestFiles(ctx),
   contribute(testProjects, {
-    // The tests read the server's `.env` as the server does; PostgreSQL creates test databases beside its `DATABASE_URL`.
+    // The tests read the server's `.env` as the server does; a database server creates test databases beside its `DATABASE_URL`.
     envDir: serverApp(ctx).dir,
     include: "packages/api/tests/integration/**/*.test.ts",
     name: "integration",

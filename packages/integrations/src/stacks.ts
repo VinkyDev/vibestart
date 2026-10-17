@@ -70,7 +70,7 @@ const print = (line: string) => {
   process.stdout.write(`${line}\n`);
 };
 
-// A server's own `postgres` database always exists; each test run creates and drops `postgres_test_<port>` beside it.
+// A server's own `postgres` database always exists; each test file creates and drops a randomly named `postgres_test_…` database beside it.
 const postgresUrl =
   process.env.STACKS_POSTGRES_URL ??
   `postgres://${userInfo().username}@localhost:5432/postgres`;

@@ -48,5 +48,14 @@ export const formatWithProjectConfig = async (
 
   formatted.set(key, pending);
 
-  return await pending;
+  try {
+    return await pending;
+  } catch (error) {
+    // Every caller awaiting this rejection lands here; only the first finds it still cached.
+    if (formatted.get(key) === pending) {
+      formatted.delete(key);
+    }
+
+    throw error;
+  }
 };

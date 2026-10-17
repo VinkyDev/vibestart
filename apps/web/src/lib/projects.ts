@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { GeneratedFile } from "@vibestart/core";
 import { verificationSchema } from "@vibestart/core";
 
+import { cached } from "#/lib/cached.ts";
 import type { Project, StackEntry, StackPreview } from "#/lib/project.ts";
 import { previewPath, projectKey } from "#/lib/project.ts";
 import { verifiedAddons } from "#/lib/stack.ts";
@@ -54,28 +55,6 @@ const fetchPreview = async (label: string) => {
   }
 
   return previewSchema.parse(await response.json());
-};
-
-const cached = <T>(
-  cache: Map<string, Promise<T>>,
-  key: string,
-  create: () => Promise<T>
-) => {
-  let promise = cache.get(key);
-
-  if (promise === undefined) {
-    promise = (async () => {
-      try {
-        return await create();
-      } catch (error) {
-        cache.delete(key);
-        throw error;
-      }
-    })();
-    cache.set(key, promise);
-  }
-
-  return promise;
 };
 
 const previews = new Map<string, Promise<StackPreview>>();

@@ -190,7 +190,6 @@ export const ormId = (ctx: Context) => ormOf(ctx).id;
 export const ormDependencies = (ctx: Context) =>
   ormId(ctx) === "drizzle" ? ["drizzle-orm"] : [];
 
-/** The ORM as the README's layers table names it, with its major version. */
 // The todos module written for Drizzle on PostgreSQL and SQLite, or the set that replaces it.
 const todosModule = (ctx: Context) => {
   if (ctx.has("prisma") || ctx.has("mongoose")) {
@@ -228,6 +227,7 @@ export const webMigrates = (ctx: Context) =>
 export const hasTables = (ctx: Context) =>
   todosExample(ctx) || ctx.has("better-auth");
 
+/** The ORM as the README's layers table names it, with its major version. */
 export const ormRelease = (ctx: Context) => ormOf(ctx).release;
 
 export const databaseFlow = (ctx: Context) =>

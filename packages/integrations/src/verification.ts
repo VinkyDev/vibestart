@@ -128,7 +128,16 @@ export const verifiedOutput = async (
     outputs.set(label, pending);
   }
 
-  return await pending;
+  try {
+    return await pending;
+  } catch (error) {
+    // Every caller awaiting this rejection lands here; only the first finds it still cached.
+    if (outputs.get(label) === pending) {
+      outputs.delete(label);
+    }
+
+    throw error;
+  }
 };
 
 export const verifiedFingerprint = async (
