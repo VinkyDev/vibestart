@@ -131,7 +131,11 @@ export const verifiedOutput = async (
   try {
     return await pending;
   } catch (error) {
-    outputs.delete(label);
+    // Every caller awaiting this rejection lands here; only the first finds it still cached.
+    if (outputs.get(label) === pending) {
+      outputs.delete(label);
+    }
+
     throw error;
   }
 };
