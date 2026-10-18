@@ -369,16 +369,20 @@ const devCommands = (ctx: Context): (readonly [string, string?])[] => {
 };
 
 // Git ignores every `.env`, so a fresh clone recreates them from this section.
-const renderEnvironment = (read: ReadSlot) => {
+const renderEnvironment = (ctx: Context, read: ReadSlot) => {
   const files = read(envFiles);
 
   if (files.length === 0) {
     return [];
   }
 
+  const intro = ctx.has("better-auth")
+    ? "Each app loads the `.env` in its directory. Project creation wrote them with the values below, replacing the `BETTER_AUTH_SECRET` placeholder with a generated secret; git ignores them, so a fresh clone recreates them and generates its own (`openssl rand -base64 32`)."
+    : "Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.";
+
   return [
     "## Environment",
-    "Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.",
+    intro,
     ...files.map((envFile) =>
       [
         `\`${envFile.path}\``,
@@ -430,7 +434,7 @@ const renderReadme = (ctx: Context, read: ReadSlot) => {
       "```",
     ].join("\n"),
     ...read(readmeOpen),
-    ...renderEnvironment(read),
+    ...renderEnvironment(ctx, read),
     "## Commands",
     ["```sh", commands, "```"].join("\n"),
     ...read(readmeCommandNotes),

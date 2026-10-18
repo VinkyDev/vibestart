@@ -28,7 +28,7 @@ The API listens on http://localhost:3000. API docs are at http://localhost:3000/
 
 ## Environment
 
-Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.
+Each app loads the `.env` in its directory. Project creation wrote them with the values below, replacing the `BETTER_AUTH_SECRET` placeholder with a generated secret; git ignores them, so a fresh clone recreates them and generates its own (`openssl rand -base64 32`).
 
 `apps/server/.env`
 
