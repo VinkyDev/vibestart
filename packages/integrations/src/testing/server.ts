@@ -37,6 +37,8 @@ const webArgs = (ctx: Context, port: string) =>
       ];
 
 const serverEnv = (ctx: Context) => [
+  // Worker test servers share a runner; the inspector port is unnecessary for browser tests.
+  ...(ctx.has("workers") ? ['VOID_INSPECTOR_PORT: "false"'] : []),
   ...(ctx.has("better-auth")
     ? [
         'BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters"',

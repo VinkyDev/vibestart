@@ -102,6 +102,7 @@ export const startTestServer = async (baseURL: string) => {
           "--strictPort",
         ],
         {
+          VOID_INSPECTOR_PORT: "false",
           BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
           BETTER_AUTH_URL: baseURL,
           DATABASE_URL: database.url,

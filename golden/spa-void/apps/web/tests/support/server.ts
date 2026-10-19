@@ -86,7 +86,7 @@ export const startTestServer = async (baseURL: string) => {
           port,
           "--strictPort",
         ],
-        {}
+        { VOID_INSPECTOR_PORT: "false" }
       )
     );
     await waitForServer(`${baseURL}/`);

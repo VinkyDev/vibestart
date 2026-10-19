@@ -129,7 +129,7 @@ The `runtime` kind adds Bun beside Node. Bun needs the Hono capability, so it is
 
 Hono splits `src/app.ts` (routing) from `src/index.ts` (listen and shutdown), so both runtimes load the full module graph and answer requests without binding a socket. `stacks smoke` uses that Node/Bun boundary and never writes records. Workers require workerd and use `stacks verify` in CI.
 
-The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown. Workers SSR receives the same startup readiness budget as Next, because workerd may optimize server dependencies before listening.
+The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown. Workers SSR receives the same startup readiness budget as Next, because workerd may optimize server dependencies before listening. Worker test servers disable the inspector, matching Void's own integration harness and avoiding shared debugger ports during parallel verification.
 
 Teardown stops server process trees before removing test databases. Windows uses bounded `taskkill` and exit waits, with direct-child termination if `taskkill` fails; a child that does not exit fails teardown. SQLite removal retries transient file locks.
 
