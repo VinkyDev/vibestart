@@ -3505,13 +3505,41 @@
   }
 }
 
-# apps/server/package.json · 8 stacks
+# apps/server/package.json · 4 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
-#   spa-hono-electron-void
-#   spa-hono-electron-void-e2e
 #   spa-hono-expo-void
 #   spa-hono-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "hono": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 4 stacks
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 {
@@ -3709,21 +3737,55 @@
   }
 }
 
-# apps/server/package.json · 16 stacks
+# apps/server/package.json · 8 stacks
 #   spa-hono-mysql-better-auth-electron-expo-void
 #   spa-hono-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-mysql-better-auth-electron-void
-#   spa-hono-mysql-better-auth-electron-void-e2e
 #   spa-hono-mysql-better-auth-expo-void
 #   spa-hono-mysql-better-auth-expo-void-e2e
-#   spa-hono-mysql-better-auth-void
-#   spa-hono-mysql-better-auth-void-e2e
 #   spa-hono-postgres-better-auth-electron-expo-void
 #   spa-hono-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-postgres-better-auth-electron-void
-#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-expo-void
 #   spa-hono-postgres-better-auth-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "db:migrate": "node --env-file-if-exists=.env src/migrate.ts",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 8 stacks
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-void
 #   spa-hono-postgres-better-auth-void-e2e
 {
@@ -3815,21 +3877,54 @@
   }
 }
 
-# apps/server/package.json · 16 stacks
+# apps/server/package.json · 8 stacks
 #   spa-hono-mysql-electron-expo-void
 #   spa-hono-mysql-electron-expo-void-e2e
-#   spa-hono-mysql-electron-void
-#   spa-hono-mysql-electron-void-e2e
 #   spa-hono-mysql-expo-void
 #   spa-hono-mysql-expo-void-e2e
-#   spa-hono-mysql-void
-#   spa-hono-mysql-void-e2e
 #   spa-hono-postgres-electron-expo-void
 #   spa-hono-postgres-electron-expo-void-e2e
-#   spa-hono-postgres-electron-void
-#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-expo-void
 #   spa-hono-postgres-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "db:migrate": "node --env-file-if-exists=.env src/migrate.ts",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/db": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 8 stacks
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
 {
@@ -3902,13 +3997,42 @@
   }
 }
 
-# apps/server/package.json · 8 stacks
+# apps/server/package.json · 4 stacks
 #   spa-hono-openapi-electron-expo-void
 #   spa-hono-openapi-electron-expo-void-e2e
-#   spa-hono-openapi-electron-void
-#   spa-hono-openapi-electron-void-e2e
 #   spa-hono-openapi-expo-void
 #   spa-hono-openapi-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "hono": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 4 stacks
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
 #   spa-hono-openapi-void
 #   spa-hono-openapi-void-e2e
 {
@@ -4100,21 +4224,55 @@
   }
 }
 
-# apps/server/package.json · 16 stacks
+# apps/server/package.json · 8 stacks
 #   spa-hono-openapi-mysql-better-auth-electron-expo-void
 #   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-void
-#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-void
 #   spa-hono-openapi-mysql-better-auth-expo-void-e2e
-#   spa-hono-openapi-mysql-better-auth-void
-#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-void
 #   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-void
-#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-void
 #   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "db:migrate": "node --env-file-if-exists=.env src/migrate.ts",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 8 stacks
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-void
 #   spa-hono-openapi-postgres-better-auth-void-e2e
 {
@@ -4150,21 +4308,54 @@
   }
 }
 
-# apps/server/package.json · 16 stacks
+# apps/server/package.json · 8 stacks
 #   spa-hono-openapi-mysql-electron-expo-void
 #   spa-hono-openapi-mysql-electron-expo-void-e2e
-#   spa-hono-openapi-mysql-electron-void
-#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-void
 #   spa-hono-openapi-mysql-expo-void-e2e
-#   spa-hono-openapi-mysql-void
-#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-electron-expo-void
 #   spa-hono-openapi-postgres-electron-expo-void-e2e
-#   spa-hono-openapi-postgres-electron-void
-#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-void
 #   spa-hono-openapi-postgres-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "db:migrate": "node --env-file-if-exists=.env src/migrate.ts",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 8 stacks
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-void
 #   spa-hono-openapi-postgres-void-e2e
 {
@@ -4240,13 +4431,45 @@
   }
 }
 
-# apps/server/package.json · 8 stacks
+# apps/server/package.json · 4 stacks
 #   spa-hono-orpc-electron-expo-void
 #   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-electron-void
-#   spa-hono-orpc-electron-void-e2e
 #   spa-hono-orpc-expo-void
 #   spa-hono-orpc-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "hono": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 4 stacks
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
 #   spa-hono-orpc-void
 #   spa-hono-orpc-void-e2e
 {
@@ -4447,21 +4670,58 @@
   }
 }
 
-# apps/server/package.json · 16 stacks
+# apps/server/package.json · 8 stacks
 #   spa-hono-orpc-mysql-better-auth-electron-expo-void
 #   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-void
-#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-void
 #   spa-hono-orpc-mysql-better-auth-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-void
-#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-void
 #   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-void
-#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-void
 #   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "db:migrate": "node --env-file-if-exists=.env src/migrate.ts",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/auth": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 8 stacks
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-void
 #   spa-hono-orpc-postgres-better-auth-void-e2e
 {
@@ -4500,21 +4760,57 @@
   }
 }
 
-# apps/server/package.json · 16 stacks
+# apps/server/package.json · 8 stacks
 #   spa-hono-orpc-mysql-electron-expo-void
 #   spa-hono-orpc-mysql-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-electron-void
-#   spa-hono-orpc-mysql-electron-void-e2e
 #   spa-hono-orpc-mysql-expo-void
 #   spa-hono-orpc-mysql-expo-void-e2e
-#   spa-hono-orpc-mysql-void
-#   spa-hono-orpc-mysql-void-e2e
 #   spa-hono-orpc-postgres-electron-expo-void
 #   spa-hono-orpc-postgres-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-electron-void
-#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-expo-void
 #   spa-hono-orpc-postgres-expo-void-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev --host",
+    "build": "vp build",
+    "preview": "vp preview",
+    "db:migrate": "node --env-file-if-exists=.env src/migrate.ts",
+    "prepare": "void prepare"
+  },
+  "dependencies": {
+    "@my-app/api": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/web": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}
+
+# apps/server/package.json · 8 stacks
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-void
 #   spa-hono-orpc-postgres-void-e2e
 {

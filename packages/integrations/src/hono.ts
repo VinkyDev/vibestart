@@ -505,7 +505,11 @@ const serverPackage = (ctx: Context) =>
     imports: { "#src/*": "./src/*" },
     path: "apps/server",
     scripts: ctx.has("workers")
-      ? { dev: "vp dev", build: "vp build", preview: "vp preview" }
+      ? {
+          dev: ctx.has("expo") ? "vp dev --host" : "vp dev",
+          build: "vp build",
+          preview: "vp preview",
+        }
       : {
           dev: ctx.has("bun")
             ? "bun --watch src/index.ts"
