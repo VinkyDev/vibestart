@@ -15,7 +15,7 @@ export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200
 const webDir = fileURLToPath(new URL("../..", import.meta.url));
 const envFile = `${webDir}/.env`;
 
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+const waitForServer = async (url: string, attempts = 300): Promise<void> => {
   await retry(
     async () => {
       const response = await fetch(url);
@@ -109,7 +109,8 @@ export const startTestServer = async (baseURL: string) => {
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
       ["/", "/login", "/todos"].map(async (route) => {
-        await waitForServer(`${baseURL}${route}`);
+        const response = await fetch(`${baseURL}${route}`);
+        await response.arrayBuffer();
       })
     );
   } catch (error) {

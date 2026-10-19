@@ -17,15 +17,6 @@ const warmUp = (ctx: Context) => {
     ...(todosExample(ctx) ? ["/todos"] : []),
   ].map((route) => `"${route}"`);
 
-  if (ctx.has("workers") && ctx.has("tanstack-start")) {
-    // workerd restarts when SSR discovers dependencies, so each page participates in readiness.
-    return [
-      `    await Promise.all([${routes.join(", ")}].map(async (route) => {`,
-      `      await waitForServer(\`\${baseURL}\${route}\`);`,
-      "    }));",
-    ];
-  }
-
   return [
     `    await Promise.all([${routes.join(", ")}].map(async (route) => {`,
     `      const response = await fetch(\`\${baseURL}\${route}\`);`,
@@ -172,9 +163,10 @@ const declarations = (ctx: Context) => [
   "",
 ];
 
+// workerd can optimize SSR dependencies before listening; it needs the same cold start budget as Next.
 const helpers = (
   ctx: Context
-) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") ? 300 : 100}): Promise<void> => {
+) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") || (ctx.has("workers") && ctx.has("tanstack-start")) ? 300 : 100}): Promise<void> => {
   await retry(
     async () => {
       const response = await fetch(url);
