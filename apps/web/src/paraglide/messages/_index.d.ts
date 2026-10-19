@@ -664,7 +664,7 @@ export declare const api_clients_same: ((inputs?: Api_Clients_SameInputs, option
 /**
 * | output |
 * | --- |
-* | "Cloudflare deployment through Void" |
+* | "deployment to Cloudflare through Void" |
 *
 * @param {Cap_Cloudflare_DeploymentInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1798,7 +1798,7 @@ export declare const desc_vite_plus: ((inputs?: Desc_Vite_PlusInputs, options?: 
 /**
 * | output |
 * | --- |
-* | "Cloudflare deployment for a SPA, SPA + Hono, or TanStack Start (preview)" |
+* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
 *
 * @param {Desc_VoidInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

@@ -440,7 +440,7 @@ export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => L
 };
 
 export const cap_cloudflare_deployment = /** @type {(inputs: Cap_Cloudflare_DeploymentInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Cloudflare deployment through Void`)
+	return /** @type {LocalizedString} */ (`deployment to Cloudflare through Void`)
 };
 
 export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
@@ -769,7 +769,7 @@ export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => Local
 };
 
 export const desc_void = /** @type {(inputs: Desc_VoidInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Cloudflare deployment for a SPA, SPA + Hono, or TanStack Start (preview)`)
+	return /** @type {LocalizedString} */ (`Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)`)
 };
 
 export const desc_workers = /** @type {(inputs: Desc_WorkersInputs) => LocalizedString} */ () => {

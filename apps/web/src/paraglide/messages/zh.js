@@ -768,7 +768,7 @@ export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => Local
 };
 
 export const desc_void = /** @type {(inputs: Desc_VoidInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`将 SPA、SPA + Hono 或 TanStack Start 部署到 Cloudflare（预览）`)
+	return /** @type {LocalizedString} */ (`将 SPA、SPA + Hono 或 TanStack Start 部署到 Cloudflare Workers（预览）`)
 };
 
 export const desc_workers = /** @type {(inputs: Desc_WorkersInputs) => LocalizedString} */ () => {
