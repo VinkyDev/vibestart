@@ -50,9 +50,6 @@ export const Header = () => (
       <span className="text-ui hidden font-semibold tracking-tight min-[400px]:inline">
         vibestart
       </span>
-      <span className="bg-foreground/5 text-muted-foreground hidden rounded-full px-2 py-0.5 text-xs md:inline">
-        beta
-      </span>
     </Link>
     <nav className="flex items-center gap-0.5 whitespace-nowrap">
       <Link className={navLink} params={{ _splat: "" }} to="/docs/$">
