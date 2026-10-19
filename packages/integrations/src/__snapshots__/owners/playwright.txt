@@ -10560,9 +10560,9 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
-      ["/", "/login"].map(
-        async (route) => await waitForServer(`${baseURL}${route}`)
-      )
+      ["/", "/login"].map(async (route) => {
+        await waitForServer(`${baseURL}${route}`);
+      })
     );
   } catch (error) {
     await stopAll();
@@ -10683,7 +10683,9 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
-      ["/"].map(async (route) => await waitForServer(`${baseURL}${route}`))
+      ["/"].map(async (route) => {
+        await waitForServer(`${baseURL}${route}`);
+      })
     );
   } catch (error) {
     await stopAll();
@@ -10916,7 +10918,9 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
-      ["/"].map(async (route) => await waitForServer(`${baseURL}${route}`))
+      ["/"].map(async (route) => {
+        await waitForServer(`${baseURL}${route}`);
+      })
     );
   } catch (error) {
     await stopAll();
@@ -11309,9 +11313,9 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
-      ["/", "/login", "/todos"].map(
-        async (route) => await waitForServer(`${baseURL}${route}`)
-      )
+      ["/", "/login", "/todos"].map(async (route) => {
+        await waitForServer(`${baseURL}${route}`);
+      })
     );
   } catch (error) {
     await stopAll();
@@ -11432,9 +11436,9 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
-      ["/", "/todos"].map(
-        async (route) => await waitForServer(`${baseURL}${route}`)
-      )
+      ["/", "/todos"].map(async (route) => {
+        await waitForServer(`${baseURL}${route}`);
+      })
     );
   } catch (error) {
     await stopAll();

@@ -108,9 +108,9 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/api/health`);
     await Promise.all(
-      ["/", "/login", "/todos"].map(
-        async (route) => await waitForServer(`${baseURL}${route}`)
-      )
+      ["/", "/login", "/todos"].map(async (route) => {
+        await waitForServer(`${baseURL}${route}`);
+      })
     );
   } catch (error) {
     await stopAll();

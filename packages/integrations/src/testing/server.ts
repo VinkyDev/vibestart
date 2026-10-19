@@ -20,9 +20,9 @@ const warmUp = (ctx: Context) => {
   if (ctx.has("workers") && ctx.has("tanstack-start")) {
     // workerd restarts when SSR discovers dependencies, so each page participates in readiness.
     return [
-      `    await Promise.all([${routes.join(", ")}].map(async (route) =>`,
-      `      await waitForServer(\`\${baseURL}\${route}\`)`,
-      "    ));",
+      `    await Promise.all([${routes.join(", ")}].map(async (route) => {`,
+      `      await waitForServer(\`\${baseURL}\${route}\`);`,
+      "    }));",
     ];
   }
 
