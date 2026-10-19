@@ -24,7 +24,7 @@ vp run dev
 
 Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api.
 
-The browser always talks to one origin: in development Vite proxies `/rpc` and `/api` to the server, in production the server serves the SPA. Session cookies therefore stay first-party and no CORS is configured. `BETTER_AUTH_URL` is that browser-facing origin (`http://localhost:5173` in development), not the server's own port.
+The browser always talks to one origin: in development Vite proxies `/api` to the server, in production the server serves the SPA. Session cookies therefore stay first-party and no CORS is configured. `BETTER_AUTH_URL` is that browser-facing origin (`http://localhost:5173` in development), not the server's own port.
 
 ## Environment
 
@@ -67,10 +67,12 @@ This deployment option is in preview. It deploys to your own Cloudflare account;
 vp exec --filter @my-app/server void connect --platform cloudflare
 vp exec --filter @my-app/server void secret put BETTER_AUTH_SECRET
 vp exec --filter @my-app/server void secret put BETTER_AUTH_URL
-DATABASE_URL='postgres-or-mysql-production-url' vp run deploy
+DATABASE_URL='postgresql://user:password@host:5432/my-app' vp run deploy
 ```
 
-The deploy script requires DATABASE_URL in the shell before reading any local .env. It applies Drizzle migrations first, then deploys and creates Hyperdrive. Use the production dialect's full connection URL. Void's built-in database migrations and auth are not used.
+`BETTER_AUTH_URL` is the origin users open: your custom domain, or `https://my-app.<your-subdomain>.workers.dev`. Void checks `env.ts` before uploading, so set both secrets before the first deploy.
+
+The deploy script requires `DATABASE_URL` in the shell before reading any local `.env`. It applies Drizzle migrations first, then deploys and creates Hyperdrive. Keep `DATABASE_URL` out of Worker secrets: the Worker prefers it over Hyperdrive, which is how `void dev` reaches a local database. Void's built-in database migrations and auth are not used.
 
 Commit `void.lock.json`, which belongs to your deployment state and is never generated or merged by vibestart. Run `void prepare` from `apps/server` after cloning; the package prepare script also runs it on install. Local `.env` values are not uploaded. Use `void secret put` for production server values.
 

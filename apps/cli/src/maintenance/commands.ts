@@ -151,7 +151,7 @@ const added = async (
     return blueprint;
   }
 
-  // Auxiliary choices follow the selected product; never replace a user's framework or database.
+  // Auxiliary choices the project leaves open follow the selected product, such as the runtime of a SPA without a server.
   const required = Object.fromEntries(
     Object.entries(choices).filter(([kind]) => {
       const integrations = registry.integrations.filter(
@@ -168,6 +168,16 @@ const added = async (
   if (stack === undefined) {
     throw new MaintenanceError(
       resolution.violations.map(({ reason }) => reason).join("\n")
+    );
+  }
+
+  const replaced = Object.entries(blueprint.stack).flatMap(([kind, id]) =>
+    stack[kind] === id ? [] : [`${id} with ${stack[kind] ?? "nothing"}`]
+  );
+
+  if (replaced.length > 0) {
+    throw new MaintenanceError(
+      `Adding ${selected.join(", ")} would replace ${replaced.join(", ")}; this needs an explicit migration.`
     );
   }
 

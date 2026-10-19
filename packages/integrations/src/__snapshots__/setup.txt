@@ -607,15 +607,21 @@ vp install  # writes pnpm-lock.yaml
 vp run db:client  # writes packages/db/src/generated/**
 vp run typegen  # writes apps/web/.next/**, apps/web/next-env.d.ts
 
-# setup · 332 stacks
+# setup · 340 stacks
 #   spa-docker
 #   spa-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
 #   spa-electron-expo-docker-e2e
+#   spa-electron-expo-void
+#   spa-electron-expo-void-e2e
+#   spa-electron-void
+#   spa-electron-void-e2e
 #   spa-expo-docker
 #   spa-expo-docker-e2e
+#   spa-expo-void
+#   spa-expo-void-e2e
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-docker
@@ -808,6 +814,8 @@ vp run typegen  # writes apps/web/.next/**, apps/web/next-env.d.ts
 #   spa-hono-sqlite-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-docker
 #   spa-hono-sqlite-expo-docker-e2e
+#   spa-void
+#   spa-void-e2e
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker
@@ -941,35 +949,6 @@ vp run typegen  # writes apps/web/.next/**, apps/web/next-env.d.ts
 #   tanstack-start-self-sqlite-expo-docker
 #   tanstack-start-self-sqlite-expo-docker-e2e
 vp install  # writes pnpm-lock.yaml
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
-
-# setup · 24 stacks
-#   spa-electron-expo-void
-#   spa-electron-expo-void-e2e
-#   spa-electron-void
-#   spa-electron-void-e2e
-#   spa-expo-void
-#   spa-expo-void-e2e
-#   spa-void
-#   spa-void-e2e
-#   tanstack-start-expo-void
-#   tanstack-start-expo-void-e2e
-#   tanstack-start-self-mysql-expo-void
-#   tanstack-start-self-mysql-expo-void-e2e
-#   tanstack-start-self-mysql-void
-#   tanstack-start-self-mysql-void-e2e
-#   tanstack-start-self-orpc-expo-void
-#   tanstack-start-self-orpc-expo-void-e2e
-#   tanstack-start-self-orpc-void
-#   tanstack-start-self-orpc-void-e2e
-#   tanstack-start-self-postgres-expo-void
-#   tanstack-start-self-postgres-expo-void-e2e
-#   tanstack-start-self-postgres-void
-#   tanstack-start-self-postgres-void-e2e
-#   tanstack-start-void
-#   tanstack-start-void-e2e
-vp install  # writes pnpm-lock.yaml
-vp exec --filter @my-app/web void prepare  # writes apps/web/.void/**
 vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 40 stacks
@@ -1833,6 +1812,27 @@ vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 #   tanstack-start-self-postgres-prisma-expo-docker-e2e
 vp install  # writes pnpm-lock.yaml
 vp run db:client  # writes packages/db/src/generated/**
+vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+
+# setup · 16 stacks
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+vp install  # writes pnpm-lock.yaml
+vp exec --filter @my-app/web void prepare  # writes apps/web/.void/**
 vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 24 stacks

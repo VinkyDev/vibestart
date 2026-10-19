@@ -17,13 +17,14 @@ import {
   hasWebApp,
   proxiesToHono,
   renderEnvModule,
+  rpcPath,
   serverEnv,
   stackHeadline,
   closeDatabase as closeDatabaseStatement,
 } from "#/app.ts";
 import { composeServers, dockerRuntime } from "#/docker.ts";
 import { envFiles } from "#/env-files.ts";
-import { templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import {
   agentsConventions,
@@ -66,7 +67,7 @@ const healthHandler = (ctx: Context) => {
 
 const apiRoutes = (ctx: Context) => {
   if (ctx.has("orpc")) {
-    return ['  .all("/rpc/*", rpc)', '  .all("/api/*", openApi)'];
+    return [`  .all("${rpcPath(ctx)}/*", rpc)`, '  .all("/api/*", openApi)'];
   }
 
   const services = ctx.has("better-auth") ? "{ auth, db }" : "{ db }";
@@ -301,7 +302,7 @@ const services = (ctx: Context) => {
 
 const apiOwns = (ctx: Context) => {
   if (ctx.has("orpc")) {
-    return ["oRPC at `/rpc`", "OpenAPI and docs at `/api`"];
+    return [`oRPC at \`${rpcPath(ctx)}\``, "OpenAPI and docs at `/api`"];
   }
 
   return ctx.has("openapi")
@@ -347,7 +348,7 @@ const standalone = (ctx: Context) => {
     ? [
         contribute(
           agentsNotes,
-          `\`vp run dev\` serves the API on :3000. Request flow: client → \`POST /rpc/*\` → \`packages/api\` procedure${databaseFlow(ctx)}. \`/api/*\` serves the same procedures as OpenAPI, with reference docs at \`/api\`.`
+          `\`vp run dev\` serves the API on :3000. Request flow: client → \`POST ${rpcPath(ctx)}/*\` → \`packages/api\` procedure${databaseFlow(ctx)}. \`/api/*\` serves the same procedures as OpenAPI, with reference docs at \`/api\`.`
         ),
         contribute(
           readmeOpen,
@@ -521,15 +522,40 @@ const serverPackage = (ctx: Context) =>
         },
   });
 
+const orpcPath = "apps/server/src/orpc.ts";
+
+// A Worker builds services per request, so its database-backed oRPC templates receive them; the stateless one only moves its RPC prefix.
+const orpcFiles = (ctx: Context) => {
+  const variant = apiVariant(ctx);
+
+  if (!ctx.has("workers")) {
+    return templateFiles(ctx, `hono/orpc-${variant}`);
+  }
+
+  if (variant !== "stateless") {
+    return templateFiles(ctx, `hono/workers-orpc-${variant}`);
+  }
+
+  const set = "hono/orpc-stateless";
+
+  return [
+    ...templateFiles(ctx, set, { except: [orpcPath] }),
+    file(
+      orpcPath,
+      replaceOnce(
+        templateContent(ctx, set, orpcPath),
+        '"/rpc"',
+        `"${rpcPath(ctx)}"`,
+        `${set}/${orpcPath}`
+      )
+    ),
+  ];
+};
+
 export const hono = defineIntegration({
   contribute: (ctx) => [
     ...contextFiles(ctx),
-    ...(ctx.has("orpc")
-      ? templateFiles(
-          ctx,
-          `hono/${ctx.has("workers") && ctx.stack.database !== undefined ? "workers-" : ""}orpc-${apiVariant(ctx)}`
-        )
-      : []),
+    ...(ctx.has("orpc") ? orpcFiles(ctx) : []),
     file("apps/server/vite.config.ts", renderViteConfig(ctx)),
     ...(ctx.has("workers")
       ? []

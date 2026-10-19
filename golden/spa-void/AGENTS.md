@@ -50,7 +50,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 | ------------------- | --------------------------------------------------------------------------------- |
 | `apps/web`          | React SPA: TanStack Router file routes, TanStack Query; e2e tests in `tests/e2e/` |
 | `packages/ui`       | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`        |
-| `scripts/deploy.ts` | explicit production database migration, then Void deployment                      |
+| `scripts/deploy.ts` | Void deployment                                                                   |
 | `packages/config`   | Shared TypeScript presets                                                         |
 
 `vp run dev` serves the app on :5173. `vp run build` writes static files to `apps/web/dist`; there is no server.
@@ -58,8 +58,8 @@ Converge on the simplest durable design that meets current requirements, and lan
 ## Conventions
 
 - **UI.** From `packages/ui`, run `pnpm dlx shadcn@latest add <component>` and import `@my-app/ui/components/<name>`. Files in `packages/ui/src/components` are vendored shadcn and are not linted. App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout. When the first file lands in `src/hooks`, add `"./hooks/*": "./src/hooks/*.ts"` to the package exports (`components.json` already aliases that path).
-- **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`; regenerate ignored types with `vp exec --filter @my-app/web void prepare`.
-- **Generated.** `routeTree.gen.ts` and `.void/` are tool output. Leave them unchanged. Run void prepare after cloning to regenerate Worker types
+- **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`.
+- **Generated.** `routeTree.gen.ts` is tool output. Leave it unchanged.
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
 - **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.
 - **Ultracite.** Run `vp check` to apply the Ultracite lint and formatting presets, including framework rules and anti-slop checks for AI-written code. Fix the reported code instead of disabling the rules.

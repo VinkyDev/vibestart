@@ -20,7 +20,7 @@ import {
   stackHeadline,
 } from "#/app.ts";
 import { commentedShell } from "#/format.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
   agentsMap,
@@ -106,6 +106,38 @@ const packageOwns = (ctx: Context) => {
   return `Drizzle schema${dialect} (\`src/schema/\`${tables}), relations, migrations (\`src/migrations/\`), \`createDb\``;
 };
 
+const clientPath = "packages/db/src/index.ts";
+
+// A Worker opens a client per request behind Hyperdrive's pool. Workers forbid eval, and Drizzle parses Postgres arrays itself, so the type lookup is a wasted round trip.
+const workerClientOptions = {
+  mysql: [
+    "createPool({ uri: url })",
+    "createPool({ uri: url, disableEval: true, connectionLimit: 1 })",
+  ],
+  postgres: [
+    'connection: { client_min_messages: "warning" }, url',
+    'connection: { client_min_messages: "warning" }, fetch_types: false, max: 5, url',
+  ],
+} as const;
+
+const workerClient = (
+  ctx: Context,
+  database: keyof typeof workerClientOptions
+) => {
+  const set = `drizzle/${database}/common`;
+  const [from, to] = workerClientOptions[database];
+
+  return file(
+    clientPath,
+    replaceOnce(
+      templateContent(ctx, set, clientPath),
+      from,
+      to,
+      `${set}/${clientPath}`
+    )
+  );
+};
+
 export const drizzle = defineIntegration({
   contribute: (ctx) => {
     const { dir } = serverApp(ctx);
@@ -113,29 +145,14 @@ export const drizzle = defineIntegration({
 
     return [
       ...templateFiles(ctx, "drizzle/common"),
-      ...templateFiles(ctx, `drizzle/${database}/common`, {
-        except: ctx.has("workers") ? ["packages/db/src/index.ts"] : [],
-      }),
-      ...(ctx.has("workers")
+      ...(ctx.has("workers") && database !== "sqlite"
         ? [
-            file(
-              "packages/db/src/index.ts",
-              templateContent(
-                ctx,
-                `drizzle/${database}/common`,
-                "packages/db/src/index.ts"
-              )
-                .replace(
-                  "createPool({ uri: url })",
-                  "createPool({ uri: url, disableEval: true, connectionLimit: 1 })"
-                )
-                .replace(
-                  'connection: { client_min_messages: "warning" }, url',
-                  'connection: { client_min_messages: "warning" }, max: 5, url'
-                )
-            ),
+            ...templateFiles(ctx, `drizzle/${database}/common`, {
+              except: [clientPath],
+            }),
+            workerClient(ctx, database),
           ]
-        : []),
+        : templateFiles(ctx, `drizzle/${database}/common`)),
       ...(todosExample(ctx)
         ? templateFiles(ctx, `drizzle/${database}/${authVariant(ctx)}`)
         : []),

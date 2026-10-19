@@ -378,8 +378,9 @@ export const tanstackStart = defineIntegration({
           ...(database ? [["/app/apps/web/dist", "./dist"] as const] : []),
         ],
       }),
-      contribute(ignoredFiles, ".output"),
-      contribute(ignoredFiles, ".nitro"),
+      ...(ctx.has("workers")
+        ? []
+        : [".output", ".nitro"].map((glob) => contribute(ignoredFiles, glob))),
       contribute(agentsMap, {
         owns: `TanStack Start app: SSR file routes${hasBackend(ctx) ? ", server routes, server functions" : ""}; e2e tests in \`tests/e2e/\``,
         path: "apps/web",

@@ -7,6 +7,7 @@ export default defineConfig({
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });

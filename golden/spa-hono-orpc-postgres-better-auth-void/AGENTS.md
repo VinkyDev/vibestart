@@ -46,18 +46,18 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 ## Map
 
-| Path                | Owns                                                                                                                                           |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web`          | React SPA: TanStack Router file routes, TanStack Query, the Better Auth client; e2e tests in `tests/e2e/`                                      |
-| `apps/server`       | Hono on Workers: request-scoped `db` and `auth` passed to `createApp`, oRPC at `/rpc`, OpenAPI and docs at `/api`, the built SPA in production |
-| `packages/api`      | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type the web client is typed from                                   |
-| `packages/db`       | Drizzle schema (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`                            |
-| `packages/auth`     | Better Auth configuration (`createAuth`) and the `Session` type                                                                                |
-| `packages/ui`       | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                                     |
-| `scripts/deploy.ts` | explicit production database migration, then Void deployment                                                                                   |
-| `packages/config`   | Shared TypeScript presets                                                                                                                      |
+| Path                | Owns                                                                                                                                               |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web`          | React SPA: TanStack Router file routes, TanStack Query, the Better Auth client; e2e tests in `tests/e2e/`                                          |
+| `apps/server`       | Hono on Workers: request-scoped `db` and `auth` passed to `createApp`, oRPC at `/api/rpc`, OpenAPI and docs at `/api`, the built SPA in production |
+| `packages/api`      | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type the web client is typed from                                       |
+| `packages/db`       | Drizzle schema (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`                                |
+| `packages/auth`     | Better Auth configuration (`createAuth`) and the `Session` type                                                                                    |
+| `packages/ui`       | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                                         |
+| `scripts/deploy.ts` | explicit production database migration, then Void deployment                                                                                       |
+| `packages/config`   | Shared TypeScript presets                                                                                                                          |
 
-`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` → `api.*` (`src/lib/api.ts`) → `POST /rpc/*` → `packages/api` procedure → Drizzle → PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
+`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` → `api.*` (`src/lib/api.ts`) → `POST /api/rpc/*` → `packages/api` procedure → Drizzle → PostgreSQL. In development Vite proxies `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
 
 ## Conventions
 
@@ -68,7 +68,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 - **Protected page.** Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=…`. The session sits on the route context (`context.session`), loaded once per navigation in `__root.tsx` from `/api/auth/get-session`. This is an SPA: the page hide is UX, and the procedure is the security boundary. Sign-out clears the Query cache.
 - **Proxy.** Better Auth rate-limits by client IP. Behind a reverse proxy, set `advanced.ipAddress` in `packages/auth` to the header that proxy sets. With no proxy, leave forwarding headers untrusted.
 - **UI.** From `packages/ui`, run `pnpm dlx shadcn@latest add <component>` and import `@my-app/ui/components/<name>`. Files in `packages/ui/src/components` are vendored shadcn and are not linted. App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout. When the first file lands in `src/hooks`, add `"./hooks/*": "./src/hooks/*.ts"` to the package exports (`components.json` already aliases that path).
-- **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`; regenerate ignored types with `vp exec --filter @my-app/server void prepare`. Database clients belong to one request and close when its response stream finishes, including cancellation or failure.
+- **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`. Regenerate ignored types with `vp exec --filter @my-app/server void prepare`. Database clients belong to one request and close when its response stream finishes, including cancellation or failure.
 - **Generated.** `routeTree.gen.ts`, `packages/db/src/migrations/**`, and `.void/` are tool output. Leave them unchanged. Run void prepare after cloning to regenerate Worker types
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
 - **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.

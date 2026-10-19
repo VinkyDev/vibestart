@@ -16,6 +16,26 @@ const logServerError = (cause: unknown) => {
   }
 };
 
+const rpcHandler = new RPCHandler(appRouter, {
+  interceptors: [onError(logServerError)],
+});
+
+const openApiHandler = new OpenAPIHandler(appRouter, {
+  interceptors: [onError(logServerError)],
+  plugins: [
+    new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+      specGenerateOptions: {
+        info: {
+          title: "my-app",
+          version: "0.0.0",
+        },
+      },
+    }),
+  ],
+});
+
+// Handlers are shared by the isolate; services belong to the request.
 export const createRpc = ({ auth, db }: Services) => {
   const mount =
     (
@@ -23,7 +43,9 @@ export const createRpc = ({ auth, db }: Services) => {
       prefix: `/${string}`
     ) =>
     async (c: HonoContext) => {
-      const session = await auth.api.getSession({ headers: c.req.raw.headers });
+      const session = await auth.api.getSession({
+        headers: c.req.raw.headers,
+      });
 
       const { matched, response } = await handler.handle(c.req.raw, {
         context: { db, session },
@@ -35,28 +57,8 @@ export const createRpc = ({ auth, db }: Services) => {
         : await c.notFound();
     };
 
-  const rpc = mount(
-    new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
-    "/rpc"
-  );
-
-  const openApi = mount(
-    new OpenAPIHandler(appRouter, {
-      interceptors: [onError(logServerError)],
-      plugins: [
-        new OpenAPIReferencePlugin({
-          schemaConverters: [new ZodToJsonSchemaConverter()],
-          specGenerateOptions: {
-            info: {
-              title: "my-app",
-              version: "0.0.0",
-            },
-          },
-        }),
-      ],
-    }),
-    "/api"
-  );
-
-  return { rpc, openApi };
+  return {
+    openApi: mount(openApiHandler, "/api"),
+    rpc: mount(rpcHandler, "/api/rpc"),
+  };
 };

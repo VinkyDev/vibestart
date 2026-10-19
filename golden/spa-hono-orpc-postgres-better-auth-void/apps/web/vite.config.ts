@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/api": SERVER_URL,
-        "/rpc": SERVER_URL,
       },
     },
   };

@@ -15,45 +15,45 @@ const logServerError = (cause: unknown) => {
   }
 };
 
-export const createRpc = ({ db }: Services) => {
-const mount =
-  (
-    handler: RPCHandler<Context> | OpenAPIHandler<Context>,
-    prefix: `/${string}`
-  ) =>
-  async (c: HonoContext) => {
-    const { matched, response } = await handler.handle(c.req.raw, {
-      context: { db },
-      prefix,
-    });
+const rpcHandler = new RPCHandler(appRouter, {
+  interceptors: [onError(logServerError)],
+});
 
-    return matched
-      ? c.newResponse(response.body, response)
-      : await c.notFound();
-  };
-
-const rpc = mount(
-  new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
-  "/rpc"
-);
-
-const openApi = mount(
-  new OpenAPIHandler(appRouter, {
-    interceptors: [onError(logServerError)],
-    plugins: [
-      new OpenAPIReferencePlugin({
-        schemaConverters: [new ZodToJsonSchemaConverter()],
-        specGenerateOptions: {
-          info: {
-            title: "my-app",
-            version: "0.0.0",
-          },
+const openApiHandler = new OpenAPIHandler(appRouter, {
+  interceptors: [onError(logServerError)],
+  plugins: [
+    new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+      specGenerateOptions: {
+        info: {
+          title: "my-app",
+          version: "0.0.0",
         },
-      }),
-    ],
-  }),
-  "/api"
-);
+      },
+    }),
+  ],
+});
 
-  return { rpc, openApi };
+// Handlers are shared by the isolate; services belong to the request.
+export const createRpc = ({ db }: Services) => {
+  const mount =
+    (
+      handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+      prefix: `/${string}`
+    ) =>
+    async (c: HonoContext) => {
+      const { matched, response } = await handler.handle(c.req.raw, {
+        context: { db },
+        prefix,
+      });
+
+      return matched
+        ? c.newResponse(response.body, response)
+        : await c.notFound();
+    };
+
+  return {
+    openApi: mount(openApiHandler, "/api"),
+    rpc: mount(rpcHandler, "/api/rpc"),
+  };
 };

@@ -30,7 +30,7 @@ export const signUp = async (email = uniqueEmail()) => {
     .join("; ");
 
   const client: AppRouterClient = createORPCClient(
-    new RPCLink({ headers: { cookie }, url: `${e2eBaseURL}/rpc` })
+    new RPCLink({ headers: { cookie }, url: `${e2eBaseURL}/api/rpc` })
   );
 
   return { client, email };

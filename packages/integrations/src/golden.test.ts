@@ -53,7 +53,7 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
         ? ["vp run --filter @my-app/db db:init", "vp run db:client"]
         : []),
       ...(stack.framework === "next" ? ["vp run typegen"] : []),
-      ...(stack.deployment === "void"
+      ...(stack.deployment === "void" && stack.backend !== undefined
         ? [
             `vp exec --filter @my-app/${stack.backend === "hono" ? "server" : "web"} void prepare`,
           ]

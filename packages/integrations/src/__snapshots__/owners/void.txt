@@ -554,106 +554,6 @@ export {
   forward as PUT,
 } from "../_forward.ts";
 
-# apps/server/routes/rpc/[...path].ts · 40 stacks
-#   spa-hono-orpc-electron-expo-void
-#   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-electron-void
-#   spa-hono-orpc-electron-void-e2e
-#   spa-hono-orpc-expo-void
-#   spa-hono-orpc-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-void
-#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-void
-#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-void
-#   spa-hono-orpc-mysql-better-auth-void-e2e
-#   spa-hono-orpc-mysql-electron-expo-void
-#   spa-hono-orpc-mysql-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-electron-void
-#   spa-hono-orpc-mysql-electron-void-e2e
-#   spa-hono-orpc-mysql-expo-void
-#   spa-hono-orpc-mysql-expo-void-e2e
-#   spa-hono-orpc-mysql-void
-#   spa-hono-orpc-mysql-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-void
-#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-void
-#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-void
-#   spa-hono-orpc-postgres-better-auth-void-e2e
-#   spa-hono-orpc-postgres-electron-expo-void
-#   spa-hono-orpc-postgres-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-electron-void
-#   spa-hono-orpc-postgres-electron-void-e2e
-#   spa-hono-orpc-postgres-expo-void
-#   spa-hono-orpc-postgres-expo-void-e2e
-#   spa-hono-orpc-postgres-void
-#   spa-hono-orpc-postgres-void-e2e
-#   spa-hono-orpc-void
-#   spa-hono-orpc-void-e2e
-export {
-  forward as DELETE,
-  forward as GET,
-  forward as OPTIONS,
-  forward as PATCH,
-  forward as POST,
-  forward as PUT,
-} from "../_forward.ts";
-
-# apps/server/routes/rpc/index.ts · 40 stacks
-#   spa-hono-orpc-electron-expo-void
-#   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-electron-void
-#   spa-hono-orpc-electron-void-e2e
-#   spa-hono-orpc-expo-void
-#   spa-hono-orpc-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-void
-#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-void
-#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-void
-#   spa-hono-orpc-mysql-better-auth-void-e2e
-#   spa-hono-orpc-mysql-electron-expo-void
-#   spa-hono-orpc-mysql-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-electron-void
-#   spa-hono-orpc-mysql-electron-void-e2e
-#   spa-hono-orpc-mysql-expo-void
-#   spa-hono-orpc-mysql-expo-void-e2e
-#   spa-hono-orpc-mysql-void
-#   spa-hono-orpc-mysql-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-void
-#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-void
-#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-void
-#   spa-hono-orpc-postgres-better-auth-void-e2e
-#   spa-hono-orpc-postgres-electron-expo-void
-#   spa-hono-orpc-postgres-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-electron-void
-#   spa-hono-orpc-postgres-electron-void-e2e
-#   spa-hono-orpc-postgres-expo-void
-#   spa-hono-orpc-postgres-expo-void-e2e
-#   spa-hono-orpc-postgres-void
-#   spa-hono-orpc-postgres-void-e2e
-#   spa-hono-orpc-void
-#   spa-hono-orpc-void-e2e
-export {
-  forward as DELETE,
-  forward as GET,
-  forward as OPTIONS,
-  forward as PATCH,
-  forward as POST,
-  forward as PUT,
-} from "../_forward.ts";
-
 # apps/server/void.config.ts · 24 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
@@ -687,7 +587,8 @@ export default defineConfig({
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });
 
@@ -749,7 +650,8 @@ export default defineConfig({
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });
 
@@ -811,7 +713,8 @@ export default defineConfig({
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });
 
@@ -1047,11 +950,10 @@ export const startInstance = createStart(() => ({
 import { defineConfig } from "void/config";
 
 export default defineConfig({
-  routing: { notFound: "single-page-application" },
+  inference: { appType: "spa" },
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
   },
 });
 
@@ -1070,7 +972,8 @@ export default defineConfig({
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });
 
@@ -1096,11 +999,11 @@ import { defineConfig } from "void/config";
 export default defineConfig({
   database: "mysql",
   inference: { bindings: { db: true } },
-
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });
 
@@ -1126,11 +1029,11 @@ import { defineConfig } from "void/config";
 export default defineConfig({
   database: "pg",
   inference: { bindings: { db: true } },
-
   cloudflare: {
     name: "my-app",
     compatibility_date: "2026-10-01",
-    compatibility_flags: ["nodejs_compat"],
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
   },
 });
 

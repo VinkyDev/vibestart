@@ -15,6 +15,6 @@ export const createApp = ({ auth, db }: Services) => {
     .use(logger())
     .use(secureHeaders())
     .on(["GET", "POST"], "/api/auth/*", authHandler)
-    .all("/rpc/*", rpc)
+    .all("/api/rpc/*", rpc)
     .all("/api/*", openApi);
 };

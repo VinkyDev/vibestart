@@ -171,6 +171,14 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
 export const hasBackend = (ctx: Context) => ctx.stack.backend !== undefined;
 
+// Void runs a Hono Worker before static assets only under `/api`; any other route would put every asset request behind the Worker.
+export const rpcPath = (ctx: Context) =>
+  ctx.has("hono") && ctx.has("workers") ? "/api/rpc" : "/rpc";
+
+/** Path prefixes a web client forwards to the server. */
+export const serverPaths = (ctx: Context) =>
+  ctx.has("orpc") && rpcPath(ctx) === "/rpc" ? ["/rpc", "/api"] : ["/api"];
+
 export const proxiesToHono = (ctx: Context) =>
   ctx.has("hono") && hasWebApp(ctx) && !ctx.has("spa");
 

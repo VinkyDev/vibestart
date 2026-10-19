@@ -11,10 +11,12 @@ import {
   databaseFlow,
   hasBackend,
   homePage,
+  rpcPath,
+  serverPaths,
   stackHeadline,
   todosExample,
 } from "#/app.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
   agentsNotes,
@@ -27,11 +29,13 @@ const viteConfigPath = "apps/web/vite.config.ts";
 const rpcProxy = '        "/rpc": SERVER_URL,\n';
 
 const proxied = (ctx: Context) =>
-  ctx.has("orpc") ? "`/rpc` and `/api`" : "`/api`";
+  serverPaths(ctx)
+    .map((path) => `\`${path}\``)
+    .join(" and ");
 
 const flow = (ctx: Context) => {
   if (ctx.has("orpc")) {
-    return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\` → \`api.*\` (\`src/lib/api.ts\`) → \`POST /rpc/*\` → \`packages/api\` procedure${databaseFlow(ctx)}.`;
+    return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\` → \`api.*\` (\`src/lib/api.ts\`) → \`POST ${rpcPath(ctx)}/*\` → \`packages/api\` procedure${databaseFlow(ctx)}.`;
   }
 
   if (!ctx.has("openapi")) {
@@ -71,48 +75,42 @@ const open = (ctx: Context) => {
     : [`Open http://localhost:5173.${docs}`];
 };
 
-// Without oRPC the server has no `/rpc` for Vite to proxy.
 const viteConfig = (ctx: Context) => {
   if (!hasBackend(ctx)) {
-    if (ctx.has("workers")) {
-      const content = templateContent(ctx, "spa/static", viteConfigPath);
-
-      return [
-        file(
-          viteConfigPath,
-          content
-            .replace(
-              'import { defineConfig } from "vite-plus";',
-              'import { defineConfig } from "vite-plus";\nimport { voidPlugin } from "void";'
-            )
-            .replace("plugins: [", "plugins: [voidPlugin(), ")
-        ),
-      ];
-    }
-
     return templateFiles(ctx, "spa/static");
   }
 
   const config = templateContent(ctx, "spa/proxy", viteConfigPath);
 
-  if (!config.includes(rpcProxy)) {
-    throw new Error(`spa/proxy/${viteConfigPath} has no /rpc proxy`);
-  }
-
   return [
     file(
       viteConfigPath,
-      ctx.has("orpc") ? config : config.replace(rpcProxy, "")
+      serverPaths(ctx).includes("/rpc")
+        ? config
+        : replaceOnce(config, rpcProxy, "", `spa/proxy/${viteConfigPath}`)
     ),
   ];
 };
+
+const orpcClientPath = "apps/web/src/lib/api.ts";
+
+const orpcClient = (ctx: Context) =>
+  file(
+    orpcClientPath,
+    replaceOnce(
+      templateContent(ctx, "spa/orpc", orpcClientPath),
+      "/rpc`",
+      `${rpcPath(ctx)}\``,
+      `spa/orpc/${orpcClientPath}`
+    )
+  );
 
 export const spa = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "spa/common"),
     ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
     ...viteConfig(ctx),
-    ...(ctx.has("orpc") ? templateFiles(ctx, "spa/orpc") : []),
+    ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
     ...(todosExample(ctx) && !ctx.has("better-auth")
       ? templateFiles(ctx, "spa/todos")
       : []),

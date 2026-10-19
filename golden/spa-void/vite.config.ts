@@ -7,7 +7,7 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-const generatedFiles = ["**/routeTree.gen.ts", "**/.void/**"];
+const generatedFiles = ["**/routeTree.gen.ts"];
 
 const vendoredFiles = ["packages/ui/src/components/**"];
 

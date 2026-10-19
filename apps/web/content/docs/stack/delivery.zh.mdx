@@ -28,15 +28,15 @@ description: 使用 Docker 或 Void 部署应用，或将 Web 界面打包为 El
 
 <Tech href="https://void.cloud" icon="void" />
 
-Void 1.1.11 负责构建并部署到你自己的 Cloudflare Workers 账号。选择 `--deployment void --runtime workers` 可部署静态 SPA、由 Hono 托管的 SPA 或 TanStack Start。不支持 Next.js、独立 Hono 服务、TanStack Start + Hono 双服务组合。
+Void 1.1.11 负责构建并部署到你自己的 Cloudflare Workers 账号。选择 `--deployment void --runtime workers` 可部署静态 SPA、由 Hono 托管的 SPA 或 TanStack Start。不支持 Next.js、独立 Hono 服务、TanStack Start + Hono 双服务组合。静态 SPA 只部署静态资源。使用 Hono 时，Cloudflare 直接提供 SPA 的静态资源，仅 `/api/*` 由 Worker 处理，因此 oRPC 位于 `/api/rpc`。
 
 服务端使用外部 PostgreSQL 或 MySQL + Drizzle，可选 Better Auth。Hyperdrive 管理生产连接池；每个请求创建客户端，在响应流完成或失败后释放。不使用 Void 自带迁移和登录；不支持 SQLite、Prisma、MongoDB、D1 和 Void Platform。
 
-克隆后按生成的 README 重建本地 `.env`，在部署应用目录执行 `void prepare` 生成被忽略的 Worker 类型。安装依赖时也通过 `prepare` 自动运行。Worker 与 Node 工具分别使用独立的 TypeScript 配置。
+克隆后按生成的 README 重建本地 `.env`。带服务端的技术栈需在部署应用目录执行 `void prepare` 生成被忽略的 Worker 类型；安装依赖时也会通过 `prepare` 自动运行。Worker 与 Node 工具分别使用独立的 TypeScript 配置。
 
 按 README 使用 `void connect --platform cloudflare` 登录，并用 `void secret put` 设置生产服务端变量。本地 `.env` 不会上传。`DATABASE_URL='生产地址' vp run deploy` 先执行 Drizzle 迁移，必要时构建 SPA，再执行 `void deploy`。数据库地址必须显式存在于部署命令的 shell，避免本地 `.env` 静默选中了迁移目标。提交记录部署状态的 `void.lock.json`；vibestart 维护命令不会生成或合并它。生成项目不包含 GitHub Actions。
 
-`vibestart add void --dry-run` 可预览给兼容项目添加部署。它会自动推导必需的辅助运行时，保留框架和数据库选择。使用 `add void --no-install --yes` 应用配置，移植所有 `manual` 业务源码变更，再按 `next` 完成安装和检查。已有 Docker 不会被静默替换。
+`vibestart add void --dry-run` 可预览给没有服务端的 SPA 添加该部署，项目随后运行在 Workers 上。已有服务端的项目保留 Node.js 或 Bun 运行时：`add` 不会替换它，因为把服务端代码迁到 Workers 属于迁移。已有 Docker 同样不会被静默替换。
 
 ## Electron [#electron]
 

@@ -11,6 +11,7 @@ import {
   hasBackend,
   hasWebApp,
   listStack,
+  rpcPath,
   stackHeadline,
   todosExample,
 } from "#/app.ts";
@@ -18,7 +19,7 @@ import { envFiles } from "#/env-files.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
 import { openapiQueriesContent } from "#/openapi.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides, ultracitePresets } from "#/ultracite.ts";
 import {
   agentsConventions,
@@ -236,21 +237,6 @@ const apiUrl = {
   name: "EXPO_PUBLIC_API_URL",
 };
 
-const replaceOnce = (
-  content: string,
-  from: string,
-  to: string,
-  where: string
-) => {
-  const parts = content.split(from);
-
-  if (parts.length !== 2) {
-    throw new Error(`${where} must hold ${from} once`);
-  }
-
-  return parts.join(to);
-};
-
 const envImport = 'import { apiUrl } from "#src/env.ts";';
 
 // `call` places the session options in the client's constructor call.
@@ -258,10 +244,9 @@ const withSession = (
   ctx: Context,
   set: string,
   path: string,
+  content: string,
   call: readonly [from: string, to: (options: string) => string]
 ) => {
-  const content = templateContent(ctx, set, path);
-
   if (!ctx.has("better-auth")) {
     return file(path, content);
   }
@@ -294,10 +279,18 @@ const orpcClientPath = "apps/mobile/src/lib/api.ts";
 
 const orpcFiles = (ctx: Context) => [
   ...templateFiles(ctx, "expo/orpc", { except: [orpcClientPath] }),
-  withSession(ctx, "expo/orpc", orpcClientPath, [
-    "new RPCLink({ ",
-    (options) => `new RPCLink({\n${options}\n`,
-  ]),
+  withSession(
+    ctx,
+    "expo/orpc",
+    orpcClientPath,
+    replaceOnce(
+      templateContent(ctx, "expo/orpc", orpcClientPath),
+      "/rpc`",
+      `${rpcPath(ctx)}\``,
+      `expo/orpc/${orpcClientPath}`
+    ),
+    ["new RPCLink({ ", (options) => `new RPCLink({\n${options}\n`]
+  ),
   contribute(packageJson, {
     dependencies: ["@orpc/client", "@orpc/tanstack-query"],
     devDependencies: [`${ctx.scope}/api`],
@@ -306,6 +299,7 @@ const orpcFiles = (ctx: Context) => [
 ];
 
 const openapiQueriesPath = "apps/web/src/lib/api.ts";
+const openapiClientPath = "apps/mobile/src/lib/client.ts";
 
 // The queries are the web app's, over a client that reaches the server's origin.
 const openapiFiles = (ctx: Context) => [
@@ -318,10 +312,13 @@ const openapiFiles = (ctx: Context) => [
       `openapi/web/${openapiQueriesPath}`
     )
   ),
-  withSession(ctx, "expo/openapi", "apps/mobile/src/lib/client.ts", [
-    "/api`)",
-    (options) => `/api\`, {\n${options}\n})`,
-  ]),
+  withSession(
+    ctx,
+    "expo/openapi",
+    openapiClientPath,
+    templateContent(ctx, "expo/openapi", openapiClientPath),
+    ["/api`)", (options) => `/api\`, {\n${options}\n})`]
+  ),
   contribute(packageJson, {
     dependencies: ["hono"],
     devDependencies: [`${ctx.scope}/api`],

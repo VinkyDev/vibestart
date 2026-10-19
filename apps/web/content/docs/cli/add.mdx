@@ -9,7 +9,7 @@ npx vibestart-cli add knip ultracite docker --dry-run
 npx vibestart-cli add knip ultracite docker --yes
 ```
 
-Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks; Docker and Void add deployment configuration. The package manager is preserved; Void derives the required Workers runtime.
+Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks; Docker and Void add deployment configuration. Adding capabilities preserves the package manager and application runtime.
 
 ## Preview and apply [#apply]
 
@@ -25,4 +25,4 @@ By default, the command installs once, then runs `vp check`, selected Knip check
 
 Adding Ultracite may require changes to existing application code to satisfy new rules. When a check fails, the files stay written: fix the code and rerun the check, or undo with Git. Adding capabilities does not migrate databases automatically.
 
-Void is also available for compatible SPA, SPA + Hono, and TanStack Start projects. `add void` derives the required Workers runtime while retaining framework and database choices. Port all `manual` source changes; an existing deployment cannot be replaced implicitly. `void.lock.json` is user-owned deployment state and is never merged. See [Void delivery](/docs/stack/delivery#void).
+`add void` deploys a SPA without a server to Cloudflare; such a project has no runtime yet, and Void serves it as static assets on Workers. A project with a server already runs on Node.js or Bun, and `add` refuses to replace that runtime: moving server code to Workers is a migration. Create a Void project with `--deployment void --runtime workers` instead. An existing deployment is never replaced implicitly, and `void.lock.json` is user-owned deployment state that is never merged. See [Void delivery](/docs/stack/delivery#void).

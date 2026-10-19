@@ -22,7 +22,7 @@ npx --yes vibestart-cli add knip ultracite --yes --json
 
 Pass capability IDs as separate positional arguments. Currently Knip, Ultracite, Docker, and Void support addition; use the live list for the running release. Add Docker with `npx --yes vibestart-cli add docker`, following the same preview/apply workflow. Already selected capabilities are not duplicated.
 
-`requires-upgrade` means the recorded template and current CLI release differ. Preview an upgrade first; apply it only if it fits the user's requested scope. `add` preserves framework, database, and package-manager choices. Adding Void rederives the required auxiliary runtime as Workers. For Void, apply with `--no-install`, port all `manual` source changes, then run the installation and checks in `next`; it does not migrate business code automatically. An occupied deployment choice is never replaced implicitly. `void.lock.json` belongs to the user and is outside maintenance.
+`requires-upgrade` means the recorded template and current CLI release differ. Preview an upgrade first; apply it only if it fits the user's requested scope. `add` is not a framework, database, runtime, or package-manager migration command. `add void` applies to a SPA without a server, which has no runtime yet; for a project with a server it fails, and Void needs a new project created with `--deployment void --runtime workers`. An occupied deployment choice is never replaced implicitly. `void.lock.json` belongs to the user and is outside maintenance.
 
 ## Upgrade templates
 
