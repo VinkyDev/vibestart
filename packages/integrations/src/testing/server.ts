@@ -21,7 +21,7 @@ const warmUp = (ctx: Context) => {
     // workerd restarts when SSR discovers dependencies, so each page participates in readiness.
     return [
       `    await Promise.all([${routes.join(", ")}].map(async (route) =>`,
-      "      await waitForServer(`${baseURL}${route}`)",
+      `      await waitForServer(\`\${baseURL}\${route}\`)`,
       "    ));",
     ];
   }
