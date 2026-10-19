@@ -52,10 +52,10 @@ The `/update-deps` agent skill (`.agents/skills/update-deps`) runs this whole fl
 
 ## Releasing the CLI
 
-`vibestart-cli` is published only by `.github/workflows/release.yml`. Do not run `npm publish` from a machine: it publishes `package.json` as written, and `catalog:` dependencies then reach the registry unresolved (this shipped once as an uninstallable `0.1.0-beta.0`).
+`vibestart-cli` is published only by `.github/workflows/release.yml`. Do not run `npm publish` from a machine: it publishes `package.json` as written, and `catalog:` dependencies then reach the registry unresolved (this shipped once as an uninstallable release).
 
 1. Set `version` in `apps/cli/package.json` and merge it to `main` with `vp run ready` passing.
-2. Push a tag that equals the version: `git tag -a v0.1.0-beta.2 -m v0.1.0-beta.2 && git push origin v0.1.0-beta.2`.
+2. Push a tag that equals the version: `git tag -a vX.Y.Z -m vX.Y.Z && git push origin vX.Y.Z`.
 3. The workflow runs `vp run ready`, pulls the verification records and stops unless every stack has one at the current output, packs with pnpm, and publishes through npm trusted publishing, with provenance and no token or one-time password. A prerelease suffix goes to the `beta` dist-tag, anything else to `latest`.
 4. It then creates the GitHub release with generated notes, and POSTs `CLOUDFLARE_DEPLOY_HOOK`. That hook builds `main` on Workers Builds, which is how the Studio is published.
 

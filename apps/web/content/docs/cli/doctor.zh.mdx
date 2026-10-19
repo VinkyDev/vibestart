@@ -13,7 +13,7 @@ npx vibestart-cli doctor --cwd my-app --json
 
 终端会列出项目模板版本、检查发现的问题、冲突文件、升级将应用的模板变化，以及需要手动移植的变化。`--json` 提供相同检查结果的结构化输出，供脚本和编码 Agent 使用。
 
-默认查询的是 npm 的 `latest` 通道，而非 `beta` 通道。如需预览 beta 模板的更新，请运行 `npx vibestart-cli upgrade --dry-run`。`--offline` 会关闭这项网络查询。发现新版本仅作为提示，不会因此判定项目存在问题。使用 `--offline` 时，如果项目记录的是其他版本，则不做比较，因为该版本的模板需要从 npm 获取。
+默认查询的是 npm 的 `latest` 通道。`--offline` 会关闭这项网络查询。发现新版本仅作为提示，不会因此判定项目存在问题。使用 `--offline` 时，如果项目记录的是其他版本，则不做比较，因为该版本的模板需要从 npm 获取。
 
 ## 处理检查结果 [#results]
 
