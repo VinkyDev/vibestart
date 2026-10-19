@@ -118,7 +118,23 @@ const renderWorkerApp = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
   const auth = ctx.has("better-auth");
   const api = ctx.stack.api !== undefined;
+  const rpc = ctx.has("orpc");
   const names = auth ? "auth, db" : "db";
+
+  const handlers = [
+    ...(rpc && database
+      ? [`const { rpc, openApi } = createRpc({ ${names} });`, ""]
+      : []),
+    ...(auth
+      ? [
+          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
+          "",
+        ]
+      : []),
+    ...(!api && database ? [...healthHandler(ctx), ""] : []),
+  ];
+
+  const factory = `export const createApp = (${database ? `{ ${names} }: Services` : ""}) =>`;
 
   return [
     ...(ctx.has("openapi")
@@ -131,24 +147,23 @@ const renderWorkerApp = (ctx: Context) => {
     'import { secureHeaders } from "hono/secure-headers";',
     "",
     ...(database ? ['import type { Services } from "#src/context.ts";'] : []),
-    ...(ctx.has("orpc") ? ['import { createRpc } from "#src/orpc.ts";'] : []),
+    ...(rpc
+      ? [
+          `import { ${database ? "createRpc" : "openApi, rpc"} } from "#src/orpc.ts";`,
+        ]
+      : []),
     "",
-    `export const createApp = (${database ? `{ ${names} }: Services` : ""}) => {`,
-    ...(ctx.has("orpc")
-      ? [
-          `const { rpc, openApi } = createRpc(${database ? `{ ${names} }` : ""});`,
-          "",
-        ]
-      : []),
-    ...(auth
-      ? [
-          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
-          "",
-        ]
-      : []),
-    ...(api ? [] : [...healthHandler(ctx), ""]),
-    ...routes(ctx).map((line) => line.replace("export const app =", "return")),
-    "};",
+    ...(!api && !database ? [...healthHandler(ctx), ""] : []),
+    ...(handlers.length === 0
+      ? routes(ctx).map((line) => line.replace("export const app =", factory))
+      : [
+          `${factory} {`,
+          ...handlers,
+          ...routes(ctx).map((line) =>
+            line.replace("export const app =", "return")
+          ),
+          "};",
+        ]),
     "",
   ].join("\n");
 };
@@ -354,7 +369,7 @@ const standalone = (ctx: Context) => {
 const renderViteConfig = (ctx: Context) => {
   if (ctx.has("workers")) {
     return `import { defineConfig } from "vite-plus";
-import { voidPlugin } from "void/vite";
+import { voidPlugin } from "void";
 
 export default defineConfig({
   plugins: [voidPlugin()],
@@ -505,7 +520,7 @@ export const hono = defineIntegration({
     ...(ctx.has("orpc")
       ? templateFiles(
           ctx,
-          `hono/${ctx.has("workers") ? "workers-" : ""}orpc-${apiVariant(ctx)}`
+          `hono/${ctx.has("workers") && ctx.stack.database !== undefined ? "workers-" : ""}orpc-${apiVariant(ctx)}`
         )
       : []),
     file("apps/server/vite.config.ts", renderViteConfig(ctx)),

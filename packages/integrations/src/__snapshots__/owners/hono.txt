@@ -1672,14 +1672,10 @@ import type { Context } from "hono";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 
-export const createApp = () => {
-  const health = (c: Context) => c.json({ status: "ok" });
+const health = (c: Context) => c.json({ status: "ok" });
 
-  return new Hono()
-    .use(logger())
-    .use(secureHeaders())
-    .get("/api/health", health);
-};
+export const createApp = () =>
+  new Hono().use(logger()).use(secureHeaders()).get("/api/health", health);
 
 # apps/server/src/app.ts · 16 stacks
 #   spa-hono-mysql-better-auth-electron-expo-void
@@ -1775,12 +1771,8 @@ import { secureHeaders } from "hono/secure-headers";
 
 import { createApi } from "@my-app/api";
 
-export const createApp = () => {
-  return new Hono()
-    .use(logger())
-    .use(secureHeaders())
-    .route("/api", createApi());
-};
+export const createApp = () =>
+  new Hono().use(logger()).use(secureHeaders()).route("/api", createApi());
 
 # apps/server/src/app.ts · 16 stacks
 #   spa-hono-openapi-mysql-better-auth-electron-expo-void
@@ -1843,12 +1835,11 @@ import { createApi } from "@my-app/api";
 
 import type { Services } from "#src/context.ts";
 
-export const createApp = ({ db }: Services) => {
-  return new Hono()
+export const createApp = ({ db }: Services) =>
+  new Hono()
     .use(logger())
     .use(secureHeaders())
     .route("/api", createApi({ db }));
-};
 
 # apps/server/src/app.ts · 8 stacks
 #   spa-hono-orpc-electron-expo-void
@@ -1863,17 +1854,14 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 
-import { createRpc } from "#src/orpc.ts";
+import { openApi, rpc } from "#src/orpc.ts";
 
-export const createApp = () => {
-  const { rpc, openApi } = createRpc();
-
-  return new Hono()
+export const createApp = () =>
+  new Hono()
     .use(logger())
     .use(secureHeaders())
     .all("/rpc/*", rpc)
     .all("/api/*", openApi);
-};
 
 # apps/server/src/app.ts · 16 stacks
 #   spa-hono-orpc-mysql-better-auth-electron-expo-void
@@ -3324,15 +3312,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -3394,15 +3392,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -3472,15 +3480,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -3542,15 +3560,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -7288,7 +7316,7 @@ export const env = createEnv({
   },
 });
 
-# apps/server/src/orpc.ts · 36 stacks
+# apps/server/src/orpc.ts · 44 stacks
 #   hono-orpc-bun-docker
 #   hono-orpc-docker
 #   hono-orpc-expo-bun-docker
@@ -7313,10 +7341,18 @@ export const env = createEnv({
 #   spa-hono-orpc-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-electron-expo-docker
 #   spa-hono-orpc-electron-expo-docker-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
 #   spa-hono-orpc-expo-bun-docker
 #   spa-hono-orpc-expo-bun-docker-e2e
 #   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
 #   tanstack-start-hono-orpc-bun-docker
 #   tanstack-start-hono-orpc-bun-docker-e2e
 #   tanstack-start-hono-orpc-docker
@@ -7929,74 +7965,6 @@ export const openApi = mount(
   }),
   "/api"
 );
-
-# apps/server/src/orpc.ts · 8 stacks
-#   spa-hono-orpc-electron-expo-void
-#   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-electron-void
-#   spa-hono-orpc-electron-void-e2e
-#   spa-hono-orpc-expo-void
-#   spa-hono-orpc-expo-void-e2e
-#   spa-hono-orpc-void
-#   spa-hono-orpc-void-e2e
-import { OpenAPIHandler } from "@orpc/openapi/fetch";
-import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
-import { ORPCError, onError } from "@orpc/server";
-import { RPCHandler } from "@orpc/server/fetch";
-import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import type { Context as HonoContext } from "hono";
-
-import { appRouter } from "@my-app/api";
-import type { Context } from "@my-app/api";
-
-const logServerError = (cause: unknown) => {
-  if (!(cause instanceof ORPCError) || cause.status >= 500) {
-    console.error(cause);
-  }
-};
-
-export const createRpc = () => {
-  const mount =
-    (
-      handler: RPCHandler<Context> | OpenAPIHandler<Context>,
-      prefix: `/${string}`
-    ) =>
-    async (c: HonoContext) => {
-      const { matched, response } = await handler.handle(c.req.raw, {
-        context: {},
-        prefix,
-      });
-
-      return matched
-        ? c.newResponse(response.body, response)
-        : await c.notFound();
-    };
-
-  const rpc = mount(
-    new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
-    "/rpc"
-  );
-
-  const openApi = mount(
-    new OpenAPIHandler(appRouter, {
-      interceptors: [onError(logServerError)],
-      plugins: [
-        new OpenAPIReferencePlugin({
-          schemaConverters: [new ZodToJsonSchemaConverter()],
-          specGenerateOptions: {
-            info: {
-              title: "my-app",
-              version: "0.0.0",
-            },
-          },
-        }),
-      ],
-    }),
-    "/api"
-  );
-
-  return { rpc, openApi };
-};
 
 # apps/server/src/orpc.ts · 16 stacks
 #   spa-hono-orpc-mysql-better-auth-electron-expo-void
@@ -11557,7 +11525,7 @@ export default defineConfig({
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { defineConfig } from "vite-plus";
-import { voidPlugin } from "void/vite";
+import { voidPlugin } from "void";
 
 export default defineConfig({
   plugins: [voidPlugin()],

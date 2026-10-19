@@ -50,15 +50,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {

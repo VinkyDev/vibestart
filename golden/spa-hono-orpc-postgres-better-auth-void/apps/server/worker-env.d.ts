@@ -1,7 +1,5 @@
-import "cloudflare:workers";
-
-declare module "cloudflare:workers" {
-  interface ProvidedEnv {
-    HYPERDRIVE: { connectionString: string };
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
   }
 }

@@ -83,7 +83,7 @@ const viteConfig = (ctx: Context) => {
           content
             .replace(
               'import { defineConfig } from "vite-plus";',
-              'import { defineConfig } from "vite-plus";\nimport { voidPlugin } from "void/vite";'
+              'import { defineConfig } from "vite-plus";\nimport { voidPlugin } from "void";'
             )
             .replace("plugins: [", "plugins: [voidPlugin(), ")
         ),

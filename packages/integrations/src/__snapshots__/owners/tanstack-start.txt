@@ -7700,15 +7700,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -7771,15 +7781,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -7850,15 +7870,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -7921,15 +7951,25 @@ export const withServices = async (
 
     const response = await handle(services);
 
-    if (response.body === null) {
+    const { body } = response;
+
+    if (body === null) {
       return response;
     }
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const forwarded = new Response(readable, response);
-    const completed = response.body.pipeTo(writable).finally(dispose);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
     streaming = true;
-    waitUntil(completed);
+    waitUntil(transfer());
 
     return forwarded;
   } finally {
@@ -10960,7 +11000,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite-plus";
-import { voidPlugin } from "void/vite";
+import { voidPlugin } from "void";
 
 export default defineConfig({
   plugins: [

@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 
-if (!process.env.DATABASE_URL) {
+if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error(
     "Set DATABASE_URL in the deployment shell to the production database URL"
   );
@@ -22,7 +22,9 @@ const run = (args: string[]) => {
 };
 
 run(["run", "db:migrate"]);
+
 run(["run", "--filter", "@my-app/web", "build"]);
+
 run([
   "exec",
   "--filter",

@@ -884,11 +884,9 @@ export default defineConfig({
 #   spa-hono-postgres-expo-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
-import "cloudflare:workers";
-
-declare module "cloudflare:workers" {
-  interface ProvidedEnv {
-    HYPERDRIVE: { connectionString: string };
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
   }
 }
 
@@ -1128,11 +1126,9 @@ export default defineConfig({
 #   tanstack-start-self-postgres-expo-void-e2e
 #   tanstack-start-self-postgres-void
 #   tanstack-start-self-postgres-void-e2e
-import "cloudflare:workers";
-
-declare module "cloudflare:workers" {
-  interface ProvidedEnv {
-    HYPERDRIVE: { connectionString: string };
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
   }
 }
 
@@ -1223,6 +1219,7 @@ const run = (args: string[]) => {
 };
 
 run(["run", "--filter", "@my-app/web", "build"]);
+
 run([
   "exec",
   "--filter",
@@ -1332,7 +1329,7 @@ run([
 #   spa-hono-postgres-void-e2e
 import { spawnSync } from "node:child_process";
 
-if (!process.env.DATABASE_URL) {
+if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error(
     "Set DATABASE_URL in the deployment shell to the production database URL"
   );
@@ -1354,7 +1351,9 @@ const run = (args: string[]) => {
 };
 
 run(["run", "db:migrate"]);
+
 run(["run", "--filter", "@my-app/web", "build"]);
+
 run([
   "exec",
   "--filter",
@@ -1400,7 +1399,7 @@ run([
 #   tanstack-start-self-postgres-void-e2e
 import { spawnSync } from "node:child_process";
 
-if (!process.env.DATABASE_URL) {
+if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error(
     "Set DATABASE_URL in the deployment shell to the production database URL"
   );
@@ -1422,6 +1421,7 @@ const run = (args: string[]) => {
 };
 
 run(["run", "db:migrate"]);
+
 run([
   "exec",
   "--filter",

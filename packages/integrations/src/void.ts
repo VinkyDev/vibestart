@@ -102,15 +102,25 @@ export const workerServices = (ctx: Context) => {
     "",
     "    const response = await handle(services);",
     "",
-    "    if (response.body === null) {",
+    "    const { body } = response;",
+    "",
+    "    if (body === null) {",
     "      return response;",
     "    }",
     "",
     "    const { readable, writable } = new TransformStream<Uint8Array>();",
     "    const forwarded = new Response(readable, response);",
-    "    const completed = response.body.pipeTo(writable).finally(dispose);",
+    "",
+    "    const transfer = async () => {",
+    "      try {",
+    "        await body.pipeTo(writable);",
+    "      } finally {",
+    "        await dispose();",
+    "      }",
+    "    };",
+    "",
     "    streaming = true;",
-    "    waitUntil(completed);",
+    "    waitUntil(transfer());",
     "",
     "    return forwarded;",
     "  } finally {",
@@ -188,7 +198,7 @@ const environment = (read: ReadSlot) =>
     "export default defineEnv({",
     ...read(serverEnv).map(
       ({ name, schema }) =>
-        `  ${name}: ${name === "DATABASE_URL" ? "z.url().optional()" : schema},`
+        `  ${name}: ${name === "DATABASE_URL" ? `${schema}.optional()` : schema},`
     ),
     "});",
     "",
@@ -215,7 +225,7 @@ const deploy = (ctx: Context) => {
 
 ${
   ctx.stack.database
-    ? `if (!process.env.DATABASE_URL) {
+    ? `if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error("Set DATABASE_URL in the deployment shell to the production database URL");
 }
 
@@ -233,7 +243,7 @@ ${
   }
 };
 
-${ctx.stack.database ? 'run(["run", "db:migrate"]);\n' : ""}${ctx.has("hono") ? `run(["run", "--filter", "${ctx.scope}/web", "build"]);\n` : ""}run(["exec", "--filter", "${ctx.scope}/${dir.slice(5)}", "void", "deploy", "--platform", "cloudflare"]);
+${ctx.stack.database ? 'run(["run", "db:migrate"]);\n\n' : ""}${ctx.has("hono") ? `run(["run", "--filter", "${ctx.scope}/web", "build"]);\n\n` : ""}run(["exec", "--filter", "${ctx.scope}/${dir.slice(5)}", "void", "deploy", "--platform", "cloudflare"]);
 `;
 };
 
@@ -277,7 +287,7 @@ export const voidDeployment = defineIntegration({
         ? [
             file(
               `${dir}/worker-env.d.ts`,
-              'import "cloudflare:workers";\n\ndeclare module "cloudflare:workers" {\n  interface ProvidedEnv {\n    HYPERDRIVE: { connectionString: string };\n  }\n}\n'
+              "declare namespace Cloudflare {\n  interface Env {\n    HYPERDRIVE: Hyperdrive;\n  }\n}\n"
             ),
           ]
         : []),
