@@ -155,10 +155,11 @@ export const packConfig = (ctx: Context, path: string, content: string) => {
 export const environmentConvention = (ctx: Context, loading: string) => {
   const { dir, lazy, src } = serverApp(ctx);
   const reads = lazy ? "`readEnv()`" : "`env`";
+  const envPath = ctx.has("workers") ? `${dir}/env.ts` : `${src}/env.ts`;
 
   return {
     text: [
-      `Declare every server variable in \`${src}/env.ts\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}.`,
+      `Declare every server variable in \`${envPath}\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}${ctx.has("workers") ? " from `void/env`" : ""}.`,
       loading,
       ...(ctx.has("sqlite")
         ? [`\`DATABASE_URL\` resolves from the \`${dir}\` directory.`]
