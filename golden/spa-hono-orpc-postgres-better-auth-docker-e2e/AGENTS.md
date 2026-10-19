@@ -46,15 +46,15 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 ## Map
 
-| Path              | Owns                                                                                                                                                                                        |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web`        | React SPA: TanStack Router file routes, TanStack Query, the Better Auth client; e2e tests in `tests/e2e/`                                                                                   |
-| `apps/server`     | Hono on Node: `env`, the `services` middleware that hands each request `db` and `auth`, Better Auth at `/api/auth`, oRPC at `/rpc`, OpenAPI and docs at `/api`, the built SPA in production |
-| `packages/api`    | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type the web client is typed from                                                                                |
-| `packages/db`     | Drizzle schema (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`                                                                         |
-| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                                                                                             |
-| `packages/ui`     | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                                                                                  |
-| `packages/config` | Shared TypeScript presets                                                                                                                                                                   |
+| Path              | Owns                                                                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web`        | React SPA: TanStack Router file routes, TanStack Query, the Better Auth client; e2e tests in `tests/e2e/`                                                      |
+| `apps/server`     | Hono on Node: `env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`, oRPC at `/rpc`, OpenAPI and docs at `/api`, the built SPA in production |
+| `packages/api`    | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type the web client is typed from                                                   |
+| `packages/db`     | Drizzle schema (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`                                            |
+| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                                                                |
+| `packages/ui`     | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                                                     |
+| `packages/config` | Shared TypeScript presets                                                                                                                                      |
 
 `vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` → `api.*` (`src/lib/api.ts`) → `POST /rpc/*` → `packages/api` procedure → Drizzle → PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
 

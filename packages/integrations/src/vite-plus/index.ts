@@ -377,7 +377,7 @@ const renderEnvironment = (ctx: Context, read: ReadSlot) => {
   }
 
   const intro = ctx.has("better-auth")
-    ? "Each app loads the `.env` in its directory. Project creation wrote them with the values below, replacing the `BETTER_AUTH_SECRET` placeholder with a generated secret; git ignores them, so a fresh clone recreates them and generates its own (`openssl rand -base64 32`)."
+    ? "Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret."
     : "Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.";
 
   return [

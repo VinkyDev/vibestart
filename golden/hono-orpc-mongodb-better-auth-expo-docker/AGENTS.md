@@ -46,14 +46,14 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 ## Map
 
-| Path              | Owns                                                                                                                                                           |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/server`     | Hono on Node: `env`, the `services` middleware that hands each request `db` and `auth`, Better Auth at `/api/auth`, oRPC at `/rpc`, OpenAPI and docs at `/api` |
-| `packages/api`    | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type clients are typed from                                                         |
-| `packages/db`     | Mongoose schemas (`src/schema/`), index builds (`src/migrate.ts`), `createDb`                                                                                  |
-| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                                                                |
-| `apps/mobile`     | Expo Router screens, mobile UI components, and the Uniwind theme                                                                                               |
-| `packages/config` | Shared TypeScript presets                                                                                                                                      |
+| Path              | Owns                                                                                                                              |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/server`     | Hono on Node: `env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`, oRPC at `/rpc`, OpenAPI and docs at `/api` |
+| `packages/api`    | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type clients are typed from                            |
+| `packages/db`     | Mongoose schemas (`src/schema/`), index builds (`src/migrate.ts`), `createDb`                                                     |
+| `packages/auth`   | Better Auth configuration (`createAuth`) and the `Session` type                                                                   |
+| `apps/mobile`     | Expo Router screens, mobile UI components, and the Uniwind theme                                                                  |
+| `packages/config` | Shared TypeScript presets                                                                                                         |
 
 `vp run dev` serves the API on :3000. Request flow: client → `POST /rpc/*` → `packages/api` procedure → Mongoose → MongoDB. `/api/*` serves the same procedures as OpenAPI, with reference docs at `/api`.
 

@@ -5,15 +5,12 @@ import { secureHeaders } from "hono/secure-headers";
 
 import { createApi } from "@my-app/api";
 
-import { services } from "#src/context.ts";
-import type { AppEnv } from "#src/context.ts";
+import { auth, db } from "#src/context.ts";
 
-const authHandler = async (c: Context<AppEnv>) =>
-  await c.var.services.auth.handler(c.req.raw);
+const authHandler = async (c: Context) => await auth.handler(c.req.raw);
 
-export const app = new Hono<AppEnv>()
+export const app = new Hono()
   .use(logger())
   .use(secureHeaders())
-  .use(services)
   .on(["GET", "POST"], "/api/auth/*", authHandler)
-  .route("/api", createApi());
+  .route("/api", createApi({ auth, db }));

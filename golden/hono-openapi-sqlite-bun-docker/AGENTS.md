@@ -48,7 +48,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 | Path              | Owns                                                                                                           |
 | ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| `apps/server`     | Hono on Bun: `env`, the `services` middleware that hands each request `db`, mounts `packages/api` at `/api`    |
+| `apps/server`     | Hono on Bun: `env`, the shared `db`, mounts `packages/api` at `/api`                                           |
 | `packages/api`    | OpenAPI routes (`createApi`), their Zod schemas, the reference docs, and the `Api` type clients are typed from |
 | `packages/db`     | Drizzle schema for SQLite (`src/schema/`), relations, migrations (`src/migrations/`), `createDb`               |
 | `packages/config` | Shared TypeScript presets                                                                                      |
@@ -58,7 +58,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 ## Conventions
 
 - **Environment.** Declare every server variable in `apps/server/src/env.ts` and list it, with a safe example value, under Environment in `README.md`. Keep real values in the ignored `.env` file. Code reads `env`. Bun loads `.env` in development; production gets the variables from the platform. `DATABASE_URL` resolves from the `apps/server` directory.
-- **Route.** Declare it with `createRoute` in a module under `packages/api/src/routes/`, with a Zod schema for every request part and every response status, and mount that module in `packages/api/src/index.ts`. Read the database from `c.var.services.db`, which the server sets on every request, and answer an expected failure with its declared status. The OpenAPI document and `hono/client`'s types follow with no codegen step.
+- **Route.** Declare it with `createRoute` in a module under `packages/api/src/routes/`, with a Zod schema for every request part and every response status, and mount that module in `packages/api/src/index.ts`. Read the database from the `db` the routes are created with, and answer an expected failure with its declared status. The OpenAPI document and `hono/client`'s types follow with no codegen step.
 - **Schema.** Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as Zod. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated. SQLite stores booleans and timestamps as integers (`integer({ mode: "boolean" })`, `integer({ mode: "timestamp_ms" })`). The driver is synchronous: `db.run()` and the migrator return values; query builders (`select`, `insert`, …) are still awaited.
 - **Generated.** `packages/db/src/migrations/**` is tool output. Leave it unchanged.
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.

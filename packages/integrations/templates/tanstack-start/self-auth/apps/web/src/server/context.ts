@@ -3,16 +3,10 @@ import { createDb } from "@my-app/db";
 
 import { env } from "#src/server/env.ts";
 
-const db = createDb(env.DATABASE_URL);
+export const db = createDb(env.DATABASE_URL);
 
-const services = {
-  auth: createAuth({
-    db,
-    baseURL: env.BETTER_AUTH_URL,
-    secret: env.BETTER_AUTH_SECRET,
-  }),
+export const auth = createAuth({
   db,
-};
-
-// Callers ask for services per request, so a runtime that cannot share them across requests changes only this module.
-export const getServices = () => services;
+  baseURL: env.BETTER_AUTH_URL,
+  secret: env.BETTER_AUTH_SECRET,
+});

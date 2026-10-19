@@ -2,7 +2,7 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { todos } from "@my-app/db/schema/todos";
 import { eq } from "drizzle-orm";
 
-import type { ApiEnv } from "#src/services.ts";
+import type { Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -87,14 +87,12 @@ const deleteTodo = createRoute({
 
 const todoNotFound = { message: "Todo not found" };
 
-export const todoRoutes = () =>
-  new OpenAPIHono<ApiEnv>()
+export const todoRoutes = ({ db }: Services) =>
+  new OpenAPIHono()
     .openapi(listTodos, async (c) =>
-      c.json(await c.var.services.db.query.todos.findMany({ orderBy: { id: "asc" } }), 200)
+      c.json(await db.query.todos.findMany({ orderBy: { id: "asc" } }), 200)
     )
     .openapi(createTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [created] = await db
         .insert(todos)
         .values(c.req.valid("json"))
@@ -107,8 +105,6 @@ export const todoRoutes = () =>
       return c.json(created, 201);
     })
     .openapi(updateTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [updated] = await db
         .update(todos)
         .set(c.req.valid("json"))
@@ -120,8 +116,6 @@ export const todoRoutes = () =>
         : c.json(updated, 200);
     })
     .openapi(deleteTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [deleted] = await db
         .delete(todos)
         .where(eq(todos.id, c.req.valid("param").id))

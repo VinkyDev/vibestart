@@ -297,7 +297,7 @@ export const closeDatabase = (ctx: Context, db = "db") => {
 
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
-  const check = databaseCheck(ctx, "getServices().db");
+  const check = databaseCheck(ctx, next ? "getServices().db" : "db");
 
   const handler = [
     `${check.async ? "async " : ""}() => {`,
@@ -326,7 +326,7 @@ export const selfHealthRoute = (ctx: Context) => {
       'import { createFileRoute } from "@tanstack/react-router";',
       ...check.imports,
       "",
-      'import { getServices } from "#src/server/context.ts";',
+      'import { db } from "#src/server/context.ts";',
       "",
       `const health = ${handler.join("\n")}`,
       "",

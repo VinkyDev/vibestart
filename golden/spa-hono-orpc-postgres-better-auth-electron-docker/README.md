@@ -31,14 +31,14 @@ The browser always talks to one origin: in development Vite proxies `/rpc` and `
 
 ## Environment
 
-Each app loads the `.env` in its directory. Project creation wrote them with the values below, replacing the `BETTER_AUTH_SECRET` placeholder with a generated secret; git ignores them, so a fresh clone recreates them and generates its own (`openssl rand -base64 32`).
+Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret.
 
 `apps/server/.env`
 
 ```dotenv
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
 BETTER_AUTH_URL=http://localhost:5173
-BETTER_AUTH_SECRET=replace-with-openssl-rand-base64-32-output
+BETTER_AUTH_SECRET=
 PORT=3000
 ```
 

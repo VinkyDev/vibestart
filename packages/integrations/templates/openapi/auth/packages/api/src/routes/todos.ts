@@ -3,7 +3,7 @@ import { todos } from "@my-app/db/schema/todos";
 import { and, eq } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 
-import type { ApiEnv } from "#src/services.ts";
+import type { Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -98,17 +98,12 @@ const deleteTodo = createRoute({
 
 const todoNotFound = { message: "Todo not found" };
 
-// The session check below sets `userId` beside the `services` the server provides.
-interface TodoEnv {
-  Variables: ApiEnv["Variables"] & { userId: string };
-}
-
-export const todoRoutes = () => {
-  const routes = new OpenAPIHono<TodoEnv>();
+export const todoRoutes = ({ auth, db }: Services) => {
+  const routes = new OpenAPIHono<{ Variables: { userId: string } }>();
 
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
-    const session = await c.var.services.auth.api.getSession({ headers: c.req.raw.headers });
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
     if (!session) {
       throw new HTTPException(401, {
@@ -122,8 +117,6 @@ export const todoRoutes = () => {
 
   return routes
     .openapi(listTodos, async (c) => {
-      const { db } = c.var.services;
-
       const rows = await db.query.todos.findMany({
         orderBy: { id: "asc" },
         where: { userId: c.var.userId },
@@ -132,8 +125,6 @@ export const todoRoutes = () => {
       return c.json(rows, 200);
     })
     .openapi(createTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [created] = await db
         .insert(todos)
         .values({ ...c.req.valid("json"), userId: c.var.userId })
@@ -146,8 +137,6 @@ export const todoRoutes = () => {
       return c.json(created, 201);
     })
     .openapi(updateTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [updated] = await db
         .update(todos)
         .set(c.req.valid("json"))
@@ -164,8 +153,6 @@ export const todoRoutes = () => {
         : c.json(updated, 200);
     })
     .openapi(deleteTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [deleted] = await db
         .delete(todos)
         .where(

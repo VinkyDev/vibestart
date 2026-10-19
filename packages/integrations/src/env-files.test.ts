@@ -36,6 +36,16 @@ const runner = {
 };
 
 describe(renderEnvFiles, () => {
+  it.each([
+    "hono-postgres-better-auth",
+    "next-self-postgres-better-auth",
+    "tanstack-start-self-postgres-better-auth",
+  ])("leaves the example secret unset for %s", async (label) => {
+    const [file] = renderEnvFiles(await readOf(label));
+
+    expect(file?.content).toContain("BETTER_AUTH_SECRET=\n");
+  });
+
   it("fills in the auth secret and the runner's database", async () => {
     const files = renderEnvFiles(
       await readOf("hono-postgres-better-auth"),

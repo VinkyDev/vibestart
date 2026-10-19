@@ -57,7 +57,7 @@ pnpm projects declare their workspaces and a catalog of shared versions in `pnpm
 
 ## Environment variables [#env]
 
-Each application reads the `.env` in its own directory. The CLI writes these files with local values and a generated authentication secret, and the Environment section of `README.md` lists them, so a fresh clone can recreate them. Servers validate their environment at startup and stop with a clear error if a value is missing.
+Each application reads the `.env` in its own directory. The CLI writes these files with local values and a generated authentication secret. The Environment section of `README.md` lists safe examples, with an empty `BETTER_AUTH_SECRET` when authentication is selected. A fresh clone recreates the files from those examples and fills in its own secret using `openssl rand -base64 32`. Servers validate their environment at startup and stop with a clear error if a required value is missing.
 
 <Callout type="warn">
   `.env` files contain secrets and are excluded from Git. When you add a

@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { sql } from "drizzle-orm";
 
-import type { ApiEnv } from "#src/services.ts";
+import type { Services } from "#src/services.ts";
 
 const health = createRoute({
   method: "get",
@@ -16,9 +16,9 @@ const health = createRoute({
   },
 });
 
-export const healthRoutes = () =>
-  new OpenAPIHono<ApiEnv>().openapi(health, (c) => {
-    c.var.services.db.run(sql`select 1`);
+export const healthRoutes = ({ db }: Services) =>
+  new OpenAPIHono().openapi(health, (c) => {
+    db.run(sql`select 1`);
 
     return c.json({ status: "ok" as const }, 200);
   });

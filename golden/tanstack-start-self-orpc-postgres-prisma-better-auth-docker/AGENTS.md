@@ -49,7 +49,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 | Path                  | Owns                                                                                                            |
 | --------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `apps/web`            | TanStack Start app: SSR file routes, server routes, server functions; e2e tests in `tests/e2e/`                 |
-| `apps/web/src/server` | Server-only code: `env`, `getServices()` with `db` and `auth`, oRPC handlers, the migration entry               |
+| `apps/web/src/server` | Server-only code: `env`, the shared `db` and `auth` instances, oRPC handlers, the migration entry               |
 | `packages/api`        | oRPC routers, `publicProcedure`, `protectedProcedure`, and the `AppRouter` type the web client is typed from    |
 | `packages/db`         | Prisma schema (`src/schema/*.prisma`, including Better Auth models), migrations (`src/migrations/`), `createDb` |
 | `packages/auth`       | Better Auth configuration (`createAuth`) and the `Session` type                                                 |

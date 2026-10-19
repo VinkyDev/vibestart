@@ -3,7 +3,7 @@ import { HTTPException } from "hono/http-exception";
 
 import { toTodo } from "@my-app/db";
 
-import type { ApiEnv } from "#src/services.ts";
+import type { Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -98,17 +98,12 @@ const deleteTodo = createRoute({
 
 const todoNotFound = { message: "Todo not found" };
 
-// The session check below sets `userId` beside the `services` the server provides.
-interface TodoEnv {
-  Variables: ApiEnv["Variables"] & { userId: string };
-}
-
-export const todoRoutes = () => {
-  const routes = new OpenAPIHono<TodoEnv>();
+export const todoRoutes = ({ auth, db }: Services) => {
+  const routes = new OpenAPIHono<{ Variables: { userId: string } }>();
 
   // On the sub-app, so a route added here cannot skip the check.
   routes.use(async (c, next) => {
-    const session = await c.var.services.auth.api.getSession({ headers: c.req.raw.headers });
+    const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
     if (!session) {
       throw new HTTPException(401, {
@@ -123,8 +118,6 @@ export const todoRoutes = () => {
   // Each write matches the user's id too: someone else's todo is not found either.
   return routes
     .openapi(listTodos, async (c) => {
-      const { db } = c.var.services;
-
       const rows = await db.todos
         .find({ userId: c.var.userId })
         .sort({ _id: 1 })
@@ -133,8 +126,6 @@ export const todoRoutes = () => {
       return c.json(rows.map(toTodo), 200);
     })
     .openapi(createTodo, async (c) => {
-      const { db } = c.var.services;
-
       const created = await db.todos.create({
         ...c.req.valid("json"),
         userId: c.var.userId,
@@ -143,8 +134,6 @@ export const todoRoutes = () => {
       return c.json(toTodo(created.toObject()), 201);
     })
     .openapi(updateTodo, async (c) => {
-      const { db } = c.var.services;
-
       const row = await db.todos
         .findOneAndUpdate(
           { _id: c.req.valid("param").id, userId: c.var.userId },
@@ -160,8 +149,6 @@ export const todoRoutes = () => {
       return c.json(toTodo(row), 200);
     })
     .openapi(deleteTodo, async (c) => {
-      const { db } = c.var.services;
-
       const row = await db.todos
         .findOneAndDelete({ _id: c.req.valid("param").id, userId: c.var.userId })
         .lean();

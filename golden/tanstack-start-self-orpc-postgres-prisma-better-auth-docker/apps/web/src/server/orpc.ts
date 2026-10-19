@@ -7,14 +7,13 @@ import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { appRouter } from "@my-app/api";
 import type { Context } from "@my-app/api";
 
-import { getServices } from "#src/server/context.ts";
+import { auth, db } from "#src/server/context.ts";
 import { handleRequest } from "#src/server/request.ts";
 
-export const createContext = async (headers: Headers): Promise<Context> => {
-  const { auth, db } = getServices();
-
-  return { db, session: await auth.api.getSession({ headers }) };
-};
+export const createContext = async (headers: Headers): Promise<Context> => ({
+  db,
+  session: await auth.api.getSession({ headers }),
+});
 
 const logServerError = (cause: unknown) => {
   if (!(cause instanceof ORPCError) || cause.status >= 500) {

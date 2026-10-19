@@ -8,7 +8,7 @@ import type { Context as HonoContext } from "hono";
 import { appRouter } from "@my-app/api";
 import type { Context } from "@my-app/api";
 
-import type { AppEnv } from "#src/context.ts";
+import { auth, db } from "#src/context.ts";
 
 const logServerError = (cause: unknown) => {
   if (!(cause instanceof ORPCError) || cause.status >= 500) {
@@ -21,8 +21,7 @@ const mount =
     handler: RPCHandler<Context> | OpenAPIHandler<Context>,
     prefix: `/${string}`
   ) =>
-  async (c: HonoContext<AppEnv>) => {
-    const { auth, db } = c.var.services;
+  async (c: HonoContext) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
     const { matched, response } = await handler.handle(c.req.raw, {

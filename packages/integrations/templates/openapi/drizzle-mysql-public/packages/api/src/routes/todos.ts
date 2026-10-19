@@ -2,7 +2,7 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import { todos } from "@my-app/db/schema/todos";
 import { eq } from "drizzle-orm";
 
-import type { ApiEnv, Services } from "#src/services.ts";
+import type { Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -88,27 +88,21 @@ const deleteTodo = createRoute({
 const todoNotFound = { message: "Todo not found" };
 
 // MySQL has no `returning`, so a write finds its row by id.
-const findTodo = (db: Services["db"], id: number) =>
-  db.query.todos.findFirst({ where: { id } });
+export const todoRoutes = ({ db }: Services) => {
+  const findTodo = (id: number) => db.query.todos.findFirst({ where: { id } });
 
-export const todoRoutes = () =>
-  new OpenAPIHono<ApiEnv>()
+  return new OpenAPIHono()
     .openapi(listTodos, async (c) =>
-      c.json(
-        await c.var.services.db.query.todos.findMany({ orderBy: { id: "asc" } }),
-        200
-      )
+      c.json(await db.query.todos.findMany({ orderBy: { id: "asc" } }), 200)
     )
     .openapi(createTodo, async (c) => {
-      const { db } = c.var.services;
-
       const [created] = await db
         .insert(todos)
         .values(c.req.valid("json"))
         .$returningId();
 
       const row =
-        created === undefined ? undefined : await findTodo(db, created.id);
+        created === undefined ? undefined : await findTodo(created.id);
 
       if (row === undefined) {
         throw new Error("The insert returned no row");
@@ -117,10 +111,8 @@ export const todoRoutes = () =>
       return c.json(row, 201);
     })
     .openapi(updateTodo, async (c) => {
-      const { db } = c.var.services;
-
       const values = c.req.valid("json");
-      const row = await findTodo(db, c.req.valid("param").id);
+      const row = await findTodo(c.req.valid("param").id);
 
       if (row === undefined) {
         return c.json(todoNotFound, 404);
@@ -131,9 +123,7 @@ export const todoRoutes = () =>
       return c.json({ ...row, ...values }, 200);
     })
     .openapi(deleteTodo, async (c) => {
-      const { db } = c.var.services;
-
-      const row = await findTodo(db, c.req.valid("param").id);
+      const row = await findTodo(c.req.valid("param").id);
 
       if (row === undefined) {
         return c.json(todoNotFound, 404);
@@ -143,3 +133,4 @@ export const todoRoutes = () =>
 
       return c.json(row, 200);
     });
+};

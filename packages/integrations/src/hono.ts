@@ -52,10 +52,10 @@ const healthHandler = (ctx: Context) => {
     return ['const health = (c: Context) => c.json({ status: "ok" });'];
   }
 
-  const check = databaseCheck(ctx, "c.var.services.db");
+  const check = databaseCheck(ctx, "db");
 
   return [
-    `const health = ${check.async ? "async " : ""}(c: Context<AppEnv>) => {`,
+    `const health = ${check.async ? "async " : ""}(c: Context) => {`,
     `  ${check.statement}`,
     "",
     '  return c.json({ status: "ok" });',
@@ -68,23 +68,23 @@ const apiRoutes = (ctx: Context) => {
     return ['  .all("/rpc/*", rpc)', '  .all("/api/*", openApi)'];
   }
 
+  const services = ctx.has("better-auth") ? "{ auth, db }" : "{ db }";
+  const created = ctx.stack.database === undefined ? "" : services;
+
   return ctx.has("openapi")
-    ? ['  .route("/api", createApi())']
+    ? [`  .route("/api", createApi(${created}))`]
     : ['  .get("/api/health", health)'];
 };
 
 const routes = (ctx: Context) => {
-  const database = ctx.stack.database !== undefined;
-
   const auth = ctx.has("better-auth")
     ? ['  .on(["GET", "POST"], "/api/auth/*", authHandler)']
     : [];
 
   const lines = [
-    `export const app = new Hono${database ? "<AppEnv>" : ""}()`,
+    "export const app = new Hono()",
     "  .use(logger())",
     "  .use(secureHeaders())",
-    ...(database ? ["  .use(services)"] : []),
     ...auth,
     ...apiRoutes(ctx),
   ];
@@ -100,15 +100,19 @@ const closeDatabase = (ctx: Context) => {
   return [closeDatabaseStatement(ctx)];
 };
 
-const contextImports = (ctx: Context) =>
-  ctx.stack.database === undefined
-    ? []
-    : [
-        'import { services } from "#src/context.ts";',
-        'import type { AppEnv } from "#src/context.ts";',
-      ];
+const contextImport = (ctx: Context) => {
+  if (ctx.stack.database === undefined) {
+    return [];
+  }
 
-// `app` holds no runtime-specific code, so any runtime can serve it; `src/index.ts` binds it to this one.
+  const names = [
+    ...(ctx.has("better-auth") ? ["auth"] : []),
+    ...(ctx.has("orpc") ? [] : ["db"]),
+  ].join(", ");
+
+  return names === "" ? [] : [`import { ${names} } from "#src/context.ts";`];
+};
+
 const renderApp = (ctx: Context) => {
   const auth = ctx.has("better-auth");
   const api = ctx.stack.api !== undefined;
@@ -125,15 +129,14 @@ const renderApp = (ctx: Context) => {
     'import { logger } from "hono/logger";',
     'import { secureHeaders } from "hono/secure-headers";',
     "",
-    ...contextImports(ctx),
+    ...contextImport(ctx),
     ...(ctx.has("orpc")
       ? ['import { openApi, rpc } from "#src/orpc.ts";']
       : []),
     "",
     ...(auth
       ? [
-          "const authHandler = async (c: Context<AppEnv>) =>",
-          "  await c.var.services.auth.handler(c.req.raw);",
+          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
           "",
         ]
       : []),
@@ -227,8 +230,8 @@ const services = (ctx: Context) => {
   }
 
   return ctx.has("better-auth")
-    ? "`env`, the `services` middleware that hands each request `db` and `auth`, Better Auth at `/api/auth`"
-    : "`env`, the `services` middleware that hands each request `db`";
+    ? "`env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`"
+    : "`env`, the shared `db`";
 };
 
 const apiOwns = (ctx: Context) => {
@@ -324,7 +327,7 @@ const renderViteConfig = (ctx: Context) => {
 const middlewareOverride = (ctx: Context) => {
   const files = [
     "apps/server/src/**",
-    ...(ctx.has("openapi") ? ["packages/api/**"] : []),
+    ...(ctx.has("openapi") ? ["packages/api/src/**"] : []),
   ];
 
   return `{

@@ -281,7 +281,7 @@ export const betterAuth = defineIntegration({
       schema: "z.url()",
     }),
     contribute(serverEnv, {
-      example: "replace-with-openssl-rand-base64-32-output",
+      example: "",
       name: "BETTER_AUTH_SECRET",
       schema: "z.string().min(32)",
     }),

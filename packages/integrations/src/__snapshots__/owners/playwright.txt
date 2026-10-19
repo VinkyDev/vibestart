@@ -10902,7 +10902,6 @@ describe("todos", () => {
 #   tanstack-start-hono-openapi-sqlite-better-auth-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
-import { Hono } from "hono";
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
@@ -10910,7 +10909,7 @@ import { createAuth } from "@my-app/auth";
 import { createTestDatabase } from "@my-app/db/testing";
 
 import { createApi } from "#src/index.ts";
-import type { Api, ApiEnv } from "#src/index.ts";
+import type { Api } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
@@ -10923,13 +10922,7 @@ const auth = createAuth({
   secret: "test-secret-that-is-at-least-32-characters",
 });
 
-// Stands in for the server, which sets the request's services before the API runs.
-export const api = new Hono<ApiEnv>()
-  .use(async (c, next) => {
-    c.set("services", { auth, db });
-    await next();
-  })
-  .route("/", createApi());
+export const api = createApi({ auth, db });
 
 /** Sends each request to the API in this process, through its routing, validation, and serialization. */
 export const createClient = (cookie?: string) =>
@@ -11078,27 +11071,20 @@ export const signUp = async () => {
 #   tanstack-start-hono-openapi-sqlite-docker
 #   tanstack-start-hono-openapi-sqlite-expo-bun-docker
 #   tanstack-start-hono-openapi-sqlite-expo-docker
-import { Hono } from "hono";
 import { hc } from "hono/client";
 import { afterAll } from "vite-plus/test";
 
 import { createTestDatabase } from "@my-app/db/testing";
 
 import { createApi } from "#src/index.ts";
-import type { Api, ApiEnv } from "#src/index.ts";
+import type { Api } from "#src/index.ts";
 
 // Each test file has a database of its own, so files run in parallel and share no rows.
 const { db, remove } = await createTestDatabase();
 
 afterAll(remove);
 
-// Stands in for the server, which sets the request's services before the API runs.
-export const api = new Hono<ApiEnv>()
-  .use(async (c, next) => {
-    c.set("services", { db });
-    await next();
-  })
-  .route("/", createApi());
+export const api = createApi({ db });
 
 /** Sends each request to the API in this process, through its routing, validation, and serialization. */
 export const client = hc<Api>("http://localhost", { fetch: api.request });

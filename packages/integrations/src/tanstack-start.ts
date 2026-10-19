@@ -109,8 +109,8 @@ const selfServices = (ctx: Context) => {
   }
 
   return ctx.has("better-auth")
-    ? ["`env`, `getServices()` with `db` and `auth`"]
-    : ["`env`, `getServices()` with `db`"];
+    ? ["`env`, the shared `db` and `auth` instances"]
+    : ["`env`, the shared `db`"];
 };
 
 const selfServerOwns = (ctx: Context) =>
@@ -133,7 +133,7 @@ const selfApi = (ctx: Context) =>
     : [
         selfHealthRoute(ctx),
         contribute(packageJson, {
-          dependencies: databaseCheck(ctx, "getServices().db").dependencies,
+          dependencies: databaseCheck(ctx, "db").dependencies,
           path: "apps/web",
         }),
       ];

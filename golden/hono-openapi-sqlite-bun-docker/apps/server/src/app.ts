@@ -4,11 +4,9 @@ import { secureHeaders } from "hono/secure-headers";
 
 import { createApi } from "@my-app/api";
 
-import { services } from "#src/context.ts";
-import type { AppEnv } from "#src/context.ts";
+import { db } from "#src/context.ts";
 
-export const app = new Hono<AppEnv>()
+export const app = new Hono()
   .use(logger())
   .use(secureHeaders())
-  .use(services)
-  .route("/api", createApi());
+  .route("/api", createApi({ db }));

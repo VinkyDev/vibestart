@@ -2,7 +2,7 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
 import { toTodo } from "@my-app/db";
 
-import type { ApiEnv } from "#src/services.ts";
+import type { Services } from "#src/services.ts";
 
 const json = <T extends z.ZodType>(schema: T) => ({
   "application/json": { schema },
@@ -87,25 +87,19 @@ const deleteTodo = createRoute({
 
 const todoNotFound = { message: "Todo not found" };
 
-export const todoRoutes = () =>
-  new OpenAPIHono<ApiEnv>()
+export const todoRoutes = ({ db }: Services) =>
+  new OpenAPIHono()
     .openapi(listTodos, async (c) => {
-      const { db } = c.var.services;
-
       const rows = await db.todos.find().sort({ _id: 1 }).lean();
 
       return c.json(rows.map(toTodo), 200);
     })
     .openapi(createTodo, async (c) => {
-      const { db } = c.var.services;
-
       const created = await db.todos.create(c.req.valid("json"));
 
       return c.json(toTodo(created.toObject()), 201);
     })
     .openapi(updateTodo, async (c) => {
-      const { db } = c.var.services;
-
       const row = await db.todos
         .findByIdAndUpdate(c.req.valid("param").id, c.req.valid("json"), {
           returnDocument: "after",
@@ -119,8 +113,6 @@ export const todoRoutes = () =>
       return c.json(toTodo(row), 200);
     })
     .openapi(deleteTodo, async (c) => {
-      const { db } = c.var.services;
-
       const row = await db.todos
         .findByIdAndDelete(c.req.valid("param").id)
         .lean();

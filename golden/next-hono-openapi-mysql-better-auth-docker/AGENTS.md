@@ -46,16 +46,16 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 ## Map
 
-| Path                  | Owns                                                                                                                                                |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web`            | Next.js App Router app: pages and layouts in `src/app/`, route handlers, client components in `src/components/`; e2e tests in `tests/e2e/`          |
-| `apps/web/src/server` | Server-only code (`import "server-only"`): `readEnv()` with `SERVER_URL`, the proxy to the API server, server query utilities, `getSession`         |
-| `apps/server`         | Hono on Node: `env`, the `services` middleware that hands each request `db` and `auth`, Better Auth at `/api/auth`, mounts `packages/api` at `/api` |
-| `packages/api`        | OpenAPI routes (`createApi`), their Zod schemas, the reference docs, and the `Api` type the web client is typed from                                |
-| `packages/db`         | Drizzle schema for MySQL (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`                       |
-| `packages/auth`       | Better Auth configuration (`createAuth`) and the `Session` type                                                                                     |
-| `packages/ui`         | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                                          |
-| `packages/config`     | Shared TypeScript presets                                                                                                                           |
+| Path                  | Owns                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web`            | Next.js App Router app: pages and layouts in `src/app/`, route handlers, client components in `src/components/`; e2e tests in `tests/e2e/`  |
+| `apps/web/src/server` | Server-only code (`import "server-only"`): `readEnv()` with `SERVER_URL`, the proxy to the API server, server query utilities, `getSession` |
+| `apps/server`         | Hono on Node: `env`, the shared `db` and `auth` instances, Better Auth at `/api/auth`, mounts `packages/api` at `/api`                      |
+| `packages/api`        | OpenAPI routes (`createApi`), their Zod schemas, the reference docs, and the `Api` type the web client is typed from                        |
+| `packages/db`         | Drizzle schema for MySQL (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb`               |
+| `packages/auth`       | Better Auth configuration (`createAuth`) and the `Session` type                                                                             |
+| `packages/ui`         | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                                  |
+| `packages/config`     | Shared TypeScript presets                                                                                                                   |
 
 `vp run dev` serves the app on :3000 and the API server (`apps/server`) on :3001. The browser talks only to the app: its `/api/*` route handler (including `/api/auth`) forwards to the API server at `SERVER_URL`, so session cookies are first-party and there is no CORS configuration.
 
@@ -67,7 +67,7 @@ This is Next.js 16. Before calling a Next API, read the matching guide in `apps/
 
 - **Server.** A file is a Server Component until it starts with `"use client"`. Hooks, event handlers, `api`, and `authClient` belong in client components. A server-only module imports `"server-only"`, so a client import fails the build.
 - **Environment.** Declare every server variable in `apps/server/src/env.ts` and list it, with a safe example value, under Environment in `README.md`. Keep real values in the ignored `.env` file. Code reads `env`. The web app is shipped to the browser, so it holds no secret.
-- **Route.** Declare it with `createRoute` in a module under `packages/api/src/routes/`, with a Zod schema for every request part and every response status, and mount that module in `packages/api/src/index.ts`. Read the database from `c.var.services.db`, which the server sets on every request, and answer an expected failure with its declared status. The OpenAPI document and the web client's types follow with no codegen step.
+- **Route.** Declare it with `createRoute` in a module under `packages/api/src/routes/`, with a Zod schema for every request part and every response status, and mount that module in `packages/api/src/index.ts`. Read the database from the `db` the routes are created with, and answer an expected failure with its declared status. The OpenAPI document and the web client's types follow with no codegen step.
 - **Schema.** Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as Zod. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated. MySQL has no `returning`: read a row back after a write (`$returningId()` on insert), and give a column that is indexed or unique a bounded `varchar`. The Better Auth tables in `schema/auth.ts` match the fields Better Auth expects; read its docs before adding a plugin.
 - **Authorization.** A route module that reads or writes user data guards its whole sub-app with a session middleware, as `packages/api/src/routes/todos.ts` does: it throws `HTTPException` 401 without a session and sets `c.var.userId`. Each route declares that 401, scopes every query by `c.var.userId`, and answers 404 for someone else's row, which does not reveal that the id exists. Each new protected route gets an integration test as an anonymous caller and as another user.
 - **Protected page.** A page that needs a user calls `getSession()` and `redirect("/login?redirect=…")` when the session is missing. Add the page to `redirectTargets` in `src/app/login/page.tsx`; any other redirect value falls back to `/todos`. The page hide is UX, and the server route is the security boundary.
