@@ -16,6 +16,7 @@
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Cloudflare_DeploymentInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
@@ -31,6 +32,7 @@
 /** @typedef {{}} Cap_Sql_DatabaseInputs */
 /** @typedef {{}} Cap_Sql_OrmInputs */
 /** @typedef {{}} Cap_Ui_ComponentsInputs */
+/** @typedef {{}} Cap_Workers_RuntimeInputs */
 /** @typedef {{}} Change_Demo_ApplyInputs */
 /** @typedef {{}} Change_Demo_FailedInputs */
 /** @typedef {{}} Change_Demo_LabelInputs */
@@ -67,6 +69,8 @@
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_VoidInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Void_DatabaseInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
@@ -93,6 +97,8 @@
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
+/** @typedef {{}} Desc_VoidInputs */
+/** @typedef {{}} Desc_WorkersInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
@@ -141,6 +147,8 @@
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_VoidInputs */
+/** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
 /** @typedef {{}} Gate_CheckInputs */
@@ -430,6 +438,10 @@ export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => L
 	return /** @type {LocalizedString} */ (`所有客户端都调用这一套 API，类型直接来自服务端代码。`)
 };
 
+export const cap_cloudflare_deployment = /** @type {(inputs: Cap_Cloudflare_DeploymentInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`通过 Void 部署到 Cloudflare`)
+};
+
 export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`数据库服务（PostgreSQL 或 MySQL）`)
 };
@@ -488,6 +500,10 @@ export const cap_sql_orm = /** @type {(inputs: Cap_Sql_OrmInputs) => LocalizedSt
 
 export const cap_ui_components = /** @type {(inputs: Cap_Ui_ComponentsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`UI 组件库`)
+};
+
+export const cap_workers_runtime = /** @type {(inputs: Cap_Workers_RuntimeInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Cloudflare Workers 运行时`)
 };
 
 export const change_demo_apply = /** @type {(inputs: Change_Demo_ApplyInputs) => LocalizedString} */ () => {
@@ -639,6 +655,14 @@ export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs
 	return /** @type {LocalizedString} */ (`${i?.name} 镜像，Compose 运行 PostgreSQL`)
 };
 
+export const deployment_void = /** @type {(inputs: Deployment_VoidInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Cloudflare Worker + 静态资源`)
+};
+
+export const deployment_void_database = /** @type {(inputs: Deployment_Void_DatabaseInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · 外部数据库`)
+};
+
 export const desc_better_auth = /** @type {(inputs: Desc_Better_AuthInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`邮箱密码登录，会话存储在数据库中`)
 };
@@ -741,6 +765,14 @@ export const desc_tanstack_start = /** @type {(inputs: Desc_Tanstack_StartInputs
 
 export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`统一工具链：开发、构建、测试、检查与格式化`)
+};
+
+export const desc_void = /** @type {(inputs: Desc_VoidInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`将 SPA、SPA + Hono 或 TanStack Start 部署到 Cloudflare（预览）`)
+};
+
+export const desc_workers = /** @type {(inputs: Desc_WorkersInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`通过 Void 部署到 Cloudflare Workers`)
 };
 
 export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => LocalizedString} */ () => {
@@ -933,6 +965,14 @@ export const fit_sqlite = /** @type {(inputs: Fit_SqliteInputs) => LocalizedStri
 
 export const fit_tanstack_start = /** @type {(inputs: Fit_Tanstack_StartInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合需要 SEO 或首屏速度的网站`)
+};
+
+export const fit_void = /** @type {(inputs: Fit_VoidInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`部署到你的 Cloudflare 账号，通过 Hyperdrive 连接外部 Postgres 或 MySQL，使用 Drizzle。`)
+};
+
+export const fit_workers = /** @type {(inputs: Fit_WorkersInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`服务运行于 Cloudflare Workers，每个请求独立创建数据库客户端。`)
 };
 
 export const gate_build = /** @type {(inputs: Gate_BuildInputs) => LocalizedString} */ () => {
@@ -1416,11 +1456,11 @@ export const role_deployment = /** @type {(inputs: Role_DeploymentInputs) => Loc
 };
 
 export const role_deployment_about = /** @type {(inputs: Role_Deployment_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`应用如何打包上线。`)
+	return /** @type {LocalizedString} */ (`应用如何部署到托管环境。`)
 };
 
 export const role_deployment_none = /** @type {(inputs: Role_Deployment_NoneInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`不构建镜像，可在任何支持 Node.js 的环境运行。`)
+	return /** @type {LocalizedString} */ (`稍后选择托管平台。`)
 };
 
 export const role_deployment_question = /** @type {(inputs: Role_Deployment_QuestionInputs) => LocalizedString} */ () => {
@@ -1484,7 +1524,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`运行 Hono 服务。包管理器、前端框架和测试工具独立选择。`)
+	return /** @type {LocalizedString} */ (`Node.js 和 Bun 运行服务进程；Void 使用 Cloudflare Workers，构建工具仍运行于 Node.js。`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {
@@ -1492,7 +1532,7 @@ export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => Localized
 };
 
 export const runtime_question = /** @type {(inputs: Runtime_QuestionInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`使用哪种运行时运行 Hono？`)
+	return /** @type {LocalizedString} */ (`服务端使用哪个运行时？`)
 };
 
 export const search_docs = /** @type {(inputs: Search_DocsInputs) => LocalizedString} */ () => {

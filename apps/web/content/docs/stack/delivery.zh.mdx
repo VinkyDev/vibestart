@@ -1,9 +1,9 @@
 ---
 title: 交付
-description: 使用 Docker 部署应用，或将 Web 界面打包为 Electron 桌面应用。
+description: 使用 Docker 或 Void 部署应用，或将 Web 界面打包为 Electron 桌面应用。
 ---
 
-交付决定完成的应用以什么形式到达用户：作为容器运行在服务器上，或作为用户安装的桌面应用。两者均为可选项，Docker 也可以在项目创建后添加。
+交付决定应用如何到达用户：通过 Docker 部署到服务器、通过 Void 部署到 Cloudflare，或作为 Electron 桌面应用安装。各项均为可选项，Docker 和 Void 也可以添加到兼容的已有项目。
 
 ## Docker [#docker]
 
@@ -36,7 +36,7 @@ Void 1.1.11 负责构建并部署到你自己的 Cloudflare Workers 账号。选
 
 按 README 使用 `void connect --platform cloudflare` 登录，并用 `void secret put` 设置生产服务端变量。本地 `.env` 不会上传。`DATABASE_URL='生产地址' vp run deploy` 先执行 Drizzle 迁移，必要时构建 SPA，再执行 `void deploy`。数据库地址必须显式存在于部署命令的 shell，避免本地 `.env` 静默选中了迁移目标。提交记录部署状态的 `void.lock.json`；vibestart 维护命令不会生成或合并它。生成项目不包含 GitHub Actions。
 
-`vibestart add void --dry-run` 可预览给兼容项目添加部署。它会自动推导必需的辅助运行时，保留框架和数据库选择。在运行生成的检查前，移植所有 `manual` 业务源码变更。已有 Docker 不会被静默替换。
+`vibestart add void --dry-run` 可预览给兼容项目添加部署。它会自动推导必需的辅助运行时，保留框架和数据库选择。使用 `add void --no-install --yes` 应用配置，移植所有 `manual` 业务源码变更，再按 `next` 完成安装和检查。已有 Docker 不会被静默替换。
 
 ## Electron [#electron]
 

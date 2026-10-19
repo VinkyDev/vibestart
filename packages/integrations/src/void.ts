@@ -128,6 +128,7 @@ export const workerTsconfig = (ctx: Context) => {
   const start = ctx.has("tanstack-start");
   const nodeEnv = start ? "src/server/node-env.ts" : "src/node-env.ts";
   const migrate = start ? "src/server/migrate.ts" : "src/migrate.ts";
+
   return [
     file(
       `${dir}/tsconfig.json`,
@@ -145,7 +146,7 @@ export const workerTsconfig = (ctx: Context) => {
         extends: `${ctx.scope}/config/typescript/${start ? "react" : "base"}.json`,
         compilerOptions: {
           types: ["void/env", ...(start ? ["vite/client"] : [])],
-          ...(start ? { jsx: "react-jsx" } : {}),
+          jsx: start ? "react-jsx" : undefined,
         },
         include: [
           "src",
@@ -209,6 +210,7 @@ export default defineConfig({
 
 const deploy = (ctx: Context) => {
   const dir = workerApp(ctx);
+
   return `import { spawnSync } from "node:child_process";
 
 ${
@@ -237,6 +239,7 @@ ${ctx.stack.database ? 'run(["run", "db:migrate"]);\n' : ""}${ctx.has("hono") ? 
 
 const routes = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
+
   const forward = `import { defineHandler } from "void";
 
 import { createApp } from "#src/app.ts";
@@ -245,6 +248,7 @@ export const forward = defineHandler(async (c) =>
   ${database ? "await withServices(async (services) => await createApp(services).fetch(c.req.raw))" : "await createApp().fetch(c.req.raw)"}
 );
 `;
+
   return [
     file("apps/server/routes/_forward.ts", forward),
     ...[
@@ -265,6 +269,7 @@ export const voidDeployment = defineIntegration({
     const dir = workerApp(ctx);
     const backend = hasBackend(ctx);
     const database = ctx.stack.database !== undefined;
+
     return [
       file(`${dir}/void.config.ts`, config(ctx)),
       ...(backend ? [renderFile(`${dir}/env.ts`, environment)] : []),

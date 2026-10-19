@@ -114,43 +114,6 @@ const contextImport = (ctx: Context) => {
   return names === "" ? [] : [`import { ${names} } from "#src/context.ts";`];
 };
 
-const renderApp = (ctx: Context) => {
-  if (ctx.has("workers")) {
-    return renderWorkerApp(ctx);
-  }
-
-  const auth = ctx.has("better-auth");
-  const api = ctx.stack.api !== undefined;
-
-  return [
-    ...(ctx.has("openapi")
-      ? [`import { createApi } from "${ctx.scope}/api";`]
-      : []),
-    ...(!api && ctx.stack.database !== undefined
-      ? databaseCheck(ctx, "db").imports
-      : []),
-    'import { Hono } from "hono";',
-    ...(auth || !api ? ['import type { Context } from "hono";'] : []),
-    'import { logger } from "hono/logger";',
-    'import { secureHeaders } from "hono/secure-headers";',
-    "",
-    ...contextImport(ctx),
-    ...(ctx.has("orpc")
-      ? ['import { openApi, rpc } from "#src/orpc.ts";']
-      : []),
-    "",
-    ...(auth
-      ? [
-          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
-          "",
-        ]
-      : []),
-    ...(api ? [] : [...healthHandler(ctx), ""]),
-    ...routes(ctx),
-    "",
-  ].join("\n");
-};
-
 const renderWorkerApp = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
   const auth = ctx.has("better-auth");
@@ -186,6 +149,43 @@ const renderWorkerApp = (ctx: Context) => {
     ...(api ? [] : [...healthHandler(ctx), ""]),
     ...routes(ctx).map((line) => line.replace("export const app =", "return")),
     "};",
+    "",
+  ].join("\n");
+};
+
+const renderApp = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return renderWorkerApp(ctx);
+  }
+
+  const auth = ctx.has("better-auth");
+  const api = ctx.stack.api !== undefined;
+
+  return [
+    ...(ctx.has("openapi")
+      ? [`import { createApi } from "${ctx.scope}/api";`]
+      : []),
+    ...(!api && ctx.stack.database !== undefined
+      ? databaseCheck(ctx, "db").imports
+      : []),
+    'import { Hono } from "hono";',
+    ...(auth || !api ? ['import type { Context } from "hono";'] : []),
+    'import { logger } from "hono/logger";',
+    'import { secureHeaders } from "hono/secure-headers";',
+    "",
+    ...contextImport(ctx),
+    ...(ctx.has("orpc")
+      ? ['import { openApi, rpc } from "#src/orpc.ts";']
+      : []),
+    "",
+    ...(auth
+      ? [
+          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
+          "",
+        ]
+      : []),
+    ...(api ? [] : [...healthHandler(ctx), ""]),
+    ...routes(ctx),
     "",
   ].join("\n");
 };
@@ -301,7 +301,9 @@ const owns = (ctx: Context) => {
     ...(ctx.has("spa") ? ["the built SPA in production"] : []),
   ];
 
-  return `Hono on ${ctx.has("workers") ? "Workers" : ctx.has("bun") ? "Bun" : "Node"}: ${parts.join(", ")}`;
+  const runtime = ctx.has("bun") ? "Bun" : "Node";
+
+  return `Hono on ${ctx.has("workers") ? "Workers" : runtime}: ${parts.join(", ")}`;
 };
 
 const health = (ctx: Context) =>
@@ -430,13 +432,76 @@ const runtimeDependencies = (ctx: Context): string[] => {
   return ctx.has("spa") ? ["@hono/bun"] : [];
 };
 
+const contextFiles = (ctx: Context) => {
+  if (ctx.stack.database === undefined) {
+    return [];
+  }
+
+  return ctx.has("workers")
+    ? [file("apps/server/src/context.ts", workerServices(ctx))]
+    : templateFiles(ctx, `hono/${authVariant(ctx)}`);
+};
+
+const environmentFiles = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return ctx.stack.database === undefined
+      ? []
+      : [renderFile("apps/server/src/node-env.ts", workerNodeEnv)];
+  }
+
+  return [
+    renderFile("apps/server/src/env.ts", (read) =>
+      renderEnvModule([...read(serverEnv), port(ctx)], false)
+    ),
+  ];
+};
+
+const backendChoice = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return "Hono on Cloudflare Workers";
+  }
+
+  return ctx.has("bun") ? "Hono on Bun" : "Hono on Node.js 24";
+};
+
+const serverPackage = (ctx: Context) =>
+  contribute(packageJson, {
+    dependencies: [
+      ...runtimeDependencies(ctx),
+      ...(ctx.has("workers") && ctx.stack.database === undefined
+        ? []
+        : ["@t3-oss/env-core"]),
+      "hono",
+      ...(ctx.has("workers") && ctx.stack.database === undefined
+        ? []
+        : ["zod"]),
+    ],
+    devDependencies: [
+      `${ctx.scope}/config`,
+      "@types/node",
+      ...(ctx.has("bun") ? ["@types/bun"] : []),
+      ...(ctx.has("workers") ? [`${ctx.scope}/web`] : []),
+      "typescript",
+      "vite-plus",
+    ],
+    imports: { "#src/*": "./src/*" },
+    path: "apps/server",
+    scripts: ctx.has("workers")
+      ? { dev: "vp dev", build: "vp build", preview: "vp preview" }
+      : {
+          dev: ctx.has("bun")
+            ? "bun --watch src/index.ts"
+            : "node --watch --env-file-if-exists=.env src/index.ts",
+          build: "vp pack",
+          start: ctx.has("bun")
+            ? "bun dist/index.mjs"
+            : "node --env-file-if-exists=.env dist/index.mjs",
+        },
+  });
+
 export const hono = defineIntegration({
   contribute: (ctx) => [
-    ...(ctx.stack.database === undefined
-      ? []
-      : ctx.has("workers")
-        ? [file("apps/server/src/context.ts", workerServices(ctx))]
-        : templateFiles(ctx, `hono/${authVariant(ctx)}`)),
+    ...contextFiles(ctx),
     ...(ctx.has("orpc")
       ? templateFiles(
           ctx,
@@ -451,15 +516,7 @@ export const hono = defineIntegration({
     ...(ctx.has("workers")
       ? workerTsconfig(ctx)
       : [file("apps/server/tsconfig.json", renderTsconfig(ctx))]),
-    ...(ctx.has("workers")
-      ? ctx.stack.database === undefined
-        ? []
-        : [renderFile("apps/server/src/node-env.ts", workerNodeEnv)]
-      : [
-          renderFile("apps/server/src/env.ts", (read) =>
-            renderEnvModule([...read(serverEnv), port(ctx)], false)
-          ),
-        ]),
+    ...environmentFiles(ctx),
     contribute(envFiles, {
       lines: (read) => [
         ...read(serverEnv),
@@ -467,39 +524,7 @@ export const hono = defineIntegration({
       ],
       path: "apps/server/.env",
     }),
-    contribute(packageJson, {
-      dependencies: [
-        ...runtimeDependencies(ctx),
-        ...(ctx.has("workers") && ctx.stack.database === undefined
-          ? []
-          : ["@t3-oss/env-core"]),
-        "hono",
-        ...(ctx.has("workers") && ctx.stack.database === undefined
-          ? []
-          : ["zod"]),
-      ],
-      devDependencies: [
-        `${ctx.scope}/config`,
-        "@types/node",
-        ...(ctx.has("bun") ? ["@types/bun"] : []),
-        ...(ctx.has("workers") ? [`${ctx.scope}/web`] : []),
-        "typescript",
-        "vite-plus",
-      ],
-      imports: { "#src/*": "./src/*" },
-      path: "apps/server",
-      scripts: ctx.has("workers")
-        ? { dev: "vp dev", build: "vp build", preview: "vp preview" }
-        : {
-            dev: ctx.has("bun")
-              ? "bun --watch src/index.ts"
-              : "node --watch --env-file-if-exists=.env src/index.ts",
-            build: "vp pack",
-            start: ctx.has("bun")
-              ? "bun dist/index.mjs"
-              : "node --env-file-if-exists=.env dist/index.mjs",
-          },
-    }),
+    serverPackage(ctx),
     ...(ctx.stack.database === undefined ? [] : databaseScripts(ctx)),
     contribute(unitTestSources, "apps/server/src"),
     contribute(ultraciteOverrides, middlewareOverride(ctx)),
@@ -541,11 +566,7 @@ export const hono = defineIntegration({
     contribute(readmeTagline, "Hono"),
     contribute(stackHeadline, "Hono"),
     contribute(readmeLayers, {
-      choice: ctx.has("workers")
-        ? "Hono on Cloudflare Workers"
-        : ctx.has("bun")
-          ? "Hono on Bun"
-          : "Hono on Node.js 24",
+      choice: backendChoice(ctx),
       layer: "Backend",
     }),
     ...(hasWebApp(ctx) ? [] : standalone(ctx)),

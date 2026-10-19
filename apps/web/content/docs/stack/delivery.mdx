@@ -3,7 +3,7 @@ title: Delivery
 description: Deploy with Docker or Void, or package the web interface as an Electron desktop app.
 ---
 
-Delivery is how the finished application reaches its users: as a container running on a server, or as a desktop app they install. Both are optional, and Docker can also be added to an existing project.
+Delivery is how the finished application reaches its users: through Docker on a server, Void on Cloudflare, or an Electron desktop app. Each is optional; Docker and Void can also be added to compatible existing projects.
 
 ## Docker [#docker]
 
@@ -40,7 +40,7 @@ After cloning, recreate local `.env` files from the generated README and run `vo
 
 Follow the generated README to log in with `void connect --platform cloudflare` and set production server values with `void secret put`. Local `.env` values are never uploaded. `DATABASE_URL='production-url' vp run deploy` first applies Drizzle migrations, builds the SPA when needed, then calls `void deploy`. The database URL must be explicitly present in the deployment shell, so a local `.env` cannot silently select the migration target. Commit `void.lock.json`, which records your deployment state. Never regenerate it through vibestart maintenance. Generated projects contain no GitHub Actions.
 
-`vibestart add void --dry-run` previews adding this deployment to a compatible project. Its required auxiliary runtime is derived automatically; frameworks and databases stay fixed. Port every `manual` starter-source change before running the generated checks. Docker cannot be replaced implicitly.
+`vibestart add void --dry-run` previews adding this deployment to a compatible project. Its required auxiliary runtime is derived automatically; frameworks and databases stay fixed. Apply with `add void --no-install --yes`, port every `manual` starter-source change, then run the installation and checks listed in `next`. Docker cannot be replaced implicitly.
 
 ## Electron [#electron]
 

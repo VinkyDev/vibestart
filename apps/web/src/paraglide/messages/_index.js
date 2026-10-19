@@ -18,6 +18,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Cloudflare_DeploymentInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
@@ -33,6 +34,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Cap_Sql_DatabaseInputs */
 /** @typedef {{}} Cap_Sql_OrmInputs */
 /** @typedef {{}} Cap_Ui_ComponentsInputs */
+/** @typedef {{}} Cap_Workers_RuntimeInputs */
 /** @typedef {{}} Change_Demo_ApplyInputs */
 /** @typedef {{}} Change_Demo_FailedInputs */
 /** @typedef {{}} Change_Demo_LabelInputs */
@@ -69,6 +71,8 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_VoidInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Void_DatabaseInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
@@ -95,6 +99,8 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
+/** @typedef {{}} Desc_VoidInputs */
+/** @typedef {{}} Desc_WorkersInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
@@ -143,6 +149,8 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_VoidInputs */
+/** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
 /** @typedef {{}} Gate_CheckInputs */
@@ -595,6 +603,20 @@ export const api_clients_same = /** @type {((inputs?: Api_Clients_SameInputs, op
 /**
 * | output |
 * | --- |
+* | "Cloudflare deployment through Void" |
+*
+* @param {Cap_Cloudflare_DeploymentInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const cap_cloudflare_deployment = /** @type {((inputs?: Cap_Cloudflare_DeploymentInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Cloudflare_DeploymentInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.cap_cloudflare_deployment(inputs)
+	return __en.cap_cloudflare_deployment(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "a database server (PostgreSQL or MySQL)" |
 *
 * @param {Cap_Database_ServerInputs} inputs
@@ -801,6 +823,20 @@ export const cap_ui_components = /** @type {((inputs?: Cap_Ui_ComponentsInputs, 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.cap_ui_components(inputs)
 	return __en.cap_ui_components(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "the Cloudflare Workers runtime" |
+*
+* @param {Cap_Workers_RuntimeInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const cap_workers_runtime = /** @type {((inputs?: Cap_Workers_RuntimeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Workers_RuntimeInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.cap_workers_runtime(inputs)
+	return __en.cap_workers_runtime(inputs)
 });
 /**
 * | output |
@@ -1309,6 +1345,34 @@ export const deployment_postgres = /** @type {((inputs: Deployment_PostgresInput
 /**
 * | output |
 * | --- |
+* | "{name} · Cloudflare Worker + static assets" |
+*
+* @param {Deployment_VoidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_void = /** @type {((inputs: Deployment_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_VoidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_void(inputs)
+	return __en.deployment_void(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "{name} · Worker + Hyperdrive · external database" |
+*
+* @param {Deployment_Void_DatabaseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_void_database = /** @type {((inputs: Deployment_Void_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Void_DatabaseInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_void_database(inputs)
+	return __en.deployment_void_database(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Email and password sign-in, with sessions in the database" |
 *
 * @param {Desc_Better_AuthInputs} inputs
@@ -1669,6 +1733,34 @@ export const desc_vite_plus = /** @type {((inputs?: Desc_Vite_PlusInputs, option
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_vite_plus(inputs)
 	return __en.desc_vite_plus(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Cloudflare deployment for a SPA, SPA + Hono, or TanStack Start (preview)" |
+*
+* @param {Desc_VoidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_void = /** @type {((inputs?: Desc_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_VoidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_void(inputs)
+	return __en.desc_void(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Cloudflare Workers runtime, deployed with Void" |
+*
+* @param {Desc_WorkersInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_workers = /** @type {((inputs?: Desc_WorkersInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_WorkersInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_workers(inputs)
+	return __en.desc_workers(inputs)
 });
 /**
 * | output |
@@ -2342,6 +2434,34 @@ export const fit_tanstack_start = /** @type {((inputs?: Fit_Tanstack_StartInputs
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_tanstack_start(inputs)
 	return __en.fit_tanstack_start(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
+*
+* @param {Fit_VoidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_void = /** @type {((inputs?: Fit_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_VoidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_void(inputs)
+	return __en.fit_void(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Runs your server in Cloudflare Workers; database clients belong to each request." |
+*
+* @param {Fit_WorkersInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_workers = /** @type {((inputs?: Fit_WorkersInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_WorkersInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_workers(inputs)
+	return __en.fit_workers(inputs)
 });
 /**
 * | output |
@@ -3980,7 +4100,7 @@ export const role_deployment = /** @type {((inputs?: Role_DeploymentInputs, opti
 /**
 * | output |
 * | --- |
-* | "How the app is packaged for a server." |
+* | "How the app is deployed to its host." |
 *
 * @param {Role_Deployment_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3994,7 +4114,7 @@ export const role_deployment_about = /** @type {((inputs?: Role_Deployment_About
 /**
 * | output |
 * | --- |
-* | "No image. Runs anywhere Node.js runs." |
+* | "Choose a hosting platform later." |
 *
 * @param {Role_Deployment_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4218,7 +4338,7 @@ export const runs_in_electron = /** @type {((inputs?: Runs_In_ElectronInputs, op
 /**
 * | output |
 * | --- |
-* | "Runs the Hono server. The package manager, web framework and test tools are independent." |
+* | "Node.js and Bun run server processes. Void uses Cloudflare Workers; build tools still run on Node.js." |
 *
 * @param {Runtime_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4246,7 +4366,7 @@ export const runtime_none = /** @type {((inputs?: Runtime_NoneInputs, options?: 
 /**
 * | output |
 * | --- |
-* | "Run Hono on which runtime?" |
+* | "Which runtime runs the server?" |
 *
 * @param {Runtime_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

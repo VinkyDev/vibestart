@@ -15,6 +15,7 @@
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Cloudflare_DeploymentInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
@@ -30,6 +31,7 @@
 /** @typedef {{}} Cap_Sql_DatabaseInputs */
 /** @typedef {{}} Cap_Sql_OrmInputs */
 /** @typedef {{}} Cap_Ui_ComponentsInputs */
+/** @typedef {{}} Cap_Workers_RuntimeInputs */
 /** @typedef {{}} Change_Demo_ApplyInputs */
 /** @typedef {{}} Change_Demo_FailedInputs */
 /** @typedef {{}} Change_Demo_LabelInputs */
@@ -66,6 +68,8 @@
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_VoidInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Void_DatabaseInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
@@ -92,6 +96,8 @@
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
+/** @typedef {{}} Desc_VoidInputs */
+/** @typedef {{}} Desc_WorkersInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
@@ -140,6 +146,8 @@
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_VoidInputs */
+/** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
 /** @typedef {{}} Gate_CheckInputs */
@@ -380,6 +388,7 @@ export type Api_Client_DesktopInputs = {};
 export type Api_Client_MobileInputs = {};
 export type Api_ClientsInputs = {};
 export type Api_Clients_SameInputs = {};
+export type Cap_Cloudflare_DeploymentInputs = {};
 export type Cap_Database_ServerInputs = {};
 export type Cap_Document_DatabaseInputs = {};
 export type Cap_Document_OrmInputs = {};
@@ -395,6 +404,7 @@ export type Cap_Single_Page_AppInputs = {};
 export type Cap_Sql_DatabaseInputs = {};
 export type Cap_Sql_OrmInputs = {};
 export type Cap_Ui_ComponentsInputs = {};
+export type Cap_Workers_RuntimeInputs = {};
 export type Change_Demo_ApplyInputs = {};
 export type Change_Demo_FailedInputs = {};
 export type Change_Demo_LabelInputs = {};
@@ -441,6 +451,12 @@ export type Deployment_MysqlInputs = {
 export type Deployment_PostgresInputs = {
     name: NonNullable<unknown>;
 };
+export type Deployment_VoidInputs = {
+    name: NonNullable<unknown>;
+};
+export type Deployment_Void_DatabaseInputs = {
+    name: NonNullable<unknown>;
+};
 export type Desc_Better_AuthInputs = {};
 export type Desc_BunInputs = {};
 export type Desc_DockerInputs = {};
@@ -467,6 +483,8 @@ export type Desc_SqliteInputs = {};
 export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
 export type Desc_Vite_PlusInputs = {};
+export type Desc_VoidInputs = {};
+export type Desc_WorkersInputs = {};
 export type Desktop_DistInputs = {};
 export type Desktop_Dist_PillInputs = {};
 export type Docs_AnchorInputs = {};
@@ -519,6 +537,8 @@ export type Fit_SelfInputs = {};
 export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
 export type Fit_Tanstack_StartInputs = {};
+export type Fit_VoidInputs = {};
+export type Fit_WorkersInputs = {};
 export type Gate_BuildInputs = {};
 export type Gate_Build_WebInputs = {};
 export type Gate_CheckInputs = {};
@@ -806,6 +826,7 @@ export declare const api_client_desktop: (inputs: Api_Client_DesktopInputs) => L
 export declare const api_client_mobile: (inputs: Api_Client_MobileInputs) => LocalizedString;
 export declare const api_clients: (inputs: Api_ClientsInputs) => LocalizedString;
 export declare const api_clients_same: (inputs: Api_Clients_SameInputs) => LocalizedString;
+export declare const cap_cloudflare_deployment: (inputs: Cap_Cloudflare_DeploymentInputs) => LocalizedString;
 export declare const cap_database_server: (inputs: Cap_Database_ServerInputs) => LocalizedString;
 export declare const cap_document_database: (inputs: Cap_Document_DatabaseInputs) => LocalizedString;
 export declare const cap_document_orm: (inputs: Cap_Document_OrmInputs) => LocalizedString;
@@ -821,6 +842,7 @@ export declare const cap_single_page_app: (inputs: Cap_Single_Page_AppInputs) =>
 export declare const cap_sql_database: (inputs: Cap_Sql_DatabaseInputs) => LocalizedString;
 export declare const cap_sql_orm: (inputs: Cap_Sql_OrmInputs) => LocalizedString;
 export declare const cap_ui_components: (inputs: Cap_Ui_ComponentsInputs) => LocalizedString;
+export declare const cap_workers_runtime: (inputs: Cap_Workers_RuntimeInputs) => LocalizedString;
 export declare const change_demo_apply: (inputs: Change_Demo_ApplyInputs) => LocalizedString;
 export declare const change_demo_failed: (inputs: Change_Demo_FailedInputs) => LocalizedString;
 export declare const change_demo_label: (inputs: Change_Demo_LabelInputs) => LocalizedString;
@@ -857,6 +879,8 @@ export declare const deployment_image: (inputs: Deployment_ImageInputs) => Local
 export declare const deployment_mongodb: (inputs: Deployment_MongodbInputs) => LocalizedString;
 export declare const deployment_mysql: (inputs: Deployment_MysqlInputs) => LocalizedString;
 export declare const deployment_postgres: (inputs: Deployment_PostgresInputs) => LocalizedString;
+export declare const deployment_void: (inputs: Deployment_VoidInputs) => LocalizedString;
+export declare const deployment_void_database: (inputs: Deployment_Void_DatabaseInputs) => LocalizedString;
 export declare const desc_better_auth: (inputs: Desc_Better_AuthInputs) => LocalizedString;
 export declare const desc_bun: (inputs: Desc_BunInputs) => LocalizedString;
 export declare const desc_docker: (inputs: Desc_DockerInputs) => LocalizedString;
@@ -883,6 +907,8 @@ export declare const desc_sqlite: (inputs: Desc_SqliteInputs) => LocalizedString
 export declare const desc_tanstack_router: (inputs: Desc_Tanstack_RouterInputs) => LocalizedString;
 export declare const desc_tanstack_start: (inputs: Desc_Tanstack_StartInputs) => LocalizedString;
 export declare const desc_vite_plus: (inputs: Desc_Vite_PlusInputs) => LocalizedString;
+export declare const desc_void: (inputs: Desc_VoidInputs) => LocalizedString;
+export declare const desc_workers: (inputs: Desc_WorkersInputs) => LocalizedString;
 export declare const desktop_dist: (inputs: Desktop_DistInputs) => LocalizedString;
 export declare const desktop_dist_pill: (inputs: Desktop_Dist_PillInputs) => LocalizedString;
 export declare const docs_anchor: (inputs: Docs_AnchorInputs) => LocalizedString;
@@ -931,6 +957,8 @@ export declare const fit_self: (inputs: Fit_SelfInputs) => LocalizedString;
 export declare const fit_spa: (inputs: Fit_SpaInputs) => LocalizedString;
 export declare const fit_sqlite: (inputs: Fit_SqliteInputs) => LocalizedString;
 export declare const fit_tanstack_start: (inputs: Fit_Tanstack_StartInputs) => LocalizedString;
+export declare const fit_void: (inputs: Fit_VoidInputs) => LocalizedString;
+export declare const fit_workers: (inputs: Fit_WorkersInputs) => LocalizedString;
 export declare const gate_build: (inputs: Gate_BuildInputs) => LocalizedString;
 export declare const gate_build_web: (inputs: Gate_Build_WebInputs) => LocalizedString;
 export declare const gate_check: (inputs: Gate_CheckInputs) => LocalizedString;

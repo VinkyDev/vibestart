@@ -16,6 +16,7 @@
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
+/** @typedef {{}} Cap_Cloudflare_DeploymentInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
@@ -31,6 +32,7 @@
 /** @typedef {{}} Cap_Sql_DatabaseInputs */
 /** @typedef {{}} Cap_Sql_OrmInputs */
 /** @typedef {{}} Cap_Ui_ComponentsInputs */
+/** @typedef {{}} Cap_Workers_RuntimeInputs */
 /** @typedef {{}} Change_Demo_ApplyInputs */
 /** @typedef {{}} Change_Demo_FailedInputs */
 /** @typedef {{}} Change_Demo_LabelInputs */
@@ -67,6 +69,8 @@
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_VoidInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Void_DatabaseInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
@@ -93,6 +97,8 @@
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
+/** @typedef {{}} Desc_VoidInputs */
+/** @typedef {{}} Desc_WorkersInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
 /** @typedef {{}} Docs_AnchorInputs */
@@ -141,6 +147,8 @@
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_VoidInputs */
+/** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
 /** @typedef {{}} Gate_CheckInputs */
@@ -431,6 +439,10 @@ export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => L
 	return /** @type {LocalizedString} */ (`Every client calls this one API, with its types taken from the server code.`)
 };
 
+export const cap_cloudflare_deployment = /** @type {(inputs: Cap_Cloudflare_DeploymentInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Cloudflare deployment through Void`)
+};
+
 export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`a database server (PostgreSQL or MySQL)`)
 };
@@ -489,6 +501,10 @@ export const cap_sql_orm = /** @type {(inputs: Cap_Sql_OrmInputs) => LocalizedSt
 
 export const cap_ui_components = /** @type {(inputs: Cap_Ui_ComponentsInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`a UI component library`)
+};
+
+export const cap_workers_runtime = /** @type {(inputs: Cap_Workers_RuntimeInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`the Cloudflare Workers runtime`)
 };
 
 export const change_demo_apply = /** @type {(inputs: Change_Demo_ApplyInputs) => LocalizedString} */ () => {
@@ -640,6 +656,14 @@ export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs
 	return /** @type {LocalizedString} */ (`${i?.name} image, with PostgreSQL via Compose`)
 };
 
+export const deployment_void = /** @type {(inputs: Deployment_VoidInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Cloudflare Worker + static assets`)
+};
+
+export const deployment_void_database = /** @type {(inputs: Deployment_Void_DatabaseInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · external database`)
+};
+
 export const desc_better_auth = /** @type {(inputs: Desc_Better_AuthInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Email and password sign-in, with sessions in the database`)
 };
@@ -742,6 +766,14 @@ export const desc_tanstack_start = /** @type {(inputs: Desc_Tanstack_StartInputs
 
 export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Unified toolchain for dev, build, test, lint, and format`)
+};
+
+export const desc_void = /** @type {(inputs: Desc_VoidInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Cloudflare deployment for a SPA, SPA + Hono, or TanStack Start (preview)`)
+};
+
+export const desc_workers = /** @type {(inputs: Desc_WorkersInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Cloudflare Workers runtime, deployed with Void`)
 };
 
 export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => LocalizedString} */ () => {
@@ -936,6 +968,14 @@ export const fit_sqlite = /** @type {(inputs: Fit_SqliteInputs) => LocalizedStri
 
 export const fit_tanstack_start = /** @type {(inputs: Fit_Tanstack_StartInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For sites that need SEO or fast first loads.`)
+};
+
+export const fit_void = /** @type {(inputs: Fit_VoidInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle.`)
+};
+
+export const fit_workers = /** @type {(inputs: Fit_WorkersInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Runs your server in Cloudflare Workers; database clients belong to each request.`)
 };
 
 export const gate_build = /** @type {(inputs: Gate_BuildInputs) => LocalizedString} */ () => {
@@ -1421,11 +1461,11 @@ export const role_deployment = /** @type {(inputs: Role_DeploymentInputs) => Loc
 };
 
 export const role_deployment_about = /** @type {(inputs: Role_Deployment_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`How the app is packaged for a server.`)
+	return /** @type {LocalizedString} */ (`How the app is deployed to its host.`)
 };
 
 export const role_deployment_none = /** @type {(inputs: Role_Deployment_NoneInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`No image. Runs anywhere Node.js runs.`)
+	return /** @type {LocalizedString} */ (`Choose a hosting platform later.`)
 };
 
 export const role_deployment_question = /** @type {(inputs: Role_Deployment_QuestionInputs) => LocalizedString} */ () => {
@@ -1489,7 +1529,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Runs the Hono server. The package manager, web framework and test tools are independent.`)
+	return /** @type {LocalizedString} */ (`Node.js and Bun run server processes. Void uses Cloudflare Workers; build tools still run on Node.js.`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {
@@ -1497,7 +1537,7 @@ export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => Localized
 };
 
 export const runtime_question = /** @type {(inputs: Runtime_QuestionInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Run Hono on which runtime?`)
+	return /** @type {LocalizedString} */ (`Which runtime runs the server?`)
 };
 
 export const search_docs = /** @type {(inputs: Search_DocsInputs) => LocalizedString} */ () => {

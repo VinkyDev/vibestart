@@ -76,6 +76,7 @@ const viteConfig = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     if (ctx.has("workers")) {
       const content = templateContent(ctx, "spa/static", viteConfigPath);
+
       return [
         file(
           viteConfigPath,
@@ -88,6 +89,7 @@ const viteConfig = (ctx: Context) => {
         ),
       ];
     }
+
     return templateFiles(ctx, "spa/static");
   }
 

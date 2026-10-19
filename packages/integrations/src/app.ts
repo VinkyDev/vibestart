@@ -45,13 +45,15 @@ export const serverApp = (ctx: Context) => {
 
   const lazy = ctx.has("next");
 
+  const envImport = ctx.has("workers")
+    ? 'import { env } from "#src/server/node-env.ts";'
+    : 'import { env } from "#src/server/env.ts";';
+
   return {
     dir: "apps/web",
     envImport: lazy
       ? 'import { readEnv } from "#src/server/env.ts";'
-      : ctx.has("workers")
-        ? 'import { env } from "#src/server/node-env.ts";'
-        : 'import { env } from "#src/server/env.ts";',
+      : envImport,
     lazy,
     read: (name: string) => (lazy ? `readEnv().${name}` : `env.${name}`),
     src: "apps/web/src/server",
@@ -310,6 +312,7 @@ export const closeDatabase = (ctx: Context, db = "db") => {
 
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
+
   const check = databaseCheck(
     ctx,
     next || ctx.has("workers") ? "getServices().db" : "db"

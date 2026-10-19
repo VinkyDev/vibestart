@@ -15,7 +15,15 @@ import { chosen, integrationOf } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 // A database server runs beside the image in Compose; SQLite lives inside it.
-const deploymentLabel = (database: string | undefined, name: string) => {
+const deploymentLabel = (stack: Stack, name: string) => {
+  const { database } = stack;
+
+  if (stack.deployment === "void") {
+    return database === undefined
+      ? m.deployment_void({ name })
+      : m.deployment_void_database({ name });
+  }
+
   if (database === "postgres") {
     return m.deployment_postgres({ name });
   }
@@ -136,11 +144,7 @@ export const DeploymentFrame = ({
             initial={{ left: origin.x + 20, top: origin.y + 8 }}
             transition={spring}
           >
-            {stack.deployment === "void"
-              ? stack.database === undefined
-                ? m.deployment_void({ name })
-                : m.deployment_void_database({ name })
-              : deploymentLabel(stack.database, name)}
+            {deploymentLabel(stack, name)}
           </motion.span>
         </motion.div>
       )}
