@@ -576,7 +576,7 @@ const client = createClient();
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/lib/api.ts · 32 stacks
+# apps/web/src/lib/api.ts · 40 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
@@ -591,18 +591,26 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-docker
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-docker
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
@@ -634,7 +642,7 @@ const client = createClient();
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/lib/api.ts · 24 stacks
+# apps/web/src/lib/api.ts · 32 stacks
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -643,6 +651,10 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -651,6 +663,10 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -9203,13 +9219,11 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
   }
 };
 
-# apps/web/src/server/request-cancellation.test.ts · 456 stacks
+# apps/web/src/server/request-cancellation.test.ts · 416 stacks
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker
 #   tanstack-start-expo-docker-e2e
-#   tanstack-start-expo-void
-#   tanstack-start-expo-void-e2e
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-docker
@@ -9534,16 +9548,10 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-self-mysql-better-auth-expo-void
-#   tanstack-start-self-mysql-better-auth-expo-void-e2e
-#   tanstack-start-self-mysql-better-auth-void
-#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
-#   tanstack-start-self-mysql-expo-void
-#   tanstack-start-self-mysql-expo-void-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-docker
 #   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-expo-docker
@@ -9552,14 +9560,10 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-mysql-prisma-docker-e2e
 #   tanstack-start-self-mysql-prisma-expo-docker
 #   tanstack-start-self-mysql-prisma-expo-docker-e2e
-#   tanstack-start-self-mysql-void
-#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
-#   tanstack-start-self-orpc-expo-void
-#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -9572,16 +9576,10 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-self-orpc-mysql-better-auth-expo-void
-#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
-#   tanstack-start-self-orpc-mysql-better-auth-void
-#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
-#   tanstack-start-self-orpc-mysql-expo-void
-#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -9590,22 +9588,14 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
-#   tanstack-start-self-orpc-mysql-void
-#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-expo-void
-#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-void
-#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
-#   tanstack-start-self-orpc-postgres-expo-void
-#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -9614,8 +9604,6 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
-#   tanstack-start-self-orpc-postgres-void
-#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -9624,22 +9612,14 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
-#   tanstack-start-self-orpc-void
-#   tanstack-start-self-orpc-void-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-self-postgres-better-auth-expo-void
-#   tanstack-start-self-postgres-better-auth-expo-void-e2e
-#   tanstack-start-self-postgres-better-auth-void
-#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
-#   tanstack-start-self-postgres-expo-void
-#   tanstack-start-self-postgres-expo-void-e2e
 #   tanstack-start-self-postgres-prisma-better-auth-docker
 #   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-postgres-prisma-better-auth-expo-docker
@@ -9648,8 +9628,6 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-postgres-prisma-docker-e2e
 #   tanstack-start-self-postgres-prisma-expo-docker
 #   tanstack-start-self-postgres-prisma-expo-docker-e2e
-#   tanstack-start-self-postgres-void
-#   tanstack-start-self-postgres-void-e2e
 #   tanstack-start-self-sqlite-better-auth-docker
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-expo-docker
@@ -9658,8 +9636,6 @@ export const proxyToServer = async ({ request }: { request: Request }) => {
 #   tanstack-start-self-sqlite-docker-e2e
 #   tanstack-start-self-sqlite-expo-docker
 #   tanstack-start-self-sqlite-expo-docker-e2e
-#   tanstack-start-void
-#   tanstack-start-void-e2e
 import { IncomingMessage, ServerResponse } from "node:http";
 import { Socket } from "node:net";
 
@@ -10507,7 +10483,8 @@ export const handleRequest = async (
 #   tanstack-start-void
 #   tanstack-start-void-e2e
 {
-  "extends": "@my-app/config/typescript/node.json",
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": { "types": ["node", "vite/client"] },
   "include": ["*.config.ts", "config/**/*.ts", "tests", "src/**/*.test.ts"]
 }
 
@@ -10545,7 +10522,8 @@ export const handleRequest = async (
 #   tanstack-start-self-postgres-void
 #   tanstack-start-self-postgres-void-e2e
 {
-  "extends": "@my-app/config/typescript/node.json",
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": { "types": ["node", "vite/client"] },
   "include": [
     "*.config.ts",
     "config/**/*.ts",

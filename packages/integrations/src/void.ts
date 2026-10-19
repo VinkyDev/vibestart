@@ -171,7 +171,8 @@ export const workerTsconfig = (ctx: Context) => {
     file(
       `${dir}/tsconfig.node.json`,
       JSON.stringify({
-        extends: `${ctx.scope}/config/typescript/node.json`,
+        extends: `${ctx.scope}/config/typescript/${start ? "react" : "node"}.json`,
+        compilerOptions: { types: ["node", ...(start ? ["vite/client"] : [])] },
         include: [
           "*.config.ts",
           "config/**/*.ts",
@@ -268,7 +269,7 @@ export const forward = defineHandler(async (c) =>
     ].map((route) =>
       file(
         `apps/server/routes/${route}`,
-        'export { forward as ALL } from "../_forward.ts";\n'
+        'export { forward as DELETE, forward as GET, forward as HEAD, forward as OPTIONS, forward as PATCH, forward as POST, forward as PUT } from "../_forward.ts";\n'
       )
     ),
   ];

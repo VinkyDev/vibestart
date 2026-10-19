@@ -146,10 +146,18 @@ const selfApi = (ctx: Context) =>
   ctx.has("orpc")
     ? [
         ...templateFiles(ctx, "tanstack-start/self-orpc"),
-        ...templateFiles(
-          ctx,
-          `tanstack-start/${ctx.has("workers") && ctx.stack.database !== undefined ? "workers-" : ""}self-orpc-${apiVariant(ctx)}`
-        ),
+        ...templateFiles(ctx, `tanstack-start/self-orpc-${apiVariant(ctx)}`, {
+          except:
+            ctx.has("workers") && ctx.stack.database !== undefined
+              ? ["apps/web/src/server/orpc.ts"]
+              : [],
+        }),
+        ...(ctx.has("workers") && ctx.stack.database !== undefined
+          ? templateFiles(
+              ctx,
+              `tanstack-start/workers-self-orpc-${apiVariant(ctx)}`
+            )
+          : []),
         contribute(
           agentsNotes,
           `A route \`loader\` or component calls \`api.*\` from \`src/lib/api.ts\`. During SSR that client calls the router in-process${ctx.has("better-auth") ? " with the request's cookies" : ""}; in the browser it posts to \`/rpc\`. Loader data is dehydrated into the Query cache, so the browser does not refetch it.`
@@ -290,6 +298,7 @@ export const tanstackStart = defineIntegration({
             ? [
                 "apps/web/tsconfig.json",
                 "apps/web/config/request-cancellation.ts",
+                "apps/web/src/server/request-cancellation.test.ts",
               ]
             : []),
         ],
