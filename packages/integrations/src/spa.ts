@@ -74,6 +74,20 @@ const open = (ctx: Context) => {
 // Without oRPC the server has no `/rpc` for Vite to proxy.
 const viteConfig = (ctx: Context) => {
   if (!hasBackend(ctx)) {
+    if (ctx.has("workers")) {
+      const content = templateContent(ctx, "spa/static", viteConfigPath);
+      return [
+        file(
+          viteConfigPath,
+          content
+            .replace(
+              'import { defineConfig } from "vite-plus";',
+              'import { defineConfig } from "vite-plus";\nimport { voidPlugin } from "void/vite";'
+            )
+            .replace("plugins: [", "plugins: [voidPlugin(), ")
+        ),
+      ];
+    }
     return templateFiles(ctx, "spa/static");
   }
 

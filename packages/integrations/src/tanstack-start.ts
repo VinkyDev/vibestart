@@ -38,12 +38,30 @@ import {
   readmeTagline,
   unitTestSources,
 } from "#/vite-plus/slots.ts";
+import { workerNodeEnv, workerServices, workerTsconfig } from "#/void.ts";
 
 const viteConfigPath = "apps/web/vite.config.ts";
 const packBlock = /^ {2}pack: \{\n(?: {4}.*\n)+ {2}\},\n/mu;
 
 // `vp pack` bundles the migration entry, so only a web app that migrates keeps the `pack` block.
 const viteConfig = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return file(
+      viteConfigPath,
+      `import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite-plus";
+import { voidPlugin } from "void/vite";
+
+export default defineConfig({
+  plugins: [voidPlugin(), tailwindcss(), tanstackStart(), react({ compiler: true })],
+  server: { port: 3000 },
+});
+`
+    );
+  }
+
   const config = templateContent(ctx, "tanstack-start/common", viteConfigPath);
 
   if (!packBlock.test(config)) {
@@ -104,6 +122,10 @@ const serverConvention = (ctx: Context) => {
 };
 
 const selfServices = (ctx: Context) => {
+  if (ctx.has("workers") && ctx.stack.database !== undefined) {
+    return ["request-scoped services via `getServices()`"];
+  }
+
   if (ctx.stack.database === undefined) {
     return [];
   }
@@ -124,7 +146,10 @@ const selfApi = (ctx: Context) =>
   ctx.has("orpc")
     ? [
         ...templateFiles(ctx, "tanstack-start/self-orpc"),
-        ...templateFiles(ctx, `tanstack-start/self-orpc-${apiVariant(ctx)}`),
+        ...templateFiles(
+          ctx,
+          `tanstack-start/${ctx.has("workers") && ctx.stack.database !== undefined ? "workers-" : ""}self-orpc-${apiVariant(ctx)}`
+        ),
         contribute(
           agentsNotes,
           `A route \`loader\` or component calls \`api.*\` from \`src/lib/api.ts\`. During SSR that client calls the router in-process${ctx.has("better-auth") ? " with the request's cookies" : ""}; in the browser it posts to \`/rpc\`. Loader data is dehydrated into the Query cache, so the browser does not refetch it.`
@@ -140,10 +165,17 @@ const selfApi = (ctx: Context) =>
 
 // The server's variables all belong to the database and the accounts on it.
 const selfEnvironment = (ctx: Context) => [
-  ...templateFiles(ctx, `tanstack-start/self-${authVariant(ctx)}`),
-  renderFile("apps/web/src/server/env.ts", (read) =>
-    renderEnvModule(read(serverEnv), false)
-  ),
+  ...(ctx.has("workers")
+    ? [
+        file("apps/web/src/server/context.ts", workerServices(ctx)),
+        renderFile("apps/web/src/server/node-env.ts", workerNodeEnv),
+      ]
+    : [
+        ...templateFiles(ctx, `tanstack-start/self-${authVariant(ctx)}`),
+        renderFile("apps/web/src/server/env.ts", (read) =>
+          renderEnvModule(read(serverEnv), false)
+        ),
+      ]),
   contribute(envFiles, {
     lines: (read) => read(serverEnv),
     path: "apps/web/.env",
@@ -252,13 +284,22 @@ export const tanstackStart = defineIntegration({
 
     return [
       ...templateFiles(ctx, "tanstack-start/common", {
-        except: [viteConfigPath],
+        except: [
+          viteConfigPath,
+          ...(ctx.has("workers")
+            ? [
+                "apps/web/tsconfig.json",
+                "apps/web/config/request-cancellation.ts",
+              ]
+            : []),
+        ],
       }),
       ...templateFiles(ctx, `tanstack-start/${authVariant(ctx)}`),
       ...(todosExample(ctx) && !auth
         ? templateFiles(ctx, "tanstack-start/todos")
         : []),
       viteConfig(ctx),
+      ...(ctx.has("workers") ? workerTsconfig(ctx) : []),
       homePage(ctx, "apps/web/src/routes/index.tsx", true),
       contribute(packageJson, {
         dependencies: [
@@ -270,7 +311,7 @@ export const tanstackStart = defineIntegration({
           "@tailwindcss/vite",
           "@types/node",
           "@vitejs/plugin-react",
-          "nitro",
+          ...(ctx.has("workers") ? [] : ["nitro"]),
           "oxc-transform-react",
           "typescript",
           "vite",
@@ -281,8 +322,16 @@ export const tanstackStart = defineIntegration({
         scripts: {
           // The Expo app on a phone reaches the API through this server, which Vite binds to localhost alone by default.
           dev: ctx.has("expo") && hasBackend(ctx) ? "vp dev --host" : "vp dev",
-          build: database ? "vp build && vp pack" : "vp build",
-          start: "node --env-file-if-exists=.env .output/server/index.mjs",
+          build:
+            database && !ctx.has("workers")
+              ? "vp build && vp pack"
+              : "vp build",
+          ...(ctx.has("workers")
+            ? { preview: "vp preview" }
+            : {
+                start:
+                  "node --env-file-if-exists=.env .output/server/index.mjs",
+              }),
         },
       }),
       ...(database
@@ -333,5 +382,5 @@ export const tanstackStart = defineIntegration({
   description: "Full-stack React with SSR, server routes, and server functions",
   homepage: "https://tanstack.com/start",
   provides: ["frontend-framework", "fullstack-framework"],
-  requires: ["react", "router", "node-runtime"],
+  requires: ["react", "router", ["node-runtime", "workers-runtime"]],
 });

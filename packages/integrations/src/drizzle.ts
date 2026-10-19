@@ -20,7 +20,7 @@ import {
   stackHeadline,
 } from "#/app.ts";
 import { commentedShell } from "#/format.ts";
-import { templateFiles } from "#/templates.ts";
+import { templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
   agentsMap,
@@ -113,7 +113,29 @@ export const drizzle = defineIntegration({
 
     return [
       ...templateFiles(ctx, "drizzle/common"),
-      ...templateFiles(ctx, `drizzle/${database}/common`),
+      ...templateFiles(ctx, `drizzle/${database}/common`, {
+        except: ctx.has("workers") ? ["packages/db/src/index.ts"] : [],
+      }),
+      ...(ctx.has("workers")
+        ? [
+            file(
+              "packages/db/src/index.ts",
+              templateContent(
+                ctx,
+                `drizzle/${database}/common`,
+                "packages/db/src/index.ts"
+              )
+                .replace(
+                  "createPool({ uri: url })",
+                  "createPool({ uri: url, disableEval: true, connectionLimit: 1 })"
+                )
+                .replace(
+                  'connection: { client_min_messages: "warning" }, url',
+                  'connection: { client_min_messages: "warning" }, max: 5, url'
+                )
+            ),
+          ]
+        : []),
       ...(todosExample(ctx)
         ? templateFiles(ctx, `drizzle/${database}/${authVariant(ctx)}`)
         : []),

@@ -1,6 +1,6 @@
 ---
 title: Delivery
-description: Deploy with Docker, or package the web interface as an Electron desktop app.
+description: Deploy with Docker or Void, or package the web interface as an Electron desktop app.
 ---
 
 Delivery is how the finished application reaches its users: as a container running on a server, or as a desktop app they install. Both are optional, and Docker can also be added to an existing project.
@@ -27,6 +27,20 @@ Configure secrets and database addresses in the deployment environment, then sta
     },
   ]}
 />
+
+## Void (preview) [#void]
+
+<Tech href="https://void.cloud" icon="void" />
+
+Void 1.1.11 builds and deploys to your own Cloudflare Workers account. Choose `--deployment void --runtime workers` for a static SPA, a SPA hosted by Hono, or TanStack Start. Next.js, a standalone Hono server, and TanStack Start paired with Hono are excluded.
+
+Server stacks use Drizzle with an external PostgreSQL or MySQL database, optionally with Better Auth. Hyperdrive pools production connections; every request creates its own client and releases it after the response stream completes or fails. Void's database migrations and auth are not used. SQLite, Prisma, MongoDB, D1, and Void Platform are excluded.
+
+After cloning, recreate local `.env` files from the generated README and run `void prepare` in the deployed app to generate ignored Worker types. Installation also runs it through `prepare`. Worker and Node tooling have separate TypeScript configs.
+
+Follow the generated README to log in with `void connect --platform cloudflare` and set production server values with `void secret put`. Local `.env` values are never uploaded. `DATABASE_URL='production-url' vp run deploy` first applies Drizzle migrations, builds the SPA when needed, then calls `void deploy`. The database URL must be explicitly present in the deployment shell, so a local `.env` cannot silently select the migration target. Commit `void.lock.json`, which records your deployment state. Never regenerate it through vibestart maintenance. Generated projects contain no GitHub Actions.
+
+`vibestart add void --dry-run` previews adding this deployment to a compatible project. Its required auxiliary runtime is derived automatically; frameworks and databases stay fixed. Port every `manual` starter-source change before running the generated checks. Docker cannot be replaced implicitly.
 
 ## Electron [#electron]
 

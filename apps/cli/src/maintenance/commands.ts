@@ -3,7 +3,12 @@ import path from "node:path";
 import { isCancel, multiselect } from "@clack/prompts";
 import { z } from "zod";
 
-import { createBlueprintSchema, diffText } from "@vibestart/core";
+import {
+  choicesOf,
+  createBlueprintSchema,
+  diffText,
+  resolve,
+} from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
 import {
@@ -140,7 +145,33 @@ const added = async (
     }
   }
 
-  return blueprint;
+  const choices = choicesOf(registry, blueprint.stack);
+
+  if (resolve(registry, choices).stacks.length > 0) {
+    return blueprint;
+  }
+
+  // Auxiliary choices follow the selected product; never replace a user's framework or database.
+  const required = Object.fromEntries(
+    Object.entries(choices).filter(([kind]) => {
+      const integrations = registry.integrations.filter(
+        (integration) => integration.kind === kind
+      );
+      return !integrations.every(
+        (integration) => integration.auxiliary === true
+      );
+    })
+  );
+  const resolution = resolve(registry, required);
+  const stack = resolution.stacks[0];
+
+  if (stack === undefined) {
+    throw new MaintenanceError(
+      resolution.violations.map(({ reason }) => reason).join("\n")
+    );
+  }
+
+  return { ...blueprint, stack };
 };
 
 const planFor = async (

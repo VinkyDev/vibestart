@@ -72,5 +72,5 @@ export const mongodb = defineIntegration({
   description: "MongoDB server, run by Docker Compose in development",
   homepage: "https://www.mongodb.com",
   provides: ["document-database"],
-  requires: ["http-server", "document-orm"],
+  requires: ["http-server", "document-orm", "node-runtime"],
 });

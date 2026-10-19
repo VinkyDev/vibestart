@@ -250,7 +250,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
 
   if (server !== undefined) {
     boxes.push({
-      deployed: true,
+      deployed: stack.deployment !== "void",
       group: "database",
       id: "database",
       label: server(),

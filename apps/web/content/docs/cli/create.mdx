@@ -100,7 +100,7 @@ Change them to one of:
 
 ## Package manager and Hono runtime [#runtime]
 
-These two choices are independent. The package manager defaults to `pnpm`; choose Bun with `--package-manager bun`. Hono runs on `node` by default; use `--runtime bun` to run its server on Bun. The runtime choice applies to Hono only: Next.js, TanStack Start, Electron, Vite+, and Vitest run as they otherwise would.
+These two choices are independent. The package manager defaults to `pnpm`; choose Bun with `--package-manager bun`. Hono runs on `node` by default; use `--runtime bun` to run its server on Bun. The Bun runtime choice applies to Hono only: Next.js, TanStack Start, Electron, Vite+, and Vitest run as they otherwise would.
 
 ```sh
 # pnpm installs, Bun runs Hono
@@ -252,3 +252,5 @@ On failure:
 | `0`   | Success   |
 | `1`   | Failure   |
 | `130` | Cancelled |
+
+For Cloudflare deployment, use `--deployment void --runtime workers`. Void supports static SPA, SPA + Hono, and TanStack Start; server stacks use optional external Postgres/MySQL + Drizzle. Node.js still runs tooling and migrations. Follow the generated setup steps, including `void prepare`, before checks. See [Void delivery](/docs/stack/delivery#void).

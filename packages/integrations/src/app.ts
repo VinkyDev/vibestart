@@ -34,7 +34,9 @@ export const serverApp = (ctx: Context) => {
   if (ctx.has("hono")) {
     return {
       dir: "apps/server",
-      envImport: 'import { env } from "#src/env.ts";',
+      envImport: ctx.has("workers")
+        ? 'import { env } from "#src/node-env.ts";'
+        : 'import { env } from "#src/env.ts";',
       lazy: false,
       read: (name: string) => `env.${name}`,
       src: "apps/server/src",
@@ -47,7 +49,9 @@ export const serverApp = (ctx: Context) => {
     dir: "apps/web",
     envImport: lazy
       ? 'import { readEnv } from "#src/server/env.ts";'
-      : 'import { env } from "#src/server/env.ts";',
+      : ctx.has("workers")
+        ? 'import { env } from "#src/server/node-env.ts";'
+        : 'import { env } from "#src/server/env.ts";',
     lazy,
     read: (name: string) => (lazy ? `readEnv().${name}` : `env.${name}`),
     src: "apps/web/src/server",
@@ -119,7 +123,16 @@ export const migrationEntry = (ctx: Context, run: readonly string[]) => {
       "",
       `const db = createDb(${read("DATABASE_URL")});`,
       // Each statement stands apart, as Ultracite's readable-spacing rule asks.
-      ...run.flatMap((statement) => ["", statement]),
+      ...(ctx.has("workers")
+        ? [
+            "",
+            "try {",
+            ...run.slice(0, -1).map((statement) => `  ${statement}`),
+            "} finally {",
+            `  ${run.at(-1)}`,
+            "}",
+          ]
+        : run.flatMap((statement) => ["", statement])),
       "",
     ].join("\n")
   );
@@ -297,7 +310,10 @@ export const closeDatabase = (ctx: Context, db = "db") => {
 
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
-  const check = databaseCheck(ctx, next ? "getServices().db" : "db");
+  const check = databaseCheck(
+    ctx,
+    next || ctx.has("workers") ? "getServices().db" : "db"
+  );
 
   const handler = [
     `${check.async ? "async " : ""}() => {`,
@@ -326,7 +342,9 @@ export const selfHealthRoute = (ctx: Context) => {
       'import { createFileRoute } from "@tanstack/react-router";',
       ...check.imports,
       "",
-      'import { db } from "#src/server/context.ts";',
+      ctx.has("workers")
+        ? 'import { getServices } from "#src/server/context.ts";'
+        : 'import { db } from "#src/server/context.ts";',
       "",
       `const health = ${handler.join("\n")}`,
       "",

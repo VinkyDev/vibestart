@@ -29,6 +29,8 @@ const groupName = (group: Group) =>
 const pages = new Map([
   ["better-auth", "stack/data"],
   ["docker", "stack/delivery"],
+  ["void", "stack/delivery"],
+  ["workers", "stack/toolchain"],
   ["drizzle", "stack/data"],
   ["prisma", "stack/data"],
   ["mongodb", "stack/data"],
@@ -59,6 +61,8 @@ const marks = new Map<string, TechIcon>([
   ["better-auth", "better-auth"],
   ["bun", "bun"],
   ["docker", "docker"],
+  ["void", "void"],
+  ["workers", "workers"],
   ["drizzle", "drizzle"],
   ["prisma", "prisma"],
   ["mongodb", "mongodb"],

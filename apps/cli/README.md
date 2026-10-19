@@ -51,3 +51,7 @@ Run `npx vibestart-cli --help` for the full reference.
 - [Agent skill](https://github.com/VinkyDev/vibestart/tree/main/skills/vibestart)
 
 MIT
+
+### Void deployment (preview)
+
+`--deployment void --runtime workers` deploys a SPA, SPA + Hono, or TanStack Start to your Cloudflare account with Void 1.1.11. Server stacks support external PostgreSQL or MySQL with Drizzle and optional Better Auth. Next.js, SQLite, Prisma, and a standalone Hono server are excluded. Generated projects include a deployment script and instructions for production secrets, Hyperdrive, and `void.lock.json`; they include no GitHub Actions. See [delivery](https://vibestart.net/docs/stack/delivery#void).

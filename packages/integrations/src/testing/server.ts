@@ -71,8 +71,8 @@ const separateServerBody = (ctx: Context) => ({
   starts: [
     startCall(
       "serverDir",
-      ['"src/index.ts"'],
-      [...serverEnv(ctx), "PORT: serverPort"],
+      ctx.has("workers") ? webArgs(ctx, "serverPort") : ['"src/index.ts"'],
+      [...serverEnv(ctx), ...(ctx.has("workers") ? [] : ["PORT: serverPort"])],
       ctx.has("bun")
     ),
     `    await waitForServer(\`http://localhost:\${serverPort}/api/health\`);`,

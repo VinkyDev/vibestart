@@ -1,6 +1,6 @@
 ---
 title: 添加能力
-description: 为已有项目接入扩展工具或 Docker 部署配置。
+description: 为已有项目接入扩展工具或 Docker/Void 部署配置。
 ---
 
 ```sh
@@ -9,7 +9,7 @@ npx vibestart-cli add knip ultracite docker --dry-run
 npx vibestart-cli add knip ultracite docker --yes
 ```
 
-未指定能力时，终端中会显示多选列表。Knip 与 Ultracite 是代码检查扩展，Docker 提供部署配置。添加能力不会改变项目的包管理器和应用运行时。
+未指定能力时，终端中会显示多选列表。Knip 与 Ultracite 是代码检查扩展，Docker 和 Void 提供部署配置。添加能力不会改变包管理器；Void 会推导必需的 Workers 运行时。
 
 ## 预览与应用 [#apply]
 
@@ -24,3 +24,5 @@ npx vibestart-cli add knip ultracite docker --yes
 `--no-install` 只写文件，返回 `needs-install`，并给出需要执行的安装与检查命令。这两个参数不能同时使用。
 
 接入 Ultracite 后，已有业务代码可能需要按新增规则调整。检查失败时，文件保持已写入的状态：修改代码后重新执行检查，或用 Git 撤销。添加能力不会自动迁移数据库。
+
+兼容的 SPA、SPA + Hono 和 TanStack Start 项目还可使用 `add void`，自动推导必需的 Workers 运行时，保留框架和数据库选择。需移植所有 `manual` 源码变更；不能隐式替换已有部署。`void.lock.json` 属于用户部署状态，不参与合并。详见 [Void 部署](/docs/stack/delivery#void)。

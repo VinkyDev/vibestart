@@ -100,7 +100,7 @@ Change them to one of:
 
 ## 包管理器与 Hono 运行时 [#runtime]
 
-这两项选择相互独立。包管理器默认为 `pnpm`，可通过 `--package-manager bun` 选择 Bun；Hono 默认运行在 `node` 上，可通过 `--runtime bun` 改为 Bun。运行时选择仅作用于 Hono，Next.js、TanStack Start、Electron、Vite+ 和 Vitest 的运行方式不变。
+这两项选择相互独立。包管理器默认为 `pnpm`，可通过 `--package-manager bun` 选择 Bun；Hono 默认运行在 `node` 上，可通过 `--runtime bun` 改为 Bun。Bun 运行时选择仅作用于 Hono，Next.js、TanStack Start、Electron、Vite+ 和 Vitest 的运行方式不变。
 
 ```sh
 # 使用 pnpm 安装依赖，Bun 运行 Hono
@@ -252,3 +252,5 @@ npx vibestart-cli my-app --framework spa --backend hono --json
 | `0`    | 成功   |
 | `1`    | 失败   |
 | `130`  | 已取消 |
+
+部署到 Cloudflare 时使用 `--deployment void --runtime workers`。Void 支持静态 SPA、SPA + Hono 和 TanStack Start；服务端可选外部 Postgres/MySQL + Drizzle。工具和迁移脚本仍运行于 Node.js。检查前按生成的步骤完成 `void prepare` 等准备，详见 [Void 部署](/docs/stack/delivery#void)。

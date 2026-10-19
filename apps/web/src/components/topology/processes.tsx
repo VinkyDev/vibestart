@@ -136,7 +136,11 @@ export const DeploymentFrame = ({
             initial={{ left: origin.x + 20, top: origin.y + 8 }}
             transition={spring}
           >
-            {deploymentLabel(stack.database, name)}
+            {stack.deployment === "void"
+              ? stack.database === undefined
+                ? m.deployment_void({ name })
+                : m.deployment_void_database({ name })
+              : deploymentLabel(stack.database, name)}
           </motion.span>
         </motion.div>
       )}

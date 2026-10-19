@@ -1,0 +1,13 @@
+{
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": {
+    "types": ["void/env", "vite/client"],
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "env.ts", "worker-env.d.ts", ".void/*.d.ts"],
+  "exclude": [
+    "src/server/migrate.ts",
+    "src/server/node-env.ts",
+    "src/**/*.test.ts"
+  ]
+}

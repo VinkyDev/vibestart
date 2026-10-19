@@ -34,7 +34,7 @@ const fileFacets = (file: GeneratedFile) =>
         .map((line) => `line ${file.path} ${line}`)
     : [`file ${file.path} ${digest(file.content)}`];
 
-// Docker changes only its own files, so a deployment is not a choice `ready` sees.
+// Docker has no runtime effect. Void participates only in its own stacks, preserving existing coverage.
 const choiceKinds = registry.kinds
   .map((kind) => kind.id)
   .filter((kind) => kind !== "deployment");
@@ -42,7 +42,10 @@ const choiceKinds = registry.kinds
 /** Every `size` of the stack's choices made together, an empty kind included as `none`. */
 const choiceFacets = (stack: Stack, size: number) =>
   combinations(
-    choiceKinds.map((kind) => `${kind}=${stack[kind] ?? "none"}`),
+    [
+      ...choiceKinds.map((kind) => `${kind}=${stack[kind] ?? "none"}`),
+      ...(stack.deployment === "void" ? ["deployment=void"] : []),
+    ],
     size
   ).map((choices) => `choices ${choices.join(" ")}`);
 
