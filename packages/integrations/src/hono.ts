@@ -16,13 +16,13 @@ import {
   environmentConvention,
   hasWebApp,
   proxiesToHono,
-  renderEnvExample,
   renderEnvModule,
   serverEnv,
   stackHeadline,
   closeDatabase as closeDatabaseStatement,
 } from "#/app.ts";
 import { composeServers, dockerRuntime } from "#/docker.ts";
+import { envFiles } from "#/env-files.ts";
 import { templateFiles } from "#/templates.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import {
@@ -116,26 +116,10 @@ const contextImport = (ctx: Context) => {
 const renderApp = (ctx: Context) => {
   const auth = ctx.has("better-auth");
   const api = ctx.stack.api !== undefined;
-  // The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
-  const spa = ctx.has("spa");
 
   return [
-    ...(spa
-      ? [
-          'import { existsSync } from "node:fs";',
-          'import { fileURLToPath } from "node:url";',
-        ]
-      : []),
-    "",
     ...(ctx.has("openapi")
       ? [`import { createApi } from "${ctx.scope}/api";`]
-      : []),
-    ...(spa
-      ? [
-          ctx.has("bun")
-            ? 'import { serveStatic } from "@hono/bun";'
-            : 'import { serveStatic } from "@hono/node-server/serve-static";',
-        ]
       : []),
     ...(!api && ctx.stack.database !== undefined
       ? databaseCheck(ctx, "db").imports
@@ -150,12 +134,6 @@ const renderApp = (ctx: Context) => {
       ? ['import { openApi, rpc } from "#src/orpc.ts";']
       : []),
     "",
-    ...(spa
-      ? [
-          'const publicDir = fileURLToPath(new URL("public", import.meta.url));',
-          "",
-        ]
-      : []),
     ...(auth
       ? [
           "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
@@ -165,26 +143,47 @@ const renderApp = (ctx: Context) => {
     ...(api ? [] : [...healthHandler(ctx), ""]),
     ...routes(ctx),
     "",
-    ...(spa
-      ? [
-          "if (existsSync(publicDir)) {",
-          "  app",
-          "    .use(serveStatic({ root: publicDir }))",
-          '    .get("*", serveStatic({ root: publicDir, path: "index.html" }));',
-          "}",
-          "",
-        ]
-      : []),
   ].join("\n");
 };
+
+// The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
+const staticImports = (ctx: Context) =>
+  ctx.has("spa")
+    ? [
+        ctx.has("bun")
+          ? 'import { serveStatic } from "@hono/bun";'
+          : 'import { serveStatic } from "@hono/node-server/serve-static";',
+      ]
+    : [];
+
+const serveSpa = (ctx: Context) =>
+  ctx.has("spa")
+    ? [
+        'const publicDir = fileURLToPath(new URL("public", import.meta.url));',
+        "",
+        "if (existsSync(publicDir)) {",
+        "  app",
+        "    .use(serveStatic({ root: publicDir }))",
+        '    .get("*", serveStatic({ root: publicDir, path: "index.html" }));',
+        "}",
+        "",
+      ]
+    : [];
 
 const renderIndex = (ctx: Context) =>
   [
     'import { once } from "node:events";',
+    ...(ctx.has("spa")
+      ? [
+          'import { existsSync } from "node:fs";',
+          'import { fileURLToPath } from "node:url";',
+        ]
+      : []),
     "",
     ctx.has("bun")
       ? 'import { serve } from "bun";'
       : 'import { serve } from "@hono/node-server";',
+    ...staticImports(ctx),
     "",
     'import { app } from "#src/app.ts";',
     ...(ctx.stack.database === undefined
@@ -192,6 +191,7 @@ const renderIndex = (ctx: Context) =>
       : ['import { db } from "#src/context.ts";']),
     'import { env } from "#src/env.ts";',
     "",
+    ...serveSpa(ctx),
     ...(ctx.has("bun")
       ? [
           "const server = serve({ fetch: app.fetch, port: env.PORT });",
@@ -379,9 +379,10 @@ export const hono = defineIntegration({
     renderFile("apps/server/src/env.ts", (read) =>
       renderEnvModule([...read(serverEnv), port(ctx)], false)
     ),
-    renderFile("apps/server/.env.example", (read) =>
-      renderEnvExample([...read(serverEnv), port(ctx)])
-    ),
+    contribute(envFiles, {
+      lines: (read) => [...read(serverEnv), port(ctx)],
+      path: "apps/server/.env",
+    }),
     contribute(packageJson, {
       dependencies: [
         ...runtimeDependencies(ctx),

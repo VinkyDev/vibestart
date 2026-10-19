@@ -64,7 +64,7 @@ The desktop app wraps `apps/web`: `vp run dev` starts the web dev server and ope
 
 ## Conventions
 
-- **Environment.** Declare every server variable in `apps/server/src/env.ts` and add it to `apps/server/.env.example`. Code reads `env`. The web app is shipped to the browser, so it holds no secret.
+- **Environment.** Declare every server variable in `apps/server/src/env.ts` and list it, with a safe example value, under Environment in `README.md`. Keep real values in the ignored `.env` file. Code reads `env`. The web app is shipped to the browser, so it holds no secret.
 - **Procedure.** Add it on a router in `packages/api/src/routers/` and register that router in `packages/api/src/index.ts`. Validate input with Zod, read the database from `context.db`, and throw `ORPCError` for an expected failure. The web client takes the new type with no codegen step.
 - **Schema.** Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as Zod. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated. The Better Auth tables in `schema/auth.ts` match the fields Better Auth expects; read its docs before adding a plugin.
 - **Authorization.** A procedure that reads or writes user data is a `protectedProcedure` and scopes every query by `context.session.user.id`. Someone else's row is `NOT_FOUND`, which does not reveal that the id exists. Each new protected procedure gets an integration test as an anonymous caller and as another user.

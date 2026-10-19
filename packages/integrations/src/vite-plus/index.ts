@@ -20,6 +20,7 @@ import {
 
 import { hasBackend, hasWebApp } from "#/app.ts";
 import { toolchainVersions } from "#/catalog.ts";
+import { envFiles, renderEnvLines } from "#/env-files.ts";
 import { commentedShell, joinWords, markdownTable, quote } from "#/format.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { templateFiles } from "#/templates.ts";
@@ -291,7 +292,6 @@ const renderGitignore = (read: ReadSlot) =>
     "",
     ".env",
     ".env.*",
-    "!.env.example",
     "",
     ".DS_Store",
     ".idea",
@@ -368,6 +368,33 @@ const devCommands = (ctx: Context): (readonly [string, string?])[] => {
   ];
 };
 
+// Git ignores every `.env`, so a fresh clone recreates them from this section.
+const renderEnvironment = (ctx: Context, read: ReadSlot) => {
+  const files = read(envFiles);
+
+  if (files.length === 0) {
+    return [];
+  }
+
+  const intro = ctx.has("better-auth")
+    ? "Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret."
+    : "Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.";
+
+  return [
+    "## Environment",
+    intro,
+    ...files.map((envFile) =>
+      [
+        `\`${envFile.path}\``,
+        "",
+        "```dotenv",
+        renderEnvLines(envFile.lines(read)),
+        "```",
+      ].join("\n")
+    ),
+  ];
+};
+
 const renderReadme = (ctx: Context, read: ReadSlot) => {
   const steps = orderedReadySteps(read);
 
@@ -407,6 +434,7 @@ const renderReadme = (ctx: Context, read: ReadSlot) => {
       "```",
     ].join("\n"),
     ...read(readmeOpen),
+    ...renderEnvironment(ctx, read),
     "## Commands",
     ["```sh", commands, "```"].join("\n"),
     ...read(readmeCommandNotes),

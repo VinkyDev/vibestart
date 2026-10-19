@@ -11,7 +11,6 @@ const theme = "vitesse-light";
 const grammars = {
   css: async () => await import("shiki/langs/css.mjs"),
   dockerfile: async () => await import("shiki/langs/dockerfile.mjs"),
-  dotenv: async () => await import("shiki/langs/dotenv.mjs"),
   html: async () => await import("shiki/langs/html.mjs"),
   json: async () => await import("shiki/langs/json.mjs"),
   jsonc: async () => await import("shiki/langs/jsonc.mjs"),
@@ -50,10 +49,6 @@ const grammarOf = (path: string): Grammar | undefined => {
 
   if (name === "Dockerfile") {
     return "dockerfile";
-  }
-
-  if (name.startsWith(".env")) {
-    return "dotenv";
   }
 
   if (name.startsWith("tsconfig") || path.startsWith(".vscode/")) {

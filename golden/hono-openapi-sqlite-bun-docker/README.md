@@ -20,6 +20,17 @@ vp run dev
 
 The API listens on http://localhost:3000. API docs are at http://localhost:3000/api.
 
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with these values; git ignores them, so a fresh clone recreates them from here.
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=local.db
+PORT=3000
+```
+
 ## Commands
 
 ```sh

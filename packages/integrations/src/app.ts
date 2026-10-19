@@ -105,9 +105,6 @@ export const renderEnvModule = (
   ].join("\n");
 };
 
-export const renderEnvExample = (variables: readonly EnvVariable[]) =>
-  variables.map(({ name, example }) => `${name}=${example}\n`).join("");
-
 /** `run` migrates and closes `db`, in the driver's sync or async form. */
 export const migrationEntry = (ctx: Context, run: readonly string[]) => {
   const { envImport, read, src } = serverApp(ctx);
@@ -146,7 +143,7 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
   return {
     text: [
-      `Declare every server variable in \`${src}/env.ts\` and add it to \`${dir}/.env.example\`. Code reads ${reads}.`,
+      `Declare every server variable in \`${src}/env.ts\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}.`,
       loading,
       ...(ctx.has("sqlite")
         ? [`\`DATABASE_URL\` resolves from the \`${dir}\` directory.`]

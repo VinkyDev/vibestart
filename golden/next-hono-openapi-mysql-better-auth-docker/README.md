@@ -25,6 +25,25 @@ vp run dev
 
 Open http://localhost:3000 and create an account. API docs are at http://localhost:3000/api.
 
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret.
+
+`apps/web/.env`
+
+```dotenv
+SERVER_URL=http://localhost:3001
+```
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=mysql://root:mysql@localhost:3306/my_app
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_SECRET=
+PORT=3001
+```
+
 ## Commands
 
 ```sh

@@ -26,6 +26,19 @@ Open http://localhost:5173 and create an account. API docs are at http://localho
 
 The browser always talks to one origin: in development Vite proxies `/rpc` and `/api` to the server, in production the server serves the SPA. Session cookies therefore stay first-party and no CORS is configured. `BETTER_AUTH_URL` is that browser-facing origin (`http://localhost:5173` in development), not the server's own port.
 
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret.
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:5173
+BETTER_AUTH_SECRET=
+PORT=3000
+```
+
 ## Commands
 
 ```sh
