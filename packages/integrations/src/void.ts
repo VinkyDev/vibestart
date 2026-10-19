@@ -136,6 +136,7 @@ export const workerServices = (ctx: Context) => {
 export const workerTsconfig = (ctx: Context) => {
   const dir = workerApp(ctx);
   const start = ctx.has("tanstack-start");
+  const database = ctx.stack.database !== undefined;
   const nodeEnv = start ? "src/server/node-env.ts" : "src/node-env.ts";
   const migrate = start ? "src/server/migrate.ts" : "src/migrate.ts";
 
@@ -178,7 +179,7 @@ export const workerTsconfig = (ctx: Context) => {
           "config/**/*.ts",
           "tests",
           "src/**/*.test.ts",
-          ...(ctx.stack.database !== undefined ? [migrate, nodeEnv] : []),
+          ...(database ? [migrate, nodeEnv] : []),
         ],
       })
     ),
@@ -205,11 +206,14 @@ const environment = (read: ReadSlot) =>
     "",
   ].join("\n");
 
-const config = (ctx: Context) => `import { defineConfig } from "void/config";
+const config = (ctx: Context) => {
+  const database = ctx.stack.database !== undefined;
+
+  return `import { defineConfig } from "void/config";
 
 export default defineConfig({
-  ${ctx.stack.database !== undefined ? `database: "${ctx.has("mysql") ? "mysql" : "pg"}",` : ""}
-  ${ctx.has("hono") || ctx.stack.database !== undefined ? `inference: { ${ctx.has("hono") ? 'appType: "void", ' : ""}${ctx.stack.database !== undefined ? "bindings: { db: true }" : ""} },` : ""}
+  ${database ? `database: "${ctx.has("mysql") ? "mysql" : "pg"}",` : ""}
+  ${ctx.has("hono") || database ? `inference: { ${ctx.has("hono") ? 'appType: "void", ' : ""}${database ? "bindings: { db: true }" : ""} },` : ""}
   ${ctx.has("spa") ? 'routing: { notFound: "single-page-application" },' : ""}
   cloudflare: {
     name: "${ctx.name}",
@@ -218,14 +222,16 @@ export default defineConfig({
   },
 });
 `;
+};
 
 const deploy = (ctx: Context) => {
   const dir = workerApp(ctx);
+  const database = ctx.stack.database !== undefined;
 
   return `import { spawnSync } from "node:child_process";
 
 ${
-  ctx.stack.database !== undefined
+  database
     ? `if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error("Set DATABASE_URL in the deployment shell to the production database URL");
 }
@@ -244,7 +250,7 @@ ${
   }
 };
 
-${ctx.stack.database !== undefined ? 'run(["run", "db:migrate"]);\n\n' : ""}${ctx.has("hono") ? `run(["run", "--filter", "${ctx.scope}/web", "build"]);\n\n` : ""}run(["exec", "--filter", "${ctx.scope}/${dir.slice(5)}", "void", "deploy", "--platform", "cloudflare"]);
+${database ? 'run(["run", "db:migrate"]);\n\n' : ""}${ctx.has("hono") ? `run(["run", "--filter", "${ctx.scope}/web", "build"]);\n\n` : ""}run(["exec", "--filter", "${ctx.scope}/${dir.slice(5)}", "void", "deploy", "--platform", "cloudflare"]);
 `;
 };
 
