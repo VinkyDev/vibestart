@@ -29,18 +29,7 @@ Native requests keep no cookies. With Better Auth, the Expo client stores the se
 
 ## Expo Go and development builds [#builds]
 
-`vp run dev:mobile` starts Metro in a terminal of its own, apart from `vp run dev`. Scan its QR code with Expo Go to open the app on a phone, or press `a` or `i` for an Android emulator or an iOS simulator. Expo Go includes every native module the generated app uses, so no native build is needed to start.
-
-<Callout title="Expo SDK 58 is in beta" type="warn">
-  The app is on the SDK 58 beta until Expo releases it as stable. Expo Go from
-  the app stores runs only the latest stable SDK, so it cannot open the app yet.
-  Pressing `a` or `i` installs the matching Expo Go on an emulator or a
-  simulator. On an Android phone, install the APK from [Expo Go
-  releases](https://github.com/expo/expo-go-releases/releases); on an iPhone,
-  use the TestFlight build Expo publishes with the beta, or a development build.
-  A later vibestart release moves to SDK 58 stable, and `npx vibestart-cli
-  upgrade` brings a project along.
-</Callout>
+`vp run dev:mobile` starts Metro in a terminal of its own, apart from `vp run dev`. Scan its QR code with Expo Go to open the app on a phone, or press `a` or `i` for an Android emulator or an iOS simulator. Expo Go includes every native module the generated app uses, so no native build is needed to start. Expo Go from the app stores runs the latest stable SDK only, so a project left on an older SDK needs `npx vibestart-cli upgrade`, a development build, or that SDK's Expo Go from [Expo Go releases](https://github.com/expo/expo-go-releases/releases).
 
 When the app needs a native module that Expo Go lacks, switch to a development build. The `android` and `ios` scripts in `apps/mobile` build one locally: Android needs Android Studio and JDK 17–21, and iOS needs a Mac with Xcode. The project includes no EAS configuration; run `eas init` to build in Expo's cloud instead.
 

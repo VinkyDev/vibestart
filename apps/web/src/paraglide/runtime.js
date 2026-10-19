@@ -1100,7 +1100,7 @@ function defaultUrlPatternExtractLocale(url) {
  * // => URL("https://de.example.com/store")
  * ```
  *
- * @param {string | URL} url - The URL to localize. If string, must be absolute.
+ * @param {string | { readonly href: string }} url - The URL to localize. Accepts readonly URL objects. If string, must be absolute.
  * @param {object} [options] - Options for localization
  * @param {Locale} [options.locale] - Target locale. If not provided, uses getLocale()
  * @returns {URL} The localized URL, always absolute
@@ -1112,7 +1112,9 @@ export function localizeUrl(url, options) {
     if (TREE_SHAKE_DEFAULT_URL_PATTERN_USED) {
         return localizeUrlDefaultPattern(url, targetLocale);
     }
-    const originalUrl = typeof url === "string" ? new URL(url) : url;
+    const originalUrl = url instanceof URL
+        ? url
+        : new URL(typeof url === "string" ? url : url.href);
     const urlObj = trailingSlash === undefined
         ? originalUrl
         : normalizeTrailingSlash(new URL(originalUrl));
@@ -1155,12 +1157,12 @@ export function localizeUrl(url, options) {
 /**
  * https://github.com/opral/inlang-paraglide-js/issues/381
  *
- * @param {string | URL} url
+ * @param {string | { readonly href: string }} url
  * @param {Locale} locale
  * @returns {URL}
  */
 function localizeUrlDefaultPattern(url, locale) {
-    const urlObj = normalizeTrailingSlash(typeof url === "string" ? new URL(url, getUrlOrigin()) : new URL(url));
+    const urlObj = normalizeTrailingSlash(typeof url === "string" ? new URL(url, getUrlOrigin()) : new URL(url.href));
     const currentLocale = extractLocaleFromUrl(urlObj);
     // If current locale matches target locale, no change needed
     if (currentLocale === locale) {
@@ -1218,14 +1220,16 @@ function localizeUrlDefaultPattern(url, locale) {
  * deLocalizeUrl(url); // => URL("https://example.com/store")
  * ```
  *
- * @param {string | URL} url - The URL to de-localize. If string, must be absolute.
+ * @param {string | { readonly href: string }} url - The URL to de-localize. Accepts readonly URL objects. If string, must be absolute.
  * @returns {URL} The de-localized URL, always absolute
  */
 export function deLocalizeUrl(url) {
     if (TREE_SHAKE_DEFAULT_URL_PATTERN_USED) {
         return deLocalizeUrlDefaultPattern(url);
     }
-    const originalUrl = typeof url === "string" ? new URL(url) : url;
+    const originalUrl = url instanceof URL
+        ? url
+        : new URL(typeof url === "string" ? url : url.href);
     const urlObj = trailingSlash === undefined
         ? originalUrl
         : normalizeTrailingSlash(new URL(originalUrl));
@@ -1257,11 +1261,11 @@ export function deLocalizeUrl(url) {
 }
 /**
  * De-localizes a URL using the default pattern (/:locale/*)
- * @param {string|URL} url
+ * @param {string | { readonly href: string }} url
  * @returns {URL}
  */
 function deLocalizeUrlDefaultPattern(url) {
-    const urlObj = normalizeTrailingSlash(typeof url === "string" ? new URL(url, getUrlOrigin()) : new URL(url));
+    const urlObj = normalizeTrailingSlash(typeof url === "string" ? new URL(url, getUrlOrigin()) : new URL(url.href));
     // Ignore leading separators like locale detection, preserving the remaining path.
     const pathSegments = urlObj.pathname.replace(/^\/+/, "").split("/");
     // If first segment is a locale, remove it
