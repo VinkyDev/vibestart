@@ -22,6 +22,7 @@ Everything else, including a style or naming preference, is Nit at most.
 - A new or changed integration: are the Studio messages in both languages, the goldens, and the docs carried along? `.agents/skills/add-integration/SKILL.md` lists every layer.
 - Generated SQL, URLs, and identifiers: bounded length, quoted, and escaped for every database the template renders for.
 - A bug fix: does it start from a test that fails without it, at the boundary that owns the behavior (`AGENTS.md`, Tests)? Name the class of bug and every other instance of it, so one round fixes them all.
+- A deleted or rewritten docs paragraph: stale text often sits beside a rule that still holds. Keep the rule, or say where it lives now.
 
 ## Evidence
 
