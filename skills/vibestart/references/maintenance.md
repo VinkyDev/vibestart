@@ -1,6 +1,6 @@
 # Maintaining projects
 
-Run commands from the project root or append `--cwd /actual/project/path`. Resolve one CLI version and retain it throughout an operation. The examples use the newest published release. For preview and application, pin the package to the same exact version, for example `vibestart-cli@0.1.0-beta.1`.
+Run commands from the project root or append `--cwd /actual/project/path`. Resolve one CLI version and retain it throughout an operation. The examples use the newest published release. For preview and application, pin the package to the same exact version, for example `vibestart-cli@0.1.0`.
 
 `vibestart.jsonc` is the whole maintenance state: the choices, the project `name`, and the `version` of the release that generated it. The CLI regenerates that release's templates as the merge base, running it from npm when it is not the running release. A project whose record lacks `name` or `version` cannot be maintained; restore them from Git history rather than guessing.
 
@@ -10,7 +10,7 @@ Run commands from the project root or append `--cwd /actual/project/path`. Resol
 npx --yes vibestart-cli doctor --offline --json
 ```
 
-`doctor` is read-only. Inspect `issues`, `conflicts`, `updates`, `manual`, `release`, and `status`. With `--offline`, a project recorded by another release returns `updates: null` and `manual: null`: not compared, not up to date. Without `--offline`, it also looks up npm’s `latest` channel, not the `beta` channel; `latest: null` is not proof that no release exists. A healthy result checks configuration and maintenance state, not application behavior.
+`doctor` is read-only. Inspect `issues`, `conflicts`, `updates`, `manual`, `release`, and `status`. With `--offline`, a project recorded by another release returns `updates: null` and `manual: null`: not compared, not up to date. Without `--offline`, it also looks up npm’s `latest` channel; `latest: null` is not proof that no release exists. A healthy result checks configuration and maintenance state, not application behavior.
 
 ## Add capabilities
 
