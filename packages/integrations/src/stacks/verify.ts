@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
-import { closeSync, openSync, readFileSync } from "node:fs";
+import { appendFileSync, closeSync, existsSync, openSync, readFileSync } from "node:fs";
 import { arch, platform, release } from "node:os";
 import path from "node:path";
 
@@ -113,6 +113,15 @@ export const verifyStack = async ({
   const seconds = Math.round((Date.now() - started) / 1000);
 
   if (!passed) {
+    const serverLog = path.join(dir, "apps/web/.e2e/server.log");
+
+    if (existsSync(serverLog)) {
+      appendFileSync(
+        logFile,
+        `\nE2E server log:\n${readFileSync(serverLog, "utf-8")}`
+      );
+    }
+
     print(`${label} FAIL (${seconds}s), see ${logFile}`);
     // On CI the log file stays on the runner, so the reason has to reach the job output.
     print(logTail(logFile));
