@@ -10177,19 +10177,15 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 16 stacks
+# apps/web/tests/support/server.ts · 12 stacks
 #   tanstack-start-self-mongodb-better-auth-docker
 #   tanstack-start-self-mongodb-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker
-#   tanstack-start-self-mysql-better-auth-expo-void
-#   tanstack-start-self-mysql-better-auth-void
 #   tanstack-start-self-mysql-prisma-better-auth-docker
 #   tanstack-start-self-mysql-prisma-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker
-#   tanstack-start-self-postgres-better-auth-expo-void
-#   tanstack-start-self-postgres-better-auth-void
 #   tanstack-start-self-postgres-prisma-better-auth-docker
 #   tanstack-start-self-postgres-prisma-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-docker
@@ -10317,21 +10313,17 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 16 stacks
+# apps/web/tests/support/server.ts · 12 stacks
 #   tanstack-start-self-mongodb-docker
 #   tanstack-start-self-mongodb-expo-docker
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-expo-docker
-#   tanstack-start-self-mysql-expo-void
 #   tanstack-start-self-mysql-prisma-docker
 #   tanstack-start-self-mysql-prisma-expo-docker
-#   tanstack-start-self-mysql-void
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-expo-docker
-#   tanstack-start-self-postgres-expo-void
 #   tanstack-start-self-postgres-prisma-docker
 #   tanstack-start-self-postgres-prisma-expo-docker
-#   tanstack-start-self-postgres-void
 #   tanstack-start-self-sqlite-docker
 #   tanstack-start-self-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
@@ -10454,10 +10446,256 @@ export const startTestServer = async (baseURL: string) => {
 };
 
 # apps/web/tests/support/server.ts · 4 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-void
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const envFile = `${webDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+
+  const { port } = new URL(baseURL);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          port,
+          "--strictPort",
+        ],
+        {
+          BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+          BETTER_AUTH_URL: baseURL,
+          DATABASE_URL: database.url,
+        }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/login"].map(
+        async (route) => await waitForServer(`${baseURL}${route}`)
+      )
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 4 stacks
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-void
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const envFile = `${webDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+
+  const { port } = new URL(baseURL);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          port,
+          "--strictPort",
+        ],
+        { DATABASE_URL: database.url }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/"].map(async (route) => await waitForServer(`${baseURL}${route}`))
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 2 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-expo-docker
-#   tanstack-start-self-orpc-expo-void
-#   tanstack-start-self-orpc-void
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -10573,19 +10811,130 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 16 stacks
+# apps/web/tests/support/server.ts · 2 stacks
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-void
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const envFile = `${webDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+
+  const { port } = new URL(baseURL);
+  const children: ChildProcess[] = [];
+
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          port,
+          "--strictPort",
+        ],
+        {}
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/"].map(async (route) => await waitForServer(`${baseURL}${route}`))
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 12 stacks
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
-#   tanstack-start-self-orpc-mysql-better-auth-expo-void
-#   tanstack-start-self-orpc-mysql-better-auth-void
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
-#   tanstack-start-self-orpc-postgres-better-auth-expo-void
-#   tanstack-start-self-orpc-postgres-better-auth-void
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
@@ -10713,21 +11062,17 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 16 stacks
+# apps/web/tests/support/server.ts · 12 stacks
 #   tanstack-start-self-orpc-mongodb-docker
 #   tanstack-start-self-orpc-mongodb-expo-docker
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-expo-docker
-#   tanstack-start-self-orpc-mysql-expo-void
 #   tanstack-start-self-orpc-mysql-prisma-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
-#   tanstack-start-self-orpc-mysql-void
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-expo-docker
-#   tanstack-start-self-orpc-postgres-expo-void
 #   tanstack-start-self-orpc-postgres-prisma-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
-#   tanstack-start-self-orpc-postgres-void
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker
 import { spawn, spawnSync } from "node:child_process";
@@ -10840,6 +11185,256 @@ export const startTestServer = async (baseURL: string) => {
         const response = await fetch(`${baseURL}${route}`);
         await response.arrayBuffer();
       })
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 4 stacks
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-void
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const envFile = `${webDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+
+  const { port } = new URL(baseURL);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          port,
+          "--strictPort",
+        ],
+        {
+          BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+          BETTER_AUTH_URL: baseURL,
+          DATABASE_URL: database.url,
+        }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/login", "/todos"].map(
+        async (route) => await waitForServer(`${baseURL}${route}`)
+      )
+    );
+  } catch (error) {
+    await stopAll();
+    throw error;
+  }
+
+  return stopAll;
+};
+
+# apps/web/tests/support/server.ts · 4 stacks
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-void
+import { spawn, spawnSync } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { once } from "node:events";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { retry } from "es-toolkit/function";
+
+import { createTestDatabase } from "@my-app/db/testing";
+
+import { closeTestHttp } from "./http.ts";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const envFile = `${webDir}/.env`;
+
+const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+  await retry(
+    async () => {
+      const response = await fetch(url);
+      await response.arrayBuffer();
+
+      if (!response.ok) {
+        throw new Error(`Server did not become healthy at ${url}`);
+      }
+    },
+    { delay: 100, retries: attempts }
+  );
+};
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  spawn(process.execPath, args, {
+    cwd,
+    detached: true,
+    env: { ...process.env, ...env },
+    // Vite closes its server on stdin EOF outside CI; keep this pipe open until teardown.
+    stdio: ["pipe", "inherit", "inherit"],
+  });
+
+const stop = async (child: ChildProcess) => {
+  if (
+    child.pid === undefined ||
+    child.exitCode !== null ||
+    child.signalCode !== null
+  ) {
+    return;
+  }
+
+  const exited = once(child, "exit", {
+    signal:
+      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+  });
+
+  if (process.platform === "win32") {
+    // taskkill may report already-exited descendants as errors.
+    const result = spawnSync(
+      "taskkill",
+      ["/pid", String(child.pid), "/t", "/f"],
+      {
+        stdio: "ignore",
+        timeout: 5000,
+      }
+    );
+
+    if (result.error || result.status !== 0) {
+      child.kill();
+    }
+  } else {
+    process.kill(-child.pid, "SIGTERM");
+  }
+
+  await exited;
+};
+
+export const startTestServer = async (baseURL: string) => {
+  if (existsSync(envFile)) {
+    process.loadEnvFile(envFile);
+  }
+
+  const { port } = new URL(baseURL);
+  const database = await createTestDatabase();
+  const children: ChildProcess[] = [];
+
+  const stopAll = async () => {
+    await Promise.all(children.map(stop));
+    await database.remove();
+    await closeTestHttp();
+  };
+
+  try {
+    children.push(
+      start(
+        webDir,
+        [
+          "node_modules/vite-plus/bin/vp",
+          "dev",
+          "--port",
+          port,
+          "--strictPort",
+        ],
+        { DATABASE_URL: database.url }
+      )
+    );
+    await waitForServer(`${baseURL}/api/health`);
+    await Promise.all(
+      ["/", "/todos"].map(
+        async (route) => await waitForServer(`${baseURL}${route}`)
+      )
     );
   } catch (error) {
     await stopAll();
