@@ -157,13 +157,13 @@ const added = async (
       const integrations = registry.integrations.filter(
         (integration) => integration.kind === kind
       );
-      return !integrations.every(
-        (integration) => integration.auxiliary === true
-      );
+
+      return !integrations.every((integration) => integration.auxiliary);
     })
   );
+
   const resolution = resolve(registry, required);
-  const stack = resolution.stacks[0];
+  const [stack] = resolution.stacks;
 
   if (stack === undefined) {
     throw new MaintenanceError(

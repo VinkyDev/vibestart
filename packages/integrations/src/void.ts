@@ -177,7 +177,7 @@ export const workerTsconfig = (ctx: Context) => {
           "config/**/*.ts",
           "tests",
           "src/**/*.test.ts",
-          ...(ctx.stack.database ? [migrate, nodeEnv] : []),
+          ...(ctx.stack.database !== undefined ? [migrate, nodeEnv] : []),
         ],
       })
     ),
@@ -207,8 +207,8 @@ const environment = (read: ReadSlot) =>
 const config = (ctx: Context) => `import { defineConfig } from "void/config";
 
 export default defineConfig({
-  ${ctx.stack.database ? `database: "${ctx.has("mysql") ? "mysql" : "pg"}",` : ""}
-  ${ctx.has("hono") || ctx.stack.database ? `inference: { ${ctx.has("hono") ? 'appType: "void", ' : ""}${ctx.stack.database ? "bindings: { db: true }" : ""} },` : ""}
+  ${ctx.stack.database !== undefined ? `database: "${ctx.has("mysql") ? "mysql" : "pg"}",` : ""}
+  ${ctx.has("hono") || ctx.stack.database !== undefined ? `inference: { ${ctx.has("hono") ? 'appType: "void", ' : ""}${ctx.stack.database !== undefined ? "bindings: { db: true }" : ""} },` : ""}
   ${ctx.has("spa") ? 'routing: { notFound: "single-page-application" },' : ""}
   cloudflare: {
     name: "${ctx.name}",
@@ -224,7 +224,7 @@ const deploy = (ctx: Context) => {
   return `import { spawnSync } from "node:child_process";
 
 ${
-  ctx.stack.database
+  ctx.stack.database !== undefined
     ? `if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error("Set DATABASE_URL in the deployment shell to the production database URL");
 }
@@ -243,7 +243,7 @@ ${
   }
 };
 
-${ctx.stack.database ? 'run(["run", "db:migrate"]);\n\n' : ""}${ctx.has("hono") ? `run(["run", "--filter", "${ctx.scope}/web", "build"]);\n\n` : ""}run(["exec", "--filter", "${ctx.scope}/${dir.slice(5)}", "void", "deploy", "--platform", "cloudflare"]);
+${ctx.stack.database !== undefined ? 'run(["run", "db:migrate"]);\n\n' : ""}${ctx.has("hono") ? `run(["run", "--filter", "${ctx.scope}/web", "build"]);\n\n` : ""}run(["exec", "--filter", "${ctx.scope}/${dir.slice(5)}", "void", "deploy", "--platform", "cloudflare"]);
 `;
 };
 
