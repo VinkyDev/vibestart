@@ -31,14 +31,14 @@ Docker 部署网页应用和服务端。镜像中不包含移动端，因此只�
 
 `vp run dev:mobile` 在单独的终端中启动 Metro，与 `vp run dev` 分开。用 Expo Go 扫描二维码即可在手机上打开 App，也可以按 `a` 或 `i` 使用 Android 模拟器或 iOS 模拟器。Expo Go 已包含生成的 App 用到的所有原生模块，因此开始开发不需要原生构建。
 
-<Callout title="Expo SDK 58 仍在 beta" type="warn">
-  在 Expo 发布 SDK 58 正式版之前，App 使用的是 SDK 58 beta。应用商店里的 Expo Go
-  只支持最新的正式版 SDK，因此暂时打不开这个 App。按 `a` 或 `i` 时，Expo CLI
-  会在 Android 模拟器或 iOS 模拟器上安装匹配的 Expo Go。Android 手机请从 [Expo
-  Go releases](https://github.com/expo/expo-go-releases/releases) 安装
-  APK；iPhone 请使用 Expo 随 beta 发布的 TestFlight 版本，或改用开发构建。之后的
-  vibestart 版本会切换到 SDK 58 正式版，运行 `npx vibestart-cli upgrade`
-  即可让项目跟上。
+<Callout title="每个 Expo Go 构建只有一个 SDK 版本" type="warn">
+  每个 Expo Go 构建只运行一个 Expo SDK。App Store 中的 Expo Go 止步于 SDK
+  54，因此无法在实体 iPhone 或 iPad 上打开这个 App：需要用 [`eas
+  go`](https://expo.fyi/deploy-expo-go-testflight) 为 App 对应的 SDK 构建 Expo
+  Go 并通过 TestFlight 分发（需要 Apple Developer Program
+  会员），或改用开发构建。Google Play 的版本也可能落后于新 SDK：Android 手机可从
+  [expo.dev/go](https://expo.dev/go) 安装与 App SDK 匹配的构建，按 `a` 或 `i`
+  则会在模拟器上安装匹配的 Expo Go。
 </Callout>
 
 当 App 需要 Expo Go 没有的原生模块时，改用开发构建。`apps/mobile` 中的 `android` 和 `ios` 脚本会在本地构建：Android 需要 Android Studio 和 JDK 17–21，iOS 需要装有 Xcode 的 Mac。项目不包含 EAS 配置；如需在 Expo 云端构建，运行 `eas init`。

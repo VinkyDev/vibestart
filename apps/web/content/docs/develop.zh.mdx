@@ -68,7 +68,7 @@ Agent 报告完成后，重点检查以下几项：
 
 ## 移动端 [#mobile]
 
-用 `vp run dev:mobile` 启动 App，再用 Expo Go 打开；SDK 58 处于 beta 期间应安装哪个 Expo Go，见[移动端](/docs/stack/mobile#builds)。只有移动端时不需要其他步骤。有服务端时，先用 `vp run dev` 启动服务端，再在第二个终端运行 `vp run dev:mobile`。App 通过你电脑上的 3000 端口调用服务端，因此手机必须能访问到它：让两者处于同一网络，并在防火墙中放行该端口。公司网络或 VPN 常常阻止设备之间互相访问，改用手机热点即可避开。发布构建没有 Metro 可询问，因此会调用 `apps/mobile/.env` 中 `EXPO_PUBLIC_API_URL` 指定的服务端。
+用 `vp run dev:mobile` 启动 App，再用 Expo Go 打开；该用哪个 Expo Go 构建见[移动端](/docs/stack/mobile#builds)。只有移动端时不需要其他步骤。有服务端时，先用 `vp run dev` 启动服务端，再在第二个终端运行 `vp run dev:mobile`。App 通过你电脑上的 3000 端口调用服务端，因此手机必须能访问到它：让两者处于同一网络，并在防火墙中放行该端口。公司网络或 VPN 常常阻止设备之间互相访问，改用手机热点即可避开。发布构建没有 Metro 可询问，因此会调用 `apps/mobile/.env` 中 `EXPO_PUBLIC_API_URL` 指定的服务端。
 
 `vp run ready` 不需要设备即可检查 App，因此提交前请在 Expo Go 中打开你改过的页面。开发构建与 API 连接的说明见[移动端](/docs/stack/mobile)。
 

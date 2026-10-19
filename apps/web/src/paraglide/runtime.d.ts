@@ -429,12 +429,14 @@ export declare function extractLocaleFromUrl(url: URL | string): Locale | undefi
  * // => URL("https://de.example.com/store")
  * ```
  *
- * @param {string | URL} url - The URL to localize. If string, must be absolute.
+ * @param {string | { readonly href: string }} url - The URL to localize. Accepts readonly URL objects. If string, must be absolute.
  * @param {object} [options] - Options for localization
  * @param {Locale} [options.locale] - Target locale. If not provided, uses getLocale()
  * @returns {URL} The localized URL, always absolute
  */
-export declare function localizeUrl(url: string | URL, options?: {
+export declare function localizeUrl(url: string | {
+    readonly href: string;
+}, options?: {
     locale?: Locale;
 }): URL;
 /**
@@ -473,10 +475,12 @@ export declare function localizeUrl(url: string | URL, options?: {
  * deLocalizeUrl(url); // => URL("https://example.com/store")
  * ```
  *
- * @param {string | URL} url - The URL to de-localize. If string, must be absolute.
+ * @param {string | { readonly href: string }} url - The URL to de-localize. Accepts readonly URL objects. If string, must be absolute.
  * @returns {URL} The de-localized URL, always absolute
  */
-export declare function deLocalizeUrl(url: string | URL): URL;
+export declare function deLocalizeUrl(url: string | {
+    readonly href: string;
+}): URL;
 /**
  * Aggregates named groups from various parts of the URLPattern match result.
  *
