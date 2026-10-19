@@ -5,13 +5,13 @@
 Compose a full-stack TypeScript stack and get a project that has been installed, checked, tested, and built for real. This package is the `vibestart` command.
 
 ```sh
-npx vibestart-cli@beta my-app
+npx vibestart-cli my-app
 ```
 
 Answer the prompts, or pass flags to skip them:
 
 ```sh
-npx vibestart-cli@beta my-app --framework next --backend self --api orpc --database postgres --auth better-auth
+npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
 ```
 
 Or compose visually in the [web studio](https://vibestart.net/studio) and copy the command.
@@ -42,7 +42,7 @@ Node.js 22.12 or newer. The CLI installs the project with pnpm (the default) or 
 | `--json`                                                     | Print one JSON object and never prompt.                                                                                             |
 | `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final check.                                                                    |
 
-Run `npx vibestart-cli@beta --help` for the full reference.
+Run `npx vibestart-cli --help` for the full reference.
 
 ## Links
 
