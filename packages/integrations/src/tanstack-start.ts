@@ -28,6 +28,7 @@ import { dockerRuntime } from "#/docker.ts";
 import { envFiles } from "#/env-files.ts";
 import { joinWords, markdownTable } from "#/format.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
+import { ultraciteOverrides } from "#/ultracite.ts";
 import {
   agentsConventions,
   agentsMap,
@@ -312,6 +313,18 @@ export const tanstackStart = defineIntegration({
         : []),
       viteConfig(ctx),
       ...(ctx.has("workers") ? workerTsconfig(ctx) : []),
+      ...(ctx.has("workers") && database
+        ? [
+            contribute(
+              ultraciteOverrides,
+              `{
+  // TanStack Start middleware awaits next() for its response, rather than calling a Node.js callback.
+  files: ["apps/web/src/start.ts"],
+  rules: { "node/callback-return": "off" },
+}`
+            ),
+          ]
+        : []),
       homePage(ctx, "apps/web/src/routes/index.tsx", true),
       contribute(packageJson, {
         dependencies: [

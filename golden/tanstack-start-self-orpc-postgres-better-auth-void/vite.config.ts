@@ -56,6 +56,11 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
     overrides: [
       {
+        // TanStack Start middleware awaits next() for its response, rather than calling a Node.js callback.
+        files: ["apps/web/src/start.ts"],
+        rules: { "node/callback-return": "off" },
+      },
+      {
         files: ["apps/web/src/routes/**"],
         rules: {
           // A route module exports its `Route` beside the components it renders.
