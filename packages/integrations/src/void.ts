@@ -65,7 +65,7 @@ export const workerServices = (ctx: Context) => {
           "  const services = requests.get(getRequest());",
           "",
           "  if (services === undefined) {",
-          '    throw new Error("Services require the request wrapper in src/server.ts");',
+          '    throw new Error("Services require the request middleware in src/start.ts");',
           "  }",
           "",
           "  return services;",
@@ -275,7 +275,7 @@ export const forward = defineHandler(async (c) =>
     ].map((route) =>
       file(
         `apps/server/routes/${route}`,
-        'export { forward as DELETE, forward as GET, forward as HEAD, forward as OPTIONS, forward as PATCH, forward as POST, forward as PUT } from "../_forward.ts";\n'
+        'export { forward as DELETE, forward as GET, forward as OPTIONS, forward as PATCH, forward as POST, forward as PUT } from "../_forward.ts";\n'
       )
     ),
   ];
@@ -302,15 +302,20 @@ export const voidDeployment = defineIntegration({
       ...(ctx.has("tanstack-start") && database
         ? [
             file(
-              "apps/web/src/server.ts",
-              `import handler, { createServerEntry } from "@tanstack/react-start/server-entry";
+              "apps/web/src/start.ts",
+              `import { createCsrfMiddleware, createMiddleware, createStart } from "@tanstack/react-start";
 
 import { withServices } from "#src/server/context.ts";
 
-export default createServerEntry({
-  fetch: async (request, options) =>
-    await withServices(request, async () => await handler.fetch(request, options)),
-});
+const services = createMiddleware().server(async ({ next, request }) =>
+  await withServices(request, async () => (await next()).response)
+);
+
+const csrf = createCsrfMiddleware({ filter: (ctx) => ctx.handlerType === "serverFn" });
+
+export const startInstance = createStart(() => ({
+  requestMiddleware: [csrf, services],
+}));
 `
             ),
           ]
@@ -346,7 +351,6 @@ export default createServerEntry({
           "void.config.ts",
           ...(backend ? ["env.ts"] : []),
           ...(ctx.has("hono") ? ["routes/**/*.ts"] : []),
-          ...(ctx.has("tanstack-start") && database ? ["src/server.ts"] : []),
         ],
         ignoreDependencies: [
           ...(database ? ["cloudflare"] : []),

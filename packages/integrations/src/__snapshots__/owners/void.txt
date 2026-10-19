@@ -418,7 +418,6 @@ export const forward = defineHandler(
 export {
   forward as DELETE,
   forward as GET,
-  forward as HEAD,
   forward as OPTIONS,
   forward as PATCH,
   forward as POST,
@@ -549,7 +548,6 @@ export {
 export {
   forward as DELETE,
   forward as GET,
-  forward as HEAD,
   forward as OPTIONS,
   forward as PATCH,
   forward as POST,
@@ -600,7 +598,6 @@ export {
 export {
   forward as DELETE,
   forward as GET,
-  forward as HEAD,
   forward as OPTIONS,
   forward as PATCH,
   forward as POST,
@@ -651,7 +648,6 @@ export {
 export {
   forward as DELETE,
   forward as GET,
-  forward as HEAD,
   forward as OPTIONS,
   forward as PATCH,
   forward as POST,
@@ -981,7 +977,7 @@ import { defineEnv } from "void/env";
 
 export default defineEnv({});
 
-# apps/web/src/server.ts · 32 stacks
+# apps/web/src/start.ts · 32 stacks
 #   tanstack-start-self-mysql-better-auth-expo-void
 #   tanstack-start-self-mysql-better-auth-expo-void-e2e
 #   tanstack-start-self-mysql-better-auth-void
@@ -1014,17 +1010,26 @@ export default defineEnv({});
 #   tanstack-start-self-postgres-expo-void-e2e
 #   tanstack-start-self-postgres-void
 #   tanstack-start-self-postgres-void-e2e
-import handler, { createServerEntry } from "@tanstack/react-start/server-entry";
+import {
+  createCsrfMiddleware,
+  createMiddleware,
+  createStart,
+} from "@tanstack/react-start";
 
 import { withServices } from "#src/server/context.ts";
 
-export default createServerEntry({
-  fetch: async (request, options) =>
-    await withServices(
-      request,
-      async () => await handler.fetch(request, options)
-    ),
+const services = createMiddleware().server(
+  async ({ next, request }) =>
+    await withServices(request, async () => (await next()).response)
+);
+
+const csrf = createCsrfMiddleware({
+  filter: (ctx) => ctx.handlerType === "serverFn",
 });
+
+export const startInstance = createStart(() => ({
+  requestMiddleware: [csrf, services],
+}));
 
 # apps/web/void.config.ts · 8 stacks
 #   spa-electron-expo-void

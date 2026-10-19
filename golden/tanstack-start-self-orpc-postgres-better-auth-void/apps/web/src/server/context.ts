@@ -18,7 +18,7 @@ export const getServices = () => {
   const services = requests.get(getRequest());
 
   if (services === undefined) {
-    throw new Error("Services require the request wrapper in src/server.ts");
+    throw new Error("Services require the request middleware in src/start.ts");
   }
 
   return services;
