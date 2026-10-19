@@ -57,7 +57,7 @@ pnpm 项目在 `pnpm-workspace.yaml` 中声明 workspace 和共享版本目录�
 
 ## 环境变量 [#env]
 
-每个应用读取各自目录下的 `.env`。CLI 会写入这些文件，填入本地值和随机生成的认证密钥。`README.md` 的 Environment 一节只列安全示例，选择认证时 `BETTER_AUTH_SECRET` 留空。新克隆的仓库据此重建文件，并用 `openssl rand -base64 32` 生成自己的密钥填入。服务启动时会校验环境变量，缺少必要的值时会给出明确的错误并停止。
+每个应用读取各自目录下的 `.env`。CLI 会写入这些文件，填入本地值和随机生成的认证密钥。`README.md` 的 Environment 一节只列安全示例，选择认证时 `BETTER_AUTH_SECRET` 留空。新克隆的仓库据此重建文件，并用 `openssl rand -base64 32` 生成自己的密钥填入。缺少必要的值时，环境变量校验会给出明确的错误。Next.js 在懒加载服务初始化时校验；Hono 和 TanStack Start 在加载环境变量模块时校验。
 
 <Callout type="warn">
   `.env` 文件包含密钥，已被 Git 忽略。新增配置项时，请在 `README.md` 中列出

@@ -57,7 +57,7 @@ pnpm projects declare their workspaces and a catalog of shared versions in `pnpm
 
 ## Environment variables [#env]
 
-Each application reads the `.env` in its own directory. The CLI writes these files with local values and a generated authentication secret. The Environment section of `README.md` lists safe examples, with an empty `BETTER_AUTH_SECRET` when authentication is selected. A fresh clone recreates the files from those examples and fills in its own secret using `openssl rand -base64 32`. Servers validate their environment at startup and stop with a clear error if a required value is missing.
+Each application reads the `.env` in its own directory. The CLI writes these files with local values and a generated authentication secret. The Environment section of `README.md` lists safe examples, with an empty `BETTER_AUTH_SECRET` when authentication is selected. A fresh clone recreates the files from those examples and fills in its own secret using `openssl rand -base64 32`. Environment validation fails with a clear error if a required value is missing. Next.js validates when its lazy services initialize; Hono and TanStack Start validate when their environment module loads.
 
 <Callout type="warn">
   `.env` files contain secrets and are excluded from Git. When you add a
