@@ -153,7 +153,7 @@ export default defineConfig({
     },
   },
   staged: {
-    "*": "vp check --fix",
+    "*": ["node scripts/check-file-size.ts", "vp check --fix"],
   },
   test: {
     // Matrix suites each invoke the native formatter; bound file parallelism to avoid oversubscription.
