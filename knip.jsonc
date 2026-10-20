@@ -2,6 +2,10 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignore": ["golden/**", "packages/integrations/templates/**", ".agents/**"],
   "workspaces": {
+    ".": {
+      // `vp staged` runs this from the `staged` block of vite.config.ts, which Knip does not read.
+      "entry": ["scripts/check-file-size.ts"],
+    },
     "packages/integrations": {
       "entry": ["src/stacks.ts"],
     },
