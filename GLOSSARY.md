@@ -66,6 +66,10 @@ The virtual file tree `generate` returns: files, setup commands, and getting-sta
 **Golden**:
 A checked-in generated project in `golden/`, byte-equal to generator output. Together the goldens use every integration.
 
+**Prototype**:
+A hand-written project in `prototypes/` for a stack the generator does not offer yet, with one recommended choice per kind. It is the target the templates are written toward, outside CI and the verification store; once the generator renders it, a golden replaces it.
+_Avoid_: golden, example, starter
+
 **Snapshot**:
 The file snapshots in `packages/integrations/src/__snapshots__`, one per owner, holding each distinct file once under the stacks that render it.
 

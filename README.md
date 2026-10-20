@@ -106,6 +106,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `packages/integrations` | Integrations, templates, the dependency catalog, and the verification store |
 | `packages/config`       | Shared TypeScript presets                                                   |
 | `golden/`               | Checked-in generated projects, each its own workspace                       |
+| `prototypes/`           | Hand-written targets for stacks the generator does not offer yet            |
 
 ## Contributing
 
