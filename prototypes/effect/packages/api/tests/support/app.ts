@@ -1,0 +1,152 @@
+import { PgClient } from "@effect/sql-pg";
+import { Context, Effect, Layer, Redacted, Schema } from "effect";
+import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { Auth } from "@my-app/auth";
+import { TodosRpcs } from "@my-app/contracts";
+import { Database } from "@my-app/db";
+import { makeTestDatabase } from "@my-app/db/testing";
+
+import { Routes } from "#src/index.ts";
+
+const origin = "http://localhost";
+
+/**
+ * The server's routes as a Fetch handler in this process, on a migrated database of its own, so
+ * each test file runs in parallel without a port or shared rows.
+ */
+export class TestApp extends Context.Service<
+  TestApp,
+  {
+    /** Sends a request through every route and middleware, as the browser would. */
+    readonly fetch: (request: Request) => Promise<Response>;
+    /** Signs a new user up through Better Auth and returns their session cookie. */
+    readonly signUp: Effect.Effect<string>;
+  }
+>()("@my-app/api/tests/TestApp") {
+  static readonly layer = Layer.effect(
+    TestApp,
+    Effect.gen(function* () {
+      const url = yield* makeTestDatabase;
+
+      const services = yield* Layer.build(
+        Layer.mergeAll(
+          Database.layer.pipe(Layer.provide(PgClient.layer({ url }))),
+          Auth.layer({
+            baseURL: origin,
+            databaseUrl: url,
+            secret: Redacted.make("test-secret-that-is-at-least-32-characters"),
+          })
+        )
+      );
+
+      const { dispose, handler } = HttpRouter.toWebHandler(
+        Routes.pipe(
+          Layer.provide(Layer.succeedContext(services)),
+          Layer.provide(HttpServer.layerServices)
+        ),
+        { disableLogger: true }
+      );
+
+      yield* Effect.addFinalizer(() => Effect.promise(dispose));
+
+      const auth = Context.get(services, Auth);
+
+      const signUp = Effect.promise(async () => {
+        const { headers } = await auth.api.signUpEmail({
+          body: {
+            email: `${crypto.randomUUID()}@example.com`,
+            name: "Test User",
+            password: "correct-horse-battery",
+          },
+          returnHeaders: true,
+        });
+
+        return headers
+          .getSetCookie()
+          .map((header) => header.split(";")[0])
+          .join("; ");
+      });
+
+      return { fetch: handler, signUp };
+    })
+  );
+}
+
+/** A typed RPC client that calls as the cookie's user, or anonymously without one. */
+export const makeClient = Effect.fnUntraced(function* (cookie?: string) {
+  const app = yield* TestApp;
+
+  const fetch = async (
+    ...[input, init]: Parameters<typeof globalThis.fetch>
+  ) => {
+    const request = new Request(input, init);
+
+    if (cookie !== undefined) {
+      request.headers.set("cookie", cookie);
+    }
+
+    return await app.fetch(request);
+  };
+
+  return yield* RpcClient.make(TodosRpcs, { flatten: true }).pipe(
+    Effect.provide(
+      RpcClient.layerProtocolHttp({ url: `${origin}/rpc` }).pipe(
+        Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer]),
+        Layer.provide(Layer.succeed(FetchHttpClient.Fetch, fetch))
+      )
+    )
+  );
+});
+
+// The `Exit` the server writes for `todos.create`, as JSON.
+const CreateExit = Schema.fromJsonString(
+  Schema.Struct({
+    exit: Schema.Union([
+      Schema.Struct({
+        _tag: Schema.Literal("Success"),
+        value: Schema.Struct({
+          completed: Schema.Boolean,
+          title: Schema.String,
+        }),
+      }),
+      Schema.Struct({ _tag: Schema.Literal("Failure") }),
+    ]),
+  })
+);
+
+/**
+ * Posts `todos.create` as raw NDJSON, past the client's own payload validation, and returns the
+ * server's `Exit`, so tests see what the server itself accepts.
+ */
+export const createRaw = Effect.fnUntraced(function* (
+  cookie: string,
+  title: string
+) {
+  const app = yield* TestApp;
+
+  const request = {
+    _tag: "Request",
+    headers: [],
+    id: "1",
+    payload: { title },
+    tag: "todos.create",
+  };
+
+  const response = yield* Effect.promise(
+    async () =>
+      await app.fetch(
+        new Request(`${origin}/rpc`, {
+          body: `${JSON.stringify(request)}\n`,
+          headers: { "content-type": "application/ndjson", cookie },
+          method: "POST",
+        })
+      )
+  );
+
+  const body = yield* Effect.promise(async () => await response.text());
+  const { exit } = yield* Schema.decodeUnknownEffect(CreateExit)(body.trim());
+
+  return exit;
+});

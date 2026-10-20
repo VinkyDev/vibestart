@@ -106,6 +106,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `packages/integrations` | Integration、模板、依赖目录与验证记录存储 |
 | `packages/config`       | 共享的 TypeScript 预设                    |
 | `golden/`               | 已提交的生成项目,各自是独立的 workspace   |
+| `prototypes/`           | 尚未生成的技术栈的手写目标项目,不进 CI    |
 
 ## 参与贡献
 

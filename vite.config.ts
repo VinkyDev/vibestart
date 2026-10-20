@@ -7,13 +7,14 @@ import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
 
-// Golden projects are separate workspaces checked by their own config; templates
+// Golden projects and prototypes are separate workspaces checked by their own config; templates
 // are fragments of generated projects and are checked through generated output.
 // Agent skills are installed from upstream and pinned by hash in `skills-lock.json`, so reformatting one makes it drift.
 const foreignFiles = [
   ".agents/skills/**",
   ".claude/skills/**",
   "golden/**",
+  "prototypes/**",
   "reference/**",
   "packages/integrations/templates/**",
 ];

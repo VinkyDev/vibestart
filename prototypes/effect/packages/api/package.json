@@ -1,0 +1,27 @@
+{
+  "name": "@my-app/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@my-app/auth": "workspace:*",
+    "@my-app/contracts": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/sql-pg": "catalog:",
+    "@effect/vitest": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
