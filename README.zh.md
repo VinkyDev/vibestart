@@ -64,11 +64,15 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 | 数据库         | PostgreSQL、MySQL、SQLite、MongoDB,或不选                     |
 | ORM            | Drizzle;PostgreSQL 与 MySQL 也可选 Prisma;MongoDB 用 Mongoose |
 | Auth           | Better Auth                                                   |
-| 部署           | Docker                                                        |
+| 部署           | Docker、Void（预览）                                          |
 | UI             | shadcn(Base UI)与 Tailwind 4                                  |
 | 单元和集成测试 | Vitest                                                        |
 | 端到端测试     | Playwright 或 TesterArmy e2e                                  |
 | 工具链         | Vite+、Oxlint、Knip、`AGENTS.md`                              |
+
+### Void 部署（预览）
+
+`--deployment void --runtime workers` 使用 Void 1.2.1 将 SPA、SPA + Hono 或 TanStack Start 部署到你的 Cloudflare 账号。服务端支持外部 PostgreSQL 或 MySQL + Drizzle，可选 Better Auth；不支持 Next.js、SQLite、Prisma 和独立 Hono 服务。生成项目包含部署脚本，以及生产密钥、Hyperdrive、`void.lock.json` 的操作说明，不生成 GitHub Actions。详见[交付文档](https://vibestart.net/zh/docs/stack/delivery#void)。
 
 ## CLI 选项
 
@@ -83,7 +87,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `--<kind> <choice>`                                          | 决定某一类选择(`--framework`、`--backend`、`--api`、`--database`、`--orm`、`--auth`、`--desktop`、`--mobile`、`--deployment` 等)。`none` 表示可选项留空。 |
 | `--addons <ids\|none>`                                       | 选择扩展,逗号分隔。默认启用 Knip 与 Ultracite;`none` 两者都不要。                                                                                         |
 | `--package-manager <pnpm\|bun>`                              | 用 pnpm(默认)或 Bun 1.4.3 及以上安装依赖。                                                                                                                |
-| `--runtime <node\|bun>`                                      | Hono 服务运行在 Node.js(默认)或 Bun 上。                                                                                                                  |
+| `--runtime <node\|bun\|workers>`                             | Void 使用 Cloudflare Workers；Hono 可使用 Node.js（默认）或 Bun。                                                                                         |
 | `--recipe <path\|url>`                                       | 从 `vibestart.jsonc` 开始;`kind` 参数优先于它。                                                                                                           |
 | `--list`                                                     | 列出所有选择类别、选项与全部合法技术栈。                                                                                                                  |
 | `--dry-run`                                                  | 解析技术栈并列出文件,不写入磁盘。                                                                                                                         |

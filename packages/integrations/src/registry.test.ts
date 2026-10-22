@@ -36,6 +36,31 @@ describe("the registry", () => {
     );
   });
 
+  // Void deploys a React web app to Workers, which reach a SQL server only through Hyperdrive and Drizzle.
+  it.each([
+    ["framework", ["spa", "tanstack-start"]],
+    ["backend", ["hono", "none", "self"]],
+    ["database", ["mysql", "none", "postgres"]],
+    ["orm", ["drizzle", "none"]],
+    ["runtime", ["workers"]],
+  ])("deploys with Void the %s choices %j", (kind, ids) => {
+    const offered = new Set(
+      resolve(registry, { deployment: "void" }).stacks.map(
+        (stack) => stack[kind] ?? "none"
+      )
+    );
+
+    expect([...offered].toSorted((a, b) => a.localeCompare(b))).toStrictEqual(
+      ids
+    );
+  });
+
+  it("runs on Workers only what Void deploys", () => {
+    expect(
+      resolve(registry, { deployment: null, runtime: "workers" }).stacks
+    ).toHaveLength(0);
+  });
+
   it("signs users in on MongoDB as on a SQL database", () => {
     expect(
       resolve(registry, { auth: "better-auth", database: "mongodb" }).stacks

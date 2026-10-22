@@ -1,6 +1,6 @@
 ---
 title: Add capabilities
-description: Introduce code tools or Docker deployment configuration to an existing project.
+description: Introduce code tools or Docker/Void deployment configuration to an existing project.
 ---
 
 ```sh
@@ -9,7 +9,7 @@ npx vibestart-cli add knip ultracite docker --dry-run
 npx vibestart-cli add knip ultracite docker --yes
 ```
 
-Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks; Docker adds deployment configuration. Adding capabilities preserves the package manager and application runtime.
+Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks; Docker and Void add deployment configuration. Adding capabilities preserves the package manager and application runtime.
 
 ## Preview and apply [#apply]
 
@@ -24,3 +24,5 @@ By default, the command installs once, then runs `vp check`, selected Knip check
 `--no-install` writes files only and returns `needs-install`, with the installation and checks to run. These flags cannot be combined.
 
 Adding Ultracite may require changes to existing application code to satisfy new rules. When a check fails, the files stay written: fix the code and rerun the check, or undo with Git. Adding capabilities does not migrate databases automatically.
+
+`add void` deploys a SPA without a server to Cloudflare; such a project has no runtime yet, and Void serves it as static assets on Workers. A project with a server already runs on Node.js or Bun, and `add` refuses to replace that runtime: moving server code to Workers is a migration. Create a Void project with `--deployment void --runtime workers` instead. An existing deployment is never replaced implicitly, and `void.lock.json` is user-owned deployment state that is never merged. See [Void delivery](/docs/stack/delivery#void).

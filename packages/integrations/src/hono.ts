@@ -17,13 +17,14 @@ import {
   hasWebApp,
   proxiesToHono,
   renderEnvModule,
+  rpcPath,
   serverEnv,
   stackHeadline,
   closeDatabase as closeDatabaseStatement,
 } from "#/app.ts";
 import { composeServers, dockerRuntime } from "#/docker.ts";
 import { envFiles } from "#/env-files.ts";
-import { templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import {
   agentsConventions,
@@ -34,6 +35,7 @@ import {
   readmeTagline,
   unitTestSources,
 } from "#/vite-plus/slots.ts";
+import { workerNodeEnv, workerServices, workerTsconfig } from "#/void.ts";
 
 // Beside a full-stack framework, whose dev server takes :3000, the API listens on :3001.
 const port = (ctx: Context) => {
@@ -65,7 +67,7 @@ const healthHandler = (ctx: Context) => {
 
 const apiRoutes = (ctx: Context) => {
   if (ctx.has("orpc")) {
-    return ['  .all("/rpc/*", rpc)', '  .all("/api/*", openApi)'];
+    return [`  .all("${rpcPath(ctx)}/*", rpc)`, '  .all("/api/*", openApi)'];
   }
 
   const services = ctx.has("better-auth") ? "{ auth, db }" : "{ db }";
@@ -113,7 +115,65 @@ const contextImport = (ctx: Context) => {
   return names === "" ? [] : [`import { ${names} } from "#src/context.ts";`];
 };
 
+const renderWorkerApp = (ctx: Context) => {
+  const database = ctx.stack.database !== undefined;
+  const auth = ctx.has("better-auth");
+  const api = ctx.stack.api !== undefined;
+  const rpc = ctx.has("orpc");
+  const names = auth ? "auth, db" : "db";
+
+  const handlers = [
+    ...(rpc && database
+      ? [`const { rpc, openApi } = createRpc({ ${names} });`, ""]
+      : []),
+    ...(auth
+      ? [
+          "const authHandler = async (c: Context) => await auth.handler(c.req.raw);",
+          "",
+        ]
+      : []),
+    ...(!api && database ? [...healthHandler(ctx), ""] : []),
+  ];
+
+  const factory = `export const createApp = (${database ? `{ ${names} }: Services` : ""}) =>`;
+
+  return [
+    ...(ctx.has("openapi")
+      ? [`import { createApi } from "${ctx.scope}/api";`]
+      : []),
+    ...(!api && database ? databaseCheck(ctx, "db").imports : []),
+    'import { Hono } from "hono";',
+    ...(auth || !api ? ['import type { Context } from "hono";'] : []),
+    'import { logger } from "hono/logger";',
+    'import { secureHeaders } from "hono/secure-headers";',
+    "",
+    ...(database ? ['import type { Services } from "#src/context.ts";'] : []),
+    ...(rpc
+      ? [
+          `import { ${database ? "createRpc" : "openApi, rpc"} } from "#src/orpc.ts";`,
+        ]
+      : []),
+    "",
+    ...(!api && !database ? [...healthHandler(ctx), ""] : []),
+    ...(handlers.length === 0
+      ? routes(ctx).map((line) => line.replace("export const app =", factory))
+      : [
+          `${factory} {`,
+          ...handlers,
+          ...routes(ctx).map((line) =>
+            line.replace("export const app =", "return")
+          ),
+          "};",
+        ]),
+    "",
+  ].join("\n");
+};
+
 const renderApp = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return renderWorkerApp(ctx);
+  }
+
   const auth = ctx.has("better-auth");
   const api = ctx.stack.api !== undefined;
 
@@ -225,6 +285,12 @@ ${ctx.has("bun") ? '  "compilerOptions": { "types": ["node", "bun"] },\n' : ""} 
 };
 
 const services = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return ctx.stack.database === undefined
+      ? "routes forwarded by Void"
+      : `request-scoped ${ctx.has("better-auth") ? "`db` and `auth`" : "`db`"} passed to \`createApp\``;
+  }
+
   if (ctx.stack.database === undefined) {
     return "`env`";
   }
@@ -236,7 +302,7 @@ const services = (ctx: Context) => {
 
 const apiOwns = (ctx: Context) => {
   if (ctx.has("orpc")) {
-    return ["oRPC at `/rpc`", "OpenAPI and docs at `/api`"];
+    return [`oRPC at \`${rpcPath(ctx)}\``, "OpenAPI and docs at `/api`"];
   }
 
   return ctx.has("openapi")
@@ -251,7 +317,9 @@ const owns = (ctx: Context) => {
     ...(ctx.has("spa") ? ["the built SPA in production"] : []),
   ];
 
-  return `Hono on ${ctx.has("bun") ? "Bun" : "Node"}: ${parts.join(", ")}`;
+  const runtime = ctx.has("bun") ? "Bun" : "Node";
+
+  return `Hono on ${ctx.has("workers") ? "Workers" : runtime}: ${parts.join(", ")}`;
 };
 
 const health = (ctx: Context) =>
@@ -280,7 +348,7 @@ const standalone = (ctx: Context) => {
     ? [
         contribute(
           agentsNotes,
-          `\`vp run dev\` serves the API on :3000. Request flow: client → \`POST /rpc/*\` → \`packages/api\` procedure${databaseFlow(ctx)}. \`/api/*\` serves the same procedures as OpenAPI, with reference docs at \`/api\`.`
+          `\`vp run dev\` serves the API on :3000. Request flow: client → \`POST ${rpcPath(ctx)}/*\` → \`packages/api\` procedure${databaseFlow(ctx)}. \`/api/*\` serves the same procedures as OpenAPI, with reference docs at \`/api\`.`
         ),
         contribute(
           readmeOpen,
@@ -300,6 +368,21 @@ const standalone = (ctx: Context) => {
 };
 
 const renderViteConfig = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return `import { defineConfig } from "vite-plus";
+import { voidPlugin } from "void";
+
+// Void merges shell overrides; Wrangler must not overwrite them by reading .env again.
+process.env.CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV = "false";
+
+export default defineConfig({
+  plugins: [voidPlugin()],
+  publicDir: "../web/dist",
+  server: { port: 3000 },
+});
+`;
+  }
+
   const database = ctx.stack.database !== undefined;
 
   return [
@@ -357,6 +440,10 @@ const databaseScripts = (ctx: Context) => [
 ];
 
 const runtimeDependencies = (ctx: Context): string[] => {
+  if (ctx.has("workers")) {
+    return [];
+  }
+
   if (!ctx.has("bun")) {
     return ["@hono/node-server"];
   }
@@ -364,51 +451,128 @@ const runtimeDependencies = (ctx: Context): string[] => {
   return ctx.has("spa") ? ["@hono/bun"] : [];
 };
 
-export const hono = defineIntegration({
-  contribute: (ctx) => [
-    ...(ctx.stack.database === undefined
+const contextFiles = (ctx: Context) => {
+  if (ctx.stack.database === undefined) {
+    return [];
+  }
+
+  return ctx.has("workers")
+    ? [file("apps/server/src/context.ts", workerServices(ctx))]
+    : templateFiles(ctx, `hono/${authVariant(ctx)}`);
+};
+
+const environmentFiles = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return ctx.stack.database === undefined
       ? []
-      : templateFiles(ctx, `hono/${authVariant(ctx)}`)),
-    ...(ctx.has("orpc")
-      ? templateFiles(ctx, `hono/orpc-${apiVariant(ctx)}`)
-      : []),
-    file("apps/server/vite.config.ts", renderViteConfig(ctx)),
-    file("apps/server/src/index.ts", renderIndex(ctx)),
-    file("apps/server/src/app.ts", renderApp(ctx)),
-    file("apps/server/tsconfig.json", renderTsconfig(ctx)),
+      : [renderFile("apps/server/src/node-env.ts", workerNodeEnv)];
+  }
+
+  return [
     renderFile("apps/server/src/env.ts", (read) =>
       renderEnvModule([...read(serverEnv), port(ctx)], false)
     ),
+  ];
+};
+
+const backendChoice = (ctx: Context) => {
+  if (ctx.has("workers")) {
+    return "Hono on Cloudflare Workers";
+  }
+
+  return ctx.has("bun") ? "Hono on Bun" : "Hono on Node.js 24";
+};
+
+const serverPackage = (ctx: Context) =>
+  contribute(packageJson, {
+    dependencies: [
+      ...runtimeDependencies(ctx),
+      ...(ctx.has("workers") && ctx.stack.database === undefined
+        ? []
+        : ["@t3-oss/env-core"]),
+      "hono",
+      ...(ctx.has("workers") && ctx.stack.database === undefined
+        ? []
+        : ["zod"]),
+    ],
+    devDependencies: [
+      `${ctx.scope}/config`,
+      "@types/node",
+      ...(ctx.has("bun") ? ["@types/bun"] : []),
+      ...(ctx.has("workers") ? [`${ctx.scope}/web`] : []),
+      "typescript",
+      "vite-plus",
+    ],
+    imports: { "#src/*": "./src/*" },
+    path: "apps/server",
+    scripts: ctx.has("workers")
+      ? {
+          dev: ctx.has("expo") ? "vp dev --host" : "vp dev",
+          build: "vp build",
+          preview: "vp preview",
+        }
+      : {
+          dev: ctx.has("bun")
+            ? "bun --watch src/index.ts"
+            : "node --watch --env-file-if-exists=.env src/index.ts",
+          build: "vp pack",
+          start: ctx.has("bun")
+            ? "bun dist/index.mjs"
+            : "node --env-file-if-exists=.env dist/index.mjs",
+        },
+  });
+
+const orpcPath = "apps/server/src/orpc.ts";
+
+// A Worker builds services per request, so its database-backed oRPC templates receive them; the stateless one only moves its RPC prefix.
+const orpcFiles = (ctx: Context) => {
+  const variant = apiVariant(ctx);
+
+  if (!ctx.has("workers")) {
+    return templateFiles(ctx, `hono/orpc-${variant}`);
+  }
+
+  if (variant !== "stateless") {
+    return templateFiles(ctx, `hono/workers-orpc-${variant}`);
+  }
+
+  const set = "hono/orpc-stateless";
+
+  return [
+    ...templateFiles(ctx, set, { except: [orpcPath] }),
+    file(
+      orpcPath,
+      replaceOnce(
+        templateContent(ctx, set, orpcPath),
+        '"/rpc"',
+        `"${rpcPath(ctx)}"`,
+        `${set}/${orpcPath}`
+      )
+    ),
+  ];
+};
+
+export const hono = defineIntegration({
+  contribute: (ctx) => [
+    ...contextFiles(ctx),
+    ...(ctx.has("orpc") ? orpcFiles(ctx) : []),
+    file("apps/server/vite.config.ts", renderViteConfig(ctx)),
+    ...(ctx.has("workers")
+      ? []
+      : [file("apps/server/src/index.ts", renderIndex(ctx))]),
+    file("apps/server/src/app.ts", renderApp(ctx)),
+    ...(ctx.has("workers")
+      ? workerTsconfig(ctx)
+      : [file("apps/server/tsconfig.json", renderTsconfig(ctx))]),
+    ...environmentFiles(ctx),
     contribute(envFiles, {
-      lines: (read) => [...read(serverEnv), port(ctx)],
+      lines: (read) => [
+        ...read(serverEnv),
+        ...(ctx.has("workers") ? [] : [port(ctx)]),
+      ],
       path: "apps/server/.env",
     }),
-    contribute(packageJson, {
-      dependencies: [
-        ...runtimeDependencies(ctx),
-        "@t3-oss/env-core",
-        "hono",
-        "zod",
-      ],
-      devDependencies: [
-        `${ctx.scope}/config`,
-        "@types/node",
-        ...(ctx.has("bun") ? ["@types/bun"] : []),
-        "typescript",
-        "vite-plus",
-      ],
-      imports: { "#src/*": "./src/*" },
-      path: "apps/server",
-      scripts: {
-        dev: ctx.has("bun")
-          ? "bun --watch src/index.ts"
-          : "node --watch --env-file-if-exists=.env src/index.ts",
-        build: "vp pack",
-        start: ctx.has("bun")
-          ? "bun dist/index.mjs"
-          : "node --env-file-if-exists=.env dist/index.mjs",
-      },
-    }),
+    serverPackage(ctx),
     ...(ctx.stack.database === undefined ? [] : databaseScripts(ctx)),
     contribute(unitTestSources, "apps/server/src"),
     contribute(ultraciteOverrides, middlewareOverride(ctx)),
@@ -450,7 +614,7 @@ export const hono = defineIntegration({
     contribute(readmeTagline, "Hono"),
     contribute(stackHeadline, "Hono"),
     contribute(readmeLayers, {
-      choice: ctx.has("bun") ? "Hono on Bun" : "Hono on Node.js 24",
+      choice: backendChoice(ctx),
       layer: "Backend",
     }),
     ...(hasWebApp(ctx) ? [] : standalone(ctx)),
@@ -461,5 +625,8 @@ export const hono = defineIntegration({
   description: "Standalone API server built on Hono",
   homepage: "https://hono.dev",
   provides: ["hono-server", "http-server"],
-  requires: ["node-runtime"],
+  requires: [
+    ["node-runtime", "workers-runtime"],
+    ["node-runtime", "single-page-app"],
+  ],
 });

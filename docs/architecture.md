@@ -93,7 +93,7 @@ A **facet** is one thing `ready` exercises in an output (`coverage.ts`). A pass 
 Two classes stand outside the facets:
 
 - **Add-ons.** Each stack is verified with the default add-ons. Dropping an add-on removes only its own files, dependencies, presets, and checks (`addons.test.ts`), so the record stands for any subset of the defaults. An add-on that edits business files or the runtime must bring its own coverage.
-- **Docker.** A stack without a deployment differs from its Docker sibling by Docker's files alone (`deployment.test.ts`), so it reuses that sibling's snapshot and coverage. `ready` reads no Docker file, so Docker files and the deployment choice are no facets either.
+- **Docker.** A stack without a deployment differs from its Docker sibling by Docker's files alone (`deployment.test.ts`), so it reuses that sibling's snapshot and coverage. `ready` reads no Docker file, so Docker files and its deployment choice are no facets either. Void changes runtime files, so only Void stacks add `deployment=void` choice facets; existing Docker and undeployed facets stay identical.
 
 ### Running at scale
 
@@ -121,17 +121,11 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 
 `verify` installs Chromium in each project with a browser test, through the project's own runner as its README says, so the browser build follows the runner version that project resolved rather than the registry's latest. A Linux job first installs Chromium's system libraries. Tests run once, and Vite+ owns the pnpm cache.
 
+The Linux MongoDB service sets `GLIBC_TUNABLES=glibc.pthread.rseq=1`, keeping glibc in charge of rseq so MongoDB uses per-thread caches. MongoDB's per-CPU allocator is unsafe on kernels 6.19 through 7.0.13 ([SERVER-125742](https://jira.mongodb.org/browse/SERVER-125742)); remove the setting once every hosted runner kernel includes the fix. Database tests still run against the same MongoDB 8 service.
+
 ## Package manager and runtime
 
-`packageManager` defaults to pnpm. Core renders a pnpm workspace file or Bun workspaces with a catalog and install policy in the root manifest; Bun keeps the `catalog:` protocol and approves install scripts only through an explicit `trustedDependencies`.
-
-The `runtime` kind adds Bun beside Node. Bun needs the Hono capability, so it is legal only in stacks with Hono. Full-stack frameworks and the Vite+ toolchain stay on Node, and Docker includes whichever runtimes the stack uses. Stack names gain `bun` for the runtime and `bun-pm` for the package manager, and a record vouches only for its own fingerprint.
-
-Hono splits `src/app.ts` (routing) from `src/index.ts` (listen and shutdown), so both runtimes load the full module graph and answer requests without binding a socket. `stacks smoke` uses that boundary and never writes records.
-
-The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown.
-
-Teardown stops server process trees before removing test databases. Windows uses bounded `taskkill` and exit waits, with direct-child termination if `taskkill` fails; a child that does not exit fails teardown. SQLite removal retries transient file locks.
+[Runtime architecture](runtime.md) covers package managers, Node/Bun and Workers, test-server teardown, and Void deployment.
 
 ## Project maintenance
 
@@ -141,7 +135,7 @@ The merge base is regenerated, not stored. Generation is deterministic and npm r
 
 Commands: `create`, `add`, `upgrade`, `doctor`, and the `snapshot` protocol. `add` and `upgrade` compare the regenerated base, the current files, and the target output, and produce one plan. `packages/core` owns the pure line and JSONC merge, `packages/integrations` declares addable capabilities and the maintained scope, and `apps/cli/src/maintenance` owns release loading, project I/O, and commands. A capability has one template, shared by create and add.
 
-Only infrastructure is merged: manifests, catalog, toolchain and config files, Git ignores, agent conventions, Docker files. The CLI writes `vibestart.jsonc` itself, only when its recorded data changes, and refuses a target release whose record omits its version. Starter business source belongs to the user: a template change to it is reported in the plan's `manual` list with the previous and target template, and never written. Replacing a stack choice is not an automatic migration.
+Only infrastructure is merged: manifests, catalog, toolchain and config files, Git ignores, agent conventions, Docker files. The CLI writes `vibestart.jsonc` itself, only when its recorded data changes, and refuses a target release whose record omits its version. Starter business source belongs to the user: a template change to it is reported in the plan's `manual` list with the previous and target template, and never written. Replacing a stack choice is not an automatic migration. Adding a capability may fill an auxiliary choice the project left open, such as the Workers runtime of a SPA without a server, but `add` refuses to change a choice already made. Void config, env schema, Worker declarations and deploy script are infrastructure. `void.lock.json` is user-owned deployment state and is never generated or merged.
 
 Git is the record of a write. A write requires a clean worktree, so `git diff` shows exactly what it changed and `git restore . && git clean -fd` undoes it. Conflicts are written into the files with Git's markers, and the write stops before installation. Otherwise the CLI installs once and runs the selected checks; a failing check leaves the files written for the user to fix or undo.
 

@@ -297,7 +297,7 @@ const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/api.ts · 240 stacks
+# apps/web/src/lib/api.ts · 272 stacks
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -310,10 +310,18 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -326,10 +334,16 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-docker
@@ -362,6 +376,8 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-expo-docker
 #   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -374,10 +390,18 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -390,10 +414,16 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-docker
@@ -426,6 +456,8 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-expo-docker
 #   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -590,7 +622,7 @@ const createQueries = (client: Client) => ({
 
 export const api = createQueries(createClient());
 
-# apps/web/src/lib/client.ts · 288 stacks
+# apps/web/src/lib/client.ts · 320 stacks
 #   next-hono-openapi-mongodb-better-auth-bun-docker
 #   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
 #   next-hono-openapi-mongodb-better-auth-docker
@@ -731,10 +763,18 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -747,10 +787,16 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-docker
@@ -783,6 +829,8 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-expo-docker
 #   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -795,10 +843,18 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -811,10 +867,16 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-docker
@@ -847,6 +909,8 @@ export const api = createQueries(createClient());
 #   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-expo-docker
 #   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -1128,7 +1192,7 @@ export const serverApi = createQueries(
 
 export const getQueryClient = cache(() => new QueryClient());
 
-# packages/api/src/index.ts · 36 stacks
+# packages/api/src/index.ts · 44 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
@@ -1153,10 +1217,18 @@ export const getQueryClient = cache(() => new QueryClient());
 #   spa-hono-openapi-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-electron-expo-docker
 #   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
 #   spa-hono-openapi-expo-bun-docker
 #   spa-hono-openapi-expo-bun-docker-e2e
 #   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-expo-docker-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-bun-docker-e2e
 #   tanstack-start-hono-openapi-docker
@@ -1186,7 +1258,7 @@ export const createApi = () => {
 
 export type Api = ReturnType<typeof createApi>;
 
-# packages/api/src/index.ts · 432 stacks
+# packages/api/src/index.ts · 464 stacks
 #   hono-openapi-mongodb-better-auth-bun-docker
 #   hono-openapi-mongodb-better-auth-docker
 #   hono-openapi-mongodb-better-auth-expo-bun-docker
@@ -1375,10 +1447,18 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -1391,10 +1471,16 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-docker
@@ -1427,6 +1513,8 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-expo-docker
 #   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -1439,10 +1527,18 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -1455,10 +1551,16 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-docker
@@ -1491,6 +1593,8 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-expo-docker
 #   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -1646,7 +1750,7 @@ export const createApi = (services: Services) => {
 
 export type Api = ReturnType<typeof createApi>;
 
-# packages/api/src/routes/health.ts · 36 stacks
+# packages/api/src/routes/health.ts · 44 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
@@ -1671,10 +1775,18 @@ export type Api = ReturnType<typeof createApi>;
 #   spa-hono-openapi-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-electron-expo-docker
 #   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
 #   spa-hono-openapi-expo-bun-docker
 #   spa-hono-openapi-expo-bun-docker-e2e
 #   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-expo-docker-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-bun-docker-e2e
 #   tanstack-start-hono-openapi-docker
@@ -1800,7 +1912,7 @@ export const healthRoutes = ({ db }: Services) =>
     return c.json({ status: "ok" as const }, 200);
   });
 
-# packages/api/src/routes/health.ts · 72 stacks
+# packages/api/src/routes/health.ts · 88 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -1837,10 +1949,18 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -1853,10 +1973,18 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -1995,7 +2123,7 @@ export const healthRoutes = ({ db }: Services) =>
     return c.json({ status: "ok" as const }, 200);
   });
 
-# packages/api/src/routes/health.ts · 72 stacks
+# packages/api/src/routes/health.ts · 88 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -2032,10 +2160,18 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -2048,10 +2184,18 @@ export const healthRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -2654,7 +2798,7 @@ export const todoRoutes = ({ db }: Services) =>
       return c.json(toTodo(row), 200);
     });
 
-# packages/api/src/routes/todos.ts · 36 stacks
+# packages/api/src/routes/todos.ts · 44 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -2679,10 +2823,18 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -2864,7 +3016,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
     });
 };
 
-# packages/api/src/routes/todos.ts · 36 stacks
+# packages/api/src/routes/todos.ts · 44 stacks
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -2889,10 +3041,18 @@ export const todoRoutes = ({ auth, db }: Services) => {
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   tanstack-start-hono-openapi-mysql-bun-docker
 #   tanstack-start-hono-openapi-mysql-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-docker
@@ -3472,7 +3632,7 @@ export const todoRoutes = ({ db }: Services) => {
     });
 };
 
-# packages/api/src/routes/todos.ts · 72 stacks
+# packages/api/src/routes/todos.ts · 80 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -3509,10 +3669,18 @@ export const todoRoutes = ({ db }: Services) => {
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -3717,7 +3885,7 @@ export const todoRoutes = ({ auth, db }: Services) => {
     });
 };
 
-# packages/api/src/routes/todos.ts · 72 stacks
+# packages/api/src/routes/todos.ts · 80 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
@@ -3754,10 +3922,18 @@ export const todoRoutes = ({ auth, db }: Services) => {
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -3919,7 +4095,7 @@ export const todoRoutes = ({ db }: Services) =>
         : c.json(deleted, 200);
     });
 
-# packages/api/src/services.ts · 216 stacks
+# packages/api/src/services.ts · 232 stacks
 #   hono-openapi-mongodb-better-auth-bun-docker
 #   hono-openapi-mongodb-better-auth-docker
 #   hono-openapi-mongodb-better-auth-expo-bun-docker
@@ -4020,10 +4196,18 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-docker
@@ -4052,10 +4236,18 @@ export const todoRoutes = ({ db }: Services) =>
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-docker
@@ -4144,7 +4336,7 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/src/services.ts · 216 stacks
+# packages/api/src/services.ts · 232 stacks
 #   hono-openapi-mongodb-bun-docker
 #   hono-openapi-mongodb-docker
 #   hono-openapi-mongodb-expo-bun-docker
@@ -4245,10 +4437,16 @@ export interface Services {
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
 #   spa-hono-openapi-mysql-prisma-bun-docker
 #   spa-hono-openapi-mysql-prisma-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-docker
@@ -4265,6 +4463,8 @@ export interface Services {
 #   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-expo-docker
 #   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -4277,10 +4477,16 @@ export interface Services {
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
 #   spa-hono-openapi-postgres-prisma-bun-docker
 #   spa-hono-openapi-postgres-prisma-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-docker
@@ -4297,6 +4503,8 @@ export interface Services {
 #   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-expo-docker
 #   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -4367,7 +4575,7 @@ export interface Services {
   db: Database;
 }
 
-# packages/api/tsconfig.json · 468 stacks
+# packages/api/tsconfig.json · 508 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
@@ -4536,10 +4744,16 @@ export interface Services {
 #   spa-hono-openapi-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-electron-expo-docker
 #   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
 #   spa-hono-openapi-expo-bun-docker
 #   spa-hono-openapi-expo-bun-docker-e2e
 #   spa-hono-openapi-expo-docker
 #   spa-hono-openapi-expo-docker-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
 #   spa-hono-openapi-mongodb-better-auth-bun-docker
 #   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mongodb-better-auth-docker
@@ -4584,10 +4798,18 @@ export interface Services {
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -4600,10 +4822,16 @@ export interface Services {
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
 #   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-better-auth-docker
@@ -4636,6 +4864,8 @@ export interface Services {
 #   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-prisma-expo-docker
 #   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -4648,10 +4878,18 @@ export interface Services {
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -4664,10 +4902,16 @@ export interface Services {
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
 #   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-better-auth-docker
@@ -4700,6 +4944,8 @@ export interface Services {
 #   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-prisma-expo-docker
 #   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -4732,6 +4978,8 @@ export interface Services {
 #   spa-hono-openapi-sqlite-expo-bun-docker-e2e
 #   spa-hono-openapi-sqlite-expo-docker
 #   spa-hono-openapi-sqlite-expo-docker-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
 #   tanstack-start-hono-openapi-bun-docker
 #   tanstack-start-hono-openapi-bun-docker-e2e
 #   tanstack-start-hono-openapi-docker

@@ -1,0 +1,21 @@
+name: my-app
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: my_app
+      MYSQL_ROOT_PASSWORD: mysql
+    healthcheck:
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pmysql"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

@@ -1451,6 +1451,538 @@
   }
 }
 
+# knip.json · 1 stack
+#   spa-electron-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": ["void.config.ts"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   spa-electron-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   spa-electron-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/web": {
+      "entry": ["void.config.ts"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   spa-electron-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 2 stacks
+#   spa-expo-void
+#   tanstack-start-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": ["void.config.ts"]
+    }
+  }
+}
+
+# knip.json · 2 stacks
+#   spa-expo-void-e2e
+#   tanstack-start-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-orpc-electron-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-orpc-electron-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-electron-void
+#   spa-hono-openapi-electron-void
+#   spa-hono-orpc-electron-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-electron-void-e2e
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-orpc-electron-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-expo-void
+#   spa-hono-openapi-expo-void
+#   spa-hono-orpc-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-expo-void-e2e
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-orpc-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-electron-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-electron-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-electron-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-electron-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-void
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-void
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-void
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
 # knip.json · 24 stacks
 #   spa-hono-mysql-prisma-better-auth-electron-bun-docker
 #   spa-hono-mysql-prisma-better-auth-electron-docker
@@ -1631,6 +2163,226 @@
     },
     "apps/web": {
       "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-openapi-void
+#   spa-hono-orpc-void
+#   spa-hono-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 3 stacks
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-void-e2e
+#   spa-hono-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 2 stacks
+#   spa-void
+#   tanstack-start-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/web": {
+      "entry": ["void.config.ts"]
+    }
+  }
+}
+
+# knip.json · 2 stacks
+#   spa-void-e2e
+#   tanstack-start-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 8 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": ["void.config.ts", "env.ts"],
+      "ignoreDependencies": ["cloudflare"]
+    }
+  }
+}
+
+# knip.json · 8 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "env.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ],
+      "ignoreDependencies": ["cloudflare"]
+    }
+  }
+}
+
+# knip.json · 8 stacks
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/web": {
+      "entry": ["void.config.ts", "env.ts"],
+      "ignoreDependencies": ["cloudflare"]
+    }
+  }
+}
+
+# knip.json · 8 stacks
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "env.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ],
+      "ignoreDependencies": ["cloudflare"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   tanstack-start-self-orpc-expo-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": ["void.config.ts", "env.ts"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   tanstack-start-self-orpc-expo-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "env.ts",
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   tanstack-start-self-orpc-void
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/web": {
+      "entry": ["void.config.ts", "env.ts"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   tanstack-start-self-orpc-void-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/web": {
+      "entry": [
+        "void.config.ts",
+        "env.ts",
         "e2e.config.ts",
         "tests/e2e/**/*.e2e.ts",
         "tests/support/start.ts"

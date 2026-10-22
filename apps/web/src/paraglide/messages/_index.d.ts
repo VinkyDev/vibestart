@@ -15,6 +15,7 @@ export type Api_Client_DesktopInputs = {};
 export type Api_Client_MobileInputs = {};
 export type Api_ClientsInputs = {};
 export type Api_Clients_SameInputs = {};
+export type Cap_Cloudflare_DeploymentInputs = {};
 export type Cap_Database_ServerInputs = {};
 export type Cap_Document_DatabaseInputs = {};
 export type Cap_Document_OrmInputs = {};
@@ -30,6 +31,7 @@ export type Cap_Single_Page_AppInputs = {};
 export type Cap_Sql_DatabaseInputs = {};
 export type Cap_Sql_OrmInputs = {};
 export type Cap_Ui_ComponentsInputs = {};
+export type Cap_Workers_RuntimeInputs = {};
 export type Change_Demo_ApplyInputs = {};
 export type Change_Demo_FailedInputs = {};
 export type Change_Demo_LabelInputs = {};
@@ -76,6 +78,12 @@ export type Deployment_MysqlInputs = {
 export type Deployment_PostgresInputs = {
     name: NonNullable<unknown>;
 };
+export type Deployment_VoidInputs = {
+    name: NonNullable<unknown>;
+};
+export type Deployment_Void_DatabaseInputs = {
+    name: NonNullable<unknown>;
+};
 export type Desc_Better_AuthInputs = {};
 export type Desc_BunInputs = {};
 export type Desc_DockerInputs = {};
@@ -102,6 +110,8 @@ export type Desc_SqliteInputs = {};
 export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
 export type Desc_Vite_PlusInputs = {};
+export type Desc_VoidInputs = {};
+export type Desc_WorkersInputs = {};
 export type Desktop_DistInputs = {};
 export type Desktop_Dist_PillInputs = {};
 export type Docs_AnchorInputs = {};
@@ -154,6 +164,8 @@ export type Fit_SelfInputs = {};
 export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
 export type Fit_Tanstack_StartInputs = {};
+export type Fit_VoidInputs = {};
+export type Fit_WorkersInputs = {};
 export type Gate_BuildInputs = {};
 export type Gate_Build_WebInputs = {};
 export type Gate_CheckInputs = {};
@@ -652,6 +664,20 @@ export declare const api_clients_same: ((inputs?: Api_Clients_SameInputs, option
 /**
 * | output |
 * | --- |
+* | "deployment to Cloudflare through Void" |
+*
+* @param {Cap_Cloudflare_DeploymentInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const cap_cloudflare_deployment: ((inputs?: Cap_Cloudflare_DeploymentInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Cloudflare_DeploymentInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "a database server (PostgreSQL or MySQL)" |
 *
 * @param {Cap_Database_ServerInputs} inputs
@@ -857,6 +883,20 @@ export declare const cap_sql_orm: ((inputs?: Cap_Sql_OrmInputs, options?: {
 export declare const cap_ui_components: ((inputs?: Cap_Ui_ComponentsInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Ui_ComponentsInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "the Cloudflare Workers runtime" |
+*
+* @param {Cap_Workers_RuntimeInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const cap_workers_runtime: ((inputs?: Cap_Workers_RuntimeInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Workers_RuntimeInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1366,6 +1406,34 @@ export declare const deployment_postgres: ((inputs: Deployment_PostgresInputs, o
 /**
 * | output |
 * | --- |
+* | "{name} · Cloudflare Worker + static assets" |
+*
+* @param {Deployment_VoidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const deployment_void: ((inputs: Deployment_VoidInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_VoidInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "{name} · Worker + Hyperdrive · external database" |
+*
+* @param {Deployment_Void_DatabaseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const deployment_void_database: ((inputs: Deployment_Void_DatabaseInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Void_DatabaseInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "Email and password sign-in, with sessions in the database" |
 *
 * @param {Desc_Better_AuthInputs} inputs
@@ -1725,6 +1793,34 @@ export declare const desc_tanstack_start: ((inputs?: Desc_Tanstack_StartInputs, 
 export declare const desc_vite_plus: ((inputs?: Desc_Vite_PlusInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Vite_PlusInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
+*
+* @param {Desc_VoidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_void: ((inputs?: Desc_VoidInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_VoidInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Cloudflare Workers runtime, deployed with Void" |
+*
+* @param {Desc_WorkersInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_workers: ((inputs?: Desc_WorkersInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_WorkersInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -2398,6 +2494,34 @@ export declare const fit_sqlite: ((inputs?: Fit_SqliteInputs, options?: {
 export declare const fit_tanstack_start: ((inputs?: Fit_Tanstack_StartInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Tanstack_StartInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
+*
+* @param {Fit_VoidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_void: ((inputs?: Fit_VoidInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_VoidInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Runs your server in Cloudflare Workers; database clients belong to each request." |
+*
+* @param {Fit_WorkersInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_workers: ((inputs?: Fit_WorkersInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_WorkersInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -4035,7 +4159,7 @@ export declare const role_deployment: ((inputs?: Role_DeploymentInputs, options?
 /**
 * | output |
 * | --- |
-* | "How the app is packaged for a server." |
+* | "How the app is deployed to its host." |
 *
 * @param {Role_Deployment_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4049,7 +4173,7 @@ export declare const role_deployment_about: ((inputs?: Role_Deployment_AboutInpu
 /**
 * | output |
 * | --- |
-* | "No image. Runs anywhere Node.js runs." |
+* | "Choose a hosting platform later." |
 *
 * @param {Role_Deployment_NoneInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4273,7 +4397,7 @@ export declare const runs_in_electron: ((inputs?: Runs_In_ElectronInputs, option
 /**
 * | output |
 * | --- |
-* | "Runs the Hono server. The package manager, web framework and test tools are independent." |
+* | "Node.js and Bun run server processes. Void uses Cloudflare Workers; build tools still run on Node.js." |
 *
 * @param {Runtime_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4301,7 +4425,7 @@ export declare const runtime_none: ((inputs?: Runtime_NoneInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Run Hono on which runtime?" |
+* | "Which runtime runs the server?" |
 *
 * @param {Runtime_QuestionInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

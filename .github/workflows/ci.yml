@@ -92,6 +92,9 @@ jobs:
           --health-retries 30
       mongodb:
         image: ${{ matrix.platform == 'linux' && 'mongo:8' || '' }}
+        env:
+          # SERVER-125742: until hosted kernels have the rseq fix, glibc owns rseq so MongoDB uses safe per-thread caches.
+          GLIBC_TUNABLES: glibc.pthread.rseq=1
         ports:
           - 27017:27017
         options: >-

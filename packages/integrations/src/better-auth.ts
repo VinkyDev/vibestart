@@ -215,7 +215,9 @@ const appSets = (ctx: Context) => {
   }
 
   return ctx.has("tanstack-start")
-    ? [`better-auth/tanstack-start-${server}`]
+    ? [
+        `better-auth/tanstack-start-${ctx.has("workers") ? "workers-" : ""}${server}`,
+      ]
     : ["better-auth/spa"];
 };
 

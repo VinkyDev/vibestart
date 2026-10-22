@@ -91,6 +91,7 @@ export const catalog = {
     "electron-builder": "^26.15.3",
   },
   server: {
+    void: "1.2.1",
     "@hono/bun": "^1.0.1",
     "@hono/node-server": "^2.1.5",
     "@t3-oss/env-core": "^0.13.11",

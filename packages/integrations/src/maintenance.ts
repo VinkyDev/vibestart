@@ -8,6 +8,11 @@ export const maintenanceFiles = (files: readonly GeneratedFile[]) =>
   files.filter(
     ({ path, owner }) =>
       owner === "docker" ||
+      (owner === "void" &&
+        (path.endsWith("/void.config.ts") ||
+          path.endsWith("/env.ts") ||
+          path.endsWith("/worker-env.d.ts") ||
+          path === "scripts/deploy.ts")) ||
       /(?:^|\/)(?:package\.json|pnpm-workspace\.yaml|tsconfig(?:\.[\w-]+)?\.json|vite\.config\.ts|metro\.config\.ts|knip\.jsonc?|\.gitignore|\.npmrc|\.node-version|\.bun-version|AGENTS\.md)$/u.test(
         path
       ) ||

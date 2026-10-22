@@ -502,5 +502,5 @@ export const prisma = defineIntegration({
   description: "Prisma ORM 7 with Prisma Migrate",
   homepage: "https://www.prisma.io",
   provides: ["sql-orm"],
-  requires: ["database-server"],
+  requires: ["database-server", "node-runtime"],
 });

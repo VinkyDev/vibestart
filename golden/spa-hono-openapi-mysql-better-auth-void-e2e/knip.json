@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "apps/server": {
+      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "ignoreDependencies": ["cloudflare", "@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}

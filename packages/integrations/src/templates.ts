@@ -38,6 +38,22 @@ const templateSet = (set: string) => {
 const withName = (ctx: Context, content: string) =>
   content.replaceAll("my-app", ctx.name);
 
+/** Rewrites a template anchor that must appear exactly once, so a template edit cannot silently skip it. */
+export const replaceOnce = (
+  content: string,
+  from: string,
+  to: string,
+  where: string
+) => {
+  const parts = content.split(from);
+
+  if (parts.length !== 2) {
+    throw new Error(`${where} must hold ${from} once`);
+  }
+
+  return parts.join(to);
+};
+
 export const templateContent = (ctx: Context, set: string, path: string) => {
   const content = templates[`${root}${set}/${path}`];
 

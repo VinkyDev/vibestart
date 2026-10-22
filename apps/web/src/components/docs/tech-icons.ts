@@ -29,12 +29,16 @@ import ultracite from "#/assets/tech/ultracite.svg";
 import vitePlus from "#/assets/tech/vite-plus.svg";
 import vite from "#/assets/tech/vite.svg";
 import vitest from "#/assets/tech/vitest.svg";
+import voidIcon from "#/assets/tech/void.svg";
+import workers from "#/assets/tech/workers.svg";
 import zod from "#/assets/tech/zod.svg";
 
 export const techIcons = {
   "better-auth": betterAuth,
   bun,
   docker,
+  void: voidIcon,
+  workers,
   drizzle,
   e2e,
   electron,

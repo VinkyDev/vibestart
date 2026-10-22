@@ -78,15 +78,24 @@ describe(pnpmFacets, () => {
     ).toStrictEqual([]);
   });
 
-  it("takes every three choices together, Docker aside", async () => {
-    const stack = compose(registry, { deployment: "docker" });
+  // Docker changes only its own files; Void changes the code it deploys, so it is a choice in its own stacks.
+  it.each([
+    { deployment: "docker", choice: false },
+    { deployment: "void", choice: true },
+  ])(
+    "takes every three choices together, $deployment a choice: $choice",
+    async ({ deployment, choice }) => {
+      const stack = compose(registry, { deployment });
 
-    const choices = [
-      ...pnpmFacets(stack, await verifiedGeneration(stack)),
-    ].filter((facet) => facet.startsWith("choices "));
+      const choices = [
+        ...pnpmFacets(stack, await verifiedGeneration(stack)),
+      ].filter((facet) => facet.startsWith("choices "));
 
-    const kinds = registry.kinds.length - 1;
-    expect(choices).toHaveLength((kinds * (kinds - 1) * (kinds - 2)) / 6);
-    expect(choices.some((facet) => facet.includes("deployment="))).toBeFalsy();
-  });
+      const kinds = registry.kinds.length - (choice ? 0 : 1);
+      expect(choices).toHaveLength((kinds * (kinds - 1) * (kinds - 2)) / 6);
+      expect(
+        choices.some((facet) => facet.includes(`deployment=${deployment}`))
+      ).toBe(choice);
+    }
+  );
 });

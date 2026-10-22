@@ -37,6 +37,8 @@ const webArgs = (ctx: Context, port: string) =>
       ];
 
 const serverEnv = (ctx: Context) => [
+  // Worker test servers share a runner; the inspector port is unnecessary for browser tests.
+  ...(ctx.has("workers") ? ['VOID_INSPECTOR_PORT: "false"'] : []),
   ...(ctx.has("better-auth")
     ? [
         'BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters"',
@@ -71,8 +73,8 @@ const separateServerBody = (ctx: Context) => ({
   starts: [
     startCall(
       "serverDir",
-      ['"src/index.ts"'],
-      [...serverEnv(ctx), "PORT: serverPort"],
+      ctx.has("workers") ? webArgs(ctx, "serverPort") : ['"src/index.ts"'],
+      [...serverEnv(ctx), ...(ctx.has("workers") ? [] : ["PORT: serverPort"])],
       ctx.has("bun")
     ),
     `    await waitForServer(\`http://localhost:\${serverPort}/api/health\`);`,
@@ -163,9 +165,10 @@ const declarations = (ctx: Context) => [
   "",
 ];
 
+// workerd can optimize SSR dependencies before listening; it needs the same cold start budget as Next.
 const helpers = (
   ctx: Context
-) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") ? 300 : 100}): Promise<void> => {
+) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") || (ctx.has("workers") && ctx.has("tanstack-start")) ? 300 : 100}): Promise<void> => {
   await retry(
     async () => {
       const response = await fetch(url);

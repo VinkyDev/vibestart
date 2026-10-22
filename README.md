@@ -64,11 +64,15 @@ VibeStart does not host your application, does not migrate production data, and 
 | Database                 | PostgreSQL, MySQL, SQLite, MongoDB, or none                     |
 | ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL; Mongoose on MongoDB |
 | Auth                     | Better Auth                                                     |
-| Deployment               | Docker                                                          |
+| Deployment               | Docker, Void (preview)                                          |
 | UI                       | shadcn (Base UI) and Tailwind 4                                 |
 | Unit & integration tests | Vitest                                                          |
 | End-to-end tests         | Playwright or TesterArmy e2e                                    |
 | Toolchain                | Vite+, Oxlint, Knip, `AGENTS.md`                                |
+
+### Void deployment (preview)
+
+`--deployment void --runtime workers` deploys a SPA, SPA + Hono, or TanStack Start to your Cloudflare account with Void 1.2.1. Server stacks support external PostgreSQL or MySQL with Drizzle and optional Better Auth. Next.js, SQLite, Prisma, and a standalone Hono server are excluded. Generated projects include a deployment script and instructions for production secrets, Hyperdrive, and `void.lock.json`; they include no GitHub Actions. See [delivery](https://vibestart.net/docs/stack/delivery#void).
 
 ## CLI options
 
@@ -83,7 +87,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--orm`, `--auth`, `--desktop`, `--mobile`, `--deployment`, …). `none` is the empty choice of an optional kind. |
 | `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                                      |
 | `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.3 or newer.                                                                                                                                  |
-| `--runtime <node\|bun>`                                      | Run the Hono server on Node.js (default) or Bun.                                                                                                                                    |
+| `--runtime <node\|bun\|workers>`                             | Cloudflare Workers with Void, or Node.js (default) / Bun for Hono.                                                                                                                  |
 | `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                                             |
 | `--list`                                                     | List every kind, its options, and every legal stack.                                                                                                                                |
 | `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                                               |

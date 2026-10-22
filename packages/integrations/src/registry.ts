@@ -28,6 +28,8 @@ import { tanstackStart } from "#/tanstack-start.ts";
 import { e2eTests, playwrightTests } from "#/testing/index.ts";
 import { ultracite } from "#/ultracite.ts";
 import { vitePlus } from "#/vite-plus/index.ts";
+import { voidDeployment } from "#/void.ts";
+import { workers } from "#/workers.ts";
 
 export const registry = defineRegistry({
   addons: [knip, ultracite],
@@ -37,6 +39,8 @@ export const registry = defineRegistry({
     "hono-server": "a Hono server",
     "http-server": "an HTTP server",
     "node-runtime": "a Node.js-compatible runtime",
+    "workers-runtime": "the Cloudflare Workers runtime",
+    "cloudflare-deployment": "deployment to Cloudflare through Void",
     react: "React",
     router: "a router",
     "single-page-app": "a single-page app",
@@ -73,7 +77,9 @@ export const registry = defineRegistry({
     electron,
     node,
     bun,
+    workers,
     docker,
+    voidDeployment,
     playwrightTests,
     e2eTests,
   ],

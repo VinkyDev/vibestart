@@ -34,7 +34,9 @@ export const serverApp = (ctx: Context) => {
   if (ctx.has("hono")) {
     return {
       dir: "apps/server",
-      envImport: 'import { env } from "#src/env.ts";',
+      envImport: ctx.has("workers")
+        ? 'import { env } from "#src/node-env.ts";'
+        : 'import { env } from "#src/env.ts";',
       lazy: false,
       read: (name: string) => `env.${name}`,
       src: "apps/server/src",
@@ -43,11 +45,15 @@ export const serverApp = (ctx: Context) => {
 
   const lazy = ctx.has("next");
 
+  const envImport = ctx.has("workers")
+    ? 'import { env } from "#src/server/node-env.ts";'
+    : 'import { env } from "#src/server/env.ts";';
+
   return {
     dir: "apps/web",
     envImport: lazy
       ? 'import { readEnv } from "#src/server/env.ts";'
-      : 'import { env } from "#src/server/env.ts";',
+      : envImport,
     lazy,
     read: (name: string) => (lazy ? `readEnv().${name}` : `env.${name}`),
     src: "apps/web/src/server",
@@ -119,7 +125,16 @@ export const migrationEntry = (ctx: Context, run: readonly string[]) => {
       "",
       `const db = createDb(${read("DATABASE_URL")});`,
       // Each statement stands apart, as Ultracite's readable-spacing rule asks.
-      ...run.flatMap((statement) => ["", statement]),
+      ...(ctx.has("workers")
+        ? [
+            "",
+            "try {",
+            ...run.slice(0, -1).map((statement) => `  ${statement}`),
+            "} finally {",
+            `  ${run.at(-1)}`,
+            "}",
+          ]
+        : run.flatMap((statement) => ["", statement])),
       "",
     ].join("\n")
   );
@@ -140,10 +155,11 @@ export const packConfig = (ctx: Context, path: string, content: string) => {
 export const environmentConvention = (ctx: Context, loading: string) => {
   const { dir, lazy, src } = serverApp(ctx);
   const reads = lazy ? "`readEnv()`" : "`env`";
+  const envPath = ctx.has("workers") ? `${dir}/env.ts` : `${src}/env.ts`;
 
   return {
     text: [
-      `Declare every server variable in \`${src}/env.ts\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}.`,
+      `Declare every server variable in \`${envPath}\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}${ctx.has("workers") ? " from `void/env`" : ""}.`,
       loading,
       ...(ctx.has("sqlite")
         ? [`\`DATABASE_URL\` resolves from the \`${dir}\` directory.`]
@@ -154,6 +170,14 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 };
 
 export const hasBackend = (ctx: Context) => ctx.stack.backend !== undefined;
+
+// Void runs a Hono Worker before static assets only under `/api`; any other route would put every asset request behind the Worker.
+export const rpcPath = (ctx: Context) =>
+  ctx.has("hono") && ctx.has("workers") ? "/api/rpc" : "/rpc";
+
+/** Path prefixes a web client forwards to the server. */
+export const serverPaths = (ctx: Context) =>
+  ctx.has("orpc") && rpcPath(ctx) === "/rpc" ? ["/rpc", "/api"] : ["/api"];
 
 export const proxiesToHono = (ctx: Context) =>
   ctx.has("hono") && hasWebApp(ctx) && !ctx.has("spa");
@@ -297,7 +321,11 @@ export const closeDatabase = (ctx: Context, db = "db") => {
 
 export const selfHealthRoute = (ctx: Context) => {
   const next = ctx.has("next");
-  const check = databaseCheck(ctx, next ? "getServices().db" : "db");
+
+  const check = databaseCheck(
+    ctx,
+    next || ctx.has("workers") ? "getServices().db" : "db"
+  );
 
   const handler = [
     `${check.async ? "async " : ""}() => {`,
@@ -326,7 +354,9 @@ export const selfHealthRoute = (ctx: Context) => {
       'import { createFileRoute } from "@tanstack/react-router";',
       ...check.imports,
       "",
-      'import { db } from "#src/server/context.ts";',
+      ctx.has("workers")
+        ? 'import { getServices } from "#src/server/context.ts";'
+        : 'import { db } from "#src/server/context.ts";',
       "",
       `const health = ${handler.join("\n")}`,
       "",

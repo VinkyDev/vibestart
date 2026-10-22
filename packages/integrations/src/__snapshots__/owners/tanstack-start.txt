@@ -576,11 +576,13 @@ const client = createClient();
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/lib/api.ts · 28 stacks
+# apps/web/src/lib/api.ts · 40 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-docker
 #   tanstack-start-self-orpc-mongodb-docker-e2e
 #   tanstack-start-self-orpc-mongodb-expo-docker
@@ -589,22 +591,32 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-docker
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-docker
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import { createRouterClient } from "@orpc/server";
@@ -630,7 +642,7 @@ const client = createClient();
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/lib/api.ts · 24 stacks
+# apps/web/src/lib/api.ts · 32 stacks
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -639,6 +651,10 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -647,6 +663,10 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -681,11 +701,13 @@ const client = createClient();
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/router.tsx · 416 stacks
+# apps/web/src/router.tsx · 456 stacks
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker
 #   tanstack-start-expo-docker-e2e
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-docker
@@ -1010,10 +1032,16 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-docker
 #   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-expo-docker
@@ -1022,10 +1050,14 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-mysql-prisma-docker-e2e
 #   tanstack-start-self-mysql-prisma-expo-docker
 #   tanstack-start-self-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -1038,10 +1070,16 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -1050,14 +1088,22 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -1066,6 +1112,8 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -1074,14 +1122,22 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
 #   tanstack-start-self-postgres-prisma-better-auth-docker
 #   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-postgres-prisma-better-auth-expo-docker
@@ -1090,6 +1146,8 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-postgres-prisma-docker-e2e
 #   tanstack-start-self-postgres-prisma-expo-docker
 #   tanstack-start-self-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 #   tanstack-start-self-sqlite-better-auth-docker
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-expo-docker
@@ -1098,6 +1156,8 @@ export const api = createTanstackQueryUtils(client);
 #   tanstack-start-self-sqlite-docker-e2e
 #   tanstack-start-self-sqlite-expo-docker
 #   tanstack-start-self-sqlite-expo-docker-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
 import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 
@@ -1128,11 +1188,13 @@ declare module "@tanstack/react-router" {
   }
 }
 
-# apps/web/src/routes/__root.tsx · 224 stacks
+# apps/web/src/routes/__root.tsx · 248 stacks
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker
 #   tanstack-start-expo-docker-e2e
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-docker
@@ -1309,14 +1371,20 @@ declare module "@tanstack/react-router" {
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
 #   tanstack-start-self-mysql-prisma-docker
 #   tanstack-start-self-mysql-prisma-docker-e2e
 #   tanstack-start-self-mysql-prisma-expo-docker
 #   tanstack-start-self-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-docker
 #   tanstack-start-self-orpc-mongodb-docker-e2e
 #   tanstack-start-self-orpc-mongodb-expo-docker
@@ -1325,34 +1393,50 @@ declare module "@tanstack/react-router" {
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-docker
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-docker
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
 #   tanstack-start-self-postgres-prisma-docker
 #   tanstack-start-self-postgres-prisma-docker-e2e
 #   tanstack-start-self-postgres-prisma-expo-docker
 #   tanstack-start-self-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 #   tanstack-start-self-sqlite-docker
 #   tanstack-start-self-sqlite-docker-e2e
 #   tanstack-start-self-sqlite-expo-docker
 #   tanstack-start-self-sqlite-expo-docker-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -1417,7 +1501,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 });
 
-# apps/web/src/routes/__root.tsx · 192 stacks
+# apps/web/src/routes/__root.tsx · 208 stacks
 #   tanstack-start-hono-mongodb-better-auth-bun-docker
 #   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
 #   tanstack-start-hono-mongodb-better-auth-docker
@@ -1570,6 +1654,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-docker
 #   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-expo-docker
@@ -1582,6 +1670,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -1590,6 +1682,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -1602,6 +1698,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-prisma-better-auth-docker
 #   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-postgres-prisma-better-auth-expo-docker
@@ -1997,11 +2097,13 @@ export const Route = createFileRoute("/api/$")({
   server: { handlers: { ANY: proxyToServer } },
 });
 
-# apps/web/src/routes/api/$.ts · 52 stacks
+# apps/web/src/routes/api/$.ts · 72 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -2014,10 +2116,16 @@ export const Route = createFileRoute("/api/$")({
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -2026,14 +2134,22 @@ export const Route = createFileRoute("/api/$")({
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -2042,6 +2158,8 @@ export const Route = createFileRoute("/api/$")({
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -2050,6 +2168,8 @@ export const Route = createFileRoute("/api/$")({
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { handleOpenApi } from "#src/server/orpc.ts";
@@ -2114,6 +2234,38 @@ export const Route = createFileRoute("/api/health")({
 });
 
 # apps/web/src/routes/api/health.ts · 16 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { createFileRoute } from "@tanstack/react-router";
+import { sql } from "drizzle-orm";
+
+import { getServices } from "#src/server/context.ts";
+
+const health = async () => {
+  await getServices().db.execute(sql`select 1`);
+
+  return Response.json({ status: "ok" });
+};
+
+export const Route = createFileRoute("/api/health")({
+  server: { handlers: { GET: health } },
+});
+
+# apps/web/src/routes/api/health.ts · 16 stacks
 #   tanstack-start-self-mysql-prisma-better-auth-docker
 #   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-mysql-prisma-better-auth-expo-docker
@@ -2168,9 +2320,11 @@ export const Route = createFileRoute("/api/health")({
   server: { handlers: { GET: health } },
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 const HomePage = () => (
@@ -2197,9 +2351,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-expo-docker
 #   tanstack-start-expo-docker-e2e
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 const HomePage = () => (
@@ -5269,9 +5425,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-mysql-better-auth-docker
 #   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5304,9 +5462,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5339,9 +5499,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-docker-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5374,9 +5536,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5549,9 +5713,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5584,9 +5750,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5759,9 +5927,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-mysql-better-auth-docker
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5794,9 +5964,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5829,9 +6001,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -5864,9 +6038,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6039,9 +6215,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6074,9 +6252,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6110,9 +6290,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6145,9 +6327,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6460,9 +6644,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6495,9 +6681,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6530,9 +6718,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6565,9 +6755,11 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 2 stacks
+# apps/web/src/routes/index.tsx · 4 stacks
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
@@ -6993,11 +7185,13 @@ export const Route = createFileRoute("/rpc/$")({
   server: { handlers: { ANY: proxyToServer } },
 });
 
-# apps/web/src/routes/rpc/$.ts · 52 stacks
+# apps/web/src/routes/rpc/$.ts · 72 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -7010,10 +7204,16 @@ export const Route = createFileRoute("/rpc/$")({
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -7022,14 +7222,22 @@ export const Route = createFileRoute("/rpc/$")({
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -7038,6 +7246,8 @@ export const Route = createFileRoute("/rpc/$")({
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -7046,6 +7256,8 @@ export const Route = createFileRoute("/rpc/$")({
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
 import { handleRpc } from "#src/server/orpc.ts";
@@ -7054,7 +7266,7 @@ export const Route = createFileRoute("/rpc/$")({
   server: { handlers: { ANY: handleRpc } },
 });
 
-# apps/web/src/routes/todos.tsx · 120 stacks
+# apps/web/src/routes/todos.tsx · 128 stacks
 #   tanstack-start-hono-openapi-mongodb-bun-docker
 #   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-docker
@@ -7159,18 +7371,26 @@ export const Route = createFileRoute("/rpc/$")({
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-docker
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-docker
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
@@ -7434,6 +7654,346 @@ import { createDb } from "@my-app/db";
 import { env } from "#src/server/env.ts";
 
 export const db = createDb(env.DATABASE_URL);
+
+# apps/web/src/server/context.ts · 8 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+import { getRequest } from "@tanstack/react-start/server";
+import { env as bindings, waitUntil } from "cloudflare:workers";
+import { env } from "void/env";
+
+import { createAuth } from "@my-app/auth";
+import type { Auth } from "@my-app/auth";
+import { createDb } from "@my-app/db";
+import type { Database } from "@my-app/db";
+
+interface Services {
+  auth: Auth;
+  db: Database;
+}
+
+const requests = new WeakMap<Request, Services>();
+
+export const getServices = () => {
+  const services = requests.get(getRequest());
+
+  if (services === undefined) {
+    throw new Error("Services require the request middleware in src/start.ts");
+  }
+
+  return services;
+};
+
+export const withServices = async (
+  request: Request,
+  handle: (services: Services) => Promise<Response>
+) => {
+  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);
+  let streaming = false;
+
+  const dispose = async () => {
+    requests.delete(request);
+    await db.$client.promise().end();
+  };
+
+  try {
+    const services = {
+      auth: createAuth({
+        baseURL: env.BETTER_AUTH_URL,
+        db,
+        secret: env.BETTER_AUTH_SECRET,
+      }),
+      db,
+    };
+
+    requests.set(request, services);
+
+    const response = await handle(services);
+
+    const { body } = response;
+
+    if (body === null) {
+      return response;
+    }
+
+    const { readable, writable } = new TransformStream<Uint8Array>();
+    const forwarded = new Response(readable, response);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
+    streaming = true;
+    waitUntil(transfer());
+
+    return forwarded;
+  } finally {
+    if (!streaming) {
+      await dispose();
+    }
+  }
+};
+
+# apps/web/src/server/context.ts · 8 stacks
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+import { getRequest } from "@tanstack/react-start/server";
+import { env as bindings, waitUntil } from "cloudflare:workers";
+import { env } from "void/env";
+
+import { createDb } from "@my-app/db";
+import type { Database } from "@my-app/db";
+
+interface Services {
+  db: Database;
+}
+
+const requests = new WeakMap<Request, Services>();
+
+export const getServices = () => {
+  const services = requests.get(getRequest());
+
+  if (services === undefined) {
+    throw new Error("Services require the request middleware in src/start.ts");
+  }
+
+  return services;
+};
+
+export const withServices = async (
+  request: Request,
+  handle: (services: Services) => Promise<Response>
+) => {
+  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);
+  let streaming = false;
+
+  const dispose = async () => {
+    requests.delete(request);
+    await db.$client.promise().end();
+  };
+
+  try {
+    const services = {
+      db,
+    };
+
+    requests.set(request, services);
+
+    const response = await handle(services);
+
+    const { body } = response;
+
+    if (body === null) {
+      return response;
+    }
+
+    const { readable, writable } = new TransformStream<Uint8Array>();
+    const forwarded = new Response(readable, response);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
+    streaming = true;
+    waitUntil(transfer());
+
+    return forwarded;
+  } finally {
+    if (!streaming) {
+      await dispose();
+    }
+  }
+};
+
+# apps/web/src/server/context.ts · 8 stacks
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+import { getRequest } from "@tanstack/react-start/server";
+import { env as bindings, waitUntil } from "cloudflare:workers";
+import { env } from "void/env";
+
+import { createAuth } from "@my-app/auth";
+import type { Auth } from "@my-app/auth";
+import { createDb } from "@my-app/db";
+import type { Database } from "@my-app/db";
+
+interface Services {
+  auth: Auth;
+  db: Database;
+}
+
+const requests = new WeakMap<Request, Services>();
+
+export const getServices = () => {
+  const services = requests.get(getRequest());
+
+  if (services === undefined) {
+    throw new Error("Services require the request middleware in src/start.ts");
+  }
+
+  return services;
+};
+
+export const withServices = async (
+  request: Request,
+  handle: (services: Services) => Promise<Response>
+) => {
+  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);
+  let streaming = false;
+
+  const dispose = async () => {
+    requests.delete(request);
+    await db.$client.end();
+  };
+
+  try {
+    const services = {
+      auth: createAuth({
+        baseURL: env.BETTER_AUTH_URL,
+        db,
+        secret: env.BETTER_AUTH_SECRET,
+      }),
+      db,
+    };
+
+    requests.set(request, services);
+
+    const response = await handle(services);
+
+    const { body } = response;
+
+    if (body === null) {
+      return response;
+    }
+
+    const { readable, writable } = new TransformStream<Uint8Array>();
+    const forwarded = new Response(readable, response);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
+    streaming = true;
+    waitUntil(transfer());
+
+    return forwarded;
+  } finally {
+    if (!streaming) {
+      await dispose();
+    }
+  }
+};
+
+# apps/web/src/server/context.ts · 8 stacks
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { getRequest } from "@tanstack/react-start/server";
+import { env as bindings, waitUntil } from "cloudflare:workers";
+import { env } from "void/env";
+
+import { createDb } from "@my-app/db";
+import type { Database } from "@my-app/db";
+
+interface Services {
+  db: Database;
+}
+
+const requests = new WeakMap<Request, Services>();
+
+export const getServices = () => {
+  const services = requests.get(getRequest());
+
+  if (services === undefined) {
+    throw new Error("Services require the request middleware in src/start.ts");
+  }
+
+  return services;
+};
+
+export const withServices = async (
+  request: Request,
+  handle: (services: Services) => Promise<Response>
+) => {
+  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);
+  let streaming = false;
+
+  const dispose = async () => {
+    requests.delete(request);
+    await db.$client.end();
+  };
+
+  try {
+    const services = {
+      db,
+    };
+
+    requests.set(request, services);
+
+    const response = await handle(services);
+
+    const { body } = response;
+
+    if (body === null) {
+      return response;
+    }
+
+    const { readable, writable } = new TransformStream<Uint8Array>();
+    const forwarded = new Response(readable, response);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
+    streaming = true;
+    waitUntil(transfer());
+
+    return forwarded;
+  } finally {
+    if (!streaming) {
+      await dispose();
+    }
+  }
+};
 
 # apps/web/src/server/env.ts · 312 stacks
 #   tanstack-start-hono-bun-docker
@@ -7907,11 +8467,59 @@ export const env = createEnv({
   },
 });
 
-# apps/web/src/server/orpc.ts · 4 stacks
+# apps/web/src/server/node-env.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { createEnv } from "@t3-oss/env-core";
+import { z } from "zod";
+
+export const env = createEnv({
+  emptyStringAsUndefined: true,
+  runtimeEnv: process.env,
+  server: {
+    DATABASE_URL: z.url(),
+  },
+});
+
+# apps/web/src/server/orpc.ts · 8 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { ORPCError, onError } from "@orpc/server";
@@ -8093,6 +8701,144 @@ import { db } from "#src/server/context.ts";
 import { handleRequest } from "#src/server/request.ts";
 
 export const createContext = (): Context => ({ db });
+
+const logServerError = (cause: unknown) => {
+  if (!(cause instanceof ORPCError) || cause.status >= 500) {
+    console.error(cause);
+  }
+};
+
+const mount =
+  (
+    handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+    prefix: `/${string}`
+  ) =>
+  async ({ request }: { request: Request }) =>
+    await handleRequest(request, async () => {
+      const { response } = await handler.handle(request, {
+        prefix,
+        context: createContext(),
+      });
+
+      return response ?? new Response("Not Found", { status: 404 });
+    });
+
+export const handleRpc = mount(
+  new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
+  "/rpc"
+);
+
+export const handleOpenApi = mount(
+  new OpenAPIHandler(appRouter, {
+    interceptors: [onError(logServerError)],
+    plugins: [
+      new OpenAPIReferencePlugin({
+        schemaConverters: [new ZodToJsonSchemaConverter()],
+        specGenerateOptions: {
+          info: {
+            title: "my-app",
+            version: "0.0.0",
+          },
+        },
+      }),
+    ],
+  }),
+  "/api"
+);
+
+# apps/web/src/server/orpc.ts · 8 stacks
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { ORPCError, onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+
+import { appRouter } from "@my-app/api";
+import type { Context } from "@my-app/api";
+
+import { getServices } from "#src/server/context.ts";
+import { handleRequest } from "#src/server/request.ts";
+
+export const createContext = async (headers: Headers): Promise<Context> => {
+  const { auth, db } = getServices();
+
+  return { db, session: await auth.api.getSession({ headers }) };
+};
+
+const logServerError = (cause: unknown) => {
+  if (!(cause instanceof ORPCError) || cause.status >= 500) {
+    console.error(cause);
+  }
+};
+
+const mount =
+  (
+    handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+    prefix: `/${string}`
+  ) =>
+  async ({ request }: { request: Request }) =>
+    await handleRequest(request, async () => {
+      const { response } = await handler.handle(request, {
+        prefix,
+        context: await createContext(request.headers),
+      });
+
+      return response ?? new Response("Not Found", { status: 404 });
+    });
+
+export const handleRpc = mount(
+  new RPCHandler(appRouter, { interceptors: [onError(logServerError)] }),
+  "/rpc"
+);
+
+export const handleOpenApi = mount(
+  new OpenAPIHandler(appRouter, {
+    interceptors: [onError(logServerError)],
+    plugins: [
+      new OpenAPIReferencePlugin({
+        schemaConverters: [new ZodToJsonSchemaConverter()],
+        specGenerateOptions: {
+          info: {
+            title: "my-app",
+            version: "0.0.0",
+          },
+        },
+      }),
+    ],
+  }),
+  "/api"
+);
+
+# apps/web/src/server/orpc.ts · 8 stacks
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { ORPCError, onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+
+import { appRouter } from "@my-app/api";
+import type { Context } from "@my-app/api";
+
+import { getServices } from "#src/server/context.ts";
+import { handleRequest } from "#src/server/request.ts";
+
+export const createContext = (): Context => ({ db: getServices().db });
 
 const logServerError = (cause: unknown) => {
   if (!(cause instanceof ORPCError) || cause.status >= 500) {
@@ -8973,11 +9719,13 @@ describe("dev request cancellation", () => {
   });
 });
 
-# apps/web/src/server/request.test.ts · 52 stacks
+# apps/web/src/server/request.test.ts · 72 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -8990,10 +9738,16 @@ describe("dev request cancellation", () => {
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -9002,14 +9756,22 @@ describe("dev request cancellation", () => {
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -9018,6 +9780,8 @@ describe("dev request cancellation", () => {
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -9026,6 +9790,8 @@ describe("dev request cancellation", () => {
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 import { describe, expect, it } from "vite-plus/test";
 
 import { handleRequest } from "./request.ts";
@@ -9138,11 +9904,13 @@ describe("request cancellation", () => {
   );
 });
 
-# apps/web/src/server/request.ts · 52 stacks
+# apps/web/src/server/request.ts · 72 stacks
 #   tanstack-start-self-orpc-docker
 #   tanstack-start-self-orpc-docker-e2e
 #   tanstack-start-self-orpc-expo-docker
 #   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-docker
 #   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
@@ -9155,10 +9923,16 @@ describe("request cancellation", () => {
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
@@ -9167,14 +9941,22 @@ describe("request cancellation", () => {
 #   tanstack-start-self-orpc-mysql-prisma-docker-e2e
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker
 #   tanstack-start-self-orpc-mysql-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
@@ -9183,6 +9965,8 @@ describe("request cancellation", () => {
 #   tanstack-start-self-orpc-postgres-prisma-docker-e2e
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker
 #   tanstack-start-self-orpc-postgres-prisma-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -9191,6 +9975,8 @@ describe("request cancellation", () => {
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
 #   tanstack-start-self-orpc-sqlite-expo-docker-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
 export const handleRequest = async (
   request: Request,
   handle: () => Promise<Response>
@@ -9638,6 +10424,171 @@ export const handleRequest = async (
   "include": ["src", "tests", "*.config.ts"]
 }
 
+# apps/web/tsconfig.json · 40 stacks
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.worker.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+
+# apps/web/tsconfig.node.json · 8 stacks
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+{
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": { "types": ["node", "vite/client"] },
+  "include": ["*.config.ts", "config/**/*.ts", "tests", "src/**/*.test.ts"]
+}
+
+# apps/web/tsconfig.node.json · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+{
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": { "types": ["node", "vite/client"] },
+  "include": [
+    "*.config.ts",
+    "config/**/*.ts",
+    "tests",
+    "src/**/*.test.ts",
+    "src/server/migrate.ts",
+    "src/server/node-env.ts"
+  ]
+}
+
+# apps/web/tsconfig.worker.json · 40 stacks
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+{
+  "extends": "@my-app/config/typescript/react.json",
+  "compilerOptions": {
+    "types": ["void/env", "vite/client"],
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "env.ts", "worker-env.d.ts", ".void/*.d.ts"],
+  "exclude": [
+    "src/server/migrate.ts",
+    "src/server/node-env.ts",
+    "src/**/*.test.ts"
+  ]
+}
+
 # apps/web/vite.config.ts · 320 stacks
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
@@ -9981,6 +10932,66 @@ export default defineConfig(({ command }) => ({
       ? { ssr: { resolve: { noExternal: true } } }
       : undefined,
 }));
+
+# apps/web/vite.config.ts · 40 stacks
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite-plus";
+import { voidPlugin } from "void";
+
+// Void merges shell overrides; Wrangler must not overwrite them by reading .env again.
+process.env.CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV = "false";
+
+export default defineConfig({
+  plugins: [
+    voidPlugin(),
+    tailwindcss(),
+    tanstackStart(),
+    react({ compiler: true }),
+  ],
+  server: { port: 3000 },
+});
 
 # apps/web/vite.config.ts · 16 stacks
 #   tanstack-start-self-mongodb-better-auth-docker

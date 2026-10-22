@@ -1,3 +1,5 @@
+import { groupBy } from "es-toolkit/array";
+
 import {
   contribute,
   defineAddon,
@@ -9,11 +11,27 @@ import {
 import { readySteps, toolConventions } from "#/vite-plus/slots.ts";
 
 /** `ignoreDependencies` lists packages a Knip plugin wrongly expects the workspace to install. */
-export const knipEntries = defineSlot<{
+interface KnipEntry {
   readonly workspace: string;
   readonly entry?: readonly string[];
   readonly ignoreDependencies?: readonly string[];
-}>("knip/entries");
+}
+
+export const knipEntries = defineSlot<KnipEntry>("knip/entries");
+
+const workspaceConfig = (entries: readonly KnipEntry[]) => {
+  const entry = [...new Set(entries.flatMap((item) => item.entry ?? []))];
+
+  const ignoreDependencies = [
+    ...new Set(entries.flatMap((item) => item.ignoreDependencies ?? [])),
+  ];
+
+  return {
+    entry: entry.length === 0 ? undefined : entry,
+    ignoreDependencies:
+      ignoreDependencies.length === 0 ? undefined : ignoreDependencies,
+  };
+};
 
 export const knip = defineAddon({
   supportsAdd: true,
@@ -28,12 +46,12 @@ export const knip = defineAddon({
                 {
                   $schema: "https://unpkg.com/knip@6/schema.json",
                   workspaces: Object.fromEntries(
-                    read(knipEntries).map(
-                      ({ workspace, entry, ignoreDependencies }) => [
-                        workspace,
-                        { entry, ignoreDependencies },
-                      ]
-                    )
+                    Object.entries(
+                      groupBy(read(knipEntries), (entry) => entry.workspace)
+                    ).map(([workspace, entries]) => [
+                      workspace,
+                      workspaceConfig(entries),
+                    ])
                   ),
                 },
                 null,

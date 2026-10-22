@@ -1,0 +1,1409 @@
+# apps/server/env.ts · 24 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+import { defineEnv } from "void/env";
+
+export default defineEnv({});
+
+# apps/server/env.ts · 24 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+import { defineEnv } from "void/env";
+import { z } from "zod";
+
+export default defineEnv({
+  DATABASE_URL: z.url().optional(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+  NODE_ENV: z.enum(["development", "production", "test"]).optional(),
+});
+
+# apps/server/env.ts · 24 stacks
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+import { defineEnv } from "void/env";
+import { z } from "zod";
+
+export default defineEnv({
+  DATABASE_URL: z.url().optional(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+});
+
+# apps/server/env.ts · 48 stacks
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+import { defineEnv } from "void/env";
+import { z } from "zod";
+
+export default defineEnv({
+  DATABASE_URL: z.url().optional(),
+});
+
+# apps/server/routes/_forward.ts · 24 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+import { defineHandler } from "void";
+
+import { createApp } from "#src/app.ts";
+
+export const forward = defineHandler(
+  async (c) => await createApp().fetch(c.req.raw)
+);
+
+# apps/server/routes/_forward.ts · 96 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+import { defineHandler } from "void";
+
+import { createApp } from "#src/app.ts";
+import { withServices } from "#src/context.ts";
+
+export const forward = defineHandler(
+  async (c) =>
+    await withServices(
+      async (services) => await createApp(services).fetch(c.req.raw)
+    )
+);
+
+# apps/server/routes/api/[...path].ts · 120 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+export {
+  forward as DELETE,
+  forward as GET,
+  forward as OPTIONS,
+  forward as PATCH,
+  forward as POST,
+  forward as PUT,
+} from "../_forward.ts";
+
+# apps/server/routes/api/index.ts · 120 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+export {
+  forward as DELETE,
+  forward as GET,
+  forward as OPTIONS,
+  forward as PATCH,
+  forward as POST,
+  forward as PUT,
+} from "../_forward.ts";
+
+# apps/server/void.config.ts · 24 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  inference: { appType: "void" },
+  routing: { notFound: "single-page-application" },
+  cloudflare: {
+    name: "my-app",
+    compatibility_date: "2026-10-01",
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
+  },
+});
+
+# apps/server/void.config.ts · 48 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  database: "mysql",
+  inference: { appType: "void", bindings: { db: true } },
+  routing: { notFound: "single-page-application" },
+  cloudflare: {
+    name: "my-app",
+    // Local tooling infers its binding; deploy.ts requires an existing cache-disabled production ID.
+    hyperdrive:
+      process.env.HYPERDRIVE_ID === undefined
+        ? undefined
+        : [{ binding: "HYPERDRIVE", id: process.env.HYPERDRIVE_ID }],
+    compatibility_date: "2026-10-01",
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
+  },
+});
+
+# apps/server/void.config.ts · 48 stacks
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  database: "pg",
+  inference: { appType: "void", bindings: { db: true } },
+  routing: { notFound: "single-page-application" },
+  cloudflare: {
+    name: "my-app",
+    // Local tooling infers its binding; deploy.ts requires an existing cache-disabled production ID.
+    hyperdrive:
+      process.env.HYPERDRIVE_ID === undefined
+        ? undefined
+        : [{ binding: "HYPERDRIVE", id: process.env.HYPERDRIVE_ID }],
+    compatibility_date: "2026-10-01",
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
+  },
+});
+
+# apps/server/worker-env.d.ts · 96 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
+  }
+}
+
+# apps/web/env.ts · 16 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+import { defineEnv } from "void/env";
+import { z } from "zod";
+
+export default defineEnv({
+  DATABASE_URL: z.url().optional(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+});
+
+# apps/web/env.ts · 16 stacks
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { defineEnv } from "void/env";
+import { z } from "zod";
+
+export default defineEnv({
+  DATABASE_URL: z.url().optional(),
+});
+
+# apps/web/env.ts · 4 stacks
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+import { defineEnv } from "void/env";
+
+export default defineEnv({});
+
+# apps/web/src/start.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import {
+  createCsrfMiddleware,
+  createMiddleware,
+  createStart,
+} from "@tanstack/react-start";
+
+import { withServices } from "#src/server/context.ts";
+
+const services = createMiddleware().server(
+  async ({ next, request }) =>
+    await withServices(request, async () => {
+      const result = await next();
+
+      return result.response;
+    })
+);
+
+const csrf = createCsrfMiddleware({
+  filter: (ctx) => ctx.handlerType === "serverFn",
+});
+
+export const startInstance = createStart(() => ({
+  requestMiddleware: [csrf, services],
+}));
+
+# apps/web/void.config.ts · 8 stacks
+#   spa-electron-expo-void
+#   spa-electron-expo-void-e2e
+#   spa-electron-void
+#   spa-electron-void-e2e
+#   spa-expo-void
+#   spa-expo-void-e2e
+#   spa-void
+#   spa-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  inference: { appType: "spa" },
+  cloudflare: {
+    name: "my-app",
+    compatibility_date: "2026-10-01",
+  },
+});
+
+# apps/web/void.config.ts · 8 stacks
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  cloudflare: {
+    name: "my-app",
+    compatibility_date: "2026-10-01",
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
+  },
+});
+
+# apps/web/void.config.ts · 16 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  database: "mysql",
+  inference: { bindings: { db: true } },
+  cloudflare: {
+    name: "my-app",
+    // Local tooling infers its binding; deploy.ts requires an existing cache-disabled production ID.
+    hyperdrive:
+      process.env.HYPERDRIVE_ID === undefined
+        ? undefined
+        : [{ binding: "HYPERDRIVE", id: process.env.HYPERDRIVE_ID }],
+    compatibility_date: "2026-10-01",
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
+  },
+});
+
+# apps/web/void.config.ts · 16 stacks
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { defineConfig } from "void/config";
+
+export default defineConfig({
+  database: "pg",
+  inference: { bindings: { db: true } },
+  cloudflare: {
+    name: "my-app",
+    // Local tooling infers its binding; deploy.ts requires an existing cache-disabled production ID.
+    hyperdrive:
+      process.env.HYPERDRIVE_ID === undefined
+        ? undefined
+        : [{ binding: "HYPERDRIVE", id: process.env.HYPERDRIVE_ID }],
+    compatibility_date: "2026-10-01",
+    // Without enable_request_signal, `request.signal` never aborts when the client disconnects.
+    compatibility_flags: ["nodejs_compat", "enable_request_signal"],
+  },
+});
+
+# apps/web/worker-env.d.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
+  }
+}
+
+# scripts/deploy.ts · 16 stacks
+#   spa-electron-expo-void
+#   spa-electron-expo-void-e2e
+#   spa-electron-void
+#   spa-electron-void-e2e
+#   spa-expo-void
+#   spa-expo-void-e2e
+#   spa-void
+#   spa-void-e2e
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+import { spawnSync } from "node:child_process";
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+run([
+  "exec",
+  "--filter",
+  "@my-app/web",
+  "void",
+  "deploy",
+  "--platform",
+  "cloudflare",
+]);
+
+# scripts/deploy.ts · 24 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+import { spawnSync } from "node:child_process";
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+run(["run", "--filter", "@my-app/web", "build"]);
+
+run([
+  "exec",
+  "--filter",
+  "@my-app/server",
+  "void",
+  "deploy",
+  "--platform",
+  "cloudflare",
+]);
+
+# scripts/deploy.ts · 96 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+import { spawnSync } from "node:child_process";
+
+if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
+  throw new Error(
+    "Set DATABASE_URL in the deployment shell to the production database URL"
+  );
+}
+
+if (!/^[a-f0-9]{32}$/iu.test(process.env.HYPERDRIVE_ID ?? "")) {
+  throw new Error(
+    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see README.md before deploying"
+  );
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+run(["run", "db:migrate"]);
+
+run(["run", "--filter", "@my-app/web", "build"]);
+
+run([
+  "exec",
+  "--filter",
+  "@my-app/server",
+  "void",
+  "deploy",
+  "--platform",
+  "cloudflare",
+]);
+
+# scripts/deploy.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { spawnSync } from "node:child_process";
+
+if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
+  throw new Error(
+    "Set DATABASE_URL in the deployment shell to the production database URL"
+  );
+}
+
+if (!/^[a-f0-9]{32}$/iu.test(process.env.HYPERDRIVE_ID ?? "")) {
+  throw new Error(
+    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see README.md before deploying"
+  );
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+run(["run", "db:migrate"]);
+
+run([
+  "exec",
+  "--filter",
+  "@my-app/web",
+  "void",
+  "deploy",
+  "--platform",
+  "cloudflare",
+]);

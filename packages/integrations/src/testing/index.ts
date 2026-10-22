@@ -12,13 +12,14 @@ import {
   exampleVariant,
   hasBackend,
   hasWebApp,
+  rpcPath,
   serverApp,
   chosenDatabase,
   todosExample,
   ormId,
 } from "#/app.ts";
 import { joinWords, markdownTable } from "#/format.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
 import {
   agentsSections,
@@ -206,6 +207,29 @@ const renderTestsSection = (ctx: Context, runner: BrowserRunner) =>
     ...practice(ctx, runner),
   ].join("\n\n");
 
+const authApiPath = "apps/web/tests/support/api.ts";
+
+const authSupport = (ctx: Context) => {
+  const set = `testing/support/auth-${apiStyle(ctx)}`;
+
+  if (!ctx.has("orpc")) {
+    return templateFiles(ctx, set);
+  }
+
+  return [
+    ...templateFiles(ctx, set, { except: [authApiPath] }),
+    file(
+      authApiPath,
+      replaceOnce(
+        templateContent(ctx, set, authApiPath),
+        "/rpc`",
+        `${rpcPath(ctx)}\``,
+        `${set}/${authApiPath}`
+      )
+    ),
+  ];
+};
+
 const support = (ctx: Context) => {
   const variant = e2eVariant(ctx);
 
@@ -214,9 +238,7 @@ const support = (ctx: Context) => {
     ...(variant === "account"
       ? templateFiles(ctx, "testing/support/account")
       : []),
-    ...(variant === "auth"
-      ? templateFiles(ctx, `testing/support/auth-${apiStyle(ctx)}`)
-      : []),
+    ...(variant === "auth" ? authSupport(ctx) : []),
     ...(hasBackend(ctx) ? templateFiles(ctx, "testing/support/http") : []),
   ];
 };

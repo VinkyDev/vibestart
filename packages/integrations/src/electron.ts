@@ -7,7 +7,7 @@ import {
   pnpmWorkspace,
 } from "@vibestart/core";
 
-import { hasBackend } from "#/app.ts";
+import { hasBackend, serverPaths } from "#/app.ts";
 import { knipEntries } from "#/knip.ts";
 import { templateFiles } from "#/templates.ts";
 import {
@@ -22,13 +22,7 @@ import {
 
 const defaultApiOrigin = "http://localhost:3000";
 
-const apiPaths = (ctx: Context) => {
-  if (!hasBackend(ctx)) {
-    return [];
-  }
-
-  return ctx.has("orpc") ? ["/rpc", "/api"] : ["/api"];
-};
+const apiPaths = (ctx: Context) => (hasBackend(ctx) ? serverPaths(ctx) : []);
 
 const config = (ctx: Context) =>
   file(

@@ -56,7 +56,7 @@ const usage = `Usage: vp run stacks <command> [pattern] [--out <dir>] [--force] 
   verify [pattern]   generate, install, set up, and run \`vp run ready\` in each matching task of this
                      platform, skipping tasks verified at their current output (--force reruns them).
                      On Linux and Windows each pass is written to <out>/results; CI records them
-  smoke [pattern]    install Hono stacks, check, unit-test, build, and exercise modules/handlers without listening; no record
+  smoke [pattern]    install Node/Bun Hono stacks, check, unit-test, build, and exercise modules/handlers without listening; no record
   goldens            regenerate golden/* from generator output
   plan               print, as JSON, the CI jobs whose passes would cover every task verification.json
                      does not: the fewest stacks that add a pass to each uncovered facet
@@ -276,7 +276,9 @@ const runStackCommand = async (
   }
 
   const selected = await selectStacks(
-    verifiedStacks.filter((stack) => stack.backend === "hono"),
+    verifiedStacks.filter(
+      (stack) => stack.backend === "hono" && stack.runtime !== "workers"
+    ),
     managers,
     matches
   );

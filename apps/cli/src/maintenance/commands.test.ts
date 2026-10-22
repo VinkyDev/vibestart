@@ -7,6 +7,7 @@ import { afterAll, describe, expect, it, vi } from "vite-plus/test";
 import { z } from "zod";
 
 import { resolve, withDefaults } from "@vibestart/core";
+import type { Choices } from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
 import { maintenanceCommand } from "#/maintenance/commands.ts";
@@ -29,25 +30,24 @@ const commit = async (cwd: string) => {
   await git(cwd, "commit", "--quiet", "--allow-empty", "-m", "edit");
 };
 
+const business = (runtime: "node" | "bun"): Choices => ({
+  framework: "spa",
+  backend: "hono",
+  api: "orpc",
+  database: "sqlite",
+  auth: null,
+  runtime,
+});
+
 const fixture = async (
   packageManager: "pnpm" | "bun",
-  runtime: "node" | "bun",
+  choices: Choices,
   { repository = true } = {}
 ) => {
   const cwd = mkdtempSync(path.join(tmpdir(), "vibestart-commands-"));
   roots.push(cwd);
 
-  const [stack] = resolve(
-    registry,
-    withDefaults(registry, {
-      framework: "spa",
-      backend: "hono",
-      api: "orpc",
-      database: "sqlite",
-      auth: null,
-      runtime,
-    })
-  ).stacks;
+  const [stack] = resolve(registry, withDefaults(registry, choices)).stacks;
 
   if (stack === undefined) {
     throw new Error("Expected legal stack");
@@ -127,7 +127,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("records the release and name that generated the project in vibestart.jsonc", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     await expect(loadRecipe(cwd)).resolves.toMatchObject({
       name: "business",
       version: runningVersion,
@@ -135,7 +135,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("shows doctor findings and distinguishes an offline lookup", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     const result = await capture("doctor", "--cwd", cwd, "--offline");
     expect(result.exitCode).toBe(1);
     expect(result.output).toContain(`Project template: ${runningVersion}`);
@@ -145,7 +145,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("names what a project without a recorded release is missing", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     writeText(
       cwd,
       "vibestart.jsonc",
@@ -157,7 +157,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("asks for an upgrade before adding to a project from another release, and offline doctor leaves it uncompared", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     writeText(
       cwd,
       "vibestart.jsonc",
@@ -175,7 +175,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("names the installation and checks that deferred installation leaves", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
 
     const result = await capture(
       "add",
@@ -194,7 +194,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("previews a conflict without writing anything", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     writeText(cwd, "Dockerfile", "FROM custom-business-image\n");
     const preview = await capture("add", "docker", "--cwd", cwd, "--dry-run");
     expect(preview.exitCode).toBe(1);
@@ -204,7 +204,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("writes both sides of a conflict into the file and skips installation", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     writeText(cwd, "Dockerfile", "FROM custom-business-image\n");
     await commit(cwd);
     const applied = await capture("add", "docker", "--cwd", cwd, "--yes");
@@ -226,7 +226,7 @@ describe("project maintenance CLI", () => {
   ] as const)(
     "adds capabilities with %s and %s without changing business code",
     async (manager, runtime) => {
-      const { cwd } = await fixture(manager, runtime);
+      const { cwd } = await fixture(manager, business(runtime));
       writeText(
         cwd,
         "apps/server/src/app.ts",
@@ -264,8 +264,55 @@ describe("project maintenance CLI", () => {
     }
   );
 
+  it("adds Void to a SPA without a server, whose runtime Void then chooses", async () => {
+    const { cwd } = await fixture("pnpm", { framework: "spa", backend: null });
+
+    const result = await run(
+      "add",
+      "void",
+      "--cwd",
+      cwd,
+      "--yes",
+      "--no-install"
+    );
+
+    expect(result.output).toMatchObject({ ok: true, status: "needs-install" });
+    expect(projectOf(await loadRecipe(cwd)).blueprint.stack).toMatchObject({
+      deployment: "void",
+      runtime: "workers",
+    });
+    expect(readText(cwd, "apps/web/void.config.ts")).toContain(
+      'appType: "spa"'
+    );
+    expect(readText(cwd, "scripts/deploy.ts")).toContain("void");
+  });
+
+  it("refuses adding Void where it would replace the server's runtime", async () => {
+    const { cwd } = await fixture("pnpm", {
+      ...business("node"),
+      database: "postgres",
+    });
+
+    const before = readText(cwd, "vibestart.jsonc");
+
+    const result = await run(
+      "add",
+      "void",
+      "--cwd",
+      cwd,
+      "--yes",
+      "--no-install"
+    );
+
+    expect(result).toMatchObject({ exitCode: 1, output: { ok: false } });
+    expect(result.output.error).toBe(
+      "Adding void would replace node with workers; this needs an explicit migration."
+    );
+    expect(readText(cwd, "vibestart.jsonc")).toBe(before);
+  });
+
   it("previews without modifying project files", async () => {
-    const { cwd } = await fixture("bun", "bun");
+    const { cwd } = await fixture("bun", business("bun"));
     const before = readText(cwd, "vibestart.jsonc");
     const result = await run("add", "knip", "--cwd", cwd, "--dry-run");
     expect(result.output).toMatchObject({ ok: true, status: "planned" });
@@ -276,7 +323,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("writes only from a clean Git worktree", async () => {
-    const dirty = await fixture("pnpm", "node");
+    const dirty = await fixture("pnpm", business("node"));
     writeText(dirty.cwd, "apps/server/src/app.ts", "uncommitted");
 
     const refused = await run(
@@ -290,7 +337,10 @@ describe("project maintenance CLI", () => {
 
     expect(refused.exitCode).toBe(1);
     expect(refused.output.error).toContain("Commit or stash");
-    const untracked = await fixture("pnpm", "node", { repository: false });
+
+    const untracked = await fixture("pnpm", business("node"), {
+      repository: false,
+    });
 
     const outside = await run(
       "add",
@@ -317,7 +367,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("refuses applying changes without non-interactive consent", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     const before = readText(cwd, "package.json");
     const result = await run("add", "knip", "--cwd", cwd);
     expect(result.exitCode).toBe(2);
@@ -325,7 +375,7 @@ describe("project maintenance CLI", () => {
   });
 
   it("has a clean no-op when the project matches its release, whatever comments its record carries", async () => {
-    const { cwd } = await fixture("pnpm", "node");
+    const { cwd } = await fixture("pnpm", business("node"));
     writeText(
       cwd,
       "vibestart.jsonc",

@@ -682,6 +682,130 @@ migrateDatabase(db);
 
 db.$client.close();
 
+# apps/server/src/migrate.ts · 48 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/node-env.ts";
+
+const db = createDb(env.DATABASE_URL);
+
+try {
+  await migrateDatabase(db);
+} finally {
+  await db.$client.promise().end();
+}
+
+# apps/server/src/migrate.ts · 48 stacks
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/node-env.ts";
+
+const db = createDb(env.DATABASE_URL);
+
+try {
+  await migrateDatabase(db);
+} finally {
+  await db.$client.end();
+}
+
 # apps/web/src/server/migrate.ts · 16 stacks
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
@@ -795,6 +919,36 @@ await migrateDatabase(db);
 await db.$client.promise().end();
 
 # apps/web/src/server/migrate.ts · 16 stacks
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/server/node-env.ts";
+
+const db = createDb(env.DATABASE_URL);
+
+try {
+  await migrateDatabase(db);
+} finally {
+  await db.$client.promise().end();
+}
+
+# apps/web/src/server/migrate.ts · 16 stacks
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
@@ -821,6 +975,36 @@ const db = createDb(env.DATABASE_URL);
 await migrateDatabase(db);
 
 await db.$client.end();
+
+# apps/web/src/server/migrate.ts · 16 stacks
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { createDb } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+import { env } from "#src/server/node-env.ts";
+
+const db = createDb(env.DATABASE_URL);
+
+try {
+  await migrateDatabase(db);
+} finally {
+  await db.$client.end();
+}
 
 # apps/web/src/server/migrate.ts · 16 stacks
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
@@ -850,7 +1034,7 @@ migrateDatabase(db);
 
 db.$client.close();
 
-# packages/db/drizzle.config.ts · 216 stacks
+# packages/db/drizzle.config.ts · 264 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -935,10 +1119,18 @@ db.$client.close();
 #   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-electron-expo-docker
 #   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
 #   spa-hono-mysql-better-auth-expo-bun-docker
 #   spa-hono-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-expo-docker
 #   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
 #   spa-hono-mysql-bun-docker
 #   spa-hono-mysql-bun-docker-e2e
 #   spa-hono-mysql-docker
@@ -951,10 +1143,18 @@ db.$client.close();
 #   spa-hono-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-electron-expo-docker
 #   spa-hono-mysql-electron-expo-docker-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
 #   spa-hono-mysql-expo-bun-docker
 #   spa-hono-mysql-expo-bun-docker-e2e
 #   spa-hono-mysql-expo-docker
 #   spa-hono-mysql-expo-docker-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -967,10 +1167,18 @@ db.$client.close();
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -983,10 +1191,18 @@ db.$client.close();
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-orpc-mysql-better-auth-bun-docker
 #   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-docker
@@ -999,10 +1215,18 @@ db.$client.close();
 #   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   spa-hono-orpc-mysql-bun-docker
 #   spa-hono-orpc-mysql-bun-docker-e2e
 #   spa-hono-orpc-mysql-docker
@@ -1015,10 +1239,18 @@ db.$client.close();
 #   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-electron-expo-docker
 #   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
 #   spa-hono-orpc-mysql-expo-bun-docker
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
 #   tanstack-start-hono-mysql-better-auth-bun-docker
 #   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-mysql-better-auth-docker
@@ -1084,7 +1316,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 216 stacks
+# packages/db/drizzle.config.ts · 264 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -1169,10 +1401,18 @@ export default defineConfig({
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -1185,10 +1425,18 @@ export default defineConfig({
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -1201,10 +1449,18 @@ export default defineConfig({
 #   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -1217,10 +1473,18 @@ export default defineConfig({
 #   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-electron-expo-docker
 #   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-expo-bun-docker
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -1233,10 +1497,18 @@ export default defineConfig({
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
 #   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-expo-bun-docker
 #   spa-hono-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-bun-docker-e2e
 #   spa-hono-postgres-docker
@@ -1249,10 +1521,18 @@ export default defineConfig({
 #   spa-hono-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-electron-expo-docker
 #   spa-hono-postgres-electron-expo-docker-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-expo-bun-docker
 #   spa-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-postgres-expo-docker
 #   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -1556,7 +1836,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 32 stacks
+# packages/db/drizzle.config.ts · 48 stacks
 #   next-self-mysql-better-auth-docker
 #   next-self-mysql-better-auth-docker-e2e
 #   next-self-mysql-better-auth-expo-docker
@@ -1577,18 +1857,34 @@ export default defineConfig({
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-docker
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 import { existsSync } from "node:fs";
 
 import { defineConfig } from "drizzle-kit";
@@ -1606,7 +1902,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 32 stacks
+# packages/db/drizzle.config.ts · 48 stacks
 #   next-self-orpc-postgres-better-auth-docker
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
@@ -1627,18 +1923,34 @@ export default defineConfig({
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 import { existsSync } from "node:fs";
 
 import { defineConfig } from "drizzle-kit";
@@ -2494,7 +2806,169 @@ export const createDb = (path: string) => {
 
 export type Database = ReturnType<typeof createDb>;
 
-# packages/db/src/migrate.ts · 248 stacks
+# packages/db/src/index.ts · 64 stacks
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
+import { drizzle } from "drizzle-orm/mysql2";
+import { createPool } from "mysql2";
+
+import { relations } from "#src/relations.ts";
+
+// drizzle-orm sets options on `client.config` and wraps the pool with `promise()`, which a `mysql2/promise` pool
+// lacks. Close it with `db.$client.promise().end()`.
+export const createDb = (url: string) =>
+  drizzle({
+    client: createPool({ uri: url, disableEval: true, connectionLimit: 1 }),
+    relations,
+  });
+
+export type Database = ReturnType<typeof createDb>;
+
+# packages/db/src/index.ts · 64 stacks
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
+import { drizzle } from "drizzle-orm/postgres-js";
+
+import { relations } from "#src/relations.ts";
+
+export const createDb = (url: string) =>
+  drizzle({
+    connection: {
+      connection: { client_min_messages: "warning" },
+      fetch_types: false,
+      max: 5,
+      url,
+    },
+    relations,
+  });
+
+export type Database = ReturnType<typeof createDb>;
+
+# packages/db/src/migrate.ts · 312 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -2595,10 +3069,18 @@ export type Database = ReturnType<typeof createDb>;
 #   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-electron-expo-docker
 #   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
 #   spa-hono-mysql-better-auth-expo-bun-docker
 #   spa-hono-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-expo-docker
 #   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
 #   spa-hono-mysql-bun-docker
 #   spa-hono-mysql-bun-docker-e2e
 #   spa-hono-mysql-docker
@@ -2611,10 +3093,18 @@ export type Database = ReturnType<typeof createDb>;
 #   spa-hono-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-electron-expo-docker
 #   spa-hono-mysql-electron-expo-docker-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
 #   spa-hono-mysql-expo-bun-docker
 #   spa-hono-mysql-expo-bun-docker-e2e
 #   spa-hono-mysql-expo-docker
 #   spa-hono-mysql-expo-docker-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -2627,10 +3117,18 @@ export type Database = ReturnType<typeof createDb>;
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -2643,10 +3141,18 @@ export type Database = ReturnType<typeof createDb>;
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-orpc-mysql-better-auth-bun-docker
 #   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-docker
@@ -2659,10 +3165,18 @@ export type Database = ReturnType<typeof createDb>;
 #   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   spa-hono-orpc-mysql-bun-docker
 #   spa-hono-orpc-mysql-bun-docker-e2e
 #   spa-hono-orpc-mysql-docker
@@ -2675,10 +3189,18 @@ export type Database = ReturnType<typeof createDb>;
 #   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-electron-expo-docker
 #   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
 #   spa-hono-orpc-mysql-expo-bun-docker
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
 #   tanstack-start-hono-mysql-better-auth-bun-docker
 #   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-mysql-better-auth-docker
@@ -2731,18 +3253,34 @@ export type Database = ReturnType<typeof createDb>;
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-docker
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 import { fileURLToPath } from "node:url";
 
 import { migrate } from "drizzle-orm/mysql2/migrator";
@@ -2755,7 +3293,7 @@ export const migrateDatabase = async (db: Database) => {
   await migrate(db, { migrationsFolder });
 };
 
-# packages/db/src/migrate.ts · 248 stacks
+# packages/db/src/migrate.ts · 312 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -2856,10 +3394,18 @@ export const migrateDatabase = async (db: Database) => {
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -2872,10 +3418,18 @@ export const migrateDatabase = async (db: Database) => {
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -2888,10 +3442,18 @@ export const migrateDatabase = async (db: Database) => {
 #   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -2904,10 +3466,18 @@ export const migrateDatabase = async (db: Database) => {
 #   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-electron-expo-docker
 #   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-expo-bun-docker
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -2920,10 +3490,18 @@ export const migrateDatabase = async (db: Database) => {
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
 #   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-expo-bun-docker
 #   spa-hono-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-bun-docker-e2e
 #   spa-hono-postgres-docker
@@ -2936,10 +3514,18 @@ export const migrateDatabase = async (db: Database) => {
 #   spa-hono-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-electron-expo-docker
 #   spa-hono-postgres-electron-expo-docker-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-expo-bun-docker
 #   spa-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-postgres-expo-docker
 #   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -2992,18 +3578,34 @@ export const migrateDatabase = async (db: Database) => {
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 import { fileURLToPath } from "node:url";
 
 import { migrate } from "drizzle-orm/postgres-js/migrator";
@@ -3277,7 +3879,7 @@ export const migrateDatabase = (db: Database) => {
   migrate(db, { migrationsFolder });
 };
 
-# packages/db/src/migrations/.gitkeep · 132 stacks
+# packages/db/src/migrations/.gitkeep · 156 stacks
 #   hono-mysql-bun-docker
 #   hono-mysql-docker
 #   hono-mysql-expo-bun-docker
@@ -3338,10 +3940,18 @@ export const migrateDatabase = (db: Database) => {
 #   spa-hono-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-electron-expo-docker
 #   spa-hono-mysql-electron-expo-docker-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
 #   spa-hono-mysql-expo-bun-docker
 #   spa-hono-mysql-expo-bun-docker-e2e
 #   spa-hono-mysql-expo-docker
 #   spa-hono-mysql-expo-docker-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-bun-docker-e2e
 #   spa-hono-postgres-docker
@@ -3354,10 +3964,18 @@ export const migrateDatabase = (db: Database) => {
 #   spa-hono-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-electron-expo-docker
 #   spa-hono-postgres-electron-expo-docker-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-expo-bun-docker
 #   spa-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-postgres-expo-docker
 #   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-bun-docker-e2e
 #   spa-hono-sqlite-docker
@@ -3402,16 +4020,24 @@ export const migrateDatabase = (db: Database) => {
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 #   tanstack-start-self-sqlite-docker
 #   tanstack-start-self-sqlite-docker-e2e
 #   tanstack-start-self-sqlite-expo-docker
 #   tanstack-start-self-sqlite-expo-docker-e2e
 
-# packages/db/src/relations.ts · 132 stacks
+# packages/db/src/relations.ts · 156 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -3472,10 +4098,18 @@ export const migrateDatabase = (db: Database) => {
 #   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-electron-expo-docker
 #   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
 #   spa-hono-mysql-better-auth-expo-bun-docker
 #   spa-hono-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-expo-docker
 #   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -3488,10 +4122,18 @@ export const migrateDatabase = (db: Database) => {
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
 #   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-expo-bun-docker
 #   spa-hono-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-docker
@@ -3536,10 +4178,18 @@ export const migrateDatabase = (db: Database) => {
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-sqlite-better-auth-docker
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-expo-docker
@@ -3564,7 +4214,7 @@ export const relations = defineRelations(
   })
 );
 
-# packages/db/src/relations.ts · 132 stacks
+# packages/db/src/relations.ts · 156 stacks
 #   hono-mysql-bun-docker
 #   hono-mysql-docker
 #   hono-mysql-expo-bun-docker
@@ -3625,10 +4275,18 @@ export const relations = defineRelations(
 #   spa-hono-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-electron-expo-docker
 #   spa-hono-mysql-electron-expo-docker-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
 #   spa-hono-mysql-expo-bun-docker
 #   spa-hono-mysql-expo-bun-docker-e2e
 #   spa-hono-mysql-expo-docker
 #   spa-hono-mysql-expo-docker-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-bun-docker-e2e
 #   spa-hono-postgres-docker
@@ -3641,10 +4299,18 @@ export const relations = defineRelations(
 #   spa-hono-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-electron-expo-docker
 #   spa-hono-postgres-electron-expo-docker-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-expo-bun-docker
 #   spa-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-postgres-expo-docker
 #   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
 #   spa-hono-sqlite-bun-docker
 #   spa-hono-sqlite-bun-docker-e2e
 #   spa-hono-sqlite-docker
@@ -3689,10 +4355,18 @@ export const relations = defineRelations(
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 #   tanstack-start-self-sqlite-docker
 #   tanstack-start-self-sqlite-docker-e2e
 #   tanstack-start-self-sqlite-expo-docker
@@ -3701,7 +4375,7 @@ import { defineRelations } from "drizzle-orm";
 
 export const relations = defineRelations({});
 
-# packages/db/src/relations.ts · 240 stacks
+# packages/db/src/relations.ts · 280 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -3798,10 +4472,18 @@ export const relations = defineRelations({});
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -3814,10 +4496,18 @@ export const relations = defineRelations({});
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -3846,10 +4536,18 @@ export const relations = defineRelations({});
 #   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -3862,10 +4560,18 @@ export const relations = defineRelations({});
 #   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -3934,10 +4640,18 @@ export const relations = defineRelations({});
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -3967,7 +4681,7 @@ export const relations = defineRelations(
   })
 );
 
-# packages/db/src/relations.ts · 240 stacks
+# packages/db/src/relations.ts · 280 stacks
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -4064,10 +4778,18 @@ export const relations = defineRelations(
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -4080,10 +4802,18 @@ export const relations = defineRelations(
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -4112,10 +4842,18 @@ export const relations = defineRelations(
 #   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-electron-expo-docker
 #   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
 #   spa-hono-orpc-mysql-expo-bun-docker
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -4128,10 +4866,18 @@ export const relations = defineRelations(
 #   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-electron-expo-docker
 #   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-expo-bun-docker
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
 #   spa-hono-orpc-sqlite-bun-docker
 #   spa-hono-orpc-sqlite-bun-docker-e2e
 #   spa-hono-orpc-sqlite-docker
@@ -4200,10 +4946,18 @@ export const relations = defineRelations(
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-docker
 #   tanstack-start-self-orpc-sqlite-docker-e2e
 #   tanstack-start-self-orpc-sqlite-expo-docker
@@ -4214,7 +4968,7 @@ import { todos } from "#src/schema/todos.ts";
 
 export const relations = defineRelations({ todos });
 
-# packages/db/src/schema/auth.ts · 124 stacks
+# packages/db/src/schema/auth.ts · 156 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -4271,10 +5025,18 @@ export const relations = defineRelations({ todos });
 #   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-electron-expo-docker
 #   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
 #   spa-hono-mysql-better-auth-expo-bun-docker
 #   spa-hono-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-expo-docker
 #   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -4287,10 +5049,18 @@ export const relations = defineRelations({ todos });
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-orpc-mysql-better-auth-bun-docker
 #   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-docker
@@ -4303,10 +5073,18 @@ export const relations = defineRelations({ todos });
 #   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-hono-mysql-better-auth-bun-docker
 #   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-mysql-better-auth-docker
@@ -4335,10 +5113,18 @@ export const relations = defineRelations({ todos });
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-docker
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 import {
   boolean,
   index,
@@ -4417,7 +5203,7 @@ export const verification = snakeCase.table(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-# packages/db/src/schema/auth.ts · 124 stacks
+# packages/db/src/schema/auth.ts · 156 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -4474,10 +5260,18 @@ export const verification = snakeCase.table(
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -4490,10 +5284,18 @@ export const verification = snakeCase.table(
 #   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
 #   spa-hono-postgres-better-auth-bun-docker
 #   spa-hono-postgres-better-auth-bun-docker-e2e
 #   spa-hono-postgres-better-auth-docker
@@ -4506,10 +5308,18 @@ export const verification = snakeCase.table(
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
 #   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-expo-bun-docker
 #   spa-hono-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -4538,10 +5348,18 @@ export const verification = snakeCase.table(
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-better-auth-docker
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 import {
   boolean,
   index,
@@ -4814,7 +5632,7 @@ export const verification = snakeCase.table(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-# packages/db/src/schema/todos.ts · 80 stacks
+# packages/db/src/schema/todos.ts · 100 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -4855,10 +5673,18 @@ export const verification = snakeCase.table(
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-orpc-mysql-better-auth-bun-docker
 #   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-docker
@@ -4871,10 +5697,18 @@ export const verification = snakeCase.table(
 #   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
 #   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-better-auth-docker
@@ -4895,6 +5729,10 @@ export const verification = snakeCase.table(
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -4930,7 +5768,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 80 stacks
+# packages/db/src/schema/todos.ts · 100 stacks
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -4971,10 +5809,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-orpc-mysql-bun-docker
 #   spa-hono-orpc-mysql-bun-docker-e2e
 #   spa-hono-orpc-mysql-docker
@@ -4987,10 +5833,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-electron-expo-docker
 #   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
 #   spa-hono-orpc-mysql-expo-bun-docker
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
 #   tanstack-start-hono-openapi-mysql-bun-docker
 #   tanstack-start-hono-openapi-mysql-bun-docker-e2e
 #   tanstack-start-hono-openapi-mysql-docker
@@ -5011,6 +5865,10 @@ export type Todo = typeof todos.$inferSelect;
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -5039,7 +5897,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 80 stacks
+# packages/db/src/schema/todos.ts · 100 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -5080,10 +5938,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -5096,10 +5962,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
 #   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-better-auth-docker
@@ -5120,6 +5994,10 @@ export type Todo = typeof todos.$inferSelect;
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -5155,7 +6033,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 80 stacks
+# packages/db/src/schema/todos.ts · 100 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
@@ -5196,10 +6074,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -5212,10 +6098,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-electron-expo-docker
 #   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-expo-bun-docker
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
 #   tanstack-start-hono-openapi-postgres-bun-docker
 #   tanstack-start-hono-openapi-postgres-bun-docker-e2e
 #   tanstack-start-hono-openapi-postgres-docker
@@ -5236,6 +6130,10 @@ export type Todo = typeof todos.$inferSelect;
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -5484,7 +6382,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/tsconfig.json · 744 stacks
+# packages/db/tsconfig.json · 872 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -5761,10 +6659,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-electron-expo-docker
 #   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
 #   spa-hono-mysql-better-auth-expo-bun-docker
 #   spa-hono-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-mysql-better-auth-expo-docker
 #   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
 #   spa-hono-mysql-bun-docker
 #   spa-hono-mysql-bun-docker-e2e
 #   spa-hono-mysql-docker
@@ -5777,10 +6683,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-mysql-electron-expo-docker
 #   spa-hono-mysql-electron-expo-docker-e2e
+#   spa-hono-mysql-electron-expo-void
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void
+#   spa-hono-mysql-electron-void-e2e
 #   spa-hono-mysql-expo-bun-docker
 #   spa-hono-mysql-expo-bun-docker-e2e
 #   spa-hono-mysql-expo-docker
 #   spa-hono-mysql-expo-docker-e2e
+#   spa-hono-mysql-expo-void
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-void
+#   spa-hono-mysql-void-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -5793,10 +6707,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker
 #   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker
 #   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-expo-docker
 #   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -5809,10 +6731,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-electron-expo-docker
 #   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void
+#   spa-hono-openapi-mysql-electron-void-e2e
 #   spa-hono-openapi-mysql-expo-bun-docker
 #   spa-hono-openapi-mysql-expo-bun-docker-e2e
 #   spa-hono-openapi-mysql-expo-docker
 #   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-void
+#   spa-hono-openapi-mysql-void-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -5825,10 +6755,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker
 #   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker
 #   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-expo-docker
 #   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -5841,10 +6779,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-electron-expo-docker
 #   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void
+#   spa-hono-openapi-postgres-electron-void-e2e
 #   spa-hono-openapi-postgres-expo-bun-docker
 #   spa-hono-openapi-postgres-expo-bun-docker-e2e
 #   spa-hono-openapi-postgres-expo-docker
 #   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-void
+#   spa-hono-openapi-postgres-void-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -5889,10 +6835,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker
 #   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker
 #   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-better-auth-expo-docker
 #   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
 #   spa-hono-orpc-mysql-bun-docker
 #   spa-hono-orpc-mysql-bun-docker-e2e
 #   spa-hono-orpc-mysql-docker
@@ -5905,10 +6859,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-electron-expo-docker
 #   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-void
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void
+#   spa-hono-orpc-mysql-electron-void-e2e
 #   spa-hono-orpc-mysql-expo-bun-docker
 #   spa-hono-orpc-mysql-expo-bun-docker-e2e
 #   spa-hono-orpc-mysql-expo-docker
 #   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-void
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-void
+#   spa-hono-orpc-mysql-void-e2e
 #   spa-hono-orpc-postgres-better-auth-bun-docker
 #   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-docker
@@ -5921,10 +6883,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker
 #   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker
 #   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-better-auth-expo-docker
 #   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
 #   spa-hono-orpc-postgres-bun-docker
 #   spa-hono-orpc-postgres-bun-docker-e2e
 #   spa-hono-orpc-postgres-docker
@@ -5937,10 +6907,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-electron-expo-docker
 #   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-void
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void
+#   spa-hono-orpc-postgres-electron-void-e2e
 #   spa-hono-orpc-postgres-expo-bun-docker
 #   spa-hono-orpc-postgres-expo-bun-docker-e2e
 #   spa-hono-orpc-postgres-expo-docker
 #   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-void
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-void
+#   spa-hono-orpc-postgres-void-e2e
 #   spa-hono-orpc-sqlite-better-auth-bun-docker
 #   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-orpc-sqlite-better-auth-docker
@@ -5985,10 +6963,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-electron-expo-docker
 #   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
 #   spa-hono-postgres-better-auth-expo-bun-docker
 #   spa-hono-postgres-better-auth-expo-bun-docker-e2e
 #   spa-hono-postgres-better-auth-expo-docker
 #   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
 #   spa-hono-postgres-bun-docker
 #   spa-hono-postgres-bun-docker-e2e
 #   spa-hono-postgres-docker
@@ -6001,10 +6987,18 @@ export type Todo = typeof todos.$inferSelect;
 #   spa-hono-postgres-electron-expo-bun-docker-e2e
 #   spa-hono-postgres-electron-expo-docker
 #   spa-hono-postgres-electron-expo-docker-e2e
+#   spa-hono-postgres-electron-expo-void
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void
+#   spa-hono-postgres-electron-void-e2e
 #   spa-hono-postgres-expo-bun-docker
 #   spa-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-postgres-expo-docker
 #   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-postgres-expo-void
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-void
+#   spa-hono-postgres-void-e2e
 #   spa-hono-sqlite-better-auth-bun-docker
 #   spa-hono-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-sqlite-better-auth-docker
@@ -6185,26 +7179,50 @@ export type Todo = typeof todos.$inferSelect;
 #   tanstack-start-self-mysql-better-auth-docker-e2e
 #   tanstack-start-self-mysql-better-auth-expo-docker
 #   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
 #   tanstack-start-self-mysql-docker
 #   tanstack-start-self-mysql-docker-e2e
 #   tanstack-start-self-mysql-expo-docker
 #   tanstack-start-self-mysql-expo-docker-e2e
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-expo-void-e2e
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-mysql-void-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-docker
 #   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker
 #   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
 #   tanstack-start-self-orpc-mysql-docker
 #   tanstack-start-self-orpc-mysql-docker-e2e
 #   tanstack-start-self-orpc-mysql-expo-docker
 #   tanstack-start-self-orpc-mysql-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-mysql-void-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-docker
 #   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker
 #   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
 #   tanstack-start-self-orpc-postgres-docker
 #   tanstack-start-self-orpc-postgres-docker-e2e
 #   tanstack-start-self-orpc-postgres-expo-docker
 #   tanstack-start-self-orpc-postgres-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-postgres-void-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-docker
 #   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
@@ -6217,10 +7235,18 @@ export type Todo = typeof todos.$inferSelect;
 #   tanstack-start-self-postgres-better-auth-docker-e2e
 #   tanstack-start-self-postgres-better-auth-expo-docker
 #   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
 #   tanstack-start-self-postgres-docker
 #   tanstack-start-self-postgres-docker-e2e
 #   tanstack-start-self-postgres-expo-docker
 #   tanstack-start-self-postgres-expo-docker-e2e
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-expo-void-e2e
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-postgres-void-e2e
 #   tanstack-start-self-sqlite-better-auth-docker
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-expo-docker

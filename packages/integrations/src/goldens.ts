@@ -12,7 +12,7 @@ import { stackLabel } from "#/stack-label.ts";
  * One product each, and together every integration.
  * A browser app, a full-stack app on its own server, a site with a documented
  * HTTP API, a desktop client of a hosted API, a mobile client of an API, and a
- * small Bun service.
+ * small Bun service. Four Worker products cover static assets, SSR, and both external database drivers.
  * A project that only swaps a choice one of these already uses — the test runner,
  * Node beside the Bun service, or `self` on a second framework — is not a golden.
  */
@@ -23,6 +23,10 @@ const goldenLabels = [
   "spa-hono-orpc-postgres-better-auth-electron-docker",
   "hono-orpc-mongodb-better-auth-expo-docker",
   "hono-openapi-sqlite-bun-docker",
+  "spa-void",
+  "tanstack-start-self-orpc-postgres-better-auth-void",
+  "spa-hono-orpc-postgres-better-auth-void",
+  "spa-hono-openapi-mysql-better-auth-void-e2e",
 ];
 
 export const goldens: Record<string, Stack> = Object.fromEntries(

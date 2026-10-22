@@ -3,7 +3,12 @@ import path from "node:path";
 import { isCancel, multiselect } from "@clack/prompts";
 import { z } from "zod";
 
-import { createBlueprintSchema, diffText } from "@vibestart/core";
+import {
+  choicesOf,
+  createBlueprintSchema,
+  diffText,
+  resolve,
+} from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
 import {
@@ -140,7 +145,43 @@ const added = async (
     }
   }
 
-  return blueprint;
+  const choices = choicesOf(registry, blueprint.stack);
+
+  if (resolve(registry, choices).stacks.length > 0) {
+    return blueprint;
+  }
+
+  // Auxiliary choices the project leaves open follow the selected product, such as the runtime of a SPA without a server.
+  const required = Object.fromEntries(
+    Object.entries(choices).filter(([kind]) => {
+      const integrations = registry.integrations.filter(
+        (integration) => integration.kind === kind
+      );
+
+      return !integrations.every((integration) => integration.auxiliary);
+    })
+  );
+
+  const resolution = resolve(registry, required);
+  const [stack] = resolution.stacks;
+
+  if (stack === undefined) {
+    throw new MaintenanceError(
+      resolution.violations.map(({ reason }) => reason).join("\n")
+    );
+  }
+
+  const replaced = Object.entries(blueprint.stack).flatMap(([kind, id]) =>
+    stack[kind] === id ? [] : [`${id} with ${stack[kind] ?? "nothing"}`]
+  );
+
+  if (replaced.length > 0) {
+    throw new MaintenanceError(
+      `Adding ${selected.join(", ")} would replace ${replaced.join(", ")}; this needs an explicit migration.`
+    );
+  }
+
+  return { ...blueprint, stack };
 };
 
 const planFor = async (
