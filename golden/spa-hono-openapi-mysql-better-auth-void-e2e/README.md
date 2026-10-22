@@ -74,6 +74,14 @@ vp exec --filter @my-app/server void secret put BETTER_AUTH_URL
 HYPERDRIVE_ID='<cache-disabled-config-id>' DATABASE_URL='mysql://user:password@host:3306/my-app' vp run deploy
 ```
 
+In PowerShell, set the deployment values before running the same command:
+
+```powershell
+$env:HYPERDRIVE_ID = '<cache-disabled-config-id>'
+$env:DATABASE_URL = 'mysql://user:password@host:3306/my-app'
+vp run deploy
+```
+
 `BETTER_AUTH_URL` is the origin users open: your custom domain, or `https://my-app.<your-subdomain>.workers.dev`. Void checks `env.ts` before uploading, so set both secrets before the first deploy.
 
 The deploy script requires an explicit `DATABASE_URL` and a valid `HYPERDRIVE_ID` in the shell before reading any local `.env` or applying Drizzle migrations. Both must target the same production database. It then deploys using the existing Hyperdrive; its cache-disabled setting remains your responsibility. Keep these deployment values out of Worker secrets: the Worker prefers `DATABASE_URL` over Hyperdrive, which is how `void dev` reaches a local database. Void's built-in database migrations and auth are not used.

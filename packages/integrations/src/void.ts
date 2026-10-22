@@ -356,6 +356,18 @@ const readme = (ctx: Context) => {
         ]
       : []),
     ["```sh", ...commands, "```"].join("\n"),
+    ...(database
+      ? [
+          [
+            "In PowerShell, set the deployment values before running the same command:",
+            "```powershell",
+            "$env:HYPERDRIVE_ID = '<cache-disabled-config-id>'",
+            `$env:DATABASE_URL = '${productionUrl(ctx)}'`,
+            "vp run deploy",
+            "```",
+          ].join("\n"),
+        ]
+      : []),
     ...(auth
       ? [
           `\`BETTER_AUTH_URL\` is the origin users open: your custom domain, or \`https://${ctx.name}.<your-subdomain>.workers.dev\`. Void checks \`env.ts\` before uploading, so set both secrets before the first deploy.`,
