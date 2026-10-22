@@ -72,7 +72,7 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 
 ### Void 部署（预览）
 
-`--deployment void --runtime workers` 使用 Void 1.1.11 将 SPA、SPA + Hono 或 TanStack Start 部署到你的 Cloudflare 账号。服务端支持外部 PostgreSQL 或 MySQL + Drizzle，可选 Better Auth；不支持 Next.js、SQLite、Prisma 和独立 Hono 服务。生成项目包含部署脚本，以及生产密钥、Hyperdrive、`void.lock.json` 的操作说明，不生成 GitHub Actions。详见[交付文档](https://vibestart.net/zh/docs/stack/delivery#void)。
+`--deployment void --runtime workers` 使用 Void 1.2.1 将 SPA、SPA + Hono 或 TanStack Start 部署到你的 Cloudflare 账号。服务端支持外部 PostgreSQL 或 MySQL + Drizzle，可选 Better Auth；不支持 Next.js、SQLite、Prisma 和独立 Hono 服务。生成项目包含部署脚本，以及生产密钥、Hyperdrive、`void.lock.json` 的操作说明，不生成 GitHub Actions。详见[交付文档](https://vibestart.net/zh/docs/stack/delivery#void)。
 
 ## CLI 选项
 

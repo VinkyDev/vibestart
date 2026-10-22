@@ -123,17 +123,7 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 
 ## Package manager and runtime
 
-`packageManager` defaults to pnpm. Core renders a pnpm workspace file or Bun workspaces with a catalog and install policy in the root manifest; Bun keeps the `catalog:` protocol and approves install scripts only through an explicit `trustedDependencies`.
-
-The `runtime` kind adds Bun beside Node. Bun needs the Hono capability, so it is legal only in stacks with Hono. Full-stack frameworks and the Vite+ toolchain stay on Node, and Docker includes whichever runtimes the stack uses. Stack names gain `bun` for the runtime and `bun-pm` for the package manager, and a record vouches only for its own fingerprint.
-
-Hono splits `src/app.ts` (routing) from `src/index.ts` (listen and shutdown), so both runtimes load the full module graph and answer requests without binding a socket. `stacks smoke` uses that Node/Bun boundary and never writes records. Workers require workerd and use `stacks verify` in CI.
-
-The e2e runner keeps a parent-owned stdin pipe open, because Vite treats stdin EOF as shutdown outside CI. It installs the catalog's fixed Undici dispatcher and closes it on teardown. Workers SSR receives the same startup readiness budget as Next, because workerd may optimize server dependencies before listening. Worker test servers disable the inspector, matching Void's own integration harness and avoiding shared debugger ports during parallel verification.
-
-Teardown stops server process trees before removing test databases. Windows uses bounded `taskkill` and exit waits, with direct-child termination if `taskkill` fails; a child that does not exit fails teardown. SQLite removal retries transient file locks.
-
-Void is a deployment integration paired with the auxiliary Workers runtime. It accepts a static SPA, SPA + Hono, or TanStack Start, with optional external PostgreSQL/MySQL + Drizzle and Better Auth. A static SPA deploys as assets with no Worker code. Void runs a Hono Worker before assets only under `/api`, so Hono on Workers serves oRPC at `/api/rpc`. Hono receives request-scoped services through an explicit `createApp(services)` factory; `createApi(services)` remains mandatory. TanStack Start binds services in its global request middleware (`src/start.ts`) and reads them with `getServices()`. Void 1.1.11 delegates to Start's default entry, so custom server entries are not used. Clients close on handler failure or after the response body finishes, fails, or is cancelled. Worker stacks enable the `enable_request_signal` compatibility flag, without which `request.signal` never aborts on a client disconnect. Node and Bun outputs retain their module-level services. Worker code and Node migration tooling have separate TypeScript projects; `void prepare` generates ignored Worker types. Deploy requires an explicit shell database URL before migrations and calls Void with the Cloudflare target.
+[Runtime architecture](runtime.md) covers package managers, Node/Bun and Workers, test-server teardown, and Void deployment.
 
 ## Project maintenance
 

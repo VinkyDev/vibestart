@@ -15,6 +15,7 @@ import {
   renderEnvModule,
   serverEnv,
 } from "#/app.ts";
+import { catalog } from "#/catalog.ts";
 import { knipEntries } from "#/knip.ts";
 import {
   agentsConventions,
@@ -479,7 +480,7 @@ export const startInstance = createStart(() => ({
       contribute(readmeTagline, "Void"),
       contribute(readmeLayers, {
         layer: "Deployment",
-        choice: "Void 1.1.11 on Cloudflare Workers (preview)",
+        choice: `Void ${catalog.server.void} on Cloudflare Workers (preview)`,
       }),
       contribute(readmeSections, () => readme(ctx)),
     ];

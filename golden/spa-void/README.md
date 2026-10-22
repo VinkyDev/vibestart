@@ -6,7 +6,7 @@ React · Void, on [Vite+](https://viteplus.dev).
 | ---------- | --------------------------------------------------------- |
 | Frontend   | React 19, TanStack Router, TanStack Query, Tailwind CSS 4 |
 | UI         | shadcn/ui on Base UI, in `packages/ui`                    |
-| Deployment | Void 1.1.11 on Cloudflare Workers (preview)               |
+| Deployment | Void 1.2.1 on Cloudflare Workers (preview)                |
 | Toolchain  | Vite+ (`vp`): dev, build, test, lint, format, type check  |
 
 ## Getting started

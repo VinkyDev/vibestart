@@ -1,6 +1,12 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
-import { appendFileSync, closeSync, existsSync, openSync, readFileSync } from "node:fs";
+import {
+  appendFileSync,
+  closeSync,
+  existsSync,
+  openSync,
+  readFileSync,
+} from "node:fs";
 import { arch, platform, release } from "node:os";
 import path from "node:path";
 
