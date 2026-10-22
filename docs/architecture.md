@@ -121,6 +121,8 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 
 `verify` installs Chromium in each project with a browser test, through the project's own runner as its README says, so the browser build follows the runner version that project resolved rather than the registry's latest. A Linux job first installs Chromium's system libraries. Tests run once, and Vite+ owns the pnpm cache.
 
+The Linux MongoDB service sets `GLIBC_TUNABLES=glibc.pthread.rseq=1`, keeping glibc in charge of rseq so MongoDB uses per-thread caches. MongoDB's per-CPU allocator is unsafe on kernels 6.19 through 7.0.13 ([SERVER-125742](https://jira.mongodb.org/browse/SERVER-125742)); remove the setting once every hosted runner kernel includes the fix. Database tests still run against the same MongoDB 8 service.
+
 ## Package manager and runtime
 
 [Runtime architecture](runtime.md) covers package managers, Node/Bun and Workers, test-server teardown, and Void deployment.
