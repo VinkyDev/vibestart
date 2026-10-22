@@ -34,7 +34,7 @@ npx --yes vibestart-cli upgrade --yes --json
 
 The target is the template bundled with the running CLI, not implicitly the latest npm release. `--to VERSION` selects an exact published version; replace `VERSION` with an actual version and use the same value for preview and application. Tags such as `beta` or `latest` and semver ranges are not accepted by `--to`. Fetching a different release executes its generator and requires registry access.
 
-The CLI compares the original template, current project, and target template. `changes` updates supported configuration and dependency files while preserving business edits, and records the target release in `vibestart.jsonc`. `manual` lists template changes to files the project owns, such as starter source, with the previous (`before`) and target (`after`) template content; the CLI never writes them. This command does not promise arbitrary application migrations or update every dependency to npm's latest version.
+The CLI compares the original template, current project, and target template. `changes` updates supported configuration (including Metro and Babel) and dependency files while preserving business edits, and records the target release in `vibestart.jsonc`. `manual` lists template changes to files the project owns, such as starter source, with the previous (`before`) and target (`after`) template content; the CLI never writes them. This command does not promise arbitrary application migrations or update every dependency to npm's latest version.
 
 Review the returned changes, conflicts, and manual entries before applying. The default write flow installs dependencies through `vp install`, runs `vp check`, runs Knip if selected, and runs the existing unit test project if present. It does not automatically initialize, migrate, or reset a database.
 
@@ -48,6 +48,7 @@ A write starts from a clean Git worktree, so `git diff` is exactly the change. T
 
 - **`conflicts`**: the files hold both sides between `<<<<<<< project`, `||||||| previous template`, `=======`, and `>>>>>>> target template`; installation was skipped. Resolve each using the user's code and the intended template change, rather than choosing every incoming side. A maintained file the user had deleted is restored; ask whether to keep it.
 - **`manual`**: port each template change into the user's code. Diff `before` against `after` to see the intent, then apply it where the user's version of the file differs.
+- **Babel configuration conflict**: the command fails before writing if an existing Expo Babel config shadows the target `apps/mobile/babel.config.cjs`. Merge the user's settings and the target compiler plugin into that CJS file, remove the competing config, and retry the same release.
 - **A failed installation or check** leaves the files written. Fix the cause and rerun the failed step.
 
 To abandon the write, `git restore . && git clean -fd` returns the project to the commit it started from. It does not restore `node_modules` or database data.

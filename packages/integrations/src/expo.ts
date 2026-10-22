@@ -278,6 +278,17 @@ const withSession = (
 const orpcClientPath = "apps/mobile/src/lib/api.ts";
 
 const orpcFiles = (ctx: Context) => [
+  file(
+    "apps/mobile/babel.config.cjs",
+    [
+      "module.exports = {",
+      'presets: ["babel-preset-expo"],',
+      "// Hermes rejects the rest-parameter destructuring used by oRPC's client.",
+      'plugins: ["@babel/plugin-transform-parameters"],',
+      "};",
+      "",
+    ].join("\n")
+  ),
   ...templateFiles(ctx, "expo/orpc", { except: [orpcClientPath] }),
   withSession(
     ctx,
@@ -293,7 +304,11 @@ const orpcFiles = (ctx: Context) => [
   ),
   contribute(packageJson, {
     dependencies: ["@orpc/client", "@orpc/tanstack-query"],
-    devDependencies: [`${ctx.scope}/api`],
+    devDependencies: [
+      `${ctx.scope}/api`,
+      "@babel/plugin-transform-parameters",
+      "babel-preset-expo",
+    ],
     path: "apps/mobile",
   }),
 ];

@@ -1,3 +1,4 @@
+import nodePath from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 import type { ParseError } from "jsonc-parser";
@@ -26,6 +27,33 @@ export interface Plan {
 const contents = (snapshot: Snapshot) =>
   new Map(snapshot.files.map((file) => [file.path, file.content]));
 
+const assertBabelConfig = (cwd: string, path: string, after: string | null) => {
+  if (!path.endsWith("/babel.config.cjs") || after === null) {
+    return;
+  }
+
+  // Expo selects the first config filename it finds, before babel.config.cjs.
+  const shadowing = [
+    ".babelrc",
+    ".babelrc.js",
+    ".babelrc.cjs",
+    ".babelrc.mjs",
+    ".babelrc.json",
+    ".babelrc.cts",
+    "babel.config.js",
+  ]
+    .map((filename) =>
+      nodePath.posix.join(nodePath.posix.dirname(path), filename)
+    )
+    .find((filename) => readText(cwd, filename) !== null);
+
+  if (shadowing !== undefined) {
+    throw new MaintenanceError(
+      `Babel configuration conflict: ${shadowing} takes precedence over ${path}. Merge your Babel settings and the target template's @babel/plugin-transform-parameters into ${path}, remove ${shadowing}, then retry. No files were written.`
+    );
+  }
+};
+
 export const planUpdate = (
   cwd: string,
   base: Snapshot,
@@ -44,6 +72,9 @@ export const planUpdate = (
     const before = previous.get(path) ?? null;
     const after = next.get(path) ?? null;
     const local = readText(cwd, path);
+
+    assertBabelConfig(cwd, path, after);
+
     const change = mergeFile(path, before, local, after);
 
     // An already selected capability with missing infrastructure is damaged, not an add/no-op.

@@ -67,6 +67,9 @@ export const catalog = {
     zod: "^4.6.7",
   },
   mobile: {
+    // Expo SDK 58 runs Babel 7; Babel 8 plugins require a different core.
+    "@babel/plugin-transform-parameters": "^7.29.7",
+    "babel-preset-expo": "~58.0.19",
     expo: "58.0.14",
     "expo-constants": "~58.0.12",
     "expo-linking": "~58.0.13",
