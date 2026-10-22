@@ -48,7 +48,7 @@ A write starts from a clean Git worktree, so `git diff` is exactly the change. T
 
 - **`conflicts`**: the files hold both sides between `<<<<<<< project`, `||||||| previous template`, `=======`, and `>>>>>>> target template`; installation was skipped. Resolve each using the user's code and the intended template change, rather than choosing every incoming side. A maintained file the user had deleted is restored; ask whether to keep it.
 - **`manual`**: port each template change into the user's code. Diff `before` against `after` to see the intent, then apply it where the user's version of the file differs.
-- **Babel configuration conflict**: the command fails before writing if an existing Expo Babel config shadows the target `apps/mobile/babel.config.cjs`. Merge the user's settings and the target compiler plugin into that CJS file, remove the competing config, and retry the same release.
+- **Babel configuration conflict**: the command fails before writing if an existing Expo Babel config shadows or duplicates the target `apps/mobile/babel.config.cjs`. Merge the user's settings and the target compiler plugin into that CJS file, remove the competing config, and retry the same release.
 - **A failed installation or check** leaves the files written. Fix the cause and rerun the failed step.
 
 To abandon the write, `git restore . && git clean -fd` returns the project to the commit it started from. It does not restore `node_modules` or database data.

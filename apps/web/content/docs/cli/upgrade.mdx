@@ -37,6 +37,6 @@ A write needs the project in a Git repository with no uncommitted changes, so `g
 
 ## Conflicts [#conflicts]
 
-An Expo + oRPC upgrade fails before writing when an existing Babel config (such as `.babelrc.json` or `babel.config.js`) takes precedence over the target `apps/mobile/babel.config.cjs`. Follow the error: merge your settings and the target compiler plugin into that CJS config, remove the competing config, and retry the same release.
+An Expo + oRPC upgrade fails before writing when an existing Babel config (such as `.babelrc.json` or `babel.config.js`) shadows or duplicates the target `apps/mobile/babel.config.cjs`. Follow the error: merge your settings and the target compiler plugin into that CJS config, remove the competing config, and retry the same release.
 
 When a file has both your edit and a template change in the same place, the CLI writes both into the file between Git's conflict markers (`<<<<<<< project`, `=======`, `>>>>>>> target template`). It then stops before installation. Resolve the markers, then run the installation and checks the result names. A maintained file you deleted is restored and reported as a conflict. Previews report conflicts without writing.

@@ -106,6 +106,11 @@ describe("upgrade plans", () => {
     ".babelrc.json",
     ".babelrc.cts",
     "babel.config.js",
+    "babel.config.mjs",
+    "babel.config.json",
+    "babel.config.cts",
+    "babel.config.ts",
+    "babel.config.mts",
   ])(
     "refuses to hide the native compiler fix behind an existing %s",
     (filename) => {

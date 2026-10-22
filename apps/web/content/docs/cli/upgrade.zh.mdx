@@ -37,6 +37,6 @@ npx vibestart-cli upgrade --yes
 
 ## 冲突 [#conflicts]
 
-升级 Expo + oRPC 项目时，如果已有 Babel 配置（如 `.babelrc.json` 或 `babel.config.js`）优先于目标 `apps/mobile/babel.config.cjs`，命令会在写入前失败。请按错误提示将自己的配置和目标编译插件合并进该 CJS 配置，删除优先加载的配置，再用同一版本重试。
+升级 Expo + oRPC 项目时，如果已有 Babel 配置（如 `.babelrc.json` 或 `babel.config.js`）遮蔽目标 `apps/mobile/babel.config.cjs` 或造成重复根配置，命令会在写入前失败。请按错误提示将自己的配置和目标编译插件合并进该 CJS 配置，删除竞争配置，再用同一版本重试。
 
 同一处既有你的修改、也有模板的变化时，CLI 会把两边的内容都写进文件，用 Git 的冲突标记（`<<<<<<< project`、`=======`、`>>>>>>> target template`）分隔，并在安装前停止。解决冲突标记后，执行结果中给出的安装与检查命令。被删除的维护文件会被恢复，同样报告为冲突。预览只报告冲突，不写入文件。

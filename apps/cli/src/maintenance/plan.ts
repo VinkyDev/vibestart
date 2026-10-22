@@ -32,7 +32,7 @@ const assertBabelConfig = (cwd: string, path: string, after: string | null) => {
     return;
   }
 
-  // Expo selects the first config filename it finds, before babel.config.cjs.
+  // Expo selects the first .babelrc; Babel rejects multiple root configs.
   const shadowing = [
     ".babelrc",
     ".babelrc.js",
@@ -41,6 +41,11 @@ const assertBabelConfig = (cwd: string, path: string, after: string | null) => {
     ".babelrc.json",
     ".babelrc.cts",
     "babel.config.js",
+    "babel.config.mjs",
+    "babel.config.json",
+    "babel.config.cts",
+    "babel.config.ts",
+    "babel.config.mts",
   ]
     .map((filename) =>
       nodePath.posix.join(nodePath.posix.dirname(path), filename)
@@ -49,7 +54,7 @@ const assertBabelConfig = (cwd: string, path: string, after: string | null) => {
 
   if (shadowing !== undefined) {
     throw new MaintenanceError(
-      `Babel configuration conflict: ${shadowing} takes precedence over ${path}. Merge your Babel settings and the target template's @babel/plugin-transform-parameters into ${path}, remove ${shadowing}, then retry. No files were written.`
+      `Babel configuration conflict: ${shadowing} competes with ${path}. Merge your Babel settings and the target template's @babel/plugin-transform-parameters into ${path}, remove ${shadowing}, then retry. No files were written.`
     );
   }
 };
