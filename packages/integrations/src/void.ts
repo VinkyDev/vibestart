@@ -238,6 +238,12 @@ const config = (ctx: Context) => {
       : []),
     "  cloudflare: {",
     `    name: "${ctx.name}",`,
+    ...(database
+      ? [
+          "    // Local tooling infers its binding; deploy.ts requires an existing cache-disabled production ID.",
+          '    hyperdrive: process.env.HYPERDRIVE_ID === undefined ? undefined : [{ binding: "HYPERDRIVE", id: process.env.HYPERDRIVE_ID }],',
+        ]
+      : []),
     '    compatibility_date: "2026-10-01",',
     ...(site
       ? []
@@ -260,6 +266,10 @@ ${
   database
     ? `if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   throw new Error("Set DATABASE_URL in the deployment shell to the production database URL");
+}
+
+if (!/^[a-f0-9]{32}$/iu.test(process.env.HYPERDRIVE_ID ?? "")) {
+  throw new Error("Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see README.md before deploying");
 }
 
 `
@@ -310,7 +320,7 @@ const productionUrl = (ctx: Context) =>
 
 const managed = (ctx: Context) => {
   if (ctx.stack.database !== undefined) {
-    return "Void manages the Worker and Hyperdrive, while Drizzle owns the schema and migrations.";
+    return "Void manages the Worker and binds your existing Hyperdrive, while Drizzle owns the schema and migrations.";
   }
 
   return staticSite(ctx)
@@ -334,12 +344,17 @@ const readme = (ctx: Context) => {
         ]
       : []),
     database
-      ? `DATABASE_URL='${productionUrl(ctx)}' vp run deploy`
+      ? `HYPERDRIVE_ID='<cache-disabled-config-id>' DATABASE_URL='${productionUrl(ctx)}' vp run deploy`
       : "vp run deploy",
   ];
 
   const paragraphs = [
     `This deployment option is in preview. It deploys to your own Cloudflare account; ${managed(ctx)}`,
+    ...(database
+      ? [
+          "Before the first deploy, create a Hyperdrive configuration in the Cloudflare dashboard for the production database and turn **Query caching off**. Supply its ID as `HYPERDRIVE_ID` in every deployment shell; `void.config.ts` binds that existing resource. Void's browser login can deploy an existing binding without a Hyperdrive-edit API token, but cannot create one. Automatic provisioning is not used because it enables query caching, which can return stale todos or revoked sessions after a write. Connection pooling still works with caching disabled.",
+        ]
+      : []),
     ["```sh", ...commands, "```"].join("\n"),
     ...(auth
       ? [
@@ -348,7 +363,7 @@ const readme = (ctx: Context) => {
       : []),
     ...(database
       ? [
-          "The deploy script requires `DATABASE_URL` in the shell before reading any local `.env`. It applies Drizzle migrations first, then deploys and creates Hyperdrive. Keep `DATABASE_URL` out of Worker secrets: the Worker prefers it over Hyperdrive, which is how `void dev` reaches a local database. Void's built-in database migrations and auth are not used.",
+          "The deploy script requires an explicit `DATABASE_URL` and a valid `HYPERDRIVE_ID` in the shell before reading any local `.env` or applying Drizzle migrations. Both must target the same production database. It then deploys using the existing Hyperdrive; its cache-disabled setting remains your responsibility. Keep these deployment values out of Worker secrets: the Worker prefers `DATABASE_URL` over Hyperdrive, which is how `void dev` reaches a local database. Void's built-in database migrations and auth are not used.",
         ]
       : []),
     `Commit \`void.lock.json\`, which belongs to your deployment state and is never generated or merged by vibestart.${
@@ -458,7 +473,7 @@ export const startInstance = createStart(() => ({
       contribute(agentsMap, {
         path: "scripts/deploy.ts",
         owns: database
-          ? "explicit production database migration, then Void deployment"
+          ? "production database and Hyperdrive prerequisites, migration, then Void deployment"
           : "Void deployment",
       }),
       contribute(agentsConventions, {
@@ -472,6 +487,7 @@ export const startInstance = createStart(() => ({
               ]),
           ...(database
             ? [
+                "Set `DATABASE_URL` and `HYPERDRIVE_ID` in the deployment shell for the same production database. Provision Hyperdrive with query caching disabled; Void binds that existing ID.",
                 "Database clients belong to one request and close when its response stream finishes, including cancellation or failure.",
               ]
             : []),

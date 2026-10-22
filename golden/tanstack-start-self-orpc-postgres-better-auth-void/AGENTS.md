@@ -54,7 +54,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 | `packages/db`         | Drizzle schema (`src/schema/`, including Better Auth tables), relations, migrations (`src/migrations/`), `createDb` |
 | `packages/auth`       | Better Auth configuration (`createAuth`) and the `Session` type                                                     |
 | `packages/ui`         | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                          |
-| `scripts/deploy.ts`   | explicit production database migration, then Void deployment                                                        |
+| `scripts/deploy.ts`   | production database and Hyperdrive prerequisites, migration, then Void deployment                                   |
 | `packages/config`     | Shared TypeScript presets                                                                                           |
 
 `vp run dev` serves the app on :3000. One process handles everything, same-origin, in development and production:
@@ -78,7 +78,7 @@ A route `loader` or component calls `api.*` from `src/lib/api.ts`. During SSR th
 - **Protected page.** Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=…`. The session sits on the route context (`context.session`), loaded once per navigation in `__root.tsx`. The page hide is UX, and the procedure is the security boundary.
 - **Proxy.** Better Auth rate-limits by client IP. Behind a reverse proxy, set `advanced.ipAddress` in `packages/auth` to the header that proxy sets. With no proxy, leave forwarding headers untrusted.
 - **UI.** From `packages/ui`, run `pnpm dlx shadcn@latest add <component>` and import `@my-app/ui/components/<name>`. Files in `packages/ui/src/components` are vendored shadcn and are not linted. App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout. When the first file lands in `src/hooks`, add `"./hooks/*": "./src/hooks/*.ts"` to the package exports (`components.json` already aliases that path).
-- **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`. Regenerate ignored types with `vp exec --filter @my-app/web void prepare`. Database clients belong to one request and close when its response stream finishes, including cancellation or failure.
+- **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`. Regenerate ignored types with `vp exec --filter @my-app/web void prepare`. Set `DATABASE_URL` and `HYPERDRIVE_ID` in the deployment shell for the same production database. Provision Hyperdrive with query caching disabled; Void binds that existing ID. Database clients belong to one request and close when its response stream finishes, including cancellation or failure.
 - **Generated.** `routeTree.gen.ts`, `packages/db/src/migrations/**`, and `.void/` are tool output. Leave them unchanged. Run void prepare after cloning to regenerate Worker types
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.
 - **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.

@@ -6,6 +6,12 @@ if (process.env.DATABASE_URL === undefined || process.env.DATABASE_URL === "") {
   );
 }
 
+if (!/^[a-f0-9]{32}$/iu.test(process.env.HYPERDRIVE_ID ?? "")) {
+  throw new Error(
+    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see README.md before deploying"
+  );
+}
+
 const run = (args: string[]) => {
   const result = spawnSync("vp", args, {
     stdio: "inherit",

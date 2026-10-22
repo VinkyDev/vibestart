@@ -61,18 +61,20 @@ vp run db:migrate    # applies it
 
 ## Deploy to Cloudflare with Void
 
-This deployment option is in preview. It deploys to your own Cloudflare account; Void manages the Worker and Hyperdrive, while Drizzle owns the schema and migrations.
+This deployment option is in preview. It deploys to your own Cloudflare account; Void manages the Worker and binds your existing Hyperdrive, while Drizzle owns the schema and migrations.
+
+Before the first deploy, create a Hyperdrive configuration in the Cloudflare dashboard for the production database and turn **Query caching off**. Supply its ID as `HYPERDRIVE_ID` in every deployment shell; `void.config.ts` binds that existing resource. Void's browser login can deploy an existing binding without a Hyperdrive-edit API token, but cannot create one. Automatic provisioning is not used because it enables query caching, which can return stale todos or revoked sessions after a write. Connection pooling still works with caching disabled.
 
 ```sh
 vp exec --filter @my-app/server void connect --platform cloudflare
 vp exec --filter @my-app/server void secret put BETTER_AUTH_SECRET
 vp exec --filter @my-app/server void secret put BETTER_AUTH_URL
-DATABASE_URL='postgresql://user:password@host:5432/my-app' vp run deploy
+HYPERDRIVE_ID='<cache-disabled-config-id>' DATABASE_URL='postgresql://user:password@host:5432/my-app' vp run deploy
 ```
 
 `BETTER_AUTH_URL` is the origin users open: your custom domain, or `https://my-app.<your-subdomain>.workers.dev`. Void checks `env.ts` before uploading, so set both secrets before the first deploy.
 
-The deploy script requires `DATABASE_URL` in the shell before reading any local `.env`. It applies Drizzle migrations first, then deploys and creates Hyperdrive. Keep `DATABASE_URL` out of Worker secrets: the Worker prefers it over Hyperdrive, which is how `void dev` reaches a local database. Void's built-in database migrations and auth are not used.
+The deploy script requires an explicit `DATABASE_URL` and a valid `HYPERDRIVE_ID` in the shell before reading any local `.env` or applying Drizzle migrations. Both must target the same production database. It then deploys using the existing Hyperdrive; its cache-disabled setting remains your responsibility. Keep these deployment values out of Worker secrets: the Worker prefers `DATABASE_URL` over Hyperdrive, which is how `void dev` reaches a local database. Void's built-in database migrations and auth are not used.
 
 Commit `void.lock.json`, which belongs to your deployment state and is never generated or merged by vibestart. Run `void prepare` from `apps/server` after cloning; the package prepare script also runs it on install. Local `.env` values are not uploaded. Use `void secret put` for production server values.
 
