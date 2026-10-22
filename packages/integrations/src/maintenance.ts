@@ -13,7 +13,7 @@ export const maintenanceFiles = (files: readonly GeneratedFile[]) =>
           path.endsWith("/env.ts") ||
           path.endsWith("/worker-env.d.ts") ||
           path === "scripts/deploy.ts")) ||
-      /(?:^|\/)(?:package\.json|pnpm-workspace\.yaml|tsconfig(?:\.[\w-]+)?\.json|vite\.config\.ts|metro\.config\.ts|babel\.config\.cjs|knip\.jsonc?|\.gitignore|\.npmrc|\.node-version|\.bun-version|AGENTS\.md)$/u.test(
+      /(?:^|\/)(?:package\.json|pnpm-workspace\.yaml|tsconfig(?:\.[\w-]+)?\.json|vite\.config\.ts|metro\.config\.ts|knip\.jsonc?|\.gitignore|\.npmrc|\.node-version|\.bun-version|AGENTS\.md)$/u.test(
         path
       ) ||
       path.startsWith("packages/config/")

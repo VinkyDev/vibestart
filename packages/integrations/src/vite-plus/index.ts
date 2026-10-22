@@ -53,7 +53,7 @@ import agentsCode from "./agents-code.md?raw";
 import agentsDone from "./agents-done.md?raw";
 import agentsVitePlus from "./agents-vite-plus.md?raw";
 
-const formattedFile = /\.(?:cjs|css|html|js|json|jsonc|md|mjs|ts|tsx|ya?ml)$/u;
+const formattedFile = /\.(?:css|html|js|json|jsonc|md|mjs|ts|tsx|ya?ml)$/u;
 
 // `path.matchesGlob` compiles its patterns on every call, and every generation asks about the same paths.
 const ignoredPaths = new Map<string, boolean>();

@@ -4,6 +4,7 @@ import {
   defineIntegration,
   file,
   packageJson,
+  pnpmWorkspace,
   renderFile,
 } from "@vibestart/core";
 
@@ -278,17 +279,10 @@ const withSession = (
 const orpcClientPath = "apps/mobile/src/lib/api.ts";
 
 const orpcFiles = (ctx: Context) => [
-  file(
-    "apps/mobile/babel.config.cjs",
-    [
-      "module.exports = {",
-      "// Hermes rejects the rest-parameter destructuring used by oRPC's client.",
-      'plugins: ["@babel/plugin-transform-parameters"],',
-      'presets: ["babel-preset-expo"],',
-      "};",
-      "",
-    ].join("\n")
-  ),
+  // Expo's newer preset drops Hermes async-parameter fixes; remove the pin when default native exports pass.
+  contribute(pnpmWorkspace, {
+    overrides: { "babel-preset-expo": "58.0.17" },
+  }),
   ...templateFiles(ctx, "expo/orpc", { except: [orpcClientPath] }),
   withSession(
     ctx,
@@ -304,11 +298,7 @@ const orpcFiles = (ctx: Context) => [
   ),
   contribute(packageJson, {
     dependencies: ["@orpc/client", "@orpc/tanstack-query"],
-    devDependencies: [
-      `${ctx.scope}/api`,
-      "@babel/plugin-transform-parameters",
-      "babel-preset-expo",
-    ],
+    devDependencies: [`${ctx.scope}/api`],
     path: "apps/mobile",
   }),
 ];

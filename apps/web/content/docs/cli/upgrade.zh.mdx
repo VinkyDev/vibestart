@@ -23,7 +23,7 @@ npx vibestart-cli upgrade --yes
 
 ## 合并范围 [#merge]
 
-模板持续维护的文件会进行三方合并：原始模板、当前项目文件和目标模板。这些文件包括各个 `package.json`、catalog、TypeScript、Vite+、Metro 与 Babel 配置、Knip、Git 忽略规则、`AGENTS.md` 和 Docker 文件。合并会保留可合并的 JSONC 注释、自定义脚本及配置字段。最后，CLI 将目标版本写入 `vibestart.jsonc`。
+模板持续维护的文件会进行三方合并：原始模板、当前项目文件和目标模板。这些文件包括各个 `package.json`、catalog、TypeScript 与 Vite+ 配置、Knip、Git 忽略规则、`AGENTS.md` 和 Docker 文件。合并会保留可合并的 JSONC 注释、自定义脚本及配置字段。最后，CLI 将目标版本写入 `vibestart.jsonc`。
 
 业务页面、API 实现等初始业务源码归项目所有。目标模板修改了这类文件时，计划会把它列在 `manual` 下，并附上模板自身的差异，升级不会写入这些文件。请把这些变化移植到你的代码中，也可以交给编码 Agent 完成。项目中已经做过的修改不会再列出。
 
@@ -36,7 +36,5 @@ npx vibestart-cli upgrade --yes
 写入要求项目位于 Git 仓库中，且没有未提交的修改，这样 `git diff` 显示的正好是本次升级的全部改动。提交前请先审查。如需全部撤销，执行 `git restore . && git clean -fd`。预览没有这项要求。
 
 ## 冲突 [#conflicts]
-
-升级 Expo + oRPC 项目时，如果已有 Babel 配置（如 `.babelrc.json` 或 `babel.config.js`）遮蔽目标 `apps/mobile/babel.config.cjs` 或造成重复根配置，命令会在写入前失败。请按错误提示将自己的配置和目标编译插件合并进该 CJS 配置，删除竞争配置，再用同一版本重试。
 
 同一处既有你的修改、也有模板的变化时，CLI 会把两边的内容都写进文件，用 Git 的冲突标记（`<<<<<<< project`、`=======`、`>>>>>>> target template`）分隔，并在安装前停止。解决冲突标记后，执行结果中给出的安装与检查命令。被删除的维护文件会被恢复，同样报告为冲突。预览只报告冲突，不写入文件。

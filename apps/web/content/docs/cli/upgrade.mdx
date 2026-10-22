@@ -23,7 +23,7 @@ Run the desired CLI version or use `--to <exact-published-version>`. The target 
 
 ## Merge scope [#merge]
 
-Upgrades perform a three-way merge of the original template, current project, and target template for the files the template keeps maintaining: manifests, the catalog, TypeScript, Vite+, Metro and Babel configuration, Knip, Git ignores, `AGENTS.md`, and Docker files. Mergeable JSONC comments, custom scripts, and configuration fields are preserved. The CLI then writes `vibestart.jsonc` with the target release.
+Upgrades perform a three-way merge of the original template, current project, and target template for the files the template keeps maintaining: manifests, the catalog, TypeScript and Vite+ configuration, Knip, Git ignores, `AGENTS.md`, and Docker files. Mergeable JSONC comments, custom scripts, and configuration fields are preserved. The CLI then writes `vibestart.jsonc` with the target release.
 
 Application pages, API implementations, and other starter source belong to the project. When the target template changes one of them, the plan lists it under `manual` with the template's own diff, and the upgrade never writes it. Port the change into your code, or ask your coding agent to. A change the project already made is not listed.
 
@@ -36,7 +36,5 @@ Maintenance does not initialize, migrate, or reset databases. Review and execute
 A write needs the project in a Git repository with no uncommitted changes, so `git diff` shows exactly what the upgrade changed. Review it before you commit. To undo everything, run `git restore . && git clean -fd`. Previews have no such requirement.
 
 ## Conflicts [#conflicts]
-
-An Expo + oRPC upgrade fails before writing when an existing Babel config (such as `.babelrc.json` or `babel.config.js`) shadows or duplicates the target `apps/mobile/babel.config.cjs`. Follow the error: merge your settings and the target compiler plugin into that CJS config, remove the competing config, and retry the same release.
 
 When a file has both your edit and a template change in the same place, the CLI writes both into the file between Git's conflict markers (`<<<<<<< project`, `=======`, `>>>>>>> target template`). It then stops before installation. Resolve the markers, then run the installation and checks the result names. A maintained file you deleted is restored and reported as a conflict. Previews report conflicts without writing.
