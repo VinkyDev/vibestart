@@ -97,6 +97,8 @@ describe("generated test-server teardown", () => {
 
       const stopped = h.stop().then(() => {
         completed = true;
+
+        return completed;
       });
 
       await vi.advanceTimersByTimeAsync(100);

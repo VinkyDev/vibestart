@@ -14,7 +14,7 @@ COPY --chown=vp:vp . .
 RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
-FROM oven/bun:1.4.3-slim AS runtime
+FROM oven/bun:1.4.4-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production PORT=3000 DATABASE_URL=/data/app.db
 
