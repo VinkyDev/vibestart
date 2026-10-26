@@ -27,7 +27,7 @@ export const setPin = (text: string, key: string, from: string, to: string) => {
     );
   }
 
-  return text.replace(line, (_, head: string, tail: string) =>
+  return text.replaceAll(line, (_, head: string, tail: string) =>
     [head, to, tail].join("")
   );
 };
