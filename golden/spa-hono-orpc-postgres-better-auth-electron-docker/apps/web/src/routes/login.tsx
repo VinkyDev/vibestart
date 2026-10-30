@@ -2,7 +2,8 @@ import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 
 import { AuthForm } from "#src/components/auth-form.tsx";
 
-const sameOriginPath = /^\/(?!\/)/u;
+// Browsers normalize backslashes and strip tabs/newlines before resolving URLs.
+const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
 
 const isSameOriginRedirect = (value: unknown): value is string =>
   typeof value === "string" && sameOriginPath.test(value);

@@ -7,7 +7,6 @@ import { Api, TodosRpcs } from "@my-app/contracts";
 
 const { origin } = window.location;
 
-/** The app's procedures over `/rpc`; the session cookie rides along on same-origin requests. */
 class Rpc extends AtomRpc.Service<Rpc>()("@my-app/web/Rpc", {
   group: TodosRpcs,
   protocol: RpcClient.layerProtocolHttp({ url: `${origin}/rpc` }).pipe(
@@ -15,14 +14,12 @@ class Rpc extends AtomRpc.Service<Rpc>()("@my-app/web/Rpc", {
   ),
 }) {}
 
-/** The public REST API under `/api`. */
 class HttpApi extends AtomHttpApi.Service<HttpApi>()("@my-app/web/HttpApi", {
   api: Api,
   baseUrl: origin,
   httpClient: FetchHttpClient.layer,
 }) {}
 
-/** Mutations that pass these keys refresh every query that lists them. */
 export const todosKeys = ["todos"];
 
 export const todosAtom = Rpc.query("todos.list", undefined, {

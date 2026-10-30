@@ -14,18 +14,16 @@ export const AuthMiddlewareLive = Layer.effect(
   Effect.gen(function* () {
     const auth = yield* Auth;
 
-    return (effect, { headers }) =>
-      Effect.gen(function* () {
-        const session = yield* Effect.tryPromise({
-          try: async () =>
-            await auth.api.getSession({ headers: new Headers(headers) }),
-          catch: (cause) => cause,
-        }).pipe(
-          Effect.catch((error) =>
-            Effect.logError("Session lookup failed", error).pipe(
-              Effect.andThen(Effect.fail(new ServiceUnavailable()))
-            )
-          )
+    return Effect.fn("AuthMiddleware")(
+      function* (effect, { headers }) {
+        const session = yield* Effect.tryPromise(
+          async () =>
+            await auth.api.getSession({ headers: new Headers(headers) })
+        ).pipe(
+          Effect.tapError((error) =>
+            Effect.logError("Session lookup failed", error)
+          ),
+          Effect.mapError(() => new ServiceUnavailable())
         );
 
         if (session === null) {
@@ -39,13 +37,13 @@ export const AuthMiddlewareLive = Layer.effect(
           id,
           name,
         });
-      }).pipe(
-        // RPC defects otherwise serialize their message and cause. Keep those on the server.
-        Effect.catchDefect((cause) =>
-          Effect.logError("RPC defect", cause).pipe(
-            Effect.andThen(Effect.fail(new InternalServerError()))
-          )
+      },
+      // RPC defects otherwise serialize their message and cause. Keep those on the server.
+      Effect.catchDefect((cause) =>
+        Effect.logError("RPC defect", cause).pipe(
+          Effect.andThen(Effect.fail(new InternalServerError()))
         )
-      );
+      )
+    );
   })
 );

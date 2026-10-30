@@ -20,9 +20,7 @@ export class TestApp extends Context.Service<
   TestApp,
   {
     readonly database: typeof Database.Service;
-    /** Sends a request through every route and middleware, as the browser would. */
     readonly fetch: (request: Request) => Promise<Response>;
-    /** Signs a new user up through Better Auth and returns their session cookie. */
     readonly signUp: Effect.Effect<string>;
   }
 >()("@my-app/api/tests/TestApp") {
@@ -86,7 +84,6 @@ export class TestApp extends Context.Service<
   );
 }
 
-/** A typed RPC client that calls as the cookie's user, or anonymously without one. */
 export const makeClient = Effect.fnUntraced(function* (cookie?: string) {
   const app = yield* TestApp;
 
@@ -112,7 +109,6 @@ export const makeClient = Effect.fnUntraced(function* (cookie?: string) {
   );
 });
 
-// The `Exit` the server writes for `todos.create`, as JSON.
 const CreateExit = Schema.fromJsonString(
   Schema.Struct({
     exit: Schema.Union([

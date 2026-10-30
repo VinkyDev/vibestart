@@ -46,7 +46,6 @@ export class Auth extends Context.Service<
   static readonly layer = (options: AuthOptions) =>
     Layer.effect(Auth, makeAuth(options));
 
-  /** Reads `DATABASE_URL`, `BETTER_AUTH_URL`, and `BETTER_AUTH_SECRET`. */
   static readonly layerConfig = Layer.unwrap(
     Effect.map(
       Config.all({

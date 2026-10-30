@@ -17,7 +17,6 @@ const messageFor = <E>(cause: Cause.Cause<E>) => {
   return "Something went wrong. Try again.";
 };
 
-/** Shows a failed call's typed error as a toast; anything else is a generic failure. */
 export const toastFailure = <A, E>(exit: Exit.Exit<A, E>) => {
   if (Exit.isFailure(exit)) {
     toast.error(messageFor(exit.cause));

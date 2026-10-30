@@ -40,7 +40,6 @@ const start = (cwd: string, args: string[], env: Record<string, string>) =>
     stderr: "inherit",
   });
 
-/** One scope owns the database and processes, including partially completed startup. */
 export const testServer = Effect.gen(function* () {
   yield* Effect.sync(() => {
     if (existsSync(envFile)) {

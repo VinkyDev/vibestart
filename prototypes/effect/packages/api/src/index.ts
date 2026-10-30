@@ -11,7 +11,6 @@ import { HealthLive } from "#src/health.ts";
 import { TodosLive } from "#src/rpc.ts";
 import { Todos } from "#src/todos.ts";
 
-/** Better Auth answers every method under `/api/auth/*` with its own Fetch handler. */
 const AuthRoutes = Layer.unwrap(
   Effect.gen(function* () {
     const auth = yield* Auth;
@@ -24,7 +23,6 @@ const AuthRoutes = Layer.unwrap(
   })
 );
 
-/** The app's procedures at `/rpc`, as NDJSON over HTTP. */
 const RpcRoutes = RpcServer.layerHttp({
   group: TodosRpcs,
   path: "/rpc",
@@ -34,13 +32,11 @@ const RpcRoutes = RpcServer.layerHttp({
   Layer.provide(Todos.layer)
 );
 
-/** The public REST API, its OpenAPI document, and the Scalar reference. */
 const ApiRoutes = Layer.mergeAll(
   HttpApiBuilder.layer(Api, { openapiPath: "/api/openapi.json" }),
   HttpApiScalar.layer(Api, { path: "/api/docs" })
 ).pipe(Layer.provide(HealthLive));
 
-/** Every route the server mounts. Needs `Database`, `Auth`, and the HTTP platform services. */
 const SecurityHeaders = HttpRouter.middleware(
   (effect) =>
     Effect.map(

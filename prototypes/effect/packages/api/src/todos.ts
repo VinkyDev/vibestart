@@ -28,7 +28,6 @@ const firstOrNotFound = <A>([row]: readonly A[], id: number) =>
     ? Effect.fail(new TodoNotFound({ id }))
     : Effect.succeed(row);
 
-/** Owns persistence and ownership rules, independent of the RPC transport. */
 export class Todos extends Context.Service<
   Todos,
   {

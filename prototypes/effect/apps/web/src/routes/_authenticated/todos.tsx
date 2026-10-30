@@ -26,7 +26,6 @@ import {
 } from "#src/lib/api.ts";
 import { toastFailure } from "#src/lib/notify.ts";
 
-// The server decodes the same schema; decoding here first trims the title and keeps a blank one from being sent.
 const decodeTitle = Schema.decodeUnknownExit(TodoTitle);
 
 const TodoItem = ({ todo }: { todo: Todo }) => {

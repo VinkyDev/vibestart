@@ -107,3 +107,27 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await reload(browser);
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
+
+test("login redirects stay on the app origin after URL normalization", async ({
+  browser,
+  screen,
+}) => {
+  const { email } = await signUp();
+  const redirect = "/\\example.com";
+  await visit(browser, `/login?redirect=${encodeURIComponent(redirect)}`);
+  await screen.getByLabel("Email").fill(email);
+  await screen.getByLabel("Password").fill(password);
+  await screen.getByRole("main").getByRole("button", { name: "Sign in" }).tap();
+  await expect(browser).toHaveURL("/todos");
+
+  const expectInternalRedirect = async (value: string) => {
+    await visit(browser, `/login?redirect=${encodeURIComponent(value)}`);
+    await expect(browser).toHaveURL("/todos");
+  };
+
+  await expectInternalRedirect("//example.com");
+  await expectInternalRedirect("/\\example.com");
+  await expectInternalRedirect("/\t/example.com");
+  await expectInternalRedirect("/\r/example.com");
+  await expectInternalRedirect("/\n/example.com");
+});
