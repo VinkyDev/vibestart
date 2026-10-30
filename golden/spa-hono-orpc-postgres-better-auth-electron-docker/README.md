@@ -5,7 +5,7 @@ React · Hono · oRPC · PostgreSQL · Drizzle · Better Auth · Electron · Nod
 | Layer     | Choice                                                                                |
 | --------- | ------------------------------------------------------------------------------------- |
 | Frontend  | React 19, TanStack Router, TanStack Query, Tailwind CSS 4                             |
-| Backend   | Hono on Node.js 24                                                                    |
+| Backend   | Hono on Node.js 26                                                                    |
 | API       | oRPC (end-to-end types, no codegen) plus OpenAPI at `/api`                            |
 | Database  | PostgreSQL 18, Drizzle ORM v1                                                         |
 | Auth      | Better Auth, email and password, sessions in PostgreSQL                               |

@@ -1541,7 +1541,7 @@ export const desc_next = /** @type {((inputs?: Desc_NextInputs, options?: { loca
 /**
 * | output |
 * | --- |
-* | "Node.js 24" |
+* | "Node.js 26" |
 *
 * @param {Desc_NodeInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

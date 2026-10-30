@@ -165,10 +165,10 @@ const declarations = (ctx: Context) => [
   "",
 ];
 
-// workerd can optimize SSR dependencies before listening; it needs the same cold start budget as Next.
+// workerd can optimize Worker dependencies before listening; it needs the same cold start budget as Next.
 const helpers = (
   ctx: Context
-) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") || (ctx.has("workers") && ctx.has("tanstack-start")) ? 300 : 100}): Promise<void> => {
+) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") || (ctx.has("workers") && (ctx.has("tanstack-start") || hasBackend(ctx))) ? 300 : 100}): Promise<void> => {
   await retry(
     async () => {
       const response = await fetch(url);

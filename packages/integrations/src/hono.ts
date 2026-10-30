@@ -1,3 +1,5 @@
+import { major } from "semver";
+
 import {
   contribute,
   defineIntegration,
@@ -22,6 +24,7 @@ import {
   stackHeadline,
   closeDatabase as closeDatabaseStatement,
 } from "#/app.ts";
+import { toolchainVersions } from "#/catalog.ts";
 import { composeServers, dockerRuntime } from "#/docker.ts";
 import { envFiles } from "#/env-files.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
@@ -480,7 +483,9 @@ const backendChoice = (ctx: Context) => {
     return "Hono on Cloudflare Workers";
   }
 
-  return ctx.has("bun") ? "Hono on Bun" : "Hono on Node.js 24";
+  return ctx.has("bun")
+    ? "Hono on Bun"
+    : `Hono on Node.js ${major(toolchainVersions.node)}`;
 };
 
 const serverPackage = (ctx: Context) =>
