@@ -150,7 +150,7 @@ const startBody = (ctx: Context) => {
     "    try {",
     "      await stopAll();",
     "    } catch (cleanupError) {",
-    '      throw new AggregateError([error, cleanupError], "Test server startup and cleanup failed");',
+    '      throw new AggregateError([error, cleanupError], "Test server startup and cleanup failed", { cause: cleanupError });',
     "    }",
     "",
     "    throw error;",

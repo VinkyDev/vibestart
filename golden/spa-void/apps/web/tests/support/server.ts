@@ -122,7 +122,8 @@ export const startTestServer = async (baseURL: string) => {
     } catch (cleanupError) {
       throw new AggregateError(
         [error, cleanupError],
-        "Test server startup and cleanup failed"
+        "Test server startup and cleanup failed",
+        { cause: cleanupError }
       );
     }
 
