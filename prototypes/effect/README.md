@@ -86,7 +86,7 @@ Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUT
 
 Effect packages are pinned together at 4.1.0. Shared dependencies follow the golden catalog: Node 26.13.0, pnpm 12.15.0, Vite+ 1.4.0, Drizzle 1.0.0-rc.5, and Better Auth 1.7.14. Drizzle uses its published release candidate, without the earlier snapshot or a patch.
 
-The Effect CI job runs `vp run ready` on Linux (PostgreSQL 18) and Windows (the runner’s PostgreSQL 17), including real HTTP integration tests, Chromium journeys, and production builds. Linux also builds and starts the Docker image, including an idempotent migration check. It is part of the required `ci` check. This remains a prototype: promotion requires the generator to produce this project and its verified stacks to cover it; the CLI and Studio do not offer Effect yet.
+The Effect CI job runs `vp run ready` on Linux (PostgreSQL 18) and Windows (the runner’s PostgreSQL 17), including real HTTP integration tests, Chromium journeys, and production builds. Linux also builds and starts the Docker image, including repeatable migrations, sign-up, and an authenticated RPC write. It is part of the required `ci` check. This remains a prototype: promotion requires the generator to produce this project and its verified stacks to cover it; the CLI and Studio do not offer Effect yet.
 
 ## Boundaries
 

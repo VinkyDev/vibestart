@@ -99,6 +99,8 @@ const nodeRuntime = (ctx: Context, read: ReadSlot) => {
       ctx.has("bun")
         ? `FROM oven/bun:${toolchainVersions.bun}-slim AS runtime`
         : "FROM debian:trixie-slim AS runtime",
+      // The copied Node 26 binary links libatomic, including Bun images that use Node for health checks.
+      "RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*",
       "WORKDIR /app",
       `ENV ${[["NODE_ENV", "production"], ["PORT", "3000"], ...env].map(([name, value]) => `${name}=${value}`).join(" ")}`,
     ].join("\n"),

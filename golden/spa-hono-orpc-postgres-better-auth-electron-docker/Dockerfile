@@ -20,6 +20,7 @@ RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
 FROM debian:trixie-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 ENV NODE_ENV=production PORT=3000
 

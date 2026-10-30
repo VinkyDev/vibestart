@@ -226,6 +226,26 @@ jobs:
           timeout 60 bash -c 'until [ "$(docker inspect --format "{{.State.Health.Status}}" effect-prototype)" = healthy ]; do sleep 2; done'
           curl --fail --silent --output /dev/null http://localhost:3000/
           curl --fail --silent --output /dev/null http://localhost:3000/api/openapi.json
+          node --input-type=module <<'JS'
+          import assert from "node:assert/strict";
+          const origin = "http://localhost:3000";
+          const signedUp = await fetch(`${origin}/api/auth/sign-up/email`, {
+            method: "POST",
+            headers: { "content-type": "application/json", origin },
+            body: JSON.stringify({ email: `${crypto.randomUUID()}@example.com`, name: "Smoke", password: "correct-horse-battery" }),
+          });
+          assert.equal(signedUp.status, 200);
+          const cookie = signedUp.headers.getSetCookie().map((value) => value.split(";")[0]).join("; ");
+          const response = await fetch(`${origin}/rpc`, {
+            method: "POST",
+            headers: { "content-type": "application/ndjson", cookie },
+            body: JSON.stringify({ _tag: "Request", id: "1", tag: "todos.create", payload: { title: "Production todo" }, headers: [] }) + "\n",
+          });
+          assert.equal(response.status, 200);
+          const { exit } = JSON.parse(await response.text());
+          assert.equal(exit._tag, "Success");
+          assert.equal(exit.value.title, "Production todo");
+          JS
       - if: failure()
         uses: actions/upload-artifact@v7.0.1
         with:

@@ -8,6 +8,7 @@ import { authClient } from "#src/lib/auth-client.ts";
 export const UserMenu = () => {
   const queryClient = useQueryClient();
   const { data: session } = authClient.useSession();
+
   const signOut = useMutation({
     mutationFn: async () => {
       const { error } = await authClient.signOut();
