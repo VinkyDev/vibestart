@@ -97,7 +97,7 @@ A test earns its upkeep when its expected values come from a source independent 
 
 `apps/web/e2e.config.ts` runs `tests/support/start.ts` to start the stack for the e2e tests on :3200 (`E2E_TEST_PORT`): a fresh MySQL database, the real Hono server, and Vite in front, with the same proxy and origin as development. A second checkout runs its tests at the same time on another port. Each integration test file gets a database of its own from `createTestDatabase()` in `@my-app/db/testing`, migrated and removed when the file ends, so files run in parallel. Test databases are created beside `DATABASE_URL` from `apps/server/.env`, so the tests need MySQL running. Tests sign up a new user with `signUp()`, so they share no rows.
 
-Use `visit()` and `reload()` (`waitUntil: "networkidle"`) before interacting so server-rendered pages finish hydrating. Query with `screen`, act with `tap()` and `fill()`, and assert with `expect` from `e2e`. Generated tests need no model; configure an agent in `e2e.config.ts` for natural-language steps.
+Use `visit()` and `reload()` before interacting. Network idle does not prove hydration; controls that need client JavaScript must stay disabled until hydration completes. Query with `screen`, act with `tap()` and `fill()`, and assert with `expect` from `e2e`. Generated tests need no model; configure an agent in `e2e.config.ts` for natural-language steps.
 
 The app command inherits only `PATH`, `HOME`, temporary-directory variables, and `e2e.config.ts` overrides. Forward any additional required variables there. Logs: `apps/web/.e2e/server.log`; report: `.e2e/report.json`; failure traces: `.e2e/artifacts`. Rerun failures from `apps/web` with `vp exec e2e run --last-failed`.
 

@@ -28,7 +28,7 @@ export const playwright: BrowserRunner = {
   installer: "playwright",
   name: "Playwright",
   practice: [
-    'Open and reload pages with `visit()` (`waitUntil: "networkidle"`) before clicking. Server-rendered pages hydrate after load, and a click before hydration does nothing. Assert with Playwright\'s web-first assertions (`toBeVisible`, `toHaveURL`, `toBeChecked`).',
+    "Open and reload pages with `visit()` before clicking. Network idle does not prove hydration; controls that need client JavaScript must stay disabled until hydration completes. Assert with Playwright's web-first assertions (`toBeVisible`, `toHaveURL`, `toBeChecked`).",
   ],
   startsStack: "`apps/web/tests/support/server.ts` starts",
   templates: "testing/playwright",
@@ -79,7 +79,7 @@ export const e2e: BrowserRunner = {
   installer: "e2e-web",
   name: "TesterArmy e2e",
   practice: [
-    'Use `visit()` and `reload()` (`waitUntil: "networkidle"`) before interacting so server-rendered pages finish hydrating. Query with `screen`, act with `tap()` and `fill()`, and assert with `expect` from `e2e`. Generated tests need no model; configure an agent in `e2e.config.ts` for natural-language steps.',
+    "Use `visit()` and `reload()` before interacting. Network idle does not prove hydration; controls that need client JavaScript must stay disabled until hydration completes. Query with `screen`, act with `tap()` and `fill()`, and assert with `expect` from `e2e`. Generated tests need no model; configure an agent in `e2e.config.ts` for natural-language steps.",
     "The app command inherits only `PATH`, `HOME`, temporary-directory variables, and `e2e.config.ts` overrides. Forward any additional required variables there. Logs: `apps/web/.e2e/server.log`; report: `.e2e/report.json`; failure traces: `.e2e/artifacts`. Rerun failures from `apps/web` with `vp exec e2e run --last-failed`.",
   ],
   startsStack:
