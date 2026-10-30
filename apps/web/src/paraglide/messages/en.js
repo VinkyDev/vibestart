@@ -713,7 +713,7 @@ export const desc_next = /** @type {(inputs: Desc_NextInputs) => LocalizedString
 };
 
 export const desc_node = /** @type {(inputs: Desc_NodeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Node.js 24`)
+	return /** @type {LocalizedString} */ (`Node.js 26`)
 };
 
 export const desc_openapi = /** @type {(inputs: Desc_OpenapiInputs) => LocalizedString} */ () => {

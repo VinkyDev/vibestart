@@ -36,7 +36,7 @@ vp run stacks verify       # run `vp run ready` in each stack without a current 
 
 ## Keeping dependencies current
 
-A package has one range in this repository's catalog (`pnpm-workspace.yaml`), the generated catalog (`packages/integrations/src/catalog.ts`), the `package.json` engines, and the `bun-version` CI installs (`.github/workflows/ci.yml`).
+A package has one range in this repository's catalog (`pnpm-workspace.yaml`), the generated catalog (`packages/integrations/src/catalog.ts`), the `package.json` engines, `.node-version`, and the `bun-version` CI installs (`.github/workflows/ci.yml`).
 
 ```sh
 vp run deps                 # list pins behind the registry; exits 1 when one is

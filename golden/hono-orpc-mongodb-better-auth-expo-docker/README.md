@@ -4,7 +4,7 @@ Hono · oRPC · MongoDB · Mongoose · Better Auth · Expo · Node · Docker, on
 
 | Layer     | Choice                                                         |
 | --------- | -------------------------------------------------------------- |
-| Backend   | Hono on Node.js 24                                             |
+| Backend   | Hono on Node.js 26                                             |
 | API       | oRPC (end-to-end types, no codegen) plus OpenAPI at `/api`     |
 | Database  | MongoDB 8, Mongoose 9                                          |
 | Auth      | Better Auth, email and password, sessions in MongoDB           |

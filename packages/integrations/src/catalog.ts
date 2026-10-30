@@ -2,7 +2,7 @@ import type { Catalog } from "@vibestart/core";
 
 export const toolchainVersions = {
   bun: "1.4.4",
-  node: "24.22.1",
+  node: "26.13.0",
   pnpm: "12.15.0",
   vitePlus: "1.4.0",
 };
@@ -14,7 +14,7 @@ export const catalog = {
     e2e: "^0.21.3",
     "@playwright/test": "^1.64.1",
     "@shadcn/lint": "^0.2.3",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     knip: "^6.43.0",
     typescript: "^7.0.2",
     ultracite: "^8.1.0",

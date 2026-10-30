@@ -6,7 +6,7 @@ Next.js · Hono · OpenAPI · MySQL · Drizzle · Better Auth · Node · Docker,
 | --------- | ------------------------------------------------------------------------------------- |
 | Framework | Next.js 16 App Router, React 19 with React Compiler, typed routes                     |
 | Data      | TanStack Query, prefetched in Server Components and hydrated, Tailwind 4              |
-| Backend   | Hono on Node.js 24                                                                    |
+| Backend   | Hono on Node.js 26                                                                    |
 | API       | REST routes with `@hono/zod-openapi`, a typed `hono/client`, reference docs at `/api` |
 | Database  | MySQL 8.4, Drizzle ORM v1                                                             |
 | Auth      | Better Auth, email and password, sessions in MySQL                                    |

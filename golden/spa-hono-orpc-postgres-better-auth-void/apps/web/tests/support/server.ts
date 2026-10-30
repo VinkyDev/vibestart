@@ -16,7 +16,7 @@ const webDir = fileURLToPath(new URL("../..", import.meta.url));
 const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
 const envFile = `${serverDir}/.env`;
 
-const waitForServer = async (url: string, attempts = 100): Promise<void> => {
+const waitForServer = async (url: string, attempts = 300): Promise<void> => {
   await retry(
     async () => {
       const response = await fetch(url);

@@ -1,5 +1,8 @@
+import { major } from "semver";
+
 import { contribute, defineIntegration } from "@vibestart/core";
 
+import { toolchainVersions } from "#/catalog.ts";
 import { readmeTagline } from "#/vite-plus/slots.ts";
 
 export const node = defineIntegration({
@@ -7,7 +10,7 @@ export const node = defineIntegration({
   id: "node",
   kind: "runtime",
   name: "Node.js",
-  description: "Node.js 24",
+  description: `Node.js ${major(toolchainVersions.node)}`,
   homepage: "https://nodejs.org",
   auxiliary: true,
   provides: ["node-runtime"],

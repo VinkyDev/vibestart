@@ -1602,7 +1602,7 @@ export declare const desc_next: ((inputs?: Desc_NextInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Node.js 24" |
+* | "Node.js 26" |
 *
 * @param {Desc_NodeInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
