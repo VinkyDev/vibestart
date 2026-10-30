@@ -31,6 +31,7 @@ test("switches independent modes and restores them through browser history", asy
   await page.screenshot({
     path: test.info().outputPath("effect-studio.png"),
     fullPage: true,
+    animations: "disabled",
   });
 });
 
