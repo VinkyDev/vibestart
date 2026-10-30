@@ -47,9 +47,9 @@ const harness = (platform = "win32") => {
   }));
 
   const kill = vi.fn<typeof process.kill>();
-  const controller = new AbortController();
 
   const timeout = vi.fn<typeof AbortSignal.timeout>((delay) => {
+    const controller = new AbortController();
     setTimeout(() => {
       controller.abort();
     }, delay);
@@ -152,15 +152,57 @@ describe("generated test-server teardown", () => {
   it.each(["linux", "darwin"])(
     "keeps process-group shutdown on %s",
     async (platform) => {
+      vi.useFakeTimers();
       const h = harness(platform);
       const stopped = h.stop();
+      await vi.advanceTimersByTimeAsync(0);
       expect(h.kill).toHaveBeenCalledWith(-1234, "SIGTERM");
       expect(h.taskkill).not.toHaveBeenCalled();
-      expect(h.timeout).not.toHaveBeenCalled();
+      expect(h.timeout).toHaveBeenCalledWith(5000);
       h.exit();
       await stopped;
     }
   );
+
+  it.each(["linux", "darwin"])(
+    "force-kills a process group that ignores SIGTERM on %s",
+    async (platform) => {
+      vi.useFakeTimers();
+      const h = harness(platform);
+      const stopped = h.stop();
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(h.kill.mock.calls).toStrictEqual([
+        [-1234, "SIGTERM"],
+        [-1234, "SIGKILL"],
+      ]);
+      h.exit();
+      await stopped;
+      expect(h.child.listenerCount("exit")).toBe(0);
+    }
+  );
+
+  it("bounds the wait even when SIGKILL does not produce an exit", async () => {
+    vi.useFakeTimers();
+    const h = harness("linux");
+    await Promise.all([
+      expect(h.stop()).rejects.toMatchObject({ name: "AbortError" }),
+      vi.advanceTimersByTimeAsync(10_000),
+    ]);
+    expect(h.child.listenerCount("exit")).toBe(0);
+    expect(h.child.listenerCount("error")).toBe(0);
+  });
+
+  it("does not leave an unhandled exit wait when signalling fails", async () => {
+    vi.useFakeTimers();
+    const h = harness("linux");
+    h.kill.mockImplementation(() => {
+      throw new Error("kill denied");
+    });
+    await expect(h.stop()).rejects.toThrow("kill denied");
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(h.child.listenerCount("exit")).toBe(0);
+    expect(h.child.listenerCount("error")).toBe(0);
+  });
 
   it.each([{ pid: undefined }, { exitCode: 0 }, { signalCode: "SIGTERM" }])(
     "skips a child that has already stopped: %j",

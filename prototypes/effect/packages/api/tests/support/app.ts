@@ -19,8 +19,8 @@ const origin = "http://localhost";
 export class TestApp extends Context.Service<
   TestApp,
   {
-    /** Sends a request through every route and middleware, as the browser would. */
     readonly database: typeof Database.Service;
+    /** Sends a request through every route and middleware, as the browser would. */
     readonly fetch: (request: Request) => Promise<Response>;
     /** Signs a new user up through Better Auth and returns their session cookie. */
     readonly signUp: Effect.Effect<string>;
@@ -129,8 +129,7 @@ const CreateExit = Schema.fromJsonString(
 );
 
 /**
- * Posts `todos.create` as raw NDJSON, past the client's own payload validation, and returns the
- * server's `Exit`, so tests see what the server itself accepts.
+ * Posts raw NDJSON past client validation, so tests observe the server's actual wire response.
  */
 export const rpcRaw = Effect.fnUntraced(function* (
   cookie: string,

@@ -195,4 +195,38 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
       assert.strictEqual(response.headers.get("x-frame-options"), "DENY");
     })
   );
+
+  it.effect(
+    "does not misreport an auth database outage as an anonymous session",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+        yield* Effect.acquireUseRelease(
+          app.database.execute(
+            sql`alter table session rename to unavailable_session`
+          ),
+          () =>
+            Effect.gen(function* () {
+              assert.instanceOf(
+                yield* Effect.flip(client("todos.list", undefined)),
+                ServiceUnavailable
+              );
+
+              const body = yield* rpcRaw(cookie, "todos.create", {
+                title: "Unsent",
+              });
+
+              assert.include(body, "ServiceUnavailable");
+              assert.notInclude(body, "select");
+              assert.notInclude(body, "unavailable_session");
+            }),
+          () =>
+            app.database
+              .execute(sql`alter table unavailable_session rename to session`)
+              .pipe(Effect.orDie)
+        );
+      })
+  );
 });

@@ -41,37 +41,43 @@ const stop = async (child: ChildProcess) => {
     return;
   }
 
-  const exited = once(child, "exit", {
-    signal: AbortSignal.timeout(5000),
-  });
+  const { pid } = child;
 
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
+  const terminate = async (signal: "SIGTERM" | "SIGKILL") => {
+    await Promise.all([
+      once(child, "exit", { signal: AbortSignal.timeout(5000) }),
+      Promise.resolve().then(() => {
+        if (process.platform === "win32") {
+          // taskkill may report already-exited descendants as errors.
+          const result = spawnSync(
+            "taskkill",
+            ["/pid", String(pid), "/t", "/f"],
+            {
+              stdio: "ignore",
+              timeout: 5000,
+            }
+          );
 
-    if (result.error || result.status !== 0) {
-      child.kill();
-    }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
+          if (result.error || result.status !== 0) {
+            return child.kill();
+          }
+
+          return true;
+        }
+
+        return process.kill(-pid, signal);
+      }),
+    ]);
+  };
 
   try {
-    await exited;
+    await terminate("SIGTERM");
   } catch (error) {
     if (process.platform === "win32") {
       throw error;
     }
-    const killed = once(child, "exit", { signal: AbortSignal.timeout(5000) });
-    process.kill(-child.pid, "SIGKILL");
-    await killed;
+
+    await terminate("SIGKILL");
   }
 };
 
@@ -81,9 +87,15 @@ export const startTestServer = async (baseURL: string) => {
 
   const stopAll = async () => {
     const results = await Promise.allSettled(children.map(stop));
-    const errors = results
-      .filter((result) => result.status === "rejected")
-      .map((result) => result.reason);
+
+    const errors: unknown[] = [];
+
+    for (const result of results) {
+      if (result.status === "rejected") {
+        errors.push(result.reason);
+      }
+    }
+
     if (errors.length > 0) {
       throw new AggregateError(errors, "Failed to stop test servers");
     }

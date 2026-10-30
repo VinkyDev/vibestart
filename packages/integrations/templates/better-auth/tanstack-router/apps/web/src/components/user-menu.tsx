@@ -23,6 +23,7 @@ export const UserMenu = () => {
   const signOut = useMutation({
     mutationFn: async () => {
       const { error } = await authClient.signOut();
+
       if (error) {
         throw new Error("Could not sign out. Please try again.");
       }
