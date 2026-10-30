@@ -11,6 +11,9 @@ export const UserMenu = () => {
 
   const signOut = useMutation({
     mutationFn: async () => {
+      // Expo drops its local session before the request; clear private queries first.
+      queryClient.clear();
+
       const { error } = await authClient.signOut();
 
       if (error) {
@@ -19,9 +22,6 @@ export const UserMenu = () => {
     },
     onError: () => {
       Alert.alert("Could not sign out", "Please try again.");
-    },
-    onSuccess: () => {
-      queryClient.clear();
     },
   });
 

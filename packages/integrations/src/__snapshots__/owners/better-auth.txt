@@ -4173,10 +4173,14 @@ const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
 const isSameOriginRedirect = (value: unknown): value is string =>
   typeof value === "string" && sameOriginPath.test(value);
 
-const validateSearch = (search: {
-  redirect?: unknown;
-}): { redirect?: string } =>
-  isSameOriginRedirect(search.redirect) ? { redirect: search.redirect } : {};
+interface LoginSearch {
+  redirect?: string;
+}
+
+const validateSearch = (search: { redirect?: unknown }): LoginSearch => ({
+  // TanStack merges validated search with the input, so rejected values must be overwritten.
+  redirect: isSameOriginRedirect(search.redirect) ? search.redirect : undefined,
+});
 
 const LoginPage = () => {
   const router = useRouter();
@@ -4563,10 +4567,14 @@ const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
 const isSameOriginRedirect = (value: unknown): value is string =>
   typeof value === "string" && sameOriginPath.test(value);
 
-const validateSearch = (search: {
-  redirect?: unknown;
-}): { redirect?: string } =>
-  isSameOriginRedirect(search.redirect) ? { redirect: search.redirect } : {};
+interface LoginSearch {
+  redirect?: string;
+}
+
+const validateSearch = (search: { redirect?: unknown }): LoginSearch => ({
+  // TanStack merges validated search with the input, so rejected values must be overwritten.
+  redirect: isSameOriginRedirect(search.redirect) ? search.redirect : undefined,
+});
 
 const LoginPage = () => {
   const router = useRouter();

@@ -125,6 +125,7 @@ test("login redirects stay on the app origin after URL normalization", async ({
     await expect(browser).toHaveURL("/todos");
   };
 
+  await expectInternalRedirect("https://example.com");
   await expectInternalRedirect("//example.com");
   await expectInternalRedirect("/\\example.com");
   await expectInternalRedirect("/\t/example.com");
