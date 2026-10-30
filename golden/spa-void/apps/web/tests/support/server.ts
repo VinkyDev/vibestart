@@ -117,7 +117,15 @@ export const startTestServer = async (baseURL: string) => {
     );
     await waitForServer(`${baseURL}/`);
   } catch (error) {
-    await stopAll();
+    try {
+      await stopAll();
+    } catch (cleanupError) {
+      throw new AggregateError(
+        [error, cleanupError],
+        "Test server startup and cleanup failed"
+      );
+    }
+
     throw error;
   }
 

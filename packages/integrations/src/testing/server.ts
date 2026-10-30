@@ -98,22 +98,16 @@ const singleServerBody = (ctx: Context) => ({
 });
 
 const cleanup = (ctx: Context) => {
-  if (ctx.stack.database !== undefined && hasBackend(ctx)) {
-    return [
-      "    try {",
-      "      await database.remove();",
-      "    } finally {",
-      "      await closeTestHttp();",
-      "    }",
-    ];
-  }
-
-  return [
-    ...(ctx.stack.database === undefined
-      ? []
-      : ["    await database.remove();"]),
-    ...(hasBackend(ctx) ? ["    await closeTestHttp();"] : []),
+  const tasks = [
+    ...(ctx.stack.database === undefined ? [] : ["database.remove()"]),
+    ...(hasBackend(ctx) ? ["closeTestHttp()"] : []),
   ];
+
+  return tasks.length === 0
+    ? []
+    : [
+        `    results.push(...(await Promise.allSettled([${tasks.join(", ")}])));`,
+      ];
 };
 
 // A failed start stops what it started, so no server outlives the run holding its port.
@@ -153,7 +147,12 @@ const startBody = (ctx: Context) => {
     healthCheck(ctx),
     ...warmUp(ctx),
     "  } catch (error) {",
-    "    await stopAll();",
+    "    try {",
+    "      await stopAll();",
+    "    } catch (cleanupError) {",
+    '      throw new AggregateError([error, cleanupError], "Test server startup and cleanup failed");',
+    "    }",
+    "",
     "    throw error;",
     "  }",
     "",

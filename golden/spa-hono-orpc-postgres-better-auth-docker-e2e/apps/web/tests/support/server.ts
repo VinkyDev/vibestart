@@ -101,11 +101,9 @@ export const startTestServer = async (baseURL: string) => {
   const stopAll = async () => {
     const results = await Promise.allSettled(children.map(stop));
 
-    try {
-      await database.remove();
-    } finally {
-      await closeTestHttp();
-    }
+    results.push(
+      ...(await Promise.allSettled([database.remove(), closeTestHttp()]))
+    );
 
     const errors: unknown[] = [];
 
@@ -151,7 +149,15 @@ export const startTestServer = async (baseURL: string) => {
       })
     );
   } catch (error) {
-    await stopAll();
+    try {
+      await stopAll();
+    } catch (cleanupError) {
+      throw new AggregateError(
+        [error, cleanupError],
+        "Test server startup and cleanup failed"
+      );
+    }
+
     throw error;
   }
 
