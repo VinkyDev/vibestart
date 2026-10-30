@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@my-app/ui/components/button";
 import {
@@ -28,7 +29,13 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
   const signOut = useMutation({
     mutationFn: async () => {
-      await authClient.signOut();
+      const { error } = await authClient.signOut();
+      if (error) {
+        throw new Error("Could not sign out. Please try again.");
+      }
+    },
+    onError: () => {
+      toast.error("Could not sign out. Please try again.");
     },
     onSuccess: () => {
       queryClient.clear();
@@ -61,6 +68,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          disabled={signOut.isPending}
           onClick={() => {
             signOut.mutate();
           }}

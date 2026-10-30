@@ -1,9 +1,16 @@
 import { and, eq } from "drizzle-orm";
-import { Effect } from "effect";
+import { Context, Data, Effect, Layer } from "effect";
 
-import { CurrentUser, TodoNotFound, TodosRpcs } from "@my-app/contracts";
+import { TodoNotFound } from "@my-app/contracts";
+import type { Todo } from "@my-app/contracts";
 import { Database } from "@my-app/db";
 import { todos } from "@my-app/db/schema/todos";
+
+export class TodoStorageError extends Data.TaggedError("TodoStorageError")<{
+  readonly cause: unknown;
+}> {}
+
+const storageError = (cause: unknown) => new TodoStorageError({ cause });
 
 const columns = {
   completed: todos.completed,
@@ -21,64 +28,71 @@ const firstOrNotFound = <A>([row]: readonly A[], id: number) =>
     ? Effect.fail(new TodoNotFound({ id }))
     : Effect.succeed(row);
 
-/** Each procedure reads and writes only the current user's rows; database failures are defects. */
-export const TodosLive = TodosRpcs.toLayer(
-  Effect.gen(function* () {
-    const db = yield* Database;
+/** Owns persistence and ownership rules, independent of the RPC transport. */
+export class Todos extends Context.Service<
+  Todos,
+  {
+    readonly list: (
+      userId: string
+    ) => Effect.Effect<readonly Todo[], TodoStorageError>;
+    readonly create: (
+      userId: string,
+      title: string
+    ) => Effect.Effect<Todo, TodoStorageError>;
+    readonly update: (
+      userId: string,
+      id: number,
+      completed: boolean
+    ) => Effect.Effect<Todo, TodoStorageError | TodoNotFound>;
+    readonly delete: (
+      userId: string,
+      id: number
+    ) => Effect.Effect<void, TodoStorageError | TodoNotFound>;
+  }
+>()("@my-app/api/Todos") {
+  static readonly layer = Layer.effect(
+    Todos,
+    Effect.gen(function* () {
+      const db = yield* Database;
 
-    return {
-      "todos.create": ({ title }) =>
-        Effect.gen(function* () {
-          const user = yield* CurrentUser;
-
-          const [todo] = yield* Effect.orDie(
-            db
-              .insert(todos)
-              .values({ title, userId: user.id })
-              .returning(columns)
-          );
+      return Todos.of({
+        list: Effect.fn("Todos.list")(function* (userId) {
+          return yield* db
+            .select(columns)
+            .from(todos)
+            .where(eq(todos.userId, userId))
+            .orderBy(todos.id)
+            .pipe(Effect.mapError(storageError));
+        }),
+        create: Effect.fn("Todos.create")(function* (userId, title) {
+          const [todo] = yield* db
+            .insert(todos)
+            .values({ title, userId })
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
 
           return todo ?? (yield* Effect.die("insert returned no row"));
         }),
-
-      "todos.delete": ({ id }) =>
-        Effect.gen(function* () {
-          const user = yield* CurrentUser;
-
-          const rows = yield* Effect.orDie(
-            db.delete(todos).where(ownedBy(user.id, id)).returning(columns)
-          );
-
-          yield* firstOrNotFound(rows, id);
-        }),
-
-      "todos.list": () =>
-        Effect.gen(function* () {
-          const user = yield* CurrentUser;
-
-          return yield* Effect.orDie(
-            db
-              .select(columns)
-              .from(todos)
-              .where(eq(todos.userId, user.id))
-              .orderBy(todos.id)
-          );
-        }),
-
-      "todos.update": ({ completed, id }) =>
-        Effect.gen(function* () {
-          const user = yield* CurrentUser;
-
-          const rows = yield* Effect.orDie(
-            db
-              .update(todos)
-              .set({ completed })
-              .where(ownedBy(user.id, id))
-              .returning(columns)
-          );
+        update: Effect.fn("Todos.update")(function* (userId, id, completed) {
+          const rows = yield* db
+            .update(todos)
+            .set({ completed })
+            .where(ownedBy(userId, id))
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
 
           return yield* firstOrNotFound(rows, id);
         }),
-    };
-  })
-);
+        delete: Effect.fn("Todos.delete")(function* (userId, id) {
+          const rows = yield* db
+            .delete(todos)
+            .where(ownedBy(userId, id))
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          yield* firstOrNotFound(rows, id);
+        }),
+      });
+    })
+  );
+}

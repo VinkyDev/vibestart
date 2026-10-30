@@ -1,12 +1,18 @@
 import { Schema } from "effect";
 
-/** Trimmed on decode, then bounded; the `todos_title_length` check holds the database to the same rule. */
-export const TodoTitle = Schema.Trim.check(Schema.isBetweenLength(1, 200));
+/** Normalize at the boundary; count Unicode code points, as PostgreSQL char_length does. */
+export const TodoTitle = Schema.Trim.check(
+  Schema.isPattern(/^[^\u0000]{1,200}$/u)
+);
+
+export const TodoId = Schema.Int.check(
+  Schema.isBetween({ minimum: 1, maximum: 2_147_483_647 })
+);
 
 export const Todo = Schema.Struct({
   completed: Schema.Boolean,
   createdAt: Schema.Date,
-  id: Schema.Int,
+  id: TodoId,
   title: Schema.String,
 });
 
@@ -14,5 +20,5 @@ export type Todo = typeof Todo.Type;
 
 export class TodoNotFound extends Schema.TaggedError<TodoNotFound>()(
   "TodoNotFound",
-  { id: Schema.Int }
+  { id: TodoId }
 ) {}

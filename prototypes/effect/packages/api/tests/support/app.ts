@@ -20,6 +20,7 @@ export class TestApp extends Context.Service<
   TestApp,
   {
     /** Sends a request through every route and middleware, as the browser would. */
+    readonly database: typeof Database.Service;
     readonly fetch: (request: Request) => Promise<Response>;
     /** Signs a new user up through Better Auth and returns their session cookie. */
     readonly signUp: Effect.Effect<string>;
@@ -51,17 +52,24 @@ export class TestApp extends Context.Service<
 
       yield* Effect.addFinalizer(() => Effect.promise(dispose));
 
-      const auth = Context.get(services, Auth);
-
       const signUp = Effect.promise(async () => {
-        const { headers } = await auth.api.signUpEmail({
-          body: {
-            email: `${crypto.randomUUID()}@example.com`,
-            name: "Test User",
-            password: "correct-horse-battery",
-          },
-          returnHeaders: true,
-        });
+        const response = await handler(
+          new Request(`${origin}/api/auth/sign-up/email`, {
+            method: "POST",
+            headers: { "content-type": "application/json", origin },
+            body: JSON.stringify({
+              email: `${crypto.randomUUID()}@example.com`,
+              name: "Test User",
+              password: "correct-horse-battery",
+            }),
+          })
+        );
+
+        if (!response.ok) {
+          throw new Error(`Sign up failed with ${response.status}`);
+        }
+
+        const { headers } = response;
 
         return headers
           .getSetCookie()
@@ -69,7 +77,11 @@ export class TestApp extends Context.Service<
           .join("; ");
       });
 
-      return { fetch: handler, signUp };
+      return {
+        database: Context.get(services, Database),
+        fetch: handler,
+        signUp,
+      };
     })
   );
 }
@@ -120,32 +132,32 @@ const CreateExit = Schema.fromJsonString(
  * Posts `todos.create` as raw NDJSON, past the client's own payload validation, and returns the
  * server's `Exit`, so tests see what the server itself accepts.
  */
-export const createRaw = Effect.fnUntraced(function* (
+export const rpcRaw = Effect.fnUntraced(function* (
   cookie: string,
-  title: string
+  tag: string,
+  payload: Record<string, string | number | boolean>
 ) {
   const app = yield* TestApp;
-
-  const request = {
-    _tag: "Request",
-    headers: [],
-    id: "1",
-    payload: { title },
-    tag: "todos.create",
-  };
 
   const response = yield* Effect.promise(
     async () =>
       await app.fetch(
         new Request(`${origin}/rpc`, {
-          body: `${JSON.stringify(request)}\n`,
+          body: `${JSON.stringify({ _tag: "Request", headers: [], id: "1", payload, tag })}\n`,
           headers: { "content-type": "application/ndjson", cookie },
           method: "POST",
         })
       )
   );
 
-  const body = yield* Effect.promise(async () => await response.text());
+  return yield* Effect.promise(async () => await response.text());
+});
+
+export const createRaw = Effect.fnUntraced(function* (
+  cookie: string,
+  title: string
+) {
+  const body = yield* rpcRaw(cookie, "todos.create", { title });
   const { exit } = yield* Schema.decodeUnknownEffect(CreateExit)(body.trim());
 
   return exit;

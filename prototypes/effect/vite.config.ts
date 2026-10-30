@@ -52,6 +52,28 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
     overrides: [
       {
+        // This promise is only a synchronization signal, without a resolved value.
+        files: ["apps/web/tests/e2e/**"],
+        rules: { "typescript/no-invalid-void-type": "off" },
+      },
+
+      {
+        // Effect services use `Service.use`, not React hooks, and colocate typed errors.
+        files: ["packages/api/src/**"],
+        rules: {
+          "react-hooks/rules-of-hooks": "off",
+          "eslint/max-classes-per-file": "off",
+          // `Effect.map(effect, f)` is a dual API, not Array.map with thisArg.
+          "unicorn/no-array-method-this-argument": "off",
+        },
+      },
+      {
+        // PostgreSQL text rejects NUL, so the boundary schema explicitly excludes it.
+        files: ["packages/contracts/src/todo.ts"],
+        rules: { "eslint/no-control-regex": "off" },
+      },
+
+      {
         // Effect's errors are `class X extends Schema.TaggedError<X>()(…)`, a factory call rather than a thrown
         // `Error()`; a contract module declares several of them, and a `Schema` value with a `type` of the same name.
         files: ["packages/contracts/src/**"],
@@ -71,7 +93,11 @@ export default defineConfig({
       {
         // Atom clients are service classes, one per protocol, declared together.
         files: ["apps/web/src/lib/api.ts"],
-        rules: { "eslint/max-classes-per-file": "off" },
+        rules: {
+          "eslint/max-classes-per-file": "off",
+          // `runtime.fn<void>()` declares a mutation with no input.
+          "typescript/no-invalid-void-type": "off",
+        },
       },
       {
         files: ["apps/web/src/routes/**"],

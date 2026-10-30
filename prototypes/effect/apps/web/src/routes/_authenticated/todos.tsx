@@ -1,11 +1,17 @@
-import { useAtomSet, useAtomSuspense } from "@effect/atom-react";
+import {
+  useAtomRefresh,
+  useAtomSet,
+  useAtomSuspense,
+} from "@effect/atom-react";
 import { createFileRoute } from "@tanstack/react-router";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { Exit, Schema } from "effect";
 import { Trash2Icon } from "lucide-react";
-import { startTransition, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
 import { TodoTitle } from "@my-app/contracts";
+import type { Todo } from "@my-app/contracts";
 import { Button } from "@my-app/ui/components/button";
 import { Card, CardContent } from "@my-app/ui/components/card";
 import { Checkbox } from "@my-app/ui/components/checkbox";
@@ -23,13 +29,60 @@ import { toastFailure } from "#src/lib/notify.ts";
 // The server decodes the same schema; decoding here first trims the title and keeps a blank one from being sent.
 const decodeTitle = Schema.decodeUnknownExit(TodoTitle);
 
+const TodoItem = ({ todo }: { todo: Todo }) => {
+  const [pending, startMutation] = useTransition();
+
+  const updateTodo = useAtomSet(updateTodoAtom(todo.id), {
+    mode: "promiseExit",
+  });
+
+  const deleteTodo = useAtomSet(deleteTodoAtom(todo.id), {
+    mode: "promiseExit",
+  });
+
+  return (
+    <li className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors">
+      <Checkbox
+        aria-label={todo.title}
+        checked={todo.completed}
+        disabled={pending}
+        onCheckedChange={(completed) => {
+          startMutation(async () => {
+            toastFailure(await updateTodo(completed));
+          });
+        }}
+      />
+      <span
+        className={
+          todo.completed
+            ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
+            : "flex-1 text-sm"
+        }
+      >
+        {todo.title}
+      </span>
+      <Button
+        aria-label={`Delete ${todo.title}`}
+        disabled={pending}
+        onClick={() => {
+          startMutation(async () => {
+            toastFailure(await deleteTodo());
+          });
+        }}
+        size="icon-sm"
+        variant="ghost"
+      >
+        <Trash2Icon className="text-muted-foreground" />
+      </Button>
+    </li>
+  );
+};
+
 const TodosPage = () => {
   const [title, setTitle] = useState("");
   const [isCreating, startCreating] = useTransition();
   const { value: todos } = useAtomSuspense(todosAtom);
   const createTodo = useAtomSet(createTodoAtom, { mode: "promiseExit" });
-  const updateTodo = useAtomSet(updateTodoAtom, { mode: "promiseExit" });
-  const deleteTodo = useAtomSet(deleteTodoAtom, { mode: "promiseExit" });
   const validTitle = decodeTitle(title);
 
   const done = todos.filter((todo) => todo.completed).length;
@@ -99,51 +152,7 @@ const TodosPage = () => {
         ) : (
           <ul className="-mb-4 divide-y border-t">
             {todos.map((todo) => (
-              <li
-                className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors"
-                key={todo.id}
-              >
-                <Checkbox
-                  aria-label={todo.title}
-                  checked={todo.completed}
-                  onCheckedChange={(completed) => {
-                    startTransition(async () => {
-                      toastFailure(
-                        await updateTodo({
-                          payload: { completed, id: todo.id },
-                          reactivityKeys: todosKeys,
-                        })
-                      );
-                    });
-                  }}
-                />
-                <span
-                  className={
-                    todo.completed
-                      ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
-                      : "flex-1 text-sm"
-                  }
-                >
-                  {todo.title}
-                </span>
-                <Button
-                  aria-label={`Delete ${todo.title}`}
-                  onClick={() => {
-                    startTransition(async () => {
-                      toastFailure(
-                        await deleteTodo({
-                          payload: { id: todo.id },
-                          reactivityKeys: todosKeys,
-                        })
-                      );
-                    });
-                  }}
-                  size="icon-sm"
-                  variant="ghost"
-                >
-                  <Trash2Icon className="text-muted-foreground" />
-                </Button>
-              </li>
+              <TodoItem key={todo.id} todo={todo} />
             ))}
           </ul>
         )}
@@ -152,6 +161,25 @@ const TodosPage = () => {
   );
 };
 
+const TodosError = ({ reset }: ErrorComponentProps) => {
+  const refresh = useAtomRefresh(todosAtom);
+
+  return (
+    <section className="grid justify-items-start gap-4" role="alert">
+      <p>Could not load your todos.</p>
+      <Button
+        onClick={() => {
+          refresh();
+          reset();
+        }}
+      >
+        Try again
+      </Button>
+    </section>
+  );
+};
+
 export const Route = createFileRoute("/_authenticated/todos")({
   component: TodosPage,
+  errorComponent: TodosError,
 });

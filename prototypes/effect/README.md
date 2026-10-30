@@ -2,12 +2,12 @@
 
 React · Effect · PostgreSQL · Drizzle · Better Auth · Node · Docker, on [Vite+](https://viteplus.dev).
 
-> **Prototype.** This is the hand-written target for a vibestart Effect stack, not generator output. CI does not build or test it yet. See [Status](#status).
+> **Prototype.** This is the hand-written target for a vibestart Effect stack, not generator output. The dedicated Effect CI job checks it independently of generated stacks. See [Status](#status).
 
 | Layer     | Choice                                                                                   |
 | --------- | ---------------------------------------------------------------------------------------- |
 | Frontend  | React 19, TanStack Router, Effect Atom (`AtomRpc`, `AtomHttpApi`), Tailwind CSS 4        |
-| Backend   | Effect `HttpRouter` on `@effect/platform-node`, Node.js 24                               |
+| Backend   | Effect `HttpRouter` on `@effect/platform-node`, Node.js 26                               |
 | API       | Effect RPC at `/rpc` for the app; Effect HttpApi at `/api` with OpenAPI and Scalar docs  |
 | Contracts | `packages/contracts`: Effect Schema, shared by server and browser, depending on `effect` |
 | Config    | Effect `Config` (secrets as `Redacted`)                                                  |
@@ -84,9 +84,15 @@ Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUT
 
 ## Status
 
-Written against effect 4.0.5. `vp install` and `vp check` pass. Not yet run: the integration and e2e tests (they need PostgreSQL) and the Docker build. Known gaps, each with the condition that removes it:
+Effect packages are pinned together at 4.1.0. Shared dependencies follow the golden catalog: Node 26.13.0, pnpm 12.15.0, Vite+ 1.4.0, Drizzle 1.0.0-rc.5, and Better Auth 1.7.14. Drizzle uses its published release candidate, without the earlier snapshot or a patch.
 
-- **Drizzle.** `drizzle-orm` 1.0.0-rc.4's `effect-postgres` driver fails to load on effect 4.0.5, so the catalog pins the `rc5` snapshot `1.0.0-rc.5-5935859`. Its type declarations still import `effect/unstable/sql/SqlError`, which effect 4 no longer exports. Removed when a Drizzle release targets effect 4 stable.
-- **Two pools.** Better Auth's Drizzle adapter takes only the Promise driver (better-auth#7234), so `packages/auth` holds a small `postgres` pool beside the `@effect/sql-pg` one. Removed when the adapter accepts an Effect database.
-- **Security headers.** Effect's HTTP server has no counterpart to Hono's `secureHeaders`; none are set yet.
-- **Client validation.** The RPC client validates the encoded payload, so a form decodes its input with the contract schema (`TodoTitle`) before calling; the server still rejects invalid payloads, which `createRaw` tests.
+The Effect CI job runs `vp run ready` against PostgreSQL 18, including real HTTP integration tests, Chromium journeys, and production builds, then builds the Docker image. It is part of the required `ci` check. This remains a prototype: promotion requires the generator to produce this project and its verified stacks to cover it; the CLI and Studio do not offer Effect yet.
+
+## Boundaries
+
+- **Services.** `Todos` owns SQL and ownership rules. RPC handlers read `CurrentUser` and map storage errors to public errors. Causes remain in server logs; RPC defects are sanitized before serialization.
+- **Contracts.** IDs fit positive PostgreSQL integers. Titles are trimmed at the API boundary and limited to 200 Unicode code points, excluding NUL. The database separately enforces the length bound; its `btrim` is not JavaScript's Unicode normalization.
+- **Client state.** Authenticated routes own a Registry keyed by session ID. It is disposed on sign-out or session replacement. Public queries keep their own Registry. Each todo owns its mutation, with writes to that row disabled while pending.
+- **Resources.** A single Effect scope owns the e2e database and child processes, including failed startup. Child process shutdown has a bounded grace period.
+- **Auth.** Better Auth's Drizzle adapter still requires the Promise driver, so auth owns a small `postgres` pool beside `@effect/sql-pg`. This is the only second database driver; remove it when the adapter supports Effect directly.
+- **HTTP.** Global middleware adds `nosniff`, frame denial, and a referrer policy to API and static responses. TLS termination and deployment-specific CSP remain deployment concerns; the API documentation loads its own assets.

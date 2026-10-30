@@ -1,16 +1,8 @@
-import { once } from "node:events";
+import { NodeRuntime, NodeServices } from "@effect/platform-node";
+import { Effect } from "effect";
 
-import { e2eBaseURL, startTestServer } from "./server.ts";
+import { testServer } from "./server.ts";
 
-const stopped = Promise.race([
-  once(process, "SIGINT"),
-  once(process, "SIGTERM"),
-]);
-
-const stop = await startTestServer(e2eBaseURL);
-
-try {
-  await stopped;
-} finally {
-  await stop();
-}
+NodeRuntime.runMain(
+  testServer.pipe(Effect.scoped, Effect.provide(NodeServices.layer))
+);

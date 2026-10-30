@@ -1,6 +1,6 @@
-import { Layer } from "effect";
+import { Effect, Layer } from "effect";
 import { FetchHttpClient } from "effect/http";
-import { AtomHttpApi, AtomRpc } from "effect/reactivity";
+import { Atom, AtomHttpApi, AtomRpc, Reactivity } from "effect/reactivity";
 import { RpcClient, RpcSerialization } from "effect/rpc";
 
 import { Api, TodosRpcs } from "@my-app/contracts";
@@ -31,8 +31,29 @@ export const todosAtom = Rpc.query("todos.list", undefined, {
 
 export const createTodoAtom = Rpc.mutation("todos.create");
 
-export const updateTodoAtom = Rpc.mutation("todos.update");
+// Each row owns a mutation fiber: writing another row must not interrupt it.
+export const updateTodoAtom = Atom.family((id: number) =>
+  Rpc.runtime.fn<boolean>()(
+    Effect.fnUntraced(function* (completed) {
+      const client = yield* Rpc;
 
-export const deleteTodoAtom = Rpc.mutation("todos.delete");
+      return yield* client("todos.update", { id, completed }).pipe(
+        Reactivity.mutation(todosKeys)
+      );
+    })
+  )
+);
+
+export const deleteTodoAtom = Atom.family((id: number) =>
+  Rpc.runtime.fn<void>()(
+    Effect.fnUntraced(function* () {
+      const client = yield* Rpc;
+
+      return yield* client("todos.delete", { id }).pipe(
+        Reactivity.mutation(todosKeys)
+      );
+    })
+  )
+);
 
 export const healthAtom = HttpApi.query("health", "check", {});

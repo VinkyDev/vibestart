@@ -163,17 +163,59 @@ jobs:
           path: ${{ runner.temp }}/stacks/*.log
           if-no-files-found: ignore
 
+  effect:
+    name: Effect prototype
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 15
+    defaults:
+      run:
+        working-directory: prototypes/effect
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      E2E_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: prototypes/effect/.node-version
+      - run: vp install
+      - run: vp exec e2e-web install chromium --with-deps
+        working-directory: prototypes/effect/apps/web
+      - run: vp run ready
+      - run: docker build --tag effect-prototype .
+      - if: failure()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: effect-prototype-logs
+          path: prototypes/effect/apps/web/.e2e
+          include-hidden-files: true
+          if-no-files-found: ignore
+
   # The one required check: every job passed, and verify ran every planned task or had none.
   ci:
     if: always()
-    needs: [ready, plan, verify]
+    needs: [ready, plan, verify, effect]
     runs-on: ubuntu-24.04
     steps:
       - run: |
+          test "$EFFECT" = success
           test "$READY" = success
           test "$PLAN" = success
           test "$VERIFY" = success || test "$VERIFY" = skipped
         env:
+          EFFECT: ${{ needs.effect.result }}
           READY: ${{ needs.ready.result }}
           PLAN: ${{ needs.plan.result }}
           VERIFY: ${{ needs.verify.result }}

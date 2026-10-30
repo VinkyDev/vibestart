@@ -112,3 +112,99 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await reload(browser);
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
+
+test("writes to different rows both complete when their requests overlap", async ({
+  browser,
+  screen,
+}) => {
+  await signUpThroughUi(browser, screen);
+
+  await screen.getByLabel("New todo").fill("First task");
+  await screen.getByRole("button", { name: "Add" }).tap();
+  await expect(
+    screen.getByRole("checkbox", { name: "First task" })
+  ).toBeVisible();
+  await screen.getByLabel("New todo").fill("Second task");
+  await screen.getByRole("button", { name: "Add" }).tap();
+  await expect(
+    screen.getByRole("checkbox", { name: "Second task" })
+  ).toBeVisible();
+
+  // Hold the first real request until the second arrives; no timing-dependent sleeps.
+  const bothStarted = Promise.withResolvers<void>();
+  let writes = 0;
+  await browser.route("**/rpc", async (route) => {
+    if (route.request.postData?.includes('"tag":"todos.update"') === true) {
+      writes += 1;
+
+      if (writes === 2) {
+        bothStarted.resolve();
+      }
+
+      await bothStarted.promise;
+    }
+
+    await route.continue();
+  });
+
+  await screen.getByRole("checkbox", { name: "First task" }).tap();
+  await screen.getByRole("checkbox", { name: "Second task" }).tap();
+  await expect(
+    screen.getByRole("checkbox", { name: "First task" })
+  ).toBeChecked();
+  await expect(
+    screen.getByRole("checkbox", { name: "Second task" })
+  ).toBeChecked();
+  await reload(browser);
+  await expect(
+    screen.getByRole("checkbox", { name: "First task" })
+  ).toBeChecked();
+  await expect(
+    screen.getByRole("checkbox", { name: "Second task" })
+  ).toBeChecked();
+});
+
+test("a failed sign-out keeps the session and allows retry", async ({
+  browser,
+  screen,
+}) => {
+  await signUpThroughUi(browser, screen);
+  // Model an unavailable upstream, without replacing the successful auth path.
+  await browser.route("**/api/auth/sign-out", async (route) => {
+    await route.fulfill({ status: 503, json: { message: "Unavailable" } });
+  });
+  await screen.getByRole("button", { name: "Ada" }).tap();
+  await screen.getByRole("menuitem", { name: "Sign out" }).tap();
+  await expect(
+    screen.getByText("Could not sign out. Please try again.")
+  ).toBeVisible();
+  await expect(browser).toHaveURL("/todos");
+  await expect(screen.getByRole("button", { name: "Ada" })).toBeVisible();
+
+  await browser.unroute("**/api/auth/sign-out");
+  await screen.getByRole("button", { name: "Ada" }).tap();
+  await screen.getByRole("menuitem", { name: "Sign out" }).tap();
+  await expect(browser).toHaveURL("/");
+});
+
+test("a new session never sees the previous user's cached todos", async ({
+  browser,
+  screen,
+}) => {
+  await signUpThroughUi(browser, screen);
+  await screen.getByLabel("New todo").fill("Private to the first account");
+  await screen.getByRole("button", { name: "Add" }).tap();
+  await expect(screen.getByText("Private to the first account")).toBeVisible();
+  await screen.getByRole("link", { name: "Home", exact: true }).tap();
+  await expect(screen.getByText("Connected")).toBeVisible();
+  await screen.getByRole("button", { name: "Ada" }).tap();
+  await screen.getByRole("menuitem", { name: "Sign out" }).tap();
+  await expect(screen.getByRole("button", { name: "Ada" })).not.toBeVisible();
+  await expect(screen.getByText("Connected")).toBeVisible();
+
+  await signUpThroughUi(browser, screen);
+  await expect(screen.getByText("No todos yet.")).toBeVisible();
+  await expect(
+    screen.getByText("Private to the first account")
+  ).not.toBeVisible();
+});

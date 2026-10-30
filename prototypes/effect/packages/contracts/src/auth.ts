@@ -1,6 +1,8 @@
 import { Context, Schema } from "effect";
 import { RpcMiddleware } from "effect/rpc";
 
+import { InternalServerError, ServiceUnavailable } from "#src/errors.ts";
+
 /** The signed-in user, provided to every procedure behind `AuthMiddleware`. */
 export class CurrentUser extends Context.Service<
   CurrentUser,
@@ -17,4 +19,6 @@ export class Unauthorized extends Schema.TaggedError<Unauthorized>()(
 export class AuthMiddleware extends RpcMiddleware.Service<
   AuthMiddleware,
   { provides: CurrentUser }
->()("@my-app/contracts/AuthMiddleware", { error: Unauthorized }) {}
+>()("@my-app/contracts/AuthMiddleware", {
+  error: Schema.Union([Unauthorized, ServiceUnavailable, InternalServerError]),
+}) {}

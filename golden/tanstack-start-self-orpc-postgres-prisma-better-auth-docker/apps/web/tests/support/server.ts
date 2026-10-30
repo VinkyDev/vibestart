@@ -48,8 +48,7 @@ const stop = async (child: ChildProcess) => {
   }
 
   const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
+    signal: AbortSignal.timeout(5000),
   });
 
   if (process.platform === "win32") {
@@ -70,7 +69,16 @@ const stop = async (child: ChildProcess) => {
     process.kill(-child.pid, "SIGTERM");
   }
 
-  await exited;
+  try {
+    await exited;
+  } catch (error) {
+    if (process.platform === "win32") {
+      throw error;
+    }
+    const killed = once(child, "exit", { signal: AbortSignal.timeout(5000) });
+    process.kill(-child.pid, "SIGKILL");
+    await killed;
+  }
 };
 
 export const startTestServer = async (baseURL: string) => {
@@ -83,9 +91,18 @@ export const startTestServer = async (baseURL: string) => {
   const children: ChildProcess[] = [];
 
   const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
+    const results = await Promise.allSettled(children.map(stop));
+    try {
+      await database.remove();
+    } finally {
+      await closeTestHttp();
+    }
+    const errors = results
+      .filter((result) => result.status === "rejected")
+      .map((result) => result.reason);
+    if (errors.length > 0) {
+      throw new AggregateError(errors, "Failed to stop test servers");
+    }
   };
 
   try {

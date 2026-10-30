@@ -1,9 +1,14 @@
 import { assert, layer } from "@effect/vitest";
+import { sql } from "drizzle-orm";
 import { Effect } from "effect";
 
-import { TodoNotFound, Unauthorized } from "@my-app/contracts";
+import {
+  ServiceUnavailable,
+  TodoNotFound,
+  Unauthorized,
+} from "@my-app/contracts";
 
-import { createRaw, makeClient, TestApp } from "../support/app.ts";
+import { createRaw, makeClient, rpcRaw, TestApp } from "../support/app.ts";
 
 type Client = Effect.Success<ReturnType<typeof makeClient>>;
 
@@ -47,7 +52,13 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
     })
   );
 
-  for (const title of ["", "   ", "x".repeat(201)]) {
+  for (const title of [
+    "",
+    "   ",
+    "x".repeat(201),
+    "😀".repeat(201),
+    "nul\u0000byte",
+  ]) {
     it.effect(`rejects the title ${JSON.stringify(title)}`, () =>
       Effect.gen(function* () {
         const app = yield* TestApp;
@@ -100,6 +111,88 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
         new TodoNotFound({ id: todo.id })
       );
       assert.deepStrictEqual(yield* alice("todos.list", undefined), [todo]);
+    })
+  );
+
+  it.effect(
+    "accepts 200 Unicode code points and trims Unicode whitespace",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const title = "😀".repeat(200);
+        const exit = yield* createRaw(cookie, `\u00A0${title}\u3000`);
+        assert.deepStrictEqual(exit, {
+          _tag: "Success",
+          value: { completed: false, title },
+        });
+      })
+  );
+
+  for (const id of [0, -1, 1.5, 2_147_483_648]) {
+    it.effect(`rejects id ${id} before querying storage`, () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const body = yield* rpcRaw(cookie, "todos.delete", { id });
+        assert.include(body, '"_tag":"Failure"');
+        assert.notInclude(body, "TodoNotFound");
+        assert.notInclude(body, "ServiceUnavailable");
+      })
+    );
+  }
+
+  it.effect(
+    "returns a typed storage failure without SQL or parameters on the wire",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+        yield* Effect.acquireUseRelease(
+          app.database.execute(
+            sql`alter table todos rename to unavailable_todos`
+          ),
+          () =>
+            Effect.gen(function* () {
+              assert.instanceOf(
+                yield* Effect.flip(client("todos.list", undefined)),
+                ServiceUnavailable
+              );
+
+              const body = yield* rpcRaw(cookie, "todos.create", {
+                title: "private-payload-marker",
+              });
+
+              assert.include(body, "ServiceUnavailable");
+              assert.notInclude(body, "private-payload-marker");
+              assert.notInclude(body, "insert into");
+              assert.notInclude(body, "Drizzle");
+              assert.notInclude(body, '"_tag":"Die"');
+              assert.notInclude(body, '"query"');
+            }),
+          () =>
+            app.database
+              .execute(sql`alter table unavailable_todos rename to todos`)
+              .pipe(Effect.orDie)
+        );
+      })
+  );
+
+  it.effect("sets browser security headers on public HTTP responses", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+
+      const response = yield* Effect.promise(
+        async () => await app.fetch(new Request("http://localhost/api/health"))
+      );
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(
+        response.headers.get("x-content-type-options"),
+        "nosniff"
+      );
+      assert.strictEqual(response.headers.get("x-frame-options"), "DENY");
     })
   );
 });

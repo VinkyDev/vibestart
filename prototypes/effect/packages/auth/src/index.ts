@@ -14,7 +14,7 @@ interface AuthOptions {
 }
 
 // The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
-const makeAuth = Effect.fnUntraced(function* (options: AuthOptions) {
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
   const client = yield* Effect.acquireRelease(
     Effect.sync(() =>
       postgres(Redacted.value(options.databaseUrl), {
