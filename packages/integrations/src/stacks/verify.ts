@@ -103,7 +103,7 @@ export const verifyStack = async ({
     "git init -q",
     ...generation.setup.map((command) => command.run),
     ...browserInstall(stack),
-    "vp run ready",
+    `${packageManager} run ready`,
   ];
 
   const child = spawn(commands.join(" && "), {
