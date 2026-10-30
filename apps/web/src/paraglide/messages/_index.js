@@ -22,6 +22,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
+/** @typedef {{}} Cap_Effect_Http_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -78,6 +79,9 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
+/** @typedef {{}} Desc_EffectInputs */
+/** @typedef {{}} Desc_Effect_HttpInputs */
+/** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
@@ -96,6 +100,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_ShadcnInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
+/** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
@@ -115,6 +120,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Docs_PreviousInputs */
 /** @typedef {{}} Document_DescriptionInputs */
 /** @typedef {{}} Document_TitleInputs */
+/** @typedef {{}} Effect_ProcessInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
 /** @typedef {{}} Expo_ProcessInputs */
@@ -125,6 +131,8 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_DrizzleInputs */
+/** @typedef {{}} Fit_Effect_HttpInputs */
+/** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -196,6 +204,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
 /** @typedef {{}} Kind_MobileInputs */
+/** @typedef {{}} Kind_ModeInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -207,6 +216,9 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_StandardInputs */
+/** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
 /** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -655,6 +667,20 @@ export const cap_document_orm = /** @type {((inputs?: Cap_Document_OrmInputs, op
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.cap_document_orm(inputs)
 	return __en.cap_document_orm(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "an Effect HTTP server" |
+*
+* @param {Cap_Effect_Http_ServerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const cap_effect_http_server = /** @type {((inputs?: Cap_Effect_Http_ServerInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Effect_Http_ServerInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.cap_effect_http_server(inputs)
+	return __en.cap_effect_http_server(inputs)
 });
 /**
 * | output |
@@ -1443,6 +1469,48 @@ export const desc_e2e = /** @type {((inputs?: Desc_E2eInputs, options?: { locale
 /**
 * | output |
 * | --- |
+* | "An integrated Effect stack with typed services, RPC, and reactive state" |
+*
+* @param {Desc_EffectInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_effect = /** @type {((inputs?: Desc_EffectInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_EffectInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_effect(inputs)
+	return __en.desc_effect(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Scoped HTTP server with Effect services and layers" |
+*
+* @param {Desc_Effect_HttpInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_effect_http = /** @type {((inputs?: Desc_Effect_HttpInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Effect_HttpInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_effect_http(inputs)
+	return __en.desc_effect_http(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Schema contracts, typed RPC, and Effect Atom clients" |
+*
+* @param {Desc_Effect_RpcInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_effect_rpc = /** @type {((inputs?: Desc_Effect_RpcInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Effect_RpcInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_effect_rpc(inputs)
+	return __en.desc_effect_rpc(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Desktop app around the web app, packaged with electron-builder" |
 *
 * @param {Desc_ElectronInputs} inputs
@@ -1625,7 +1693,7 @@ export const desc_prisma = /** @type {((inputs?: Desc_PrismaInputs, options?: { 
 /**
 * | output |
 * | --- |
-* | "React 19 with TanStack Query" |
+* | "React 19 components and hooks" |
 *
 * @param {Desc_ReactInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1691,6 +1759,20 @@ export const desc_sqlite = /** @type {((inputs?: Desc_SqliteInputs, options?: { 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_sqlite(inputs)
 	return __en.desc_sqlite(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Compose frameworks, APIs, databases, and deployment targets" |
+*
+* @param {Desc_StandardInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_standard = /** @type {((inputs?: Desc_StandardInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_StandardInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_standard(inputs)
+	return __en.desc_standard(inputs)
 });
 /**
 * | output |
@@ -1961,6 +2043,20 @@ export const document_title = /** @type {((inputs?: Document_TitleInputs, option
 /**
 * | output |
 * | --- |
+* | "Effect · Node.js" |
+*
+* @param {Effect_ProcessInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const effect_process = /** @type {((inputs?: Effect_ProcessInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Effect_ProcessInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.effect_process(inputs)
+	return __en.effect_process(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Electron main process" |
 *
 * @param {Electron_ProcessInputs} inputs
@@ -2102,6 +2198,34 @@ export const fit_drizzle = /** @type {((inputs?: Fit_DrizzleInputs, options?: { 
 /**
 * | output |
 * | --- |
+* | "Scoped services and resource lifetimes throughout the server." |
+*
+* @param {Fit_Effect_HttpInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_effect_http = /** @type {((inputs?: Fit_Effect_HttpInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Effect_HttpInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_effect_http(inputs)
+	return __en.fit_effect_http(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "One typed contract from the server to Effect Atom in the browser." |
+*
+* @param {Fit_Effect_RpcInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_effect_rpc = /** @type {((inputs?: Fit_Effect_RpcInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Effect_RpcInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_effect_rpc(inputs)
+	return __en.fit_effect_rpc(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "For the same web app in its own window, packaged as an installer." |
 *
 * @param {Fit_ElectronInputs} inputs
@@ -2200,7 +2324,7 @@ export const fit_next = /** @type {((inputs?: Fit_NextInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "Keep the current Node.js runtime for Hono." |
+* | "Run the server on Node.js." |
 *
 * @param {Fit_NodeInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3109,6 +3233,20 @@ export const kind_mobile = /** @type {((inputs?: Kind_MobileInputs, options?: { 
 /**
 * | output |
 * | --- |
+* | "Mode" |
+*
+* @param {Kind_ModeInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const kind_mode = /** @type {((inputs?: Kind_ModeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Kind_ModeInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.kind_mode(inputs)
+	return __en.kind_mode(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "ORM" |
 *
 * @param {Kind_OrmInputs} inputs
@@ -3259,6 +3397,48 @@ export const learn_about = /** @type {((inputs: Learn_AboutInputs, options?: { l
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.learn_about(inputs)
 	return __en.learn_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Typed services, RPC, and reactive state" |
+*
+* @param {Mode_Effect_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_effect_about = /** @type {((inputs?: Mode_Effect_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Effect_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_effect_about(inputs)
+	return __en.mode_effect_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Standard" |
+*
+* @param {Mode_StandardInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_standard = /** @type {((inputs?: Mode_StandardInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_StandardInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_standard(inputs)
+	return __en.mode_standard(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Compose your own stack" |
+*
+* @param {Mode_Standard_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_standard_about = /** @type {((inputs?: Mode_Standard_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Standard_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_standard_about(inputs)
+	return __en.mode_standard_about(inputs)
 });
 /**
 * | output |

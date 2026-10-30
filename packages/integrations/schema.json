@@ -21,6 +21,11 @@
     "stack": {
       "type": "object",
       "properties": {
+        "mode": {
+          "default": "standard",
+          "type": "string",
+          "enum": ["standard", "effect"]
+        },
         "toolchain": { "type": "string", "enum": ["vite-plus"] },
         "frontend": { "type": "string", "enum": ["react"] },
         "framework": {
@@ -28,8 +33,11 @@
           "enum": ["spa", "tanstack-start", "next"]
         },
         "router": { "type": "string", "enum": ["tanstack-router"] },
-        "backend": { "type": "string", "enum": ["hono", "self"] },
-        "api": { "type": "string", "enum": ["orpc", "openapi"] },
+        "backend": {
+          "type": "string",
+          "enum": ["hono", "effect-http", "self"]
+        },
+        "api": { "type": "string", "enum": ["orpc", "effect-rpc", "openapi"] },
         "database": {
           "type": "string",
           "enum": ["postgres", "mysql", "sqlite", "mongodb"]
@@ -52,7 +60,7 @@
           ]
         }
       },
-      "required": ["toolchain", "testing"],
+      "required": ["toolchain"],
       "additionalProperties": false
     }
   },

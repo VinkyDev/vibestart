@@ -1,7 +1,7 @@
 import type { Stack } from "@vibestart/core";
 
 import type { Group } from "#/lib/roles.ts";
-import { chosen } from "#/lib/stack.ts";
+import { chosen, optionsOf } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 export const stageWidth = 1250;
@@ -105,7 +105,11 @@ export const layoutOf = (stack: Stack): Layout => {
 
   let gap = clientGap;
 
-  for (const client of clients.filter((kind) => stack[kind] === undefined)) {
+  for (const client of clients.filter(
+    (kind) =>
+      stack[kind] === undefined &&
+      optionsOf(kind, stack.mode).some((option) => option !== null)
+  )) {
     const top = floor + gap;
     placed[client] = {
       folded: true,
@@ -235,12 +239,13 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
     });
   }
 
-  if (stack.backend === "hono") {
+  if (stack.backend === "hono" || stack.backend === "effect-http") {
     boxes.push({
       deployed: true,
       group: "backend",
       id: "server",
-      label: m.hono_process(),
+      label:
+        stack.backend === "effect-http" ? m.effect_process() : m.hono_process(),
       node: true,
       rect: around([blocks.backend, ...hosted], boxPadding, boxLabel),
     });

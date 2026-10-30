@@ -1,4 +1,4 @@
-# .gitattributes · 1789 stacks
+# .gitattributes · 1790 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -574,6 +574,7 @@
 #   next-self-sqlite-expo-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -2671,8 +2672,9 @@ test-results
 !.vscode/settings.json
 !.vscode/extensions.json
 
-# .gitignore · 86 stacks
+# .gitignore · 87 stacks
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-expo-docker-e2e
 #   spa-hono-bun-docker-e2e
 #   spa-hono-docker-e2e
@@ -4287,7 +4289,7 @@ coverage
 !.vscode/settings.json
 !.vscode/extensions.json
 
-# .node-version · 1789 stacks
+# .node-version · 1790 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -4863,6 +4865,7 @@ coverage
 #   next-self-sqlite-expo-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -6079,7 +6082,7 @@ coverage
 #   tanstack-start-void-e2e
 26.13.0
 
-# .vscode/extensions.json · 1789 stacks
+# .vscode/extensions.json · 1790 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -6655,6 +6658,7 @@ coverage
 #   next-self-sqlite-expo-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -8792,216 +8796,8 @@ coverage
   }
 }
 
-# .vscode/settings.json · 128 stacks
-#   spa-electron-expo-docker
-#   spa-electron-expo-docker-e2e
-#   spa-electron-expo-void
-#   spa-electron-expo-void-e2e
-#   spa-expo-docker
-#   spa-expo-docker-e2e
-#   spa-expo-void
-#   spa-expo-void-e2e
-#   spa-hono-electron-expo-bun-docker
-#   spa-hono-electron-expo-bun-docker-e2e
-#   spa-hono-electron-expo-docker
-#   spa-hono-electron-expo-docker-e2e
-#   spa-hono-expo-bun-docker
-#   spa-hono-expo-bun-docker-e2e
-#   spa-hono-expo-docker
-#   spa-hono-expo-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
-#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-expo-docker
-#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-mongodb-better-auth-expo-bun-docker
-#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-expo-docker
-#   spa-hono-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-mongodb-electron-expo-bun-docker
-#   spa-hono-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-mongodb-electron-expo-docker
-#   spa-hono-mongodb-electron-expo-docker-e2e
-#   spa-hono-mongodb-expo-bun-docker
-#   spa-hono-mongodb-expo-bun-docker-e2e
-#   spa-hono-mongodb-expo-docker
-#   spa-hono-mongodb-expo-docker-e2e
-#   spa-hono-openapi-electron-expo-bun-docker
-#   spa-hono-openapi-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-electron-expo-docker
-#   spa-hono-openapi-electron-expo-docker-e2e
-#   spa-hono-openapi-expo-bun-docker
-#   spa-hono-openapi-expo-bun-docker-e2e
-#   spa-hono-openapi-expo-docker
-#   spa-hono-openapi-expo-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
-#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-expo-docker
-#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-openapi-mongodb-electron-expo-bun-docker
-#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-electron-expo-docker
-#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
-#   spa-hono-openapi-mongodb-expo-bun-docker
-#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-expo-docker
-#   spa-hono-openapi-mongodb-expo-docker-e2e
-#   spa-hono-orpc-electron-expo-bun-docker
-#   spa-hono-orpc-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-electron-expo-docker
-#   spa-hono-orpc-electron-expo-docker-e2e
-#   spa-hono-orpc-expo-bun-docker
-#   spa-hono-orpc-expo-bun-docker-e2e
-#   spa-hono-orpc-expo-docker
-#   spa-hono-orpc-expo-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
-#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-expo-docker
-#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mongodb-electron-expo-bun-docker
-#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-electron-expo-docker
-#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
-#   spa-hono-orpc-mongodb-expo-bun-docker
-#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-expo-docker
-#   spa-hono-orpc-mongodb-expo-docker-e2e
-#   tanstack-start-expo-docker
-#   tanstack-start-expo-docker-e2e
-#   tanstack-start-hono-expo-bun-docker
-#   tanstack-start-hono-expo-bun-docker-e2e
-#   tanstack-start-hono-expo-docker
-#   tanstack-start-hono-expo-docker-e2e
-#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
-#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-mongodb-better-auth-expo-docker
-#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-hono-mongodb-expo-bun-docker
-#   tanstack-start-hono-mongodb-expo-bun-docker-e2e
-#   tanstack-start-hono-mongodb-expo-docker
-#   tanstack-start-hono-mongodb-expo-docker-e2e
-#   tanstack-start-hono-openapi-expo-bun-docker
-#   tanstack-start-hono-openapi-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-expo-docker
-#   tanstack-start-hono-openapi-expo-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
-#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
-#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
-#   tanstack-start-hono-openapi-mongodb-expo-docker
-#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
-#   tanstack-start-hono-orpc-expo-bun-docker
-#   tanstack-start-hono-orpc-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-expo-docker
-#   tanstack-start-hono-orpc-expo-docker-e2e
-#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
-#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
-#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
-#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
-#   tanstack-start-hono-orpc-mongodb-expo-docker
-#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
-#   tanstack-start-self-mongodb-better-auth-expo-docker
-#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-self-mongodb-expo-docker
-#   tanstack-start-self-mongodb-expo-docker-e2e
-#   tanstack-start-self-orpc-expo-docker
-#   tanstack-start-self-orpc-expo-docker-e2e
-#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
-#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-self-orpc-mongodb-expo-docker
-#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
-{
-  "npm.scriptRunner": "vp",
-  "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "explicit"
-  },
-  "oxc.disableNestedConfig": true,
-  "oxc.fmt.disableNestedConfig": true,
-  "files.readonlyInclude": {
-    "**/routeTree.gen.ts": true,
-    "apps/mobile/uniwind-types.d.ts": true
-  }
-}
-
-# .vscode/settings.json · 16 stacks
-#   spa-hono-electron-expo-void
-#   spa-hono-electron-expo-void-e2e
-#   spa-hono-expo-void
-#   spa-hono-expo-void-e2e
-#   spa-hono-openapi-electron-expo-void
-#   spa-hono-openapi-electron-expo-void-e2e
-#   spa-hono-openapi-expo-void
-#   spa-hono-openapi-expo-void-e2e
-#   spa-hono-orpc-electron-expo-void
-#   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-expo-void
-#   spa-hono-orpc-expo-void-e2e
-#   tanstack-start-expo-void
-#   tanstack-start-expo-void-e2e
-#   tanstack-start-self-orpc-expo-void
-#   tanstack-start-self-orpc-expo-void-e2e
-{
-  "npm.scriptRunner": "vp",
-  "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "explicit"
-  },
-  "oxc.disableNestedConfig": true,
-  "oxc.fmt.disableNestedConfig": true,
-  "files.readonlyInclude": {
-    "**/routeTree.gen.ts": true,
-    "apps/mobile/uniwind-types.d.ts": true,
-    "**/.void/**": true
-  }
-}
-
-# .vscode/settings.json · 16 stacks
-#   spa-hono-electron-void
-#   spa-hono-electron-void-e2e
-#   spa-hono-openapi-electron-void
-#   spa-hono-openapi-electron-void-e2e
-#   spa-hono-openapi-void
-#   spa-hono-openapi-void-e2e
-#   spa-hono-orpc-electron-void
-#   spa-hono-orpc-electron-void-e2e
-#   spa-hono-orpc-void
-#   spa-hono-orpc-void-e2e
-#   spa-hono-void
-#   spa-hono-void-e2e
-#   tanstack-start-self-orpc-void
-#   tanstack-start-self-orpc-void-e2e
-#   tanstack-start-void
-#   tanstack-start-void-e2e
-{
-  "npm.scriptRunner": "vp",
-  "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "explicit"
-  },
-  "oxc.disableNestedConfig": true,
-  "oxc.fmt.disableNestedConfig": true,
-  "files.readonlyInclude": {
-    "**/routeTree.gen.ts": true,
-    "**/.void/**": true
-  }
-}
-
-# .vscode/settings.json · 240 stacks
+# .vscode/settings.json · 241 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-hono-mysql-better-auth-bun-docker
 #   spa-hono-mysql-better-auth-bun-docker-e2e
 #   spa-hono-mysql-better-auth-docker
@@ -9254,6 +9050,215 @@ coverage
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true,
     "packages/db/src/migrations/**": true
+  }
+}
+
+# .vscode/settings.json · 128 stacks
+#   spa-electron-expo-docker
+#   spa-electron-expo-docker-e2e
+#   spa-electron-expo-void
+#   spa-electron-expo-void-e2e
+#   spa-expo-docker
+#   spa-expo-docker-e2e
+#   spa-expo-void
+#   spa-expo-void-e2e
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-electron-expo-bun-docker-e2e
+#   spa-hono-electron-expo-docker
+#   spa-hono-electron-expo-docker-e2e
+#   spa-hono-expo-bun-docker
+#   spa-hono-expo-bun-docker-e2e
+#   spa-hono-expo-docker
+#   spa-hono-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mongodb-electron-expo-bun-docker
+#   spa-hono-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-electron-expo-docker
+#   spa-hono-mongodb-electron-expo-docker-e2e
+#   spa-hono-mongodb-expo-bun-docker
+#   spa-hono-mongodb-expo-bun-docker-e2e
+#   spa-hono-mongodb-expo-docker
+#   spa-hono-mongodb-expo-docker-e2e
+#   spa-hono-openapi-electron-expo-bun-docker
+#   spa-hono-openapi-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-electron-expo-docker
+#   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-expo-bun-docker
+#   spa-hono-openapi-expo-bun-docker-e2e
+#   spa-hono-openapi-expo-docker
+#   spa-hono-openapi-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-electron-expo-docker-e2e
+#   spa-hono-orpc-expo-bun-docker
+#   spa-hono-orpc-expo-bun-docker-e2e
+#   spa-hono-orpc-expo-docker
+#   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-expo-docker
+#   tanstack-start-expo-docker-e2e
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-bun-docker-e2e
+#   tanstack-start-hono-expo-docker
+#   tanstack-start-hono-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-expo-bun-docker
+#   tanstack-start-hono-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-expo-docker
+#   tanstack-start-hono-mongodb-expo-docker-e2e
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-expo-docker
+#   tanstack-start-hono-openapi-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker-e2e
+#   tanstack-start-hono-orpc-expo-bun-docker
+#   tanstack-start-hono-orpc-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-expo-docker
+#   tanstack-start-hono-orpc-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-expo-docker
+#   tanstack-start-self-mongodb-expo-docker-e2e
+#   tanstack-start-self-orpc-expo-docker
+#   tanstack-start-self-orpc-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker-e2e
+{
+  "npm.scriptRunner": "vp",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+  "oxc.disableNestedConfig": true,
+  "oxc.fmt.disableNestedConfig": true,
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true,
+    "apps/mobile/uniwind-types.d.ts": true
+  }
+}
+
+# .vscode/settings.json · 16 stacks
+#   spa-hono-electron-expo-void
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-expo-void
+#   spa-hono-expo-void-e2e
+#   spa-hono-openapi-electron-expo-void
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-expo-void
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-orpc-electron-expo-void
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-expo-void
+#   spa-hono-orpc-expo-void-e2e
+#   tanstack-start-expo-void
+#   tanstack-start-expo-void-e2e
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-expo-void-e2e
+{
+  "npm.scriptRunner": "vp",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+  "oxc.disableNestedConfig": true,
+  "oxc.fmt.disableNestedConfig": true,
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true,
+    "apps/mobile/uniwind-types.d.ts": true,
+    "**/.void/**": true
+  }
+}
+
+# .vscode/settings.json · 16 stacks
+#   spa-hono-electron-void
+#   spa-hono-electron-void-e2e
+#   spa-hono-openapi-electron-void
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-void
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-electron-void
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-void
+#   spa-hono-orpc-void-e2e
+#   spa-hono-void
+#   spa-hono-void-e2e
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-orpc-void-e2e
+#   tanstack-start-void
+#   tanstack-start-void-e2e
+{
+  "npm.scriptRunner": "vp",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+  "oxc.disableNestedConfig": true,
+  "oxc.fmt.disableNestedConfig": true,
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true,
+    "**/.void/**": true
   }
 }
 
@@ -75377,6 +75382,123 @@ The change is done when every modified path works end to end, every rule in this
 Before you report it, review the whole diff in a fresh context when your tools allow one: read the failure and cleanup paths, a second run against existing state, and every caller of what changed, and fix what you find.
 
 # AGENTS.md · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+<!--VITE PLUS START-->
+
+# Using Vite+, the Unified Toolchain for the Web
+
+This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
+
+Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
+
+## Built-in Commands vs Scripts
+
+`vp <name>` runs a built-in command. `vp run <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `vp dev` and `vp run dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `vp run <name>` when the project defines a script or task with that name.
+
+## Running Scripts
+
+Run TypeScript and JavaScript files with `vpx <file>`, for example `vpx ./scripts/seed.ts --dry-run`. It handles enums, decorators, JSX, and tsconfig `paths`, so do not add `tsx` or `ts-node` to run scripts. `vpx --watch <file>` reruns the file when a file it uses changes, in place of `tsx watch`. `vp node <file>` runs plain Node.js.
+
+## Tool Versions
+
+Run `vp toolchain` to show versions and relationships in the active Vite+
+release. Add a tool name to select part of the graph. For example, run
+`vp toolchain vite`. Use `--global` to ignore the local `vite-plus` package. Use
+`vp why <package>` to show the package-manager dependency graph.
+
+## Review Checklist
+
+- [ ] Run `vp install` after pulling remote changes and before getting started.
+- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
+- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
+
+<!--VITE PLUS END-->
+
+# Project
+
+`vibestart.jsonc` records the stack this project was created with. When it also records the `name` and `version` of the vibestart release that generated the project, the vibestart CLI maintains the project from it: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. Leave `vibestart.jsonc` as the CLI wrote it. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source, which is yours to edit, as manual changes to port.
+
+## Code
+
+Converge on the simplest durable design that meets current requirements, and land it directly. The change you land is the design that stays.
+
+- Make routine judgment calls yourself. Ask when readings of the request lead to materially different work; when no one can answer, take the reading the code supports and state it in your report.
+- Fix the root cause at the abstraction that owns it. Carry the change through every layer it touches, and leave unrelated areas intact.
+- Open with a tracer bullet: the smallest end-to-end slice that works, grown in complete layers. Add a concept, configuration option, or extension point only for a use case that exists now.
+- One representation, one execution path. Move every in-repository consumer to the final interface, and delete the obsolete API, schema, implementation, configuration, tests, and documentation in the same change. The final interface stands alone: no adapter, deprecated alias, dual read or write, fallback, feature flag, or migration layer beside it.
+- A compatibility path exists only for a verified external constraint: a deployed consumer, a public contract, persisted production data, or a staged rollout. An assumed consumer is not a constraint. Isolate the path, name the condition that removes it, and let the final state shape the core. When production state cannot change atomically, ship an explicit, reversible migration with a defined end.
+- Validate untrusted data where it enters, then trust it. Type it as `unknown`, narrow it with a schema or a type guard, and make invalid states unrepresentable so later code does not re-check them. `any` is not a type in this repo. Back every type assertion and non-null assertion with a runtime check or a stated invariant. Catch an error only where you recover from it or add context; let the rest propagate.
+- Names carry the meaning. A comment states a why the code cannot: an external constraint, counterintuitive behavior, an invariant, or a tradeoff. It speaks to the next reader, never about the change, its history, or its reviewer. Delete a comment that restates the code or has gone stale.
+- Lint serves the design. When a rule's concern applies, fix the code. When a rule misfires on the idiom a library documents, keep the idiom and turn the rule off for that library's files in a `lint.overrides` entry in `vite.config.ts`, with a comment naming the idiom.
+- Reuse before you write: search the repo's own modules, then its dependencies, their docs, and their types. Otherwise add one mature, maintained library when it lowers total complexity or raises reliability, at the latest stable version the toolchain accepts, and follow its current docs. One library per capability; a few lines of domain logic stay inline.
+
+## Map
+
+| Path                 | Owns                                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `apps/web`           | React SPA: TanStack Router file routes, Effect Atom clients, Better Auth, and browser tests                 |
+| `apps/server`        | Node entry points: routes on NodeHttpServer, Layer composition, the built SPA in production, and migrate.ts |
+| `packages/contracts` | Effect Schema wire contracts, tagged errors, RPC groups, HTTP API, and authentication context               |
+| `packages/api`       | Thin RPC handlers, the Todos service, authentication middleware, and HTTP routes                            |
+| `packages/db`        | Drizzle schema, relations, migrations, and the Database service on @effect/sql-pg                           |
+| `packages/auth`      | The Auth service: Better Auth configured from Config on its official Promise adapter                        |
+| `packages/ui`        | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                  |
+| `packages/config`    | Shared TypeScript presets                                                                                   |
+
+`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` atom (`src/lib/api.ts`) → `POST /rpc` (NDJSON) → `AuthMiddleware` → `packages/api` handler → Drizzle on `@effect/sql-pg` → PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
+
+## Conventions
+
+- **Effect.** Services are `Context.Service` classes with static layers. Compose them with `Layer` and run them at process or Promise boundaries. Use `Effect.gen` for inline programs and layer construction, `Effect.fn("Service.operation")` for reusable operations, and `Effect.fnUntraced` when a span would duplicate an existing boundary. Internal failures can use `Data.TaggedError`; public errors use `Schema.TaggedError` in `packages/contracts`. Map expected failures at the transport boundary and log their causes there. Reserve defects for broken invariants in application flows; do not turn database or authentication outages into defects with `Effect.orDie`. Test-cleanup finalizers may use `Effect.orDie` because scope finalizers cannot return typed errors. Every `effect` and `@effect/*` package stays on one exact version.
+- **Environment.** Read server variables with `Config` where the service that needs them builds its layer (`Database.layerConfig`, `Auth.layerConfig`, `PORT` in `apps/server/src/index.ts`), and list each, with a safe example value, under Environment in `README.md`. Secrets are `Config.Redacted`. Keep real values in the ignored `.env` file. The web app is shipped to the browser, so it holds no secret.
+- **Procedure.** Declare it with `Rpc.make` on `TodosRpcs` (or a new group) in `packages/contracts`, with payload, success, and error schemas, then implement it in the group's `toLayer` in `packages/api`. The server decodes the payload with the same schema; the web form decodes it first, so a user sees the rule before a request is sent. Public REST endpoints go on `Api` in `src/http-api.ts` instead.
+- **Schema.** Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as the contract schema. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated. The Better Auth tables in `schema/auth.ts` match the fields Better Auth expects; read its docs before adding a plugin.
+- **Authorization.** A group that reads or writes user data carries `.middleware(AuthMiddleware)`, and its RPC handlers pass `CurrentUser.id` to a service that scopes every query by that user. Someone else's row is a `TodoNotFound`-style error, which does not reveal that the id exists. Each new procedure gets an integration test as an anonymous caller and as another user.
+- **Protected page.** Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=…`. The session sits on the route context (`context.session`), loaded once per navigation in `__root.tsx` from `/api/auth/get-session`. This is an SPA: the page hide is UX, and the procedure is the security boundary. Authenticated routes own a `RegistryProvider` keyed by session ID; sign-out or session replacement disposes private state without resetting public queries. The root observes Better Auth session changes and invalidates router context when the session ID changes.
+- **Data in the UI.** Read with `Rpc.query` / `HttpApi.query` atoms and `useAtomSuspense` or `useAtomValue`. Use `Rpc.mutation` for one shared write, such as the create form. Independent row writes use `Atom.family` with `Rpc.runtime.fn`, so one row cannot interrupt another. Refresh queries through `reactivityKeys` or `Reactivity.mutation`, disable repeated writes to the same row while pending, and report failed exits with `toastFailure`.
+- **Proxy.** Better Auth rate-limits by client IP. Behind a reverse proxy, set `advanced.ipAddress` in `packages/auth` to the header that proxy sets. With no proxy, leave forwarding headers untrusted.
+- **UI.** From `packages/ui`, run `pnpm dlx shadcn@latest add <component>` and import `@my-app/ui/components/<name>`. Files in `packages/ui/src/components` are vendored shadcn and are not linted. App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout. When the first file lands in `src/hooks`, add `"./hooks/*": "./src/hooks/*.ts"` to the package exports (`components.json` already aliases that path).
+- **Generated.** `routeTree.gen.ts` and `packages/db/src/migrations/**` are tool output. Leave them unchanged.
+- **Knip.** Delete what `vp run knip` reports: unused files, exports, dependencies, and catalog entries. Add a Knip config entry only when a plugin cannot see a real reference.
+- **Ultracite.** Run `vp check` to apply the Ultracite lint and formatting presets, including framework rules and anti-slop checks for AI-written code. Fix the reported code instead of disabling the rules.
+
+## Tests
+
+A test earns its upkeep when its expected values come from a source independent of the code: the request, an acceptance criterion, a documented contract, or a domain rule, written down before the implementation. A test derived from reading the implementation restates it and catches nothing.
+
+- Cover a change with the broadest test that reaches it. End-to-end journeys and integration tests through the real stack carry most of the confidence; a unit test is for dense logic with many cases: calculations, parsers, state machines, permissions.
+- Test behavior at the boundary that owns it: the exported API, the command, the route or procedure, the page. A test that breaks under a behavior-preserving refactor is pinned to the implementation; move it to that boundary.
+- Before adding a test, name the regression that makes it fail, and confirm no type, schema, lint rule, or existing test already catches it. Each contract has one owning test; extend its table of cases rather than adding a near-copy.
+- Run this repo's own code for real. A fake stands in only for a service this repo does not run, with the reason next to it and a contract test that pins the request and response it imitates.
+- Watch every new test go red before it goes green. A bug fix starts from a test that reproduces the bug.
+- When a test fails, fix the code. Change, skip, or weaken an assertion only when the specified behavior changed, and say so in your report.
+
+| Layer       | Location                                                             | Runs against                                                                                                                         | Write it for                                                                             |
+| ----------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| End-to-end  | `apps/web/tests/e2e/*.e2e.ts`                                        | TesterArmy e2e driving Chromium against the real web app, API, and PostgreSQL                                                        | Journeys that decide whether the product works                                           |
+| Integration | `packages/api/tests/integration/*.test.ts`                           | `@effect/vitest` sending requests through `Routes` in process (`HttpRouter.toWebHandler`), real sessions, a real PostgreSQL database | Every procedure's validation, error codes, authorization, and invariants                 |
+| Unit        | `*.test.ts` beside the code in `apps/server/src` or `packages/*/src` | Node, no I/O                                                                                                                         | Branching logic: pricing, permissions, state machines, parsers, calculations, edge cases |
+
+`apps/web/e2e.config.ts` runs `tests/support/start.ts` to start the stack for the e2e tests on :3200 (`E2E_TEST_PORT`): a fresh PostgreSQL database, the real Effect server, and Vite in front, with the same proxy and origin as development. A second checkout runs its tests at the same time on another port. Each integration test file provides `TestApp.layer` (`tests/support/app.ts`) through `layer(...)` from `@effect/vitest`: a database of its own from `makeTestDatabase` in `@my-app/db/testing`, migrated and dropped when the layer's scope closes, so files run in parallel without a port. Test databases are created beside `DATABASE_URL` from `apps/server/.env`, so the tests need PostgreSQL running. Tests sign up a new user with `TestApp.signUp`, so they share no rows. `rpcRaw` posts NDJSON past client validation so tests can inspect the actual wire response; `createRaw` decodes the create exit.
+
+Use `visit()` and `reload()` (`waitUntil: "networkidle"`) before interacting so server-rendered pages finish hydrating. Query with `screen`, act with `tap()` and `fill()`, and assert with `expect` from `e2e`. Generated tests need no model; configure an agent in `e2e.config.ts` for natural-language steps.
+
+The app command inherits only `PATH`, `HOME`, temporary-directory variables, and `e2e.config.ts` overrides. Forward any additional required variables there. Logs: `apps/web/.e2e/server.log`; report: `.e2e/report.json`; failure traces: `.e2e/artifacts`. Rerun failures from `apps/web` with `vp exec e2e run --last-failed`.
+
+Integration tests send real requests to the routes in this process, through the same middleware and validation as the server, with real Better Auth sessions and a real database.
+
+E2E tests in `apps/web/tests/e2e` are the specification: changing, skipping, or weakening an assertion takes the user's approval first.
+
+While iterating, run the narrowest set that covers the change: `vp test --project unit`, `vp test --project integration`, `vp test --changed`, a single file, or `vp exec e2e run <file>` in `apps/web`.
+
+## Done
+
+The change is done when every modified path works end to end, every rule in this file holds in every modified file, and `vp run ready` passes.
+
+Before you report it, review the whole diff in a fresh context when your tools allow one: read the failure and cleanup paths, a second run against existing state, and every caller of what changed, and fix what you find.
+
+# AGENTS.md · 1 stack
 #   spa-electron-docker
 <!--VITE PLUS START-->
 
@@ -214662,7 +214784,7 @@ The change is done when every modified path works end to end, every rule in this
 
 Before you report it, review the whole diff in a fresh context when your tools allow one: read the failure and cleanup paths, a second run against existing state, and every caller of what changed, and fix what you find.
 
-# packages/config/typescript/base.json · 1789 stacks
+# packages/config/typescript/base.json · 1790 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -215238,6 +215360,7 @@ Before you report it, review the whole diff in a fresh context when your tools a
 #   next-self-sqlite-expo-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -216476,7 +216599,7 @@ Before you report it, review the whole diff in a fresh context when your tools a
   }
 }
 
-# packages/config/typescript/node.json · 1789 stacks
+# packages/config/typescript/node.json · 1790 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -217052,6 +217175,7 @@ Before you report it, review the whole diff in a fresh context when your tools a
 #   next-self-sqlite-expo-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -267064,6 +267188,74 @@ docker compose up --build
 ```
 
 This serves the web app on http://localhost:3000. The image is nginx with the files `vp run build` writes to `apps/web/dist`; a path with no file falls back to `index.html`, so client-side routes load directly.
+
+# README.md · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+# my-app
+
+Effect · PostgreSQL · Node · Docker, on [Vite+](https://viteplus.dev).
+
+| Layer     | Choice                                                              |
+| --------- | ------------------------------------------------------------------- |
+| Frontend  | React 19, TanStack Router, Effect Atom, Tailwind CSS 4              |
+| Backend   | Effect HTTP on Node.js 26                                           |
+| API       | Effect RPC, HttpApi and Schema; Effect Atom in the browser          |
+| Database  | PostgreSQL 18, Drizzle ORM v1                                       |
+| Auth      | Better Auth with an Effect service boundary and PostgreSQL sessions |
+| UI        | shadcn/ui on Base UI, in `packages/ui`                              |
+| Deploy    | Docker: one self-contained image, no `node_modules` at runtime      |
+| Toolchain | Vite+ (`vp`): dev, build, test, lint, format, type check            |
+
+## Getting started
+
+```sh
+vp install
+docker compose up -d db   # or point DATABASE_URL at any Postgres
+vp run db:migrate
+vp run dev
+```
+
+Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party.
+
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret.
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:5173
+BETTER_AUTH_SECRET=
+PORT=3000
+```
+
+## Commands
+
+```sh
+vp check          # format, lint, type check
+vp run knip       # unused files, exports, dependencies, and catalog entries
+vp test           # unit and integration tests (Vitest)
+vp run test:e2e   # end-to-end tests against the real Effect server and PostgreSQL
+vp run ready      # check + knip + test + test:e2e + production build
+```
+
+The first `vp run test:e2e` needs Chromium: `cd apps/web && vp exec e2e-web install chromium`. TesterArmy e2e sends anonymous usage telemetry; set `E2E_TELEMETRY_DISABLED=1` to turn it off.
+
+## Production
+
+```sh
+BETTER_AUTH_SECRET=$(openssl rand -base64 32) docker compose up --build
+```
+
+This starts PostgreSQL, runs migrations once, then serves the API and the web app on http://localhost:3000.
+
+The image runs two entry points from the same build:
+
+- `node dist/migrate.mjs` applies pending migrations and exits;
+- `node dist/index.mjs` serves `/rpc`, `/api`, `/api/auth`, and the SPA.
+
+Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUTH_SECRET`; the server also reads `PORT` (default `3000`).
 
 # README.md · 1 stack
 #   spa-electron-docker
@@ -371840,7 +372032,7 @@ Commit `void.lock.json`, which belongs to your deployment state and is never gen
   "include": ["vite.config.ts", "apps/mobile/metro.config.ts"]
 }
 
-# tsconfig.json · 810 stacks
+# tsconfig.json · 811 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-mongodb-better-auth-bun-docker
@@ -372129,6 +372321,7 @@ Commit `void.lock.json`, which belongs to your deployment state and is never gen
 #   next-self-sqlite-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-hono-bun-docker
@@ -378140,6 +378333,167 @@ export default defineConfig({
       {
         test: {
           include: ["packages/*/src/**/*.test.ts"],
+          name: "unit",
+        },
+      },
+    ],
+  },
+});
+
+# vite.config.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import oxfmt from "ultracite/oxfmt";
+import antiSlop from "ultracite/oxlint/anti-slop";
+import core from "ultracite/oxlint/core";
+import react from "ultracite/oxlint/react";
+import shadcn from "ultracite/oxlint/shadcn";
+import tanstack from "ultracite/oxlint/tanstack";
+import vitest from "ultracite/oxlint/vitest";
+import { defineConfig, loadEnv } from "vite-plus";
+
+const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
+
+const vendoredFiles = ["packages/ui/src/components/**"];
+
+export default defineConfig({
+  fmt: {
+    ...oxfmt,
+    ignorePatterns: [...(oxfmt.ignorePatterns ?? []), ...generatedFiles],
+    proseWrap: "preserve",
+    sortImports: {
+      customGroups: [
+        {
+          elementNamePattern: ["@my-app/**"],
+          groupName: "workspace",
+        },
+      ],
+      groups: [
+        "builtin",
+        "external",
+        "workspace",
+        ["internal", "subpath"],
+        ["parent", "sibling", "index"],
+        "style",
+        "unknown",
+      ],
+      ignoreCase: true,
+      newlinesBetween: true,
+      order: "asc",
+    },
+  },
+  lint: {
+    extends: [core, react, tanstack, shadcn, vitest, antiSlop],
+    ignorePatterns: [
+      ...(core.ignorePatterns ?? []),
+      ...generatedFiles,
+      ...vendoredFiles,
+    ],
+    jsPlugins: [
+      // Knip reads this string. A spread of `shadcn.jsPlugins` is invisible to it.
+      { name: "shadcn", specifier: "@shadcn/lint" },
+      { name: "vite-plus", specifier: "vite-plus/oxlint-plugin" },
+    ],
+    options: { typeAware: true, typeCheck: true },
+    overrides: [
+      {
+        // Effect.gen and Effect.fn generators carry operation names through tracing.
+        files: ["**/*.ts", "**/*.tsx"],
+        rules: {
+          "eslint/func-names": ["error", "always", { generators: "never" }],
+        },
+      },
+      {
+        files: ["apps/web/src/routes/**"],
+        rules: {
+          // A route module exports its `Route` beside the components it renders.
+          "react/only-export-components": [
+            "warn",
+            {
+              allowExportNames: ["Route"],
+              customHOCs: ["createFileRoute", "createRootRouteWithContext"],
+            },
+          ],
+          // `beforeLoad` guards throw `redirect()`, which is a `Redirect` object rather than an `Error`.
+          "typescript/only-throw-error": [
+            "error",
+            {
+              allow: [
+                {
+                  from: "package",
+                  package: "@tanstack/router-core",
+                  name: "Redirect",
+                },
+              ],
+            },
+          ],
+        },
+      },
+      {
+        // Effect services expose Service.use and colocate their typed errors.
+        files: ["packages/api/src/**"],
+        rules: {
+          "react-hooks/rules-of-hooks": "off",
+          "eslint/max-classes-per-file": "off",
+          "unicorn/no-array-method-this-argument": "off",
+        },
+      },
+      {
+        // PostgreSQL text rejects NUL, which the boundary schema excludes.
+        files: ["packages/contracts/src/todo.ts"],
+        rules: { "eslint/no-control-regex": "off" },
+      },
+      {
+        // Schema.TaggedError is a class factory; contract modules colocate schema values and types.
+        files: ["packages/contracts/src/**"],
+        rules: {
+          "eslint/max-classes-per-file": "off",
+          "eslint/no-redeclare": "off",
+          "unicorn/throw-new-error": "off",
+        },
+      },
+      {
+        // Atom clients are service classes; runtime.fn<void>() declares a mutation without input.
+        files: ["apps/web/src/lib/api.ts"],
+        rules: {
+          "eslint/max-classes-per-file": "off",
+          "typescript/no-invalid-void-type": "off",
+        },
+      },
+      {
+        // This promise is only a synchronization signal, without a resolved value.
+        files: ["apps/web/tests/e2e/**"],
+        rules: { "typescript/no-invalid-void-type": "off" },
+      },
+      {
+        // The generic RPC client takes an explicit void payload.
+        files: ["packages/api/tests/**"],
+        rules: {
+          "unicorn/no-useless-undefined": ["error", { checkArguments: false }],
+        },
+      },
+    ],
+    rules: {
+      "vite-plus/prefer-vite-plus-imports": "error",
+    },
+  },
+  staged: {
+    "*": "vp check --fix",
+  },
+  test: {
+    projects: [
+      {
+        test: {
+          env: loadEnv("test", `${import.meta.dirname}/apps/server`, ""),
+          include: ["packages/api/tests/integration/**/*.test.ts"],
+          name: "integration",
+        },
+      },
+      {
+        test: {
+          include: [
+            "apps/server/src/**/*.test.ts",
+            "packages/*/src/**/*.test.ts",
+          ],
           name: "unit",
         },
       },

@@ -67,3 +67,5 @@ Maintenance JSON includes `ok`, `exitCode`, and `status`. Caught errors use an `
 | `failed`                | Inspect the error and `git status` before choosing the next action          |
 
 Exit `0` includes previews and deferred installation. Exit `1` includes failures, conflicts, and available changes from `upgrade --check`; inspect the result instead of blindly retrying. Invalid maintenance arguments exit `2`; cancellation exits `130`. Do not combine `--check` with `--dry-run`.
+
+Maintenance keeps the recorded mode. Records from older releases without a mode must be passed unchanged to their original generator; only the target generator fills its defaults. Adding capabilities must not migrate Standard projects to Effect or vice versa.

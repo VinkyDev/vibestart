@@ -14,6 +14,10 @@ Use the CLI to resolve stacks and maintain generated projects. Let its current h
 3. Installing this skill does not install the CLI, Vite+, or project dependencies. If a required tool is unavailable, follow its installation instructions within the user's scope rather than changing the selected stack.
 4. Read `npx --yes vibestart-cli --help` for creation or `npx --yes vibestart-cli COMMAND --help` for maintenance. Prefer `--json` for operations executed by an agent; keep stdout separate from stderr. Do not parse a task runner's banner as JSON.
 
+## Independent modes
+
+Ask which ecosystem the user wants when it is unclear. Standard is the default; Effect uses `--mode effect`. Discover its choices with `--list --mode effect --json`. Never mix its stack with Standard choices or propose changing modes to fix an incompatible selection. Preserve `stack.mode` in recipes and maintenance operations.
+
 ## Choose the workflow
 
 Read the relevant reference before acting. Paths are relative to this skill's directory, not the user's project.

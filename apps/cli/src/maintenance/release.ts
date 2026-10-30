@@ -27,7 +27,7 @@ export const currentSnapshot = async (name: string, input: Input) => {
     version: runningVersion,
   });
 
-  return snapshotOf(runningVersion, name, blueprint, generation.files);
+  return snapshotOf(runningVersion, name, input, generation.files);
 };
 
 /** A release's `snapshot` output, accepted only as the files it generated for exactly this project. */

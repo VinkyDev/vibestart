@@ -9,6 +9,7 @@ import { CodeView } from "#/components/code-view.tsx";
 import { Command } from "#/components/command.tsx";
 import { AgentHandoff } from "#/components/create-agent.tsx";
 import { FileTree } from "#/components/file-tree.tsx";
+import { Segmented } from "#/components/segmented.tsx";
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { layoutOf, stageWidth } from "#/components/topology/layout.ts";
 import { StackList } from "#/components/topology/stack-list.tsx";
@@ -60,7 +61,12 @@ const Studio = () => {
   }
 
   const file = project.files.find((candidate) => candidate.path === openPath);
-  const previewing = preview !== null && preview.label !== entry.label;
+
+  const previewing =
+    preview !== null &&
+    preview.stack.mode === entry.stack.mode &&
+    preview.label !== entry.label;
+
   const shown = previewing ? preview.stack : entry.stack;
 
   const choosing: Choosing = {
@@ -97,17 +103,47 @@ const Studio = () => {
           beside the panel while it scrolls once both fit. */}
       <main className="grid flex-1 items-start gap-3 px-3 pb-3 md:grid-cols-2 lg:grid-cols-1 lg:items-stretch xl:h-[calc(100svh-var(--spacing-header))] xl:flex-none xl:grid-cols-[minmax(0,1fr)_minmax(380px,440px)] xl:pl-0">
         <section className="md:max-lg:tall:top-header md:max-lg:tall:sticky relative flex min-h-0 flex-col lg:overflow-hidden">
-          <StackList
-            action={<AgentHandoff />}
-            choosing={choosing}
-            className="lg:hidden"
-          />
-          <AgentHandoff className="absolute top-4 right-6 z-10 hidden lg:flex xl:right-10" />
+          <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-3 lg:pl-6 xl:pl-10">
+            <div className="flex flex-wrap items-center gap-3">
+              <Segmented
+                id="studio-mode"
+                label={m.kind_mode()}
+                options={[
+                  { value: "standard", label: m.mode_standard() },
+                  { value: "effect", label: "Effect" },
+                ]}
+                value={entry.stack.mode ?? "standard"}
+                onChange={(mode) => {
+                  setPreview(null);
+                  setFocus(null);
+                  setOpenPath(null);
+                  void navigate({
+                    resetScroll: false,
+                    search: (previous) => ({
+                      mode: mode === "effect" ? "effect" : undefined,
+                      addons: previous.addons,
+                      packageManager: previous.packageManager,
+                    }),
+                  });
+                }}
+              />
+              <span
+                className="text-muted-foreground hidden text-xs sm:inline"
+                aria-live="polite"
+              >
+                {entry.stack.mode === "effect"
+                  ? m.mode_effect_about()
+                  : m.mode_standard_about()}
+              </span>
+            </div>
+            <AgentHandoff />
+          </div>
+          <StackList choosing={choosing} className="lg:hidden" />
           <AnimatePresence>
             {previewing && (
               <motion.span
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-card text-muted-foreground shadow-rest absolute top-4 left-6 z-10 hidden items-center gap-2 rounded-full px-3.5 py-1.5 text-xs lg:flex xl:left-10"
+                className="bg-card text-muted-foreground shadow-rest absolute top-16 left-6 z-10 hidden items-center gap-2 rounded-full px-3.5 py-1.5 text-xs lg:flex xl:left-10"
                 exit={{ opacity: 0, scale: 0.96 }}
                 initial={{ opacity: 0, scale: 0.96 }}
               >

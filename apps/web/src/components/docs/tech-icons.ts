@@ -3,6 +3,7 @@ import bun from "#/assets/tech/bun.svg";
 import docker from "#/assets/tech/docker.svg";
 import drizzle from "#/assets/tech/drizzle.svg";
 import e2e from "#/assets/tech/e2e.svg";
+import effect from "#/assets/tech/effect.svg";
 import electron from "#/assets/tech/electron.svg";
 import expo from "#/assets/tech/expo.svg";
 import hono from "#/assets/tech/hono.svg";
@@ -41,6 +42,7 @@ export const techIcons = {
   workers,
   drizzle,
   e2e,
+  effect,
   electron,
   expo,
   hono,

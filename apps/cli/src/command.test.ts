@@ -437,3 +437,63 @@ describe("creating a project", async () => {
     expect(output).toMatchObject({ label: "hono-openapi-sqlite", ok: true });
   });
 });
+
+describe("Effect mode", () => {
+  it("selects the reviewed stack and previews the native Effect files", async () => {
+    const result = await run("effect-app", "--mode", "effect", "--dry-run");
+    expect(result.exitCode).toBe(0);
+
+    const paths = previewSchema
+      .parse(result.output)
+      .files.map((file) => file.path);
+
+    expect(paths).toContain("packages/contracts/src/rpc.ts");
+    expect(paths).not.toContain("apps/web/src/lib/query-client.ts");
+  });
+
+  it("lists only adapted options in Effect mode", async () => {
+    const result = await run("--list", "--mode", "effect");
+    expect(result.exitCode).toBe(0);
+
+    const output = z
+      .object({
+        kinds: z.array(
+          z.object({
+            id: z.string(),
+            default: z.string().nullable().optional(),
+            options: z.array(z.object({ id: z.string() })),
+          })
+        ),
+        stacks: z.array(z.object({ stack: z.object({ mode: z.string() }) })),
+      })
+      .parse(result.output);
+
+    expect(output.stacks).toHaveLength(2);
+    expect(
+      ["mode", "database", "testing"].map(
+        (kind) => output.kinds.find(({ id }) => id === kind)?.default
+      )
+    ).toStrictEqual(["effect", "postgres", "e2e"]);
+    expect(
+      output.stacks.every(({ stack }) => stack.mode === "effect")
+    ).toBeTruthy();
+    expect(
+      output.kinds.find(({ id }) => id === "backend")?.options
+    ).toStrictEqual([{ id: "effect-http" }]);
+  });
+
+  it("rejects mixed stacks without suggesting a mode change", async () => {
+    const result = await run(
+      "effect-app",
+      "--mode",
+      "effect",
+      "--api",
+      "orpc",
+      "--dry-run"
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.message).toContain("--api effect-rpc");
+    expect(result.message).not.toContain("--mode standard");
+  });
+});

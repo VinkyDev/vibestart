@@ -54,7 +54,9 @@ export const isDecision = (kind: string): kind is Decision =>
 
 export const none = "none";
 
-export type Flags = Partial<Record<Decision, string>>;
+export type Flags = Partial<Record<Decision, string>> & {
+  readonly mode?: "standard" | "effect";
+};
 
 const kindOf = (id: string) => {
   const kind = registry.kinds.find((k) => k.id === id);
@@ -92,13 +94,26 @@ export const chosen = (
 export const e2eRunner = (stack: Stack): IntegrationInfo | undefined =>
   stack.framework === undefined ? undefined : chosen(stack, "testing");
 
-export const optionsOf = (kind: string): (IntegrationInfo | null)[] => [
-  ...registry.integrations.filter((integration) => integration.kind === kind),
-  ...(kindOf(kind).optional ? [null] : []),
-];
+export const optionsOf = (
+  kind: string,
+  mode?: string
+): (IntegrationInfo | null)[] => {
+  const allowed =
+    mode === undefined ? undefined : integrationOf(mode).choices?.[kind];
+
+  return [
+    ...registry.integrations.filter((integration) => integration.kind === kind),
+    ...(kindOf(kind).optional ? [null] : []),
+  ].filter(
+    (integration) =>
+      allowed === undefined || allowed.includes(integration?.id ?? null)
+  );
+};
 
 const decisionsOf = (stack: Stack): Choices =>
-  Object.fromEntries(decisions.map((kind) => [kind, stack[kind] ?? null]));
+  Object.fromEntries(
+    ["mode", ...decisions].map((kind) => [kind, stack[kind] ?? null])
+  );
 
 const applied = (choices: Choices, changes: readonly Change[]): Choices => ({
   ...choices,
@@ -107,7 +122,7 @@ const applied = (choices: Choices, changes: readonly Change[]): Choices => ({
 
 const entryOf = (choices: Choices): StackEntry => {
   const entry = stacks.find((candidate) =>
-    decisions.every(
+    ["mode", ...decisions].every(
       (kind) => (candidate.stack[kind] ?? null) === (choices[kind] ?? null)
     )
   );
@@ -127,6 +142,7 @@ const flag = z.string().optional();
 const packageManagerSchema = z.enum(packageManagers).optional();
 
 export const searchSchema = z.object({
+  mode: z.enum(["standard", "effect"]).catch("standard").optional(),
   addons: flag,
   api: flag,
   auth: flag,
@@ -150,7 +166,7 @@ export type Search = z.infer<typeof searchSchema>;
 
 export const parseFlags = (search: Search): Flags =>
   Object.fromEntries(
-    decisions.flatMap((kind) => {
+    (["mode", ...decisions] as const).flatMap((kind) => {
       const value = search[kind];
 
       const offered = optionsOf(kind).map(
@@ -166,11 +182,15 @@ export const parseFlags = (search: Search): Flags =>
   );
 
 export const entryFromFlags = (flags: Flags): StackEntry => {
-  const choices: Choices = mapValues(flags, (value) =>
-    value === none ? null : value
-  );
+  const choices: Choices = {
+    ...mapValues(flags, (value) => (value === none ? null : value)),
+    mode: flags.mode ?? "standard",
+  };
 
-  const { fixes, stacks: legal } = resolve(registry, choices);
+  const { fixes, stacks: legal } = resolve(registry, choices, {
+    keep: ["mode"],
+  });
+
   const [only] = legal;
 
   if (legal.length === 1 && only !== undefined) {
@@ -212,7 +232,13 @@ export const flagsOf = (stack: Stack): Flags => {
     choices = omit(choices, ["testing"]);
   }
 
-  return mapValues(choices, (id) => id ?? none);
+  const flags: Flags = Object.fromEntries(
+    decisions.flatMap((kind) =>
+      choices[kind] === undefined ? [] : [[kind, choices[kind] ?? none]]
+    )
+  );
+
+  return stack.mode === "effect" ? { ...flags, mode: "effect" } : flags;
 };
 
 export const verifiedAddons = defaultAddons(registry);
@@ -266,6 +292,9 @@ export const commandWords = (
 
   return {
     flags: [
+      ...(flags.mode === undefined
+        ? []
+        : [{ kind: "mode" as const, value: flags.mode }]),
       ...decisions.flatMap((kind) => {
         const value = flags[kind];
 
@@ -301,7 +330,10 @@ export const outcome = (
   id: string | null
 ): Outcome | undefined => {
   const choices = { ...decisionsOf(stack), [kind]: id };
-  const { fixes, stacks: legal } = resolve(registry, choices, { keep: kind });
+
+  const { fixes, stacks: legal } = resolve(registry, choices, {
+    keep: ["mode", kind],
+  });
 
   if (legal.length > 0) {
     return { changes: [], entry: entryOf(choices) };

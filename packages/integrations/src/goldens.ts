@@ -17,6 +17,7 @@ import { stackLabel } from "#/stack-label.ts";
  * Node beside the Bun service, or `self` on a second framework — is not a golden.
  */
 const goldenLabels = [
+  "spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e",
   "spa-hono-orpc-postgres-better-auth-docker-e2e",
   "tanstack-start-self-orpc-postgres-prisma-better-auth-docker",
   "next-hono-openapi-mysql-better-auth-docker",

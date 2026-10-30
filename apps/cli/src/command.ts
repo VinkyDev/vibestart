@@ -42,7 +42,7 @@ const main = async (
     const options = parseOptions(parsed, rawArgs);
 
     if (options.list) {
-      const listed = await listing();
+      const listed = await listing(options.choices);
 
       if (json) {
         printJson({ ok: true, ...listed });

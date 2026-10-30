@@ -31,7 +31,7 @@ export const hasWebApp = (ctx: Context) => ctx.stack.framework !== undefined;
 
 /** `lazy`: Next.js imports every route during `next build` without runtime variables, so `env.ts` exports `readEnv()`. */
 export const serverApp = (ctx: Context) => {
-  if (ctx.has("hono")) {
+  if (ctx.has("hono") || ctx.has("effect-http")) {
     return {
       dir: "apps/server",
       envImport: ctx.has("workers")

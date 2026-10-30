@@ -59,7 +59,15 @@ export const promptCompose = async (
       continue;
     }
 
-    const options = kindOptions(registry, choices, kind.id);
+    const allowed = registry.integrations.find(
+      (integration) => integration.id === choices.mode
+    )?.choices?.[kind.id];
+
+    const options = kindOptions(registry, choices, kind.id).filter(
+      ({ integration }) =>
+        allowed === undefined || allowed.includes(integration?.id ?? null)
+    );
+
     const open = openChoices(options);
 
     const start = startingChoice(

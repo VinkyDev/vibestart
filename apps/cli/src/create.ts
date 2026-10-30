@@ -92,7 +92,7 @@ const chooseStack = async (
   options: Options,
   choices: Choices
 ): Promise<Stack> => {
-  const resolution = resolve(registry, choices);
+  const resolution = resolve(registry, choices, { keep: ["mode"] });
   const [only, ...others] = resolution.stacks;
 
   if (only === undefined) {

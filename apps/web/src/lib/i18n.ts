@@ -26,6 +26,7 @@ const translate = (
 };
 
 const capabilityPhrases = {
+  "effect-http-server": () => m.cap_effect_http_server(),
   "frontend-framework": () => m.cap_frontend_framework(),
   "fullstack-framework": () => m.cap_fullstack_framework(),
   "hono-server": () => m.cap_hono_server(),
@@ -48,6 +49,7 @@ const capabilityPhrases = {
 export const capabilityText = (id: string) => translate(capabilityPhrases, id);
 
 const kindLabels = {
+  mode: () => m.kind_mode(),
   api: () => m.kind_api(),
   auth: () => m.kind_auth(),
   backend: () => m.kind_backend(),
@@ -68,6 +70,10 @@ const kindLabels = {
 export const kindLabel = (kind: string) => translate(kindLabels, kind);
 
 const descriptions = {
+  standard: () => m.desc_standard(),
+  effect: () => m.desc_effect(),
+  "effect-http": () => m.desc_effect_http(),
+  "effect-rpc": () => m.desc_effect_rpc(),
   "better-auth": () => m.desc_better_auth(),
   bun: () => m.desc_bun(),
   docker: () => m.desc_docker(),

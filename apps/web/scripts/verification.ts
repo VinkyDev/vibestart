@@ -4,8 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import { z } from "zod";
 
-// Release runs `stacks pull`, checks every stack, and attaches the projection. The Studio embeds that
-// file. Generating here would format every stack to reproduce it.
+// Release attaches the CI projection. The Studio checks it against the output it generates.
 const repository = "VinkyDev/vibestart";
 
 const root = fileURLToPath(new URL("../../..", import.meta.url));

@@ -19,6 +19,7 @@
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
+/** @typedef {{}} Cap_Effect_Http_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -75,6 +76,9 @@
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
+/** @typedef {{}} Desc_EffectInputs */
+/** @typedef {{}} Desc_Effect_HttpInputs */
+/** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
@@ -93,6 +97,7 @@
 /** @typedef {{}} Desc_ShadcnInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
+/** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
@@ -112,6 +117,7 @@
 /** @typedef {{}} Docs_PreviousInputs */
 /** @typedef {{}} Document_DescriptionInputs */
 /** @typedef {{}} Document_TitleInputs */
+/** @typedef {{}} Effect_ProcessInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
 /** @typedef {{}} Expo_ProcessInputs */
@@ -122,6 +128,8 @@
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_DrizzleInputs */
+/** @typedef {{}} Fit_Effect_HttpInputs */
+/** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -193,6 +201,7 @@
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
 /** @typedef {{}} Kind_MobileInputs */
+/** @typedef {{}} Kind_ModeInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -204,6 +213,9 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_StandardInputs */
+/** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
 /** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -392,6 +404,7 @@ export type Cap_Cloudflare_DeploymentInputs = {};
 export type Cap_Database_ServerInputs = {};
 export type Cap_Document_DatabaseInputs = {};
 export type Cap_Document_OrmInputs = {};
+export type Cap_Effect_Http_ServerInputs = {};
 export type Cap_Frontend_FrameworkInputs = {};
 export type Cap_Fullstack_FrameworkInputs = {};
 export type Cap_Hono_ServerInputs = {};
@@ -462,6 +475,9 @@ export type Desc_BunInputs = {};
 export type Desc_DockerInputs = {};
 export type Desc_DrizzleInputs = {};
 export type Desc_E2eInputs = {};
+export type Desc_EffectInputs = {};
+export type Desc_Effect_HttpInputs = {};
+export type Desc_Effect_RpcInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
 export type Desc_HonoInputs = {};
@@ -480,6 +496,7 @@ export type Desc_SelfInputs = {};
 export type Desc_ShadcnInputs = {};
 export type Desc_SpaInputs = {};
 export type Desc_SqliteInputs = {};
+export type Desc_StandardInputs = {};
 export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
 export type Desc_Vite_PlusInputs = {};
@@ -501,6 +518,7 @@ export type Docs_PaginationInputs = {};
 export type Docs_PreviousInputs = {};
 export type Document_DescriptionInputs = {};
 export type Document_TitleInputs = {};
+export type Effect_ProcessInputs = {};
 export type Electron_ProcessInputs = {};
 export type Engineering_CapabilitiesInputs = {};
 export type Expo_ProcessInputs = {};
@@ -513,6 +531,8 @@ export type Fit_Better_AuthInputs = {};
 export type Fit_BunInputs = {};
 export type Fit_DockerInputs = {};
 export type Fit_DrizzleInputs = {};
+export type Fit_Effect_HttpInputs = {};
+export type Fit_Effect_RpcInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
 export type Fit_HonoInputs = {};
@@ -598,6 +618,7 @@ export type Kind_DesktopInputs = {};
 export type Kind_FrameworkInputs = {};
 export type Kind_FrontendInputs = {};
 export type Kind_MobileInputs = {};
+export type Kind_ModeInputs = {};
 export type Kind_OrmInputs = {};
 export type Kind_RouterInputs = {};
 export type Kind_RuntimeInputs = {};
@@ -611,6 +632,9 @@ export type LanguageInputs = {};
 export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
+export type Mode_Effect_AboutInputs = {};
+export type Mode_StandardInputs = {};
+export type Mode_Standard_AboutInputs = {};
 export type Mongodb_ProcessInputs = {};
 export type Mysql_ProcessInputs = {};
 export type Nav_DocsInputs = {};
@@ -830,6 +854,7 @@ export declare const cap_cloudflare_deployment: (inputs: Cap_Cloudflare_Deployme
 export declare const cap_database_server: (inputs: Cap_Database_ServerInputs) => LocalizedString;
 export declare const cap_document_database: (inputs: Cap_Document_DatabaseInputs) => LocalizedString;
 export declare const cap_document_orm: (inputs: Cap_Document_OrmInputs) => LocalizedString;
+export declare const cap_effect_http_server: (inputs: Cap_Effect_Http_ServerInputs) => LocalizedString;
 export declare const cap_frontend_framework: (inputs: Cap_Frontend_FrameworkInputs) => LocalizedString;
 export declare const cap_fullstack_framework: (inputs: Cap_Fullstack_FrameworkInputs) => LocalizedString;
 export declare const cap_hono_server: (inputs: Cap_Hono_ServerInputs) => LocalizedString;
@@ -886,6 +911,9 @@ export declare const desc_bun: (inputs: Desc_BunInputs) => LocalizedString;
 export declare const desc_docker: (inputs: Desc_DockerInputs) => LocalizedString;
 export declare const desc_drizzle: (inputs: Desc_DrizzleInputs) => LocalizedString;
 export declare const desc_e2e: (inputs: Desc_E2eInputs) => LocalizedString;
+export declare const desc_effect: (inputs: Desc_EffectInputs) => LocalizedString;
+export declare const desc_effect_http: (inputs: Desc_Effect_HttpInputs) => LocalizedString;
+export declare const desc_effect_rpc: (inputs: Desc_Effect_RpcInputs) => LocalizedString;
 export declare const desc_electron: (inputs: Desc_ElectronInputs) => LocalizedString;
 export declare const desc_expo: (inputs: Desc_ExpoInputs) => LocalizedString;
 export declare const desc_hono: (inputs: Desc_HonoInputs) => LocalizedString;
@@ -904,6 +932,7 @@ export declare const desc_self: (inputs: Desc_SelfInputs) => LocalizedString;
 export declare const desc_shadcn: (inputs: Desc_ShadcnInputs) => LocalizedString;
 export declare const desc_spa: (inputs: Desc_SpaInputs) => LocalizedString;
 export declare const desc_sqlite: (inputs: Desc_SqliteInputs) => LocalizedString;
+export declare const desc_standard: (inputs: Desc_StandardInputs) => LocalizedString;
 export declare const desc_tanstack_router: (inputs: Desc_Tanstack_RouterInputs) => LocalizedString;
 export declare const desc_tanstack_start: (inputs: Desc_Tanstack_StartInputs) => LocalizedString;
 export declare const desc_vite_plus: (inputs: Desc_Vite_PlusInputs) => LocalizedString;
@@ -923,6 +952,7 @@ export declare const docs_pagination: (inputs: Docs_PaginationInputs) => Localiz
 export declare const docs_previous: (inputs: Docs_PreviousInputs) => LocalizedString;
 export declare const document_description: (inputs: Document_DescriptionInputs) => LocalizedString;
 export declare const document_title: (inputs: Document_TitleInputs) => LocalizedString;
+export declare const effect_process: (inputs: Effect_ProcessInputs) => LocalizedString;
 export declare const electron_process: (inputs: Electron_ProcessInputs) => LocalizedString;
 export declare const engineering_capabilities: (inputs: Engineering_CapabilitiesInputs) => LocalizedString;
 export declare const expo_process: (inputs: Expo_ProcessInputs) => LocalizedString;
@@ -933,6 +963,8 @@ export declare const fit_better_auth: (inputs: Fit_Better_AuthInputs) => Localiz
 export declare const fit_bun: (inputs: Fit_BunInputs) => LocalizedString;
 export declare const fit_docker: (inputs: Fit_DockerInputs) => LocalizedString;
 export declare const fit_drizzle: (inputs: Fit_DrizzleInputs) => LocalizedString;
+export declare const fit_effect_http: (inputs: Fit_Effect_HttpInputs) => LocalizedString;
+export declare const fit_effect_rpc: (inputs: Fit_Effect_RpcInputs) => LocalizedString;
 export declare const fit_electron: (inputs: Fit_ElectronInputs) => LocalizedString;
 export declare const fit_expo: (inputs: Fit_ExpoInputs) => LocalizedString;
 export declare const fit_hono: (inputs: Fit_HonoInputs) => LocalizedString;
@@ -1006,6 +1038,7 @@ export declare const kind_desktop: (inputs: Kind_DesktopInputs) => LocalizedStri
 export declare const kind_framework: (inputs: Kind_FrameworkInputs) => LocalizedString;
 export declare const kind_frontend: (inputs: Kind_FrontendInputs) => LocalizedString;
 export declare const kind_mobile: (inputs: Kind_MobileInputs) => LocalizedString;
+export declare const kind_mode: (inputs: Kind_ModeInputs) => LocalizedString;
 export declare const kind_orm: (inputs: Kind_OrmInputs) => LocalizedString;
 export declare const kind_router: (inputs: Kind_RouterInputs) => LocalizedString;
 export declare const kind_runtime: (inputs: Kind_RuntimeInputs) => LocalizedString;
@@ -1017,6 +1050,9 @@ export declare const knip_scope_desktop: (inputs: Knip_Scope_DesktopInputs) => L
 export declare const knip_scope_mobile: (inputs: Knip_Scope_MobileInputs) => LocalizedString;
 export declare const language: (inputs: LanguageInputs) => LocalizedString;
 export declare const learn_about: (inputs: Learn_AboutInputs) => LocalizedString;
+export declare const mode_effect_about: (inputs: Mode_Effect_AboutInputs) => LocalizedString;
+export declare const mode_standard: (inputs: Mode_StandardInputs) => LocalizedString;
+export declare const mode_standard_about: (inputs: Mode_Standard_AboutInputs) => LocalizedString;
 export declare const mongodb_process: (inputs: Mongodb_ProcessInputs) => LocalizedString;
 export declare const mysql_process: (inputs: Mysql_ProcessInputs) => LocalizedString;
 export declare const nav_docs: (inputs: Nav_DocsInputs) => LocalizedString;

@@ -16,6 +16,7 @@ import {
   stackHeadline,
   todosExample,
 } from "#/app.ts";
+import { effectSpa } from "#/spa/effect.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -106,44 +107,51 @@ const orpcClient = (ctx: Context) =>
   );
 
 export const spa = defineIntegration({
-  contribute: (ctx) => [
-    ...templateFiles(ctx, "spa/common"),
-    ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
-    ...viteConfig(ctx),
-    ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
-    ...(todosExample(ctx) && !ctx.has("better-auth")
-      ? templateFiles(ctx, "spa/todos")
-      : []),
-    homePage(ctx, "apps/web/src/routes/index.tsx", true),
-    contribute(packageJson, {
-      devDependencies: [
-        `${ctx.scope}/config`,
-        "@tailwindcss/vite",
-        "@tanstack/router-plugin",
-        "@types/node",
-        "@vitejs/plugin-react",
-        "oxc-transform-react",
-        "typescript",
-        "vite",
-        "vite-plus",
-      ],
-      imports: { "#src/*": "./src/*" },
-      path: "apps/web",
-      scripts: { dev: "vp dev", build: "vp build", preview: "vp preview" },
-    }),
-    contribute(agentsMap, {
-      owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
-      path: "apps/web",
-    }),
-    contribute(agentsNotes, requestFlow(ctx)),
-    contribute(readmeTagline, "React"),
-    contribute(stackHeadline, "React"),
-    contribute(readmeLayers, {
-      choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
-      layer: "Frontend",
-    }),
-    ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
-  ],
+  contribute: (ctx) =>
+    ctx.has("effect")
+      ? effectSpa(ctx)
+      : [
+          ...templateFiles(ctx, "spa/common"),
+          ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
+          ...viteConfig(ctx),
+          ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
+          ...(todosExample(ctx) && !ctx.has("better-auth")
+            ? templateFiles(ctx, "spa/todos")
+            : []),
+          homePage(ctx, "apps/web/src/routes/index.tsx", true),
+          contribute(packageJson, {
+            devDependencies: [
+              `${ctx.scope}/config`,
+              "@tailwindcss/vite",
+              "@tanstack/router-plugin",
+              "@types/node",
+              "@vitejs/plugin-react",
+              "oxc-transform-react",
+              "typescript",
+              "vite",
+              "vite-plus",
+            ],
+            imports: { "#src/*": "./src/*" },
+            path: "apps/web",
+            scripts: {
+              dev: "vp dev",
+              build: "vp build",
+              preview: "vp preview",
+            },
+          }),
+          contribute(agentsMap, {
+            owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
+            path: "apps/web",
+          }),
+          contribute(agentsNotes, requestFlow(ctx)),
+          contribute(readmeTagline, "React"),
+          contribute(stackHeadline, "React"),
+          contribute(readmeLayers, {
+            choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
+            layer: "Frontend",
+          }),
+          ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
+        ],
   id: "spa",
   kind: "framework",
   name: "TanStack Router (Vite)",

@@ -3,12 +3,7 @@ import path from "node:path";
 import { isCancel, multiselect } from "@clack/prompts";
 import { z } from "zod";
 
-import {
-  choicesOf,
-  createBlueprintSchema,
-  diffText,
-  resolve,
-} from "@vibestart/core";
+import { choicesOf, diffText, resolve } from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
 import {
@@ -23,8 +18,9 @@ import {
 import { readText } from "#/maintenance/files.ts";
 import {
   MaintenanceError,
+  inputSchema,
   normalizeInput,
-  projectOf,
+  projectSchema,
   recordFile,
   serialize,
 } from "#/maintenance/model.ts";
@@ -46,7 +42,7 @@ import {
   runningVersion,
   snapshotAt,
 } from "#/maintenance/release.ts";
-import { loadRecipe } from "#/stack.ts";
+import { readBlueprint } from "#/stack.ts";
 
 const names = new Set(["add", "doctor", "upgrade", "snapshot"]);
 
@@ -72,7 +68,20 @@ const capabilities = () => [
     })),
 ];
 
-const readProject = async (cwd: string) => projectOf(await loadRecipe(cwd));
+const readProject = async (cwd: string) => {
+  const result = projectSchema.safeParse(await readBlueprint(cwd));
+
+  if (!result.success) {
+    throw new MaintenanceError(
+      [
+        ...new Set(result.error.issues.map((issue) => issue.message)),
+        "Maintenance regenerates the original templates from them.",
+      ].join("\n")
+    );
+  }
+
+  return result.data;
+};
 
 const added = async (
   project: Project,
@@ -414,7 +423,9 @@ export const maintenanceCommand = async (args: readonly string[]) => {
 
       const input = z
         .object({
-          blueprint: createBlueprintSchema(registry),
+          blueprint: inputSchema.extend({
+            packageManager: inputSchema.shape.packageManager.default("pnpm"),
+          }),
           name: z.string(),
         })
         .parse(JSON.parse(text));

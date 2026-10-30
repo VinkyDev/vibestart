@@ -71,7 +71,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 | `apps/web`              | The Studio: the stack picker, previews of generated files, and the en/zh docs in `content/docs`   |
 | `packages/ui`           | The Studio's shadcn components and styles                                                         |
 | `golden/`               | Checked-in generated projects. Each is its own workspace and runs its own `vp check`              |
-| `prototypes/`           | Hand-written targets for stacks not generated yet. Effect has its own CI job; each is a workspace |
+| `prototypes/`           | Hand-written targets for stacks not generated yet; each is a workspace                            |
 
 ## Conventions
 

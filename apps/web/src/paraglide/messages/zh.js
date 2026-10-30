@@ -20,6 +20,7 @@
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
+/** @typedef {{}} Cap_Effect_Http_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -76,6 +77,9 @@
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
+/** @typedef {{}} Desc_EffectInputs */
+/** @typedef {{}} Desc_Effect_HttpInputs */
+/** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
@@ -94,6 +98,7 @@
 /** @typedef {{}} Desc_ShadcnInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
+/** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
@@ -113,6 +118,7 @@
 /** @typedef {{}} Docs_PreviousInputs */
 /** @typedef {{}} Document_DescriptionInputs */
 /** @typedef {{}} Document_TitleInputs */
+/** @typedef {{}} Effect_ProcessInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
 /** @typedef {{}} Expo_ProcessInputs */
@@ -123,6 +129,8 @@
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_DrizzleInputs */
+/** @typedef {{}} Fit_Effect_HttpInputs */
+/** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -194,6 +202,7 @@
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
 /** @typedef {{}} Kind_MobileInputs */
+/** @typedef {{}} Kind_ModeInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -205,6 +214,9 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_StandardInputs */
+/** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
 /** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -454,6 +466,10 @@ export const cap_document_orm = /** @type {(inputs: Cap_Document_OrmInputs) => L
 	return /** @type {LocalizedString} */ (`文档 ODM`)
 };
 
+export const cap_effect_http_server = /** @type {(inputs: Cap_Effect_Http_ServerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Effect HTTP 服务端`)
+};
+
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`前端框架`)
 };
@@ -683,6 +699,18 @@ export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} 
 	return /** @type {LocalizedString} */ (`将自然语言目标与脚本断言组合，由 AI agent 执行探索，验证后的操作可缓存回放。适合交互变化频繁、需要快速补充用户流程测试的项目。`)
 };
 
+export const desc_effect = /** @type {(inputs: Desc_EffectInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`共享 Schema、资源作用域和类型化错误的完整 Effect 技术栈。`)
+};
+
+export const desc_effect_http = /** @type {(inputs: Desc_Effect_HttpInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`在 Node 上运行 Effect HTTP，在进程入口组合服务和 Layer。`)
+};
+
+export const desc_effect_rpc = /** @type {(inputs: Desc_Effect_RpcInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Effect Schema 契约、类型安全的 RPC、HttpApi 和响应式 Atom 客户端。`)
+};
+
 export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`包裹 Web 应用的桌面端，用 electron-builder 打包`)
 };
@@ -736,7 +764,7 @@ export const desc_prisma = /** @type {(inputs: Desc_PrismaInputs) => LocalizedSt
 };
 
 export const desc_react = /** @type {(inputs: Desc_ReactInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`React 19 与 TanStack Query`)
+	return /** @type {LocalizedString} */ (`React 19 组件与 Hook`)
 };
 
 export const desc_self = /** @type {(inputs: Desc_SelfInputs) => LocalizedString} */ () => {
@@ -753,6 +781,10 @@ export const desc_spa = /** @type {(inputs: Desc_SpaInputs) => LocalizedString} 
 
 export const desc_sqlite = /** @type {(inputs: Desc_SqliteInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`单文件数据库，基于 node:sqlite`)
+};
+
+export const desc_standard = /** @type {(inputs: Desc_StandardInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`自由组合框架、API、数据库和部署目标。`)
 };
 
 export const desc_tanstack_router = /** @type {(inputs: Desc_Tanstack_RouterInputs) => LocalizedString} */ () => {
@@ -831,6 +863,10 @@ export const document_title = /** @type {(inputs: Document_TitleInputs) => Local
 	return /** @type {LocalizedString} */ (`vibestart · AI Native 全栈脚手架`)
 };
 
+export const effect_process = /** @type {(inputs: Effect_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Effect · Node.js`)
+};
+
 export const electron_process = /** @type {(inputs: Electron_ProcessInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Electron 主进程`)
 };
@@ -871,6 +907,14 @@ export const fit_drizzle = /** @type {(inputs: Fit_DrizzleInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`适合以 TypeScript 编写 SQL，支持所有数据库`)
 };
 
+export const fit_effect_http = /** @type {(inputs: Fit_Effect_HttpInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`用作用域管理整个服务端的服务和资源生命周期。`)
+};
+
+export const fit_effect_rpc = /** @type {(inputs: Fit_Effect_RpcInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`从服务端到浏览器中的 Effect Atom，共享同一份类型化契约。`)
+};
+
 export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合把同一个网页应用装进独立窗口，打包成安装程序`)
 };
@@ -900,7 +944,7 @@ export const fit_next = /** @type {(inputs: Fit_NextInputs) => LocalizedString} 
 };
 
 export const fit_node = /** @type {(inputs: Fit_NodeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`沿用当前的 Node.js 运行时运行 Hono。`)
+	return /** @type {LocalizedString} */ (`使用 Node.js 运行服务端。`)
 };
 
 export const fit_none_api = /** @type {(inputs: Fit_None_ApiInputs) => LocalizedString} */ () => {
@@ -1166,6 +1210,10 @@ export const kind_mobile = /** @type {(inputs: Kind_MobileInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`移动端`)
 };
 
+export const kind_mode = /** @type {(inputs: Kind_ModeInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`模式`)
+};
+
 export const kind_orm = /** @type {(inputs: Kind_OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`ORM`)
 };
@@ -1208,6 +1256,18 @@ export const language = /** @type {(inputs: LanguageInputs) => LocalizedString} 
 
 export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`了解 ${i?.name}`)
+};
+
+export const mode_effect_about = /** @type {(inputs: Mode_Effect_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`类型化服务、RPC 与响应式状态`)
+};
+
+export const mode_standard = /** @type {(inputs: Mode_StandardInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`默认模式`)
+};
+
+export const mode_standard_about = /** @type {(inputs: Mode_Standard_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`自由组合技术栈`)
 };
 
 export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {

@@ -99,7 +99,7 @@ const readRecipe = async (source: string) => {
   }
 };
 
-export const loadRecipe = async (source: string) => {
+export const readBlueprint = async (source: string) => {
   const errors: ParseError[] = [];
 
   const data: unknown = parse(await readRecipe(source), errors, {
@@ -113,7 +113,11 @@ export const loadRecipe = async (source: string) => {
     );
   }
 
-  const result = blueprintSchema.safeParse(data);
+  return data;
+};
+
+export const loadRecipe = async (source: string) => {
+  const result = blueprintSchema.safeParse(await readBlueprint(source));
 
   if (!result.success) {
     throw new CliError(

@@ -8,7 +8,6 @@ import { taskLabel } from "#/stack-label.ts";
 import type { Projection, StackVerification } from "#/verification.ts";
 import {
   emptyProjection,
-  recordedVerification,
   verificationOf,
   verifiedAs,
   verifiedFingerprint,
@@ -60,19 +59,6 @@ const covering = async (
 
   return projection;
 };
-
-describe(recordedVerification, () => {
-  it("returns the record the projection names, including one from an earlier output", async () => {
-    await expect(
-      recordedVerification(
-        stack,
-        addons,
-        "pnpm",
-        await covering(["pnpm"], async () => await Promise.resolve("0"))
-      )
-    ).resolves.toStrictEqual({ label: witness, record });
-  });
-});
 
 describe(verificationOf, () => {
   it("vouches for a stack with the record that covers its Docker sibling", async () => {

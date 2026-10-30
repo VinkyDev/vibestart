@@ -12,9 +12,9 @@ import { ultracitePresets } from "#/ultracite.ts";
 
 const apiStatusPath = "apps/web/src/components/api-status.tsx";
 
-// oRPC brings its own typed status; without it the home page asks `/api/health` directly.
+// RPC integrations own their status component; REST calls `/api/health` directly.
 const healthStatus = (ctx: Context) =>
-  hasBackend(ctx) && !ctx.has("orpc")
+  hasBackend(ctx) && !ctx.has("orpc") && !ctx.has("effect")
     ? [
         file(
           apiStatusPath,
@@ -32,8 +32,9 @@ export const react = defineIntegration({
     ...healthStatus(ctx),
     contribute(packageJson, {
       dependencies: [
-        "@tanstack/react-query",
-        "@tanstack/react-query-devtools",
+        ...(ctx.has("effect")
+          ? []
+          : ["@tanstack/react-query", "@tanstack/react-query-devtools"]),
         "react",
         "react-dom",
       ],
@@ -48,7 +49,7 @@ export const react = defineIntegration({
   id: "react",
   kind: "frontend",
   name: "React",
-  description: "React 19 with TanStack Query",
+  description: "React 19 components and hooks",
   homepage: "https://react.dev",
   provides: ["react"],
   requires: ["frontend-framework", "ui-components"],

@@ -19,6 +19,7 @@ import {
   sqlDatabase,
   stackHeadline,
 } from "#/app.ts";
+import { effectDatabase } from "#/drizzle/effect.ts";
 import { commentedShell } from "#/format.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
@@ -140,6 +141,10 @@ const workerClient = (
 
 export const drizzle = defineIntegration({
   contribute: (ctx) => {
+    if (ctx.has("effect")) {
+      return effectDatabase(ctx);
+    }
+
     const { dir } = serverApp(ctx);
     const database = sqlDatabase(ctx).id;
 

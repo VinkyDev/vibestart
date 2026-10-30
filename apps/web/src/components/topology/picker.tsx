@@ -166,7 +166,7 @@ export const Picker = ({
         </span>
         <span className="text-muted-foreground text-xs">{about}</span>
       </div>
-      {optionsOf(kind)
+      {optionsOf(kind, stack.mode)
         .filter((integration) => kind !== "runtime" || integration !== null)
         .map((integration) => {
           const id = integration?.id ?? null;

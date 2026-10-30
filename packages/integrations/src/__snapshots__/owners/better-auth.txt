@@ -631,6 +631,148 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
   );
 };
 
+# apps/web/src/components/auth-form.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { useState, useTransition } from "react";
+import type { SubmitEvent } from "react";
+import { toast } from "sonner";
+
+import { Button } from "@my-app/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@my-app/ui/components/card";
+import { Input } from "@my-app/ui/components/input";
+import { Label } from "@my-app/ui/components/label";
+
+import { authClient } from "#src/lib/auth.ts";
+
+type Mode = "sign-in" | "sign-up";
+
+const copy = {
+  "sign-in": {
+    title: "Sign in",
+    description: "Welcome back.",
+    submit: "Sign in",
+    switchLabel: "Need an account? Sign up",
+  },
+  "sign-up": {
+    title: "Create an account",
+    description: "Sign up with your email and a password.",
+    submit: "Sign up",
+    switchLabel: "Already have an account? Sign in",
+  },
+} as const;
+
+const formValue = (form: FormData, name: string) => {
+  const value = form.get(name);
+
+  if (value === null || value instanceof File) {
+    return "";
+  }
+
+  return value;
+};
+
+const authenticate = async (mode: Mode, form: FormData) => {
+  const email = formValue(form, "email");
+  const password = formValue(form, "password");
+
+  const { error } =
+    mode === "sign-in"
+      ? await authClient.signIn.email({ email, password })
+      : await authClient.signUp.email({
+          email,
+          password,
+          name: formValue(form, "name"),
+        });
+
+  if (error) {
+    throw new Error(error.message ?? error.statusText);
+  }
+};
+
+export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
+  const [mode, setMode] = useState<Mode>("sign-in");
+  const text = copy[mode];
+
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+
+    startTransition(async () => {
+      try {
+        await authenticate(mode, form);
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : String(error));
+
+        return;
+      }
+
+      await onSuccess();
+    });
+  };
+
+  return (
+    <Card className="mx-auto w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>{text.title}</CardTitle>
+        <CardDescription>{text.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form className="grid gap-4" onSubmit={handleSubmit}>
+          {mode === "sign-up" && (
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input autoComplete="name" id="name" name="name" required />
+            </div>
+          )}
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              autoComplete="email"
+              id="email"
+              name="email"
+              required
+              type="email"
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              autoComplete={
+                mode === "sign-in" ? "current-password" : "new-password"
+              }
+              id="password"
+              minLength={8}
+              name="password"
+              required
+              type="password"
+            />
+          </div>
+          <Button disabled={isPending} type="submit">
+            {text.submit}
+          </Button>
+          <Button
+            onClick={() => {
+              setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+            }}
+            type="button"
+            variant="link"
+          >
+            {text.switchLabel}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+};
+
 # apps/web/src/components/auth-form.tsx · 544 stacks
 #   spa-hono-mongodb-better-auth-bun-docker
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
@@ -1588,6 +1730,84 @@ export const UserMenu = ({ user }: UserMenuProps) => {
   );
 };
 
+# apps/web/src/components/user-menu.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { useTransition } from "react";
+import { toast } from "sonner";
+
+import { Button } from "@my-app/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@my-app/ui/components/dropdown-menu";
+
+import { authClient } from "#src/lib/auth.ts";
+
+export const UserMenu = () => {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const { session } = useRouteContext({ from: "__root__" });
+
+  const signOut = async () => {
+    try {
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        toast.error("Could not sign out. Please try again.");
+
+        return;
+      }
+
+      await router.invalidate();
+      await router.navigate({ to: "/" });
+    } catch {
+      toast.error("Could not sign out. Please try again.");
+    }
+  };
+
+  if (!session) {
+    return (
+      <Button
+        nativeButton={false}
+        render={<Link to="/login" />}
+        size="sm"
+        variant="outline"
+      >
+        Sign in
+      </Button>
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
+        {session.user.name}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{session.user.email}</DropdownMenuLabel>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          disabled={pending}
+          onClick={() => {
+            startTransition(signOut);
+          }}
+          variant="destructive"
+        >
+          Sign out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 # apps/web/src/components/user-menu.tsx · 544 stacks
 #   spa-hono-mongodb-better-auth-bun-docker
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
@@ -2407,7 +2627,8 @@ import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient();
 
-# apps/web/src/lib/auth.ts · 336 stacks
+# apps/web/src/lib/auth.ts · 337 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-hono-mongodb-better-auth-bun-docker
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
 #   spa-hono-mongodb-better-auth-docker
@@ -3022,6 +3243,32 @@ export const getSession = createServerFn({ method: "GET" }).handler(
   async () =>
     await getServices().auth.api.getSession({ headers: getRequestHeaders() })
 );
+
+# apps/web/src/routes/_authenticated.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { RegistryProvider } from "@effect/atom-react";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
+const AuthenticatedLayout = () => {
+  const { session } = Route.useRouteContext();
+
+  return (
+    <RegistryProvider key={session.session.id}>
+      <Outlet />
+    </RegistryProvider>
+  );
+};
+
+export const Route = createFileRoute("/_authenticated")({
+  component: AuthenticatedLayout,
+  beforeLoad: ({ context, location }) => {
+    if (!context.session) {
+      throw redirect({ to: "/login", search: { redirect: location.href } });
+    }
+
+    return { session: context.session };
+  },
+});
 
 # apps/web/src/routes/_authenticated.tsx · 352 stacks
 #   spa-hono-openapi-mongodb-better-auth-bun-docker
@@ -3972,241 +4219,8 @@ export const Route = createFileRoute("/api/auth/$")({
   server: { handlers: { GET: handleAuth, POST: handleAuth } },
 });
 
-# apps/web/src/routes/login.tsx · 192 stacks
-#   spa-hono-mongodb-better-auth-bun-docker
-#   spa-hono-mongodb-better-auth-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-docker
-#   spa-hono-mongodb-better-auth-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-bun-docker
-#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-docker
-#   spa-hono-mongodb-better-auth-electron-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
-#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-expo-docker
-#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-mongodb-better-auth-expo-bun-docker
-#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-expo-docker
-#   spa-hono-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-mysql-better-auth-bun-docker
-#   spa-hono-mysql-better-auth-bun-docker-e2e
-#   spa-hono-mysql-better-auth-docker
-#   spa-hono-mysql-better-auth-docker-e2e
-#   spa-hono-mysql-better-auth-electron-bun-docker
-#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
-#   spa-hono-mysql-better-auth-electron-docker
-#   spa-hono-mysql-better-auth-electron-docker-e2e
-#   spa-hono-mysql-better-auth-electron-expo-bun-docker
-#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mysql-better-auth-electron-expo-docker
-#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
-#   spa-hono-mysql-better-auth-electron-expo-void
-#   spa-hono-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-mysql-better-auth-electron-void
-#   spa-hono-mysql-better-auth-electron-void-e2e
-#   spa-hono-mysql-better-auth-expo-bun-docker
-#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
-#   spa-hono-mysql-better-auth-expo-docker
-#   spa-hono-mysql-better-auth-expo-docker-e2e
-#   spa-hono-mysql-better-auth-expo-void
-#   spa-hono-mysql-better-auth-expo-void-e2e
-#   spa-hono-mysql-better-auth-void
-#   spa-hono-mysql-better-auth-void-e2e
-#   spa-hono-mysql-prisma-better-auth-bun-docker
-#   spa-hono-mysql-prisma-better-auth-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-docker
-#   spa-hono-mysql-prisma-better-auth-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-bun-docker
-#   spa-hono-mysql-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-docker
-#   spa-hono-mysql-prisma-better-auth-electron-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker
-#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-expo-docker
-#   spa-hono-mysql-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-expo-bun-docker
-#   spa-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-expo-docker
-#   spa-hono-mysql-prisma-better-auth-expo-docker-e2e
-#   spa-hono-postgres-better-auth-bun-docker
-#   spa-hono-postgres-better-auth-bun-docker-e2e
-#   spa-hono-postgres-better-auth-docker
-#   spa-hono-postgres-better-auth-docker-e2e
-#   spa-hono-postgres-better-auth-electron-bun-docker
-#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-postgres-better-auth-electron-docker
-#   spa-hono-postgres-better-auth-electron-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-docker
-#   spa-hono-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-void
-#   spa-hono-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-postgres-better-auth-electron-void
-#   spa-hono-postgres-better-auth-electron-void-e2e
-#   spa-hono-postgres-better-auth-expo-bun-docker
-#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-expo-docker
-#   spa-hono-postgres-better-auth-expo-docker-e2e
-#   spa-hono-postgres-better-auth-expo-void
-#   spa-hono-postgres-better-auth-expo-void-e2e
-#   spa-hono-postgres-better-auth-void
-#   spa-hono-postgres-better-auth-void-e2e
-#   spa-hono-postgres-prisma-better-auth-bun-docker
-#   spa-hono-postgres-prisma-better-auth-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-docker
-#   spa-hono-postgres-prisma-better-auth-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-bun-docker
-#   spa-hono-postgres-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-docker
-#   spa-hono-postgres-prisma-better-auth-electron-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker
-#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-expo-docker
-#   spa-hono-postgres-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-expo-bun-docker
-#   spa-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-expo-docker
-#   spa-hono-postgres-prisma-better-auth-expo-docker-e2e
-#   spa-hono-sqlite-better-auth-bun-docker
-#   spa-hono-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-docker
-#   spa-hono-sqlite-better-auth-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-bun-docker
-#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-docker
-#   spa-hono-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-expo-docker
-#   spa-hono-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-sqlite-better-auth-expo-bun-docker
-#   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-expo-docker
-#   spa-hono-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-hono-mongodb-better-auth-bun-docker
-#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
-#   tanstack-start-hono-mongodb-better-auth-docker
-#   tanstack-start-hono-mongodb-better-auth-docker-e2e
-#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
-#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-mongodb-better-auth-expo-docker
-#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-bun-docker
-#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-docker
-#   tanstack-start-hono-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
-#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-expo-docker
-#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker
-#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker-e2e
-#   tanstack-start-hono-mysql-prisma-better-auth-docker
-#   tanstack-start-hono-mysql-prisma-better-auth-docker-e2e
-#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker
-#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker
-#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-bun-docker
-#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-docker
-#   tanstack-start-hono-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
-#   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-expo-docker
-#   tanstack-start-hono-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker
-#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker-e2e
-#   tanstack-start-hono-postgres-prisma-better-auth-docker
-#   tanstack-start-hono-postgres-prisma-better-auth-docker-e2e
-#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker
-#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker
-#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-bun-docker
-#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-docker
-#   tanstack-start-hono-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
-#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-expo-docker
-#   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
-#   tanstack-start-self-mongodb-better-auth-docker
-#   tanstack-start-self-mongodb-better-auth-docker-e2e
-#   tanstack-start-self-mongodb-better-auth-expo-docker
-#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
-#   tanstack-start-self-mysql-better-auth-docker
-#   tanstack-start-self-mysql-better-auth-docker-e2e
-#   tanstack-start-self-mysql-better-auth-expo-docker
-#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
-#   tanstack-start-self-mysql-better-auth-expo-void
-#   tanstack-start-self-mysql-better-auth-expo-void-e2e
-#   tanstack-start-self-mysql-better-auth-void
-#   tanstack-start-self-mysql-better-auth-void-e2e
-#   tanstack-start-self-mysql-prisma-better-auth-docker
-#   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
-#   tanstack-start-self-mysql-prisma-better-auth-expo-docker
-#   tanstack-start-self-mysql-prisma-better-auth-expo-docker-e2e
-#   tanstack-start-self-postgres-better-auth-docker
-#   tanstack-start-self-postgres-better-auth-docker-e2e
-#   tanstack-start-self-postgres-better-auth-expo-docker
-#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
-#   tanstack-start-self-postgres-better-auth-expo-void
-#   tanstack-start-self-postgres-better-auth-expo-void-e2e
-#   tanstack-start-self-postgres-better-auth-void
-#   tanstack-start-self-postgres-better-auth-void-e2e
-#   tanstack-start-self-postgres-prisma-better-auth-docker
-#   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
-#   tanstack-start-self-postgres-prisma-better-auth-expo-docker
-#   tanstack-start-self-postgres-prisma-better-auth-expo-docker-e2e
-#   tanstack-start-self-sqlite-better-auth-docker
-#   tanstack-start-self-sqlite-better-auth-docker-e2e
-#   tanstack-start-self-sqlite-better-auth-expo-docker
-#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
-
-import { AuthForm } from "#src/components/auth-form.tsx";
-
-// Browsers normalize backslashes and strip tabs/newlines before resolving URLs.
-const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
-
-const isSameOriginRedirect = (value: unknown): value is string =>
-  typeof value === "string" && sameOriginPath.test(value);
-
-interface LoginSearch {
-  redirect?: string;
-}
-
-const validateSearch = (search: { redirect?: unknown }): LoginSearch => ({
-  // TanStack merges validated search with the input, so rejected values must be overwritten.
-  redirect: isSameOriginRedirect(search.redirect) ? search.redirect : undefined,
-});
-
-const LoginPage = () => {
-  const router = useRouter();
-  const search = Route.useSearch();
-
-  const handleSuccess = async () => {
-    await router.invalidate();
-    await router.navigate({ href: search.redirect ?? "/" });
-  };
-
-  return <AuthForm onSuccess={handleSuccess} />;
-};
-
-export const Route = createFileRoute("/login")({
-  validateSearch,
-  beforeLoad: ({ context, search }) => {
-    if (context.session) {
-      throw redirect({ href: search.redirect ?? "/" });
-    }
-  },
-  component: LoginPage,
-});
-
-# apps/web/src/routes/login.tsx · 352 stacks
+# apps/web/src/routes/login.tsx · 353 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-hono-openapi-mongodb-better-auth-bun-docker
 #   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mongodb-better-auth-docker
@@ -4595,6 +4609,240 @@ export const Route = createFileRoute("/login")({
   beforeLoad: ({ context, search }) => {
     if (context.session) {
       throw redirect({ href: search.redirect ?? "/todos" });
+    }
+  },
+  component: LoginPage,
+});
+
+# apps/web/src/routes/login.tsx · 192 stacks
+#   spa-hono-mongodb-better-auth-bun-docker
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-prisma-better-auth-bun-docker
+#   spa-hono-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-docker
+#   spa-hono-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-docker
+#   spa-hono-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-expo-docker
+#   spa-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-expo-docker
+#   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-prisma-better-auth-bun-docker
+#   spa-hono-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-docker
+#   spa-hono-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-docker
+#   spa-hono-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-expo-docker
+#   spa-hono-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-expo-docker
+#   spa-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-expo-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-prisma-better-auth-docker
+#   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-prisma-better-auth-docker
+#   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-expo-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+
+import { AuthForm } from "#src/components/auth-form.tsx";
+
+// Browsers normalize backslashes and strip tabs/newlines before resolving URLs.
+const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
+
+const isSameOriginRedirect = (value: unknown): value is string =>
+  typeof value === "string" && sameOriginPath.test(value);
+
+interface LoginSearch {
+  redirect?: string;
+}
+
+const validateSearch = (search: { redirect?: unknown }): LoginSearch => ({
+  // TanStack merges validated search with the input, so rejected values must be overwritten.
+  redirect: isSameOriginRedirect(search.redirect) ? search.redirect : undefined,
+});
+
+const LoginPage = () => {
+  const router = useRouter();
+  const search = Route.useSearch();
+
+  const handleSuccess = async () => {
+    await router.invalidate();
+    await router.navigate({ href: search.redirect ?? "/" });
+  };
+
+  return <AuthForm onSuccess={handleSuccess} />;
+};
+
+export const Route = createFileRoute("/login")({
+  validateSearch,
+  beforeLoad: ({ context, search }) => {
+    if (context.session) {
+      throw redirect({ href: search.redirect ?? "/" });
     }
   },
   component: LoginPage,
@@ -6062,6 +6310,71 @@ export type Auth = ReturnType<typeof createAuth>;
 
 export type Session = Auth["$Infer"]["Session"];
 
+# packages/auth/src/index.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+import postgres from "postgres";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.sync(() =>
+      postgres(Redacted.value(options.databaseUrl), {
+        connection: { client_min_messages: "warning" },
+        max: 4,
+      })
+    ),
+    (sql) =>
+      Effect.promise(async () => {
+        await sql.end();
+      })
+  );
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "pg",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
 # packages/auth/src/index.ts · 12 stacks
 #   spa-hono-mongodb-better-auth-electron-bun-docker
 #   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
@@ -6966,7 +7279,7 @@ export type Auth = ReturnType<typeof createAuth>;
 
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/tsconfig.json · 808 stacks
+# packages/auth/tsconfig.json · 809 stacks
 #   hono-mongodb-better-auth-bun-docker
 #   hono-mongodb-better-auth-docker
 #   hono-mongodb-better-auth-expo-bun-docker
@@ -7231,6 +7544,7 @@ export type Session = Auth["$Infer"]["Session"];
 #   next-self-sqlite-better-auth-docker-e2e
 #   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-hono-mongodb-better-auth-bun-docker
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
 #   spa-hono-mongodb-better-auth-docker
@@ -7779,3 +8093,79 @@ export type Session = Auth["$Infer"]["Session"];
   "extends": "@my-app/config/typescript/node.json",
   "include": ["src"]
 }
+
+# packages/db/src/schema/auth.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import {
+  boolean,
+  index,
+  snakeCase,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+
+const timestamps = {
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp({ withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+};
+
+export const user = snakeCase.table("user", {
+  email: text().notNull().unique(),
+  emailVerified: boolean().notNull().default(false),
+  id: text().primaryKey(),
+  image: text(),
+  name: text().notNull(),
+  ...timestamps,
+});
+
+export const session = snakeCase.table(
+  "session",
+  {
+    expiresAt: timestamp({ withTimezone: true }).notNull(),
+    id: text().primaryKey(),
+    ipAddress: text(),
+    token: text().notNull().unique(),
+    userAgent: text(),
+    userId: text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [index("session_user_id_idx").on(table.userId)]
+);
+
+export const account = snakeCase.table(
+  "account",
+  {
+    accessToken: text(),
+    accessTokenExpiresAt: timestamp({ withTimezone: true }),
+    accountId: text().notNull(),
+    id: text().primaryKey(),
+    idToken: text(),
+    password: text(),
+    providerId: text().notNull(),
+    refreshToken: text(),
+    refreshTokenExpiresAt: timestamp({ withTimezone: true }),
+    scope: text(),
+    userId: text()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    ...timestamps,
+  },
+  (table) => [index("account_user_id_idx").on(table.userId)]
+);
+
+export const verification = snakeCase.table(
+  "verification",
+  {
+    expiresAt: timestamp({ withTimezone: true }).notNull(),
+    id: text().primaryKey(),
+    identifier: text().notNull(),
+    value: text().notNull(),
+    ...timestamps,
+  },
+  (table) => [index("verification_identifier_idx").on(table.identifier)]
+);

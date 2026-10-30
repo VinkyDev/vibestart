@@ -13,6 +13,7 @@ import {
   hasWebApp,
   proxiesToHono,
   chosenDatabase,
+  serverApp,
 } from "#/app.ts";
 import { toolchainVersions } from "#/catalog.ts";
 import { joinWords, quote } from "#/format.ts";
@@ -125,7 +126,9 @@ const nodeRuntime = (ctx: Context, read: ReadSlot) => {
  * workspace packages they use, and nothing else, so another app in the workspace (Electron) stays out of the image.
  */
 const deployedPackages = (ctx: Context) => [
-  ...(ctx.has("hono") ? [`${ctx.scope}/server`] : []),
+  ...(hasBackend(ctx) && serverApp(ctx).dir === "apps/server"
+    ? [`${ctx.scope}/server`]
+    : []),
   ...(hasWebApp(ctx) ? [`${ctx.scope}/web`] : []),
 ];
 
@@ -338,7 +341,7 @@ const staticProduction = [
 ].join("\n\n");
 
 const apiRoutes = (ctx: Context) => {
-  if (ctx.has("orpc")) {
+  if (ctx.has("orpc") || ctx.has("effect-rpc")) {
     return ["`/rpc`", "`/api`"];
   }
 

@@ -1,0 +1,21 @@
+---
+title: Effect mode
+description: An independent stack built around Effect services, schemas, RPC, and atoms.
+---
+
+Studio starts in **Standard** mode. Switch to **Effect** to work with the reviewed Effect stack; switching modes selects that mode's defaults. The URL records the mode, and browser Back restores the previous selection.
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect
+pnpm dlx vibestart-cli --list --mode effect
+```
+
+Effect mode uses React and TanStack Router, Effect HTTP and RPC, PostgreSQL through Drizzle's Effect adapter and `@effect/sql-pg`, Better Auth, and `@effect/atom-react`. Validation uses Effect Schema. Server dependencies are composed with Layers; typed service errors become sanitized transport errors. Browser state belongs to atoms, including session-scoped RPC state. There is no parallel Hono, oRPC, Zod, or TanStack Query stack.
+
+`packages/contracts` owns shared schemas and protocols. `packages/api` owns handlers and services, `packages/db` owns persistence, and `packages/auth` adapts Better Auth. `apps/server` composes and launches the application; `apps/web` owns routes and presentation. Third-party Promise APIs are adapted at their service boundary.
+
+The supported runtime is Node. Choose Docker or no deployment; unadapted frameworks, databases, mobile apps, desktop shells, and runtimes are unavailable. The CLI rejects mixed selections rather than changing modes. The package manager remains independent: pnpm and Bun can install the same Node application.
+
+Tests use `@effect/vitest` for services and `e2e` for browser flows. The generated golden participates in the same verification matrix as Standard projects. Docker CI also exercises migrations, authentication, and authenticated RPC against the production image.
+
+[Effect documentation](https://effect.website/docs/) explains the runtime and service model.

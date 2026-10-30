@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import type { Stack } from "@vibestart/core";
-import { compose, createBlueprintSchema, resolve } from "@vibestart/core";
+import {
+  check,
+  compose,
+  createBlueprintSchema,
+  resolve,
+} from "@vibestart/core";
 
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
@@ -56,7 +61,11 @@ const ownedByRunner = (path: string) =>
   runnerFiles.has(path) || path.startsWith("apps/web/tests/e2e/");
 
 const e2eStacks = verifiedStacks
-  .filter((stack) => stack.testing === "e2e")
+  .filter(
+    (stack) =>
+      stack.testing === "e2e" &&
+      check(registry, { ...stack, testing: "playwright" }).length === 0
+  )
   .map((stack) => ({ label: stackLabel(stack), stack }));
 
 const recordedRunner = (testing: string) =>

@@ -1,6 +1,7 @@
-# apps/web/index.html · 760 stacks
+# apps/web/index.html · 761 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -1046,9 +1047,10 @@ const client: AppRouterClient = createORPCClient(link);
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/main.tsx · 760 stacks
+# apps/web/src/main.tsx · 761 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -2619,6 +2621,33 @@ declare module "@tanstack/react-router" {
   }
 }
 
+# apps/web/src/router.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { RegistryProvider } from "@effect/atom-react";
+import { createRouter } from "@tanstack/react-router";
+import type { RouterHistory } from "@tanstack/react-router";
+
+import { Loader } from "#src/components/loader.tsx";
+import { routeTree } from "#src/routeTree.gen.ts";
+
+export const createAppRouter = (history?: RouterHistory) =>
+  createRouter({
+    routeTree,
+    history,
+    context: { session: null },
+    defaultPreload: "intent",
+    defaultPreloadStaleTime: 0,
+    defaultPendingComponent: Loader,
+    scrollRestoration: true,
+    Wrap: ({ children }) => <RegistryProvider>{children}</RegistryProvider>,
+  });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: ReturnType<typeof createAppRouter>;
+  }
+}
+
 # apps/web/src/routes/__root.tsx · 424 stacks
 #   spa-docker
 #   spa-docker-e2e
@@ -3089,6 +3118,78 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 });
 
+# apps/web/src/routes/__root.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import {
+  HeadContent,
+  Outlet,
+  createRootRouteWithContext,
+  useRouter,
+} from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { ThemeProvider } from "next-themes";
+import { useEffect } from "react";
+
+import { Toaster } from "@my-app/ui/components/sonner";
+
+import { Header } from "#src/components/header.tsx";
+import { authClient, getSession } from "#src/lib/auth.ts";
+import type { Session } from "#src/lib/auth.ts";
+
+interface RouterContext {
+  session: Session | null;
+}
+
+const RootLayout = () => {
+  const router = useRouter();
+  const { session } = Route.useRouteContext();
+  const current = authClient.useSession();
+  const sessionId = current.data?.session.id;
+
+  useEffect(() => {
+    if (
+      !current.isPending &&
+      !current.error &&
+      sessionId !== session?.session.id
+    ) {
+      void router.invalidate();
+    }
+  }, [
+    current.isPending,
+    current.error,
+    sessionId,
+    session?.session.id,
+    router,
+  ]);
+
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      disableTransitionOnChange
+      scriptProps={{ type: "application/json" }}
+    >
+      <HeadContent />
+      <div className="grid min-h-svh grid-rows-[auto_1fr]">
+        <Header />
+        <main className="mx-auto w-full max-w-2xl px-4 py-10 sm:py-14">
+          <Outlet />
+        </main>
+      </div>
+      <Toaster richColors />
+      <TanStackRouterDevtools position="bottom-left" />
+    </ThemeProvider>
+  );
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async () => ({ session: await getSession() }),
+  head: () => ({
+    meta: [{ title: "my-app" }],
+  }),
+  component: RootLayout,
+});
+
 # apps/web/src/routes/__root.tsx · 336 stacks
 #   spa-hono-mongodb-better-auth-bun-docker
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
@@ -3492,6 +3593,41 @@ const HomePage = () => (
       </h1>
       <p className="text-muted-foreground max-w-xl text-lg text-pretty">
         React on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
+);
+
+export const Route = createFileRoute("/")({
+  component: HomePage,
+});
+
+# apps/web/src/routes/index.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle and Better Auth
+        on Vite+.
       </p>
     </div>
     <p className="text-muted-foreground border-t pt-6 text-sm">
@@ -7230,9 +7366,10 @@ export const Route = createFileRoute("/todos")({
   component: TodosPage,
 });
 
-# apps/web/tsconfig.app.json · 760 stacks
+# apps/web/tsconfig.app.json · 761 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -7999,9 +8136,10 @@ export const Route = createFileRoute("/todos")({
   "include": ["src"]
 }
 
-# apps/web/tsconfig.json · 760 stacks
+# apps/web/tsconfig.json · 761 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -8768,9 +8906,10 @@ export const Route = createFileRoute("/todos")({
   ]
 }
 
-# apps/web/tsconfig.node.json · 760 stacks
+# apps/web/tsconfig.node.json · 761 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -9567,6 +9706,243 @@ export default defineConfig({
   ],
 });
 
+# apps/web/vite.config.ts · 209 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-bun-docker
+#   spa-hono-orpc-bun-docker-e2e
+#   spa-hono-orpc-docker
+#   spa-hono-orpc-docker-e2e
+#   spa-hono-orpc-electron-bun-docker
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-electron-expo-bun-docker
+#   spa-hono-orpc-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-electron-expo-docker
+#   spa-hono-orpc-electron-expo-docker-e2e
+#   spa-hono-orpc-expo-bun-docker
+#   spa-hono-orpc-expo-bun-docker-e2e
+#   spa-hono-orpc-expo-docker
+#   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-bun-docker
+#   spa-hono-orpc-mysql-bun-docker-e2e
+#   spa-hono-orpc-mysql-docker
+#   spa-hono-orpc-mysql-docker-e2e
+#   spa-hono-orpc-mysql-electron-bun-docker
+#   spa-hono-orpc-mysql-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-electron-docker
+#   spa-hono-orpc-mysql-electron-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-docker
+#   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-bun-docker
+#   spa-hono-orpc-mysql-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-expo-docker
+#   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-bun-docker
+#   spa-hono-orpc-postgres-bun-docker-e2e
+#   spa-hono-orpc-postgres-docker
+#   spa-hono-orpc-postgres-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-docker
+#   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-bun-docker
+#   spa-hono-orpc-postgres-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-expo-docker
+#   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-sqlite-bun-docker
+#   spa-hono-orpc-sqlite-bun-docker-e2e
+#   spa-hono-orpc-sqlite-docker
+#   spa-hono-orpc-sqlite-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-expo-docker
+#   spa-hono-orpc-sqlite-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-expo-bun-docker
+#   spa-hono-orpc-sqlite-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-expo-docker
+#   spa-hono-orpc-sqlite-expo-docker-e2e
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from "vite-plus";
+
+export default defineConfig(({ mode }) => {
+  const { SERVER_URL = "http://localhost:3000" } = loadEnv(
+    mode,
+    import.meta.dirname,
+    ""
+  );
+
+  return {
+    plugins: [
+      tanstackRouter({ target: "react", autoCodeSplitting: true }),
+      react({ compiler: true }),
+      tailwindcss(),
+    ],
+    server: {
+      proxy: {
+        "/api": SERVER_URL,
+        "/rpc": SERVER_URL,
+      },
+    },
+  };
+});
+
 # apps/web/vite.config.ts · 536 stacks
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
@@ -10125,242 +10501,6 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/api": SERVER_URL,
-      },
-    },
-  };
-});
-
-# apps/web/vite.config.ts · 208 stacks
-#   spa-hono-orpc-bun-docker
-#   spa-hono-orpc-bun-docker-e2e
-#   spa-hono-orpc-docker
-#   spa-hono-orpc-docker-e2e
-#   spa-hono-orpc-electron-bun-docker
-#   spa-hono-orpc-electron-bun-docker-e2e
-#   spa-hono-orpc-electron-docker
-#   spa-hono-orpc-electron-docker-e2e
-#   spa-hono-orpc-electron-expo-bun-docker
-#   spa-hono-orpc-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-electron-expo-docker
-#   spa-hono-orpc-electron-expo-docker-e2e
-#   spa-hono-orpc-expo-bun-docker
-#   spa-hono-orpc-expo-bun-docker-e2e
-#   spa-hono-orpc-expo-docker
-#   spa-hono-orpc-expo-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-bun-docker
-#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-docker
-#   spa-hono-orpc-mongodb-better-auth-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
-#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-docker
-#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
-#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-expo-docker
-#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mongodb-bun-docker
-#   spa-hono-orpc-mongodb-bun-docker-e2e
-#   spa-hono-orpc-mongodb-docker
-#   spa-hono-orpc-mongodb-docker-e2e
-#   spa-hono-orpc-mongodb-electron-bun-docker
-#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
-#   spa-hono-orpc-mongodb-electron-docker
-#   spa-hono-orpc-mongodb-electron-docker-e2e
-#   spa-hono-orpc-mongodb-electron-expo-bun-docker
-#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-electron-expo-docker
-#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
-#   spa-hono-orpc-mongodb-expo-bun-docker
-#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-expo-docker
-#   spa-hono-orpc-mongodb-expo-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-bun-docker
-#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-docker
-#   spa-hono-orpc-mysql-better-auth-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
-#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-docker
-#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
-#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
-#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-docker
-#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mysql-bun-docker
-#   spa-hono-orpc-mysql-bun-docker-e2e
-#   spa-hono-orpc-mysql-docker
-#   spa-hono-orpc-mysql-docker-e2e
-#   spa-hono-orpc-mysql-electron-bun-docker
-#   spa-hono-orpc-mysql-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-electron-docker
-#   spa-hono-orpc-mysql-electron-docker-e2e
-#   spa-hono-orpc-mysql-electron-expo-bun-docker
-#   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-electron-expo-docker
-#   spa-hono-orpc-mysql-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-expo-bun-docker
-#   spa-hono-orpc-mysql-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-expo-docker
-#   spa-hono-orpc-mysql-expo-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
-#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mysql-prisma-bun-docker
-#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-docker
-#   spa-hono-orpc-mysql-prisma-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-bun-docker
-#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-docker
-#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker
-#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-expo-docker
-#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-prisma-expo-bun-docker
-#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-expo-docker
-#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-bun-docker
-#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-docker
-#   spa-hono-orpc-postgres-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-docker
-#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-docker
-#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   spa-hono-orpc-postgres-bun-docker
-#   spa-hono-orpc-postgres-bun-docker-e2e
-#   spa-hono-orpc-postgres-docker
-#   spa-hono-orpc-postgres-docker-e2e
-#   spa-hono-orpc-postgres-electron-bun-docker
-#   spa-hono-orpc-postgres-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-electron-docker
-#   spa-hono-orpc-postgres-electron-docker-e2e
-#   spa-hono-orpc-postgres-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-electron-expo-docker
-#   spa-hono-orpc-postgres-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-expo-bun-docker
-#   spa-hono-orpc-postgres-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-expo-docker
-#   spa-hono-orpc-postgres-expo-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
-#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
-#   spa-hono-orpc-postgres-prisma-bun-docker
-#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-docker
-#   spa-hono-orpc-postgres-prisma-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-bun-docker
-#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-docker
-#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker
-#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-expo-docker
-#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-prisma-expo-bun-docker
-#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-expo-docker
-#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-docker
-#   spa-hono-orpc-sqlite-better-auth-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-docker
-#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-orpc-sqlite-bun-docker
-#   spa-hono-orpc-sqlite-bun-docker-e2e
-#   spa-hono-orpc-sqlite-docker
-#   spa-hono-orpc-sqlite-docker-e2e
-#   spa-hono-orpc-sqlite-electron-bun-docker
-#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
-#   spa-hono-orpc-sqlite-electron-docker
-#   spa-hono-orpc-sqlite-electron-docker-e2e
-#   spa-hono-orpc-sqlite-electron-expo-bun-docker
-#   spa-hono-orpc-sqlite-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-electron-expo-docker
-#   spa-hono-orpc-sqlite-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-expo-bun-docker
-#   spa-hono-orpc-sqlite-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-expo-docker
-#   spa-hono-orpc-sqlite-expo-docker-e2e
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import react from "@vitejs/plugin-react";
-import { defineConfig, loadEnv } from "vite-plus";
-
-export default defineConfig(({ mode }) => {
-  const { SERVER_URL = "http://localhost:3000" } = loadEnv(
-    mode,
-    import.meta.dirname,
-    ""
-  );
-
-  return {
-    plugins: [
-      tanstackRouter({ target: "react", autoCodeSplitting: true }),
-      react({ compiler: true }),
-      tailwindcss(),
-    ],
-    server: {
-      proxy: {
-        "/api": SERVER_URL,
-        "/rpc": SERVER_URL,
       },
     },
   };
