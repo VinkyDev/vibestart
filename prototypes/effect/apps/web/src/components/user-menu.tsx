@@ -1,6 +1,6 @@
-import { RegistryContext } from "@effect/atom-react";
 import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
-import { startTransition, useContext } from "react";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@my-app/ui/components/button";
 import {
@@ -17,15 +17,24 @@ import { authClient } from "#src/lib/auth.ts";
 
 export const UserMenu = () => {
   const router = useRouter();
-  const registry = useContext(RegistryContext);
+  const [pending, startTransition] = useTransition();
   const { session } = useRouteContext({ from: "__root__" });
 
   const signOut = async () => {
-    await authClient.signOut();
-    // Drops every cached query, so the next user starts from nothing.
-    registry.reset();
-    await router.invalidate();
-    await router.navigate({ to: "/" });
+    try {
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        toast.error("Could not sign out. Please try again.");
+
+        return;
+      }
+
+      await router.invalidate();
+      await router.navigate({ to: "/" });
+    } catch {
+      toast.error("Could not sign out. Please try again.");
+    }
   };
 
   if (!session) {
@@ -52,6 +61,7 @@ export const UserMenu = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          disabled={pending}
           onClick={() => {
             startTransition(signOut);
           }}

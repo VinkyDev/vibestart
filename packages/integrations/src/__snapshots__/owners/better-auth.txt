@@ -1177,6 +1177,7 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 import { useMutation } from "@tanstack/react-query";
+import { useHydrated } from "@tanstack/react-router";
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 
@@ -1239,6 +1240,7 @@ const authenticate = async (mode: Mode, form: FormData) => {
 };
 
 export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
+  const hydrated = useHydrated();
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
 
@@ -1261,48 +1263,48 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
         <CardDescription>{text.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {mode === "sign-up" && (
+        <form onSubmit={handleSubmit}>
+          <fieldset className="grid gap-4" disabled={!hydrated || isPending}>
+            {mode === "sign-up" && (
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input autoComplete="name" id="name" name="name" required />
+              </div>
+            )}
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input autoComplete="name" id="name" name="name" required />
+              <Label htmlFor="email">Email</Label>
+              <Input
+                autoComplete="email"
+                id="email"
+                name="email"
+                required
+                type="email"
+              />
             </div>
-          )}
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              autoComplete="email"
-              id="email"
-              name="email"
-              required
-              type="email"
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              autoComplete={
-                mode === "sign-in" ? "current-password" : "new-password"
-              }
-              id="password"
-              minLength={8}
-              name="password"
-              required
-              type="password"
-            />
-          </div>
-          <Button disabled={isPending} type="submit">
-            {text.submit}
-          </Button>
-          <Button
-            onClick={() => {
-              setMode(mode === "sign-in" ? "sign-up" : "sign-in");
-            }}
-            type="button"
-            variant="link"
-          >
-            {text.switchLabel}
-          </Button>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                autoComplete={
+                  mode === "sign-in" ? "current-password" : "new-password"
+                }
+                id="password"
+                minLength={8}
+                name="password"
+                required
+                type="password"
+              />
+            </div>
+            <Button type="submit">{text.submit}</Button>
+            <Button
+              onClick={() => {
+                setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+              }}
+              type="button"
+              variant="link"
+            >
+              {text.switchLabel}
+            </Button>
+          </fieldset>
         </form>
       </CardContent>
     </Card>
@@ -1507,6 +1509,7 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@my-app/ui/components/button";
 import {
@@ -1532,7 +1535,14 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
   const signOut = useMutation({
     mutationFn: async () => {
-      await authClient.signOut();
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        throw new Error("Could not sign out. Please try again.");
+      }
+    },
+    onError: () => {
+      toast.error("Could not sign out. Please try again.");
     },
     onSuccess: () => {
       queryClient.clear();
@@ -1565,6 +1575,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          disabled={signOut.isPending}
           onClick={() => {
             signOut.mutate();
           }}
@@ -2124,6 +2135,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 import { Button } from "@my-app/ui/components/button";
 import {
@@ -2145,7 +2157,14 @@ export const UserMenu = () => {
 
   const signOut = useMutation({
     mutationFn: async () => {
-      await authClient.signOut();
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        throw new Error("Could not sign out. Please try again.");
+      }
+    },
+    onError: () => {
+      toast.error("Could not sign out. Please try again.");
     },
     onSuccess: async () => {
       queryClient.clear();
@@ -2178,6 +2197,7 @@ export const UserMenu = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          disabled={signOut.isPending}
           onClick={() => {
             signOut.mutate();
           }}
@@ -4149,15 +4169,20 @@ import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 
 import { AuthForm } from "#src/components/auth-form.tsx";
 
-const sameOriginPath = /^\/(?!\/)/u;
+// Browsers normalize backslashes and strip tabs/newlines before resolving URLs.
+const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
 
 const isSameOriginRedirect = (value: unknown): value is string =>
   typeof value === "string" && sameOriginPath.test(value);
 
-const validateSearch = (search: {
-  redirect?: unknown;
-}): { redirect?: string } =>
-  isSameOriginRedirect(search.redirect) ? { redirect: search.redirect } : {};
+interface LoginSearch {
+  redirect?: string;
+}
+
+const validateSearch = (search: { redirect?: unknown }): LoginSearch => ({
+  // TanStack merges validated search with the input, so rejected values must be overwritten.
+  redirect: isSameOriginRedirect(search.redirect) ? search.redirect : undefined,
+});
 
 const LoginPage = () => {
   const router = useRouter();
@@ -4538,15 +4563,20 @@ import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 
 import { AuthForm } from "#src/components/auth-form.tsx";
 
-const sameOriginPath = /^\/(?!\/)/u;
+// Browsers normalize backslashes and strip tabs/newlines before resolving URLs.
+const sameOriginPath = /^\/(?!\/)[^\\\t\r\n]*$/u;
 
 const isSameOriginRedirect = (value: unknown): value is string =>
   typeof value === "string" && sameOriginPath.test(value);
 
-const validateSearch = (search: {
-  redirect?: unknown;
-}): { redirect?: string } =>
-  isSameOriginRedirect(search.redirect) ? { redirect: search.redirect } : {};
+interface LoginSearch {
+  redirect?: string;
+}
+
+const validateSearch = (search: { redirect?: unknown }): LoginSearch => ({
+  // TanStack merges validated search with the input, so rejected values must be overwritten.
+  redirect: isSameOriginRedirect(search.redirect) ? search.redirect : undefined,
+});
 
 const LoginPage = () => {
   const router = useRouter();

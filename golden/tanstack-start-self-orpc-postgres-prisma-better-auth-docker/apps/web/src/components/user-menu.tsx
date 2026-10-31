@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 import { Button } from "@my-app/ui/components/button";
 import {
@@ -21,7 +22,14 @@ export const UserMenu = () => {
 
   const signOut = useMutation({
     mutationFn: async () => {
-      await authClient.signOut();
+      const { error } = await authClient.signOut();
+
+      if (error) {
+        throw new Error("Could not sign out. Please try again.");
+      }
+    },
+    onError: () => {
+      toast.error("Could not sign out. Please try again.");
     },
     onSuccess: async () => {
       queryClient.clear();
@@ -54,6 +62,7 @@ export const UserMenu = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          disabled={signOut.isPending}
           onClick={() => {
             signOut.mutate();
           }}

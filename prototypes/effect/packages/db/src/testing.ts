@@ -6,19 +6,14 @@ import { Database } from "#src/index.ts";
 import { migrateDatabase } from "#src/migrate.ts";
 import { testDatabaseName } from "#src/test-database-name.ts";
 
-const runAsAdmin = (adminUrl: URL, statement: string) =>
-  Effect.gen(function* () {
-    const sql = yield* SqlClient.SqlClient;
+const runAsAdmin = Effect.fn("TestDatabase.runAsAdmin")(
+  (adminUrl: URL, statement: string) =>
+    SqlClient.SqlClient.pipe(
+      Effect.flatMap((sql) => sql.unsafe(statement)),
+      Effect.provide(PgClient.layer({ url: Redacted.make(adminUrl.href) }))
+    )
+);
 
-    yield* sql.unsafe(statement);
-  }).pipe(
-    Effect.provide(PgClient.layer({ url: Redacted.make(adminUrl.href) }))
-  );
-
-/**
- * A migrated database of its own beside `DATABASE_URL`, dropped when the scope closes. The random
- * name lets parallel test files, runners, and checkouts share one PostgreSQL server.
- */
 export const makeTestDatabase = Effect.gen(function* () {
   const adminUrl = new URL(
     Redacted.value(yield* Config.Redacted("DATABASE_URL"))

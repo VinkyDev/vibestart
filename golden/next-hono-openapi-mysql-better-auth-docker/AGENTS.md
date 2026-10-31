@@ -101,7 +101,7 @@ A test earns its upkeep when its expected values come from a source independent 
 
 `apps/web/tests/support/server.ts` starts the stack for the e2e tests on :3200 (`E2E_TEST_PORT`): a fresh MySQL database, the real Hono server, and `next dev` in its own `.next-test-<port>`, beside any running dev server in front, with the same proxy and origin as development. A second checkout runs its tests at the same time on another port. Each integration test file gets a database of its own from `createTestDatabase()` in `@my-app/db/testing`, migrated and removed when the file ends, so files run in parallel. Test databases are created beside `DATABASE_URL` from `apps/server/.env`, so the tests need MySQL running. Tests sign up a new user with `signUp()`, so they share no rows.
 
-Open and reload pages with `visit()` (`waitUntil: "networkidle"`) before clicking. Server-rendered pages hydrate after load, and a click before hydration does nothing. Assert with Playwright's web-first assertions (`toBeVisible`, `toHaveURL`, `toBeChecked`).
+Open and reload pages with `visit()` before clicking. Network idle does not prove hydration; controls that need client JavaScript must stay disabled until hydration completes. Assert with Playwright's web-first assertions (`toBeVisible`, `toHaveURL`, `toBeChecked`).
 
 Integration tests send requests to `createApi` in this process, through the same routing and validation as the server, with real Better Auth sessions and a real database.
 

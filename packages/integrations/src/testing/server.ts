@@ -97,6 +97,19 @@ const singleServerBody = (ctx: Context) => ({
   ],
 });
 
+const cleanup = (ctx: Context) => {
+  const tasks = [
+    ...(ctx.stack.database === undefined ? [] : ["database.remove()"]),
+    ...(hasBackend(ctx) ? ["closeTestHttp()"] : []),
+  ];
+
+  return tasks.length === 0
+    ? []
+    : [
+        `    results.push(...(await Promise.allSettled([${tasks.join(", ")}])));`,
+      ];
+};
+
 // A failed start stops what it started, so no server outlives the run holding its port.
 const startBody = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
@@ -112,9 +125,21 @@ const startBody = (ctx: Context) => {
     "  const children: ChildProcess[] = [];",
     "",
     "  const stopAll = async () => {",
-    "    await Promise.all(children.map(stop));",
-    ...(database ? ["    await database.remove();"] : []),
-    ...(hasBackend(ctx) ? ["    await closeTestHttp();"] : []),
+    "    const results = await Promise.allSettled(children.map(stop));",
+    "",
+    ...cleanup(ctx),
+    "",
+    "    const errors: unknown[] = [];",
+    "",
+    "    for (const result of results) {",
+    '      if (result.status === "rejected") {',
+    "        errors.push(result.reason);",
+    "      }",
+    "    }",
+    "",
+    "    if (errors.length > 0) {",
+    '      throw new AggregateError(errors, "Failed to stop test servers");',
+    "    }",
     "  };",
     "",
     "  try {",
@@ -122,7 +147,12 @@ const startBody = (ctx: Context) => {
     healthCheck(ctx),
     ...warmUp(ctx),
     "  } catch (error) {",
-    "    await stopAll();",
+    "    try {",
+    "      await stopAll();",
+    "    } catch (cleanupError) {",
+    '      throw new AggregateError([error, cleanupError], "Test server startup and cleanup failed", { cause: cleanupError });',
+    "    }",
+    "",
     "    throw error;",
     "  }",
     "",
@@ -196,25 +226,40 @@ const stop = async (child: ChildProcess) => {
     return;
   }
 
-  const exited = once(child, "exit", {
-    signal: process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
+  const { pid } = child;
 
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync("taskkill", ["/pid", String(child.pid), "/t", "/f"], {
-      stdio: "ignore",
-      timeout: 5000,
-    });
+  const terminate = async (signal: "SIGTERM" | "SIGKILL") => {
+    await Promise.all([
+      once(child, "exit", { signal: AbortSignal.timeout(5000) }),
+      Promise.resolve().then(() => {
+        if (process.platform === "win32") {
+          // taskkill may report already-exited descendants as errors.
+          const result = spawnSync("taskkill", ["/pid", String(pid), "/t", "/f"], {
+            stdio: "ignore",
+            timeout: 5000,
+          });
 
-    if (result.error || result.status !== 0) {
-      child.kill();
+          if (result.error || result.status !== 0) {
+            return child.kill();
+          }
+
+          return true;
+        }
+
+        return process.kill(-pid, signal);
+      }),
+    ]);
+  };
+
+  try {
+    await terminate("SIGTERM");
+  } catch (error) {
+    if (process.platform === "win32") {
+      throw error;
     }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
 
-  await exited;
+    await terminate("SIGKILL");
+  }
 };
 `;
 

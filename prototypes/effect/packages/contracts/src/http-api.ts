@@ -19,7 +19,6 @@ export class HealthGroup extends HttpApiGroup.make("health").add(
   })
 ) {}
 
-/** The public REST surface under `/api`, documented at `/api/openapi.json` and `/api/docs`. */
 export class Api extends HttpApi.make("api")
   .add(HealthGroup)
   .prefix("/api")

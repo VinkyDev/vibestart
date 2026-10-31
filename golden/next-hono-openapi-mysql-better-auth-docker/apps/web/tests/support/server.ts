@@ -48,30 +48,44 @@ const stop = async (child: ChildProcess) => {
     return;
   }
 
-  const exited = once(child, "exit", {
-    signal:
-      process.platform === "win32" ? AbortSignal.timeout(5000) : undefined,
-  });
+  const { pid } = child;
 
-  if (process.platform === "win32") {
-    // taskkill may report already-exited descendants as errors.
-    const result = spawnSync(
-      "taskkill",
-      ["/pid", String(child.pid), "/t", "/f"],
-      {
-        stdio: "ignore",
-        timeout: 5000,
-      }
-    );
+  const terminate = async (signal: "SIGTERM" | "SIGKILL") => {
+    await Promise.all([
+      once(child, "exit", { signal: AbortSignal.timeout(5000) }),
+      Promise.resolve().then(() => {
+        if (process.platform === "win32") {
+          // taskkill may report already-exited descendants as errors.
+          const result = spawnSync(
+            "taskkill",
+            ["/pid", String(pid), "/t", "/f"],
+            {
+              stdio: "ignore",
+              timeout: 5000,
+            }
+          );
 
-    if (result.error || result.status !== 0) {
-      child.kill();
+          if (result.error || result.status !== 0) {
+            return child.kill();
+          }
+
+          return true;
+        }
+
+        return process.kill(-pid, signal);
+      }),
+    ]);
+  };
+
+  try {
+    await terminate("SIGTERM");
+  } catch (error) {
+    if (process.platform === "win32") {
+      throw error;
     }
-  } else {
-    process.kill(-child.pid, "SIGTERM");
-  }
 
-  await exited;
+    await terminate("SIGKILL");
+  }
 };
 
 export const startTestServer = async (baseURL: string) => {
@@ -85,9 +99,23 @@ export const startTestServer = async (baseURL: string) => {
   const children: ChildProcess[] = [];
 
   const stopAll = async () => {
-    await Promise.all(children.map(stop));
-    await database.remove();
-    await closeTestHttp();
+    const results = await Promise.allSettled(children.map(stop));
+
+    results.push(
+      ...(await Promise.allSettled([database.remove(), closeTestHttp()]))
+    );
+
+    const errors: unknown[] = [];
+
+    for (const result of results) {
+      if (result.status === "rejected") {
+        errors.push(result.reason);
+      }
+    }
+
+    if (errors.length > 0) {
+      throw new AggregateError(errors, "Failed to stop test servers");
+    }
   };
 
   try {
@@ -118,7 +146,16 @@ export const startTestServer = async (baseURL: string) => {
       })
     );
   } catch (error) {
-    await stopAll();
+    try {
+      await stopAll();
+    } catch (cleanupError) {
+      throw new AggregateError(
+        [error, cleanupError],
+        "Test server startup and cleanup failed",
+        { cause: cleanupError }
+      );
+    }
+
     throw error;
   }
 

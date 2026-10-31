@@ -86,7 +86,7 @@ A test earns its upkeep when its expected values come from a source independent 
 
 `apps/web/tests/support/server.ts` starts the stack for the e2e tests on :3200 (`E2E_TEST_PORT`): `vp dev`. A second checkout runs its tests at the same time on another port.
 
-Open and reload pages with `visit()` (`waitUntil: "networkidle"`) before clicking. Server-rendered pages hydrate after load, and a click before hydration does nothing. Assert with Playwright's web-first assertions (`toBeVisible`, `toHaveURL`, `toBeChecked`).
+Open and reload pages with `visit()` before clicking. Network idle does not prove hydration; controls that need client JavaScript must stay disabled until hydration completes. Assert with Playwright's web-first assertions (`toBeVisible`, `toHaveURL`, `toBeChecked`).
 
 E2E tests in `apps/web/tests/e2e` are the specification: changing, skipping, or weakening an assertion takes the user's approval first.
 
