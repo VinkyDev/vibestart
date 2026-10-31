@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync } from "node:fs";
 
-import type { Stack } from "@vibestart/core";
+import type { Generation, Stack } from "@vibestart/core";
 import { legalStacks } from "@vibestart/core";
 
 import { registry } from "#/registry.ts";
@@ -56,4 +56,33 @@ export const goldenPaths = (golden: string) => {
   )
     .split("\0")
     .filter((file) => file !== "" && existsSync(`${root}${file}`));
+};
+
+export const isGitIgnoredSetupWrite = (
+  gitignore: string,
+  glob: string
+): boolean => {
+  const ignored = gitignore
+    .split("\n")
+    .filter((line) => line !== "" && !line.startsWith("!"))
+    .map((line) => line.replace(/\/$/u, ""));
+
+  return ignored.some(
+    (pattern) =>
+      glob === pattern ||
+      glob.startsWith(`${pattern}/`) ||
+      glob.includes(`/${pattern}/`) ||
+      glob.endsWith(`/${pattern}`)
+  );
+};
+
+export const trackedSetupWrites = (
+  generation: Generation
+): readonly string[] => {
+  const gitignore =
+    generation.files.find((file) => file.path === ".gitignore")?.content ?? "";
+
+  return generation.setup
+    .flatMap((command) => command.writes)
+    .filter((glob) => !isGitIgnoredSetupWrite(gitignore, glob));
 };

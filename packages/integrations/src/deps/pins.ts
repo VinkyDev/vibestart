@@ -200,33 +200,10 @@ const ciFile = (): PinFile => {
   };
 };
 
-const nodeVersionFile = (): PinFile => {
-  const path = ".node-version";
-  const file = fileAt(path);
-  const version = file.read().trim();
-
-  if (version === "") {
-    throw new Error(`${path} pins no Node.js version`);
-  }
-
-  return {
-    path,
-    pins: new Map([["node", version]]),
-    write: (ranges) => {
-      const node = ranges.get("node");
-
-      if (node !== undefined && node !== version) {
-        file.write(`${node}\n`);
-      }
-    },
-  };
-};
-
 export const pinFiles = (): readonly PinFile[] => [
   workspaceFile(),
   generatedFile(),
   manifestFile(),
-  nodeVersionFile(),
   ciFile(),
 ];
 

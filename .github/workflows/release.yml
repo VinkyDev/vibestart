@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
           cache: true
       - run: vp install
       - name: Tag matches the package version

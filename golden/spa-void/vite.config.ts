@@ -59,7 +59,29 @@ export default defineConfig({
             "warn",
             {
               allowExportNames: ["Route"],
-              customHOCs: ["createFileRoute", "createRootRouteWithContext"],
+              customHOCs: [
+                "createFileRoute",
+                "createRootRoute",
+                "createRootRouteWithContext",
+              ],
+            },
+          ],
+          // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
+          "typescript/only-throw-error": [
+            "error",
+            {
+              allow: [
+                {
+                  from: "package",
+                  name: "NotFoundError",
+                  package: "@tanstack/router-core",
+                },
+                {
+                  from: "package",
+                  name: "Redirect",
+                  package: "@tanstack/router-core",
+                },
+              ],
             },
           ],
         },

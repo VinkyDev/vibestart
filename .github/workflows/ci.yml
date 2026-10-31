@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
           cache: true
       - run: vp install
       - run: vp run ready
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
           cache: true
       - run: vp install
       - run: vp run stacks evidence "$RUNNER_TEMP/evidence"
@@ -109,7 +109,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
           cache: true
       - uses: oven-sh/setup-bun@v2.2.0
         with:
@@ -172,7 +172,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
           cache: true
       - run: vp install
       - run: vp run --filter @vibestart/web build
@@ -213,7 +213,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
       - run: docker build --tag effect-golden .
       - name: Smoke test the production image
         run: |
@@ -292,7 +292,7 @@ jobs:
           path: .store
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: .node-version
+          node-version-file: package.json
           cache: true
       - run: vp install
       - uses: actions/download-artifact@v8.0.1
