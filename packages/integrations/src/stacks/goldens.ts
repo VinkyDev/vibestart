@@ -38,15 +38,20 @@ export const syncGoldens = async () => {
       const setupWrites = generation.setup.flatMap((command) => command.writes);
       const generated = new Set(generation.files.map((file) => file.path));
 
-      const changedInputs = new Set(
-        created
-          ? []
-          : goldenPaths(golden).filter(
-              (file) =>
-                !generated.has(file) &&
-                !setupWrites.some((glob) => path.matchesGlob(file, glob))
-            )
-      );
+      const staleFiles = created
+        ? []
+        : goldenPaths(golden).filter(
+            (file) =>
+              !generated.has(file) &&
+              !setupWrites.some((glob) => path.matchesGlob(file, glob))
+          );
+
+      for (const stale of staleFiles) {
+        rmSync(`${root}${stale}`);
+        print(`${golden}: deleted ${stale}`);
+      }
+
+      const changedInputs = new Set(staleFiles);
 
       for (const file of generation.files) {
         const target = `${root}${file.path}`;
