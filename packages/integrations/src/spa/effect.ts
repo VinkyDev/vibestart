@@ -40,6 +40,6 @@ export const effectSpa = (ctx: Context) => [
   contribute(stackHeadline, "Effect"),
   contribute(
     readmeOpen,
-    "Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party."
+    "Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party."
   ),
 ];

@@ -22,7 +22,7 @@ vp run db:migrate
 vp run dev
 ```
 
-Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party.
+Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party.
 
 ## Environment
 

@@ -75446,7 +75446,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 | `packages/ui`        | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                  |
 | `packages/config`    | Shared TypeScript presets                                                                                   |
 
-`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` atom (`src/lib/api.ts`) → `POST /rpc` (NDJSON) → `AuthMiddleware` → `packages/api` handler → Drizzle on `@effect/sql-pg` → PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
+`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` atom (`src/lib/api.ts`) → `POST /rpc` (NDJSON) → `AuthMiddleware` → `packages/api` handler → Drizzle on `@effect/sql-pg` → PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it. The RPC HTTP boundary also rejects any supplied `Origin` that differs from this public origin, before decoding messages. RPC envelope headers never establish origin trust; non-browser clients may omit `Origin`.
 
 ## Conventions
 
@@ -267215,7 +267215,7 @@ vp run db:migrate
 vp run dev
 ```
 
-Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party.
+Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party.
 
 ## Environment
 

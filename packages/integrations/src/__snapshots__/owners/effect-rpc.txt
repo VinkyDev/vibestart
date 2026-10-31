@@ -396,7 +396,12 @@ export const HealthLive = HttpApiBuilder.group(
 # packages/api/src/index.ts · 1 stack
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 import { Effect, Layer } from "effect";
-import { HttpEffect, HttpRouter, HttpServerResponse } from "effect/http";
+import {
+  HttpEffect,
+  HttpRouter,
+  HttpServerRequest,
+  HttpServerResponse,
+} from "effect/http";
 import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
 import { RpcSerialization, RpcServer } from "effect/rpc";
 
@@ -420,12 +425,36 @@ const AuthRoutes = Layer.unwrap(
   })
 );
 
+const RpcOrigin = Layer.unwrap(
+  Effect.map(Auth, (auth) => {
+    const allowedOrigin = new URL(auth.options.baseURL).origin;
+
+    return HttpRouter.middleware((httpEffect) =>
+      Effect.gen(function* () {
+        const request = yield* HttpServerRequest.HttpServerRequest;
+        const { origin } = request.headers;
+
+        if (origin !== undefined && origin !== allowedOrigin) {
+          return HttpServerResponse.empty({ status: 403 });
+        }
+
+        return yield* httpEffect;
+      })
+    ).layer;
+  })
+);
+
 const RpcRoutes = RpcServer.layerHttp({
   group: TodosRpcs,
   path: "/rpc",
   protocol: "http",
 }).pipe(
-  Layer.provide([TodosLive, AuthMiddlewareLive, RpcSerialization.layerNdjson]),
+  Layer.provide([
+    TodosLive,
+    AuthMiddlewareLive,
+    RpcSerialization.layerNdjson,
+    RpcOrigin,
+  ]),
   Layer.provide(Todos.layer)
 );
 

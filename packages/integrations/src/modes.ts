@@ -47,7 +47,7 @@ export const effect = defineIntegration({
     ),
     contribute(
       agentsNotes,
-      "`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` atom (`src/lib/api.ts`) \u2192 `POST /rpc` (NDJSON) \u2192 `AuthMiddleware` \u2192 `packages/api` handler \u2192 Drizzle on `@effect/sql-pg` \u2192 PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it."
+      "`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` atom (`src/lib/api.ts`) \u2192 `POST /rpc` (NDJSON) \u2192 `AuthMiddleware` \u2192 `packages/api` handler \u2192 Drizzle on `@effect/sql-pg` \u2192 PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it. The RPC HTTP boundary also rejects any supplied `Origin` that differs from this public origin, before decoding messages. RPC envelope headers never establish origin trust; non-browser clients may omit `Origin`."
     ),
     contribute(
       ultraciteOverrides,
