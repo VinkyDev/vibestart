@@ -133,13 +133,8 @@ const generatedFile = (): PinFile => {
 };
 
 const manifestSchema = z.looseObject({
-  devEngines: z.looseObject({
-    packageManager: z.looseObject({
-      name: z.literal("pnpm"),
-      version: z.string(),
-    }),
-  }),
-  engines: z.looseObject({ node: z.string(), pnpm: z.string() }),
+  engines: z.looseObject({ node: z.string() }),
+  packageManager: z.string().regex(/^pnpm@\S+$/u),
 });
 
 /** The schema only checks the file; writes keep its text. */
@@ -147,35 +142,35 @@ const manifestFile = (): PinFile => {
   const path = "package.json";
   const file = fileAt(path);
   const manifest = manifestSchema.parse(JSON.parse(file.read()));
+  const pnpm = manifest.packageManager.slice("pnpm@".length);
 
   const pins = new Map([
     ["node", manifest.engines.node],
-    ["pnpm", manifest.engines.pnpm],
+    ["pnpm", pnpm],
   ]);
-
-  if (manifest.devEngines.packageManager.version !== manifest.engines.pnpm) {
-    throw new Error(
-      "package.json pins pnpm differently in engines and devEngines"
-    );
-  }
 
   return {
     path,
     pins,
     write: (ranges) => {
-      const pnpm = ranges.get("pnpm");
-      const text = setPins(file.read(), pins, ranges);
-      // devEngines pins the same pnpm, under the key `version`.
-      file.write(
-        pnpm === undefined
-          ? text
-          : setPin(
-              text,
-              "version",
-              manifest.devEngines.packageManager.version,
-              pnpm
-            )
-      );
+      const nextNode = ranges.get("node");
+      const nextPnpm = ranges.get("pnpm");
+      let text = file.read();
+
+      if (nextNode !== undefined && nextNode !== manifest.engines.node) {
+        text = setPin(text, "node", manifest.engines.node, nextNode);
+      }
+
+      if (nextPnpm !== undefined && nextPnpm !== pnpm) {
+        text = setPin(
+          text,
+          "packageManager",
+          manifest.packageManager,
+          `pnpm@${nextPnpm}`
+        );
+      }
+
+      file.write(text);
     },
   };
 };

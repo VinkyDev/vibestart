@@ -3,7 +3,7 @@ import type { Catalog } from "@vibestart/core";
 export const toolchainVersions = {
   bun: "1.4.4",
   node: "26.13.0",
-  pnpm: "12.15.0",
+  pnpm: "12.16.1",
   vitePlus: "1.4.0",
 };
 

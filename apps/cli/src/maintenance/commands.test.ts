@@ -186,9 +186,18 @@ describe("project maintenance CLI", () => {
         '"version": "0.0.1"'
       )
     );
+    writeText(
+      cwd,
+      "package.json",
+      (readText(cwd, "package.json") ?? "").replace(
+        /^.*"packageManager".*$/mu,
+        '  "devEngines": { "packageManager": { "name": "pnpm" } }'
+      )
+    );
     const result = await run("add", "knip", "--cwd", cwd, "--dry-run");
     expect(result.output.error).toContain("requires-upgrade");
     const doctor = await capture("doctor", "--cwd", cwd, "--offline");
+    expect(doctor.output).not.toContain("package.json disagrees");
     expect(doctor.output).toContain(
       "not compared (--offline; release 0.0.1 comes from npm)"
     );

@@ -23,16 +23,8 @@ export interface PackageJsonContribution {
   readonly dependencies?: readonly string[];
   readonly devDependencies?: readonly string[];
   readonly peerDependencies?: readonly string[];
-  readonly devEngines?: DevEngines;
   readonly engines?: Entries;
-}
-
-interface DevEngines {
-  readonly packageManager: {
-    readonly name: string;
-    readonly version: string;
-    readonly onFail: "download" | "error" | "warn" | "ignore";
-  };
+  readonly packageManager?: string;
 }
 
 export const packageJson = defineSlot<PackageJsonContribution>("package-json");
@@ -47,7 +39,7 @@ interface Package {
   readonly dependencies: Set<string>;
   readonly devDependencies: Set<string>;
   readonly peerDependencies: Set<string>;
-  devEngines: DevEngines | undefined;
+  packageManager: string | undefined;
 }
 
 const setOnce = <T>(
@@ -71,11 +63,11 @@ const collectPackages = (contributions: readonly PackageJsonContribution[]) => {
     const pkg = packages.get(contribution.path) ?? {
       dependencies: new Set(),
       devDependencies: new Set(),
-      devEngines: undefined,
       engines: new Map(),
       exports: new Map(),
       imports: new Map(),
       main: undefined,
+      packageManager: undefined,
       path: contribution.path,
       peerDependencies: new Set(),
       scripts: new Map(),
@@ -120,12 +112,12 @@ const collectPackages = (contributions: readonly PackageJsonContribution[]) => {
       pkg.peerDependencies.add(name);
     }
 
-    if (contribution.devEngines !== undefined) {
-      if (pkg.devEngines !== undefined) {
-        throw new Error(`${where}: devEngines is contributed twice`);
+    if (contribution.packageManager !== undefined) {
+      if (pkg.packageManager !== undefined) {
+        throw new Error(`${where}: packageManager is contributed twice`);
       }
 
-      pkg.devEngines = contribution.devEngines;
+      pkg.packageManager = contribution.packageManager;
     }
   }
 
@@ -226,8 +218,8 @@ export const renderPackageJsons = (
         specs(pkg.peerDependencies),
         pkg.peerDependencies.size > 0,
       ],
-      ["devEngines", pkg.devEngines, pkg.devEngines !== undefined],
       ["engines", Object.fromEntries(pkg.engines), pkg.engines.size > 0],
+      ["packageManager", pkg.packageManager, pkg.packageManager !== undefined],
     ];
 
     const manifest = Object.fromEntries(

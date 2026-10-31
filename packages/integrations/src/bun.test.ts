@@ -3,15 +3,16 @@ import { z } from "zod";
 
 import { compose, defaultAddons, generate, legalStacks } from "@vibestart/core";
 
+import { toolchainVersions } from "#/catalog.ts";
 import { registry } from "#/registry.ts";
 import { stackLabel } from "#/stack-label.ts";
 
-const cases = ["pnpm", "bun"].flatMap((packageManager) =>
+const cases = (["pnpm", "bun"] as const).flatMap((packageManager) =>
   ["node", "bun"].map((runtime) => ({ packageManager, runtime }))
 );
 
 const manifest = z.looseObject({
-  devEngines: z.object({ packageManager: z.object({ name: z.string() }) }),
+  packageManager: z.string(),
   workspaces: z
     .object({
       packages: z.array(z.string()),
@@ -50,12 +51,12 @@ describe("package manager and Hono runtime", () => {
       );
 
       expect({
-        manager: root.devEngines.packageManager.name,
+        manager: root.packageManager,
         pnpmWorkspace: files.has("pnpm-workspace.yaml"),
         bunCatalog: root.workspaces?.catalog.hono !== undefined,
         lock: generation.setup[0]?.writes,
       }).toStrictEqual({
-        manager: packageManager,
+        manager: `${packageManager}@${toolchainVersions[packageManager]}`,
         pnpmWorkspace: packageManager === "pnpm",
         bunCatalog: packageManager === "bun",
         lock: [packageManager === "bun" ? "bun.lock" : "pnpm-lock.yaml"],
