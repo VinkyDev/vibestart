@@ -1,4 +1,3 @@
-import type { Context } from "@vibestart/core";
 import {
   contribute,
   defineIntegration,
@@ -11,22 +10,7 @@ import { templateFiles } from "#/templates.ts";
 import { ultracitePresets, ultraciteOverrides } from "#/ultracite.ts";
 import { generatedFiles, ignoredFiles } from "#/vite-plus/slots.ts";
 
-const redirectRule = `
-    // \`beforeLoad\` guards throw \`redirect()\`, which is a \`Redirect\` object rather than an \`Error\`.
-    "typescript/only-throw-error": [
-      "error",
-      {
-        allow: [
-          {
-            from: "package",
-            package: "@tanstack/router-core",
-            name: "Redirect",
-          },
-        ],
-      },
-    ],`;
-
-const routesOverride = (ctx: Context) => `{
+const routesOverride = `{
   files: ["apps/web/src/routes/**"],
   rules: {
     // A route module exports its \`Route\` beside the components it renders.
@@ -34,9 +18,31 @@ const routesOverride = (ctx: Context) => `{
       "warn",
       {
         allowExportNames: ["Route"],
-        customHOCs: ["createFileRoute", "createRootRouteWithContext"],
+        customHOCs: [
+          "createFileRoute",
+          "createRootRoute",
+          "createRootRouteWithContext",
+        ],
       },
-    ],${ctx.has("better-auth") ? redirectRule : ""}
+    ],
+    // A loader throws \`notFound()\` and \`beforeLoad\` throws \`redirect()\`. Both are objects rather than an \`Error\`.
+    "typescript/only-throw-error": [
+      "error",
+      {
+        allow: [
+          {
+            from: "package",
+            name: "NotFoundError",
+            package: "@tanstack/router-core",
+          },
+          {
+            from: "package",
+            name: "Redirect",
+            package: "@tanstack/router-core",
+          },
+        ],
+      },
+    ],
   },
 }`;
 
@@ -66,7 +72,7 @@ export const tanstackRouter = defineIntegration({
       module: "ultracite/oxlint/tanstack",
       name: "tanstack",
     }),
-    contribute(ultraciteOverrides, routesOverride(ctx)),
+    contribute(ultraciteOverrides, routesOverride),
     contribute(generatedFiles, {
       glob: "**/routeTree.gen.ts",
       label: "routeTree.gen.ts",

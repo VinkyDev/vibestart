@@ -160,8 +160,8 @@ const renderDockerfile = (ctx: Context, read: ReadSlot) => {
         ? ["COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun"]
         : []),
       ctx.packageManager === "bun"
-        ? "COPY --chown=vp:vp package.json bun.lock .node-version ./"
-        : "COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./",
+        ? "COPY --chown=vp:vp package.json bun.lock ./"
+        : "COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./",
       ...packagePaths.map(
         (path) => `COPY --chown=vp:vp ${path}/package.json ${path}/`
       ),

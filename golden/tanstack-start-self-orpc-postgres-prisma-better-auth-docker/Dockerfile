@@ -3,7 +3,7 @@
 FROM ghcr.io/voidzero-dev/vite-plus:1.4.0 AS build
 WORKDIR /app
 
-COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml .node-version ./
+COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY --chown=vp:vp apps/web/package.json apps/web/
 COPY --chown=vp:vp packages/api/package.json packages/api/
 COPY --chown=vp:vp packages/auth/package.json packages/auth/

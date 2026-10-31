@@ -3,7 +3,12 @@ import path from "node:path";
 
 import { describe, expect, it } from "vite-plus/test";
 
-import { goldenPaths, goldenRoot, goldens } from "#/goldens.ts";
+import {
+  goldenPaths,
+  goldenRoot,
+  goldens,
+  trackedSetupWrites,
+} from "#/goldens.ts";
 import { registry } from "#/registry.ts";
 import { verifiedGeneration } from "#/verification.ts";
 
@@ -32,9 +37,10 @@ describe("the golden projects", () => {
 describe.each(generations)("$golden", ({ generation, golden, stack }) => {
   const { files, setup } = generation;
   const setupWrites = setup.flatMap((command) => command.writes);
+  const paths = goldenPaths(golden);
 
   const expected = new Map(
-    goldenPaths(golden)
+    paths
       .filter(
         (file) => !setupWrites.some((glob) => path.matchesGlob(file, glob))
       )
@@ -45,6 +51,7 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
   );
 
   const generated = new Map(files.map((file) => [file.path, file.content]));
+  const trackedWrites = trackedSetupWrites(generation);
 
   it("runs install, then generates the database client, route types or the route tree, and the initial migration", () => {
     expect(setup.map((command) => command.run)).toStrictEqual([
@@ -67,6 +74,36 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
     expect([...generated.keys()].toSorted()).toStrictEqual(
       [...expected.keys()].toSorted()
     );
+    expect(
+      trackedWrites.filter(
+        (glob) => !paths.some((file) => path.matchesGlob(file, glob))
+      )
+    ).toStrictEqual([]);
+
+    const importedRoutes =
+      stack.router === "tanstack-router"
+        ? [
+            ...readFileSync(
+              `${goldenRoot(golden)}apps/web/src/routeTree.gen.ts`,
+              "utf-8"
+            ).matchAll(/from '\.\/(?<route>routes\/[^']+)'/gu),
+          ]
+            .map(({ groups }) => groups?.route ?? "")
+            .toSorted()
+        : [];
+
+    const generatedRoutes =
+      stack.router === "tanstack-router"
+        ? [...generated.keys()]
+            .flatMap((file) =>
+              file.startsWith("apps/web/src/routes/")
+                ? [file.slice("apps/web/src/".length).replace(/\.tsx?$/u, "")]
+                : []
+            )
+            .toSorted()
+        : [];
+
+    expect(importedRoutes).toStrictEqual(generatedRoutes);
   });
 
   it.each([...expected.keys()])("%s", (file) => {

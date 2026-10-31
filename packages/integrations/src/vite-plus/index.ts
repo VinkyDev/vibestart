@@ -521,7 +521,7 @@ export const vitePlus = defineIntegration({
       "*.log",
     ].map((pattern) => contribute(ignoredFiles, pattern)),
     file(".gitattributes", "* text=auto eol=lf\n"),
-    file(".node-version", `${toolchainVersions.node}\n`),
+    file(".vite-hooks/pre-commit", "vp staged\n"),
     file(
       ".vscode/extensions.json",
       '{\n  "recommendations": ["VoidZero.vite-plus-extension-pack"]\n}\n'
