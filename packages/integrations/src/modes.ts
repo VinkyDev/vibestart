@@ -52,8 +52,14 @@ export const effect = defineIntegration({
     contribute(
       ultraciteOverrides,
       `{
-      // Effect.gen and Effect.fn generators carry operation names through tracing.
-      files:["**/*.ts","**/*.tsx"],rules:{"eslint/func-names":["error","always",{generators:"never"}]}
+      // Effect generators are anonymous; schemas, services, and tagged errors use classes and value+type pairs.
+      files: ["**/*.ts", "**/*.tsx"],
+      rules: {
+        "eslint/func-names": ["error", "always", { generators: "never" }],
+        "eslint/max-classes-per-file": "off",
+        "eslint/no-redeclare": "off",
+        "unicorn/throw-new-error": "off",
+      },
     }`
     ),
   ],

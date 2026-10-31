@@ -11,21 +11,9 @@ import { ultracitePresets, ultraciteOverrides } from "#/ultracite.ts";
 import { generatedFiles, ignoredFiles } from "#/vite-plus/slots.ts";
 
 const routesOverride = `{
+  // A loader throws \`notFound()\` and \`beforeLoad\` throws \`redirect()\`. Both are objects rather than an \`Error\`.
   files: ["apps/web/src/routes/**"],
   rules: {
-    // A route module exports its \`Route\` beside the components it renders.
-    "react/only-export-components": [
-      "warn",
-      {
-        allowExportNames: ["Route"],
-        customHOCs: [
-          "createFileRoute",
-          "createRootRoute",
-          "createRootRouteWithContext",
-        ],
-      },
-    ],
-    // A loader throws \`notFound()\` and \`beforeLoad\` throws \`redirect()\`. Both are objects rather than an \`Error\`.
     "typescript/only-throw-error": [
       "error",
       {

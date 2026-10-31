@@ -40,9 +40,6 @@ export const formatWithProjectConfig = async (
         "style",
         "unknown",
       ],
-      ignoreCase: true,
-      newlinesBetween: true,
-      order: "asc",
     },
   });
 

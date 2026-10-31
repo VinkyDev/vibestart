@@ -32,9 +32,6 @@ export default defineConfig({
         "style",
         "unknown",
       ],
-      ignoreCase: true,
-      newlinesBetween: true,
-      order: "asc",
     },
   },
   lint: {
@@ -52,28 +49,19 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
     overrides: [
       {
-        // Effect.gen and Effect.fn generators carry operation names through tracing.
+        // Effect generators are anonymous; schemas, services, and tagged errors use classes and value+type pairs.
         files: ["**/*.ts", "**/*.tsx"],
         rules: {
           "eslint/func-names": ["error", "always", { generators: "never" }],
+          "eslint/max-classes-per-file": "off",
+          "eslint/no-redeclare": "off",
+          "unicorn/throw-new-error": "off",
         },
       },
       {
+        // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
         files: ["apps/web/src/routes/**"],
         rules: {
-          // A route module exports its `Route` beside the components it renders.
-          "react/only-export-components": [
-            "warn",
-            {
-              allowExportNames: ["Route"],
-              customHOCs: [
-                "createFileRoute",
-                "createRootRoute",
-                "createRootRouteWithContext",
-              ],
-            },
-          ],
-          // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
           "typescript/only-throw-error": [
             "error",
             {
@@ -91,49 +79,6 @@ export default defineConfig({
               ],
             },
           ],
-        },
-      },
-      {
-        // Effect services expose Service.use and colocate their typed errors.
-        files: ["packages/api/src/**"],
-        rules: {
-          "react-hooks/rules-of-hooks": "off",
-          "eslint/max-classes-per-file": "off",
-          "unicorn/no-array-method-this-argument": "off",
-        },
-      },
-      {
-        // PostgreSQL text rejects NUL, which the boundary schema excludes.
-        files: ["packages/contracts/src/todo.ts"],
-        rules: { "eslint/no-control-regex": "off" },
-      },
-      {
-        // Schema.TaggedError is a class factory; contract modules colocate schema values and types.
-        files: ["packages/contracts/src/**"],
-        rules: {
-          "eslint/max-classes-per-file": "off",
-          "eslint/no-redeclare": "off",
-          "unicorn/throw-new-error": "off",
-        },
-      },
-      {
-        // Atom clients are service classes; runtime.fn<void>() declares a mutation without input.
-        files: ["apps/web/src/lib/api.ts"],
-        rules: {
-          "eslint/max-classes-per-file": "off",
-          "typescript/no-invalid-void-type": "off",
-        },
-      },
-      {
-        // This promise is only a synchronization signal, without a resolved value.
-        files: ["apps/web/tests/e2e/**"],
-        rules: { "typescript/no-invalid-void-type": "off" },
-      },
-      {
-        // The generic RPC client takes an explicit void payload.
-        files: ["packages/api/tests/**"],
-        rules: {
-          "unicorn/no-useless-undefined": ["error", { checkArguments: false }],
         },
       },
     ],
