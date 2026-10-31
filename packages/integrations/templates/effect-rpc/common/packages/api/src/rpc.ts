@@ -15,22 +15,26 @@ export const TodosLive = TodosRpcs.toLayer(
     const todos = yield* Todos;
 
     return {
-      "todos.list": () =>
-        CurrentUser.use((user) => todos.list(user.id)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
-      "todos.create": ({ title }) =>
-        CurrentUser.use((user) => todos.create(user.id, title)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
-      "todos.update": ({ id, completed }) =>
-        CurrentUser.use((user) => todos.update(user.id, id, completed)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
-      "todos.delete": ({ id }) =>
-        CurrentUser.use((user) => todos.delete(user.id, id)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
+      "todos.list": Effect.fnUntraced(function* () {
+        const user = yield* CurrentUser;
+
+        return yield* todos.list(user.id);
+      }, Effect.catchTag("TodoStorageError", unavailable)),
+      "todos.create": Effect.fnUntraced(function* ({ title }) {
+        const user = yield* CurrentUser;
+
+        return yield* todos.create(user.id, title);
+      }, Effect.catchTag("TodoStorageError", unavailable)),
+      "todos.update": Effect.fnUntraced(function* ({ id, completed }) {
+        const user = yield* CurrentUser;
+
+        return yield* todos.update(user.id, id, completed);
+      }, Effect.catchTag("TodoStorageError", unavailable)),
+      "todos.delete": Effect.fnUntraced(function* ({ id }) {
+        const user = yield* CurrentUser;
+
+        return yield* todos.delete(user.id, id);
+      }, Effect.catchTag("TodoStorageError", unavailable)),
     };
   })
 );

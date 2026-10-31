@@ -14,6 +14,8 @@ const reload = async (browser: Browser) => {
   await visit(browser, await browser.url());
 };
 
+const gate = (): PromiseWithResolvers<void> => Promise.withResolvers();
+
 const signUpThroughUi = async (browser: Browser, screen: Screen) => {
   await visit(browser, "/login");
   await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
@@ -131,7 +133,7 @@ test("writes to different rows both complete when their requests overlap", async
   ).toBeVisible();
 
   // Hold the first real request until the second arrives; no timing-dependent sleeps.
-  const bothStarted = Promise.withResolvers<void>();
+  const bothStarted = gate();
   let writes = 0;
   await browser.route("**/rpc/", async (route) => {
     if (route.request.postData?.includes('"tag":"todos.update"') === true) {
@@ -247,8 +249,8 @@ for (const { edit, expected } of [
     await signUpThroughUi(browser, screen);
     const input = screen.getByLabel("New todo");
     const add = screen.getByRole("button", { name: "Add" });
-    const started = Promise.withResolvers<void>();
-    const release = Promise.withResolvers<void>();
+    const started = gate();
+    const release = gate();
 
     await browser.route("**/rpc/", async (route) => {
       if (route.request.postData?.includes('"tag":"todos.create"') === true) {

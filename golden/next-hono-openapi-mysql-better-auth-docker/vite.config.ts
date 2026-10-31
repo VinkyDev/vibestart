@@ -37,9 +37,6 @@ export default defineConfig({
         "style",
         "unknown",
       ],
-      ignoreCase: true,
-      newlinesBetween: true,
-      order: "asc",
     },
   },
   lint: {
