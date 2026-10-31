@@ -133,7 +133,7 @@ test("writes to different rows both complete when their requests overlap", async
   // Hold the first real request until the second arrives; no timing-dependent sleeps.
   const bothStarted = Promise.withResolvers<void>();
   let writes = 0;
-  await browser.route("**/rpc", async (route) => {
+  await browser.route("**/rpc/", async (route) => {
     if (route.request.postData?.includes('"tag":"todos.update"') === true) {
       writes += 1;
 
@@ -149,6 +149,7 @@ test("writes to different rows both complete when their requests overlap", async
 
   await screen.getByRole("checkbox", { name: "First task" }).tap();
   await screen.getByRole("checkbox", { name: "Second task" }).tap();
+  await bothStarted.promise;
   await expect(
     screen.getByRole("checkbox", { name: "First task" })
   ).toBeChecked();
@@ -246,7 +247,7 @@ for (const { edit, expected } of [
     const started = Promise.withResolvers<void>();
     const release = Promise.withResolvers<void>();
 
-    await browser.route("**/rpc", async (route) => {
+    await browser.route("**/rpc/", async (route) => {
       if (route.request.postData?.includes('"tag":"todos.create"') === true) {
         started.resolve();
         await release.promise;

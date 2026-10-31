@@ -119,6 +119,11 @@ for (const locale of ["en", "zh"] as const) {
       await expect(
         page.getByRole("link", { name: text.home, exact: true })
       ).toHaveAttribute("href", "/");
+      await page.screenshot({
+        path: test.info().outputPath("preview-error.png"),
+        fullPage: true,
+        animations: "disabled",
+      });
       await page.getByRole("button", { name: text.retry, exact: true }).click();
       await expect.poll(() => requests).toBe(2);
       await expect(
