@@ -233,3 +233,51 @@ test("login redirects stay on the app origin after URL normalization", async ({
   await expectInternalRedirect("/\r/example.com");
   await expectInternalRedirect("/\n/example.com");
 });
+
+for (const { edit, expected } of [
+  { edit: "unchanged", expected: "" },
+  { edit: "next todo", expected: "Next task" },
+  { edit: "same title", expected: "First task" },
+]) {
+  test(`creating a todo preserves the draft: ${edit}`, async ({ browser, screen }) => {
+    await signUpThroughUi(browser, screen);
+    const input = screen.getByLabel("New todo");
+    const add = screen.getByRole("button", { name: "Add" });
+    const started = Promise.withResolvers<void>();
+    const release = Promise.withResolvers<void>();
+
+    await browser.route("**/rpc", async (route) => {
+      if (route.request.postData?.includes('"tag":"todos.create"') === true) {
+        started.resolve();
+        await release.promise;
+      }
+
+      await route.continue();
+    });
+
+    try {
+      await input.fill("First task");
+      await add.tap();
+      await started.promise;
+
+      if (edit !== "unchanged") {
+        await input.fill("Next task");
+      }
+
+      if (edit === "same title") {
+        await input.fill("First task");
+      }
+    } finally {
+      release.resolve();
+    }
+
+    await expect(screen.getByRole("checkbox", { name: "First task" })).toBeVisible();
+    await expect(input).toHaveValue(expected);
+
+    if (edit !== "unchanged") {
+      await add.tap();
+      await expect(screen.getByRole("checkbox")).toHaveCount(2);
+      await expect(input).toHaveValue("");
+    }
+  });
+}
