@@ -52,14 +52,15 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
     })
   );
 
-  for (const origin of [
-    "http://localhost:4000",
-    "https://attacker.example",
-    "null",
-    "",
-  ]) {
+  for (const [origin, contentType] of [
+    ["http://localhost:4000", "text/plain"],
+    ["http://localhost:4000", "application/ndjson"],
+    ["https://attacker.example", "text/plain"],
+    ["null", "text/plain"],
+    ["", "text/plain"],
+  ] as const) {
     it.effect(
-      `rejects RPC writes from the HTTP origin ${JSON.stringify(origin)}`,
+      `rejects ${contentType} RPC writes from the HTTP origin ${JSON.stringify(origin)}`,
       () =>
         Effect.gen(function* () {
           const app = yield* TestApp;
@@ -71,7 +72,7 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
               await app.fetch(
                 new Request("http://localhost/rpc", {
                   method: "POST",
-                  headers: { "content-type": "text/plain", cookie, origin },
+                  headers: { "content-type": contentType, cookie, origin },
                   body: `${JSON.stringify({
                     _tag: "Request",
                     id: "1",
@@ -112,7 +113,7 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
                 body: `${JSON.stringify({
                   _tag: "Request",
                   id: "1",
-                  headers: [],
+                  headers: [["origin", "https://attacker.example"]],
                   tag: "todos.create",
                   payload: { title: "Same-origin todo" },
                 })}\n`,
