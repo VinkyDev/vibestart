@@ -36,9 +36,6 @@ export default defineConfig({
         "style",
         "unknown",
       ],
-      ignoreCase: true,
-      newlinesBetween: true,
-      order: "asc",
     },
   },
   lint: {
@@ -61,21 +58,9 @@ export default defineConfig({
         rules: { "node/callback-return": "off" },
       },
       {
+        // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
         files: ["apps/web/src/routes/**"],
         rules: {
-          // A route module exports its `Route` beside the components it renders.
-          "react/only-export-components": [
-            "warn",
-            {
-              allowExportNames: ["Route"],
-              customHOCs: [
-                "createFileRoute",
-                "createRootRoute",
-                "createRootRouteWithContext",
-              ],
-            },
-          ],
-          // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
           "typescript/only-throw-error": [
             "error",
             {

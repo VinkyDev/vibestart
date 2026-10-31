@@ -2,7 +2,8 @@ import { Schema } from "effect";
 
 /** Normalize at the boundary; count Unicode code points, as PostgreSQL char_length does. */
 export const TodoTitle = Schema.Trim.check(
-  Schema.isPattern(/^[^\u0000]{1,200}$/u)
+  Schema.isPattern(/^.{1,200}$/su),
+  Schema.makeFilter((title) => !title.includes("\0"))
 );
 
 export const TodoId = Schema.Int.check(
