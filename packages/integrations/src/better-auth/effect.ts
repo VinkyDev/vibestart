@@ -7,6 +7,14 @@ import { templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers } from "#/vite-plus/slots.ts";
 
 export const effectAuth = (ctx: Context) => [
+  ...templateFiles(ctx, "better-auth/common"),
+  ...templateFiles(ctx, "better-auth/spa"),
+  ...templateFiles(ctx, "better-auth/tanstack-router", {
+    except: [
+      "apps/web/src/components/auth-form.tsx",
+      "apps/web/src/components/user-menu.tsx",
+    ],
+  }),
   ...templateFiles(ctx, "better-auth/effect"),
   contribute(packageJson, {
     dependencies: [

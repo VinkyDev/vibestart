@@ -1,7 +1,6 @@
 import type { Context } from "@vibestart/core";
 import { contribute, packageJson } from "@vibestart/core";
 
-import { stackHeadline } from "#/app.ts";
 import { templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -11,6 +10,10 @@ import {
 } from "#/vite-plus/slots.ts";
 
 export const effectSpa = (ctx: Context) => [
+  ...templateFiles(ctx, "spa/common", {
+    except: ["apps/web/src/router.tsx"],
+  }),
+  ...templateFiles(ctx, "spa/proxy"),
   ...templateFiles(ctx, "spa/effect"),
   contribute(packageJson, {
     path: "apps/web",
@@ -37,7 +40,6 @@ export const effectSpa = (ctx: Context) => [
     choice: "React 19, TanStack Router, Effect Atom, Tailwind CSS 4",
   }),
   contribute(readmeTagline, "Effect"),
-  contribute(stackHeadline, "Effect"),
   contribute(
     readmeOpen,
     "Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party."

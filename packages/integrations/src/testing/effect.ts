@@ -16,6 +16,10 @@ import agentsTestsIntro from "./agents-tests-intro.md?raw";
 import effectTests from "./effect-agents.md?raw";
 
 export const effectTesting = (ctx: Context) => [
+  ...templateFiles(ctx, "testing/database"),
+  ...templateFiles(ctx, "testing/e2e/runner", {
+    except: ["apps/web/tests/support/start.ts"],
+  }),
   ...templateFiles(ctx, "testing/effect"),
   contribute(packageJson, {
     path: "apps/web",

@@ -10,6 +10,9 @@ import { templateFiles } from "#/templates.ts";
 import { agentsMap, generatedFiles } from "#/vite-plus/slots.ts";
 
 export const effectDatabase = (ctx: Context) => [
+  ...templateFiles(ctx, "drizzle/common"),
+  ...templateFiles(ctx, "drizzle/auth"),
+  ...templateFiles(ctx, "drizzle/postgres/auth-tables"),
   ...templateFiles(ctx, "drizzle/effect"),
   contribute(packageJson, {
     dependencies: ["@effect/sql-pg", "drizzle-orm", "effect"],
