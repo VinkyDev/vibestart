@@ -224,16 +224,11 @@ const inspect = async (cwd: string, offline: boolean) => {
 
   const manifest = z
     .object({
-      devEngines: z
-        .object({ packageManager: z.object({ name: z.string() }) })
-        .optional(),
       packageManager: z.string().optional(),
     })
     .parse(JSON.parse(readText(cwd, "package.json") ?? "{}"));
 
-  const manager =
-    manifest.packageManager?.split("@")[0] ??
-    manifest.devEngines?.packageManager.name;
+  const manager = manifest.packageManager?.split("@")[0];
 
   if (manager !== project.blueprint.packageManager) {
     issues.push(`package.json disagrees with ${recordFile}'s package manager.`);

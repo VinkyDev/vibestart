@@ -448,19 +448,10 @@ const renderReadme = (ctx: Context, read: ReadSlot) => {
 
 const packageEngines = (
   ctx: Context
-): NonNullable<PackageJsonContribution["engines"]> => {
-  const engines = { node: toolchainVersions.node };
-
-  if (ctx.packageManager !== "bun") {
-    return { ...engines, pnpm: toolchainVersions.pnpm };
-  }
-
-  if (!ctx.has("bun")) {
-    return { ...engines, bun: `>=${toolchainVersions.bun}` };
-  }
-
-  return engines;
-};
+): NonNullable<PackageJsonContribution["engines"]> =>
+  ctx.packageManager === "bun" && !ctx.has("bun")
+    ? { bun: `>=${toolchainVersions.bun}`, node: toolchainVersions.node }
+    : { node: toolchainVersions.node };
 
 export const vitePlus = defineIntegration({
   contribute: (ctx) => [
@@ -495,17 +486,11 @@ export const vitePlus = defineIntegration({
         ...(hasWebApp(ctx) ? ["vite"] : []),
         "vite-plus",
       ],
-      devEngines: {
-        packageManager: {
-          name: ctx.packageManager ?? "pnpm",
-          version:
-            ctx.packageManager === "bun"
-              ? toolchainVersions.bun
-              : toolchainVersions.pnpm,
-          onFail: "warn",
-        },
-      },
       engines: packageEngines(ctx),
+      packageManager:
+        ctx.packageManager === "bun"
+          ? `bun@${toolchainVersions.bun}`
+          : `pnpm@${toolchainVersions.pnpm}`,
       path: ".",
       scripts: { prepare: "vp config" },
     }),
