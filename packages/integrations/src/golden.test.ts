@@ -79,6 +79,31 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
         (glob) => !paths.some((file) => path.matchesGlob(file, glob))
       )
     ).toStrictEqual([]);
+
+    const importedRoutes =
+      stack.router === "tanstack-router"
+        ? [
+            ...readFileSync(
+              `${goldenRoot(golden)}apps/web/src/routeTree.gen.ts`,
+              "utf-8"
+            ).matchAll(/from '\.\/(?<route>routes\/[^']+)'/gu),
+          ]
+            .map(({ groups }) => groups?.route ?? "")
+            .toSorted()
+        : [];
+
+    const generatedRoutes =
+      stack.router === "tanstack-router"
+        ? [...generated.keys()]
+            .flatMap((file) =>
+              file.startsWith("apps/web/src/routes/")
+                ? [file.slice("apps/web/src/".length).replace(/\.tsx?$/u, "")]
+                : []
+            )
+            .toSorted()
+        : [];
+
+    expect(importedRoutes).toStrictEqual(generatedRoutes);
   });
 
   it.each([...expected.keys()])("%s", (file) => {

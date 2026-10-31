@@ -2,6 +2,7 @@ import { execSync } from "node:child_process";
 import {
   existsSync,
   mkdirSync,
+  readFileSync,
   readdirSync,
   rmSync,
   writeFileSync,
@@ -37,9 +38,35 @@ export const syncGoldens = async () => {
       const setupWrites = generation.setup.flatMap((command) => command.writes);
       const generated = new Set(generation.files.map((file) => file.path));
 
+      const changedInputs = new Set(
+        created
+          ? []
+          : goldenPaths(golden).filter(
+              (file) =>
+                !generated.has(file) &&
+                !setupWrites.some((glob) => path.matchesGlob(file, glob))
+            )
+      );
+
       for (const file of generation.files) {
-        mkdirSync(path.dirname(`${root}${file.path}`), { recursive: true });
-        writeFileSync(`${root}${file.path}`, file.content);
+        const target = `${root}${file.path}`;
+
+        if (
+          !existsSync(target) ||
+          readFileSync(target, "utf-8") !== file.content
+        ) {
+          changedInputs.add(file.path);
+          mkdirSync(path.dirname(target), { recursive: true });
+          writeFileSync(target, file.content);
+        }
+      }
+
+      if (
+        [...changedInputs].some((file) =>
+          path.matchesGlob(file, "apps/web/src/routes/**")
+        )
+      ) {
+        rmSync(`${root}apps/web/src/routeTree.gen.ts`, { force: true });
       }
 
       const gitignore =
