@@ -52,6 +52,82 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
     })
   );
 
+  for (const origin of [
+    "http://localhost:4000",
+    "https://attacker.example",
+    "null",
+    "",
+  ]) {
+    it.effect(
+      `rejects RPC writes from the HTTP origin ${JSON.stringify(origin)}`,
+      () =>
+        Effect.gen(function* () {
+          const app = yield* TestApp;
+          const cookie = yield* app.signUp;
+          const client = yield* makeClient(cookie);
+
+          const response = yield* Effect.promise(
+            async () =>
+              await app.fetch(
+                new Request("http://localhost/rpc", {
+                  method: "POST",
+                  headers: { "content-type": "text/plain", cookie, origin },
+                  body: `${JSON.stringify({
+                    _tag: "Request",
+                    id: "1",
+                    headers: [["origin", "http://localhost"]],
+                    tag: "todos.create",
+                    payload: { title: "Unwanted todo" },
+                  })}\n`,
+                })
+              )
+          );
+
+          yield* Effect.promise(async () => await response.text());
+
+          assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+          assert.strictEqual(response.status, 403);
+        })
+    );
+  }
+
+  it.effect(
+    "accepts the configured public origin through an internal proxy URL",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+
+        const response = yield* Effect.promise(
+          async () =>
+            await app.fetch(
+              new Request("http://internal.example:3000/rpc", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/ndjson",
+                  cookie,
+                  origin: "http://localhost",
+                },
+                body: `${JSON.stringify({
+                  _tag: "Request",
+                  id: "1",
+                  headers: [],
+                  tag: "todos.create",
+                  payload: { title: "Same-origin todo" },
+                })}\n`,
+              })
+            )
+        );
+
+        yield* Effect.promise(async () => await response.text());
+
+        assert.strictEqual(response.status, 200);
+        const [todo] = yield* client("todos.list", undefined);
+        assert.deepInclude(todo, { title: "Same-origin todo" });
+      })
+  );
+
   for (const title of [
     "",
     "   ",
