@@ -22,7 +22,7 @@ const columns = {
 const ownedBy = (userId: string, id: number) =>
   and(eq(todos.id, id), eq(todos.userId, userId));
 
-/** Someone else's row reads as missing, so the error does not reveal that the id exists. */
+// Someone else's row reads as missing, so the error does not reveal that the id exists.
 const firstOrNotFound = <A>([row]: readonly A[], id: number) =>
   row === undefined
     ? Effect.fail(new TodoNotFound({ id }))

@@ -20,7 +20,9 @@ export interface BrowserRunner {
 export const playwright: BrowserRunner = {
   command: "playwright test",
   contribute: (ctx) => [
-    ...templateFiles(ctx, "testing/playwright/runner"),
+    ...templateFiles(ctx, "testing/playwright/runner", {
+      except: ctx.has("effect") ? ["apps/web/tests/e2e/global-setup.ts"] : [],
+    }),
     contribute(ignoredFiles, "playwright-report"),
     contribute(ignoredFiles, "test-results"),
   ],
@@ -59,7 +61,12 @@ export const e2e: BrowserRunner = {
   command: "e2e run",
   contribute: (ctx) => [
     e2eConfig(ctx),
-    ...templateFiles(ctx, "testing/e2e/runner", { except: [e2eConfigPath] }),
+    ...templateFiles(ctx, "testing/e2e/runner", {
+      except: [
+        e2eConfigPath,
+        ...(ctx.has("effect") ? ["apps/web/tests/support/start.ts"] : []),
+      ],
+    }),
     contribute(ignoredFiles, ".e2e"),
     // Knip has no plugin for this runner, which loads its config and discovers the tests itself.
     contribute(knipEntries, {

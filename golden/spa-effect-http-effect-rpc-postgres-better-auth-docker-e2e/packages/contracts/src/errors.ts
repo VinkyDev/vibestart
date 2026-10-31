@@ -6,9 +6,3 @@ export class ServiceUnavailable extends Schema.TaggedError<ServiceUnavailable>()
   {},
   { httpApiStatus: 503 }
 ) {}
-
-export class InternalServerError extends Schema.TaggedError<InternalServerError>()(
-  "InternalServerError",
-  {},
-  { httpApiStatus: 500 }
-) {}

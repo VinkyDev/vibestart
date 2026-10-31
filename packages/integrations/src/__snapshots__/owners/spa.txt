@@ -1,7 +1,16 @@
-# apps/web/index.html · 761 stacks
+# apps/web/index.html · 770 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -1047,10 +1056,19 @@ const client: AppRouterClient = createORPCClient(link);
 
 export const api = createTanstackQueryUtils(client);
 
-# apps/web/src/main.tsx · 761 stacks
+# apps/web/src/main.tsx · 770 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -2621,8 +2639,42 @@ declare module "@tanstack/react-router" {
   }
 }
 
-# apps/web/src/router.tsx · 1 stack
+# apps/web/src/router.tsx · 6 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { RegistryProvider } from "@effect/atom-react";
+import { createRouter } from "@tanstack/react-router";
+import type { RouterHistory } from "@tanstack/react-router";
+
+import { Loader } from "#src/components/loader.tsx";
+import { routeTree } from "#src/routeTree.gen.ts";
+
+export const createAppRouter = (history?: RouterHistory) =>
+  createRouter({
+    routeTree,
+    history,
+    defaultPreload: "intent",
+    defaultPreloadStaleTime: 0,
+    defaultPendingComponent: Loader,
+    scrollRestoration: true,
+    Wrap: ({ children }) => <RegistryProvider>{children}</RegistryProvider>,
+  });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: ReturnType<typeof createAppRouter>;
+  }
+}
+
+# apps/web/src/router.tsx · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { RegistryProvider } from "@effect/atom-react";
 import { createRouter } from "@tanstack/react-router";
 import type { RouterHistory } from "@tanstack/react-router";
@@ -3118,8 +3170,52 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 });
 
-# apps/web/src/routes/__root.tsx · 1 stack
+# apps/web/src/routes/__root.tsx · 6 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { HeadContent, Outlet, createRootRoute } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { ThemeProvider } from "next-themes";
+
+import { Toaster } from "@my-app/ui/components/sonner";
+
+import { Header } from "#src/components/header.tsx";
+
+const RootLayout = () => (
+  <ThemeProvider
+    attribute="class"
+    defaultTheme="system"
+    disableTransitionOnChange
+    scriptProps={{ type: "application/json" }}
+  >
+    <HeadContent />
+    <div className="grid min-h-svh grid-rows-[auto_1fr]">
+      <Header />
+      <main className="mx-auto w-full max-w-2xl px-4 py-10 sm:py-14">
+        <Outlet />
+      </main>
+    </div>
+    <Toaster richColors />
+    <TanStackRouterDevtools position="bottom-left" />
+  </ThemeProvider>
+);
+
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [{ title: "my-app" }],
+  }),
+  component: RootLayout,
+});
+
+# apps/web/src/routes/__root.tsx · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import {
   HeadContent,
   Outlet,
@@ -3609,7 +3705,43 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-# apps/web/src/routes/index.tsx · 1 stack
+# apps/web/src/routes/index.tsx · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        React, Effect (HttpApi, RPC, Atom) on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
+);
+
+export const Route = createFileRoute("/")({
+  component: HomePage,
+});
+
+# apps/web/src/routes/index.tsx · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -3626,8 +3758,114 @@ const HomePage = () => (
         my-app
       </h1>
       <p className="text-muted-foreground max-w-xl text-lg text-pretty">
-        React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle and Better Auth
-        on Vite+.
+        React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle, Better Auth on
+        Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
+);
+
+export const Route = createFileRoute("/")({
+  component: HomePage,
+});
+
+# apps/web/src/routes/index.tsx · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle on Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
+);
+
+export const Route = createFileRoute("/")({
+  component: HomePage,
+});
+
+# apps/web/src/routes/index.tsx · 2 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        React, Effect (HttpApi, RPC, Atom), SQLite, Drizzle, Better Auth on
+        Vite+.
+      </p>
+    </div>
+    <p className="text-muted-foreground border-t pt-6 text-sm">
+      Edit{" "}
+      <code className="text-foreground font-mono">
+        apps/web/src/routes/index.tsx
+      </code>{" "}
+      and save to see it change.
+    </p>
+  </section>
+);
+
+export const Route = createFileRoute("/")({
+  component: HomePage,
+});
+
+# apps/web/src/routes/index.tsx · 2 stacks
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ApiStatus } from "#src/components/api-status.tsx";
+
+const HomePage = () => (
+  <section className="grid gap-10 sm:py-8">
+    <div className="grid gap-5">
+      <div className="text-muted-foreground flex items-center gap-2 text-sm">
+        API
+        <ApiStatus />
+      </div>
+      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+        my-app
+      </h1>
+      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+        React, Effect (HttpApi, RPC, Atom), SQLite, Drizzle on Vite+.
       </p>
     </div>
     <p className="text-muted-foreground border-t pt-6 text-sm">
@@ -7367,10 +7605,19 @@ export const Route = createFileRoute("/todos")({
   component: TodosPage,
 });
 
-# apps/web/tsconfig.app.json · 761 stacks
+# apps/web/tsconfig.app.json · 770 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -8137,10 +8384,19 @@ export const Route = createFileRoute("/todos")({
   "include": ["src"]
 }
 
-# apps/web/tsconfig.json · 761 stacks
+# apps/web/tsconfig.json · 770 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -8907,10 +9163,19 @@ export const Route = createFileRoute("/todos")({
   ]
 }
 
-# apps/web/tsconfig.node.json · 761 stacks
+# apps/web/tsconfig.node.json · 770 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -9707,8 +9972,17 @@ export default defineConfig({
   ],
 });
 
-# apps/web/vite.config.ts · 209 stacks
+# apps/web/vite.config.ts · 218 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-hono-orpc-bun-docker
 #   spa-hono-orpc-bun-docker-e2e
 #   spa-hono-orpc-docker

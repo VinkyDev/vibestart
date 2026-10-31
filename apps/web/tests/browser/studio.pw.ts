@@ -70,7 +70,7 @@ for (const locale of ["en", "zh"] as const) {
 
       const preview =
         mode === "effect"
-          ? "**/previews/spa-effect-http-effect-rpc-postgres-better-auth-e2e.json"
+          ? "**/previews/spa-effect-http-effect-rpc-*.json"
           : "**/previews/*.json";
 
       if (mode === "effect") {
@@ -144,3 +144,38 @@ for (const locale of ["en", "zh"] as const) {
     });
   }
 }
+
+test("selects Effect testing and removes persistence through the picker", async ({
+  page,
+}) => {
+  await page.goto(
+    "/studio?mode=effect&database=sqlite&auth=better-auth&testing=e2e"
+  );
+  await page
+    .getByRole("button", { name: /End-to-end tests.*TesterArmy e2e/u })
+    .click();
+  await page.getByRole("button", { name: /^Playwright/u }).click();
+  await expect(
+    page.getByRole("button", { name: /End-to-end tests.*Playwright/u })
+  ).toBeVisible();
+  await page.getByRole("button", { name: /Auth.*Better Auth/u }).click();
+  await page.getByRole("button", { name: /^No auth/u }).click();
+  await expect(
+    page.getByRole("button", { name: /Auth.*Better Auth/u })
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: /Database.*SQLite/u }).click();
+  await page.getByRole("button", { name: /^No database/u }).click();
+  await expect(
+    page.getByRole("button", { name: /Database.*SQLite/u })
+  ).toHaveCount(0);
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: /Database.*SQLite/u })
+  ).toHaveCount(0);
+  await expect(page.locator("main")).toContainText("Effect RPC");
+  await page.screenshot({
+    path: test.info().outputPath("effect-stateless.png"),
+    fullPage: true,
+    animations: "disabled",
+  });
+});

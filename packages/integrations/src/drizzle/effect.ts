@@ -2,20 +2,32 @@ import type { Context } from "@vibestart/core";
 import {
   contribute,
   gettingStarted,
+  file,
   packageJson,
   setupCommand,
 } from "@vibestart/core";
 
+import { authVariant, sqlDatabase } from "#/app.ts";
+import { drizzleConfig } from "#/drizzle/config.ts";
 import { templateFiles } from "#/templates.ts";
 import { agentsMap, generatedFiles } from "#/vite-plus/slots.ts";
 
 export const effectDatabase = (ctx: Context) => [
   ...templateFiles(ctx, "drizzle/common"),
-  ...templateFiles(ctx, "drizzle/auth"),
-  ...templateFiles(ctx, "drizzle/postgres/auth-tables"),
+  ...templateFiles(ctx, `drizzle/${authVariant(ctx)}`),
+  ...templateFiles(ctx, `drizzle/${sqlDatabase(ctx).id}/${authVariant(ctx)}`),
+  ...(ctx.has("better-auth")
+    ? templateFiles(ctx, `drizzle/${sqlDatabase(ctx).id}/auth-tables`)
+    : []),
+  ...templateFiles(ctx, `drizzle/effect-${sqlDatabase(ctx).id}`),
+  file("packages/db/drizzle.config.ts", drizzleConfig(ctx)),
   ...templateFiles(ctx, "drizzle/effect"),
   contribute(packageJson, {
-    dependencies: ["@effect/sql-pg", "drizzle-orm", "effect"],
+    dependencies: [
+      ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg",
+      "drizzle-orm",
+      "effect",
+    ],
     devDependencies: [
       `${ctx.scope}/config`,
       "@types/node",
@@ -39,6 +51,10 @@ export const effectDatabase = (ctx: Context) => [
     path: "packages/db",
   }),
   contribute(packageJson, {
+    path: "apps/server",
+    scripts: { "db:migrate": "node --env-file-if-exists=.env src/migrate.ts" },
+  }),
+  contribute(packageJson, {
     path: ".",
     scripts: {
       "db:generate": `vp run --filter ${ctx.scope}/db db:generate`,
@@ -57,6 +73,6 @@ export const effectDatabase = (ctx: Context) => [
   contribute(gettingStarted, { run: "vp run db:migrate" }),
   contribute(agentsMap, {
     path: "packages/db",
-    owns: "Drizzle schema, relations, migrations, and the Database service on @effect/sql-pg",
+    owns: `Drizzle schema, relations, migrations, and the Database service on ${ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg"}`,
   }),
 ];

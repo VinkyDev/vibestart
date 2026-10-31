@@ -1,5 +1,14 @@
-# apps/web/src/components/api-status.tsx · 1 stack
+# apps/web/src/components/api-status.tsx · 10 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 import { useAtomValue } from "@effect/atom-react";
 import { AsyncResult } from "effect/reactivity";
 
@@ -41,8 +50,34 @@ export const ApiStatus = () => {
   );
 };
 
-# apps/web/src/lib/api.ts · 1 stack
+# apps/web/src/lib/api.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { Layer } from "effect";
+import { FetchHttpClient } from "effect/http";
+import { AtomRpc } from "effect/reactivity";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { HealthRpcs } from "@my-app/contracts";
+
+class Rpc extends AtomRpc.Service<Rpc>()("@my-app/web/Rpc", {
+  group: HealthRpcs,
+  protocol: RpcClient.layerProtocolHttp({
+    url: `${window.location.origin}/rpc`,
+  }).pipe(Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer])),
+}) {}
+
+export const healthAtom = Rpc.query("health.check", undefined);
+
+# apps/web/src/lib/api.ts · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 import { Effect, Layer } from "effect";
 import { FetchHttpClient } from "effect/http";
 import { Atom, AtomHttpApi, AtomRpc, Reactivity } from "effect/reactivity";
@@ -100,8 +135,11 @@ export const deleteTodoAtom = Atom.family((id: number) =>
 
 export const healthAtom = HttpApi.query("health", "check", {});
 
-# apps/web/src/lib/notify.ts · 1 stack
+# apps/web/src/lib/notify.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { Cause, Exit } from "effect";
 import { toast } from "sonner";
 
@@ -127,8 +165,37 @@ export const toastFailure = <A, E>(exit: Exit.Exit<A, E>) => {
   }
 };
 
-# apps/web/src/routes/_authenticated/todos.tsx · 1 stack
+# apps/web/src/lib/notify.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { Cause, Exit } from "effect";
+import { toast } from "sonner";
+
+import { TodoNotFound } from "@my-app/contracts";
+
+const messageFor = <E>(cause: Cause.Cause<E>) => {
+  const error = Cause.squash(cause);
+
+  if (error instanceof TodoNotFound) {
+    return "That todo no longer exists.";
+  }
+
+  return "Something went wrong. Try again.";
+};
+
+export const toastFailure = <A, E>(exit: Exit.Exit<A, E>) => {
+  if (Exit.isFailure(exit)) {
+    toast.error(messageFor(exit.cause));
+  }
+};
+
+# apps/web/src/routes/_authenticated/todos.tsx · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import {
   useAtomRefresh,
   useAtomSet,
@@ -315,8 +382,202 @@ export const Route = createFileRoute("/_authenticated/todos")({
   errorComponent: TodosError,
 });
 
-# packages/api/src/auth-middleware.ts · 1 stack
+# apps/web/src/routes/todos.tsx · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import {
+  useAtomRefresh,
+  useAtomSet,
+  useAtomSuspense,
+} from "@effect/atom-react";
+import { createFileRoute } from "@tanstack/react-router";
+import type { ErrorComponentProps } from "@tanstack/react-router";
+import { Exit, Schema } from "effect";
+import { Trash2Icon } from "lucide-react";
+import { useState, useTransition } from "react";
+import type { SubmitEvent } from "react";
+
+import { TodoTitle } from "@my-app/contracts";
+import type { Todo } from "@my-app/contracts";
+import { Button } from "@my-app/ui/components/button";
+import { Card, CardContent } from "@my-app/ui/components/card";
+import { Checkbox } from "@my-app/ui/components/checkbox";
+import { Input } from "@my-app/ui/components/input";
+
+import {
+  createTodoAtom,
+  deleteTodoAtom,
+  todosAtom,
+  todosKeys,
+  updateTodoAtom,
+} from "#src/lib/api.ts";
+import { toastFailure } from "#src/lib/notify.ts";
+
+const decodeTitle = Schema.decodeUnknownExit(TodoTitle);
+
+const TodoItem = ({ todo }: { todo: Todo }) => {
+  const [pending, startMutation] = useTransition();
+
+  const updateTodo = useAtomSet(updateTodoAtom(todo.id), {
+    mode: "promiseExit",
+  });
+
+  const deleteTodo = useAtomSet(deleteTodoAtom(todo.id), {
+    mode: "promiseExit",
+  });
+
+  return (
+    <li className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors">
+      <Checkbox
+        aria-label={todo.title}
+        checked={todo.completed}
+        disabled={pending}
+        onCheckedChange={(completed) => {
+          startMutation(async () => {
+            toastFailure(await updateTodo(completed));
+          });
+        }}
+      />
+      <span
+        className={
+          todo.completed
+            ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
+            : "flex-1 text-sm"
+        }
+      >
+        {todo.title}
+      </span>
+      <Button
+        aria-label={`Delete ${todo.title}`}
+        disabled={pending}
+        onClick={() => {
+          startMutation(async () => {
+            toastFailure(await deleteTodo());
+          });
+        }}
+        size="icon-sm"
+        variant="ghost"
+      >
+        <Trash2Icon className="text-muted-foreground" />
+      </Button>
+    </li>
+  );
+};
+
+const TodosPage = () => {
+  const [draft, setDraft] = useState({ title: "" });
+  const { title } = draft;
+  const [isCreating, startCreating] = useTransition();
+  const { value: todos } = useAtomSuspense(todosAtom);
+  const createTodo = useAtomSet(createTodoAtom, { mode: "promiseExit" });
+  const validTitle = decodeTitle(title);
+
+  const done = todos.filter((todo) => todo.completed).length;
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (Exit.isFailure(validTitle)) {
+      return;
+    }
+
+    startCreating(async () => {
+      const exit = await createTodo({
+        payload: { title: validTitle.value },
+        reactivityKeys: todosKeys,
+      });
+
+      if (Exit.isSuccess(exit)) {
+        setDraft((current) => (current === draft ? { title: "" } : current));
+      }
+
+      toastFailure(exit);
+    });
+  };
+
+  return (
+    <section className="grid gap-6">
+      <div className="flex items-end justify-between gap-4">
+        <div className="grid gap-1">
+          <h1 className="text-3xl font-semibold tracking-tight">Todos</h1>
+          <p className="text-muted-foreground text-sm">
+            Private to your account.
+          </p>
+        </div>
+        {todos.length > 0 && (
+          <p className="text-muted-foreground text-sm tabular-nums">
+            {done} of {todos.length} done
+          </p>
+        )}
+      </div>
+      <Card>
+        <CardContent>
+          <form className="flex gap-2" onSubmit={handleSubmit}>
+            <Input
+              aria-label="New todo"
+              onChange={(event) => {
+                setDraft({ title: event.target.value });
+              }}
+              placeholder="What needs to be done?"
+              value={title}
+            />
+            <Button
+              disabled={isCreating || Exit.isFailure(validTitle)}
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+        </CardContent>
+        {todos.length === 0 ? (
+          <div className="grid gap-1 border-t px-4 pt-10 pb-6 text-center">
+            <p className="text-sm font-medium">No todos yet.</p>
+            <p className="text-muted-foreground text-sm">
+              Each one you add is saved through the API.
+            </p>
+          </div>
+        ) : (
+          <ul className="-mb-4 divide-y border-t">
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </ul>
+        )}
+      </Card>
+    </section>
+  );
+};
+
+const TodosError = ({ reset }: ErrorComponentProps) => {
+  const refresh = useAtomRefresh(todosAtom);
+
+  return (
+    <section className="grid justify-items-start gap-4" role="alert">
+      <p>Could not load your todos.</p>
+      <Button
+        onClick={() => {
+          refresh();
+          reset();
+        }}
+      >
+        Try again
+      </Button>
+    </section>
+  );
+};
+
+export const Route = createFileRoute("/todos")({
+  component: TodosPage,
+  errorComponent: TodosError,
+});
+
+# packages/api/src/auth-middleware.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { Effect, Layer } from "effect";
 
 import { Auth } from "@my-app/auth";
@@ -367,8 +628,45 @@ export const AuthMiddlewareLive = Layer.effect(
   })
 );
 
-# packages/api/src/health.ts · 1 stack
+# packages/api/src/auth-routes.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+import { Effect, Layer } from "effect";
+import { HttpEffect, HttpRouter } from "effect/http";
+
+import { Auth } from "@my-app/auth";
+
+export const AuthRoutes = Layer.unwrap(
+  Effect.gen(function* () {
+    const auth = yield* Auth;
+
+    return HttpRouter.add(
+      "*",
+      "/api/auth/*",
+      HttpEffect.fromWebHandler(auth.handler)
+    );
+  })
+);
+
+# packages/api/src/health.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { Effect } from "effect";
+import { HttpApiBuilder } from "effect/http-api";
+
+import { Api } from "@my-app/contracts";
+
+export const HealthLive = HttpApiBuilder.group(Api, "health", (handlers) =>
+  handlers.handle("check", () => Effect.succeed({ status: "ok" as const }))
+);
+
+# packages/api/src/health.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
 import { sql } from "drizzle-orm";
 import { Effect } from "effect";
 import { HttpApiBuilder } from "effect/http-api";
@@ -394,42 +692,124 @@ export const HealthLive = HttpApiBuilder.group(
   })
 );
 
-# packages/api/src/index.ts · 1 stack
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-import { Effect, Layer } from "effect";
-import {
-  HttpEffect,
-  HttpRouter,
-  HttpServerRequest,
-  HttpServerResponse,
-} from "effect/http";
-import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
-import { RpcSerialization, RpcServer } from "effect/rpc";
+# packages/api/src/health.ts · 4 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { sql } from "drizzle-orm";
+import { Effect } from "effect";
+import { HttpApiBuilder } from "effect/http-api";
 
-import { Auth } from "@my-app/auth";
-import { Api, TodosRpcs } from "@my-app/contracts";
+import { Api, DatabaseUnavailable } from "@my-app/contracts";
+import { Database } from "@my-app/db";
 
-import { AuthMiddlewareLive } from "#src/auth-middleware.ts";
-import { HealthLive } from "#src/health.ts";
-import { TodosLive } from "#src/rpc.ts";
-import { Todos } from "#src/todos.ts";
+export const HealthLive = HttpApiBuilder.group(
+  Api,
+  "health",
+  Effect.fnUntraced(function* (handlers) {
+    const db = yield* Database;
 
-const AuthRoutes = Layer.unwrap(
-  Effect.gen(function* () {
-    const auth = yield* Auth;
-
-    return HttpRouter.add(
-      "*",
-      "/api/auth/*",
-      HttpEffect.fromWebHandler(auth.handler)
+    return handlers.handle("check", () =>
+      db.run(sql`select 1`).pipe(
+        Effect.as({ status: "ok" as const }),
+        Effect.tapError((cause) =>
+          Effect.logWarning("Database health check failed", cause)
+        ),
+        Effect.mapError(() => new DatabaseUnavailable())
+      )
     );
   })
 );
 
+# packages/api/src/index.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { Config, Effect, Layer } from "effect";
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
+import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
+import { RpcSerialization, RpcServer } from "effect/rpc";
+
+import { Api, HealthRpcs } from "@my-app/contracts";
+
+import { HealthLive } from "#src/health.ts";
+import { HealthRpcLive } from "#src/rpc.ts";
+
 const RpcOrigin = Layer.unwrap(
   Effect.gen(function* () {
-    const auth = yield* Auth;
-    const allowedOrigin = new URL(auth.options.baseURL).origin;
+    const allowedOrigin = new URL(yield* Config.String("APP_URL")).origin;
+
+    return HttpRouter.middleware((httpEffect) =>
+      Effect.gen(function* () {
+        const request = yield* HttpServerRequest.HttpServerRequest;
+        const { origin } = request.headers;
+
+        if (origin !== undefined && origin !== allowedOrigin) {
+          return HttpServerResponse.empty({ status: 403 });
+        }
+
+        return yield* httpEffect;
+      })
+    ).layer;
+  })
+);
+
+const RpcRoutes = RpcServer.layerHttp({
+  group: HealthRpcs,
+  path: "/rpc",
+  protocol: "http",
+}).pipe(
+  Layer.provide([
+    HealthRpcLive,
+
+    RpcSerialization.layerNdjson,
+    RpcOrigin,
+  ])
+);
+
+const ApiRoutes = Layer.mergeAll(
+  HttpApiBuilder.layer(Api, { openapiPath: "/api/openapi.json" }),
+  HttpApiScalar.layer(Api, { path: "/api/docs" })
+).pipe(Layer.provide(HealthLive));
+
+const SecurityHeaders = HttpRouter.middleware(
+  (effect) =>
+    effect.pipe(
+      Effect.map(
+        HttpServerResponse.setHeaders({
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+        })
+      )
+    ),
+  { global: true }
+);
+
+export const Routes = Layer.mergeAll(RpcRoutes, ApiRoutes, SecurityHeaders);
+
+# packages/api/src/index.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+import { Config, Effect, Layer } from "effect";
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
+import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
+import { RpcSerialization, RpcServer } from "effect/rpc";
+
+import { Api, TodosRpcs } from "@my-app/contracts";
+
+import { AuthMiddlewareLive } from "#src/auth-middleware.ts";
+import { AuthRoutes } from "#src/auth-routes.ts";
+import { HealthLive } from "#src/health.ts";
+import { TodosLive } from "#src/rpc.ts";
+import { Todos } from "#src/todos.ts";
+
+const RpcOrigin = Layer.unwrap(
+  Effect.gen(function* () {
+    const allowedOrigin = new URL(yield* Config.String("BETTER_AUTH_URL"))
+      .origin;
 
     return HttpRouter.middleware((httpEffect) =>
       Effect.gen(function* () {
@@ -486,8 +866,92 @@ export const Routes = Layer.mergeAll(
   SecurityHeaders
 );
 
-# packages/api/src/rpc.ts · 1 stack
+# packages/api/src/index.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { Config, Effect, Layer } from "effect";
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
+import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
+import { RpcSerialization, RpcServer } from "effect/rpc";
+
+import { Api, TodosRpcs } from "@my-app/contracts";
+
+import { HealthLive } from "#src/health.ts";
+import { TodosLive } from "#src/rpc.ts";
+import { Todos } from "#src/todos.ts";
+
+const RpcOrigin = Layer.unwrap(
+  Effect.gen(function* () {
+    const allowedOrigin = new URL(yield* Config.String("APP_URL")).origin;
+
+    return HttpRouter.middleware((httpEffect) =>
+      Effect.gen(function* () {
+        const request = yield* HttpServerRequest.HttpServerRequest;
+        const { origin } = request.headers;
+
+        if (origin !== undefined && origin !== allowedOrigin) {
+          return HttpServerResponse.empty({ status: 403 });
+        }
+
+        return yield* httpEffect;
+      })
+    ).layer;
+  })
+);
+
+const RpcRoutes = RpcServer.layerHttp({
+  group: TodosRpcs,
+  path: "/rpc",
+  protocol: "http",
+}).pipe(
+  Layer.provide([
+    TodosLive,
+
+    RpcSerialization.layerNdjson,
+    RpcOrigin,
+  ]),
+  Layer.provide(Todos.layer)
+);
+
+const ApiRoutes = Layer.mergeAll(
+  HttpApiBuilder.layer(Api, { openapiPath: "/api/openapi.json" }),
+  HttpApiScalar.layer(Api, { path: "/api/docs" })
+).pipe(Layer.provide(HealthLive));
+
+const SecurityHeaders = HttpRouter.middleware(
+  (effect) =>
+    effect.pipe(
+      Effect.map(
+        HttpServerResponse.setHeaders({
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+        })
+      )
+    ),
+  { global: true }
+);
+
+export const Routes = Layer.mergeAll(RpcRoutes, ApiRoutes, SecurityHeaders);
+
+# packages/api/src/rpc.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { Effect } from "effect";
+
+import { HealthRpcs } from "@my-app/contracts";
+
+export const HealthRpcLive = HealthRpcs.toLayer({
+  "health.check": () => Effect.succeed({ status: "ok" as const }),
+});
+
+# packages/api/src/rpc.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { Effect } from "effect";
 
 import { CurrentUser, ServiceUnavailable, TodosRpcs } from "@my-app/contracts";
@@ -541,8 +1005,61 @@ export const TodosLive = TodosRpcs.toLayer(
   })
 );
 
-# packages/api/src/todos.ts · 1 stack
+# packages/api/src/rpc.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { Effect } from "effect";
+
+import { ServiceUnavailable, TodosRpcs } from "@my-app/contracts";
+
+import { Todos } from "#src/todos.ts";
+import type { TodoStorageError } from "#src/todos.ts";
+
+const unavailable = (error: TodoStorageError) =>
+  Effect.logError("Todo storage failed", error).pipe(
+    Effect.andThen(Effect.fail(new ServiceUnavailable()))
+  );
+
+export const TodosLive = TodosRpcs.toLayer(
+  Effect.gen(function* () {
+    const todos = yield* Todos;
+
+    return {
+      "todos.list": Effect.fnUntraced(
+        function* () {
+          return yield* todos.list();
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+      "todos.create": Effect.fnUntraced(
+        function* ({ title }) {
+          return yield* todos.create(title);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+      "todos.update": Effect.fnUntraced(
+        function* ({ id, completed }) {
+          return yield* todos.update(id, completed);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+      "todos.delete": Effect.fnUntraced(
+        function* ({ id }) {
+          return yield* todos.delete(id);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+    };
+  })
+);
+
+# packages/api/src/todos.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { and, eq } from "drizzle-orm";
 import { Context, Data, Effect, Layer } from "effect";
 
@@ -567,7 +1084,7 @@ const columns = {
 const ownedBy = (userId: string, id: number) =>
   and(eq(todos.id, id), eq(todos.userId, userId));
 
-/** Someone else's row reads as missing, so the error does not reveal that the id exists. */
+// Someone else's row reads as missing, so the error does not reveal that the id exists.
 const firstOrNotFound = <A>([row]: readonly A[], id: number) =>
   row === undefined
     ? Effect.fail(new TodoNotFound({ id }))
@@ -641,19 +1158,123 @@ export class Todos extends Context.Service<
   );
 }
 
-# packages/api/tsconfig.json · 1 stack
+# packages/api/src/todos.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { eq } from "drizzle-orm";
+import { Context, Data, Effect, Layer } from "effect";
+
+import { TodoNotFound } from "@my-app/contracts";
+import type { Todo } from "@my-app/contracts";
+import { Database } from "@my-app/db";
+import { todos } from "@my-app/db/schema/todos";
+
+export class TodoStorageError extends Data.TaggedError("TodoStorageError")<{
+  readonly cause: unknown;
+}> {}
+
+const storageError = (cause: unknown) => new TodoStorageError({ cause });
+
+const columns = {
+  completed: todos.completed,
+  createdAt: todos.createdAt,
+  id: todos.id,
+  title: todos.title,
+};
+
+const firstOrNotFound = <A>([row]: readonly A[], id: number) =>
+  row === undefined
+    ? Effect.fail(new TodoNotFound({ id }))
+    : Effect.succeed(row);
+
+export class Todos extends Context.Service<
+  Todos,
+  {
+    readonly list: () => Effect.Effect<readonly Todo[], TodoStorageError>;
+    readonly create: (title: string) => Effect.Effect<Todo, TodoStorageError>;
+    readonly update: (
+      id: number,
+      completed: boolean
+    ) => Effect.Effect<Todo, TodoStorageError | TodoNotFound>;
+    readonly delete: (
+      id: number
+    ) => Effect.Effect<void, TodoStorageError | TodoNotFound>;
+  }
+>()("@my-app/api/Todos") {
+  static readonly layer = Layer.effect(
+    Todos,
+    Effect.gen(function* () {
+      const db = yield* Database;
+
+      return Todos.of({
+        list: Effect.fn("Todos.list")(function* () {
+          return yield* db
+            .select(columns)
+            .from(todos)
+
+            .orderBy(todos.id)
+            .pipe(Effect.mapError(storageError));
+        }),
+        create: Effect.fn("Todos.create")(function* (title) {
+          const [todo] = yield* db
+            .insert(todos)
+            .values({ title })
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          return todo ?? (yield* Effect.die("insert returned no row"));
+        }),
+        update: Effect.fn("Todos.update")(function* (id, completed) {
+          const rows = yield* db
+            .update(todos)
+            .set({ completed })
+            .where(eq(todos.id, id))
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          return yield* firstOrNotFound(rows, id);
+        }),
+        delete: Effect.fn("Todos.delete")(function* (id) {
+          const rows = yield* db
+            .delete(todos)
+            .where(eq(todos.id, id))
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          yield* firstOrNotFound(rows, id);
+        }),
+      });
+    })
+  );
+}
+
+# packages/api/tsconfig.json · 10 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 {
   "extends": "@my-app/config/typescript/node.json",
   "include": ["src", "tests"]
 }
 
-# packages/contracts/src/auth.ts · 1 stack
+# packages/contracts/src/auth.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { Context, Schema } from "effect";
 import { RpcMiddleware } from "effect/rpc";
 
-import { InternalServerError, ServiceUnavailable } from "#src/errors.ts";
+import { ServiceUnavailable } from "#src/errors.ts";
 
 export class CurrentUser extends Context.Service<
   CurrentUser,
@@ -666,6 +1287,12 @@ export class Unauthorized extends Schema.TaggedError<Unauthorized>()(
   { httpApiStatus: 401 }
 ) {}
 
+export class InternalServerError extends Schema.TaggedError<InternalServerError>()(
+  "InternalServerError",
+  {},
+  { httpApiStatus: 500 }
+) {}
+
 export class AuthMiddleware extends RpcMiddleware.Service<
   AuthMiddleware,
   { provides: CurrentUser }
@@ -673,8 +1300,15 @@ export class AuthMiddleware extends RpcMiddleware.Service<
   error: Schema.Union([Unauthorized, ServiceUnavailable, InternalServerError]),
 }) {}
 
-# packages/contracts/src/errors.ts · 1 stack
+# packages/contracts/src/errors.ts · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 import { Schema } from "effect";
 
 /** Public errors deliberately carry no SQL, credentials, or internal causes. */
@@ -684,14 +1318,37 @@ export class ServiceUnavailable extends Schema.TaggedError<ServiceUnavailable>()
   { httpApiStatus: 503 }
 ) {}
 
-export class InternalServerError extends Schema.TaggedError<InternalServerError>()(
-  "InternalServerError",
-  {},
-  { httpApiStatus: 500 }
+# packages/contracts/src/http-api.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { Schema } from "effect";
+import {
+  HttpApi,
+  HttpApiEndpoint,
+  HttpApiGroup,
+  OpenApi,
+} from "effect/http-api";
+
+export class HealthGroup extends HttpApiGroup.make("health").add(
+  HttpApiEndpoint.get("check", "/health", {
+    success: Schema.Struct({ status: Schema.Literal("ok") }),
+  })
 ) {}
 
-# packages/contracts/src/http-api.ts · 1 stack
+export class Api extends HttpApi.make("api")
+  .add(HealthGroup)
+  .prefix("/api")
+  .annotate(OpenApi.Title, "my-app") {}
+
+# packages/contracts/src/http-api.ts · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 import { Schema } from "effect";
 import {
   HttpApi,
@@ -718,9 +1375,24 @@ export class Api extends HttpApi.make("api")
   .prefix("/api")
   .annotate(OpenApi.Title, "my-app") {}
 
-# packages/contracts/src/index.ts · 1 stack
+# packages/contracts/src/index.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+export { Api, HealthGroup } from "#src/http-api.ts";
+
+export { HealthRpcs } from "#src/rpc.ts";
+
+# packages/contracts/src/index.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-export { AuthMiddleware, CurrentUser, Unauthorized } from "#src/auth.ts";
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+export {
+  AuthMiddleware,
+  CurrentUser,
+  Unauthorized,
+  InternalServerError,
+} from "#src/auth.ts";
 
 export { Api, DatabaseUnavailable, HealthGroup } from "#src/http-api.ts";
 
@@ -728,10 +1400,38 @@ export { TodosRpcs } from "#src/rpc.ts";
 
 export { Todo, TodoId, TodoNotFound, TodoTitle } from "#src/todo.ts";
 
-export { InternalServerError, ServiceUnavailable } from "#src/errors.ts";
+export { ServiceUnavailable } from "#src/errors.ts";
 
-# packages/contracts/src/rpc.ts · 1 stack
+# packages/contracts/src/index.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+export { Api, DatabaseUnavailable, HealthGroup } from "#src/http-api.ts";
+
+export { TodosRpcs } from "#src/rpc.ts";
+
+export { Todo, TodoId, TodoNotFound, TodoTitle } from "#src/todo.ts";
+
+export { ServiceUnavailable } from "#src/errors.ts";
+
+# packages/contracts/src/rpc.ts · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+import { Schema } from "effect";
+import { Rpc, RpcGroup } from "effect/rpc";
+
+export class HealthRpcs extends RpcGroup.make(
+  Rpc.make("health.check", {
+    success: Schema.Struct({ status: Schema.Literal("ok") }),
+  })
+) {}
+
+# packages/contracts/src/rpc.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 import { Schema } from "effect";
 import { Rpc, RpcGroup } from "effect/rpc";
 
@@ -760,8 +1460,47 @@ export class TodosRpcs extends RpcGroup.make(
   })
 ).middleware(AuthMiddleware) {}
 
-# packages/contracts/src/todo.ts · 1 stack
+# packages/contracts/src/rpc.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { Schema } from "effect";
+import { Rpc, RpcGroup } from "effect/rpc";
+
+import { ServiceUnavailable } from "#src/errors.ts";
+import { Todo, TodoId, TodoNotFound, TodoTitle } from "#src/todo.ts";
+
+export class TodosRpcs extends RpcGroup.make(
+  Rpc.make("todos.list", {
+    error: ServiceUnavailable,
+    success: Schema.Array(Todo),
+  }),
+  Rpc.make("todos.create", {
+    error: ServiceUnavailable,
+    payload: { title: TodoTitle },
+    success: Todo,
+  }),
+  Rpc.make("todos.update", {
+    error: Schema.Union([TodoNotFound, ServiceUnavailable]),
+    payload: { completed: Schema.Boolean, id: TodoId },
+    success: Todo,
+  }),
+  Rpc.make("todos.delete", {
+    error: Schema.Union([TodoNotFound, ServiceUnavailable]),
+    payload: { id: TodoId },
+  })
+) {}
+
+# packages/contracts/src/todo.ts · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 import { Schema } from "effect";
 
 /** Normalize at the boundary; count Unicode code points, as PostgreSQL char_length does. */
@@ -788,8 +1527,17 @@ export class TodoNotFound extends Schema.TaggedError<TodoNotFound>()(
   { id: TodoId }
 ) {}
 
-# packages/contracts/tsconfig.json · 1 stack
+# packages/contracts/tsconfig.json · 10 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 {
   "extends": "@my-app/config/typescript/base.json",
   "include": ["src"]

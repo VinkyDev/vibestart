@@ -1,5 +1,11 @@
-import { PgClient } from "@effect/sql-pg";
-import { Context, Effect, Layer, Redacted, Schema } from "effect";
+import {
+  ConfigProvider,
+  Context,
+  Effect,
+  Layer,
+  Redacted,
+  Schema,
+} from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
 
@@ -31,7 +37,7 @@ export class TestApp extends Context.Service<
 
       const services = yield* Layer.build(
         Layer.mergeAll(
-          Database.layer.pipe(Layer.provide(PgClient.layer({ url }))),
+          Database.layerUrl(url),
           Auth.layer({
             baseURL: origin,
             databaseUrl: url,
@@ -43,7 +49,13 @@ export class TestApp extends Context.Service<
       const { dispose, handler } = HttpRouter.toWebHandler(
         Routes.pipe(
           Layer.provide(Layer.succeedContext(services)),
-          Layer.provide(HttpServer.layerServices)
+          Layer.provide(HttpServer.layerServices),
+          Layer.provide(
+            Layer.succeed(
+              ConfigProvider.ConfigProvider,
+              ConfigProvider.fromUnknown({ BETTER_AUTH_URL: origin })
+            )
+          )
         ),
         { disableLogger: true }
       );

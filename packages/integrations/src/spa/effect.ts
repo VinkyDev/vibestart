@@ -1,7 +1,7 @@
 import type { Context } from "@vibestart/core";
-import { contribute, packageJson } from "@vibestart/core";
+import { contribute, file, packageJson } from "@vibestart/core";
 
-import { templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
   readmeLayers,
@@ -9,12 +9,54 @@ import {
   readmeTagline,
 } from "#/vite-plus/slots.ts";
 
+const spaFiles = (ctx: Context) => {
+  const router = "apps/web/src/router.tsx";
+  const home = "apps/web/src/routes/index.tsx";
+
+  const headline = [
+    "React",
+    "Effect (HttpApi, RPC, Atom)",
+    ...(ctx.stack.database === undefined
+      ? []
+      : [ctx.has("sqlite") ? "SQLite" : "PostgreSQL", "Drizzle"]),
+    ...(ctx.has("better-auth") ? ["Better Auth"] : []),
+  ].join(", ");
+
+  return [
+    ...templateFiles(ctx, "spa/effect", { except: [router, home] }),
+    ...templateFiles(
+      ctx,
+      ctx.has("better-auth") ? "spa/effect-auth" : "spa/effect-public"
+    ),
+    file(
+      router,
+      ctx.has("better-auth")
+        ? templateContent(ctx, "spa/effect", router)
+        : replaceOnce(
+            templateContent(ctx, "spa/effect", router),
+            "    context: { session: null },\n",
+            "",
+            router
+          )
+    ),
+    file(
+      home,
+      replaceOnce(
+        templateContent(ctx, "spa/effect", home),
+        "React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle and Better Auth\n        on Vite+.",
+        `${headline} on Vite+.`,
+        home
+      )
+    ),
+  ];
+};
+
 export const effectSpa = (ctx: Context) => [
   ...templateFiles(ctx, "spa/common", {
     except: ["apps/web/src/router.tsx"],
   }),
   ...templateFiles(ctx, "spa/proxy"),
-  ...templateFiles(ctx, "spa/effect"),
+  ...spaFiles(ctx),
   contribute(packageJson, {
     path: "apps/web",
     imports: { "#src/*": "./src/*" },
@@ -33,7 +75,7 @@ export const effectSpa = (ctx: Context) => [
   }),
   contribute(agentsMap, {
     path: "apps/web",
-    owns: "React SPA: TanStack Router file routes, Effect Atom clients, Better Auth, and browser tests",
+    owns: `React SPA: TanStack Router file routes, Effect Atom clients${ctx.has("better-auth") ? ", Better Auth" : ""}, and browser tests`,
   }),
   contribute(readmeLayers, {
     layer: "Frontend",
@@ -42,6 +84,6 @@ export const effectSpa = (ctx: Context) => [
   contribute(readmeTagline, "Effect"),
   contribute(
     readmeOpen,
-    "Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party."
+    `Open http://localhost:5173${ctx.has("better-auth") ? " and create an account" : ""}. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production.`
   ),
 ];

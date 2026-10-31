@@ -30,3 +30,5 @@ export const todos = snakeCase.table(
     ),
   ]
 );
+
+export type Todo = typeof todos.$inferSelect;

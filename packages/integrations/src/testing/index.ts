@@ -357,7 +357,10 @@ const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
 ];
 
 export const playwrightTests = defineIntegration({
-  contribute: (ctx) => testing(ctx, playwright),
+  contribute: (ctx) =>
+    ctx.has("effect")
+      ? effectTesting(ctx, playwright)
+      : testing(ctx, playwright),
   kind: "testing",
   description:
     "Control actions and assertions in code, wait automatically for elements, and inspect each step in a trace. Fits clear acceptance criteria and regression suites maintained over time.",
@@ -369,7 +372,7 @@ export const playwrightTests = defineIntegration({
 
 export const e2eTests = defineIntegration({
   contribute: (ctx) =>
-    ctx.has("effect") ? effectTesting(ctx) : testing(ctx, e2e),
+    ctx.has("effect") ? effectTesting(ctx, e2e) : testing(ctx, e2e),
   kind: "testing",
   description:
     "Mix natural-language goals with scripted assertions. An AI agent explores the UI, and verified actions can replay from cache. Fits evolving interfaces and teams adding user-journey coverage quickly.",

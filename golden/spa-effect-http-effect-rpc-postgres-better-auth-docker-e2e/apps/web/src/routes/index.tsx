@@ -13,8 +13,8 @@ const HomePage = () => (
         my-app
       </h1>
       <p className="text-muted-foreground max-w-xl text-lg text-pretty">
-        React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle and Better Auth
-        on Vite+.
+        React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle, Better Auth on
+        Vite+.
       </p>
     </div>
     <p className="text-muted-foreground border-t pt-6 text-sm">

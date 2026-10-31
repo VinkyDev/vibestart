@@ -1,7 +1,7 @@
 import { PgClient } from "@effect/sql-pg";
 import * as PgDrizzle from "drizzle-orm/effect-postgres";
 import type { Effect } from "effect";
-import { Config, Context, Layer } from "effect";
+import { Config, Context, Layer, Redacted } from "effect";
 
 import { relations } from "#src/relations.ts";
 
@@ -12,6 +12,9 @@ export class Database extends Context.Service<
   Effect.Success<typeof make>
 >()("@my-app/db/Database") {
   static readonly layer = Layer.effect(Database, make);
+
+  static readonly layerUrl = (url: Redacted.Redacted) =>
+    Database.layer.pipe(Layer.provide(PgClient.layer({ url })));
 
   static readonly layerConfig = Database.layer.pipe(
     Layer.provide(

@@ -1,5 +1,5 @@
 import { PgClient } from "@effect/sql-pg";
-import { Config, Effect, Layer, Redacted } from "effect";
+import { Config, Effect, Redacted } from "effect";
 import { SqlClient } from "effect/sql";
 
 import { Database } from "#src/index.ts";
@@ -29,11 +29,7 @@ export const makeTestDatabase = Effect.gen(function* () {
       Effect.orDie(runAsAdmin(adminUrl, `drop database "${name}" with (force)`))
   );
   yield* migrateDatabase.pipe(
-    Effect.provide(
-      Database.layer.pipe(
-        Layer.provide(PgClient.layer({ url: Redacted.make(url.href) }))
-      )
-    )
+    Effect.provide(Database.layerUrl(Redacted.make(url.href)))
   );
 
   return Redacted.make(url.href);

@@ -1,7 +1,7 @@
 import { Context, Schema } from "effect";
 import { RpcMiddleware } from "effect/rpc";
 
-import { InternalServerError, ServiceUnavailable } from "#src/errors.ts";
+import { ServiceUnavailable } from "#src/errors.ts";
 
 export class CurrentUser extends Context.Service<
   CurrentUser,
@@ -12,6 +12,12 @@ export class Unauthorized extends Schema.TaggedError<Unauthorized>()(
   "Unauthorized",
   {},
   { httpApiStatus: 401 }
+) {}
+
+export class InternalServerError extends Schema.TaggedError<InternalServerError>()(
+  "InternalServerError",
+  {},
+  { httpApiStatus: 500 }
 ) {}
 
 export class AuthMiddleware extends RpcMiddleware.Service<

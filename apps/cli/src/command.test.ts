@@ -440,8 +440,16 @@ describe("creating a project", async () => {
 
 describe("Effect mode", () => {
   it("selects the reviewed stack and previews the native Effect files", async () => {
-    const result = await run("effect-app", "--mode", "effect", "--dry-run");
-    expect(result.exitCode).toBe(0);
+    const result = await run(
+      "effect-app",
+      "--mode",
+      "effect",
+      "--auth",
+      "better-auth",
+      "--dry-run"
+    );
+
+    expect(result).toMatchObject({ exitCode: 0, message: undefined });
 
     const paths = previewSchema
       .parse(result.output)
@@ -468,12 +476,12 @@ describe("Effect mode", () => {
       })
       .parse(result.output);
 
-    expect(output.stacks).toHaveLength(2);
+    expect(output.stacks).toHaveLength(20);
     expect(
       ["mode", "database", "testing"].map(
         (kind) => output.kinds.find(({ id }) => id === kind)?.default
       )
-    ).toStrictEqual(["effect", "postgres", "e2e"]);
+    ).toStrictEqual(["effect", "sqlite", "playwright"]);
     expect(
       output.stacks.every(({ stack }) => stack.mode === "effect")
     ).toBeTruthy();
@@ -481,6 +489,76 @@ describe("Effect mode", () => {
       output.kinds.find(({ id }) => id === "backend")?.options
     ).toStrictEqual([{ id: "effect-http" }]);
   });
+
+  it.each(["playwright", "e2e"])(
+    "creates a stateless Effect project with %s",
+    async (testing) => {
+      const result = await run(
+        "effect-app",
+        "--mode",
+        "effect",
+        "--database",
+        "none",
+        "--orm",
+        "none",
+        "--auth",
+        "none",
+        "--testing",
+        testing,
+        "--dry-run"
+      );
+
+      expect(result).toMatchObject({ exitCode: 0, message: undefined });
+
+      const paths = previewSchema
+        .parse(result.output)
+        .files.map((file) => file.path);
+
+      expect(paths).toContain("packages/contracts/src/rpc.ts");
+      expect(paths).toContain(
+        testing === "playwright"
+          ? "apps/web/playwright.config.ts"
+          : "apps/web/e2e.config.ts"
+      );
+      expect(
+        paths.some(
+          (file) =>
+            file.startsWith("packages/db/") || file.startsWith("packages/auth/")
+        )
+      ).toBeFalsy();
+    }
+  );
+
+  it.each(["postgres", "sqlite"])(
+    "creates public Effect todos on %s",
+    async (database) => {
+      const result = await run(
+        "effect-app",
+        "--mode",
+        "effect",
+        "--database",
+        database,
+        "--auth",
+        "none",
+        "--testing",
+        "playwright",
+        "--dry-run"
+      );
+
+      expect(result).toMatchObject({ exitCode: 0, message: undefined });
+
+      const paths = previewSchema
+        .parse(result.output)
+        .files.map((file) => file.path);
+
+      expect(paths).toContain("apps/web/src/routes/todos.tsx");
+      expect(paths).toContain("packages/db/src/index.ts");
+      expect(
+        paths.some((file) => file.startsWith("packages/auth/"))
+      ).toBeFalsy();
+      expect(paths).not.toContain("apps/web/src/routes/login.tsx");
+    }
+  );
 
   it("rejects mixed stacks without suggesting a mode change", async () => {
     const result = await run(

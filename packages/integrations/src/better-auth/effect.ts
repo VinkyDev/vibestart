@@ -16,6 +16,12 @@ export const effectAuth = (ctx: Context) => [
     ],
   }),
   ...templateFiles(ctx, "better-auth/effect"),
+  ...templateFiles(
+    ctx,
+    ctx.has("sqlite")
+      ? "better-auth/effect-sqlite"
+      : "better-auth/effect-postgres"
+  ),
   contribute(packageJson, {
     dependencies: [
       "@better-auth/drizzle-adapter",
@@ -23,7 +29,7 @@ export const effectAuth = (ctx: Context) => [
       "better-auth",
       "drizzle-orm",
       "effect",
-      "postgres",
+      ...(ctx.has("postgres") ? ["postgres"] : []),
     ],
     devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],
     imports: {
@@ -34,7 +40,10 @@ export const effectAuth = (ctx: Context) => [
     },
     path: "packages/auth",
   }),
-  contribute(packageJson, { path: "apps/web", dependencies: ["better-auth"] }),
+  contribute(packageJson, {
+    path: "apps/web",
+    dependencies: ["better-auth", "sonner"],
+  }),
   contribute(serverEnv, {
     name: "BETTER_AUTH_URL",
     example: "http://localhost:5173",
@@ -59,7 +68,6 @@ export const effectAuth = (ctx: Context) => [
   }),
   contribute(readmeLayers, {
     layer: "Auth",
-    choice:
-      "Better Auth with an Effect service boundary and PostgreSQL sessions",
+    choice: `Better Auth with an Effect service boundary and ${ctx.has("sqlite") ? "SQLite" : "PostgreSQL"} sessions`,
   }),
 ];

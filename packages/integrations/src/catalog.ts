@@ -27,6 +27,7 @@ export const catalog = {
     "@effect/atom-react": "4.1.0",
     "@effect/platform-node": "4.1.0",
     "@effect/sql-pg": "4.1.0",
+    "@effect/sql-sqlite-node": "4.1.0",
     "@effect/vitest": "4.1.0",
     // @effect/vitest must share the Vitest instance that Vite+ runs.
     vitest: "5.0.5",
