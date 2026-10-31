@@ -78,7 +78,8 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 };
 
 const TodosPage = () => {
-  const [title, setTitle] = useState("");
+  const [draft, setDraft] = useState({ title: "" });
+  const { title } = draft;
   const [isCreating, startCreating] = useTransition();
   const { value: todos } = useAtomSuspense(todosAtom);
   const createTodo = useAtomSet(createTodoAtom, { mode: "promiseExit" });
@@ -100,7 +101,7 @@ const TodosPage = () => {
       });
 
       if (Exit.isSuccess(exit)) {
-        setTitle("");
+        setDraft((current) => (current === draft ? { title: "" } : current));
       }
 
       toastFailure(exit);
@@ -128,7 +129,7 @@ const TodosPage = () => {
             <Input
               aria-label="New todo"
               onChange={(event) => {
-                setTitle(event.target.value);
+                setDraft({ title: event.target.value });
               }}
               placeholder="What needs to be done?"
               value={title}

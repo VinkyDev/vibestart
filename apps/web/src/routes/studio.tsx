@@ -1,9 +1,17 @@
 import { ParaglideMessage } from "@inlang/paraglide-js-react";
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  getRouteApi,
+  Link,
+  useRouter,
+  useRouterState,
+} from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { previewName } from "virtual:vibestart";
+
+import { Button, buttonVariants } from "@vibestart/ui/components/button";
 
 import { CodeView } from "#/components/code-view.tsx";
 import { Command } from "#/components/command.tsx";
@@ -212,8 +220,47 @@ const Studio = () => {
   );
 };
 
+const StudioError = () => {
+  const router = useRouter();
+  const loading = useRouterState({ select: (state) => state.isLoading });
+
+  return (
+    <main className="flex flex-1 items-center justify-center px-6 py-24">
+      <section
+        className="grid max-w-lg justify-items-center gap-6 text-center"
+        role="alert"
+      >
+        <h1 className="font-headline text-section text-balance">
+          {m.preview_error_title()}
+        </h1>
+        <p className="text-muted-foreground text-base leading-relaxed text-pretty">
+          {m.preview_error_body()}
+        </p>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Button
+            disabled={loading}
+            onClick={() => {
+              void router.invalidate();
+            }}
+            size="lg"
+          >
+            {m.preview_retry()}
+          </Button>
+          <Link
+            className={buttonVariants({ size: "lg", variant: "outline" })}
+            to="/"
+          >
+            {m.not_found_home()}
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+};
+
 export const Route = createFileRoute("/studio")({
   component: Studio,
+  errorComponent: StudioError,
   loader: async ({ deps }) => {
     const entry = entryFromFlags(deps.flags);
 

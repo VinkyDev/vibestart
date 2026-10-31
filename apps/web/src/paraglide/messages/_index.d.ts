@@ -288,6 +288,9 @@ export type Pillar_Types_BodyInputs = {};
 export type Pillar_Types_TitleInputs = {};
 export type Postgres_ProcessInputs = {};
 export type PreviewInputs = {};
+export type Preview_Error_BodyInputs = {};
+export type Preview_Error_TitleInputs = {};
+export type Preview_RetryInputs = {};
 export type PreviewingInputs = {
     label: NonNullable<unknown>;
 };
@@ -4002,6 +4005,48 @@ export declare const postgres_process: ((inputs?: Postgres_ProcessInputs, option
 export declare const preview: ((inputs?: PreviewInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<PreviewInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Your stack choices are saved in the URL. Try loading the preview again, or return to the home page." |
+*
+* @param {Preview_Error_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_error_body: ((inputs?: Preview_Error_BodyInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_Error_BodyInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Could not load the preview" |
+*
+* @param {Preview_Error_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_error_title: ((inputs?: Preview_Error_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_Error_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Try again" |
+*
+* @param {Preview_RetryInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_retry: ((inputs?: Preview_RetryInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_RetryInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

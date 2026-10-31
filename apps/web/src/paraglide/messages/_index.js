@@ -255,6 +255,9 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Pillar_Types_TitleInputs */
 /** @typedef {{}} Postgres_ProcessInputs */
 /** @typedef {{}} PreviewInputs */
+/** @typedef {{}} Preview_Error_BodyInputs */
+/** @typedef {{}} Preview_Error_TitleInputs */
+/** @typedef {{}} Preview_RetryInputs */
 /** @typedef {{ label: NonNullable<unknown> }} PreviewingInputs */
 /** @typedef {{ name: NonNullable<unknown> }} ProcessInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Process_With_ApiInputs */
@@ -3943,6 +3946,48 @@ export const preview = /** @type {((inputs?: PreviewInputs, options?: { locale?:
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.preview(inputs)
 	return __en.preview(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Your stack choices are saved in the URL. Try loading the preview again, or return to the home page." |
+*
+* @param {Preview_Error_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const preview_error_body = /** @type {((inputs?: Preview_Error_BodyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_Error_BodyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.preview_error_body(inputs)
+	return __en.preview_error_body(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Could not load the preview" |
+*
+* @param {Preview_Error_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const preview_error_title = /** @type {((inputs?: Preview_Error_TitleInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_Error_TitleInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.preview_error_title(inputs)
+	return __en.preview_error_title(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Try again" |
+*
+* @param {Preview_RetryInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const preview_retry = /** @type {((inputs?: Preview_RetryInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_RetryInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.preview_retry(inputs)
+	return __en.preview_retry(inputs)
 });
 /**
 * | output |

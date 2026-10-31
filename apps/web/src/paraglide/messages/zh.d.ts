@@ -252,6 +252,9 @@
 /** @typedef {{}} Pillar_Types_TitleInputs */
 /** @typedef {{}} Postgres_ProcessInputs */
 /** @typedef {{}} PreviewInputs */
+/** @typedef {{}} Preview_Error_BodyInputs */
+/** @typedef {{}} Preview_Error_TitleInputs */
+/** @typedef {{}} Preview_RetryInputs */
 /** @typedef {{ label: NonNullable<unknown> }} PreviewingInputs */
 /** @typedef {{ name: NonNullable<unknown> }} ProcessInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Process_With_ApiInputs */
@@ -673,6 +676,9 @@ export type Pillar_Types_BodyInputs = {};
 export type Pillar_Types_TitleInputs = {};
 export type Postgres_ProcessInputs = {};
 export type PreviewInputs = {};
+export type Preview_Error_BodyInputs = {};
+export type Preview_Error_TitleInputs = {};
+export type Preview_RetryInputs = {};
 export type PreviewingInputs = {
     label: NonNullable<unknown>;
 };
@@ -1089,6 +1095,9 @@ export declare const pillar_types_body: (inputs: Pillar_Types_BodyInputs) => Loc
 export declare const pillar_types_title: (inputs: Pillar_Types_TitleInputs) => LocalizedString;
 export declare const postgres_process: (inputs: Postgres_ProcessInputs) => LocalizedString;
 export declare const preview: (inputs: PreviewInputs) => LocalizedString;
+export declare const preview_error_body: (inputs: Preview_Error_BodyInputs) => LocalizedString;
+export declare const preview_error_title: (inputs: Preview_Error_TitleInputs) => LocalizedString;
+export declare const preview_retry: (inputs: Preview_RetryInputs) => LocalizedString;
 export declare const previewing: ((inputs: PreviewingInputs) => LocalizedString) & {
     parts: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[];
 };

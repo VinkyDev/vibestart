@@ -253,6 +253,9 @@
 /** @typedef {{}} Pillar_Types_TitleInputs */
 /** @typedef {{}} Postgres_ProcessInputs */
 /** @typedef {{}} PreviewInputs */
+/** @typedef {{}} Preview_Error_BodyInputs */
+/** @typedef {{}} Preview_Error_TitleInputs */
+/** @typedef {{}} Preview_RetryInputs */
 /** @typedef {{ label: NonNullable<unknown> }} PreviewingInputs */
 /** @typedef {{ name: NonNullable<unknown> }} ProcessInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Process_With_ApiInputs */
@@ -1420,6 +1423,18 @@ export const postgres_process = /** @type {(inputs: Postgres_ProcessInputs) => L
 
 export const preview = /** @type {(inputs: PreviewInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`preview`)
+};
+
+export const preview_error_body = /** @type {(inputs: Preview_Error_BodyInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Your stack choices are saved in the URL. Try loading the preview again, or return to the home page.`)
+};
+
+export const preview_error_title = /** @type {(inputs: Preview_Error_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Could not load the preview`)
+};
+
+export const preview_retry = /** @type {(inputs: Preview_RetryInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Try again`)
 };
 
 export const previewing = /** @type {((inputs: PreviewingInputs) => LocalizedString) & { parts: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[] }} */ (
