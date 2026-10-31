@@ -1,0 +1,777 @@
+# apps/web/src/components/api-status.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { useAtomValue } from "@effect/atom-react";
+import { AsyncResult } from "effect/reactivity";
+
+import { Badge } from "@my-app/ui/components/badge";
+
+import { healthAtom } from "#src/lib/api.ts";
+
+export const ApiStatus = () => {
+  const health = useAtomValue(healthAtom);
+
+  if (AsyncResult.isInitial(health)) {
+    return (
+      <Badge variant="outline">
+        <span
+          aria-hidden="true"
+          className="bg-muted-foreground size-1.5 rounded-full motion-safe:animate-pulse"
+        />
+        Checking
+      </Badge>
+    );
+  }
+
+  return AsyncResult.isSuccess(health) ? (
+    <Badge variant="outline">
+      <span
+        aria-hidden="true"
+        className="bg-success ring-success/20 size-1.5 rounded-full ring-3"
+      />
+      Connected
+    </Badge>
+  ) : (
+    <Badge variant="destructive">
+      <span
+        aria-hidden="true"
+        className="bg-destructive size-1.5 rounded-full"
+      />
+      Disconnected
+    </Badge>
+  );
+};
+
+# apps/web/src/lib/api.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Effect, Layer } from "effect";
+import { FetchHttpClient } from "effect/http";
+import { Atom, AtomHttpApi, AtomRpc, Reactivity } from "effect/reactivity";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { Api, TodosRpcs } from "@my-app/contracts";
+
+const { origin } = window.location;
+
+class Rpc extends AtomRpc.Service<Rpc>()("@my-app/web/Rpc", {
+  group: TodosRpcs,
+  protocol: RpcClient.layerProtocolHttp({ url: `${origin}/rpc` }).pipe(
+    Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer])
+  ),
+}) {}
+
+class HttpApi extends AtomHttpApi.Service<HttpApi>()("@my-app/web/HttpApi", {
+  api: Api,
+  baseUrl: origin,
+  httpClient: FetchHttpClient.layer,
+}) {}
+
+export const todosKeys = ["todos"];
+
+export const todosAtom = Rpc.query("todos.list", undefined, {
+  reactivityKeys: todosKeys,
+});
+
+export const createTodoAtom = Rpc.mutation("todos.create");
+
+// Each row owns a mutation fiber: writing another row must not interrupt it.
+export const updateTodoAtom = Atom.family((id: number) =>
+  Rpc.runtime.fn<boolean>()(
+    Effect.fnUntraced(function* (completed) {
+      const client = yield* Rpc;
+
+      return yield* client("todos.update", { id, completed }).pipe(
+        Reactivity.mutation(todosKeys)
+      );
+    })
+  )
+);
+
+export const deleteTodoAtom = Atom.family((id: number) =>
+  Rpc.runtime.fn<void>()(
+    Effect.fnUntraced(function* () {
+      const client = yield* Rpc;
+
+      return yield* client("todos.delete", { id }).pipe(
+        Reactivity.mutation(todosKeys)
+      );
+    })
+  )
+);
+
+export const healthAtom = HttpApi.query("health", "check", {});
+
+# apps/web/src/lib/notify.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Cause, Exit } from "effect";
+import { toast } from "sonner";
+
+import { TodoNotFound, Unauthorized } from "@my-app/contracts";
+
+const messageFor = <E>(cause: Cause.Cause<E>) => {
+  const error = Cause.squash(cause);
+
+  if (error instanceof TodoNotFound) {
+    return "That todo no longer exists.";
+  }
+
+  if (error instanceof Unauthorized) {
+    return "Your session has ended. Sign in again.";
+  }
+
+  return "Something went wrong. Try again.";
+};
+
+export const toastFailure = <A, E>(exit: Exit.Exit<A, E>) => {
+  if (Exit.isFailure(exit)) {
+    toast.error(messageFor(exit.cause));
+  }
+};
+
+# apps/web/src/routes/_authenticated/todos.tsx · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import {
+  useAtomRefresh,
+  useAtomSet,
+  useAtomSuspense,
+} from "@effect/atom-react";
+import { createFileRoute } from "@tanstack/react-router";
+import type { ErrorComponentProps } from "@tanstack/react-router";
+import { Exit, Schema } from "effect";
+import { Trash2Icon } from "lucide-react";
+import { useState, useTransition } from "react";
+import type { SubmitEvent } from "react";
+
+import { TodoTitle } from "@my-app/contracts";
+import type { Todo } from "@my-app/contracts";
+import { Button } from "@my-app/ui/components/button";
+import { Card, CardContent } from "@my-app/ui/components/card";
+import { Checkbox } from "@my-app/ui/components/checkbox";
+import { Input } from "@my-app/ui/components/input";
+
+import {
+  createTodoAtom,
+  deleteTodoAtom,
+  todosAtom,
+  todosKeys,
+  updateTodoAtom,
+} from "#src/lib/api.ts";
+import { toastFailure } from "#src/lib/notify.ts";
+
+const decodeTitle = Schema.decodeUnknownExit(TodoTitle);
+
+const TodoItem = ({ todo }: { todo: Todo }) => {
+  const [pending, startMutation] = useTransition();
+
+  const updateTodo = useAtomSet(updateTodoAtom(todo.id), {
+    mode: "promiseExit",
+  });
+
+  const deleteTodo = useAtomSet(deleteTodoAtom(todo.id), {
+    mode: "promiseExit",
+  });
+
+  return (
+    <li className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors">
+      <Checkbox
+        aria-label={todo.title}
+        checked={todo.completed}
+        disabled={pending}
+        onCheckedChange={(completed) => {
+          startMutation(async () => {
+            toastFailure(await updateTodo(completed));
+          });
+        }}
+      />
+      <span
+        className={
+          todo.completed
+            ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
+            : "flex-1 text-sm"
+        }
+      >
+        {todo.title}
+      </span>
+      <Button
+        aria-label={`Delete ${todo.title}`}
+        disabled={pending}
+        onClick={() => {
+          startMutation(async () => {
+            toastFailure(await deleteTodo());
+          });
+        }}
+        size="icon-sm"
+        variant="ghost"
+      >
+        <Trash2Icon className="text-muted-foreground" />
+      </Button>
+    </li>
+  );
+};
+
+const TodosPage = () => {
+  const [draft, setDraft] = useState({ title: "" });
+  const { title } = draft;
+  const [isCreating, startCreating] = useTransition();
+  const { value: todos } = useAtomSuspense(todosAtom);
+  const createTodo = useAtomSet(createTodoAtom, { mode: "promiseExit" });
+  const validTitle = decodeTitle(title);
+
+  const done = todos.filter((todo) => todo.completed).length;
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (Exit.isFailure(validTitle)) {
+      return;
+    }
+
+    startCreating(async () => {
+      const exit = await createTodo({
+        payload: { title: validTitle.value },
+        reactivityKeys: todosKeys,
+      });
+
+      if (Exit.isSuccess(exit)) {
+        setDraft((current) => (current === draft ? { title: "" } : current));
+      }
+
+      toastFailure(exit);
+    });
+  };
+
+  return (
+    <section className="grid gap-6">
+      <div className="flex items-end justify-between gap-4">
+        <div className="grid gap-1">
+          <h1 className="text-3xl font-semibold tracking-tight">Todos</h1>
+          <p className="text-muted-foreground text-sm">
+            Private to your account.
+          </p>
+        </div>
+        {todos.length > 0 && (
+          <p className="text-muted-foreground text-sm tabular-nums">
+            {done} of {todos.length} done
+          </p>
+        )}
+      </div>
+      <Card>
+        <CardContent>
+          <form className="flex gap-2" onSubmit={handleSubmit}>
+            <Input
+              aria-label="New todo"
+              onChange={(event) => {
+                setDraft({ title: event.target.value });
+              }}
+              placeholder="What needs to be done?"
+              value={title}
+            />
+            <Button
+              disabled={isCreating || Exit.isFailure(validTitle)}
+              type="submit"
+            >
+              Add
+            </Button>
+          </form>
+        </CardContent>
+        {todos.length === 0 ? (
+          <div className="grid gap-1 border-t px-4 pt-10 pb-6 text-center">
+            <p className="text-sm font-medium">No todos yet.</p>
+            <p className="text-muted-foreground text-sm">
+              Each one you add is saved through the API.
+            </p>
+          </div>
+        ) : (
+          <ul className="-mb-4 divide-y border-t">
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </ul>
+        )}
+      </Card>
+    </section>
+  );
+};
+
+const TodosError = ({ reset }: ErrorComponentProps) => {
+  const refresh = useAtomRefresh(todosAtom);
+
+  return (
+    <section className="grid justify-items-start gap-4" role="alert">
+      <p>Could not load your todos.</p>
+      <Button
+        onClick={() => {
+          refresh();
+          reset();
+        }}
+      >
+        Try again
+      </Button>
+    </section>
+  );
+};
+
+export const Route = createFileRoute("/_authenticated/todos")({
+  component: TodosPage,
+  errorComponent: TodosError,
+});
+
+# packages/api/src/auth-middleware.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Effect, Layer } from "effect";
+
+import { Auth } from "@my-app/auth";
+import {
+  AuthMiddleware,
+  CurrentUser,
+  InternalServerError,
+  ServiceUnavailable,
+  Unauthorized,
+} from "@my-app/contracts";
+
+export const AuthMiddlewareLive = Layer.effect(
+  AuthMiddleware,
+  Effect.gen(function* () {
+    const auth = yield* Auth;
+
+    return Effect.fn("AuthMiddleware")(
+      function* (effect, { headers }) {
+        const session = yield* Effect.tryPromise(
+          async () =>
+            await auth.api.getSession({ headers: new Headers(headers) })
+        ).pipe(
+          Effect.tapError((error) =>
+            Effect.logError("Session lookup failed", error)
+          ),
+          Effect.mapError(() => new ServiceUnavailable())
+        );
+
+        if (session === null) {
+          return yield* new Unauthorized();
+        }
+
+        const { email, id, name } = session.user;
+
+        return yield* Effect.provideService(effect, CurrentUser, {
+          email,
+          id,
+          name,
+        });
+      },
+      // RPC defects otherwise serialize their message and cause. Keep those on the server.
+      Effect.catchDefect((cause) =>
+        Effect.logError("RPC defect", cause).pipe(
+          Effect.andThen(Effect.fail(new InternalServerError()))
+        )
+      )
+    );
+  })
+);
+
+# packages/api/src/health.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { sql } from "drizzle-orm";
+import { Effect } from "effect";
+import { HttpApiBuilder } from "effect/http-api";
+
+import { Api, DatabaseUnavailable } from "@my-app/contracts";
+import { Database } from "@my-app/db";
+
+export const HealthLive = HttpApiBuilder.group(
+  Api,
+  "health",
+  Effect.fnUntraced(function* (handlers) {
+    const db = yield* Database;
+
+    return handlers.handle("check", () =>
+      db.execute(sql`select 1`).pipe(
+        Effect.as({ status: "ok" as const }),
+        Effect.tapError((cause) =>
+          Effect.logWarning("Database health check failed", cause)
+        ),
+        Effect.mapError(() => new DatabaseUnavailable())
+      )
+    );
+  })
+);
+
+# packages/api/src/index.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Effect, Layer } from "effect";
+import {
+  HttpEffect,
+  HttpRouter,
+  HttpServerRequest,
+  HttpServerResponse,
+} from "effect/http";
+import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
+import { RpcSerialization, RpcServer } from "effect/rpc";
+
+import { Auth } from "@my-app/auth";
+import { Api, TodosRpcs } from "@my-app/contracts";
+
+import { AuthMiddlewareLive } from "#src/auth-middleware.ts";
+import { HealthLive } from "#src/health.ts";
+import { TodosLive } from "#src/rpc.ts";
+import { Todos } from "#src/todos.ts";
+
+const AuthRoutes = Layer.unwrap(
+  Effect.gen(function* () {
+    const auth = yield* Auth;
+
+    return HttpRouter.add(
+      "*",
+      "/api/auth/*",
+      HttpEffect.fromWebHandler(auth.handler)
+    );
+  })
+);
+
+const RpcOrigin = Layer.unwrap(
+  Effect.map(Auth, (auth) => {
+    const allowedOrigin = new URL(auth.options.baseURL).origin;
+
+    return HttpRouter.middleware((httpEffect) =>
+      Effect.gen(function* () {
+        const request = yield* HttpServerRequest.HttpServerRequest;
+        const { origin } = request.headers;
+
+        if (origin !== undefined && origin !== allowedOrigin) {
+          return HttpServerResponse.empty({ status: 403 });
+        }
+
+        return yield* httpEffect;
+      })
+    ).layer;
+  })
+);
+
+const RpcRoutes = RpcServer.layerHttp({
+  group: TodosRpcs,
+  path: "/rpc",
+  protocol: "http",
+}).pipe(
+  Layer.provide([
+    TodosLive,
+    AuthMiddlewareLive,
+    RpcSerialization.layerNdjson,
+    RpcOrigin,
+  ]),
+  Layer.provide(Todos.layer)
+);
+
+const ApiRoutes = Layer.mergeAll(
+  HttpApiBuilder.layer(Api, { openapiPath: "/api/openapi.json" }),
+  HttpApiScalar.layer(Api, { path: "/api/docs" })
+).pipe(Layer.provide(HealthLive));
+
+const SecurityHeaders = HttpRouter.middleware(
+  (effect) =>
+    Effect.map(
+      effect,
+      HttpServerResponse.setHeaders({
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "referrer-policy": "strict-origin-when-cross-origin",
+      })
+    ),
+  { global: true }
+);
+
+export const Routes = Layer.mergeAll(
+  AuthRoutes,
+  RpcRoutes,
+  ApiRoutes,
+  SecurityHeaders
+);
+
+# packages/api/src/rpc.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Effect } from "effect";
+
+import { CurrentUser, ServiceUnavailable, TodosRpcs } from "@my-app/contracts";
+
+import { Todos } from "#src/todos.ts";
+import type { TodoStorageError } from "#src/todos.ts";
+
+const unavailable = (error: TodoStorageError) =>
+  Effect.logError("Todo storage failed", error).pipe(
+    Effect.andThen(Effect.fail(new ServiceUnavailable()))
+  );
+
+export const TodosLive = TodosRpcs.toLayer(
+  Effect.gen(function* () {
+    const todos = yield* Todos;
+
+    return {
+      "todos.list": () =>
+        CurrentUser.use((user) => todos.list(user.id)).pipe(
+          Effect.catchTag("TodoStorageError", unavailable)
+        ),
+      "todos.create": ({ title }) =>
+        CurrentUser.use((user) => todos.create(user.id, title)).pipe(
+          Effect.catchTag("TodoStorageError", unavailable)
+        ),
+      "todos.update": ({ id, completed }) =>
+        CurrentUser.use((user) => todos.update(user.id, id, completed)).pipe(
+          Effect.catchTag("TodoStorageError", unavailable)
+        ),
+      "todos.delete": ({ id }) =>
+        CurrentUser.use((user) => todos.delete(user.id, id)).pipe(
+          Effect.catchTag("TodoStorageError", unavailable)
+        ),
+    };
+  })
+);
+
+# packages/api/src/todos.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { and, eq } from "drizzle-orm";
+import { Context, Data, Effect, Layer } from "effect";
+
+import { TodoNotFound } from "@my-app/contracts";
+import type { Todo } from "@my-app/contracts";
+import { Database } from "@my-app/db";
+import { todos } from "@my-app/db/schema/todos";
+
+export class TodoStorageError extends Data.TaggedError("TodoStorageError")<{
+  readonly cause: unknown;
+}> {}
+
+const storageError = (cause: unknown) => new TodoStorageError({ cause });
+
+const columns = {
+  completed: todos.completed,
+  createdAt: todos.createdAt,
+  id: todos.id,
+  title: todos.title,
+};
+
+const ownedBy = (userId: string, id: number) =>
+  and(eq(todos.id, id), eq(todos.userId, userId));
+
+/** Someone else's row reads as missing, so the error does not reveal that the id exists. */
+const firstOrNotFound = <A>([row]: readonly A[], id: number) =>
+  row === undefined
+    ? Effect.fail(new TodoNotFound({ id }))
+    : Effect.succeed(row);
+
+export class Todos extends Context.Service<
+  Todos,
+  {
+    readonly list: (
+      userId: string
+    ) => Effect.Effect<readonly Todo[], TodoStorageError>;
+    readonly create: (
+      userId: string,
+      title: string
+    ) => Effect.Effect<Todo, TodoStorageError>;
+    readonly update: (
+      userId: string,
+      id: number,
+      completed: boolean
+    ) => Effect.Effect<Todo, TodoStorageError | TodoNotFound>;
+    readonly delete: (
+      userId: string,
+      id: number
+    ) => Effect.Effect<void, TodoStorageError | TodoNotFound>;
+  }
+>()("@my-app/api/Todos") {
+  static readonly layer = Layer.effect(
+    Todos,
+    Effect.gen(function* () {
+      const db = yield* Database;
+
+      return Todos.of({
+        list: Effect.fn("Todos.list")(function* (userId) {
+          return yield* db
+            .select(columns)
+            .from(todos)
+            .where(eq(todos.userId, userId))
+            .orderBy(todos.id)
+            .pipe(Effect.mapError(storageError));
+        }),
+        create: Effect.fn("Todos.create")(function* (userId, title) {
+          const [todo] = yield* db
+            .insert(todos)
+            .values({ title, userId })
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          return todo ?? (yield* Effect.die("insert returned no row"));
+        }),
+        update: Effect.fn("Todos.update")(function* (userId, id, completed) {
+          const rows = yield* db
+            .update(todos)
+            .set({ completed })
+            .where(ownedBy(userId, id))
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          return yield* firstOrNotFound(rows, id);
+        }),
+        delete: Effect.fn("Todos.delete")(function* (userId, id) {
+          const rows = yield* db
+            .delete(todos)
+            .where(ownedBy(userId, id))
+            .returning(columns)
+            .pipe(Effect.mapError(storageError));
+
+          yield* firstOrNotFound(rows, id);
+        }),
+      });
+    })
+  );
+}
+
+# packages/api/tsconfig.json · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src", "tests"]
+}
+
+# packages/contracts/src/auth.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Context, Schema } from "effect";
+import { RpcMiddleware } from "effect/rpc";
+
+import { InternalServerError, ServiceUnavailable } from "#src/errors.ts";
+
+export class CurrentUser extends Context.Service<
+  CurrentUser,
+  { readonly id: string; readonly email: string; readonly name: string }
+>()("@my-app/contracts/CurrentUser") {}
+
+export class Unauthorized extends Schema.TaggedError<Unauthorized>()(
+  "Unauthorized",
+  {},
+  { httpApiStatus: 401 }
+) {}
+
+export class AuthMiddleware extends RpcMiddleware.Service<
+  AuthMiddleware,
+  { provides: CurrentUser }
+>()("@my-app/contracts/AuthMiddleware", {
+  error: Schema.Union([Unauthorized, ServiceUnavailable, InternalServerError]),
+}) {}
+
+# packages/contracts/src/errors.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Schema } from "effect";
+
+/** Public errors deliberately carry no SQL, credentials, or internal causes. */
+export class ServiceUnavailable extends Schema.TaggedError<ServiceUnavailable>()(
+  "ServiceUnavailable",
+  {},
+  { httpApiStatus: 503 }
+) {}
+
+export class InternalServerError extends Schema.TaggedError<InternalServerError>()(
+  "InternalServerError",
+  {},
+  { httpApiStatus: 500 }
+) {}
+
+# packages/contracts/src/http-api.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Schema } from "effect";
+import {
+  HttpApi,
+  HttpApiEndpoint,
+  HttpApiGroup,
+  OpenApi,
+} from "effect/http-api";
+
+export class DatabaseUnavailable extends Schema.TaggedError<DatabaseUnavailable>()(
+  "DatabaseUnavailable",
+  {},
+  { httpApiStatus: 503 }
+) {}
+
+export class HealthGroup extends HttpApiGroup.make("health").add(
+  HttpApiEndpoint.get("check", "/health", {
+    error: DatabaseUnavailable,
+    success: Schema.Struct({ status: Schema.Literal("ok") }),
+  })
+) {}
+
+export class Api extends HttpApi.make("api")
+  .add(HealthGroup)
+  .prefix("/api")
+  .annotate(OpenApi.Title, "my-app") {}
+
+# packages/contracts/src/index.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+export { AuthMiddleware, CurrentUser, Unauthorized } from "#src/auth.ts";
+
+export { Api, DatabaseUnavailable, HealthGroup } from "#src/http-api.ts";
+
+export { TodosRpcs } from "#src/rpc.ts";
+
+export { Todo, TodoId, TodoNotFound, TodoTitle } from "#src/todo.ts";
+
+export { InternalServerError, ServiceUnavailable } from "#src/errors.ts";
+
+# packages/contracts/src/rpc.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Schema } from "effect";
+import { Rpc, RpcGroup } from "effect/rpc";
+
+import { AuthMiddleware } from "#src/auth.ts";
+import { ServiceUnavailable } from "#src/errors.ts";
+import { Todo, TodoId, TodoNotFound, TodoTitle } from "#src/todo.ts";
+
+export class TodosRpcs extends RpcGroup.make(
+  Rpc.make("todos.list", {
+    error: ServiceUnavailable,
+    success: Schema.Array(Todo),
+  }),
+  Rpc.make("todos.create", {
+    error: ServiceUnavailable,
+    payload: { title: TodoTitle },
+    success: Todo,
+  }),
+  Rpc.make("todos.update", {
+    error: Schema.Union([TodoNotFound, ServiceUnavailable]),
+    payload: { completed: Schema.Boolean, id: TodoId },
+    success: Todo,
+  }),
+  Rpc.make("todos.delete", {
+    error: Schema.Union([TodoNotFound, ServiceUnavailable]),
+    payload: { id: TodoId },
+  })
+).middleware(AuthMiddleware) {}
+
+# packages/contracts/src/todo.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { Schema } from "effect";
+
+/** Normalize at the boundary; count Unicode code points, as PostgreSQL char_length does. */
+export const TodoTitle = Schema.Trim.check(
+  Schema.isPattern(/^[^\u0000]{1,200}$/u)
+);
+
+export const TodoId = Schema.Int.check(
+  Schema.isBetween({ minimum: 1, maximum: 2_147_483_647 })
+);
+
+export const Todo = Schema.Struct({
+  completed: Schema.Boolean,
+  createdAt: Schema.Date,
+  id: TodoId,
+  title: Schema.String,
+});
+
+export type Todo = typeof Todo.Type;
+
+export class TodoNotFound extends Schema.TaggedError<TodoNotFound>()(
+  "TodoNotFound",
+  { id: TodoId }
+) {}
+
+# packages/contracts/tsconfig.json · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+{
+  "extends": "@my-app/config/typescript/base.json",
+  "include": ["src"]
+}

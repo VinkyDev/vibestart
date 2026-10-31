@@ -13,7 +13,13 @@ import { Tile } from "#/components/topology/tile.tsx";
 import { ease } from "#/lib/motion.ts";
 import { addLabel, groupOf, roles, tintClass } from "#/lib/roles.ts";
 import type { Decision } from "#/lib/stack.ts";
-import { chosen, decisions, e2eRunner, selected } from "#/lib/stack.ts";
+import {
+  chosen,
+  decisions,
+  e2eRunner,
+  optionsOf,
+  selected,
+} from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const Row = ({
@@ -118,7 +124,8 @@ export const StackList = ({
       .filter(
         (integration) =>
           groupOf(integration.id) === "foundation" &&
-          integration.kind !== "testing"
+          integration.kind !== "testing" &&
+          integration.kind !== "mode"
       )
       .map(({ name }) => name),
     "Vitest",
@@ -142,11 +149,17 @@ export const StackList = ({
         {action}
       </div>
       <ul className="divide-border/70 flex flex-col divide-y">
-        {decisions.map((kind) => (
-          <li key={kind}>
-            <Row choosing={choosing} kind={kind} />
-          </li>
-        ))}
+        {decisions
+          .filter((kind) =>
+            optionsOf(kind, choosing.baseline.mode).some(
+              (option) => option !== null
+            )
+          )
+          .map((kind) => (
+            <li key={kind}>
+              <Row choosing={choosing} kind={kind} />
+            </li>
+          ))}
       </ul>
       <div className="tint-foundation border-border/70 flex flex-col gap-2.5 border-t px-4 pt-3.5 pb-4">
         <h3 className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">

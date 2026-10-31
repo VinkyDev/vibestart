@@ -1,41 +1,63 @@
-import { defaultAddons, legalStacks } from "@vibestart/core";
+import type { Choices } from "@vibestart/core";
+import { compose, defaultAddons, resolve } from "@vibestart/core";
 import { registry, stackLabel, verificationOf } from "@vibestart/integrations";
 
 import { addonsValue, kindFlag, none, noneLabel } from "#/options.ts";
+import { illegalStack } from "#/stack.ts";
 
-export const listing = async () => ({
-  packageManagers: ["pnpm", "bun"],
-  defaultPackageManager: "pnpm",
-  addons: registry.addons.map(
-    ({ default: isDefault, description, id, name }) => ({
-      default: isDefault,
-      description,
-      id,
-      name,
-    })
-  ),
-  kinds: registry.kinds.map((kind) => ({
-    /** The option a stack gets when its kind is left open without prompts; `null` is none. */
-    default: kind.default,
-    id: kind.id,
-    name: kind.name,
-    optional: kind.optional,
-    options: registry.integrations
-      .filter((integration) => integration.kind === kind.id)
-      .map(({ description, id, name }) => ({ description, id, name })),
-  })),
-  stacks: await Promise.all(
-    legalStacks(registry).map(async (stack) => {
-      const verification = await verificationOf(stack, defaultAddons(registry));
+export const listing = async (choices: Choices = {}) => {
+  const resolution = resolve(registry, choices, { keep: ["mode"] });
 
-      return {
-        label: stackLabel(stack),
-        stack,
-        verifiedAt: verification?.record.verifiedAt ?? null,
-      };
-    })
-  ),
-});
+  if (resolution.stacks.length === 0) {
+    throw illegalStack(resolution);
+  }
+
+  const { stacks } = resolution;
+  const defaults = compose(registry, choices);
+
+  return {
+    packageManagers: ["pnpm", "bun"],
+    defaultPackageManager: "pnpm",
+    addons: registry.addons.map(
+      ({ default: isDefault, description, id, name }) => ({
+        default: isDefault,
+        description,
+        id,
+        name,
+      })
+    ),
+    kinds: registry.kinds.map((kind) => ({
+      /** The option a stack gets when its kind is left open without prompts; `null` is none. */
+      default:
+        kind.default === undefined ? undefined : (defaults[kind.id] ?? null),
+      id: kind.id,
+      name: kind.name,
+      optional:
+        kind.optional && stacks.some((stack) => stack[kind.id] === undefined),
+      options: registry.integrations
+        .filter(
+          (integration) =>
+            integration.kind === kind.id &&
+            stacks.some((stack) => stack[kind.id] === integration.id)
+        )
+        .map(({ description, id, name }) => ({ description, id, name })),
+    })),
+    stacks: await Promise.all(
+      stacks.map(async (stack) => {
+        const verification = await verificationOf(
+          stack,
+          defaultAddons(registry)
+        );
+
+        return {
+          label: stackLabel(stack),
+          stack,
+          verifiedAt: verification?.record.verifiedAt ?? null,
+        };
+      })
+    ),
+  };
+};
 
 export type Listing = Awaited<ReturnType<typeof listing>>;
 

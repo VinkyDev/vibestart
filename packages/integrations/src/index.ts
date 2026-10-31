@@ -6,11 +6,7 @@ export { materializeEnv, renderEnvFiles } from "#/env-files.ts";
 
 export { stackLabel } from "#/stack-label.ts";
 
-export {
-  recordedVerification,
-  verificationOf,
-  verifiedAs,
-} from "#/verification.ts";
+export { verificationOf, verifiedAs } from "#/verification.ts";
 
 export type { VerificationMatch } from "#/verification.ts";
 

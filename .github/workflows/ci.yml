@@ -143,7 +143,8 @@ jobs:
       - run: vp install
       # Chromium's system libraries. Each project's own runner installs the browser build its version needs.
       - if: runner.os == 'Linux'
-        run: npx --yes "playwright@$(node --input-type=module -e "import { catalog } from './packages/integrations/src/catalog.ts'; console.log(catalog.toolchain['@playwright/test']);")" install-deps chromium
+        run: vp exec playwright install-deps chromium
+        working-directory: apps/web
         timeout-minutes: 10
       - run: vp run stacks verify "$PATTERN" --jobs "$JOBS" --out "$RUNNER_TEMP/stacks"
         env:
@@ -163,19 +164,36 @@ jobs:
           path: ${{ runner.temp }}/stacks/*.log
           if-no-files-found: ignore
 
+  studio:
+    name: Studio modes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: voidzero-dev/setup-vp@v1.21.1
+        with:
+          node-version-file: .node-version
+          cache: true
+      - run: vp install
+      - run: vp run --filter @vibestart/web build
+      - run: vp exec playwright install chromium --with-deps
+        working-directory: apps/web
+      - run: vp run test:e2e
+        working-directory: apps/web
+      - if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: studio-browser-results
+          path: apps/web/test-results
+          if-no-files-found: ignore
+
   effect:
-    name: Effect prototype (${{ matrix.platform }})
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - { platform: linux, runner: ubuntu-24.04 }
-          - { platform: windows, runner: windows-2025 }
+    name: Effect golden Docker
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     services:
       postgres:
-        image: ${{ matrix.platform == 'linux' && 'postgres:18' || '' }}
+        image: postgres:18
         env:
           POSTGRES_PASSWORD: postgres
         ports:
@@ -187,43 +205,28 @@ jobs:
           --health-retries 15
     defaults:
       run:
-        working-directory: prototypes/effect
+        working-directory: golden/spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
         shell: bash
     env:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-      E2E_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v7
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
-          node-version-file: prototypes/effect/.node-version
-      - if: runner.os == 'Windows'
-        name: Start PostgreSQL
-        shell: pwsh
+          node-version-file: .node-version
+      - run: docker build --tag effect-golden .
+      - name: Smoke test the production image
         run: |
-          Set-Service postgresql-x64-17 -StartupType Manual
-          Start-Service postgresql-x64-17
-          & "$env:PGBIN\pg_isready.exe" --host localhost --timeout 60
-          if ($LASTEXITCODE -ne 0) { throw "PostgreSQL is not accepting connections" }
-          "DATABASE_URL=postgres://postgres:root@localhost:5432/postgres" >> $env:GITHUB_ENV
-      - run: vp install
-      - run: vp exec e2e-web install chromium --with-deps
-        working-directory: prototypes/effect/apps/web
-      - run: vp run ready
-      - if: runner.os == 'Linux'
-        run: docker build --tag effect-prototype .
-      - if: runner.os == 'Linux'
-        name: Smoke test the production image
-        run: |
-          docker run --rm --network host --env DATABASE_URL effect-prototype node dist/migrate.mjs
-          docker run --rm --network host --env DATABASE_URL effect-prototype node dist/migrate.mjs
-          docker run --detach --name effect-prototype --network host \
+          mkdir -p apps/web/.e2e
+          docker run --rm --network host --env DATABASE_URL effect-golden node dist/migrate.mjs
+          docker run --rm --network host --env DATABASE_URL effect-golden node dist/migrate.mjs
+          docker run --detach --name effect-golden --network host \
             --env DATABASE_URL \
             --env BETTER_AUTH_URL=http://localhost:3000 \
             --env BETTER_AUTH_SECRET=ci-secret-that-is-at-least-32-characters \
-            effect-prototype
-          trap 'docker logs effect-prototype > apps/web/.e2e/docker.log 2>&1; docker rm --force effect-prototype' EXIT
-          timeout 60 bash -c 'until [ "$(docker inspect --format "{{.State.Health.Status}}" effect-prototype)" = healthy ]; do sleep 2; done'
+            effect-golden
+          trap 'docker logs effect-golden > apps/web/.e2e/docker.log 2>&1; docker rm --force effect-golden' EXIT
+          timeout 60 bash -c 'until [ "$(docker inspect --format "{{.State.Health.Status}}" effect-golden)" = healthy ]; do sleep 2; done'
           curl --fail --silent --output /dev/null http://localhost:3000/
           curl --fail --silent --output /dev/null http://localhost:3000/api/openapi.json
           node --input-type=module <<'JS'
@@ -249,23 +252,25 @@ jobs:
       - if: failure()
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: effect-prototype-logs-${{ matrix.platform }}
-          path: prototypes/effect/apps/web/.e2e
+          name: effect-golden-logs
+          path: golden/spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e/apps/web/.e2e
           include-hidden-files: true
           if-no-files-found: ignore
 
   # The one required check: every job passed, and verify ran every planned task or had none.
   ci:
     if: always()
-    needs: [ready, plan, verify, effect]
+    needs: [ready, plan, verify, effect, studio]
     runs-on: ubuntu-24.04
     steps:
       - run: |
+          test "$STUDIO" = success
           test "$EFFECT" = success
           test "$READY" = success
           test "$PLAN" = success
           test "$VERIFY" = success || test "$VERIFY" = skipped
         env:
+          STUDIO: ${{ needs.studio.result }}
           EFFECT: ${{ needs.effect.result }}
           READY: ${{ needs.ready.result }}
           PLAN: ${{ needs.plan.result }}

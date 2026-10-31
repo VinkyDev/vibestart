@@ -198,54 +198,23 @@ const matchOf = async (
     : undefined;
 };
 
-/** Under Bun, the record that covers its dependencies, and only when the sources are covered under pnpm. */
-const verificationMatch = async (
+/** A current record; Bun also needs its sources covered under pnpm. */
+export const verificationOf = async (
   stack: Stack,
   addons: readonly string[],
-  packageManager: PackageManager,
-  projection: Projection,
-  match: (
-    projection: Projection,
-    stack: Stack,
-    packageManager: PackageManager
-  ) => Promise<VerificationMatch | undefined> | VerificationMatch | undefined
+  packageManager: PackageManager = "pnpm",
+  projection: Projection = verification
 ): Promise<VerificationMatch | undefined> => {
   if (!defaultsCover(registry, addons)) {
     return undefined;
   }
 
   const subject = verifiedAs(stack);
-  const sources = await match(projection, subject, "pnpm");
+  const sources = await matchOf(projection, subject, "pnpm");
 
   if (sources === undefined || packageManager !== "bun") {
     return sources;
   }
 
-  return await match(projection, subject, "bun");
+  return await matchOf(projection, subject, "bun");
 };
-
-/**
- * The record `pull` wrote for this stack. It names that output until the next `pull`; `verificationOf` generates
- * the stack to reject a record from an earlier one.
- */
-export const recordedVerification = async (
-  stack: Stack,
-  addons: readonly string[],
-  packageManager: PackageManager = "pnpm",
-  projection: Projection = verification
-) =>
-  await verificationMatch(
-    stack,
-    addons,
-    packageManager,
-    projection,
-    matchRecorded
-  );
-
-export const verificationOf = async (
-  stack: Stack,
-  addons: readonly string[],
-  packageManager: PackageManager = "pnpm",
-  projection: Projection = verification
-) =>
-  await verificationMatch(stack, addons, packageManager, projection, matchOf);

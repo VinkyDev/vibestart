@@ -22,6 +22,15 @@ export const catalog = {
     vite: `npm:@voidzero-dev/vite-plus-core@${toolchainVersions.vitePlus}`,
     "vite-plus": toolchainVersions.vitePlus,
   },
+  effect: {
+    effect: "4.1.0",
+    "@effect/atom-react": "4.1.0",
+    "@effect/platform-node": "4.1.0",
+    "@effect/sql-pg": "4.1.0",
+    "@effect/vitest": "4.1.0",
+    // @effect/vitest must share the Vitest instance that Vite+ runs.
+    vitest: "5.0.5",
+  },
   web: {
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",

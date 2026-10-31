@@ -29,6 +29,7 @@ import {
 } from "#/vite-plus/slots.ts";
 
 import agentsTestsIntro from "./agents-tests-intro.md?raw";
+import { effectTesting } from "./effect.ts";
 import type { BrowserRunner } from "./runners.ts";
 import { e2e, playwright } from "./runners.ts";
 import { renderTestServer } from "./server.ts";
@@ -367,7 +368,8 @@ export const playwrightTests = defineIntegration({
 });
 
 export const e2eTests = defineIntegration({
-  contribute: (ctx) => testing(ctx, e2e),
+  contribute: (ctx) =>
+    ctx.has("effect") ? effectTesting(ctx) : testing(ctx, e2e),
   kind: "testing",
   description:
     "Mix natural-language goals with scripted assertions. An AI agent explores the UI, and verified actions can replay from cache. Fits evolving interfaces and teams adding user-journey coverage quickly.",

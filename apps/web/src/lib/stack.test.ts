@@ -9,6 +9,7 @@ import {
   flagsOf,
   integrationOf,
   outcome,
+  optionsOf,
   parseAddons,
   parseFlags,
   recommended,
@@ -239,5 +240,43 @@ describe("Bun selections", () => {
         "bun"
       )
     ).toBeNull();
+  });
+});
+
+describe("Effect mode", () => {
+  it("round-trips mode through URLs and the CLI command", () => {
+    const { stack } = entryFromFlags({ mode: "effect" });
+    expect(stack.mode).toBe("effect");
+    const flags = flagsOf(stack);
+    expect(parseFlags(searchSchema.parse(flags)).mode).toBe("effect");
+    expect(entryFromFlags(flags).stack).toStrictEqual(stack);
+    expect(commandLine(commandWords(flags, "my-app", "pnpm"))).toContain(
+      "--mode effect"
+    );
+    expect(entryFromFlags({}).stack.mode).toBe("standard");
+  });
+
+  it("repairs incompatible links inside the selected mode", () => {
+    const { stack } = entryFromFlags({
+      mode: "effect",
+      api: "orpc",
+      framework: "next",
+    });
+
+    expect(stack).toMatchObject({
+      mode: "effect",
+      api: "effect-rpc",
+      framework: "spa",
+    });
+    expect(outcome(stack, "api", "orpc")).toBeUndefined();
+    expect(
+      optionsOf("backend", "effect").map((option) => option?.id)
+    ).toStrictEqual(["effect-http"]);
+    expect(optionsOf("mobile", "effect")).toStrictEqual([null]);
+    expect(
+      optionsOf("backend", "standard").some(
+        (option) => option?.id === "effect-http"
+      )
+    ).toBeFalsy();
   });
 });

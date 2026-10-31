@@ -42,7 +42,9 @@ const routesOverride = (ctx: Context) => `{
 
 export const tanstackRouter = defineIntegration({
   contribute: (ctx) => [
-    ...templateFiles(ctx, "tanstack-router/common"),
+    ...templateFiles(ctx, "tanstack-router/common", {
+      except: ctx.has("effect") ? ["apps/web/src/lib/query-client.ts"] : [],
+    }),
     navigation(
       ctx,
       `tanstack-router/${authVariant(ctx)}`,

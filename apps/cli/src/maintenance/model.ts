@@ -3,7 +3,7 @@ import { z } from "zod";
 import type { Blueprint, GeneratedFile } from "@vibestart/core";
 
 // Persist historical choices without filling them from a future registry's defaults.
-const inputSchema = z.strictObject({
+export const inputSchema = z.strictObject({
   addons: z.array(z.string()),
   channel: z.literal("recommended"),
   packageManager: z.enum(["pnpm", "bun"]),
@@ -113,19 +113,13 @@ export class MaintenanceError extends Error {
   }
 }
 
-export const projectOf = (
-  blueprint: Blueprint & { readonly name?: string; readonly version?: string }
-): Project => {
-  const provenance = provenanceSchema.safeParse(blueprint);
-
-  if (!provenance.success) {
-    throw new MaintenanceError(
-      [
-        ...new Set(provenance.error.issues.map((issue) => issue.message)),
-        "Maintenance regenerates the original templates from them.",
-      ].join("\n")
-    );
-  }
-
-  return { ...provenance.data, blueprint: normalizeInput(blueprint) };
-};
+export const projectSchema = provenanceSchema
+  .extend({
+    ...inputSchema.shape,
+    packageManager: inputSchema.shape.packageManager.default("pnpm"),
+  })
+  .transform((record): Project => ({
+    name: record.name,
+    version: record.version,
+    blueprint: normalizeInput(record),
+  }));

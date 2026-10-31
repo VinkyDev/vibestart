@@ -1,0 +1,50 @@
+# apps/server/src/index.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { existsSync } from "node:fs";
+import { createServer } from "node:http";
+import { fileURLToPath } from "node:url";
+
+import { NodeHttpServer, NodeRuntime } from "@effect/platform-node";
+import { Config, Layer } from "effect";
+import { HttpRouter, HttpStaticServer } from "effect/http";
+
+import { Routes } from "@my-app/api";
+import { Auth } from "@my-app/auth";
+import { Database } from "@my-app/db";
+
+const publicDir = fileURLToPath(new URL("public", import.meta.url));
+
+// The production image serves the web build beside the API; in development Vite serves it and proxies here.
+const StaticRoutes = existsSync(publicDir)
+  ? HttpStaticServer.layer({ root: publicDir, spa: true })
+  : Layer.empty;
+
+const HttpLive = HttpRouter.serve(Layer.mergeAll(Routes, StaticRoutes)).pipe(
+  Layer.provide([Database.layerConfig, Auth.layerConfig]),
+  Layer.provide(
+    NodeHttpServer.layerConfig(createServer, {
+      port: Config.Port("PORT").pipe(Config.withDefault(3000)),
+    })
+  )
+);
+
+NodeRuntime.runMain(Layer.launch(HttpLive));
+
+# apps/server/tsconfig.json · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "include": ["src", "vite.config.ts"]
+}
+
+# apps/server/vite.config.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  pack: {
+    copy: [{ from: "../../packages/db/src/migrations", to: "dist" }],
+    deps: { alwaysBundle: [/./u] },
+    entry: ["src/index.ts", "src/migrate.ts"],
+  },
+});

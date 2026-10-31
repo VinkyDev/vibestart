@@ -59,6 +59,28 @@ export const defineRegistry = (registry: Registry): Registry => {
       );
     }
 
+    for (const [kind, choices] of Object.entries(integration.choices ?? {})) {
+      const definition = registry.kinds.find(
+        (candidate) => candidate.id === kind
+      );
+
+      if (
+        definition === undefined ||
+        choices.length === 0 ||
+        choices.some((id) =>
+          id === null
+            ? !definition.optional
+            : !registry.integrations.some(
+                (candidate) => candidate.kind === kind && candidate.id === id
+              )
+        )
+      ) {
+        throw new Error(
+          `Integration "${integration.id}" has invalid choices for "${kind}"`
+        );
+      }
+    }
+
     for (const capability of [
       ...integration.provides,
       ...integration.requires.flatMap(alternatives),

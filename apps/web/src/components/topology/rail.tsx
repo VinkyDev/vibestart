@@ -195,7 +195,8 @@ export const Rail = ({
   });
 
   const foundation = selected(stack).filter(
-    (integration) => groupOf(integration.id) === "foundation"
+    (integration) =>
+      integration.kind !== "mode" && groupOf(integration.id) === "foundation"
   );
 
   const deployment = chosen(stack, "deployment");

@@ -23,9 +23,15 @@ const Commands = ({
   </dl>
 );
 
-const Sites = ({ kind }: { readonly kind: string }) => (
+const Sites = ({
+  kind,
+  mode,
+}: {
+  readonly kind: string;
+  readonly mode: string | undefined;
+}) => (
   <p className="flex flex-wrap gap-x-4 gap-y-1">
-    {optionsOf(kind).flatMap((integration) =>
+    {optionsOf(kind, mode).flatMap((integration) =>
       integration?.homepage === undefined
         ? []
         : [
@@ -108,7 +114,7 @@ export const ToolDetails = ({
             />
           )}
           {stack.mobile !== undefined && <p>{m.tests_scope_mobile()}</p>}
-          <Sites kind="testing" />
+          <Sites kind="testing" mode={stack.mode} />
         </>
       );
     }

@@ -12,9 +12,9 @@ import { registry } from "@vibestart/integrations";
 
 import { maintenanceCommand } from "#/maintenance/commands.ts";
 import { readText, writeText } from "#/maintenance/files.ts";
-import { projectOf } from "#/maintenance/model.ts";
+import { projectSchema } from "#/maintenance/model.ts";
 import { currentSnapshot, runningVersion } from "#/maintenance/release.ts";
-import { loadRecipe } from "#/stack.ts";
+import { loadRecipe, readBlueprint } from "#/stack.ts";
 
 const roots: string[] = [];
 
@@ -115,6 +115,26 @@ describe("project maintenance CLI", () => {
     for (const cwd of roots) {
       rmSync(cwd, { force: true, recursive: true });
     }
+  });
+
+  it("keeps historical choices unchanged when reading maintenance inputs", async () => {
+    const { cwd } = await fixture("pnpm", business("node"));
+
+    const record = (readText(cwd, "vibestart.jsonc") ?? "").replace(
+      /^.*"mode".*\n/mu,
+      ""
+    );
+
+    writeText(cwd, "vibestart.jsonc", record);
+    const project = projectSchema.parse(await readBlueprint(cwd));
+    expect(project.blueprint.stack).not.toHaveProperty("mode");
+    const snapshot = await currentSnapshot(project.name, project.blueprint);
+    expect(snapshot.blueprint.stack).not.toHaveProperty("mode");
+    expect(
+      snapshot.files.find((file) => file.path === "vibestart.jsonc")?.content
+    ).toContain('"mode": "standard"');
+    const recipe = await loadRecipe(cwd);
+    expect(recipe.stack.mode).toBe("standard");
   });
 
   it("lists capability IDs and descriptions without requiring JSON", async () => {
@@ -249,7 +269,7 @@ describe("project maintenance CLI", () => {
         ok: true,
         status: "needs-install",
       });
-      expect(projectOf(await loadRecipe(cwd))).toMatchObject({
+      expect(projectSchema.parse(await loadRecipe(cwd))).toMatchObject({
         blueprint: {
           addons: ["knip", "ultracite"],
           packageManager: manager,
@@ -277,7 +297,9 @@ describe("project maintenance CLI", () => {
     );
 
     expect(result.output).toMatchObject({ ok: true, status: "needs-install" });
-    expect(projectOf(await loadRecipe(cwd)).blueprint.stack).toMatchObject({
+    expect(
+      projectSchema.parse(await loadRecipe(cwd)).blueprint.stack
+    ).toMatchObject({
       deployment: "void",
       runtime: "workers",
     });

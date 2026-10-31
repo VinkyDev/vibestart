@@ -20,12 +20,20 @@ npx vibestart-cli
 The CLI then:
 
 1. asks for a project name, if no directory was given;
-2. shows the recommended stack, with its compatibility and latest verification;
+2. asks for the mode, then each choice it leaves open;
 3. asks which add-ons and package manager to use, with the defaults selected;
-4. offers **Create**, or **Customize** to choose each part in turn, where every step lists only the options compatible with earlier choices;
+4. shows the stack and its verification, then offers **Create**, or **Customize** to choose each part in turn, where every step lists only the options compatible with earlier choices;
 5. writes, installs, and checks the project, then prints the commands to run next.
 
 When some flags are given, the CLI asks only about what they leave open.
+
+## Stack modes [#modes]
+
+Standard is the default. Interactive composition starts with the mode; `--mode effect` selects the independent [Effect stack](/docs/stack/effect). Use `--list --mode effect --json` to discover only its adapted choices. Effect mode does not accept Standard transports, frameworks, or runtimes, and incompatible-choice suggestions preserve the selected mode.
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect
+```
 
 ## What the CLI runs [#steps]
 

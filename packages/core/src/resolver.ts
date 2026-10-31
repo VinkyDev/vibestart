@@ -5,6 +5,13 @@ import { getIntegration, integrationsOfKind } from "#/registry.ts";
 
 export type Violation =
   | {
+      readonly type: "unsupported-choice";
+      readonly integration: string;
+      readonly kind: string;
+      readonly choices: readonly (string | null)[];
+      readonly reason: string;
+    }
+  | {
       readonly type: "missing-kind";
       /** One of these kinds must be filled. */
       readonly kinds: readonly string[];
@@ -173,7 +180,30 @@ export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
       type: "unused-integration",
     }));
 
+  const unsupportedChoices = integrations.flatMap((integration) =>
+    Object.entries(integration.choices ?? {}).flatMap(
+      ([kind, allowed]): Violation[] =>
+        allowed.includes(stack[kind] ?? null)
+          ? []
+          : [
+              {
+                type: "unsupported-choice",
+                integration: integration.id,
+                kind,
+                choices: allowed,
+                reason: `${integration.name} supports ${joinNames(
+                  allowed.map((id) =>
+                    id === null ? "none" : getIntegration(registry, id).name
+                  ),
+                  "or"
+                )} for ${kindName(kind)}.`,
+              },
+            ]
+    )
+  );
+
   return [
+    ...unsupportedChoices,
     ...missingKinds,
     ...missingCapabilities,
     ...sharedCapabilities,
@@ -220,7 +250,19 @@ const unavoidableViolations = (
       )
   ).length;
 
-  return emptyGroups + unmet + shared.size;
+  const choices = new Map(
+    chosen.map((integration) => [integration.kind, integration.id])
+  );
+
+  const unsupported = chosen.flatMap((integration) =>
+    Object.entries(integration.choices ?? {}).filter(
+      ([kind, allowed]) =>
+        (choices.has(kind) || emptyKinds.has(kind)) &&
+        !allowed.includes(choices.get(kind) ?? null)
+    )
+  ).length;
+
+  return emptyGroups + unmet + shared.size + unsupported;
 };
 
 /**
@@ -392,7 +434,7 @@ const changes = (choices: Choices, stack: Stack): Change[] =>
 export const resolve = (
   registry: RegistryInfo,
   choices: Choices,
-  options: { readonly keep?: string } = {}
+  options: { readonly keep?: readonly string[] } = {}
 ): Resolution => {
   assertOffered(registry, choices);
   const pairs = decided(choices);
@@ -413,11 +455,14 @@ export const resolve = (
     throw new Error("No combination is consistent with the choices");
   }
 
-  const { keep } = options;
+  const keep = options.keep ?? [];
 
   const candidates = legalStacks(registry)
-    .filter(
-      (legal) => keep === undefined || (legal[keep] ?? null) === choices[keep]
+    .filter((legal) =>
+      keep.every(
+        (kind) =>
+          choices[kind] === undefined || (legal[kind] ?? null) === choices[kind]
+      )
     )
     .map((legal) => changes(choices, legal));
 

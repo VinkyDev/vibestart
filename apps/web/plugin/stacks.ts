@@ -8,11 +8,7 @@ import {
   generate,
   legalStacks,
 } from "@vibestart/core";
-import {
-  recordedVerification,
-  registry,
-  stackLabel,
-} from "@vibestart/integrations";
+import { verificationOf, registry, stackLabel } from "@vibestart/integrations";
 import type { VerificationMatch } from "@vibestart/integrations";
 
 import type {
@@ -52,8 +48,8 @@ const defaultVerification = async (stack: Stack) => {
   const addons = defaultAddons(registry);
 
   return await Promise.all([
-    recordedVerification(stack, addons),
-    recordedVerification(stack, addons, "bun"),
+    verificationOf(stack, addons),
+    verificationOf(stack, addons, "bun"),
   ]);
 };
 

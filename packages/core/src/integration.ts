@@ -62,6 +62,8 @@ export interface Integration {
    * reads as `id`, so existing projects keep upgrading. Drop an id once no supported release writes it.
    */
   readonly formerIds?: readonly string[];
+  /** Choices this integration supports in other kinds; omitted kinds are unrestricted. */
+  readonly choices?: Readonly<Record<string, readonly (string | null)[]>>;
   readonly provides: readonly string[];
   /** Each requirement is met when the stack provides it, or for alternatives, any one of them. */
   readonly requires: readonly Requirement[];

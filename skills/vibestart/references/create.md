@@ -61,3 +61,13 @@ If installation was intentionally skipped, follow the generated `nextSteps` in o
 ## JSON and exit codes
 
 Creation returns `ok: true` for success. Failures return `ok: false` with an `error` object containing `code`, `message`, and, where relevant, resolution details. Exit codes are `0` for success, `1` for failure, and `130` for cancellation. Do not assume the maintenance error shape applies to creation.
+
+## Stack modes
+
+Standard is the default. Use `--mode effect` for the independent Effect stack, or `--list --mode effect` to list only its adapted choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect
+```
+
+Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, PostgreSQL, Drizzle, Better Auth, Node, and e2e. Docker is optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).

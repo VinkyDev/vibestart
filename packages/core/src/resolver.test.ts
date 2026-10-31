@@ -18,6 +18,7 @@ const integration = (
   id: string,
   kind: string,
   options: {
+    choices?: Readonly<Record<string, readonly (string | null)[]>>;
     auxiliary?: boolean;
     provides?: string[];
     requires?: Requirement[];
@@ -347,7 +348,7 @@ describe(resolve, () => {
 
   it("keeps the kind the user just chose", () => {
     expect(
-      resolve(registry, spaWithoutServer, { keep: "framework" }).fixes
+      resolve(registry, spaWithoutServer, { keep: ["framework"] }).fixes
     ).toStrictEqual([
       { changes: [{ from: null, kind: "backend", to: "hono" }] },
     ]);
@@ -454,5 +455,76 @@ describe(compose, () => {
       runtime: "node",
       toolchain: "vp",
     });
+  });
+});
+
+describe("integration choice constraints", () => {
+  const constrained = defineRegistry({
+    ...registry,
+    integrations: registry.integrations.map((item) =>
+      item.id === "vp"
+        ? { ...item, choices: { framework: ["static", null] } }
+        : item
+    ),
+  });
+
+  it("prunes incompatible branches while retaining an allowed absent choice", () => {
+    const stacks = legalStacks(constrained);
+    expect(stacks.length).toBeGreaterThan(0);
+    expect(
+      stacks.every(
+        (stack) => stack.framework === "static" || stack.framework === undefined
+      )
+    ).toBeTruthy();
+    expect(stacks.some((stack) => stack.framework === undefined)).toBeTruthy();
+    expect(
+      check(constrained, {
+        toolchain: "vp",
+        framework: "next",
+        runtime: "node",
+      })
+    ).toContainEqual(
+      expect.objectContaining({ type: "unsupported-choice", kind: "framework" })
+    );
+  });
+
+  it("keeps multiple decided kinds and ignores undecided kinds in repairs", () => {
+    const choices = {
+      toolchain: "vp",
+      framework: "next",
+      backend: "hono",
+      runtime: "node",
+    };
+
+    const result = resolve(constrained, choices, {
+      keep: ["toolchain", "backend"],
+    });
+
+    expect(result.fixes.length).toBeGreaterThan(0);
+    expect(
+      result.fixes.every(({ changes }) =>
+        changes.every(({ kind }) => kind === "framework")
+      )
+    ).toBeTruthy();
+    expect(
+      resolve(constrained, { framework: "next" }, { keep: ["backend"] }).fixes
+        .length
+    ).toBeGreaterThan(0);
+  });
+
+  it.each<Readonly<Record<string, readonly (string | null)[]>>>([
+    { missing: ["static"] },
+    { framework: [] },
+    { framework: ["node"] },
+    { toolchain: [null] },
+  ])("rejects invalid registry constraints: %j", (choices) => {
+    expect(() =>
+      defineRegistry({
+        ...registry,
+        integrations: registry.integrations.map((item) =>
+          item.id === "vp" ? { ...item, choices } : item
+        ),
+      })
+    ).toThrow("invalid choices");
   });
 });

@@ -19,7 +19,8 @@ const emptyTitle = ({ isError, isPending }: { isError: boolean; isPending: boole
 };
 
 const Todos = () => {
-  const [title, setTitle] = useState("");
+  const [draft, setDraft] = useState({ title: "" });
+  const { title } = draft;
   const queryClient = useQueryClient();
   const todos = useQuery(api.todos.list.queryOptions());
 
@@ -49,7 +50,9 @@ const Todos = () => {
         <Input
           accessibilityLabel="New todo"
           className="flex-1"
-          onChangeText={setTitle}
+          onChangeText={(value) => {
+            setDraft({ title: value });
+          }}
           placeholder="What needs to be done?"
           value={title}
         />
@@ -61,7 +64,7 @@ const Todos = () => {
               { title },
               {
                 onSuccess: () => {
-                  setTitle("");
+                  setDraft((current) => (current === draft ? { title: "" } : current));
                 },
               }
             );

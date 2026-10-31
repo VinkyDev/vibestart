@@ -16,6 +16,7 @@ import {
   stackHeadline,
   todosExample,
 } from "#/app.ts";
+import { effectAuth } from "#/better-auth/effect.ts";
 import { composeEnv } from "#/docker.ts";
 import { quote } from "#/format.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
@@ -241,98 +242,106 @@ const webFiles = (ctx: Context) => {
 };
 
 export const betterAuth = defineIntegration({
-  contribute: (ctx) => [
-    ...templateFiles(ctx, "better-auth/common"),
-    ...(hasWebApp(ctx) ? webFiles(ctx) : []),
-    file("packages/auth/src/index.ts", renderAuthIndex(ctx)),
-    contribute(packageJson, {
-      dependencies: [
-        authAdapter(ctx).dependency,
-        ...(ctx.has("expo") ? ["@better-auth/expo"] : []),
-        `${ctx.scope}/db`,
-        "better-auth",
-      ],
-      devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],
-      exports: { ".": "./src/index.ts" },
-      imports: { "#src/*": "./src/*" },
-      path: "packages/auth",
-    }),
-    contribute(packageJson, {
-      dependencies: [`${ctx.scope}/auth`],
-      path: serverApp(ctx).dir,
-    }),
-    ...(ctx.stack.api === undefined
-      ? []
+  contribute: (ctx) =>
+    ctx.has("effect")
+      ? effectAuth(ctx)
       : [
+          ...templateFiles(ctx, "better-auth/common"),
+          ...(hasWebApp(ctx) ? webFiles(ctx) : []),
+          file("packages/auth/src/index.ts", renderAuthIndex(ctx)),
+          contribute(packageJson, {
+            dependencies: [
+              authAdapter(ctx).dependency,
+              ...(ctx.has("expo") ? ["@better-auth/expo"] : []),
+              `${ctx.scope}/db`,
+              "better-auth",
+            ],
+            devDependencies: [
+              `${ctx.scope}/config`,
+              "@types/node",
+              "typescript",
+            ],
+            exports: { ".": "./src/index.ts" },
+            imports: { "#src/*": "./src/*" },
+            path: "packages/auth",
+          }),
           contribute(packageJson, {
             dependencies: [`${ctx.scope}/auth`],
-            path: "packages/api",
+            path: serverApp(ctx).dir,
           }),
-        ]),
-    ...(hasWebApp(ctx)
-      ? [
-          contribute(packageJson, {
-            dependencies: ["better-auth"],
-            path: "apps/web",
-          }),
-        ]
-      : []),
-    contribute(serverEnv, {
-      example: devOrigin(ctx),
-      name: "BETTER_AUTH_URL",
-      schema: "z.url()",
-    }),
-    contribute(serverEnv, {
-      example: "",
-      name: "BETTER_AUTH_SECRET",
-      schema: "z.string().min(32)",
-    }),
-    // Expo Go from the app stores may send exp:// as the origin, which the Expo plugin trusts only
-    // in development. A framework's dev server sets that; Hono's `node --watch` does not.
-    ...(ctx.has("expo") && ctx.has("hono")
-      ? [
+          ...(ctx.stack.api === undefined
+            ? []
+            : [
+                contribute(packageJson, {
+                  dependencies: [`${ctx.scope}/auth`],
+                  path: "packages/api",
+                }),
+              ]),
+          ...(hasWebApp(ctx)
+            ? [
+                contribute(packageJson, {
+                  dependencies: ["better-auth"],
+                  path: "apps/web",
+                }),
+              ]
+            : []),
           contribute(serverEnv, {
-            example: "development",
-            name: "NODE_ENV",
-            schema: 'z.enum(["development", "production", "test"]).optional()',
+            example: devOrigin(ctx),
+            name: "BETTER_AUTH_URL",
+            schema: "z.url()",
           }),
-        ]
-      : []),
-    contribute(composeEnv, {
-      name: "BETTER_AUTH_URL",
-      value: `\${BETTER_AUTH_URL:-http://localhost:3000}`,
-    }),
-    contribute(composeEnv, {
-      name: "BETTER_AUTH_SECRET",
-      value: `\${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}`,
-    }),
-    contribute(agentsMap, {
-      owns: "Better Auth configuration (`createAuth`) and the `Session` type",
-      path: "packages/auth",
-    }),
-    contribute(agentsConventions, {
-      text: authorization(ctx),
-      title: "Authorization",
-    }),
-    ...(hasWebApp(ctx)
-      ? [
+          contribute(serverEnv, {
+            example: "",
+            name: "BETTER_AUTH_SECRET",
+            schema: "z.string().min(32)",
+          }),
+          // Expo Go from the app stores may send exp:// as the origin, which the Expo plugin trusts only
+          // in development. A framework's dev server sets that; Hono's `node --watch` does not.
+          ...(ctx.has("expo") && ctx.has("hono")
+            ? [
+                contribute(serverEnv, {
+                  example: "development",
+                  name: "NODE_ENV",
+                  schema:
+                    'z.enum(["development", "production", "test"]).optional()',
+                }),
+              ]
+            : []),
+          contribute(composeEnv, {
+            name: "BETTER_AUTH_URL",
+            value: `\${BETTER_AUTH_URL:-http://localhost:3000}`,
+          }),
+          contribute(composeEnv, {
+            name: "BETTER_AUTH_SECRET",
+            value: `\${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}`,
+          }),
+          contribute(agentsMap, {
+            owns: "Better Auth configuration (`createAuth`) and the `Session` type",
+            path: "packages/auth",
+          }),
           contribute(agentsConventions, {
-            text: protectedPage(ctx),
-            title: "Protected page",
+            text: authorization(ctx),
+            title: "Authorization",
           }),
-        ]
-      : []),
-    contribute(agentsConventions, {
-      text: "Better Auth rate-limits by client IP. Behind a reverse proxy, set `advanced.ipAddress` in `packages/auth` to the header that proxy sets. With no proxy, leave forwarding headers untrusted.",
-      title: "Proxy",
-    }),
-    contribute(readmeTagline, "Better Auth"),
-    contribute(stackHeadline, "Better Auth"),
-    contribute(readmeLayers, {
-      choice: `Better Auth, email and password, sessions in ${databaseName(ctx)}`,
-      layer: "Auth",
-    }),
-  ],
+          ...(hasWebApp(ctx)
+            ? [
+                contribute(agentsConventions, {
+                  text: protectedPage(ctx),
+                  title: "Protected page",
+                }),
+              ]
+            : []),
+          contribute(agentsConventions, {
+            text: "Better Auth rate-limits by client IP. Behind a reverse proxy, set `advanced.ipAddress` in `packages/auth` to the header that proxy sets. With no proxy, leave forwarding headers untrusted.",
+            title: "Proxy",
+          }),
+          contribute(readmeTagline, "Better Auth"),
+          contribute(stackHeadline, "Better Auth"),
+          contribute(readmeLayers, {
+            choice: `Better Auth, email and password, sessions in ${databaseName(ctx)}`,
+            layer: "Auth",
+          }),
+        ],
   id: "better-auth",
   kind: "auth",
   name: "Better Auth",

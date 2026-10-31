@@ -301,7 +301,7 @@ const renderGitignore = (read: ReadSlot) =>
     "",
   ].join("\n");
 
-const renderAgents = (read: ReadSlot) => {
+const renderAgents = (ctx: Context, read: ReadSlot) => {
   const generated = read(generatedFiles);
 
   const generatedLabels = generated.flatMap(({ label }) =>
@@ -322,10 +322,14 @@ const renderAgents = (read: ReadSlot) => {
             title: "Generated",
           },
         ]),
-    {
-      text: 'Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.',
-      title: "Utilities",
-    },
+    ...(ctx.has("effect")
+      ? []
+      : [
+          {
+            text: 'Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.',
+            title: "Utilities",
+          },
+        ]),
     ...read(toolConventions),
   ];
 
@@ -541,7 +545,7 @@ export const vitePlus = defineIntegration({
     renderFile(".gitignore", renderGitignore),
     renderFile("tsconfig.json", (read) => renderRootTsconfig(ctx, read)),
     renderFile("vite.config.ts", (read) => renderViteConfig(ctx, read)),
-    renderFile("AGENTS.md", renderAgents),
+    renderFile("AGENTS.md", (read) => renderAgents(ctx, read)),
     renderFile("README.md", (read) => renderReadme(ctx, read)),
   ],
   id: "vite-plus",

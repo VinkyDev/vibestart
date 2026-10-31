@@ -27,6 +27,8 @@ const groupName = (group: Group) =>
   group === "foundation" ? m.viz_group_foundation() : roles[group].role;
 
 const pages = new Map([
+  ["effect-http", "stack/effect"],
+  ["effect-rpc", "stack/effect"],
   ["better-auth", "stack/data"],
   ["docker", "stack/delivery"],
   ["void", "stack/delivery"],
@@ -58,6 +60,8 @@ const pages = new Map([
 ]);
 
 const marks = new Map<string, TechIcon>([
+  ["effect-http", "effect"],
+  ["effect-rpc", "effect"],
   ["better-auth", "better-auth"],
   ["bun", "bun"],
   ["docker", "docker"],
@@ -114,7 +118,8 @@ export const StackMap = () => (
   <div className="bg-card shadow-sheet rounded-sheet divide-border my-8 flex flex-col divide-y overflow-hidden">
     {groups.map((group) => {
       const integrations = registry.integrations.filter(
-        (integration) => groupOf(integration.id) === group
+        (integration) =>
+          integration.kind !== "mode" && groupOf(integration.id) === group
       );
 
       return (

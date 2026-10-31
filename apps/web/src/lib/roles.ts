@@ -222,6 +222,8 @@ const addLabels: Record<OptionalDecision, () => string> = {
 export const addLabel = (kind: Decision) => addLabels[optional(kind)]();
 
 const fits = {
+  "effect-http": () => m.fit_effect_http(),
+  "effect-rpc": () => m.fit_effect_rpc(),
   bun: () => m.fit_bun(),
   drizzle: () => m.fit_drizzle(),
   mongodb: () => m.fit_mongodb(),
@@ -330,7 +332,11 @@ export const tintClass: Record<Group, string> = {
   testing: "tint-foundation",
 };
 
-export const flagTintClass = (kind: Decision | "addons" | "package-manager") =>
+export const flagTintClass = (
+  kind: Decision | "mode" | "addons" | "package-manager"
+) =>
   tintClass[
-    kind === "addons" || kind === "package-manager" ? "foundation" : kind
+    kind === "mode" || kind === "addons" || kind === "package-manager"
+      ? "foundation"
+      : kind
   ];

@@ -53,11 +53,20 @@ const kindIds = (registry: Registry, kind: string) => {
 };
 
 export const createBlueprintSchema = (registry: Registry) => {
-  const stack = Object.fromEntries(
+  const stack = Object.fromEntries<z.ZodType<string | undefined>>(
     registry.kinds.map((kind) => {
       const ids = kindIds(registry, kind.id);
 
-      return [kind.id, kind.optional ? ids.optional() : ids];
+      if (kind.optional) {
+        return [kind.id, ids.optional()] as const;
+      }
+
+      return [
+        kind.id,
+        kind.default === undefined || kind.default === null
+          ? ids
+          : ids.default(kind.default),
+      ] as const;
     })
   );
 

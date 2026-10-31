@@ -51,3 +51,13 @@ Run `npx vibestart-cli --help` for the full reference.
 - [Agent skill](https://github.com/VinkyDev/vibestart/tree/main/skills/vibestart)
 
 MIT
+
+## Stack modes
+
+Standard is the default. Use `--mode effect` for the independent Effect stack, or `--list --mode effect` to list only its adapted choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect
+```
+
+Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, PostgreSQL, Drizzle, Better Auth, Node, and e2e. Docker is optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).

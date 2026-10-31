@@ -27,7 +27,7 @@ import { Wires } from "#/components/topology/wires.tsx";
 import { useFocusTarget } from "#/lib/focus.ts";
 import { ease, spring } from "#/lib/motion.ts";
 import { roles } from "#/lib/roles.ts";
-import { chosen, selected } from "#/lib/stack.ts";
+import { chosen, optionsOf, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const useFit = (stageHeight: number) => {
@@ -192,10 +192,14 @@ export const Topology = ({
             "auth",
             "mobile",
           ] as const
-        ).map((kind, index) => {
+        ).flatMap((kind, index) => {
+          if (!optionsOf(kind, shown.mode).some((option) => option !== null)) {
+            return [];
+          }
+
           const { folded, rect } = layout.blocks[kind];
 
-          return (
+          return [
             <Block
               chips={chipsOf(kind)}
               choosing={choosing}
@@ -205,8 +209,8 @@ export const Topology = ({
               kind={kind}
               rect={rect}
               shown={shown}
-            />
-          );
+            />,
+          ];
         })}
         <AnimatePresence>
           {shown.backend !== undefined && (

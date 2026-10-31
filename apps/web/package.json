@@ -11,7 +11,8 @@
     "build": "node scripts/verification.ts && vp build",
     "postinstall": "fumadocs-mdx",
     "preview": "vp preview",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@inlang/paraglide-js": "catalog:",
+    "@playwright/test": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/router-plugin": "catalog:",
     "@types/mdx": "catalog:",

@@ -5,10 +5,13 @@ import { bun } from "#/bun.ts";
 import { catalog } from "#/catalog.ts";
 import { docker } from "#/docker.ts";
 import { drizzle } from "#/drizzle.ts";
+import { effectHttp } from "#/effect-http.ts";
+import { effectRpc } from "#/effect-rpc.ts";
 import { electron } from "#/electron.ts";
 import { expo } from "#/expo.ts";
 import { hono } from "#/hono.ts";
 import { knip } from "#/knip.ts";
+import { effect, standard } from "#/modes.ts";
 import { mongodb } from "#/mongodb.ts";
 import { mongoose } from "#/mongoose.ts";
 import { mysql } from "#/mysql.ts";
@@ -34,6 +37,7 @@ import { workers } from "#/workers.ts";
 export const registry = defineRegistry({
   addons: [knip, ultracite],
   capabilities: {
+    "effect-http-server": "an Effect HTTP server",
     "frontend-framework": "a frontend framework",
     "fullstack-framework": "a full-stack framework",
     "hono-server": "a Hono server",
@@ -54,6 +58,8 @@ export const registry = defineRegistry({
   },
   catalog,
   integrations: [
+    standard,
+    effect,
     vitePlus,
     react,
     spa,
@@ -62,8 +68,10 @@ export const registry = defineRegistry({
     expo,
     tanstackRouter,
     hono,
+    effectHttp,
     self,
     orpc,
+    effectRpc,
     openapi,
     postgres,
     mysql,
@@ -85,6 +93,7 @@ export const registry = defineRegistry({
   ],
   kindGroups: [["framework", "backend", "mobile"]],
   kinds: [
+    { id: "mode", name: "Mode", optional: false, default: "standard" },
     { id: "toolchain", name: "Toolchain", optional: false },
     { id: "frontend", name: "Frontend", optional: true },
     { id: "framework", name: "Framework", optional: true },

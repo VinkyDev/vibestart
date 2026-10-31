@@ -16,7 +16,8 @@ import { Input } from "@my-app/ui/components/input";
 import { api } from "#src/lib/api.ts";
 
 const TodosPage = () => {
-  const [title, setTitle] = useState("");
+  const [draft, setDraft] = useState({ title: "" });
+  const { title } = draft;
   const queryClient = useQueryClient();
   const { data: todos } = useSuspenseQuery(api.todos.list.queryOptions());
 
@@ -46,7 +47,7 @@ const TodosPage = () => {
       { title },
       {
         onSuccess: () => {
-          setTitle("");
+          setDraft((current) => (current === draft ? { title: "" } : current));
         },
       }
     );
@@ -73,7 +74,7 @@ const TodosPage = () => {
             <Input
               aria-label="New todo"
               onChange={(event) => {
-                setTitle(event.target.value);
+                setDraft({ title: event.target.value });
               }}
               placeholder="What needs to be done?"
               value={title}

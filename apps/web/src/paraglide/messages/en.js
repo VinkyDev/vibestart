@@ -20,6 +20,7 @@
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
+/** @typedef {{}} Cap_Effect_Http_ServerInputs */
 /** @typedef {{}} Cap_Frontend_FrameworkInputs */
 /** @typedef {{}} Cap_Fullstack_FrameworkInputs */
 /** @typedef {{}} Cap_Hono_ServerInputs */
@@ -76,6 +77,9 @@
 /** @typedef {{}} Desc_DockerInputs */
 /** @typedef {{}} Desc_DrizzleInputs */
 /** @typedef {{}} Desc_E2eInputs */
+/** @typedef {{}} Desc_EffectInputs */
+/** @typedef {{}} Desc_Effect_HttpInputs */
+/** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
 /** @typedef {{}} Desc_HonoInputs */
@@ -94,6 +98,7 @@
 /** @typedef {{}} Desc_ShadcnInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
+/** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
@@ -113,6 +118,7 @@
 /** @typedef {{}} Docs_PreviousInputs */
 /** @typedef {{}} Document_DescriptionInputs */
 /** @typedef {{}} Document_TitleInputs */
+/** @typedef {{}} Effect_ProcessInputs */
 /** @typedef {{}} Electron_ProcessInputs */
 /** @typedef {{}} Engineering_CapabilitiesInputs */
 /** @typedef {{}} Expo_ProcessInputs */
@@ -123,6 +129,8 @@
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
 /** @typedef {{}} Fit_DrizzleInputs */
+/** @typedef {{}} Fit_Effect_HttpInputs */
+/** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
 /** @typedef {{}} Fit_HonoInputs */
@@ -194,6 +202,7 @@
 /** @typedef {{}} Kind_FrameworkInputs */
 /** @typedef {{}} Kind_FrontendInputs */
 /** @typedef {{}} Kind_MobileInputs */
+/** @typedef {{}} Kind_ModeInputs */
 /** @typedef {{}} Kind_OrmInputs */
 /** @typedef {{}} Kind_RouterInputs */
 /** @typedef {{}} Kind_RuntimeInputs */
@@ -205,6 +214,9 @@
 /** @typedef {{}} Knip_Scope_MobileInputs */
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
+/** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_StandardInputs */
+/** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
 /** @typedef {{}} Mysql_ProcessInputs */
 /** @typedef {{}} Nav_DocsInputs */
@@ -241,6 +253,9 @@
 /** @typedef {{}} Pillar_Types_TitleInputs */
 /** @typedef {{}} Postgres_ProcessInputs */
 /** @typedef {{}} PreviewInputs */
+/** @typedef {{}} Preview_Error_BodyInputs */
+/** @typedef {{}} Preview_Error_TitleInputs */
+/** @typedef {{}} Preview_RetryInputs */
 /** @typedef {{ label: NonNullable<unknown> }} PreviewingInputs */
 /** @typedef {{ name: NonNullable<unknown> }} ProcessInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Process_With_ApiInputs */
@@ -453,6 +468,10 @@ export const cap_document_database = /** @type {(inputs: Cap_Document_DatabaseIn
 
 export const cap_document_orm = /** @type {(inputs: Cap_Document_OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`a document ODM`)
+};
+
+export const cap_effect_http_server = /** @type {(inputs: Cap_Effect_Http_ServerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`an Effect HTTP server`)
 };
 
 export const cap_frontend_framework = /** @type {(inputs: Cap_Frontend_FrameworkInputs) => LocalizedString} */ () => {
@@ -684,6 +703,18 @@ export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} 
 	return /** @type {LocalizedString} */ (`Mix natural-language goals with scripted assertions. An AI agent explores the UI, and verified actions can replay from cache. Fits evolving interfaces and teams adding user-journey coverage quickly.`)
 };
 
+export const desc_effect = /** @type {(inputs: Desc_EffectInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`An integrated Effect stack with typed services, RPC, and reactive state`)
+};
+
+export const desc_effect_http = /** @type {(inputs: Desc_Effect_HttpInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Scoped HTTP server with Effect services and layers`)
+};
+
+export const desc_effect_rpc = /** @type {(inputs: Desc_Effect_RpcInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Schema contracts, typed RPC, and Effect Atom clients`)
+};
+
 export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Desktop app around the web app, packaged with electron-builder`)
 };
@@ -737,7 +768,7 @@ export const desc_prisma = /** @type {(inputs: Desc_PrismaInputs) => LocalizedSt
 };
 
 export const desc_react = /** @type {(inputs: Desc_ReactInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`React 19 with TanStack Query`)
+	return /** @type {LocalizedString} */ (`React 19 components and hooks`)
 };
 
 export const desc_self = /** @type {(inputs: Desc_SelfInputs) => LocalizedString} */ () => {
@@ -754,6 +785,10 @@ export const desc_spa = /** @type {(inputs: Desc_SpaInputs) => LocalizedString} 
 
 export const desc_sqlite = /** @type {(inputs: Desc_SqliteInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Single-file database via node:sqlite`)
+};
+
+export const desc_standard = /** @type {(inputs: Desc_StandardInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Compose frameworks, APIs, databases, and deployment targets`)
 };
 
 export const desc_tanstack_router = /** @type {(inputs: Desc_Tanstack_RouterInputs) => LocalizedString} */ () => {
@@ -832,6 +867,10 @@ export const document_title = /** @type {(inputs: Document_TitleInputs) => Local
 	return /** @type {LocalizedString} */ (`vibestart · AI Native full-stack scaffolding`)
 };
 
+export const effect_process = /** @type {(inputs: Effect_ProcessInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Effect · Node.js`)
+};
+
 export const electron_process = /** @type {(inputs: Electron_ProcessInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Electron main process`)
 };
@@ -875,6 +914,14 @@ export const fit_drizzle = /** @type {(inputs: Fit_DrizzleInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`For SQL written as TypeScript, on any database.`)
 };
 
+export const fit_effect_http = /** @type {(inputs: Fit_Effect_HttpInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Scoped services and resource lifetimes throughout the server.`)
+};
+
+export const fit_effect_rpc = /** @type {(inputs: Fit_Effect_RpcInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`One typed contract from the server to Effect Atom in the browser.`)
+};
+
 export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For the same web app in its own window, packaged as an installer.`)
 };
@@ -904,7 +951,7 @@ export const fit_next = /** @type {(inputs: Fit_NextInputs) => LocalizedString} 
 };
 
 export const fit_node = /** @type {(inputs: Fit_NodeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Keep the current Node.js runtime for Hono.`)
+	return /** @type {LocalizedString} */ (`Run the server on Node.js.`)
 };
 
 export const fit_none_api = /** @type {(inputs: Fit_None_ApiInputs) => LocalizedString} */ () => {
@@ -1174,6 +1221,10 @@ export const kind_mobile = /** @type {(inputs: Kind_MobileInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`Mobile`)
 };
 
+export const kind_mode = /** @type {(inputs: Kind_ModeInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Mode`)
+};
+
 export const kind_orm = /** @type {(inputs: Kind_OrmInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`ORM`)
 };
@@ -1216,6 +1267,18 @@ export const language = /** @type {(inputs: LanguageInputs) => LocalizedString} 
 
 export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`About ${i?.name}`)
+};
+
+export const mode_effect_about = /** @type {(inputs: Mode_Effect_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Typed services, RPC, and reactive state`)
+};
+
+export const mode_standard = /** @type {(inputs: Mode_StandardInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Standard`)
+};
+
+export const mode_standard_about = /** @type {(inputs: Mode_Standard_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Compose your own stack`)
 };
 
 export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {
@@ -1360,6 +1423,18 @@ export const postgres_process = /** @type {(inputs: Postgres_ProcessInputs) => L
 
 export const preview = /** @type {(inputs: PreviewInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`preview`)
+};
+
+export const preview_error_body = /** @type {(inputs: Preview_Error_BodyInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Your stack choices are saved in the URL. Try loading the preview again, or return to the home page.`)
+};
+
+export const preview_error_title = /** @type {(inputs: Preview_Error_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Could not load the preview`)
+};
+
+export const preview_retry = /** @type {(inputs: Preview_RetryInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Try again`)
 };
 
 export const previewing = /** @type {((inputs: PreviewingInputs) => LocalizedString) & { parts: (inputs: PreviewingInputs) => import('../runtime.js').MessagePart[] }} */ (

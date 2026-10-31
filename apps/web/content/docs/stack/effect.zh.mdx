@@ -1,0 +1,21 @@
+---
+title: Effect 模式
+description: 围绕 Effect 服务、Schema、RPC 和 Atom 构建的独立技术栈。
+---
+
+工作台默认使用 **Standard** 模式。切换到 **Effect** 后，使用经过验证的 Effect 技术栈；切换模式会选择该模式的默认组合。URL 保存模式，浏览器返回可以恢复之前的选择。
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect
+pnpm dlx vibestart-cli --list --mode effect
+```
+
+Effect 模式使用 React、TanStack Router、Effect HTTP/RPC、PostgreSQL、Drizzle Effect 适配器、`@effect/sql-pg`、Better Auth 和 `@effect/atom-react`。校验使用 Effect Schema，服务依赖通过 Layer 组合，服务错误转换为不泄露内部信息的传输错误。浏览器状态由 Atom 管理，RPC 状态跟随会话隔离，不混入 Hono、oRPC、Zod 或 TanStack Query。
+
+`packages/contracts` 定义共享 Schema 和协议，`packages/api` 实现服务和处理器，`packages/db` 管理持久化，`packages/auth` 适配 Better Auth。`apps/server` 负责组合和启动，`apps/web` 负责路由和展示。第三方 Promise API 只在服务边界适配。
+
+运行时为 Node，部署可以选择 Docker 或不部署。尚未适配的框架、数据库、移动端、桌面端和运行时不会出现在 Effect 模式中。CLI 拒绝混搭，不会自动改变模式。包管理器独立于运行时：pnpm 和 Bun 都可以安装同一套 Node 应用。
+
+服务测试使用 `@effect/vitest`，浏览器测试使用 `e2e`。Effect golden 与 Standard 项目使用同一套验证矩阵；Docker CI 还验证生产镜像的迁移、认证和鉴权 RPC。
+
+运行时和服务模型参见 [Effect 文档](https://effect.website/docs/)。

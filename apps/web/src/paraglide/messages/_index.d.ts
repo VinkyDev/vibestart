@@ -19,6 +19,7 @@ export type Cap_Cloudflare_DeploymentInputs = {};
 export type Cap_Database_ServerInputs = {};
 export type Cap_Document_DatabaseInputs = {};
 export type Cap_Document_OrmInputs = {};
+export type Cap_Effect_Http_ServerInputs = {};
 export type Cap_Frontend_FrameworkInputs = {};
 export type Cap_Fullstack_FrameworkInputs = {};
 export type Cap_Hono_ServerInputs = {};
@@ -89,6 +90,9 @@ export type Desc_BunInputs = {};
 export type Desc_DockerInputs = {};
 export type Desc_DrizzleInputs = {};
 export type Desc_E2eInputs = {};
+export type Desc_EffectInputs = {};
+export type Desc_Effect_HttpInputs = {};
+export type Desc_Effect_RpcInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
 export type Desc_HonoInputs = {};
@@ -107,6 +111,7 @@ export type Desc_SelfInputs = {};
 export type Desc_ShadcnInputs = {};
 export type Desc_SpaInputs = {};
 export type Desc_SqliteInputs = {};
+export type Desc_StandardInputs = {};
 export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
 export type Desc_Vite_PlusInputs = {};
@@ -128,6 +133,7 @@ export type Docs_PaginationInputs = {};
 export type Docs_PreviousInputs = {};
 export type Document_DescriptionInputs = {};
 export type Document_TitleInputs = {};
+export type Effect_ProcessInputs = {};
 export type Electron_ProcessInputs = {};
 export type Engineering_CapabilitiesInputs = {};
 export type Expo_ProcessInputs = {};
@@ -140,6 +146,8 @@ export type Fit_Better_AuthInputs = {};
 export type Fit_BunInputs = {};
 export type Fit_DockerInputs = {};
 export type Fit_DrizzleInputs = {};
+export type Fit_Effect_HttpInputs = {};
+export type Fit_Effect_RpcInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
 export type Fit_HonoInputs = {};
@@ -225,6 +233,7 @@ export type Kind_DesktopInputs = {};
 export type Kind_FrameworkInputs = {};
 export type Kind_FrontendInputs = {};
 export type Kind_MobileInputs = {};
+export type Kind_ModeInputs = {};
 export type Kind_OrmInputs = {};
 export type Kind_RouterInputs = {};
 export type Kind_RuntimeInputs = {};
@@ -238,6 +247,9 @@ export type LanguageInputs = {};
 export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
+export type Mode_Effect_AboutInputs = {};
+export type Mode_StandardInputs = {};
+export type Mode_Standard_AboutInputs = {};
 export type Mongodb_ProcessInputs = {};
 export type Mysql_ProcessInputs = {};
 export type Nav_DocsInputs = {};
@@ -276,6 +288,9 @@ export type Pillar_Types_BodyInputs = {};
 export type Pillar_Types_TitleInputs = {};
 export type Postgres_ProcessInputs = {};
 export type PreviewInputs = {};
+export type Preview_Error_BodyInputs = {};
+export type Preview_Error_TitleInputs = {};
+export type Preview_RetryInputs = {};
 export type PreviewingInputs = {
     label: NonNullable<unknown>;
 };
@@ -715,6 +730,20 @@ export declare const cap_document_database: ((inputs?: Cap_Document_DatabaseInpu
 export declare const cap_document_orm: ((inputs?: Cap_Document_OrmInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Document_OrmInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "an Effect HTTP server" |
+*
+* @param {Cap_Effect_Http_ServerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const cap_effect_http_server: ((inputs?: Cap_Effect_Http_ServerInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Effect_Http_ServerInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -1504,6 +1533,48 @@ export declare const desc_e2e: ((inputs?: Desc_E2eInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "An integrated Effect stack with typed services, RPC, and reactive state" |
+*
+* @param {Desc_EffectInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_effect: ((inputs?: Desc_EffectInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_EffectInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Scoped HTTP server with Effect services and layers" |
+*
+* @param {Desc_Effect_HttpInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_effect_http: ((inputs?: Desc_Effect_HttpInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Effect_HttpInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Schema contracts, typed RPC, and Effect Atom clients" |
+*
+* @param {Desc_Effect_RpcInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_effect_rpc: ((inputs?: Desc_Effect_RpcInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Effect_RpcInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "Desktop app around the web app, packaged with electron-builder" |
 *
 * @param {Desc_ElectronInputs} inputs
@@ -1686,7 +1757,7 @@ export declare const desc_prisma: ((inputs?: Desc_PrismaInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "React 19 with TanStack Query" |
+* | "React 19 components and hooks" |
 *
 * @param {Desc_ReactInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1751,6 +1822,20 @@ export declare const desc_spa: ((inputs?: Desc_SpaInputs, options?: {
 export declare const desc_sqlite: ((inputs?: Desc_SqliteInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_SqliteInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Compose frameworks, APIs, databases, and deployment targets" |
+*
+* @param {Desc_StandardInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const desc_standard: ((inputs?: Desc_StandardInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_StandardInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -2022,6 +2107,20 @@ export declare const document_title: ((inputs?: Document_TitleInputs, options?: 
 /**
 * | output |
 * | --- |
+* | "Effect · Node.js" |
+*
+* @param {Effect_ProcessInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const effect_process: ((inputs?: Effect_ProcessInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Effect_ProcessInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "Electron main process" |
 *
 * @param {Electron_ProcessInputs} inputs
@@ -2163,6 +2262,34 @@ export declare const fit_drizzle: ((inputs?: Fit_DrizzleInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "Scoped services and resource lifetimes throughout the server." |
+*
+* @param {Fit_Effect_HttpInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_effect_http: ((inputs?: Fit_Effect_HttpInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Effect_HttpInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "One typed contract from the server to Effect Atom in the browser." |
+*
+* @param {Fit_Effect_RpcInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const fit_effect_rpc: ((inputs?: Fit_Effect_RpcInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Effect_RpcInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "For the same web app in its own window, packaged as an installer." |
 *
 * @param {Fit_ElectronInputs} inputs
@@ -2261,7 +2388,7 @@ export declare const fit_next: ((inputs?: Fit_NextInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Keep the current Node.js runtime for Hono." |
+* | "Run the server on Node.js." |
 *
 * @param {Fit_NodeInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3169,6 +3296,20 @@ export declare const kind_mobile: ((inputs?: Kind_MobileInputs, options?: {
 /**
 * | output |
 * | --- |
+* | "Mode" |
+*
+* @param {Kind_ModeInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const kind_mode: ((inputs?: Kind_ModeInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Kind_ModeInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
 * | "ORM" |
 *
 * @param {Kind_OrmInputs} inputs
@@ -3318,6 +3459,48 @@ export declare const language: ((inputs?: LanguageInputs, options?: {
 export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Learn_AboutInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Typed services, RPC, and reactive state" |
+*
+* @param {Mode_Effect_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_effect_about: ((inputs?: Mode_Effect_AboutInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Effect_AboutInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Standard" |
+*
+* @param {Mode_StandardInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_standard: ((inputs?: Mode_StandardInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_StandardInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Compose your own stack" |
+*
+* @param {Mode_Standard_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_standard_about: ((inputs?: Mode_Standard_AboutInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Standard_AboutInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -3822,6 +4005,48 @@ export declare const postgres_process: ((inputs?: Postgres_ProcessInputs, option
 export declare const preview: ((inputs?: PreviewInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<PreviewInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Your stack choices are saved in the URL. Try loading the preview again, or return to the home page." |
+*
+* @param {Preview_Error_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_error_body: ((inputs?: Preview_Error_BodyInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_Error_BodyInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Could not load the preview" |
+*
+* @param {Preview_Error_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_error_title: ((inputs?: Preview_Error_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_Error_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Try again" |
+*
+* @param {Preview_RetryInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const preview_retry: ((inputs?: Preview_RetryInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Preview_RetryInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**

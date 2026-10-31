@@ -1,0 +1,17 @@
+| Layer       | Location                                                             | Runs against                                                                                                                         | Write it for                                                                             |
+| ----------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| End-to-end  | `apps/web/tests/e2e/*.e2e.ts`                                        | TesterArmy e2e driving Chromium against the real web app, API, and PostgreSQL                                                        | Journeys that decide whether the product works                                           |
+| Integration | `packages/api/tests/integration/*.test.ts`                           | `@effect/vitest` sending requests through `Routes` in process (`HttpRouter.toWebHandler`), real sessions, a real PostgreSQL database | Every procedure's validation, error codes, authorization, and invariants                 |
+| Unit        | `*.test.ts` beside the code in `apps/server/src` or `packages/*/src` | Node, no I/O                                                                                                                         | Branching logic: pricing, permissions, state machines, parsers, calculations, edge cases |
+
+`apps/web/e2e.config.ts` runs `tests/support/start.ts` to start the stack for the e2e tests on :3200 (`E2E_TEST_PORT`): a fresh PostgreSQL database, the real Effect server, and Vite in front, with the same proxy and origin as development. A second checkout runs its tests at the same time on another port. Each integration test file provides `TestApp.layer` (`tests/support/app.ts`) through `layer(...)` from `@effect/vitest`: a database of its own from `makeTestDatabase` in `@my-app/db/testing`, migrated and dropped when the layer's scope closes, so files run in parallel without a port. Test databases are created beside `DATABASE_URL` from `apps/server/.env`, so the tests need PostgreSQL running. Tests sign up a new user with `TestApp.signUp`, so they share no rows. `rpcRaw` posts NDJSON past client validation so tests can inspect the actual wire response; `createRaw` decodes the create exit.
+
+Use `visit()` and `reload()` before interacting. Query with `screen`, act with `tap()` and `fill()`, and assert with `expect` from `e2e`. Generated tests need no model; configure an agent in `e2e.config.ts` for natural-language steps.
+
+The app command inherits only `PATH`, `HOME`, temporary-directory variables, and `e2e.config.ts` overrides. Forward any additional required variables there. Logs: `apps/web/.e2e/server.log`; report: `.e2e/report.json`; failure traces: `.e2e/artifacts`. Rerun failures from `apps/web` with `vp exec e2e run --last-failed`.
+
+Integration tests send real requests to the routes in this process, through the same middleware and validation as the server, with real Better Auth sessions and a real database.
+
+E2E tests in `apps/web/tests/e2e` are the specification: changing, skipping, or weakening an assertion takes the user's approval first.
+
+While iterating, run the narrowest set that covers the change: `vp test --project unit`, `vp test --project integration`, `vp test --changed`, a single file, or `vp exec e2e run <file>` in `apps/web`.

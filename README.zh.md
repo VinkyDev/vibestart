@@ -94,6 +94,16 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `--json`                                                     | 只输出一个 JSON 对象,从不提问。失败时带有机器可读的 `code`。                                                                                              |
 | `--no-interactive`、`--no-git`、`--no-install`、`--no-check` | 跳过提问、`git init`、安装与初始化、最后的 `vp check`。                                                                                                   |
 
+## 技术栈模式
+
+默认使用 Standard。通过 `--mode effect` 创建独立的 Effect 项目，通过 `--list --mode effect` 查看已适配的选项；交互式 CLI 首先询问模式，工作台也提供 Standard/Effect 切换。
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect
+```
+
+Effect 模式组合 React、TanStack Router、Effect HTTP/RPC 与 Atom、PostgreSQL、Drizzle、Better Auth、Node 和 e2e，可选 Docker 部署。它不支持混入 Standard 的传输协议、框架或运行时。包管理器独立于 Node 运行时。
+
 ## 文档
 
 - [vibestart.net/docs](https://vibestart.net/docs)：快速开始、选择技术栈、CLI 参考、测试与概念
@@ -110,7 +120,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 | `packages/integrations` | Integration、模板、依赖目录与验证记录存储 |
 | `packages/config`       | 共享的 TypeScript 预设                    |
 | `golden/`               | 已提交的生成项目,各自是独立的 workspace   |
-| `prototypes/`           | 尚未生成的技术栈的手写目标项目,不进 CI    |
+| `prototypes/`           | 尚未生成的技术栈的手写目标项目            |
 
 ## 参与贡献
 
