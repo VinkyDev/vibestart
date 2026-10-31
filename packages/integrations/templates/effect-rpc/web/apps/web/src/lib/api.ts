@@ -42,7 +42,7 @@ export const updateTodoAtom = Atom.family((id: number) =>
 );
 
 export const deleteTodoAtom = Atom.family((id: number) =>
-  Rpc.runtime.fn<void>()(
+  Rpc.runtime.fn(
     Effect.fnUntraced(function* () {
       const client = yield* Rpc;
 

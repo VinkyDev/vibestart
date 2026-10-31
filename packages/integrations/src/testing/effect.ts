@@ -3,7 +3,7 @@ import { contribute, packageJson } from "@vibestart/core";
 
 import { knipEntries } from "#/knip.ts";
 import { templateFiles } from "#/templates.ts";
-import { ultraciteOverrides, ultracitePresets } from "#/ultracite.ts";
+import { ultracitePresets } from "#/ultracite.ts";
 import {
   agentsSections,
   ignoredFiles,
@@ -60,20 +60,6 @@ export const effectTesting = (ctx: Context) => [
     module: "ultracite/oxlint/vitest",
     name: "vitest",
   }),
-  contribute(
-    ultraciteOverrides,
-    `{
-    // This promise is only a synchronization signal, without a resolved value.
-    files:["apps/web/tests/e2e/**"],rules:{"typescript/no-invalid-void-type":"off"}
-  }`
-  ),
-  contribute(
-    ultraciteOverrides,
-    `{
-    // The generic RPC client takes an explicit void payload.
-    files:["packages/api/tests/**"],rules:{"unicorn/no-useless-undefined":["error",{checkArguments:false}]}
-  }`
-  ),
   contribute(
     agentsSections,
     `${agentsTestsIntro.trimEnd()}\n\n${effectTests.trimEnd()}`

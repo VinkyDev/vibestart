@@ -87,7 +87,7 @@ export const updateTodoAtom = Atom.family((id: number) =>
 );
 
 export const deleteTodoAtom = Atom.family((id: number) =>
-  Rpc.runtime.fn<void>()(
+  Rpc.runtime.fn(
     Effect.fnUntraced(function* () {
       const client = yield* Rpc;
 
@@ -427,7 +427,8 @@ const AuthRoutes = Layer.unwrap(
 );
 
 const RpcOrigin = Layer.unwrap(
-  Effect.map(Auth, (auth) => {
+  Effect.gen(function* () {
+    const auth = yield* Auth;
     const allowedOrigin = new URL(auth.options.baseURL).origin;
 
     return HttpRouter.middleware((httpEffect) =>
@@ -466,13 +467,14 @@ const ApiRoutes = Layer.mergeAll(
 
 const SecurityHeaders = HttpRouter.middleware(
   (effect) =>
-    Effect.map(
-      effect,
-      HttpServerResponse.setHeaders({
-        "x-content-type-options": "nosniff",
-        "x-frame-options": "DENY",
-        "referrer-policy": "strict-origin-when-cross-origin",
-      })
+    effect.pipe(
+      Effect.map(
+        HttpServerResponse.setHeaders({
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+        })
+      )
     ),
   { global: true }
 );
@@ -503,22 +505,38 @@ export const TodosLive = TodosRpcs.toLayer(
     const todos = yield* Todos;
 
     return {
-      "todos.list": () =>
-        CurrentUser.use((user) => todos.list(user.id)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
-      "todos.create": ({ title }) =>
-        CurrentUser.use((user) => todos.create(user.id, title)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
-      "todos.update": ({ id, completed }) =>
-        CurrentUser.use((user) => todos.update(user.id, id, completed)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
-      "todos.delete": ({ id }) =>
-        CurrentUser.use((user) => todos.delete(user.id, id)).pipe(
-          Effect.catchTag("TodoStorageError", unavailable)
-        ),
+      "todos.list": Effect.fnUntraced(
+        function* () {
+          const user = yield* CurrentUser;
+
+          return yield* todos.list(user.id);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+      "todos.create": Effect.fnUntraced(
+        function* ({ title }) {
+          const user = yield* CurrentUser;
+
+          return yield* todos.create(user.id, title);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+      "todos.update": Effect.fnUntraced(
+        function* ({ id, completed }) {
+          const user = yield* CurrentUser;
+
+          return yield* todos.update(user.id, id, completed);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
+      "todos.delete": Effect.fnUntraced(
+        function* ({ id }) {
+          const user = yield* CurrentUser;
+
+          return yield* todos.delete(user.id, id);
+        },
+        Effect.catchTag("TodoStorageError", unavailable)
+      ),
     };
   })
 );
@@ -748,7 +766,8 @@ import { Schema } from "effect";
 
 /** Normalize at the boundary; count Unicode code points, as PostgreSQL char_length does. */
 export const TodoTitle = Schema.Trim.check(
-  Schema.isPattern(/^[^\u0000]{1,200}$/u)
+  Schema.isPattern(/^.{1,200}$/su),
+  Schema.makeFilter((title) => !title.includes("\0"))
 );
 
 export const TodoId = Schema.Int.check(

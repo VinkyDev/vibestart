@@ -29,7 +29,8 @@ const AuthRoutes = Layer.unwrap(
 );
 
 const RpcOrigin = Layer.unwrap(
-  Effect.map(Auth, (auth) => {
+  Effect.gen(function* () {
+    const auth = yield* Auth;
     const allowedOrigin = new URL(auth.options.baseURL).origin;
 
     return HttpRouter.middleware((httpEffect) =>
@@ -68,13 +69,14 @@ const ApiRoutes = Layer.mergeAll(
 
 const SecurityHeaders = HttpRouter.middleware(
   (effect) =>
-    Effect.map(
-      effect,
-      HttpServerResponse.setHeaders({
-        "x-content-type-options": "nosniff",
-        "x-frame-options": "DENY",
-        "referrer-policy": "strict-origin-when-cross-origin",
-      })
+    effect.pipe(
+      Effect.map(
+        HttpServerResponse.setHeaders({
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+        })
+      )
     ),
   { global: true }
 );

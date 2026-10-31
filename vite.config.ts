@@ -19,11 +19,7 @@ const foreignFiles = [
   "packages/integrations/templates/**",
 ];
 
-const generatedFiles = [
-  "**/routeTree.gen.ts",
-  "apps/web/.source/**",
-  "apps/web/src/paraglide/**",
-];
+const generatedFiles = ["apps/web/.source/**", "apps/web/src/paraglide/**"];
 
 const vendoredFiles = ["packages/ui/src/components/**"];
 
@@ -53,9 +49,6 @@ export default defineConfig({
         "style",
         "unknown",
       ],
-      ignoreCase: true,
-      newlinesBetween: true,
-      order: "asc",
     },
   },
   lint: {
@@ -73,16 +66,6 @@ export default defineConfig({
     ],
     options: { typeAware: true, typeCheck: true },
     overrides: [
-      {
-        // Key order in integration contributions is the key order of the generated file.
-        files: ["packages/integrations/src/**"],
-        rules: { "eslint/sort-keys": "off" },
-      },
-      {
-        // The key order of the CLI's citty `args` is the order of its --help.
-        files: ["apps/cli/src/options.ts"],
-        rules: { "eslint/sort-keys": "off" },
-      },
       {
         // Shiki paints each token with the theme's own color. That color is grammar data, not a design-system choice.
         files: [
@@ -106,20 +89,9 @@ export default defineConfig({
         rules: { "typescript/promise-function-async": "off" },
       },
       {
+        // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
         files: ["apps/web/src/routes/**"],
         rules: {
-          // TanStack Router infers a route's options in order, so `head` reads the type `loader` returns
-          // only when it comes after it.
-          "eslint/sort-keys": "off",
-          // A route module exports its `Route` beside the components it renders.
-          "react/only-export-components": [
-            "warn",
-            {
-              allowExportNames: ["Route"],
-              customHOCs: ["createFileRoute", "createRootRoute"],
-            },
-          ],
-          // A loader throws `notFound()` and `beforeLoad` throws `redirect()`. Both are objects rather than an `Error`.
           "typescript/only-throw-error": [
             "error",
             {
