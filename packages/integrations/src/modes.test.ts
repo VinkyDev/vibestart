@@ -142,6 +142,59 @@ describe("stack modes", () => {
     }
   );
 
+  it.each(["postgres", "sqlite"])(
+    "describes unauthenticated %s todos as shared data",
+    async (database) => {
+      const { files } = await generate(
+        registry,
+        {
+          stack: compose(registry, { mode: "effect", database, auth: null }),
+          addons: [],
+          channel: "recommended",
+        },
+        { name: "effect-app" }
+      );
+
+      const page = files.find(
+        ({ path }) => path === "apps/web/src/routes/todos.tsx"
+      )?.content;
+
+      expect(page).toContain("Shared by everyone who opens the app.");
+      expect(page).not.toContain("Private to your account.");
+    }
+  );
+
+  it.each([null, "postgres", "sqlite"])(
+    "documents the required public origin for %s Effect containers without auth",
+    async (database) => {
+      const { files } = await generate(
+        registry,
+        {
+          stack: compose(registry, {
+            mode: "effect",
+            database,
+            auth: null,
+            deployment: "docker",
+          }),
+          addons: [],
+          channel: "recommended",
+        },
+        { name: "effect-app" }
+      );
+
+      const production = files
+        .find(({ path }) => path === "README.md")
+        ?.content.split("## Production")[1];
+
+      expect(production).toContain("`APP_URL` (the public origin)");
+      expect(production).not.toContain("BETTER_AUTH");
+
+      expect(production?.includes("The migration reads `DATABASE_URL`;")).toBe(
+        database !== null
+      );
+    }
+  );
+
   it.each([
     { backend: "hono" },
     { api: "orpc" },

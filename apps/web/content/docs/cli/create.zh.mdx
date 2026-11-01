@@ -35,6 +35,30 @@ CLI 会依次：
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
+Effect 模式提供 20 个合法组合：PostgreSQL 或 SQLite 搭配可选的 Better Auth，或者不使用数据库，再分别组合两种浏览器测试框架和 Docker／不部署。包管理器与扩展独立于这些组合。
+
+| 参数         | Effect 可选值                | 不进行交互时的默认值             |
+| ------------ | ---------------------------- | -------------------------------- |
+| `--database` | `postgres`、`sqlite`、`none` | `sqlite`                         |
+| `--orm`      | `drizzle`、`none`            | 根据数据库推导                   |
+| `--auth`     | `better-auth`、`none`        | 无默认值；使用数据库时需显式选择 |
+| `--testing`  | `playwright`、`e2e`          | `playwright`                     |
+
+Better Auth 需要数据库。不启用认证时，Todo 是所有访问者共享的公开数据。不使用数据库时，不生成 ORM、认证、迁移和 Todo 示例，仅保留类型化的 HTTP/RPC 健康检查。SQLite 使用官方 Effect 驱动，无需独立数据库服务。
+
+```sh
+# SQLite、认证和默认的 Playwright 测试框架
+pnpm dlx vibestart-cli my-app --mode effect --auth better-auth
+
+# PostgreSQL 公开 Todo，使用 TesterArmy e2e
+pnpm dlx vibestart-cli my-app --mode effect --database postgres --auth none --testing e2e
+
+# 不使用数据库、ORM 或认证
+pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
+```
+
+使用 `--json` 或 `--no-interactive` 时，认证等选择未确定会返回 `incomplete-stack` 并以退出码 `1` 结束；不兼容的选择返回 `illegal-stack`，退出码同样为 `1`。成功时仍以 `0` 退出。使用 `--list --mode effect --json` 查看已安装版本实际支持的选项。
+
 ## CLI 执行的步骤 [#steps]
 
 <Steps>

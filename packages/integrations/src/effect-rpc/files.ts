@@ -51,11 +51,12 @@ export const routes = (ctx: Context) =>
   file(
     "packages/api/src/index.ts",
     `
-import { Config, Effect, Layer } from "effect";
+import { ${ctx.has("better-auth") ? "" : "Config, "}Effect, Layer } from "effect";
 import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
 import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
 import { RpcSerialization, RpcServer } from "effect/rpc";
 
+${ctx.has("better-auth") ? `import { Auth } from "${ctx.scope}/auth";` : ""}
 import { Api, ${ctx.stack.database === undefined ? "HealthRpcs" : "TodosRpcs"} } from "${ctx.scope}/contracts";
 
 ${ctx.has("better-auth") ? 'import { AuthRoutes } from "#src/auth-routes.ts";\nimport { AuthMiddlewareLive } from "#src/auth-middleware.ts";' : ""}
@@ -65,7 +66,7 @@ ${ctx.stack.database === undefined ? "" : 'import { Todos } from "#src/todos.ts"
 
 const RpcOrigin = Layer.unwrap(
   Effect.gen(function* () {
-    const allowedOrigin = new URL(yield* Config.String("${ctx.has("better-auth") ? "BETTER_AUTH_URL" : "APP_URL"}")).origin;
+    const allowedOrigin = new URL(${ctx.has("better-auth") ? "(yield* Auth).options.baseURL" : 'yield* Config.String("APP_URL")'}).origin;
 
     return HttpRouter.middleware((httpEffect) =>
       Effect.gen(function* () {
@@ -89,8 +90,7 @@ const RpcRoutes = RpcServer.layerHttp({
 }).pipe(
   Layer.provide([
     ${ctx.stack.database === undefined ? "HealthRpcLive" : "TodosLive"},
-    ${ctx.has("better-auth") ? "AuthMiddlewareLive," : ""}
-    RpcSerialization.layerNdjson,
+    ${ctx.has("better-auth") ? "AuthMiddlewareLive,\n    " : ""}RpcSerialization.layerNdjson,
     RpcOrigin,
   ]),
   ${ctx.stack.database === undefined ? "" : "Layer.provide(Todos.layer)"}
@@ -130,6 +130,12 @@ export const todoWebFiles = (ctx: Context) => {
       pageSource,
       'createFileRoute("/_authenticated/todos")',
       'createFileRoute("/todos")',
+      page
+    );
+    pageSource = replaceOnce(
+      pageSource,
+      "Private to your account.",
+      "Shared by everyone who opens the app.",
       page
     );
     notifySource = replaceOnce(

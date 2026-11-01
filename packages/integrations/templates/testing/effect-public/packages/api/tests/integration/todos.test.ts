@@ -1,7 +1,7 @@
 import { assert, layer } from "@effect/vitest";
-import { Effect, Schema } from "effect";
+import { Effect } from "effect";
 
-import { TodoNotFound, TodoTitle } from "@my-app/contracts";
+import { TodoNotFound } from "@my-app/contracts";
 
 import { makeClient, TestApp } from "../support/app.ts";
 
@@ -9,9 +9,7 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
   it.effect("creates, lists, updates, and deletes without authentication", () => Effect.gen(function* () {
     const client = yield* makeClient;
 
-    const title = yield* Schema.decodeUnknownEffect(TodoTitle)("  Buy milk  ");
-
-    const todo = yield* client("todos.create", { title });
+    const todo = yield* client("todos.create", { title: "Buy milk" });
     assert.strictEqual(todo.title, "Buy milk");
     assert.strictEqual(todo.completed, false);
     assert.deepStrictEqual(yield* client("todos.list", undefined), [todo]);
@@ -19,6 +17,28 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
     yield* client("todos.delete", { id: todo.id });
     assert.deepStrictEqual(yield* client("todos.list", undefined), []);
     assert.instanceOf(yield* Effect.flip(client("todos.delete", { id: todo.id })), TodoNotFound);
+  }));
+
+  it.effect("trims a title at the server boundary", () => Effect.gen(function* () {
+    const app = yield* TestApp;
+    const client = yield* makeClient;
+
+    const response = yield* Effect.promise(async () => await app.fetch(new Request("http://localhost/rpc", {
+      method: "POST",
+      headers: { "content-type": "application/ndjson" },
+      body: `${JSON.stringify({ _tag: "Request", id: "1", tag: "todos.create", payload: { title: "  Buy milk  " }, headers: [] })}\n`,
+    })));
+
+    const body = yield* Effect.promise(async () => await response.text());
+    assert.strictEqual(response.status, 200);
+    assert.include(body, '"_tag":"Success"');
+
+    const todos = yield* client("todos.list", undefined);
+    assert.deepStrictEqual(todos.map(({ title }) => title), ["Buy milk"]);
+
+    for (const todo of todos) {
+      yield* client("todos.delete", { id: todo.id });
+    }
   }));
 
   for (const title of ["", "   ", "x".repeat(201), "😀".repeat(201), "nul\u0000byte"]) {
@@ -37,7 +57,7 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
     }));
   }
 
-  for (const origin of ["null", "http://localhost:4000", "https://attacker.example"]) {
+  for (const origin of ["", "null", "http://localhost:4000", "https://attacker.example"]) {
     it.effect(`rejects an untrusted browser origin without auth: ${origin}`, () => Effect.gen(function* () {
       const app = yield* TestApp;
 
@@ -49,6 +69,9 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
 
       yield* Effect.promise(async () => await response.text());
       assert.strictEqual(response.status, 403);
+
+      const client = yield* makeClient;
+      assert.deepStrictEqual(yield* client("todos.list", undefined), []);
     }));
   }
 });

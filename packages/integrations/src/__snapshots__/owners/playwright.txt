@@ -15780,9 +15780,9 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 import { assert, layer } from "@effect/vitest";
-import { Effect, Schema } from "effect";
+import { Effect } from "effect";
 
-import { TodoNotFound, TodoTitle } from "@my-app/contracts";
+import { TodoNotFound } from "@my-app/contracts";
 
 import { makeClient, TestApp } from "../support/app.ts";
 
@@ -15791,10 +15791,7 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
     Effect.gen(function* () {
       const client = yield* makeClient;
 
-      const title =
-        yield* Schema.decodeUnknownEffect(TodoTitle)("  Buy milk  ");
-
-      const todo = yield* client("todos.create", { title });
+      const todo = yield* client("todos.create", { title: "Buy milk" });
       assert.strictEqual(todo.title, "Buy milk");
       assert.strictEqual(todo.completed, false);
       assert.deepStrictEqual(yield* client("todos.list", undefined), [todo]);
@@ -15808,6 +15805,38 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
         yield* Effect.flip(client("todos.delete", { id: todo.id })),
         TodoNotFound
       );
+    })
+  );
+
+  it.effect("trims a title at the server boundary", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const client = yield* makeClient;
+
+      const response = yield* Effect.promise(
+        async () =>
+          await app.fetch(
+            new Request("http://localhost/rpc", {
+              method: "POST",
+              headers: { "content-type": "application/ndjson" },
+              body: `${JSON.stringify({ _tag: "Request", id: "1", tag: "todos.create", payload: { title: "  Buy milk  " }, headers: [] })}\n`,
+            })
+          )
+      );
+
+      const body = yield* Effect.promise(async () => await response.text());
+      assert.strictEqual(response.status, 200);
+      assert.include(body, '"_tag":"Success"');
+
+      const todos = yield* client("todos.list", undefined);
+      assert.deepStrictEqual(
+        todos.map(({ title }) => title),
+        ["Buy milk"]
+      );
+
+      for (const todo of todos) {
+        yield* client("todos.delete", { id: todo.id });
+      }
     })
   );
 
@@ -15843,6 +15872,7 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
   }
 
   for (const origin of [
+    "",
     "null",
     "http://localhost:4000",
     "https://attacker.example",
@@ -15866,6 +15896,9 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
 
           yield* Effect.promise(async () => await response.text());
           assert.strictEqual(response.status, 403);
+
+          const client = yield* makeClient;
+          assert.deepStrictEqual(yield* client("todos.list", undefined), []);
         })
     );
   }
@@ -16939,14 +16972,7 @@ export const makeClient = Effect.gen(function* () {
 # packages/api/tests/support/app.ts · 2 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
-import {
-  ConfigProvider,
-  Context,
-  Effect,
-  Layer,
-  Redacted,
-  Schema,
-} from "effect";
+import { Context, Effect, Layer, Redacted, Schema } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
 
@@ -16990,13 +17016,7 @@ export class TestApp extends Context.Service<
       const { dispose, handler } = HttpRouter.toWebHandler(
         Routes.pipe(
           Layer.provide(Layer.succeedContext(services)),
-          Layer.provide(HttpServer.layerServices),
-          Layer.provide(
-            Layer.succeed(
-              ConfigProvider.ConfigProvider,
-              ConfigProvider.fromUnknown({ BETTER_AUTH_URL: origin })
-            )
-          )
+          Layer.provide(HttpServer.layerServices)
         ),
         { disableLogger: true }
       );
@@ -18920,7 +18940,7 @@ export const makeTestDatabase = Effect.gen(function* () {
     ),
     (folder) =>
       Effect.promise(async () => {
-        await rm(folder, { recursive: true, force: true });
+        await rm(folder, { recursive: true, force: true, maxRetries: 10 });
       })
   );
 

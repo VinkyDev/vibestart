@@ -70,7 +70,16 @@ export const effectDatabase = (ctx: Context) => [
     glob: "packages/db/src/migrations/**",
     label: "packages/db/src/migrations/**",
   }),
-  contribute(gettingStarted, { run: "vp run db:migrate" }),
+  contribute(gettingStarted, {
+    run: "vp run db:migrate",
+    note: ctx.has("sqlite")
+      ? {
+          id: "sqlite-file",
+          text: "creates apps/server/local.db",
+          values: { path: "apps/server/local.db" },
+        }
+      : undefined,
+  }),
   contribute(agentsMap, {
     path: "packages/db",
     owns: `Drizzle schema, relations, migrations, and the Database service on ${ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg"}`,

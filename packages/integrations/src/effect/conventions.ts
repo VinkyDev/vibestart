@@ -18,7 +18,19 @@ export const effectConventions = (ctx: Context) => [
     : [
         {
           title: "Schema",
-          text: "Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as the contract schema. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated.",
+          text: [
+            "Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as the contract schema. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated.",
+            ...(ctx.has("sqlite")
+              ? [
+                  'SQLite stores booleans and timestamps as integers (`integer({ mode: "boolean" })`, `integer({ mode: "timestamp_ms" })`). Queries and migrations use Drizzle’s native Effect driver; yield them inside Effect programs. `DATABASE_URL` is a filesystem path relative to the process working directory: `local.db` resolves to `apps/server/local.db` for the generated server and migration commands.',
+                ]
+              : []),
+            ...(ctx.has("better-auth")
+              ? [
+                  "The Better Auth tables in `schema/auth.ts` match the fields Better Auth expects; read its docs before adding a plugin.",
+                ]
+              : []),
+          ].join(" "),
         },
       ]),
   ...(ctx.has("better-auth")

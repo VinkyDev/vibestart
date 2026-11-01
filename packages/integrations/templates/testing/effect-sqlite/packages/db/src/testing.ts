@@ -10,7 +10,7 @@ import { migrateDatabase } from "#src/migrate.ts";
 export const makeTestDatabase = Effect.gen(function* () {
   const directory = yield* Effect.acquireRelease(
     Effect.tryPromise(async () => await mkdtemp(path.join(tmpdir(), "my-app-test-"))),
-    (folder) => Effect.promise(async () => { await rm(folder, { recursive: true, force: true }); })
+    (folder) => Effect.promise(async () => { await rm(folder, { recursive: true, force: true, maxRetries: 10 }); })
   );
 
   const url = Redacted.make(path.join(directory, "test.db"));

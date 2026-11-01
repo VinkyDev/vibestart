@@ -70,8 +70,7 @@ export class Todos extends Context.Service<
         list: Effect.fn("Todos.list")(function* (${auth ? "userId" : ""}) {
           return yield* db
             .select(columns)
-            .from(todos)
-            ${auth ? ".where(eq(todos.userId, userId))" : ""}
+            .from(todos)${auth ? "\n            .where(eq(todos.userId, userId))" : ""}
             .orderBy(todos.id)
             .pipe(Effect.mapError(storageError));
         }),

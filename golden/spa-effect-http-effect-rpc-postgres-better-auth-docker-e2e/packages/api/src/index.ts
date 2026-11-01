@@ -1,8 +1,9 @@
-import { Config, Effect, Layer } from "effect";
+import { Effect, Layer } from "effect";
 import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
 import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
 import { RpcSerialization, RpcServer } from "effect/rpc";
 
+import { Auth } from "@my-app/auth";
 import { Api, TodosRpcs } from "@my-app/contracts";
 
 import { AuthMiddlewareLive } from "#src/auth-middleware.ts";
@@ -13,8 +14,7 @@ import { Todos } from "#src/todos.ts";
 
 const RpcOrigin = Layer.unwrap(
   Effect.gen(function* () {
-    const allowedOrigin = new URL(yield* Config.String("BETTER_AUTH_URL"))
-      .origin;
+    const allowedOrigin = new URL((yield* Auth).options.baseURL).origin;
 
     return HttpRouter.middleware((httpEffect) =>
       Effect.gen(function* () {

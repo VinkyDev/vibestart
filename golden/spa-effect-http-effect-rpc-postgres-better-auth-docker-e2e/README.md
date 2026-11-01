@@ -64,4 +64,4 @@ The image runs two entry points from the same build:
 - `node dist/migrate.mjs` applies pending migrations and exits;
 - `node dist/index.mjs` serves `/rpc`, `/api`, `/api/auth`, and the SPA.
 
-Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUTH_SECRET`; the server also reads `PORT` (default `3000`).
+The migration reads `DATABASE_URL`; the server reads `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), `BETTER_AUTH_SECRET`, and `PORT` (default `3000`). Set the public origin to the URL visitors use, including its scheme and port.

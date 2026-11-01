@@ -1,4 +1,4 @@
-import { ConfigProvider, Context, Effect, Layer, Redacted, Schema } from "effect";
+import { Context, Effect, Layer, Redacted, Schema } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
 
@@ -42,8 +42,7 @@ export class TestApp extends Context.Service<
       const { dispose, handler } = HttpRouter.toWebHandler(
         Routes.pipe(
           Layer.provide(Layer.succeedContext(services)),
-          Layer.provide(HttpServer.layerServices),
-          Layer.provide(Layer.succeed(ConfigProvider.ConfigProvider, ConfigProvider.fromUnknown({ BETTER_AUTH_URL: origin })))
+          Layer.provide(HttpServer.layerServices)
         ),
         { disableLogger: true }
       );

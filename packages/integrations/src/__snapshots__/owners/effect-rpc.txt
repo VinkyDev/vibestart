@@ -503,7 +503,7 @@ const TodosPage = () => {
         <div className="grid gap-1">
           <h1 className="text-3xl font-semibold tracking-tight">Todos</h1>
           <p className="text-muted-foreground text-sm">
-            Private to your account.
+            Shared by everyone who opens the app.
           </p>
         </div>
         {todos.length > 0 && (
@@ -759,12 +759,7 @@ const RpcRoutes = RpcServer.layerHttp({
   path: "/rpc",
   protocol: "http",
 }).pipe(
-  Layer.provide([
-    HealthRpcLive,
-
-    RpcSerialization.layerNdjson,
-    RpcOrigin,
-  ])
+  Layer.provide([HealthRpcLive, RpcSerialization.layerNdjson, RpcOrigin])
 );
 
 const ApiRoutes = Layer.mergeAll(
@@ -793,11 +788,12 @@ export const Routes = Layer.mergeAll(RpcRoutes, ApiRoutes, SecurityHeaders);
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
-import { Config, Effect, Layer } from "effect";
+import { Effect, Layer } from "effect";
 import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
 import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
 import { RpcSerialization, RpcServer } from "effect/rpc";
 
+import { Auth } from "@my-app/auth";
 import { Api, TodosRpcs } from "@my-app/contracts";
 
 import { AuthMiddlewareLive } from "#src/auth-middleware.ts";
@@ -808,8 +804,7 @@ import { Todos } from "#src/todos.ts";
 
 const RpcOrigin = Layer.unwrap(
   Effect.gen(function* () {
-    const allowedOrigin = new URL(yield* Config.String("BETTER_AUTH_URL"))
-      .origin;
+    const allowedOrigin = new URL((yield* Auth).options.baseURL).origin;
 
     return HttpRouter.middleware((httpEffect) =>
       Effect.gen(function* () {
@@ -906,12 +901,7 @@ const RpcRoutes = RpcServer.layerHttp({
   path: "/rpc",
   protocol: "http",
 }).pipe(
-  Layer.provide([
-    TodosLive,
-
-    RpcSerialization.layerNdjson,
-    RpcOrigin,
-  ]),
+  Layer.provide([TodosLive, RpcSerialization.layerNdjson, RpcOrigin]),
   Layer.provide(Todos.layer)
 );
 
@@ -1213,7 +1203,6 @@ export class Todos extends Context.Service<
           return yield* db
             .select(columns)
             .from(todos)
-
             .orderBy(todos.id)
             .pipe(Effect.mapError(storageError));
         }),

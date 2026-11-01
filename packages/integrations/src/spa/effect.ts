@@ -1,6 +1,7 @@
 import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
+import { listStack } from "#/app.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -13,14 +14,14 @@ const spaFiles = (ctx: Context) => {
   const router = "apps/web/src/router.tsx";
   const home = "apps/web/src/routes/index.tsx";
 
-  const headline = [
+  const headline = listStack([
     "React",
     "Effect (HttpApi, RPC, Atom)",
     ...(ctx.stack.database === undefined
       ? []
       : [ctx.has("sqlite") ? "SQLite" : "PostgreSQL", "Drizzle"]),
     ...(ctx.has("better-auth") ? ["Better Auth"] : []),
-  ].join(", ");
+  ]);
 
   return [
     ...templateFiles(ctx, "spa/effect", { except: [router, home] }),
