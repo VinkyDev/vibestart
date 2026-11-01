@@ -10,7 +10,7 @@ TanStack Start · oRPC · PostgreSQL · Drizzle · Better Auth · Void, on [Vite
 | Database   | PostgreSQL 18, Drizzle ORM v1                              |
 | Auth       | Better Auth, email and password, sessions in PostgreSQL    |
 | UI         | shadcn/ui on Base UI, in `packages/ui`                     |
-| Deployment | Void 1.3.0 on Cloudflare Workers (preview)                 |
+| Deployment | Void 1.4.0 on Cloudflare Workers (preview)                 |
 | Toolchain  | Vite+ (`vp`): dev, build, test, lint, format, type check   |
 
 ## Getting started

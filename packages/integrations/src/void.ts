@@ -477,10 +477,7 @@ export const startInstance = createStart(() => ({
           ...(backend ? ["env.ts"] : []),
           ...(ctx.has("hono") ? ["routes/**/*.ts"] : []),
         ],
-        ignoreDependencies: [
-          ...(database ? ["cloudflare"] : []),
-          ...(ctx.has("hono") ? [`${ctx.scope}/web`] : []),
-        ],
+        ignoreDependencies: ctx.has("hono") ? [`${ctx.scope}/web`] : undefined,
       }),
       contribute(agentsMap, {
         path: "scripts/deploy.ts",
