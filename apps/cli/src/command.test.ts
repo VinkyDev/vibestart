@@ -476,20 +476,24 @@ describe("Effect mode", () => {
       })
       .parse(result.output);
 
-    expect(output.stacks).toHaveLength(40);
+    expect(output.stacks).toHaveLength(80);
     expect(
-      ["mode", "database", "desktop", "testing"].map(
+      ["mode", "database", "desktop", "mobile", "testing"].map(
         (kind) => output.kinds.find(({ id }) => id === kind)?.default
       )
-    ).toStrictEqual(["effect", "sqlite", null, "playwright"]);
+    ).toStrictEqual(["effect", "sqlite", null, null, "playwright"]);
     expect(
       output.stacks.every(({ stack }) => stack.mode === "effect")
     ).toBeTruthy();
     expect(
-      ["backend", "desktop"].map(
+      ["backend", "desktop", "mobile"].map(
         (kind) => output.kinds.find(({ id }) => id === kind)?.options
       )
-    ).toStrictEqual([[{ id: "effect-http" }], [{ id: "electron" }]]);
+    ).toStrictEqual([
+      [{ id: "effect-http" }],
+      [{ id: "electron" }],
+      [{ id: "expo" }],
+    ]);
   });
 
   it.each(["playwright", "e2e"])(

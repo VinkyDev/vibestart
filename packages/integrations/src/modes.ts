@@ -38,7 +38,7 @@ export const effect = defineIntegration({
     auth: ["better-auth", null],
     ui: ["shadcn"],
     desktop: ["electron", null],
-    mobile: [null],
+    mobile: ["expo", null],
     runtime: ["node"],
     deployment: ["docker", null],
     testing: ["playwright", "e2e"],

@@ -1241,6 +1241,108 @@
   }
 }
 
+# knip.json · 5 stacks
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["effect"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    }
+  }
+}
+
+# knip.json · 5 stacks
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["effect"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 5 stacks
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["effect"]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    }
+  }
+}
+
+# knip.json · 5 stacks
+#   spa-effect-http-effect-rpc-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["effect"]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
 # knip.json · 55 stacks
 #   spa-electron-docker
 #   spa-hono-electron-bun-docker

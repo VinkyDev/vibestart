@@ -1,8 +1,9 @@
 import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
-import { serverEnv } from "#/app.ts";
+import { serverEnv, stackHeadline } from "#/app.ts";
 import { composeEnv } from "#/docker.ts";
+import { quote } from "#/format.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers } from "#/vite-plus/slots.ts";
 
@@ -13,26 +14,56 @@ const authIndex = (ctx: Context) => {
     ? "better-auth/effect-sqlite"
     : "better-auth/effect-postgres";
 
-  const source = templateContent(ctx, set, path);
+  let source = templateContent(ctx, set, path);
+  const mobile = ctx.has("expo");
 
-  if (!ctx.has("electron")) {
-    return file(path, source);
+  const trustedOrigins = [
+    ...(ctx.has("electron") ? ["rendererOrigin"] : []),
+    ...(mobile ? [quote(`${ctx.name}://`)] : []),
+  ];
+
+  if (mobile) {
+    source = replaceOnce(
+      source,
+      'import { betterAuth } from "better-auth";',
+      'import { expo } from "@better-auth/expo";\nimport { betterAuth } from "better-auth";',
+      `${set}/${path}`
+    );
   }
 
-  return file(
-    path,
-    replaceOnce(
-      replaceOnce(
-        source,
-        `import * as schema from "${ctx.scope}/db/schema/auth";`,
-        `import * as schema from "${ctx.scope}/db/schema/auth";\nimport { rendererOrigin } from "${ctx.scope}/electron";`,
-        `${set}/${path}`
-      ),
-      "    secret: Redacted.value(options.secret),",
-      "    secret: Redacted.value(options.secret),\n    trustedOrigins: [rendererOrigin],",
+  if (ctx.has("electron")) {
+    source = replaceOnce(
+      source,
+      `import * as schema from "${ctx.scope}/db/schema/auth";`,
+      `import * as schema from "${ctx.scope}/db/schema/auth";\nimport { rendererOrigin } from "${ctx.scope}/electron";`,
       `${set}/${path}`
-    )
-  );
+    );
+  }
+
+  const extraOptions = [
+    ...(mobile
+      ? [
+          "    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.",
+          "    plugins: [expo()],",
+        ]
+      : []),
+    ...(trustedOrigins.length === 0
+      ? []
+      : [`    trustedOrigins: [${trustedOrigins.join(", ")}],`]),
+  ];
+
+  if (extraOptions.length > 0) {
+    source = replaceOnce(
+      source,
+      "    secret: Redacted.value(options.secret),",
+      ["    secret: Redacted.value(options.secret),", ...extraOptions].join(
+        "\n"
+      ),
+      `${set}/${path}`
+    );
+  }
+
+  return file(path, source);
 };
 
 export const effectAuth = (ctx: Context) => [
@@ -49,6 +80,7 @@ export const effectAuth = (ctx: Context) => [
   contribute(packageJson, {
     dependencies: [
       "@better-auth/drizzle-adapter",
+      ...(ctx.has("expo") ? ["@better-auth/expo"] : []),
       `${ctx.scope}/db`,
       "better-auth",
       "drizzle-orm",
@@ -78,6 +110,17 @@ export const effectAuth = (ctx: Context) => [
     example: "",
     schema: "Config.Redacted",
   }),
+  // Expo Go from the app stores may send exp:// as the origin, which the Expo plugin trusts only
+  // in development. `node --watch` does not set NODE_ENV.
+  ...(ctx.has("expo")
+    ? [
+        contribute(serverEnv, {
+          name: "NODE_ENV",
+          example: "development",
+          schema: "Config.String",
+        }),
+      ]
+    : []),
   contribute(composeEnv, {
     name: "BETTER_AUTH_URL",
     value: `\${BETTER_AUTH_URL:-http://localhost:3000}`,
@@ -90,6 +133,7 @@ export const effectAuth = (ctx: Context) => [
     path: "packages/auth",
     owns: "The Auth service: Better Auth configured from Config on its official Promise adapter",
   }),
+  contribute(stackHeadline, "Better Auth"),
   contribute(readmeLayers, {
     layer: "Auth",
     choice: `Better Auth with an Effect service boundary and ${ctx.has("sqlite") ? "SQLite" : "PostgreSQL"} sessions`,

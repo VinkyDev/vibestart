@@ -21,6 +21,7 @@ describe("stack modes", () => {
           mode: "effect",
           database: "postgres",
           desktop: "electron",
+          mobile: "expo",
         }),
         addons: [],
         channel: "recommended",
@@ -101,38 +102,42 @@ describe("stack modes", () => {
     ).toBe("standard");
   });
 
-  it("offers both test runners with optional persistence, authentication, and desktop shell", () => {
+  it("offers both test runners with optional persistence, authentication, desktop, and mobile", () => {
     const { stacks } = resolve(registry, { mode: "effect" });
-    expect(stacks).toHaveLength(40);
+    expect(stacks).toHaveLength(80);
 
     for (const database of [undefined, "postgres", "sqlite"]) {
       for (const auth of database === undefined
         ? [undefined]
         : [undefined, "better-auth"]) {
         for (const desktop of [undefined, "electron"]) {
-          for (const testing of ["playwright", "e2e"]) {
-            for (const deployment of [undefined, "docker"]) {
-              expect(
-                stacks.map((stack) => ({
-                  mode: stack.mode,
-                  database: stack.database,
-                  auth: stack.auth,
-                  desktop: stack.desktop,
-                  testing: stack.testing,
-                  deployment: stack.deployment,
-                  orm: stack.orm,
-                }))
-              ).toContainEqual(
-                expect.objectContaining({
-                  mode: "effect",
-                  database,
-                  auth,
-                  desktop,
-                  testing,
-                  deployment,
-                  orm: database === undefined ? undefined : "drizzle",
-                })
-              );
+          for (const mobile of [undefined, "expo"]) {
+            for (const testing of ["playwright", "e2e"]) {
+              for (const deployment of [undefined, "docker"]) {
+                expect(
+                  stacks.map((stack) => ({
+                    mode: stack.mode,
+                    database: stack.database,
+                    auth: stack.auth,
+                    desktop: stack.desktop,
+                    mobile: stack.mobile,
+                    testing: stack.testing,
+                    deployment: stack.deployment,
+                    orm: database === undefined ? undefined : "drizzle",
+                  }))
+                ).toContainEqual(
+                  expect.objectContaining({
+                    mode: "effect",
+                    database,
+                    auth,
+                    desktop,
+                    mobile,
+                    testing,
+                    deployment,
+                    orm: database === undefined ? undefined : "drizzle",
+                  })
+                );
+              }
             }
           }
         }
@@ -296,6 +301,66 @@ describe("stack modes", () => {
     }
   );
 
+  it.each(["postgres", "sqlite"] as const)(
+    "configures Expo and Electron origins, mobile Effect atoms, and development NODE_ENV on %s",
+    async (database) => {
+      const [withAuth, publicTodos] = await Promise.all([
+        generate(
+          registry,
+          {
+            stack: compose(registry, {
+              mode: "effect",
+              database,
+              auth: "better-auth",
+              desktop: "electron",
+              mobile: "expo",
+            }),
+            addons: [],
+            channel: "recommended",
+          },
+          { name: "effect-app" }
+        ),
+        generate(
+          registry,
+          {
+            stack: compose(registry, {
+              mode: "effect",
+              database,
+              auth: null,
+              mobile: "expo",
+            }),
+            addons: [],
+            channel: "recommended",
+          },
+          { name: "effect-app" }
+        ),
+      ]);
+
+      const authIndex = withAuth.files.find(
+        ({ path }) => path === "packages/auth/src/index.ts"
+      )?.content;
+
+      expect(authIndex).toContain("plugins: [expo()],");
+      expect(authIndex).toContain(
+        'trustedOrigins: [rendererOrigin, "effect-app://"],'
+      );
+      expect(
+        withAuth.files.find(({ path }) => path === "README.md")?.content
+      ).toContain("NODE_ENV=development");
+      expect(
+        withAuth.files.find(({ path }) => path === "apps/mobile/src/lib/api.ts")
+          ?.content
+      ).toContain("await authClient.getCookie()");
+      expect(
+        publicTodos.files.find(
+          ({ path }) => path === "apps/mobile/src/lib/api.ts"
+        )?.content
+      ).toContain(
+        'Layer.succeed(FetchHttpClient.RequestInit, { credentials: "omit" })'
+      );
+    }
+  );
+
   it.each([
     { backend: "hono" },
     { api: "orpc" },
@@ -303,7 +368,6 @@ describe("stack modes", () => {
     { database: "mysql" },
     { framework: "next" },
     { runtime: "bun" },
-    { mobile: "expo" },
     { deployment: "void" },
   ])("rejects unadapted choices in Effect mode: %j", (choice) => {
     const stack = { ...compose(registry, { mode: "effect" }), ...choice };

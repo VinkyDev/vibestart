@@ -1,7 +1,7 @@
 import type { Context } from "@vibestart/core";
-import { contribute, file, packageJson } from "@vibestart/core";
+import { contribute, file, packageJson, renderFile } from "@vibestart/core";
 
-import { listStack } from "#/app.ts";
+import { listStack, stackHeadline } from "#/app.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -13,15 +13,6 @@ import {
 const spaFiles = (ctx: Context) => {
   const router = "apps/web/src/router.tsx";
   const home = "apps/web/src/routes/index.tsx";
-
-  const headline = listStack([
-    "React",
-    "Effect (HttpApi, RPC, Atom)",
-    ...(ctx.stack.database === undefined
-      ? []
-      : [ctx.has("sqlite") ? "SQLite" : "PostgreSQL", "Drizzle"]),
-    ...(ctx.has("better-auth") ? ["Better Auth"] : []),
-  ]);
 
   return [
     ...templateFiles(ctx, "spa/effect", { except: [router, home] }),
@@ -40,12 +31,11 @@ const spaFiles = (ctx: Context) => {
             router
           )
     ),
-    file(
-      home,
+    renderFile(home, (read) =>
       replaceOnce(
         templateContent(ctx, "spa/effect", home),
         "React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle and Better Auth\n        on Vite+.",
-        `${headline} on Vite+.`,
+        `${listStack(read(stackHeadline))} on Vite+.`,
         home
       )
     ),
@@ -58,6 +48,7 @@ export const effectSpa = (ctx: Context) => [
   }),
   ...templateFiles(ctx, "spa/proxy"),
   ...spaFiles(ctx),
+  contribute(stackHeadline, "React"),
   contribute(packageJson, {
     path: "apps/web",
     imports: { "#src/*": "./src/*" },
