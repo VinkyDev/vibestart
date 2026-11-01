@@ -13,11 +13,11 @@ The mobile app is optional. It can be the whole project, or sit beside a web app
 
 The rest of the stack decides what the app contains:
 
-| The stack has         | The app adds                                                                                        |
-| --------------------- | --------------------------------------------------------------------------------------------------- |
-| A server              | A card that calls the API, through oRPC or the web app's typed client, with TanStack Query          |
-| Better Auth           | Sign-up and sign-in screens, the session in the device's secure storage, and guards on user screens |
-| An API and a database | The todo example, behind sign-in when the stack has authentication                                  |
+| The stack has         | The app adds                                                                                                                             |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| A server              | A card that calls the API, through oRPC or the web app's typed client with TanStack Query (or Effect RPC and Effect Atom in Effect mode) |
+| Better Auth           | Sign-up and sign-in screens, the session in the device's secure storage, and guards on user screens                                      |
+| An API and a database | The todo example, behind sign-in when the stack has authentication                                                                       |
 
 Docker deploys the web app and the server. The mobile app is not part of the image, so a stack with only a mobile app cannot add Docker.
 

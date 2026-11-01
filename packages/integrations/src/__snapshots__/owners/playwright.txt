@@ -1,4 +1,4 @@
-# apps/web/playwright.config.ts · 826 stacks
+# apps/web/playwright.config.ts · 836 stacks
 #   next-docker
 #   next-expo-docker
 #   next-hono-bun-docker
@@ -210,14 +210,24 @@
 #   spa-docker
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 #   spa-electron-docker
 #   spa-electron-expo-docker
 #   spa-electron-expo-void
@@ -886,7 +896,7 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 200 stacks
+# apps/web/tests/e2e/app.e2e.ts · 202 stacks
 #   next-hono-bun-docker
 #   next-hono-docker
 #   next-hono-expo-bun-docker
@@ -939,6 +949,8 @@ test("the dark theme survives a reload", async ({ page }) => {
 #   next-self-sqlite-expo-docker
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 #   spa-hono-bun-docker
 #   spa-hono-docker
 #   spa-hono-electron-bun-docker
@@ -1683,7 +1695,7 @@ test("login redirects stay on the app origin after URL normalization", async ({
   await expectInternalRedirect("/\n/example.com");
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 240 stacks
+# apps/web/tests/e2e/app.e2e.ts · 244 stacks
 #   next-hono-openapi-mongodb-bun-docker
 #   next-hono-openapi-mongodb-docker
 #   next-hono-openapi-mongodb-expo-bun-docker
@@ -1746,8 +1758,12 @@ test("login redirects stay on the app origin after URL normalization", async ({
 #   next-self-orpc-sqlite-expo-docker
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 #   spa-hono-openapi-mongodb-bun-docker
 #   spa-hono-openapi-mongodb-docker
 #   spa-hono-openapi-mongodb-electron-bun-docker
@@ -1975,11 +1991,15 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 4 stacks
+# apps/web/tests/e2e/app.e2e.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
@@ -3080,17 +3100,27 @@ export default async function setup() {
   return await startTestServer(e2eBaseURL);
 }
 
-# apps/web/tests/e2e/global-setup.ts · 10 stacks
+# apps/web/tests/e2e/global-setup.ts · 20 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 import { NodeServices } from "@effect/platform-node";
 import { Effect, Exit, Layer, Scope } from "effect";
 
@@ -3576,11 +3606,15 @@ export const signUp = async (email = uniqueEmail()) => {
   return { client, email };
 };
 
-# apps/web/tests/support/api.ts · 4 stacks
+# apps/web/tests/support/api.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 import { Effect, Layer } from "effect";
 import { FetchHttpClient } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -7397,9 +7431,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -7476,11 +7512,15 @@ export const testServer = Effect.gen(function* () {
   );
 });
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -7562,11 +7602,15 @@ export const testServer = Effect.gen(function* () {
   );
 });
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -14347,9 +14391,11 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# packages/api/tests/integration/health.test.ts · 2 stacks
+# packages/api/tests/integration/health.test.ts · 4 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 import { assert, layer } from "@effect/vitest";
 import { Effect } from "effect";
 
@@ -15487,9 +15533,11 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/integration/todos.test.ts · 2 stacks
+# packages/api/tests/integration/todos.test.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 import { assert, layer } from "@effect/vitest";
 import { sql } from "drizzle-orm";
 import { Effect } from "effect";
@@ -15800,11 +15848,15 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
   );
 });
 
-# packages/api/tests/integration/todos.test.ts · 4 stacks
+# packages/api/tests/integration/todos.test.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 import { assert, layer } from "@effect/vitest";
 import { Effect } from "effect";
 
@@ -15930,9 +15982,11 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
   }
 });
 
-# packages/api/tests/integration/todos.test.ts · 2 stacks
+# packages/api/tests/integration/todos.test.ts · 4 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 import { assert, layer } from "@effect/vitest";
 import { sql } from "drizzle-orm";
 import { Effect } from "effect";
@@ -16939,9 +16993,11 @@ afterAll(remove);
 /** Calls the procedures in this process, through their middleware and validation. */
 export const client = createRouterClient(appRouter, { context: { db } });
 
-# packages/api/tests/support/app.ts · 2 stacks
+# packages/api/tests/support/app.ts · 4 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 import { ConfigProvider, Context, Effect, Layer } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -16997,11 +17053,15 @@ export const makeClient = Effect.gen(function* () {
   );
 });
 
-# packages/api/tests/support/app.ts · 4 stacks
+# packages/api/tests/support/app.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 import { Context, Effect, Layer, Redacted, Schema } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -17161,11 +17221,15 @@ export const createRaw = Effect.fnUntraced(function* (
   return exit;
 });
 
-# packages/api/tests/support/app.ts · 4 stacks
+# packages/api/tests/support/app.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 import { ConfigProvider, Context, Effect, Layer } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -17226,7 +17290,7 @@ export const makeClient = Effect.gen(function* () {
   );
 });
 
-# packages/db/src/test-database-name.ts · 580 stacks
+# packages/db/src/test-database-name.ts · 584 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -17421,8 +17485,12 @@ export const makeClient = Effect.gen(function* () {
 #   next-self-postgres-prisma-expo-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-hono-mysql-better-auth-bun-docker
 #   spa-hono-mysql-better-auth-docker
 #   spa-hono-mysql-better-auth-electron-bun-docker
@@ -18915,11 +18983,15 @@ export const createTestDatabase = async () => {
   };
 };
 
-# packages/db/src/testing.ts · 4 stacks
+# packages/db/src/testing.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 import { PgClient } from "@effect/sql-pg";
 import { Config, Effect, Redacted } from "effect";
 import { SqlClient } from "effect/sql";
@@ -18957,11 +19029,15 @@ export const makeTestDatabase = Effect.gen(function* () {
   return Redacted.make(url.href);
 });
 
-# packages/db/src/testing.ts · 4 stacks
+# packages/db/src/testing.ts · 8 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";

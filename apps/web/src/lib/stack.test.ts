@@ -288,7 +288,7 @@ describe("Effect mode", () => {
       ["backend", "desktop", "mobile"].map((kind) =>
         optionsOf(kind, "effect").map((option) => option?.id ?? null)
       )
-    ).toStrictEqual([["effect-http"], ["electron", null], [null]]);
+    ).toStrictEqual([["effect-http"], ["electron", null], ["expo", null]]);
     expect(
       optionsOf("backend", "standard").some(
         (option) => option?.id === "effect-http"

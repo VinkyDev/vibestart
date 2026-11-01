@@ -1,14 +1,24 @@
-# apps/desktop/package.json · 10 stacks
+# apps/desktop/package.json · 20 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 {
   "name": "@my-app/desktop",
   "version": "0.0.0",
@@ -1717,6 +1727,169 @@
   },
   "devDependencies": {
     "@my-app/api": "workspace:*",
+    "@my-app/config": "workspace:*",
+    "@types/react": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# apps/mobile/package.json · 4 stacks
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
+{
+  "name": "@my-app/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "android": "expo run:android",
+    "build": "expo export --platform ios --platform android",
+    "ios": "expo run:ios",
+    "start": "expo start"
+  },
+  "dependencies": {
+    "@effect/atom-react": "catalog:",
+    "@my-app/contracts": "workspace:*",
+    "cn": "catalog:",
+    "effect": "catalog:",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "expo-linking": "catalog:",
+    "expo-router": "catalog:",
+    "expo-status-bar": "catalog:",
+    "expo-system-ui": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-screens": "catalog:",
+    "react-native-worklets": "catalog:",
+    "tailwindcss": "catalog:",
+    "uniwind": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/react": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# apps/mobile/package.json · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+{
+  "name": "@my-app/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "android": "expo run:android",
+    "build": "expo export --platform ios --platform android",
+    "ios": "expo run:ios",
+    "start": "expo start"
+  },
+  "dependencies": {
+    "@better-auth/expo": "catalog:",
+    "@effect/atom-react": "catalog:",
+    "@my-app/contracts": "workspace:*",
+    "better-auth": "catalog:",
+    "class-variance-authority": "catalog:",
+    "cn": "catalog:",
+    "effect": "catalog:",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "expo-linking": "catalog:",
+    "expo-network": "catalog:",
+    "expo-router": "catalog:",
+    "expo-secure-store": "catalog:",
+    "expo-status-bar": "catalog:",
+    "expo-system-ui": "catalog:",
+    "expo-web-browser": "catalog:",
+    "lucide-react-native": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-screens": "catalog:",
+    "react-native-svg": "catalog:",
+    "react-native-worklets": "catalog:",
+    "tailwindcss": "catalog:",
+    "uniwind": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/react": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# apps/mobile/package.json · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+{
+  "name": "@my-app/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "android": "expo run:android",
+    "build": "expo export --platform ios --platform android",
+    "ios": "expo run:ios",
+    "start": "expo start"
+  },
+  "dependencies": {
+    "@effect/atom-react": "catalog:",
+    "@my-app/contracts": "workspace:*",
+    "class-variance-authority": "catalog:",
+    "cn": "catalog:",
+    "effect": "catalog:",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "expo-linking": "catalog:",
+    "expo-router": "catalog:",
+    "expo-status-bar": "catalog:",
+    "expo-system-ui": "catalog:",
+    "lucide-react-native": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-screens": "catalog:",
+    "react-native-svg": "catalog:",
+    "react-native-worklets": "catalog:",
+    "tailwindcss": "catalog:",
+    "uniwind": "catalog:"
+  },
+  "devDependencies": {
     "@my-app/config": "workspace:*",
     "@types/react": "catalog:",
     "typescript": "catalog:"
@@ -3505,11 +3678,15 @@
   }
 }
 
-# apps/server/package.json · 4 stacks
+# apps/server/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
 {
   "name": "@my-app/server",
   "version": "0.0.0",
@@ -3533,15 +3710,23 @@
   }
 }
 
-# apps/server/package.json · 8 stacks
+# apps/server/package.json · 16 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 {
   "name": "@my-app/server",
   "version": "0.0.0",
@@ -3568,15 +3753,23 @@
   }
 }
 
-# apps/server/package.json · 8 stacks
+# apps/server/package.json · 16 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 {
   "name": "@my-app/server",
   "version": "0.0.0",
@@ -7051,9 +7244,11 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7097,9 +7292,11 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7144,11 +7341,15 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7195,11 +7396,15 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7247,11 +7452,15 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7297,11 +7506,15 @@
   }
 }
 
-# apps/web/package.json · 4 stacks
+# apps/web/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -15907,6 +16120,75 @@
   "packageManager": "pnpm@12.16.1"
 }
 
+# package.json · 2 stacks
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "package:desktop": "vp run --filter @my-app/desktop package",
+    "dev:mobile": "vp run --filter @my-app/mobile start",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
+# package.json · 2 stacks
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "dev:mobile": "vp run --filter @my-app/mobile start",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
 # package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
@@ -15972,6 +16254,93 @@
     "db:migrate": "vp run --filter @my-app/server db:migrate",
     "db:studio": "vp run --filter @my-app/db db:studio",
     "package:desktop": "vp run --filter @my-app/desktop package",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
+# package.json · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "db:generate": "vp run --filter @my-app/db db:generate",
+    "db:migrate": "vp run --filter @my-app/server db:migrate",
+    "db:studio": "vp run --filter @my-app/db db:studio",
+    "package:desktop": "vp run --filter @my-app/desktop package",
+    "dev:mobile": "vp run --filter @my-app/mobile start",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
+# package.json · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "db:generate": "vp run --filter @my-app/db db:generate",
+    "db:migrate": "vp run --filter @my-app/server db:migrate",
+    "db:studio": "vp run --filter @my-app/db db:studio",
+    "dev:mobile": "vp run --filter @my-app/mobile start",
     "test:e2e": "vp run --filter @my-app/web test:e2e",
     "knip": "knip"
   },
@@ -20163,9 +20532,11 @@
   }
 }
 
-# packages/api/package.json · 2 stacks
+# packages/api/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
 {
   "name": "@my-app/api",
   "version": "0.0.0",
@@ -20190,9 +20561,11 @@
   }
 }
 
-# packages/api/package.json · 2 stacks
+# packages/api/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 {
   "name": "@my-app/api",
   "version": "0.0.0",
@@ -20218,11 +20591,15 @@
   }
 }
 
-# packages/api/package.json · 4 stacks
+# packages/api/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 {
   "name": "@my-app/api",
   "version": "0.0.0",
@@ -20250,11 +20627,15 @@
   }
 }
 
-# packages/api/package.json · 4 stacks
+# packages/api/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 {
   "name": "@my-app/api",
   "version": "0.0.0",
@@ -20283,11 +20664,15 @@
   }
 }
 
-# packages/api/package.json · 4 stacks
+# packages/api/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 {
   "name": "@my-app/api",
   "version": "0.0.0",
@@ -20314,11 +20699,15 @@
   }
 }
 
-# packages/api/package.json · 4 stacks
+# packages/api/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 {
   "name": "@my-app/api",
   "version": "0.0.0",
@@ -21193,6 +21582,67 @@
 }
 
 # packages/auth/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@better-auth/expo": "catalog:",
+    "@my-app/db": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@better-auth/expo": "catalog:",
+    "@my-app/db": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/package.json · 2 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 {
@@ -21238,6 +21688,65 @@
     "@better-auth/drizzle-adapter": "catalog:",
     "@my-app/db": "workspace:*",
     "@my-app/electron": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@better-auth/expo": "catalog:",
+    "@my-app/db": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@better-auth/expo": "catalog:",
+    "@my-app/db": "workspace:*",
     "better-auth": "catalog:",
     "drizzle-orm": "catalog:",
     "effect": "catalog:"
@@ -21570,7 +22079,7 @@
   }
 }
 
-# packages/config/package.json · 1809 stacks
+# packages/config/package.json · 1829 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -22150,22 +22659,42 @@
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -23390,27 +23919,47 @@
   }
 }
 
-# packages/contracts/package.json · 20 stacks
+# packages/contracts/package.json · 40 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 {
   "name": "@my-app/contracts",
   "version": "0.0.0",
@@ -25405,15 +25954,23 @@
   }
 }
 
-# packages/db/package.json · 8 stacks
+# packages/db/package.json · 16 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 {
   "name": "@my-app/db",
   "version": "0.0.0",
@@ -25446,15 +26003,23 @@
   }
 }
 
-# packages/db/package.json · 8 stacks
+# packages/db/package.json · 16 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 {
   "name": "@my-app/db",
   "version": "0.0.0",
@@ -25487,17 +26052,27 @@
   }
 }
 
-# packages/electron/package.json · 10 stacks
+# packages/electron/package.json · 20 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 {
   "name": "@my-app/electron",
   "version": "0.0.0",
@@ -25921,7 +26496,7 @@
   }
 }
 
-# packages/ui/package.json · 1652 stacks
+# packages/ui/package.json · 1672 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -26344,22 +26919,42 @@
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker
+#   spa-effect-http-effect-rpc-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -71322,6 +71917,328 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-electron-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 packages:
   - apps/*
@@ -71624,6 +72541,392 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+  postgres: ^3.4.9
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+  postgres: ^3.4.9
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+  postgres: ^3.4.9
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+  postgres: ^3.4.9
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-effect-http-effect-rpc-postgres-docker
 packages:
   - apps/*
@@ -71898,6 +73201,356 @@ allowBuilds:
   esbuild: false
   electron: true
   electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
 
 peerDependencyRules:
   allowAny:
@@ -72204,6 +73857,388 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-network: ~58.0.4
+  expo-router: ~58.0.27
+  expo-secure-store: ~58.0.2
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  expo-web-browser: ~58.0.7
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  "@better-auth/expo": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-effect-http-effect-rpc-sqlite-docker
 packages:
   - apps/*
@@ -72478,6 +74513,356 @@ allowBuilds:
   esbuild: false
   electron: true
   electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # mobile
+  expo: 58.0.20
+  expo-constants: ~58.0.13
+  expo-linking: ~58.0.14
+  expo-router: ~58.0.27
+  expo-status-bar: ~58.0.4
+  expo-system-ui: ~58.0.6
+  lucide-react-native: ^1.62.0
+  react-native: 0.88.0
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-safe-area-context: ~5.10.1
+  react-native-screens: ~4.30.0
+  react-native-svg: 15.16.0
+  react-native-worklets: 0.13.0
+  uniwind: ^1.13.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
 
 peerDependencyRules:
   allowAny:
@@ -193792,6 +196177,108 @@ peerDependencyRules:
 }
 
 # vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-electron-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 {
   "$schema": "https://vibestart.net/schema.json",
@@ -193902,6 +196389,120 @@ peerDependencyRules:
 }
 
 # vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
 #   spa-effect-http-effect-rpc-postgres-docker
 {
   "$schema": "https://vibestart.net/schema.json",
@@ -193997,6 +196598,116 @@ peerDependencyRules:
     "orm": "drizzle",
     "ui": "shadcn",
     "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "mobile": "expo",
     "runtime": "node",
     "deployment": "docker",
     "testing": "e2e",
@@ -194118,6 +196829,120 @@ peerDependencyRules:
 }
 
 # vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
 #   spa-effect-http-effect-rpc-sqlite-docker
 {
   "$schema": "https://vibestart.net/schema.json",
@@ -194213,6 +197038,116 @@ peerDependencyRules:
     "orm": "drizzle",
     "ui": "shadcn",
     "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "mobile": "expo",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "mobile": "expo",
     "runtime": "node",
     "deployment": "docker",
     "testing": "e2e",

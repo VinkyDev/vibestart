@@ -1,14 +1,24 @@
-# apps/desktop/electron-builder.yml · 390 stacks
+# apps/desktop/electron-builder.yml · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -411,17 +421,27 @@ linux:
   target:
     - AppImage
 
-# apps/desktop/scripts/copy-renderer.ts · 390 stacks
+# apps/desktop/scripts/copy-renderer.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -812,17 +832,27 @@ await rm(renderer, { force: true, recursive: true });
 
 await cp(webDist, renderer, { recursive: true });
 
-# apps/desktop/scripts/dev.ts · 10 stacks
+# apps/desktop/scripts/dev.ts · 20 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -1296,17 +1326,27 @@ process.on("SIGTERM", stop);
 
 app.on("exit", (code) => process.exit(code ?? 0));
 
-# apps/desktop/src/main/config.ts · 114 stacks
+# apps/desktop/src/main/config.ts · 124 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-hono-orpc-electron-bun-docker
 #   spa-hono-orpc-electron-bun-docker-e2e
 #   spa-hono-orpc-electron-docker
@@ -1701,17 +1741,27 @@ export const apiPaths: readonly string[] = ["/api"];
 
 export const defaultApiOrigin = "http://localhost:3000";
 
-# apps/desktop/src/main/index.ts · 390 stacks
+# apps/desktop/src/main/index.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -2173,17 +2223,27 @@ if (app.requestSingleInstanceLock()) {
   app.quit();
 }
 
-# apps/desktop/src/main/ipc.ts · 390 stacks
+# apps/desktop/src/main/ipc.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -2589,17 +2649,27 @@ export const setupIpc = (devOrigin: string | null) => {
   });
 };
 
-# apps/desktop/src/main/renderer-route.test.ts · 390 stacks
+# apps/desktop/src/main/renderer-route.test.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -3083,17 +3153,27 @@ describe("trust", () => {
   });
 });
 
-# apps/desktop/src/main/renderer-route.ts · 390 stacks
+# apps/desktop/src/main/renderer-route.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -3581,17 +3661,27 @@ export const rendererFile = (url: URL, root: string) => {
   return path.extname(pathname) === "" && isFile(index) ? index : null;
 };
 
-# apps/desktop/src/main/renderer.ts · 390 stacks
+# apps/desktop/src/main/renderer.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -4061,17 +4151,27 @@ export const serveRenderer = ({
   });
 };
 
-# apps/desktop/src/main/window.ts · 390 stacks
+# apps/desktop/src/main/window.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -4506,17 +4606,27 @@ export const createMainWindow = ({
   return win;
 };
 
-# apps/desktop/src/preload/index.ts · 10 stacks
+# apps/desktop/src/preload/index.ts · 20 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 import { Schema } from "effect";
 import { contextBridge, ipcRenderer } from "electron";
 
@@ -4933,17 +5043,27 @@ const desktop: DesktopApi = {
 
 contextBridge.exposeInMainWorld(desktopBridgeGlobal, desktop);
 
-# apps/desktop/tsconfig.json · 390 stacks
+# apps/desktop/tsconfig.json · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -5329,17 +5449,27 @@ contextBridge.exposeInMainWorld(desktopBridgeGlobal, desktop);
   "include": ["src", "scripts", "vite.main.config.ts", "vite.preload.config.ts"]
 }
 
-# apps/desktop/vite.main.config.ts · 10 stacks
+# apps/desktop/vite.main.config.ts · 20 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 import path from "node:path";
 
 import { defineConfig } from "vite-plus";
@@ -5761,17 +5891,27 @@ export default defineConfig({
   publicDir: false,
 });
 
-# apps/desktop/vite.preload.config.ts · 390 stacks
+# apps/desktop/vite.preload.config.ts · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -6173,17 +6313,27 @@ export default defineConfig({
   ssr: { noExternal: true },
 });
 
-# packages/electron/src/index.ts · 10 stacks
+# packages/electron/src/index.ts · 20 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 import { Schema } from "effect";
 
 export const desktopBridgeGlobal = "desktop";
@@ -6611,17 +6761,27 @@ export interface DesktopApi {
   versions: () => Promise<DesktopVersions>;
 }
 
-# packages/electron/tsconfig.json · 390 stacks
+# packages/electron/tsconfig.json · 400 stacks
 #   spa-effect-http-effect-rpc-electron-docker
 #   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker

@@ -7,7 +7,7 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import { authVariant, sqlDatabase } from "#/app.ts";
+import { authVariant, sqlDatabase, stackHeadline } from "#/app.ts";
 import { drizzleConfig } from "#/drizzle/config.ts";
 import { templateFiles } from "#/templates.ts";
 import { agentsMap, generatedFiles } from "#/vite-plus/slots.ts";
@@ -80,6 +80,7 @@ export const effectDatabase = (ctx: Context) => [
         }
       : undefined,
   }),
+  contribute(stackHeadline, "Drizzle"),
   contribute(agentsMap, {
     path: "packages/db",
     owns: `Drizzle schema, relations, migrations, and the Database service on ${ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg"}`,

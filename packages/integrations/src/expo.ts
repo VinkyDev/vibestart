@@ -17,6 +17,7 @@ import {
   todosExample,
 } from "#/app.ts";
 import { envFiles } from "#/env-files.ts";
+import { effectExpo } from "#/expo/effect.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
 import { openapiQueriesContent } from "#/openapi.ts";
@@ -63,7 +64,7 @@ const renderAppJson = (ctx: Context) =>
 
 // Generated files are formatted afterwards, so the renderers below build content, not layout.
 const rootLayout = (ctx: Context) => {
-  const query = hasBackend(ctx);
+  const query = hasBackend(ctx) && !ctx.has("effect");
   const auth = ctx.has("better-auth");
 
   const todos = todosExample(ctx)
@@ -114,8 +115,9 @@ const rootLayout = (ctx: Context) => {
         ? ['import { authClient } from "#src/lib/auth-client.ts";']
         : []),
       ...(query
-        ? ['import { queryClient } from "#src/lib/query-client.ts";', ""]
+        ? ['import { queryClient } from "#src/lib/query-client.ts";']
         : []),
+      ...(auth || query ? [""] : []),
       ...(auth
         ? [
             "const RootLayout = () => {",
@@ -407,7 +409,7 @@ const lintOverride = (ctx: Context) => `{
 }`;
 
 const sessionSender = (ctx: Context) => {
-  if (ctx.has("orpc")) {
+  if (ctx.has("orpc") || ctx.has("effect-rpc")) {
     return "`src/lib/api.ts` sends";
   }
 
@@ -440,10 +442,14 @@ const architecture = (ctx: Context) =>
 export const expo = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "expo/common"),
-    ...(hasBackend(ctx) ? backendFiles(ctx) : []),
+    ...(ctx.has("effect")
+      ? effectExpo(ctx, apiUrl)
+      : [
+          ...(hasBackend(ctx) ? backendFiles(ctx) : []),
+          ...(ctx.has("better-auth") ? authFiles(ctx) : []),
+          ...(todosExample(ctx) ? todosFiles(ctx) : []),
+        ]),
     ...(ctx.has("better-auth") || todosExample(ctx) ? formFiles(ctx) : []),
-    ...(ctx.has("better-auth") ? authFiles(ctx) : []),
-    ...(todosExample(ctx) ? todosFiles(ctx) : []),
     rootLayout(ctx),
     file("apps/mobile/app.json", renderAppJson(ctx)),
     file("apps/mobile/.gitignore", ".expo\nexpo-env.d.ts\nios\nandroid\n"),
@@ -513,7 +519,7 @@ export const expo = defineIntegration({
     ...(ctx.has("better-auth")
       ? [
           contribute(agentsConventions, {
-            text: "A screen that needs a user is listed under a `Stack.Protected guard={signedIn}` in `apps/mobile/src/app/_layout.tsx`. The guard is UX, and the server is the security boundary.",
+            text: `A screen that needs a user is listed under a \`Stack.Protected guard={signedIn}\` in \`apps/mobile/src/app/_layout.tsx\`. The guard is UX, and the server is the security boundary.${ctx.has("effect") ? " Authenticated screens wrap their content in a `RegistryProvider` keyed by `session.session.id` so signing out or switching accounts disposes private state." : ""}`,
             title: "Protected screen",
           }),
         ]

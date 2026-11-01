@@ -16,7 +16,7 @@ Use the CLI to resolve stacks and maintain generated projects. Let its current h
 
 ## Independent modes
 
-Ask which ecosystem the user wants when it is unclear. Standard is the default (familiar TypeScript with the widest range of frameworks, databases, and deployment targets). Effect (`--mode effect`) uses a heavier, stricter model suited to complex backend service flows, with a more focused set of supported choices (React SPA on Node, PostgreSQL/SQLite/no database, optional Better Auth, optional Electron desktop, Docker). Discover its choices with `--list --mode effect --json`. Never mix its stack with Standard choices or propose changing modes to fix an incompatible selection. Preserve `stack.mode` in recipes and maintenance operations.
+Ask which ecosystem the user wants when it is unclear. Standard is the default (familiar TypeScript with the widest range of frameworks, databases, and deployment targets). Effect (`--mode effect`) uses a heavier, stricter model suited to complex backend service flows, with a more focused set of supported choices (React SPA on Node, PostgreSQL/SQLite/no database, optional Better Auth, optional Electron desktop and Expo mobile, Docker). Discover its choices with `--list --mode effect --json`. Never mix its stack with Standard choices or propose changing modes to fix an incompatible selection. Preserve `stack.mode` in recipes and maintenance operations.
 
 ## Choose the workflow
 
