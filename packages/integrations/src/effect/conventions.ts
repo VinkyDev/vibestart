@@ -3,7 +3,7 @@ import type { Context } from "@vibestart/core";
 export const effectConventions = (ctx: Context) => [
   {
     title: "Effect",
-    text: 'Services are `Context.Service` classes with static layers. Compose them with `Layer` and run them at process or Promise boundaries. Use `Effect.gen` for inline programs and layer construction, `Effect.fn("Service.operation")` for reusable operations, and `Effect.fnUntraced` when a span would duplicate an existing boundary. Internal failures can use `Data.TaggedError`; public errors use `Schema.TaggedError` in `packages/contracts`. Map expected failures at the transport boundary and log their causes there. Reserve defects for broken invariants in application flows; do not turn database or authentication outages into defects with `Effect.orDie`. Test-cleanup finalizers may use `Effect.orDie` because scope finalizers cannot return typed errors. Every `effect` and `@effect/*` package stays on one exact version.',
+    text: 'Services are `Context.Service` classes with static layers. Acquire dependencies with `yield*` in layer construction, bind a service before calling its methods (`const db = yield* Database`), and run layers only at entry, framework, or test boundaries (`NodeRuntime.runMain`, `HttpRouter.toWebHandler`, `AtomRpc.Service`, `AtomHttpApi.Service`, `@effect/vitest` `layer`). Keep pure helpers synchronous. Use `Effect.gen` for inline programs and layer construction, `Effect.fn("Service.operation")` for reusable operations, and `Effect.fnUntraced` when a span would duplicate an enclosing boundary. Internal failures can use `Data.TaggedError`; public errors use `Schema.TaggedError` in `packages/contracts`. Map expected failures at the transport boundary and log their causes there. Reserve defects for broken invariants in application flows; do not turn database or authentication outages into defects with `Effect.orDie`. Test-cleanup finalizers may use `Effect.orDie` because scope finalizers cannot return typed errors. Every `effect` and `@effect/*` package stays on one exact version; import core modules (`Effect`, `Schema`, `Config`, `Data`, `Layer`, `Predicate`, `DateTime`) from `"effect"` and transport, reactivity, and SQL modules from `"effect/http"`, `"effect/http-api"`, `"effect/rpc"`, `"effect/reactivity"`, and `"effect/sql"`.',
   },
   {
     title: "Environment",
@@ -19,10 +19,10 @@ export const effectConventions = (ctx: Context) => [
         {
           title: "Schema",
           text: [
-            "Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as the contract schema. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated.",
+            "Add or edit a table in `packages/db/src/schema/`, register a new table in `src/relations.ts`, and back each invariant with a constraint (`check`, `unique`, foreign keys) as well as the contract schema. Queries and migrations use Drizzle’s native Effect driver rather than `effect/sql` `Model.Class`; yield them inside Effect programs. Run `vp run db:generate` and commit the new folder under `src/migrations/`. A committed migration stays as generated.",
             ...(ctx.has("sqlite")
               ? [
-                  'SQLite stores booleans and timestamps as integers (`integer({ mode: "boolean" })`, `integer({ mode: "timestamp_ms" })`). Queries and migrations use Drizzle’s native Effect driver; yield them inside Effect programs. `DATABASE_URL` is a filesystem path relative to the process working directory: `local.db` resolves to `apps/server/local.db` for the generated server and migration commands.',
+                  'SQLite stores booleans and timestamps as integers (`integer({ mode: "boolean" })`, `integer({ mode: "timestamp_ms" })`). `DATABASE_URL` is a filesystem path relative to the process working directory: `local.db` resolves to `apps/server/local.db` for the generated server and migration commands.',
                 ]
               : []),
             ...(ctx.has("better-auth")

@@ -9,6 +9,7 @@ import {
   resolve,
 } from "@vibestart/core";
 
+import agentsEffect from "#/effect/agents-effect.md?raw";
 import { registry } from "#/registry.ts";
 
 describe("stack modes", () => {
@@ -53,6 +54,28 @@ describe("stack modes", () => {
     expect(
       output.files.find(({ path }) => path === "vibestart.jsonc")?.content
     ).toContain('"mode": "effect"');
+  });
+
+  it("equips Effect projects with the root Effect package and agent guide", async () => {
+    const { files } = await generate(
+      registry,
+      {
+        stack: compose(registry, { mode: "effect", database: null }),
+        addons: ["knip"],
+        channel: "recommended",
+      },
+      { name: "effect-app" }
+    );
+
+    expect(
+      files.find(({ path }) => path === "package.json")?.content
+    ).toContain('"effect": "catalog:"');
+    expect(files.find(({ path }) => path === "knip.json")?.content).toContain(
+      '"ignoreDependencies": ["effect"]'
+    );
+    expect(files.find(({ path }) => path === "AGENTS.md")?.content).toContain(
+      agentsEffect.trimEnd()
+    );
   });
 
   it("keeps existing recipes in standard mode", () => {

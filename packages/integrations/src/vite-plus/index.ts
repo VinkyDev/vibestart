@@ -49,6 +49,7 @@ import {
 } from "#/vite-plus/slots.ts";
 import type { ReadyStep, TestProject } from "#/vite-plus/slots.ts";
 
+import agentsEffect from "../effect/agents-effect.md?raw";
 import agentsCode from "./agents-code.md?raw";
 import agentsDone from "./agents-done.md?raw";
 import agentsVitePlus from "./agents-vite-plus.md?raw";
@@ -332,6 +333,7 @@ const renderAgents = (ctx: Context, read: ReadSlot) => {
 
   return `${[
     agentsVitePlus.trimEnd(),
+    ...(ctx.has("effect") ? [agentsEffect.trimEnd()] : []),
     "# Project",
     "`vibestart.jsonc` records the stack this project was created with. When it also records the `name` and `version` of the vibestart release that generated the project, the vibestart CLI maintains the project from it: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. Leave `vibestart.jsonc` as the CLI wrote it. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source, which is yours to edit, as manual changes to port.",
     agentsCode.trimEnd(),
