@@ -6,12 +6,20 @@ import {
   useRouter,
   useRouterState,
 } from "@tanstack/react-router";
+import { ArrowUpRight, CircleHelp } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ReactNode } from "react";
-import { useState } from "react";
+import type { ReactNode, RefObject } from "react";
+import { useRef, useState } from "react";
 import { previewName } from "virtual:vibestart";
 
 import { Button, buttonVariants } from "@vibestart/ui/components/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@vibestart/ui/components/popover";
 
 import { CodeView } from "#/components/code-view.tsx";
 import { Command } from "#/components/command.tsx";
@@ -46,6 +54,72 @@ const previewingMarkup = {
   ),
 };
 
+const ModeGuide = ({
+  anchor,
+  mode,
+}: {
+  readonly anchor: RefObject<HTMLDivElement | null>;
+  readonly mode: "standard" | "effect";
+}) => (
+  <Popover>
+    <PopoverTrigger
+      aria-label={m.mode_guide_trigger()}
+      className="group/mode"
+      closeDelay={120}
+      delay={180}
+      openOnHover
+    >
+      <span className="text-muted-foreground group-hover/mode:text-foreground group-data-popup-open/mode:text-foreground group-focus-visible/mode:focus-ring inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors">
+        <span aria-live="polite" className="hidden sm:inline">
+          {mode === "effect" ? m.mode_effect_about() : m.mode_standard_about()}
+        </span>
+        <CircleHelp className="size-3.5 shrink-0" strokeWidth={1.75} />
+      </span>
+    </PopoverTrigger>
+    <PopoverContent
+      align="start"
+      anchor={anchor}
+      className="w-80"
+      sideOffset={8}
+    >
+      <div className="flex flex-col gap-3 p-2.5 text-xs leading-relaxed">
+        <div>
+          <PopoverTitle>{m.mode_guide_title()}</PopoverTitle>
+          <div className="mt-1">
+            <PopoverDescription>{m.mode_guide_intro()}</PopoverDescription>
+          </div>
+        </div>
+        <div className="grid gap-2">
+          <div className="bg-foreground/[0.04] rounded-xl p-2.5">
+            <p className="text-foreground font-medium">
+              {m.mode_guide_effect_title()}
+            </p>
+            <p className="text-muted-foreground mt-0.5">
+              {m.mode_guide_effect_body()}
+            </p>
+          </div>
+          <div className="bg-foreground/[0.04] rounded-xl p-2.5">
+            <p className="text-foreground font-medium">
+              {m.mode_guide_standard_title()}
+            </p>
+            <p className="text-muted-foreground mt-0.5">
+              {m.mode_guide_standard_body()}
+            </p>
+          </div>
+        </div>
+        <Link
+          className="text-foreground/80 hover:text-foreground focus-visible:focus-ring inline-flex items-center gap-1 self-start rounded-sm font-medium transition-colors outline-none"
+          params={{ _splat: "stack/effect" }}
+          to="/docs/$"
+        >
+          {m.mode_guide_docs()}
+          <ArrowUpRight className="size-3.5" strokeWidth={1.75} />
+        </Link>
+      </div>
+    </PopoverContent>
+  </Popover>
+);
+
 const Studio = () => {
   const { addons, entry, packageManager, project } = route.useLoaderData();
   const navigate = route.useNavigate();
@@ -53,6 +127,7 @@ const Studio = () => {
   const [preview, setPreview] = useState<StackEntry | null>(null);
   const [name, setName] = useState(previewName);
   const [openPath, setOpenPath] = useState<string | null>(null);
+  const modeRef = useRef<HTMLDivElement>(null);
 
   const [tracked, setTracked] = useState<{
     readonly delta: FileDelta | undefined;
@@ -112,7 +187,7 @@ const Studio = () => {
       <main className="grid flex-1 items-start gap-3 px-3 pb-3 md:grid-cols-2 lg:grid-cols-1 lg:items-stretch xl:h-[calc(100svh-var(--spacing-header))] xl:flex-none xl:grid-cols-[minmax(0,1fr)_minmax(380px,440px)] xl:pl-0">
         <section className="md:max-lg:tall:top-header md:max-lg:tall:sticky relative flex min-h-0 flex-col lg:overflow-hidden">
           <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-3 lg:pl-6 xl:pl-10">
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2" ref={modeRef}>
               <Segmented
                 id="studio-mode"
                 label={m.kind_mode()}
@@ -135,14 +210,10 @@ const Studio = () => {
                   });
                 }}
               />
-              <span
-                className="text-muted-foreground hidden text-xs sm:inline"
-                aria-live="polite"
-              >
-                {entry.stack.mode === "effect"
-                  ? m.mode_effect_about()
-                  : m.mode_standard_about()}
-              </span>
+              <ModeGuide
+                anchor={modeRef}
+                mode={entry.stack.mode === "effect" ? "effect" : "standard"}
+              />
             </div>
             <AgentHandoff />
           </div>

@@ -64,7 +64,7 @@ Creation returns `ok: true` for success. Failures return `ok: false` with an `er
 
 ## Stack modes
 
-Standard is the default. Use `--mode effect` for the independent Effect stack, or `--list --mode effect` to list only its adapted choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
+Standard is the default (`async/await` across SSR, SPA, Hono, mobile, desktop, and Workers). Use `--mode effect` when the user wants Effect or needs compiler-tracked errors, dependency layers, and scoped resource cleanup on a React SPA and Node server, or `--list --mode effect` to list only its adapted choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect

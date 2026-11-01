@@ -28,11 +28,22 @@ test("switches independent modes and restores them through browser history", asy
   await expect(
     mode.getByRole("button", { name: "Effect", exact: true })
   ).toHaveAttribute("aria-pressed", "true");
-  await page.screenshot({
-    path: test.info().outputPath("effect-studio.png"),
-    fullPage: true,
-    animations: "disabled",
-  });
+  await page
+    .getByRole("button", { name: "When to use Effect?", exact: true })
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "Standard vs. Effect" })
+  ).toBeVisible();
+  await page
+    .getByRole("link", { name: "Read the Effect mode guide", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/docs\/stack\/effect$/u);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Effect mode" })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Standard vs. Effect" })
+  ).toBeVisible();
 });
 
 test("keeps an incompatible deep link inside Effect mode", async ({ page }) => {

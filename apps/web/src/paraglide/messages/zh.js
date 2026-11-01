@@ -215,6 +215,14 @@
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
 /** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_Guide_DocsInputs */
+/** @typedef {{}} Mode_Guide_Effect_BodyInputs */
+/** @typedef {{}} Mode_Guide_Effect_TitleInputs */
+/** @typedef {{}} Mode_Guide_IntroInputs */
+/** @typedef {{}} Mode_Guide_Standard_BodyInputs */
+/** @typedef {{}} Mode_Guide_Standard_TitleInputs */
+/** @typedef {{}} Mode_Guide_TitleInputs */
+/** @typedef {{}} Mode_Guide_TriggerInputs */
 /** @typedef {{}} Mode_StandardInputs */
 /** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
@@ -703,7 +711,7 @@ export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} 
 };
 
 export const desc_effect = /** @type {(inputs: Desc_EffectInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`共享 Schema、资源作用域和类型化错误的完整 Effect 技术栈。`)
+	return /** @type {LocalizedString} */ (`将错误、依赖与资源生命周期纳入类型；适合复杂后端与 AI 协作开发`)
 };
 
 export const desc_effect_http = /** @type {(inputs: Desc_Effect_HttpInputs) => LocalizedString} */ () => {
@@ -787,7 +795,7 @@ export const desc_sqlite = /** @type {(inputs: Desc_SqliteInputs) => LocalizedSt
 };
 
 export const desc_standard = /** @type {(inputs: Desc_StandardInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`自由组合框架、API、数据库和部署目标。`)
+	return /** @type {LocalizedString} */ (`常规 async/await；按需组合 SSR、SPA、Hono、移动端、桌面端、数据库与部署`)
 };
 
 export const desc_tanstack_router = /** @type {(inputs: Desc_Tanstack_RouterInputs) => LocalizedString} */ () => {
@@ -1262,7 +1270,39 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 };
 
 export const mode_effect_about = /** @type {(inputs: Mode_Effect_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`类型化服务、RPC 与响应式状态`)
+	return /** @type {LocalizedString} */ (`错误与依赖皆入类型`)
+};
+
+export const mode_guide_docs = /** @type {(inputs: Mode_Guide_DocsInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`阅读 Effect 模式选型指南`)
+};
+
+export const mode_guide_effect_body = /** @type {(inputs: Mode_Guide_Effect_BodyInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`后端业务逻辑复杂，或重度使用 AI 编码——借助编译期错误通道、Layer 依赖与作用域资源管理拦截隐蔽 bug。`)
+};
+
+export const mode_guide_effect_title = /** @type {(inputs: Mode_Guide_Effect_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合选择 Effect`)
+};
+
+export const mode_guide_intro = /** @type {(inputs: Mode_Guide_IntroInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`普通 async/await 的类型只描述成功返回值，隐藏了可能的报错与依赖。Effect 把错误、依赖注入和资源释放全部纳入 TypeScript 类型，让遗漏在编译期直接报错。`)
+};
+
+export const mode_guide_standard_body = /** @type {(inputs: Mode_Guide_Standard_BodyInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`需要 SSR（Next.js、TanStack Start）、移动端（Expo）、桌面端（Electron）、Cloudflare Workers，或希望保持熟悉的 async/await 零上手成本。`)
+};
+
+export const mode_guide_standard_title = /** @type {(inputs: Mode_Guide_Standard_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合选择默认模式`)
+};
+
+export const mode_guide_title = /** @type {(inputs: Mode_Guide_TitleInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`默认模式 vs. Effect`)
+};
+
+export const mode_guide_trigger = /** @type {(inputs: Mode_Guide_TriggerInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`何时选 Effect？`)
 };
 
 export const mode_standard = /** @type {(inputs: Mode_StandardInputs) => LocalizedString} */ () => {
@@ -1270,7 +1310,7 @@ export const mode_standard = /** @type {(inputs: Mode_StandardInputs) => Localiz
 };
 
 export const mode_standard_about = /** @type {(inputs: Mode_Standard_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`自由组合技术栈`)
+	return /** @type {LocalizedString} */ (`常规 async/await · 自由组合技术栈`)
 };
 
 export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {

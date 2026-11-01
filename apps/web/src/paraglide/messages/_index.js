@@ -217,6 +217,14 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
 /** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_Guide_DocsInputs */
+/** @typedef {{}} Mode_Guide_Effect_BodyInputs */
+/** @typedef {{}} Mode_Guide_Effect_TitleInputs */
+/** @typedef {{}} Mode_Guide_IntroInputs */
+/** @typedef {{}} Mode_Guide_Standard_BodyInputs */
+/** @typedef {{}} Mode_Guide_Standard_TitleInputs */
+/** @typedef {{}} Mode_Guide_TitleInputs */
+/** @typedef {{}} Mode_Guide_TriggerInputs */
 /** @typedef {{}} Mode_StandardInputs */
 /** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
@@ -1472,7 +1480,7 @@ export const desc_e2e = /** @type {((inputs?: Desc_E2eInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "An integrated Effect stack with typed services, RPC, and reactive state" |
+* | "Errors, dependencies, and resources in types; best for complex backends and AI agents" |
 *
 * @param {Desc_EffectInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1766,7 +1774,7 @@ export const desc_sqlite = /** @type {((inputs?: Desc_SqliteInputs, options?: { 
 /**
 * | output |
 * | --- |
-* | "Compose frameworks, APIs, databases, and deployment targets" |
+* | "Familiar async/await; compose SSR, SPA, Hono, mobile, desktop, DB, and deploy" |
 *
 * @param {Desc_StandardInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3404,7 +3412,7 @@ export const learn_about = /** @type {((inputs: Learn_AboutInputs, options?: { l
 /**
 * | output |
 * | --- |
-* | "Typed services, RPC, and reactive state" |
+* | "Errors & dependencies in types" |
 *
 * @param {Mode_Effect_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3414,6 +3422,118 @@ export const mode_effect_about = /** @type {((inputs?: Mode_Effect_AboutInputs, 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.mode_effect_about(inputs)
 	return __en.mode_effect_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Read the Effect mode guide" |
+*
+* @param {Mode_Guide_DocsInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_docs = /** @type {((inputs?: Mode_Guide_DocsInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_DocsInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_docs(inputs)
+	return __en.mode_guide_docs(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "You have complex backend workflows or build heavily with AI agents, and want the compiler to enforce error handling, DI layers, and cleanup." |
+*
+* @param {Mode_Guide_Effect_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_effect_body = /** @type {((inputs?: Mode_Guide_Effect_BodyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Effect_BodyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_effect_body(inputs)
+	return __en.mode_guide_effect_body(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Choose Effect when" |
+*
+* @param {Mode_Guide_Effect_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_effect_title = /** @type {((inputs?: Mode_Guide_Effect_TitleInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Effect_TitleInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_effect_title(inputs)
+	return __en.mode_guide_effect_title(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Ordinary async/await hides what can throw and what services a function needs. Effect puts errors, dependencies, and resource cleanup into TypeScript types, s..." |
+*
+* @param {Mode_Guide_IntroInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_intro = /** @type {((inputs?: Mode_Guide_IntroInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_IntroInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_intro(inputs)
+	return __en.mode_guide_intro(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "You need SSR (Next.js, TanStack Start), mobile (Expo), desktop (Electron), Cloudflare Workers, or prefer familiar async/await with zero Effect learning curve." |
+*
+* @param {Mode_Guide_Standard_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_standard_body = /** @type {((inputs?: Mode_Guide_Standard_BodyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Standard_BodyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_standard_body(inputs)
+	return __en.mode_guide_standard_body(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Choose Standard when" |
+*
+* @param {Mode_Guide_Standard_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_standard_title = /** @type {((inputs?: Mode_Guide_Standard_TitleInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Standard_TitleInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_standard_title(inputs)
+	return __en.mode_guide_standard_title(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Standard vs. Effect" |
+*
+* @param {Mode_Guide_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_title = /** @type {((inputs?: Mode_Guide_TitleInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_TitleInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_title(inputs)
+	return __en.mode_guide_title(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "When to use Effect?" |
+*
+* @param {Mode_Guide_TriggerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const mode_guide_trigger = /** @type {((inputs?: Mode_Guide_TriggerInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_TriggerInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.mode_guide_trigger(inputs)
+	return __en.mode_guide_trigger(inputs)
 });
 /**
 * | output |
@@ -3432,7 +3552,7 @@ export const mode_standard = /** @type {((inputs?: Mode_StandardInputs, options?
 /**
 * | output |
 * | --- |
-* | "Compose your own stack" |
+* | "Familiar async/await · compose any stack" |
 *
 * @param {Mode_Standard_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

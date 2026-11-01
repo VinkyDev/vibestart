@@ -96,7 +96,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 
 ## 技术栈模式
 
-默认使用 Standard。通过 `--mode effect` 创建独立的 Effect 项目，通过 `--list --mode effect` 查看已适配的选项；交互式 CLI 首先询问模式，工作台也提供 Standard/Effect 切换。
+默认使用 Standard（常规 `async/await`，覆盖 SSR、SPA、Hono、移动端、桌面端与 Workers）。当你需要将错误、服务依赖与资源释放全部纳入 TypeScript 类型（适合复杂后端与 AI 协作开发）时，可通过 `--mode effect` 创建独立的 Effect 项目，或用 `--list --mode effect` 查看已适配的选项；交互式 CLI 首先询问模式，工作台也提供相同的切换与对比说明。
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect

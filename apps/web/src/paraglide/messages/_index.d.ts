@@ -248,6 +248,14 @@ export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
 export type Mode_Effect_AboutInputs = {};
+export type Mode_Guide_DocsInputs = {};
+export type Mode_Guide_Effect_BodyInputs = {};
+export type Mode_Guide_Effect_TitleInputs = {};
+export type Mode_Guide_IntroInputs = {};
+export type Mode_Guide_Standard_BodyInputs = {};
+export type Mode_Guide_Standard_TitleInputs = {};
+export type Mode_Guide_TitleInputs = {};
+export type Mode_Guide_TriggerInputs = {};
 export type Mode_StandardInputs = {};
 export type Mode_Standard_AboutInputs = {};
 export type Mongodb_ProcessInputs = {};
@@ -1533,7 +1541,7 @@ export declare const desc_e2e: ((inputs?: Desc_E2eInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "An integrated Effect stack with typed services, RPC, and reactive state" |
+* | "Errors, dependencies, and resources in types; best for complex backends and AI agents" |
 *
 * @param {Desc_EffectInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1827,7 +1835,7 @@ export declare const desc_sqlite: ((inputs?: Desc_SqliteInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Compose frameworks, APIs, databases, and deployment targets" |
+* | "Familiar async/await; compose SSR, SPA, Hono, mobile, desktop, DB, and deploy" |
 *
 * @param {Desc_StandardInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3464,7 +3472,7 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Typed services, RPC, and reactive state" |
+* | "Errors & dependencies in types" |
 *
 * @param {Mode_Effect_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3473,6 +3481,118 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 export declare const mode_effect_about: ((inputs?: Mode_Effect_AboutInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Effect_AboutInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Read the Effect mode guide" |
+*
+* @param {Mode_Guide_DocsInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_docs: ((inputs?: Mode_Guide_DocsInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_DocsInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "You have complex backend workflows or build heavily with AI agents, and want the compiler to enforce error handling, DI layers, and cleanup." |
+*
+* @param {Mode_Guide_Effect_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_effect_body: ((inputs?: Mode_Guide_Effect_BodyInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Effect_BodyInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Choose Effect when" |
+*
+* @param {Mode_Guide_Effect_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_effect_title: ((inputs?: Mode_Guide_Effect_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Effect_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Ordinary async/await hides what can throw and what services a function needs. Effect puts errors, dependencies, and resource cleanup into TypeScript types, s..." |
+*
+* @param {Mode_Guide_IntroInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_intro: ((inputs?: Mode_Guide_IntroInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_IntroInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "You need SSR (Next.js, TanStack Start), mobile (Expo), desktop (Electron), Cloudflare Workers, or prefer familiar async/await with zero Effect learning curve." |
+*
+* @param {Mode_Guide_Standard_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_standard_body: ((inputs?: Mode_Guide_Standard_BodyInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Standard_BodyInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Choose Standard when" |
+*
+* @param {Mode_Guide_Standard_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_standard_title: ((inputs?: Mode_Guide_Standard_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Standard_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Standard vs. Effect" |
+*
+* @param {Mode_Guide_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_title: ((inputs?: Mode_Guide_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "When to use Effect?" |
+*
+* @param {Mode_Guide_TriggerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_trigger: ((inputs?: Mode_Guide_TriggerInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_TriggerInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -3492,7 +3612,7 @@ export declare const mode_standard: ((inputs?: Mode_StandardInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Compose your own stack" |
+* | "Familiar async/await · compose any stack" |
 *
 * @param {Mode_Standard_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

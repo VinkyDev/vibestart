@@ -29,7 +29,7 @@ When some flags are given, the CLI asks only about what they leave open.
 
 ## Stack modes [#modes]
 
-Standard is the default. Interactive composition starts with the mode; `--mode effect` selects the independent [Effect stack](/docs/stack/effect). Use `--list --mode effect --json` to discover only its adapted choices. Effect mode does not accept Standard transports, frameworks, or runtimes, and incompatible-choice suggestions preserve the selected mode.
+Standard is the default (`async/await`, supporting SSR, SPA, Hono, mobile, desktop, and Cloudflare Workers). `--mode effect` selects the independent [Effect stack](/docs/stack/effect), which tracks errors, dependencies, and resource cleanup in TypeScript types—suited to complex backend workflows and AI-assisted development, on a React SPA and Node server. Use `--list --mode effect --json` to discover only its adapted choices. Effect mode does not accept Standard transports, frameworks, or runtimes, and incompatible-choice suggestions preserve the selected mode.
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect

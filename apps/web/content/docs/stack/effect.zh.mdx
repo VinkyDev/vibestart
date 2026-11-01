@@ -1,30 +1,71 @@
 ---
 title: Effect 模式
-description: 围绕 Effect 服务、Schema、RPC 和 Atom 构建的独立技术栈。
+description: Effect 是什么、它的优势与取舍，以及何时在默认模式与 Effect 模式之间选择。
 ---
 
-工作台默认使用 **Standard** 模式。切换到 **Effect** 后，使用经过验证的 Effect 技术栈；切换模式会选择该模式的默认组合。URL 保存模式，浏览器返回可以恢复之前的选择。
+## Effect 解决什么问题 [#why]
+
+在普通的 TypeScript 中，一个 `async` 函数返回 `Promise<Todo>`。返回类型只描述了调用成功时的结果，却隐藏了生产环境中最容易引发故障的两件事：
+
+1. **它可能如何失败**——任何 `throw` 在类型上都是 `unknown`，调用方无从得知需要处理哪些错误。
+2. **它依赖哪些外部服务**——数据库连接、认证配置和后台资源往往通过隐式全局变量或层层传参注入。
+
+[Effect](https://effect.website/docs/) 把成功值、错误类型和依赖环境同时放进类型签名中：
+
+```ts
+Effect<Todo, TodoNotFound | TodoStorageError, Database>;
+```
+
+如果某个接口忘了处理 `TodoNotFound`，或者测试忘了提供 `Database`，TypeScript 会在编译阶段直接报错。数据库连接池、测试子进程等资源绑定在 `Scope`（`Effect.acquireRelease`）上，在服务停止或初始化失败时自动释放。
+
+这一特性在与 AI 编码 Agent 协作时优势尤为明显：在普通 `async/await` 项目里容易漏过类型检查、直到运行时才暴露的错误处理遗漏与依赖缺失，在 Effect 项目中会被 `vp check` 第一时间拦截。
+
+## 默认模式 vs. Effect 模式 [#when]
+
+工作台和 CLI 提供 **默认模式（Standard）** 与 **Effect** 两种独立模式：
+
+|                | **默认模式（Standard）**                                                                                    | **Effect 模式**                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **编程模型**   | 熟悉的 `async/await`、Hono、oRPC 或 OpenAPI、Zod、TanStack Query                                            | 全链路 `Effect`、`Layer`、`Schema`、`Effect HTTP/RPC` 与 `Effect Atom`                                     |
+| **核心优势**   | 零新范式学习成本；支持最完整的框架、客户端、数据库与部署矩阵                                                | 编译期检查错误通道与依赖注入；作用域化资源释放；内置重试、并发与追踪；极适合 AI Agent 编写高可靠代码       |
+| **取舍与局限** | 抛出的异常与服务依赖关系不在类型系统中追踪                                                                  | 需要理解 `Effect.gen`、`yield*` 与 `Layer`；当前在 vibestart 中支持的技术组合范围较窄                      |
+| **支持形态**   | SPA、Next.js、TanStack Start、Hono API、Expo 移动端、Electron 桌面端、四种数据库、Docker 与 Cloudflare Void | Node 上的 React + TanStack Router SPA、PostgreSQL 或 SQLite（Drizzle）或无数据库、可选 Better Auth、Docker |
+
+- **适合选择 Effect**：后端业务逻辑较复杂、看重严格的错误处理与资源生命周期管理，或重度依赖 AI Agent 开发、希望通过编译器把隐蔽的运行时问题拦截在编码阶段。
+- **适合选择默认模式**：需要服务端渲染与 SEO（`Next.js`、`TanStack Start`）、移动端（`Expo`）、桌面端（`Electron`）、Cloudflare Workers（`Void`），或团队希望保持熟悉的 `async/await` 零上手成本。
+
+## 生成项目的架构分工 [#architecture]
+
+Effect 模式从数据库到浏览器使用同一套原语，不再混入 Hono、oRPC、Zod 或 TanStack Query：
+
+- **`packages/contracts`**——前后端共享的 `Effect Schema`、脱敏的公开错误 `Schema.TaggedErrorClass`（不携带 SQL 或内部异常原因）、`RpcGroup` 契约和 `HttpApi` 定义。
+- **`packages/db`** _（选择数据库时）_——PostgreSQL（`@effect/sql-pg`）或基于 Node 内置 SQLite 的 `@effect/sql-sqlite-node`，配合 Drizzle 原生 Effect 查询与迁移。
+- **`packages/auth`** _（启用认证时）_——在 `Effect.acquireRelease` 作用域内封装 Better Auth 官方 Drizzle 适配器，并通过 `Config.Redacted` 校验密钥。
+- **`packages/api`**——薄 RPC/HTTP 处理器、Origin 校验中间件（启用认证时对比 `BETTER_AUTH_URL`，否则对比 `APP_URL`）、会话中间件，以及基于 `Context.Service` 与 `Effect.fn` 的领域服务。
+- **`apps/server`**——在进程入口组装 `Layer` 并通过 `NodeRuntime.runMain` 启动服务。
+- **`apps/web`**——React 19、TanStack Router、`@effect/atom-react` 与 Effect 响应式客户端（`AtomRpc.Service`、`AtomHttpApi.Service` 以及按会话 ID 隔离的 `RegistryProvider`）。
+
+有数据库但不启用认证时，Todo 为所有访问者共享的公开数据；不使用数据库时，不生成 ORM、认证、迁移和 Todo 示例，仅保留类型化的 HTTP 与 RPC 健康检查。服务测试使用 `@effect/vitest`，浏览器测试可选 Playwright（默认）或 TesterArmy `e2e`，均通过作用域自动清理测试资源。每个生成的项目都在根目录配置了 `node_modules/effect/AGENTS.md` 与 `node_modules/effect/src`，方便编码 Agent 直接查阅与已安装版本一致的 Effect v4 官方文档、示例与源码。
+
+## 创建 Effect 项目 [#create]
+
+在工作台中切换到 **Effect**，或在 CLI 中传入 `--mode effect`：
 
 ```sh
+# 交互式创建 Effect 项目
 pnpm dlx vibestart-cli my-app --mode effect
+
+# SQLite（默认）+ Better Auth + Playwright
+pnpm dlx vibestart-cli my-app --mode effect --auth better-auth
+
+# PostgreSQL 公开 Todo + TesterArmy e2e
+pnpm dlx vibestart-cli my-app --mode effect --database postgres --auth none --testing e2e
+
+# 无状态 Effect 应用（不含数据库、ORM 与认证）
+pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
+
+# 查看 Effect 模式下的全部 20 个合法组合
 pnpm dlx vibestart-cli --list --mode effect
 ```
 
-Effect 模式使用 React、TanStack Router、Effect HTTP/RPC、`@effect/atom-react`，以及可选的持久化和认证。校验使用 Effect Schema，服务依赖通过 Layer 组合，服务错误转换为不泄露内部信息的传输错误。浏览器状态由 Atom 管理，RPC 状态跟随会话隔离，不混入 Hono、oRPC、Zod 或 TanStack Query。
-
-`packages/contracts` 定义共享 Schema 和协议，`packages/api` 实现服务和处理器，选择数据库时，`packages/db` 管理持久化；启用认证时，`packages/auth` 适配 Better Auth。`apps/server` 负责组合和启动，`apps/web` 负责路由和展示。第三方 Promise API 只在服务边界适配。
-
-数据库可选 PostgreSQL（`@effect/sql-pg`）或基于 Node 内置 SQLite 的 `@effect/sql-sqlite-node`。两者都使用 Drizzle 原生 Effect 查询与迁移，Effect 依赖版本与应用一致；SQLite 不需要独立数据库服务。Better Auth 可选，但需要数据库，其官方 Drizzle 适配器在服务边界内管理资源。
-
-有数据库但不启用认证时，Todo 是所有访问者共享的公开数据。不使用数据库时，不生成 ORM、认证、迁移和 Todo 示例，仅保留类型化的 HTTP/RPC 健康检查。RPC 边界仍校验浏览器 Origin：启用认证时使用 `BETTER_AUTH_URL`，否则使用 `APP_URL`。
-
-```sh
-pnpm dlx vibestart-cli my-app --mode effect --database sqlite --auth none --testing playwright
-pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
-```
-
-运行时为 Node，部署可以选择 Docker 或不部署。尚未适配的框架、数据库、移动端、桌面端和运行时不会出现在 Effect 模式中。CLI 拒绝混搭，不会自动改变模式。包管理器独立于运行时：pnpm 和 Bun 都可以安装同一套 Node 应用。
-
-服务测试使用 `@effect/vitest`，浏览器测试可选 Playwright（默认）或 TesterArmy `e2e`。两者均运行真实 Effect 服务，并通过作用域清理测试资源。Effect golden 与 Standard 项目使用同一套验证矩阵；Docker CI 还验证生产镜像的迁移、认证和鉴权 RPC。
-
-运行时和服务模型参见 [Effect 文档](https://effect.website/docs/)。
+CLI 会拒绝混搭默认模式与 Effect 模式的选项，而不会自动切换模式。包管理器（`pnpm` 或 `bun`）独立于 Node 运行时。

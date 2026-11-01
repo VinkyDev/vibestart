@@ -214,6 +214,14 @@
 /** @typedef {{}} LanguageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Learn_AboutInputs */
 /** @typedef {{}} Mode_Effect_AboutInputs */
+/** @typedef {{}} Mode_Guide_DocsInputs */
+/** @typedef {{}} Mode_Guide_Effect_BodyInputs */
+/** @typedef {{}} Mode_Guide_Effect_TitleInputs */
+/** @typedef {{}} Mode_Guide_IntroInputs */
+/** @typedef {{}} Mode_Guide_Standard_BodyInputs */
+/** @typedef {{}} Mode_Guide_Standard_TitleInputs */
+/** @typedef {{}} Mode_Guide_TitleInputs */
+/** @typedef {{}} Mode_Guide_TriggerInputs */
 /** @typedef {{}} Mode_StandardInputs */
 /** @typedef {{}} Mode_Standard_AboutInputs */
 /** @typedef {{}} Mongodb_ProcessInputs */
@@ -636,6 +644,14 @@ export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
 export type Mode_Effect_AboutInputs = {};
+export type Mode_Guide_DocsInputs = {};
+export type Mode_Guide_Effect_BodyInputs = {};
+export type Mode_Guide_Effect_TitleInputs = {};
+export type Mode_Guide_IntroInputs = {};
+export type Mode_Guide_Standard_BodyInputs = {};
+export type Mode_Guide_Standard_TitleInputs = {};
+export type Mode_Guide_TitleInputs = {};
+export type Mode_Guide_TriggerInputs = {};
 export type Mode_StandardInputs = {};
 export type Mode_Standard_AboutInputs = {};
 export type Mongodb_ProcessInputs = {};
@@ -1057,6 +1073,14 @@ export declare const knip_scope_mobile: (inputs: Knip_Scope_MobileInputs) => Loc
 export declare const language: (inputs: LanguageInputs) => LocalizedString;
 export declare const learn_about: (inputs: Learn_AboutInputs) => LocalizedString;
 export declare const mode_effect_about: (inputs: Mode_Effect_AboutInputs) => LocalizedString;
+export declare const mode_guide_docs: (inputs: Mode_Guide_DocsInputs) => LocalizedString;
+export declare const mode_guide_effect_body: (inputs: Mode_Guide_Effect_BodyInputs) => LocalizedString;
+export declare const mode_guide_effect_title: (inputs: Mode_Guide_Effect_TitleInputs) => LocalizedString;
+export declare const mode_guide_intro: (inputs: Mode_Guide_IntroInputs) => LocalizedString;
+export declare const mode_guide_standard_body: (inputs: Mode_Guide_Standard_BodyInputs) => LocalizedString;
+export declare const mode_guide_standard_title: (inputs: Mode_Guide_Standard_TitleInputs) => LocalizedString;
+export declare const mode_guide_title: (inputs: Mode_Guide_TitleInputs) => LocalizedString;
+export declare const mode_guide_trigger: (inputs: Mode_Guide_TriggerInputs) => LocalizedString;
 export declare const mode_standard: (inputs: Mode_StandardInputs) => LocalizedString;
 export declare const mode_standard_about: (inputs: Mode_Standard_AboutInputs) => LocalizedString;
 export declare const mongodb_process: (inputs: Mongodb_ProcessInputs) => LocalizedString;

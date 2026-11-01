@@ -16,7 +16,7 @@ Use the CLI to resolve stacks and maintain generated projects. Let its current h
 
 ## Independent modes
 
-Ask which ecosystem the user wants when it is unclear. Standard is the default; Effect uses `--mode effect`. Discover its choices with `--list --mode effect --json`. Never mix its stack with Standard choices or propose changing modes to fix an incompatible selection. Preserve `stack.mode` in recipes and maintenance operations.
+Ask which ecosystem the user wants when it is unclear. Standard is the default (`async/await`, supporting SSR, SPA, Hono, mobile, desktop, four databases, and Void/Docker). Effect (`--mode effect`) puts errors, dependencies (`Layer`), and resource lifetimes (`Scope`) into TypeScript types across a React SPA and Node server, which suits complex backend workflows and AI-assisted development where compiler checks catch unhandled failures early. Discover its choices with `--list --mode effect --json`. Never mix its stack with Standard choices or propose changing modes to fix an incompatible selection. Preserve `stack.mode` in recipes and maintenance operations.
 
 ## Choose the workflow
 
