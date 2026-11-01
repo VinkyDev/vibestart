@@ -64,7 +64,7 @@ Creation returns `ok: true` for success. Failures return `ok: false` with an `er
 
 ## Stack modes
 
-Standard is the default. Use `--mode effect` for the independent Effect stack, or `--list --mode effect` to list only its adapted choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
+Standard is the default and suits most projects with familiar TypeScript and the widest choice of stacks. Use `--mode effect` when the user wants Effect or needs a stricter model for complex backend service flows, or `--list --mode effect` to list only its supported choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect

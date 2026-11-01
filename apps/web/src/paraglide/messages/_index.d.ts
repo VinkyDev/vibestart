@@ -248,6 +248,14 @@ export type Learn_AboutInputs = {
     name: NonNullable<unknown>;
 };
 export type Mode_Effect_AboutInputs = {};
+export type Mode_Guide_DocsInputs = {};
+export type Mode_Guide_Effect_BodyInputs = {};
+export type Mode_Guide_Effect_TitleInputs = {};
+export type Mode_Guide_IntroInputs = {};
+export type Mode_Guide_Standard_BodyInputs = {};
+export type Mode_Guide_Standard_TitleInputs = {};
+export type Mode_Guide_TitleInputs = {};
+export type Mode_Guide_TriggerInputs = {};
 export type Mode_StandardInputs = {};
 export type Mode_Standard_AboutInputs = {};
 export type Mongodb_ProcessInputs = {};
@@ -1533,7 +1541,7 @@ export declare const desc_e2e: ((inputs?: Desc_E2eInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "An integrated Effect stack with typed services, RPC, and reactive state" |
+* | "A stricter, heavier model for complex service flows, with a focused set of stacks" |
 *
 * @param {Desc_EffectInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1827,7 +1835,7 @@ export declare const desc_sqlite: ((inputs?: Desc_SqliteInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Compose frameworks, APIs, databases, and deployment targets" |
+* | "Familiar TypeScript with the widest choice of frameworks, databases, and targets" |
 *
 * @param {Desc_StandardInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3464,7 +3472,7 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Typed services, RPC, and reactive state" |
+* | "Stricter model for complex service flows" |
 *
 * @param {Mode_Effect_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3473,6 +3481,118 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 export declare const mode_effect_about: ((inputs?: Mode_Effect_AboutInputs, options?: {
     locale?: "en" | "zh";
 }) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Effect_AboutInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "See full comparison" |
+*
+* @param {Mode_Guide_DocsInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_docs: ((inputs?: Mode_Guide_DocsInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_DocsInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Uses a heavier model that checks errors, dependencies, and cleanup in types. Suited to complex backend flows, with a steeper learning curve and stricter stac..." |
+*
+* @param {Mode_Guide_Effect_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_effect_body: ((inputs?: Mode_Guide_Effect_BodyInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Effect_BodyInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Effect (for complex service flows)" |
+*
+* @param {Mode_Guide_Effect_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_effect_title: ((inputs?: Mode_Guide_Effect_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Effect_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "The two modes use different coding styles and support different stack ranges:" |
+*
+* @param {Mode_Guide_IntroInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_intro: ((inputs?: Mode_Guide_IntroInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_IntroInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, mobile, desktop, and deployment targets." |
+*
+* @param {Mode_Guide_Standard_BodyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_standard_body: ((inputs?: Mode_Guide_Standard_BodyInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Standard_BodyInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Standard (for most projects)" |
+*
+* @param {Mode_Guide_Standard_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_standard_title: ((inputs?: Mode_Guide_Standard_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_Standard_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "Standard vs. Effect" |
+*
+* @param {Mode_Guide_TitleInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_title: ((inputs?: Mode_Guide_TitleInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_TitleInputs, {
+    locale?: "en" | "zh";
+}, {}>;
+/**
+* | output |
+* | --- |
+* | "When to use Effect?" |
+*
+* @param {Mode_Guide_TriggerInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export declare const mode_guide_trigger: ((inputs?: Mode_Guide_TriggerInputs, options?: {
+    locale?: "en" | "zh";
+}) => LocalizedString) & import('../runtime.js').MessageMetadata<Mode_Guide_TriggerInputs, {
     locale?: "en" | "zh";
 }, {}>;
 /**
@@ -3492,7 +3612,7 @@ export declare const mode_standard: ((inputs?: Mode_StandardInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Compose your own stack" |
+* | "Familiar TypeScript · widest stack choices" |
 *
 * @param {Mode_Standard_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

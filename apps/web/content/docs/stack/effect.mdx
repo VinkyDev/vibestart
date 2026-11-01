@@ -1,30 +1,44 @@
 ---
 title: Effect mode
-description: An independent stack built around Effect services, schemas, RPC, and atoms.
+description: How Effect mode differs from the Standard stack, what it supports, and when to choose it.
 ---
 
-Studio starts in **Standard** mode. Switch to **Effect** to work with the reviewed Effect stack; switching modes selects that mode's defaults. The URL records the mode, and browser Back restores the previous selection.
+Studio and the CLI offer **Standard** (the default) and **Effect** as two independent modes. They differ in **how heavy the programming model is** and **how wide a range of stacks they support**.
+
+## How to choose: Standard vs. Effect [#when]
+
+|                  | **Standard mode**                                                                                           | **Effect mode**                                                                                |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Best for**     | Most projects                                                                                               | Projects with complex service flows and strict reliability requirements                        |
+| **Coding model** | Familiar TypeScript with no extra learning curve                                                            | A heavier, stricter model that checks errors, dependencies, and resource cleanup in types      |
+| **Stack range**  | Widest (SPA, Next.js, TanStack Start, Hono, Expo mobile, Electron desktop, four databases, Docker and Void) | Focused (React SPA on Node, PostgreSQL or SQLite or no database, optional Better Auth, Docker) |
+
+- **Choose Standard** for general projects when you want familiar, everyday TypeScript and the full range of frameworks (SSR, SPA, mobile, desktop), databases, and deployment targets.
+- **Choose Effect** when you have complex backend service flows, want a stricter model that enforces error handling and resource management at compile time, and fit within its supported stack choices.
+
+To learn Effect's concepts and syntax in detail, see the [official Effect documentation](https://effect.website/docs/).
+
+## What Effect mode includes [#stack]
+
+When you select Effect mode, the generated project uses the Effect ecosystem end to end rather than mixing in Hono, oRPC, Zod, or TanStack Query:
+
+- **Web and API**: A React single-page app (TanStack Router) paired with Effect's HTTP/RPC server and reactive client state.
+- **Database and auth (optional)**: Choose PostgreSQL, SQLite (using Node's built-in SQLite with no separate database server), or no database at all. With a database, you can include Better Auth for sign-in, or omit auth for public data.
+- **Testing and AI context**: Includes service tests, browser end-to-end tests (Playwright by default, or TesterArmy `e2e`), and local Effect documentation wired for coding agents.
+
+## Creating an Effect project [#create]
+
+Switch to **Effect** in the Studio, or pass `--mode effect` to the CLI:
 
 ```sh
+# Interactive creation in Effect mode
 pnpm dlx vibestart-cli my-app --mode effect
+
+# List all supported choices in Effect mode
 pnpm dlx vibestart-cli --list --mode effect
-```
 
-Effect mode uses React and TanStack Router, Effect HTTP and RPC, `@effect/atom-react`, and optional persistence and authentication. Validation uses Effect Schema. Server dependencies are composed with Layers; typed service errors become sanitized transport errors. Browser state belongs to atoms, including session-scoped RPC state. There is no parallel Hono, oRPC, Zod, or TanStack Query stack.
-
-`packages/contracts` owns shared schemas and protocols. `packages/api` owns handlers and services, `packages/db` owns persistence when selected, and `packages/auth` adapts Better Auth when selected. `apps/server` composes and launches the application; `apps/web` owns routes and presentation. Third-party Promise APIs are adapted at their service boundary.
-
-Choose PostgreSQL (`@effect/sql-pg`) or SQLite (`@effect/sql-sqlite-node` on Node's built-in SQLite). Both use Drizzle's native Effect queries and migrations, on the same Effect version as the application. SQLite needs no database server. Better Auth is optional but requires a database; its official Drizzle adapter is scoped at the service boundary.
-
-With a database and no auth, todos are public and shared. With no database, the generator omits the ORM, auth, migrations, and todo example, and keeps typed HTTP/RPC health checks. The RPC boundary checks browser origins against `BETTER_AUTH_URL` when auth is enabled, or `APP_URL` otherwise.
-
-```sh
-pnpm dlx vibestart-cli my-app --mode effect --database sqlite --auth none --testing playwright
+# Stateless Effect app (no database or auth)
 pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
 ```
 
-The supported runtime is Node. Choose Docker or no deployment; unadapted frameworks, databases, mobile apps, desktop shells, and runtimes are unavailable. The CLI rejects mixed selections rather than changing modes. The package manager remains independent: pnpm and Bun can install the same Node application.
-
-Tests use `@effect/vitest` for services and Playwright (the default) or TesterArmy `e2e` for browser flows. Both run the real Effect server and use scoped test resources. The generated golden participates in the same verification matrix as Standard projects. Docker CI also exercises migrations, authentication, and authenticated RPC against the production image.
-
-[Effect documentation](https://effect.website/docs/) explains the runtime and service model.
+The CLI rejects mixed selections between Standard and Effect rather than switching modes automatically. Both `pnpm` and `bun` are supported as package managers.

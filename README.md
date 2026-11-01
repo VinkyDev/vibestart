@@ -96,7 +96,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 
 ## Stack modes
 
-Standard is the default. Use `--mode effect` for the independent Effect stack, or `--list --mode effect` to list only its adapted choices. Interactive creation asks for the mode first. Studio offers the same Standard/Effect switch.
+Standard is the default and suits most projects with familiar TypeScript and the widest choice of stacks. Use `--mode effect` when you want a stricter model for complex backend service flows, or `--list --mode effect` to list its supported choices. Interactive creation asks for the mode first, and Studio offers the same switch.
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect

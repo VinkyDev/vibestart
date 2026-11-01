@@ -9,7 +9,8 @@ export const standard = defineIntegration({
   id: "standard",
   kind: "mode",
   name: "Standard",
-  description: "Compose frameworks, APIs, databases, and deployment targets",
+  description:
+    "Familiar TypeScript with the widest choice of frameworks, databases, and targets",
   homepage: "https://vibestart.net",
   choices: {
     backend: ["hono", "self", null],
@@ -23,7 +24,7 @@ export const effect = defineIntegration({
   kind: "mode",
   name: "Effect",
   description:
-    "An integrated Effect stack with typed services, RPC, and reactive state",
+    "A stricter, heavier model for complex service flows, with a focused set of stacks",
   homepage: "https://effect.website",
   choices: {
     toolchain: ["vite-plus"],
