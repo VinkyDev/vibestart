@@ -63,7 +63,6 @@ const ModeGuide = ({
 }) => (
   <Popover>
     <PopoverTrigger
-      aria-label={m.mode_guide_trigger()}
       className="group/mode"
       closeDelay={120}
       delay={180}
@@ -73,6 +72,7 @@ const ModeGuide = ({
         <span aria-live="polite" className="hidden sm:inline">
           {mode === "effect" ? m.mode_effect_about() : m.mode_standard_about()}
         </span>
+        <span className="sr-only">{m.mode_guide_trigger()}</span>
         <CircleHelp className="size-3.5 shrink-0" strokeWidth={1.75} />
       </span>
     </PopoverTrigger>

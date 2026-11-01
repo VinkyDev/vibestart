@@ -24,12 +24,12 @@ This makes Effect especially effective when building with coding agents: mistake
 
 Studio and the CLI offer **Standard** (the default) and **Effect** as two independent modes:
 
-|                       | **Standard mode**                                                                                            | **Effect mode**                                                                                                  |
-| --------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| **Programming model** | Familiar `async/await`, Hono, oRPC or OpenAPI, Zod, and TanStack Query                                       | End-to-end `Effect`, `Layer`, `Schema`, `Effect HTTP/RPC`, and `Effect Atom`                                     |
-| **Strengths**         | Zero new paradigm to learn; full matrix of frameworks, clients, databases, and deployment targets            | Compiler-checked errors and dependencies; scoped resource cleanup; built-in retries, concurrency, and tracing    |
-| **Trade-offs**        | Thrown errors and service dependencies are not tracked in types                                              | Steeper learning curve (`Effect.gen`, `yield*`, `Layer`); smaller stack matrix in vibestart today                |
-| **Supported shapes**  | SPA, Next.js, TanStack Start, Hono API, Expo mobile, Electron desktop, PostgreSQL/MySQL/SQLite/MongoDB, Void | React + TanStack Router SPA on Node, PostgreSQL or SQLite (Drizzle) or no database, optional Better Auth, Docker |
+|                       | **Standard mode**                                                                                                       | **Effect mode**                                                                                                  |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Programming model** | Familiar `async/await`, Hono, oRPC or OpenAPI, Zod, and TanStack Query                                                  | End-to-end `Effect`, `Layer`, `Schema`, `Effect HTTP/RPC`, and `Effect Atom`                                     |
+| **Strengths**         | Zero new paradigm to learn; full matrix of frameworks, clients, databases, and deployment targets                       | Compiler-checked errors and dependencies; scoped resource cleanup; built-in retries, concurrency, and tracing    |
+| **Trade-offs**        | Thrown errors and service dependencies are not tracked in types                                                         | Steeper learning curve (`Effect.gen`, `yield*`, `Layer`); smaller stack matrix in vibestart today                |
+| **Supported shapes**  | SPA, Next.js, TanStack Start, Hono API, Expo mobile, Electron desktop, PostgreSQL/MySQL/SQLite/MongoDB, Docker and Void | React + TanStack Router SPA on Node, PostgreSQL or SQLite (Drizzle) or no database, optional Better Auth, Docker |
 
 - **Choose Effect when** your application has complex backend workflows, strict error and resource boundaries, or heavy AI-agent development where you want the compiler to enforce error handling and dependency wiring across every layer.
 - **Choose Standard when** you need server-rendered pages for SEO (`Next.js`, `TanStack Start`), a mobile app (`Expo`), a desktop shell (`Electron`), Cloudflare Workers (`Void`), or when your team prefers standard `async/await` with no Effect learning curve.
@@ -38,7 +38,7 @@ Studio and the CLI offer **Standard** (the default) and **Effect** as two indepe
 
 Effect mode uses one coherent stack from database to browser, with no parallel Hono, oRPC, Zod, or TanStack Query layer:
 
-- **`packages/contracts`** — shared `Effect Schema` wire types, `Schema.TaggedErrorClass` public errors (carrying no SQL or internal causes), `RpcGroup` definitions, and `HttpApi` endpoints.
+- **`packages/contracts`** — shared `Effect Schema` wire types, `Schema.TaggedError` public errors (carrying no SQL or internal causes), `RpcGroup` definitions, and `HttpApi` endpoints.
 - **`packages/db`** _(when a database is selected)_ — PostgreSQL (`@effect/sql-pg`) or SQLite (`@effect/sql-sqlite-node` on Node's built-in SQLite) with Drizzle's native Effect queries and migrations.
 - **`packages/auth`** _(when Better Auth is selected)_ — Better Auth wrapped in a scoped `Context.Service` layer (`Effect.acquireRelease`) with validated `Config.Redacted` secrets.
 - **`packages/api`** — thin RPC and HTTP handlers, origin middleware (checked against `BETTER_AUTH_URL` with auth or `APP_URL` without), session middleware, and domain services (`Context.Service` + `Effect.fn` spans).

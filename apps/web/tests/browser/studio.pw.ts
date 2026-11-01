@@ -28,9 +28,7 @@ test("switches independent modes and restores them through browser history", asy
   await expect(
     mode.getByRole("button", { name: "Effect", exact: true })
   ).toHaveAttribute("aria-pressed", "true");
-  await page
-    .getByRole("button", { name: "When to use Effect?", exact: true })
-    .click();
+  await page.getByRole("button", { name: /When to use Effect\?/u }).click();
   await expect(
     page.getByRole("dialog", { name: "Standard vs. Effect" })
   ).toBeVisible();

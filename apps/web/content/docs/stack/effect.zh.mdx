@@ -1,6 +1,6 @@
 ---
 title: Effect 模式
-description: Effect 是什么、它的优势与取舍，以及何时在默认模式与 Effect 模式之间选择。
+description: Effect 是什么、何时在默认模式与 Effect 模式之间选择，以及生成的 Effect 项目如何组织。
 ---
 
 ## Effect 解决什么问题 [#why]
@@ -38,7 +38,7 @@ Effect<Todo, TodoNotFound | TodoStorageError, Database>;
 
 Effect 模式从数据库到浏览器使用同一套原语，不再混入 Hono、oRPC、Zod 或 TanStack Query：
 
-- **`packages/contracts`**——前后端共享的 `Effect Schema`、脱敏的公开错误 `Schema.TaggedErrorClass`（不携带 SQL 或内部异常原因）、`RpcGroup` 契约和 `HttpApi` 定义。
+- **`packages/contracts`**——前后端共享的 `Effect Schema`、脱敏的公开错误 `Schema.TaggedError`（不携带 SQL 或内部异常原因）、`RpcGroup` 契约和 `HttpApi` 定义。
 - **`packages/db`** _（选择数据库时）_——PostgreSQL（`@effect/sql-pg`）或基于 Node 内置 SQLite 的 `@effect/sql-sqlite-node`，配合 Drizzle 原生 Effect 查询与迁移。
 - **`packages/auth`** _（启用认证时）_——在 `Effect.acquireRelease` 作用域内封装 Better Auth 官方 Drizzle 适配器，并通过 `Config.Redacted` 校验密钥。
 - **`packages/api`**——薄 RPC/HTTP 处理器、Origin 校验中间件（启用认证时对比 `BETTER_AUTH_URL`，否则对比 `APP_URL`）、会话中间件，以及基于 `Context.Service` 与 `Effect.fn` 的领域服务。
