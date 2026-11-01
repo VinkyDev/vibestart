@@ -32,7 +32,7 @@ Configure secrets and database addresses in the deployment environment, then sta
 
 <Tech href="https://void.cloud" icon="void" />
 
-Void 1.3.0 builds and deploys to your own Cloudflare Workers account. Choose `--deployment void --runtime workers` for a static SPA, a SPA hosted by Hono, or TanStack Start. Next.js, a standalone Hono server, and TanStack Start paired with Hono are excluded. A static SPA deploys as assets alone. With Hono, Cloudflare serves the SPA's assets and runs the Worker only for `/api/*`, so oRPC is served at `/api/rpc`.
+Void 1.4.0 builds and deploys to your own Cloudflare Workers account. Choose `--deployment void --runtime workers` for a static SPA, a SPA hosted by Hono, or TanStack Start. Next.js, a standalone Hono server, and TanStack Start paired with Hono are excluded. A static SPA deploys as assets alone. With Hono, Cloudflare serves the SPA's assets and runs the Worker only for `/api/*`, so oRPC is served at `/api/rpc`.
 
 Database-backed server stacks use Drizzle with an external PostgreSQL or MySQL database, optionally with Better Auth. A SPA + Hono stack can omit the database. Hyperdrive pools production connections; every request creates its own client and releases it after the response stream completes or fails. Void's database migrations and auth are not used. SQLite, Prisma, MongoDB, D1, and Void Platform are excluded.
 

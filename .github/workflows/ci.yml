@@ -214,6 +214,8 @@ jobs:
       - uses: voidzero-dev/setup-vp@v1.21.1
         with:
           node-version-file: package.json
+      # Goldens keep pure generator output without release-age exclusions; restore them for the container's frozen install.
+      - run: rm pnpm-lock.yaml && vp install --lockfile-only
       - run: docker build --tag effect-golden .
       - name: Smoke test the production image
         run: |

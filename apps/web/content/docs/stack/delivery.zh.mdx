@@ -28,7 +28,7 @@ description: 使用 Docker 或 Void 部署应用，或将 Web 界面打包为 El
 
 <Tech href="https://void.cloud" icon="void" />
 
-Void 1.3.0 负责构建并部署到你自己的 Cloudflare Workers 账号。选择 `--deployment void --runtime workers` 可部署静态 SPA、由 Hono 托管的 SPA 或 TanStack Start。不支持 Next.js、独立 Hono 服务、TanStack Start + Hono 双服务组合。静态 SPA 只部署静态资源。使用 Hono 时，Cloudflare 直接提供 SPA 的静态资源，仅 `/api/*` 由 Worker 处理，因此 oRPC 位于 `/api/rpc`。
+Void 1.4.0 负责构建并部署到你自己的 Cloudflare Workers 账号。选择 `--deployment void --runtime workers` 可部署静态 SPA、由 Hono 托管的 SPA 或 TanStack Start。不支持 Next.js、独立 Hono 服务、TanStack Start + Hono 双服务组合。静态 SPA 只部署静态资源。使用 Hono 时，Cloudflare 直接提供 SPA 的静态资源，仅 `/api/*` 由 Worker 处理，因此 oRPC 位于 `/api/rpc`。
 
 带数据库的服务端使用外部 PostgreSQL 或 MySQL + Drizzle，可选 Better Auth。SPA + Hono 技术栈可以不使用数据库。Hyperdrive 管理生产连接池；每个请求创建客户端，在响应流完成或失败后释放。不使用 Void 自带迁移和登录；不支持 SQLite、Prisma、MongoDB、D1 和 Void Platform。
 
