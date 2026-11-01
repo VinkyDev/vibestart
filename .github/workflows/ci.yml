@@ -175,7 +175,8 @@ jobs:
           node-version-file: package.json
           cache: true
       - run: vp install
-      - run: vp run --filter @vibestart/web build
+      - run: vp build
+        working-directory: apps/web
       - run: vp exec playwright install chromium --with-deps
         working-directory: apps/web
       - run: vp run test:e2e
