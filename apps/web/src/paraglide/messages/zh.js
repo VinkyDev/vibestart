@@ -711,7 +711,7 @@ export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} 
 };
 
 export const desc_effect = /** @type {(inputs: Desc_EffectInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`将错误、依赖与资源生命周期纳入类型；适合复杂后端与 AI 协作开发`)
+	return /** @type {LocalizedString} */ (`更严谨但更重的编程模型，适合复杂服务链路，可选技术栈范围较收敛`)
 };
 
 export const desc_effect_http = /** @type {(inputs: Desc_Effect_HttpInputs) => LocalizedString} */ () => {
@@ -795,7 +795,7 @@ export const desc_sqlite = /** @type {(inputs: Desc_SqliteInputs) => LocalizedSt
 };
 
 export const desc_standard = /** @type {(inputs: Desc_StandardInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`常规 async/await；按需组合 SSR、SPA、Hono、移动端、桌面端、数据库与部署`)
+	return /** @type {LocalizedString} */ (`通用 TypeScript 写法，支持最广泛的框架、数据库与部署目标`)
 };
 
 export const desc_tanstack_router = /** @type {(inputs: Desc_Tanstack_RouterInputs) => LocalizedString} */ () => {
@@ -1270,31 +1270,31 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 };
 
 export const mode_effect_about = /** @type {(inputs: Mode_Effect_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`错误与依赖皆入类型`)
+	return /** @type {LocalizedString} */ (`更严谨的模型 · 适合复杂服务链路`)
 };
 
 export const mode_guide_docs = /** @type {(inputs: Mode_Guide_DocsInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`阅读 Effect 模式选型指南`)
+	return /** @type {LocalizedString} */ (`查看详细对比与说明`)
 };
 
 export const mode_guide_effect_body = /** @type {(inputs: Mode_Guide_Effect_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`后端业务逻辑复杂，或重度使用 AI 编码——借助编译期错误通道、Layer 依赖与作用域资源管理拦截隐蔽 bug。`)
+	return /** @type {LocalizedString} */ (`采用一套更重的模型，对错误处理和依赖关系有更严格的约束。适合复杂的后端链路，但有一定学习门槛，且可选技术栈限制较严。`)
 };
 
 export const mode_guide_effect_title = /** @type {(inputs: Mode_Guide_Effect_TitleInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`适合选择 Effect`)
+	return /** @type {LocalizedString} */ (`Effect 模式（适合复杂服务链路）`)
 };
 
 export const mode_guide_intro = /** @type {(inputs: Mode_Guide_IntroInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`普通 async/await 的类型只描述成功返回值，隐藏了可能的报错与依赖。Effect 把错误、依赖注入和资源释放全部纳入 TypeScript 类型，让遗漏在编译期直接报错。`)
+	return /** @type {LocalizedString} */ (`两种模式采用不同的代码写法，可选的技术栈范围也不同：`)
 };
 
 export const mode_guide_standard_body = /** @type {(inputs: Mode_Guide_Standard_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`需要 SSR（Next.js、TanStack Start）、移动端（Expo）、桌面端（Electron）、Cloudflare Workers，或希望保持熟悉的 async/await 零上手成本。`)
+	return /** @type {LocalizedString} */ (`采用通用的 TypeScript 写法，零额外上手成本；支持最广泛的框架、数据库、移动端、桌面端和部署方式。`)
 };
 
 export const mode_guide_standard_title = /** @type {(inputs: Mode_Guide_Standard_TitleInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`适合选择默认模式`)
+	return /** @type {LocalizedString} */ (`默认模式（适合大多数项目）`)
 };
 
 export const mode_guide_title = /** @type {(inputs: Mode_Guide_TitleInputs) => LocalizedString} */ () => {
@@ -1310,7 +1310,7 @@ export const mode_standard = /** @type {(inputs: Mode_StandardInputs) => Localiz
 };
 
 export const mode_standard_about = /** @type {(inputs: Mode_Standard_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`常规 async/await · 自由组合技术栈`)
+	return /** @type {LocalizedString} */ (`通用写法 · 技术栈选型最广`)
 };
 
 export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {

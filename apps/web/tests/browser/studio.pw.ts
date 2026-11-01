@@ -33,14 +33,17 @@ test("switches independent modes and restores them through browser history", asy
     page.getByRole("dialog", { name: "Standard vs. Effect" })
   ).toBeVisible();
   await page
-    .getByRole("link", { name: "Read the Effect mode guide", exact: true })
+    .getByRole("link", { name: "See full comparison", exact: true })
     .click();
   await expect(page).toHaveURL(/\/docs\/stack\/effect$/u);
   await expect(
     page.getByRole("heading", { level: 1, name: "Effect mode" })
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { level: 2, name: "Standard vs. Effect" })
+    page.getByRole("heading", {
+      level: 2,
+      name: "How to choose: Standard vs. Effect",
+    })
   ).toBeVisible();
 });
 

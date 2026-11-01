@@ -96,7 +96,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 
 ## Stack modes
 
-Standard is the default (`async/await` across SSR, SPA, Hono, mobile, desktop, and Workers). Use `--mode effect` when you want errors, dependencies, and resource cleanup tracked in TypeScript types across a React SPA and Node server, or `--list --mode effect` to list its adapted choices. Interactive creation asks for the mode first, and Studio offers the same switch.
+Standard is the default and suits most projects with familiar TypeScript and the widest choice of stacks. Use `--mode effect` when you want a stricter model for complex backend service flows, or `--list --mode effect` to list its supported choices. Interactive creation asks for the mode first, and Studio offers the same switch.
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect

@@ -712,7 +712,7 @@ export const desc_e2e = /** @type {(inputs: Desc_E2eInputs) => LocalizedString} 
 };
 
 export const desc_effect = /** @type {(inputs: Desc_EffectInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Errors, dependencies, and resources in types; best for complex backends and AI agents`)
+	return /** @type {LocalizedString} */ (`A stricter, heavier model for complex service flows, with a focused set of stacks`)
 };
 
 export const desc_effect_http = /** @type {(inputs: Desc_Effect_HttpInputs) => LocalizedString} */ () => {
@@ -796,7 +796,7 @@ export const desc_sqlite = /** @type {(inputs: Desc_SqliteInputs) => LocalizedSt
 };
 
 export const desc_standard = /** @type {(inputs: Desc_StandardInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Familiar async/await; compose SSR, SPA, Hono, mobile, desktop, DB, and deploy`)
+	return /** @type {LocalizedString} */ (`Familiar TypeScript with the widest choice of frameworks, databases, and targets`)
 };
 
 export const desc_tanstack_router = /** @type {(inputs: Desc_Tanstack_RouterInputs) => LocalizedString} */ () => {
@@ -1278,31 +1278,31 @@ export const learn_about = /** @type {(inputs: Learn_AboutInputs) => LocalizedSt
 };
 
 export const mode_effect_about = /** @type {(inputs: Mode_Effect_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Errors & dependencies in types`)
+	return /** @type {LocalizedString} */ (`Stricter model for complex service flows`)
 };
 
 export const mode_guide_docs = /** @type {(inputs: Mode_Guide_DocsInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Read the Effect mode guide`)
+	return /** @type {LocalizedString} */ (`See full comparison`)
 };
 
 export const mode_guide_effect_body = /** @type {(inputs: Mode_Guide_Effect_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`You have complex backend workflows or build heavily with AI agents, and want the compiler to enforce error handling, DI layers, and cleanup.`)
+	return /** @type {LocalizedString} */ (`Uses a heavier model that checks errors, dependencies, and cleanup in types. Suited to complex backend flows, with a steeper learning curve and stricter stack limits.`)
 };
 
 export const mode_guide_effect_title = /** @type {(inputs: Mode_Guide_Effect_TitleInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Choose Effect when`)
+	return /** @type {LocalizedString} */ (`Effect (for complex service flows)`)
 };
 
 export const mode_guide_intro = /** @type {(inputs: Mode_Guide_IntroInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Ordinary async/await hides what can throw and what services a function needs. Effect puts errors, dependencies, and resource cleanup into TypeScript types, so mistakes fail type checking instead of production.`)
+	return /** @type {LocalizedString} */ (`The two modes use different coding styles and support different stack ranges:`)
 };
 
 export const mode_guide_standard_body = /** @type {(inputs: Mode_Guide_Standard_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`You need SSR (Next.js, TanStack Start), mobile (Expo), desktop (Electron), Cloudflare Workers, or prefer familiar async/await with zero Effect learning curve.`)
+	return /** @type {LocalizedString} */ (`Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, mobile, desktop, and deployment targets.`)
 };
 
 export const mode_guide_standard_title = /** @type {(inputs: Mode_Guide_Standard_TitleInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Choose Standard when`)
+	return /** @type {LocalizedString} */ (`Standard (for most projects)`)
 };
 
 export const mode_guide_title = /** @type {(inputs: Mode_Guide_TitleInputs) => LocalizedString} */ () => {
@@ -1318,7 +1318,7 @@ export const mode_standard = /** @type {(inputs: Mode_StandardInputs) => Localiz
 };
 
 export const mode_standard_about = /** @type {(inputs: Mode_Standard_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Familiar async/await · compose any stack`)
+	return /** @type {LocalizedString} */ (`Familiar TypeScript · widest stack choices`)
 };
 
 export const mongodb_process = /** @type {(inputs: Mongodb_ProcessInputs) => LocalizedString} */ () => {

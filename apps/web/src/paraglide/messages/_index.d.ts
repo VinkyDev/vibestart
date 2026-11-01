@@ -1541,7 +1541,7 @@ export declare const desc_e2e: ((inputs?: Desc_E2eInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Errors, dependencies, and resources in types; best for complex backends and AI agents" |
+* | "A stricter, heavier model for complex service flows, with a focused set of stacks" |
 *
 * @param {Desc_EffectInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1835,7 +1835,7 @@ export declare const desc_sqlite: ((inputs?: Desc_SqliteInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Familiar async/await; compose SSR, SPA, Hono, mobile, desktop, DB, and deploy" |
+* | "Familiar TypeScript with the widest choice of frameworks, databases, and targets" |
 *
 * @param {Desc_StandardInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3472,7 +3472,7 @@ export declare const learn_about: ((inputs: Learn_AboutInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Errors & dependencies in types" |
+* | "Stricter model for complex service flows" |
 *
 * @param {Mode_Effect_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3486,7 +3486,7 @@ export declare const mode_effect_about: ((inputs?: Mode_Effect_AboutInputs, opti
 /**
 * | output |
 * | --- |
-* | "Read the Effect mode guide" |
+* | "See full comparison" |
 *
 * @param {Mode_Guide_DocsInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3500,7 +3500,7 @@ export declare const mode_guide_docs: ((inputs?: Mode_Guide_DocsInputs, options?
 /**
 * | output |
 * | --- |
-* | "You have complex backend workflows or build heavily with AI agents, and want the compiler to enforce error handling, DI layers, and cleanup." |
+* | "Uses a heavier model that checks errors, dependencies, and cleanup in types. Suited to complex backend flows, with a steeper learning curve and stricter stac..." |
 *
 * @param {Mode_Guide_Effect_BodyInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3514,7 +3514,7 @@ export declare const mode_guide_effect_body: ((inputs?: Mode_Guide_Effect_BodyIn
 /**
 * | output |
 * | --- |
-* | "Choose Effect when" |
+* | "Effect (for complex service flows)" |
 *
 * @param {Mode_Guide_Effect_TitleInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3528,7 +3528,7 @@ export declare const mode_guide_effect_title: ((inputs?: Mode_Guide_Effect_Title
 /**
 * | output |
 * | --- |
-* | "Ordinary async/await hides what can throw and what services a function needs. Effect puts errors, dependencies, and resource cleanup into TypeScript types, s..." |
+* | "The two modes use different coding styles and support different stack ranges:" |
 *
 * @param {Mode_Guide_IntroInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3542,7 +3542,7 @@ export declare const mode_guide_intro: ((inputs?: Mode_Guide_IntroInputs, option
 /**
 * | output |
 * | --- |
-* | "You need SSR (Next.js, TanStack Start), mobile (Expo), desktop (Electron), Cloudflare Workers, or prefer familiar async/await with zero Effect learning curve." |
+* | "Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, mobile, desktop, and deployment targets." |
 *
 * @param {Mode_Guide_Standard_BodyInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3556,7 +3556,7 @@ export declare const mode_guide_standard_body: ((inputs?: Mode_Guide_Standard_Bo
 /**
 * | output |
 * | --- |
-* | "Choose Standard when" |
+* | "Standard (for most projects)" |
 *
 * @param {Mode_Guide_Standard_TitleInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -3612,7 +3612,7 @@ export declare const mode_standard: ((inputs?: Mode_StandardInputs, options?: {
 /**
 * | output |
 * | --- |
-* | "Familiar async/await · compose any stack" |
+* | "Familiar TypeScript · widest stack choices" |
 *
 * @param {Mode_Standard_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

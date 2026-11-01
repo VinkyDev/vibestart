@@ -11,15 +11,15 @@ A stack is one choice for each part of the application. The map lists every tech
 
 If you are unsure where to start, find the row closest to what you are building:
 
-| You are building                             | Consider                                | Because                                                            |
-| -------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------ |
-| An internal tool or dashboard                | TanStack Router SPA, Hono, oRPC, SQLite | Simple to host, with a typed API and no separate database service  |
-| A product whose pages must be searchable     | Next.js or TanStack Start               | Pages render on the server, so their content arrives with the HTML |
-| An API for other clients                     | No frontend, Hono, OpenAPI              | Standard REST endpoints, with generated documentation              |
-| A desktop application                        | TanStack Router SPA, Electron           | Electron packages the single-page app as a desktop window          |
-| An iOS and Android app                       | Expo, plus Hono and SQLite for accounts | The app calls the server's API itself; without one it stands alone |
-| An app with many concurrent writers          | PostgreSQL rather than SQLite           | A separate database service built for concurrent access            |
-| Complex backend logic or heavy AI-agent work | [Effect mode](/docs/stack/effect)       | Errors, dependencies, and resource cleanup are checked in types    |
+| You are building                         | Consider                                | Because                                                            |
+| ---------------------------------------- | --------------------------------------- | ------------------------------------------------------------------ |
+| An internal tool or dashboard            | TanStack Router SPA, Hono, oRPC, SQLite | Simple to host, with a typed API and no separate database service  |
+| A product whose pages must be searchable | Next.js or TanStack Start               | Pages render on the server, so their content arrives with the HTML |
+| An API for other clients                 | No frontend, Hono, OpenAPI              | Standard REST endpoints, with generated documentation              |
+| A desktop application                    | TanStack Router SPA, Electron           | Electron packages the single-page app as a desktop window          |
+| An iOS and Android app                   | Expo, plus Hono and SQLite for accounts | The app calls the server's API itself; without one it stands alone |
+| An app with many concurrent writers      | PostgreSQL rather than SQLite           | A separate database service built for concurrent access            |
+| Complex backend service flows            | [Effect mode](/docs/stack/effect)       | A stricter model that checks errors and dependencies in types      |
 
 Otherwise, start from the recommended stack the CLI proposes.
 

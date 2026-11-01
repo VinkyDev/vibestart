@@ -1,51 +1,30 @@
 ---
 title: Effect 模式
-description: Effect 是什么、何时在默认模式与 Effect 模式之间选择，以及生成的 Effect 项目如何组织。
+description: 默认模式与 Effect 模式的核心差别、适用场景，以及何时选择 Effect。
 ---
 
-## Effect 解决什么问题 [#why]
+工作台和 CLI 提供 **默认模式（Standard）** 与 **Effect** 两种独立模式。它们的核心区别在于**代码模型的轻重**与**可选技术栈的范围**。
 
-在普通的 TypeScript 中，一个 `async` 函数返回 `Promise<Todo>`。返回类型只描述了调用成功时的结果，却隐藏了生产环境中最容易引发故障的两件事：
+## 怎么选：默认模式 vs. Effect 模式 [#when]
 
-1. **它可能如何失败**——任何 `throw` 在类型上都是 `unknown`，调用方无从得知需要处理哪些错误。
-2. **它依赖哪些外部服务**——数据库连接、认证配置和后台资源往往通过隐式全局变量或层层传参注入。
+|                  | **默认模式（Standard）**                                                                                    | **Effect 模式**                                                                                            |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **适合什么项目** | 绝大多数常规项目                                                                                            | 服务链路较复杂、对错误处理和资源管理要求严格的项目                                                         |
+| **代码写法**     | 通用的 TypeScript 写法，上手即用                                                                            | 一套更重、约束更严的编程模型，把错误、依赖和资源回收纳入类型检查                                           |
+| **技术栈范围**   | 最广泛（支持 SPA、Next.js、TanStack Start、Hono、Expo 移动端、Electron 桌面端、四种数据库、Docker 与 Void） | 限制较严（目前仅支持 Node 上的 React 单页应用、PostgreSQL 或 SQLite 或无数据库、可选 Better Auth、Docker） |
 
-[Effect](https://effect.website/docs/) 把成功值、错误类型和依赖环境同时放进类型签名中：
+- **选择默认模式**：如果你希望使用大家最熟悉的通用写法、零额外学习成本，或者需要服务端渲染（Next.js、TanStack Start）、移动端（Expo）、桌面端（Electron）、Cloudflare Workers（Void）等更广泛的技术选型。
+- **选择 Effect 模式**：如果你的后端服务链路较复杂，希望通过一套更严谨的模型在编译期约束错误处理、服务依赖与资源释放，并且当前项目形态在 Effect 模式支持的技术栈范围内。
 
-```ts
-Effect<Todo, TodoNotFound | TodoStorageError, Database>;
-```
+关于 Effect 本身的语法、概念与设计理念，请直接参阅 [Effect 官方文档](https://effect.website/docs/)。
 
-如果某个接口忘了处理 `TodoNotFound`，或者测试忘了提供 `Database`，TypeScript 会在编译阶段直接报错。数据库连接池、测试子进程等资源绑定在 `Scope`（`Effect.acquireRelease`）上，在服务停止或初始化失败时自动释放。
+## Effect 模式包含什么 [#stack]
 
-这一特性在与 AI 编码 Agent 协作时优势尤为明显：在普通 `async/await` 项目里容易漏过类型检查、直到运行时才暴露的错误处理遗漏与依赖缺失，在 Effect 项目中会被 `vp check` 第一时间拦截。
+切换到 Effect 模式后，生成的项目从前端到后端统一使用 Effect 生态（不再混用 Hono、oRPC、Zod 或 TanStack Query）：
 
-## 默认模式 vs. Effect 模式 [#when]
-
-工作台和 CLI 提供 **默认模式（Standard）** 与 **Effect** 两种独立模式：
-
-|                | **默认模式（Standard）**                                                                                    | **Effect 模式**                                                                                            |
-| -------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **编程模型**   | 熟悉的 `async/await`、Hono、oRPC 或 OpenAPI、Zod、TanStack Query                                            | 全链路 `Effect`、`Layer`、`Schema`、`Effect HTTP/RPC` 与 `Effect Atom`                                     |
-| **核心优势**   | 零新范式学习成本；支持最完整的框架、客户端、数据库与部署矩阵                                                | 编译期检查错误通道与依赖注入；作用域化资源释放；内置重试、并发与追踪；极适合 AI Agent 编写高可靠代码       |
-| **取舍与局限** | 抛出的异常与服务依赖关系不在类型系统中追踪                                                                  | 需要理解 `Effect.gen`、`yield*` 与 `Layer`；当前在 vibestart 中支持的技术组合范围较窄                      |
-| **支持形态**   | SPA、Next.js、TanStack Start、Hono API、Expo 移动端、Electron 桌面端、四种数据库、Docker 与 Cloudflare Void | Node 上的 React + TanStack Router SPA、PostgreSQL 或 SQLite（Drizzle）或无数据库、可选 Better Auth、Docker |
-
-- **适合选择 Effect**：后端业务逻辑较复杂、看重严格的错误处理与资源生命周期管理，或重度依赖 AI Agent 开发、希望通过编译器把隐蔽的运行时问题拦截在编码阶段。
-- **适合选择默认模式**：需要服务端渲染与 SEO（`Next.js`、`TanStack Start`）、移动端（`Expo`）、桌面端（`Electron`）、Cloudflare Workers（`Void`），或团队希望保持熟悉的 `async/await` 零上手成本。
-
-## 生成项目的架构分工 [#architecture]
-
-Effect 模式从数据库到浏览器使用同一套原语，不再混入 Hono、oRPC、Zod 或 TanStack Query：
-
-- **`packages/contracts`**——前后端共享的 `Effect Schema`、脱敏的公开错误 `Schema.TaggedError`（不携带 SQL 或内部异常原因）、`RpcGroup` 契约和 `HttpApi` 定义。
-- **`packages/db`** _（选择数据库时）_——PostgreSQL（`@effect/sql-pg`）或基于 Node 内置 SQLite 的 `@effect/sql-sqlite-node`，配合 Drizzle 原生 Effect 查询与迁移。
-- **`packages/auth`** _（启用认证时）_——在 `Effect.acquireRelease` 作用域内封装 Better Auth 官方 Drizzle 适配器，并通过 `Config.Redacted` 校验密钥。
-- **`packages/api`**——薄 RPC/HTTP 处理器、Origin 校验中间件（启用认证时对比 `BETTER_AUTH_URL`，否则对比 `APP_URL`）、会话中间件，以及基于 `Context.Service` 与 `Effect.fn` 的领域服务。
-- **`apps/server`**——在进程入口组装 `Layer` 并通过 `NodeRuntime.runMain` 启动服务。
-- **`apps/web`**——React 19、TanStack Router、`@effect/atom-react` 与 Effect 响应式客户端（`AtomRpc.Service`、`AtomHttpApi.Service` 以及按会话 ID 隔离的 `RegistryProvider`）。
-
-有数据库但不启用认证时，Todo 为所有访问者共享的公开数据；不使用数据库时，不生成 ORM、认证、迁移和 Todo 示例，仅保留类型化的 HTTP 与 RPC 健康检查。服务测试使用 `@effect/vitest`，浏览器测试可选 Playwright（默认）或 TesterArmy `e2e`，均通过作用域自动清理测试资源。每个生成的项目都在根目录配置了 `node_modules/effect/AGENTS.md` 与 `node_modules/effect/src`，方便编码 Agent 直接查阅与已安装版本一致的 Effect v4 官方文档、示例与源码。
+- **前端与接口**：React 单页应用（TanStack Router）配合 Effect 响应式状态与类型化 RPC/HTTP 接口。
+- **数据与认证（可选）**：可选 PostgreSQL 或 SQLite（基于 Node 内置 SQLite，无需单独启动数据库服务），配合 Drizzle 管理数据表与迁移；启用数据库时可接入 Better Auth 登录认证。若选择无数据库，则仅生成精简的接口与健康检查骨架。
+- **测试与开发体验**：包含服务端测试与浏览器端到端测试（默认 Playwright，可选 TesterArmy `e2e`），并在项目内附带了与当前版本一致的 Effect 本地文档供 AI 编程工具参考。
 
 ## 创建 Effect 项目 [#create]
 
@@ -55,17 +34,11 @@ Effect 模式从数据库到浏览器使用同一套原语，不再混入 Hono�
 # 交互式创建 Effect 项目
 pnpm dlx vibestart-cli my-app --mode effect
 
-# SQLite（默认）+ Better Auth + Playwright
-pnpm dlx vibestart-cli my-app --mode effect --auth better-auth
-
-# PostgreSQL 公开 Todo + TesterArmy e2e
-pnpm dlx vibestart-cli my-app --mode effect --database postgres --auth none --testing e2e
-
-# 无状态 Effect 应用（不含数据库、ORM 与认证）
-pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
-
-# 查看 Effect 模式下的全部 20 个合法组合
+# 查看 Effect 模式支持的所有技术栈选项
 pnpm dlx vibestart-cli --list --mode effect
+
+# 无状态 Effect 服务（不含数据库与认证）
+pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
 ```
 
-CLI 会拒绝混搭默认模式与 Effect 模式的选项，而不会自动切换模式。包管理器（`pnpm` 或 `bun`）独立于 Node 运行时。
+CLI 不会自动混搭两种模式的选项；包管理器（`pnpm` 或 `bun`）可自由选择。

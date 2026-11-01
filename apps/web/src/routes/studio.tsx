@@ -92,18 +92,18 @@ const ModeGuide = ({
         <div className="grid gap-2">
           <div className="bg-foreground/[0.04] rounded-xl p-2.5">
             <p className="text-foreground font-medium">
-              {m.mode_guide_effect_title()}
-            </p>
-            <p className="text-muted-foreground mt-0.5">
-              {m.mode_guide_effect_body()}
-            </p>
-          </div>
-          <div className="bg-foreground/[0.04] rounded-xl p-2.5">
-            <p className="text-foreground font-medium">
               {m.mode_guide_standard_title()}
             </p>
             <p className="text-muted-foreground mt-0.5">
               {m.mode_guide_standard_body()}
+            </p>
+          </div>
+          <div className="bg-foreground/[0.04] rounded-xl p-2.5">
+            <p className="text-foreground font-medium">
+              {m.mode_guide_effect_title()}
+            </p>
+            <p className="text-muted-foreground mt-0.5">
+              {m.mode_guide_effect_body()}
             </p>
           </div>
         </div>

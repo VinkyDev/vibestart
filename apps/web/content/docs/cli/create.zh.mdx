@@ -29,7 +29,7 @@ CLI 会依次：
 
 ## 技术栈模式 [#modes]
 
-默认使用 Standard（常规 `async/await`，支持 SSR、SPA、Hono、移动端、桌面端与 Cloudflare Workers）。`--mode effect` 选择独立的 [Effect 技术栈](/docs/stack/effect)，将错误、依赖注入与资源释放纳入 TypeScript 类型，适合复杂后端逻辑与重度 AI 协作开发（运行于 React SPA + Node 服务端）。使用 `--list --mode effect --json` 查看已适配的选项。Effect 模式不接受 Standard 的传输协议、框架或运行时，不兼容选项的修复建议也会保留已选模式。
+默认使用 Standard，采用通用写法并支持最广泛的技术栈选型，适合大多数项目。交互式组合首先选择模式；`--mode effect` 选择独立的 [Effect 技术栈](/docs/stack/effect)，提供一套更严谨的模型，适合较复杂的后端服务链路（可选技术栈范围也更收敛）。使用 `--list --mode effect --json` 查看已适配的选项。Effect 模式不接受 Standard 的传输协议、框架或运行时，不兼容选项的修复建议也会保留已选模式。
 
 ```sh
 pnpm dlx vibestart-cli my-app --mode effect
