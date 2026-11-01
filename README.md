@@ -4,13 +4,13 @@
 
 **Compose. Verify. Ship.**
 
-Compose a full-stack TypeScript stack and get a cutting-edge, verified project made for AI coding agents, with type safety, lint, and tests built in.
+Compose a full-stack TypeScript stack and get a cutting-edge, verified project made for AI coding agents, with end-to-end type safety, lint, and tests built in.
 
 [![npm](https://img.shields.io/npm/v/vibestart-cli?label=npm&color=cb3837)](https://www.npmjs.com/package/vibestart-cli)
 [![CI](https://github.com/VinkyDev/vibestart/actions/workflows/ci.yml/badge.svg)](https://github.com/VinkyDev/vibestart/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**English** · [简体中文](README.zh.md)
+[**Web Studio**](https://vibestart.net/studio) · [**Documentation**](https://vibestart.net/docs) · [**Effect Mode**](https://vibestart.net/docs/stack/effect) · [**Agent Skill**](skills/vibestart/SKILL.md) · **English** · [简体中文](README.zh.md)
 
 https://github.com/user-attachments/assets/aa58d60b-4776-460b-97ee-234aa331f436
 
@@ -18,15 +18,33 @@ https://github.com/user-attachments/assets/aa58d60b-4776-460b-97ee-234aa331f436
 
 ## Quick start
 
-### Compose it yourself
+### 1. Interactive CLI or Web Studio
 
-Pick each layer in the [web studio](https://vibestart.net/studio) and copy the command it builds, or answer the prompts in your terminal:
+Pick each layer visually in the [web studio](https://vibestart.net/studio) and copy the command it builds, or answer the prompts in your terminal:
 
 ```sh
 npx vibestart-cli my-app
 ```
 
-### Hand it to an AI agent
+### 2. One-line presets
+
+Pass flags to skip prompts and scaffold a complete, verified workspace in one command:
+
+```sh
+# Recommended full-stack SPA (React + Hono + oRPC + SQLite + Better Auth)
+npx vibestart-cli my-app --framework spa --backend hono --api orpc --database sqlite --auth better-auth
+
+# SSR web app (Next.js or TanStack Start + PostgreSQL + Better Auth)
+npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
+
+# Effect mode (React SPA + Effect HTTP/RPC/Atom + SQLite + Better Auth)
+npx vibestart-cli my-app --mode effect --database sqlite --auth better-auth
+
+# Cross-platform Effect stack (Web + Electron desktop + Expo mobile + Docker)
+npx vibestart-cli my-app --mode effect --database sqlite --auth better-auth --desktop electron --mobile expo --deployment docker
+```
+
+### 3. Hand it to an AI coding agent
 
 Paste this command, along with what you want to build, into Claude Code, Codex, Cursor, or any coding agent:
 
@@ -34,7 +52,61 @@ Paste this command, along with what you want to build, into Claude Code, Codex, 
 npx skills add VinkyDev/vibestart --skill vibestart
 ```
 
-The agent installs the [vibestart skill](skills/vibestart/SKILL.md), chooses the stack, and creates the project. Later, ask it to add capabilities or upgrade the templates. See the [Agent Skills guide](apps/web/content/docs/cli/skill.mdx).
+The agent installs the [vibestart skill](skills/vibestart/SKILL.md), discovers the supported options (`--list --json`), chooses the stack, and creates the project. Later, ask it to add capabilities or upgrade the templates. See the [Agent Skills guide](apps/web/content/docs/cli/skill.mdx).
+
+### 4. Develop, verify, and evolve
+
+Every generated project uses [Vite+](https://viteplus.dev) (`vp`) as one unified toolchain and includes Day-2 maintenance commands:
+
+```sh
+cd my-app
+vp run db:migrate                # Apply SQL migrations (when using Drizzle or Prisma)
+vp run dev                       # Start web, server, and desktop in development
+vp run ready                     # Format + lint + typecheck + knip + unit/integration/E2E tests + build
+
+# Day-2 maintenance (three-way template merge & capability additions)
+npx vibestart-cli doctor         # Check project health and template updates
+npx vibestart-cli add docker     # Add Docker, Void, Knip, or Ultracite to an existing project
+npx vibestart-cli upgrade --dry-run
+```
+
+## Stack modes: Standard vs. Effect
+
+VibeStart offers two independent stack modes. Interactive creation asks for the mode first, and the [web studio](https://vibestart.net/studio) provides the same switch:
+
+|                        | **Standard mode** (default)                                                 | **Effect mode** (`--mode effect`)                                                                          |
+| ---------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Best for**           | Most projects: familiar TypeScript and the widest choice of stacks          | Complex backend service flows requiring typed errors, dependency injection (`Layer`), and scoped lifetimes |
+| **Frontend & clients** | React SPA, TanStack Start, Next.js, Electron, Expo, or API-only             | React SPA (TanStack Router) + Effect Atom, with optional Electron desktop and Expo mobile                  |
+| **Backend & API**      | Hono or framework server; oRPC, OpenAPI, or none; Zod + TanStack Query      | Effect HTTP + Effect RPC + `HttpApi` + `Effect.Schema` contracts (zero Zod / Hono / oRPC / React Query)    |
+| **Database & auth**    | PostgreSQL, MySQL, SQLite, MongoDB (Drizzle, Prisma, Mongoose); Better Auth | PostgreSQL or SQLite via native Effect + Drizzle drivers, or no database; optional Better Auth             |
+| **Runtime & deploy**   | Node.js, Bun, or Cloudflare Workers; Docker or Void (preview)               | Node.js 26; optional Docker                                                                                |
+| **Discover choices**   | `npx vibestart-cli --list`                                                  | `npx vibestart-cli --list --mode effect`                                                                   |
+
+See the [Effect mode guide](https://vibestart.net/docs/stack/effect) for a full comparison.
+
+## Supported stacks
+
+| Layer                    | Choices                                                                  |
+| ------------------------ | ------------------------------------------------------------------------ |
+| Mode                     | Standard (default) or Effect (`--mode effect`)                           |
+| App                      | React SPA (TanStack Router), TanStack Start, Next.js, or API-only        |
+| Desktop                  | Electron (`apps/desktop` + `packages/electron`)                          |
+| Mobile                   | Expo (React Native) for iOS and Android (`apps/mobile`)                  |
+| Backend                  | Hono, Effect HTTP, or the framework's own server                         |
+| API                      | oRPC, Effect RPC + HttpApi, OpenAPI, or none                             |
+| Database                 | PostgreSQL, MySQL, SQLite, MongoDB, or none                              |
+| ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL; Mongoose on MongoDB          |
+| Auth                     | Better Auth                                                              |
+| Deployment               | Docker, Void on Cloudflare Workers (preview)                             |
+| UI                       | shadcn (Base UI) and Tailwind 4                                          |
+| Unit & integration tests | Vitest (and `@effect/vitest` in Effect mode)                             |
+| End-to-end tests         | Playwright (default) or TesterArmy e2e                                   |
+| Toolchain                | Vite+, Oxlint, Oxfmt, Knip, `AGENTS.md`, and local Effect agent guidance |
+
+### Void deployment (preview)
+
+`--deployment void --runtime workers` deploys a SPA, SPA + Hono, or TanStack Start to your Cloudflare account with Void 1.3.0. Server stacks support external PostgreSQL or MySQL with Drizzle and optional Better Auth. Next.js, SQLite, Prisma, Effect mode, and a standalone Hono server are excluded. Generated projects include a deployment script and instructions for production secrets, Hyperdrive, and `void.lock.json`; they include no GitHub Actions. See [delivery](https://vibestart.net/docs/stack/delivery#void).
 
 ## Why VibeStart
 
@@ -43,70 +115,33 @@ Full details: [Why vibestart](https://vibestart.net/docs/why).
 With a coding agent, the hard part of an application is rarely the first day. It is the thirtieth: features pile up, the structure erodes, and each fix introduces another bug. VibeStart gives the agent, and you, a better starting point: best practices for a current, carefully chosen stack, and a codebase built so that an agent writes good code in it.
 
 - **Good code begets good code.** An agent imitates the code around it, follows written rules, and corrects itself from errors. Every project ships a consistent codebase, an `AGENTS.md` that says where and how each change is made, and checks (types, lint, tests) that report a mistake within seconds. `vp run ready` runs them all, fastest first.
-- **A current stack, kept current.** Only technologies that are the current standard or clearly becoming it: TypeScript 7, React 19 with the React Compiler, Drizzle ORM 1.0, Oxlint and Oxfmt, and [Vite+](https://viteplus.dev) as one toolchain. Open source, no vendor lock-in, one library per capability. When a better tool becomes the standard, the template moves to it and the old one is removed.
+- **A current stack, kept current.** Only technologies that are the current standard or clearly becoming it: TypeScript 7, React 19 with the React Compiler, Drizzle ORM 1.0, Effect v4, Oxlint and Oxfmt, and [Vite+](https://viteplus.dev) as one toolchain. Open source, no vendor lock-in, one library per capability.
 - **Composed, not copied.** Each technology is an integration with its own files, dependencies, and constraints, and the project is composed from the integrations you choose. A combination that cannot work is refused with the reason and the smallest change that fixes it.
 - **Every combination is verified.** Before each release, every supported combination is covered: each file `vp run ready` reads, and every three of its choices together, have been installed, type-checked, linted, tested, tested in a browser, and built in a combination that CI ran. The passes are recorded with fingerprints on the [`verification`](https://github.com/VinkyDev/vibestart/tree/verification) branch, and the CLI shows a representative pass for your project when it creates it.
-- **TypeScript across the stack.** One language from database to button, with types that travel from the schema through the API to the page and no code generation step. Zod validates data from outside.
+- **TypeScript across the stack.** One language from database to button, with types that travel from the schema through the API to the page and no code generation step. Zod (in Standard mode) or Effect Schema (in Effect mode) validates data from outside.
 - **Tests that earn their place.** End-to-end tests for whole workflows, integration tests for every API operation against a real database, and unit tests only for logic with real branches.
 - **Maintained after creation.** `upgrade` compares the original template, your project, and the new template, and previews the result before writing anything. Template files take the update; your application code stays as you wrote it.
 
 VibeStart does not host your application, does not migrate production data, and does not hide the code. A generated project is an ordinary repository with no runtime dependency on VibeStart.
 
-## Supported stacks
-
-| Layer                    | Choices                                                         |
-| ------------------------ | --------------------------------------------------------------- |
-| App                      | React SPA (TanStack Router), TanStack Start, Next.js            |
-| Desktop                  | Electron                                                        |
-| Mobile                   | Expo (React Native), iOS and Android                            |
-| Backend                  | Hono, or the framework's own server                             |
-| API                      | oRPC, OpenAPI, or none                                          |
-| Database                 | PostgreSQL, MySQL, SQLite, MongoDB, or none                     |
-| ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL; Mongoose on MongoDB |
-| Auth                     | Better Auth                                                     |
-| Deployment               | Docker, Void (preview)                                          |
-| UI                       | shadcn (Base UI) and Tailwind 4                                 |
-| Unit & integration tests | Vitest                                                          |
-| End-to-end tests         | Playwright or TesterArmy e2e                                    |
-| Toolchain                | Vite+, Oxlint, Knip, `AGENTS.md`                                |
-
-### Void deployment (preview)
-
-`--deployment void --runtime workers` deploys a SPA, SPA + Hono, or TanStack Start to your Cloudflare account with Void 1.3.0. Server stacks support external PostgreSQL or MySQL with Drizzle and optional Better Auth. Next.js, SQLite, Prisma, and a standalone Hono server are excluded. Generated projects include a deployment script and instructions for production secrets, Hyperdrive, and `void.lock.json`; they include no GitHub Actions. See [delivery](https://vibestart.net/docs/stack/delivery#void).
-
 ## CLI options
 
-Pass flags to skip the prompts:
-
-```sh
-npx vibestart-cli my-app --framework next --backend self --api orpc --database postgres --auth better-auth
-```
-
-| Option                                                       | Description                                                                                                                                                                         |
-| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--orm`, `--auth`, `--desktop`, `--mobile`, `--deployment`, …). `none` is the empty choice of an optional kind. |
-| `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                                      |
-| `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.3 or newer.                                                                                                                                  |
-| `--runtime <node\|bun\|workers>`                             | Cloudflare Workers with Void, or Node.js (default) / Bun for Hono.                                                                                                                  |
-| `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                                             |
-| `--list`                                                     | List every kind, its options, and every legal stack.                                                                                                                                |
-| `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                                               |
-| `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                                                   |
-| `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                                               |
-
-## Stack modes
-
-Standard is the default and suits most projects with familiar TypeScript and the widest choice of stacks. Use `--mode effect` when you want a stricter model for complex backend service flows, or `--list --mode effect` to list its supported choices. Interactive creation asks for the mode first, and Studio offers the same switch.
-
-```sh
-pnpm dlx vibestart-cli my-app --mode effect
-```
-
-Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, and Node. Choose Playwright (the default) or TesterArmy e2e, PostgreSQL or SQLite through native Effect/Drizzle drivers, or no database. Better Auth is optional and requires a database; no database also removes the ORM. Electron desktop, Expo mobile, and Docker are optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
+| Option                                                       | Description                                                                                                                                                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--mode <standard\|effect>`                                  | Select the Standard stack (default) or the independent Effect stack.                                                                                                                             |
+| `--<kind> <choice>`                                          | Decide one kind (`--framework`, `--backend`, `--api`, `--database`, `--orm`, `--auth`, `--desktop`, `--mobile`, `--deployment`, `--testing`, …). `none` is the empty choice of an optional kind. |
+| `--addons <ids\|none>`                                       | Select add-ons, comma-separated. Knip and Ultracite are on by default; `none` leaves out both.                                                                                                   |
+| `--package-manager <pnpm\|bun>`                              | Install with pnpm (default) or Bun 1.4.3 or newer.                                                                                                                                               |
+| `--runtime <node\|bun\|workers>`                             | Cloudflare Workers with Void, or Node.js (default) / Bun for Hono.                                                                                                                               |
+| `--recipe <path\|url>`                                       | Start from a `vibestart.jsonc`; kind flags override it.                                                                                                                                          |
+| `--list`                                                     | List every kind, its options, and every legal stack (combine with `--mode effect` or `--json`).                                                                                                  |
+| `--dry-run`                                                  | Resolve the stack and list the files without writing.                                                                                                                                            |
+| `--json`                                                     | Print one JSON object and never prompt. Failures carry a machine-readable `code`.                                                                                                                |
+| `--no-interactive`, `--no-git`, `--no-install`, `--no-check` | Skip prompts, `git init`, install and setup, or the final `vp check`.                                                                                                                            |
 
 ## Documentation
 
-- [vibestart.net/docs](https://vibestart.net/docs): quick start, choosing a stack, the CLI reference, testing, and concepts
+- [vibestart.net/docs](https://vibestart.net/docs): quick start, choosing a stack, Effect mode, the CLI reference, testing, and concepts
 - [Architecture](docs/architecture.md): the model, the resolver, integrations, verification, and project maintenance
 - [AGENTS.md](AGENTS.md): the rules for code in this repository and in every generated project
 
