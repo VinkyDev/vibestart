@@ -177,7 +177,9 @@ export const rpcPath = (ctx: Context) =>
 
 /** Path prefixes a web client forwards to the server. */
 export const serverPaths = (ctx: Context) =>
-  ctx.has("orpc") && rpcPath(ctx) === "/rpc" ? ["/rpc", "/api"] : ["/api"];
+  (ctx.has("orpc") || ctx.has("effect-rpc")) && rpcPath(ctx) === "/rpc"
+    ? ["/rpc", "/api"]
+    : ["/api"];
 
 export const proxiesToHono = (ctx: Context) =>
   ctx.has("hono") && hasWebApp(ctx) && !ctx.has("spa");

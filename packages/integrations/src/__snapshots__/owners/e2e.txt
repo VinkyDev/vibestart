@@ -1,4 +1,4 @@
-# apps/web/e2e.config.ts · 195 stacks
+# apps/web/e2e.config.ts · 198 stacks
 #   next-docker-e2e
 #   next-expo-docker-e2e
 #   next-hono-bun-docker-e2e
@@ -49,8 +49,11 @@
 #   next-self-sqlite-expo-docker-e2e
 #   spa-docker-e2e
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker-e2e
 #   spa-electron-expo-void-e2e
@@ -230,7 +233,7 @@ export default {
   trace: "retain-on-failure",
 } satisfies E2EConfig;
 
-# apps/web/e2e.config.ts · 626 stacks
+# apps/web/e2e.config.ts · 628 stacks
 #   next-hono-mongodb-better-auth-bun-docker-e2e
 #   next-hono-mongodb-better-auth-docker-e2e
 #   next-hono-mongodb-better-auth-expo-bun-docker-e2e
@@ -392,7 +395,9 @@ export default {
 #   next-self-postgres-prisma-docker-e2e
 #   next-self-postgres-prisma-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
 #   spa-hono-mongodb-better-auth-docker-e2e
 #   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
@@ -939,7 +944,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 199 stacks
+# apps/web/tests/e2e/app.e2e.ts · 200 stacks
 #   next-hono-bun-docker-e2e
 #   next-hono-docker-e2e
 #   next-hono-expo-bun-docker-e2e
@@ -991,6 +996,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 #   next-self-sqlite-docker-e2e
 #   next-self-sqlite-expo-docker-e2e
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-hono-bun-docker-e2e
 #   spa-hono-docker-e2e
 #   spa-hono-electron-bun-docker-e2e
@@ -1772,7 +1778,7 @@ test("login redirects stay on the app origin after URL normalization", async ({
   await expectInternalRedirect("/\n/example.com");
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 238 stacks
+# apps/web/tests/e2e/app.e2e.ts · 240 stacks
 #   next-hono-openapi-mongodb-bun-docker-e2e
 #   next-hono-openapi-mongodb-docker-e2e
 #   next-hono-openapi-mongodb-expo-bun-docker-e2e
@@ -1834,7 +1840,9 @@ test("login redirects stay on the app origin after URL normalization", async ({
 #   next-self-orpc-sqlite-docker-e2e
 #   next-self-orpc-sqlite-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 #   spa-hono-openapi-mongodb-bun-docker-e2e
 #   spa-hono-openapi-mongodb-docker-e2e
 #   spa-hono-openapi-mongodb-electron-bun-docker-e2e
@@ -2075,9 +2083,11 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 2 stacks
+# apps/web/tests/e2e/app.e2e.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 import { test } from "@e2e-dev/web";
 import type { Browser } from "@e2e-dev/web";
 import { expect } from "e2e";
@@ -2830,9 +2840,11 @@ export const signUp = async (email = uniqueEmail()) => {
   return { client, email };
 };
 
-# apps/web/tests/support/api.ts · 2 stacks
+# apps/web/tests/support/api.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 import { Effect, Layer } from "effect";
 import { FetchHttpClient } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -6649,8 +6661,9 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 1 stack
+# apps/web/tests/support/server.ts · 2 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -6727,9 +6740,11 @@ export const testServer = Effect.gen(function* () {
   );
 });
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -6811,9 +6826,11 @@ export const testServer = Effect.gen(function* () {
   );
 });
 
-# apps/web/tests/support/server.ts · 2 stacks
+# apps/web/tests/support/server.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -14428,12 +14445,17 @@ try {
   await stop();
 }
 
-# apps/web/tests/support/start.ts · 5 stacks
+# apps/web/tests/support/start.ts · 10 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 import { NodeRuntime, NodeServices } from "@effect/platform-node";
 import { Effect } from "effect";
 
@@ -14447,8 +14469,9 @@ NodeRuntime.runMain(
   )
 );
 
-# packages/api/tests/integration/health.test.ts · 1 stack
+# packages/api/tests/integration/health.test.ts · 2 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 import { assert, layer } from "@effect/vitest";
 import { Effect } from "effect";
 
@@ -15490,8 +15513,9 @@ describe("todos", () => {
   });
 });
 
-# packages/api/tests/integration/todos.test.ts · 1 stack
+# packages/api/tests/integration/todos.test.ts · 2 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 import { assert, layer } from "@effect/vitest";
 import { sql } from "drizzle-orm";
 import { Effect } from "effect";
@@ -15802,9 +15826,11 @@ layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
   );
 });
 
-# packages/api/tests/integration/todos.test.ts · 2 stacks
+# packages/api/tests/integration/todos.test.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 import { assert, layer } from "@effect/vitest";
 import { Effect } from "effect";
 
@@ -15930,8 +15956,9 @@ layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
   }
 });
 
-# packages/api/tests/integration/todos.test.ts · 1 stack
+# packages/api/tests/integration/todos.test.ts · 2 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 import { assert, layer } from "@effect/vitest";
 import { sql } from "drizzle-orm";
 import { Effect } from "effect";
@@ -16842,8 +16869,9 @@ afterAll(remove);
 /** Calls the procedures in this process, through their middleware and validation. */
 export const client = createRouterClient(appRouter, { context: { db } });
 
-# packages/api/tests/support/app.ts · 1 stack
+# packages/api/tests/support/app.ts · 2 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 import { ConfigProvider, Context, Effect, Layer } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -16899,9 +16927,11 @@ export const makeClient = Effect.gen(function* () {
   );
 });
 
-# packages/api/tests/support/app.ts · 2 stacks
+# packages/api/tests/support/app.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 import { Context, Effect, Layer, Redacted, Schema } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -17061,9 +17091,11 @@ export const createRaw = Effect.fnUntraced(function* (
   return exit;
 });
 
-# packages/api/tests/support/app.ts · 2 stacks
+# packages/api/tests/support/app.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 import { ConfigProvider, Context, Effect, Layer } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -17124,7 +17156,7 @@ export const makeClient = Effect.gen(function* () {
   );
 });
 
-# packages/db/src/test-database-name.ts · 514 stacks
+# packages/db/src/test-database-name.ts · 516 stacks
 #   next-hono-mysql-better-auth-bun-docker-e2e
 #   next-hono-mysql-better-auth-docker-e2e
 #   next-hono-mysql-better-auth-expo-bun-docker-e2e
@@ -17254,7 +17286,9 @@ export const makeClient = Effect.gen(function* () {
 #   next-self-postgres-prisma-docker-e2e
 #   next-self-postgres-prisma-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-hono-mysql-better-auth-bun-docker-e2e
 #   spa-hono-mysql-better-auth-docker-e2e
 #   spa-hono-mysql-better-auth-electron-bun-docker-e2e
@@ -18651,9 +18685,11 @@ export const createTestDatabase = async () => {
   };
 };
 
-# packages/db/src/testing.ts · 2 stacks
+# packages/db/src/testing.ts · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 import { PgClient } from "@effect/sql-pg";
 import { Config, Effect, Redacted } from "effect";
 import { SqlClient } from "effect/sql";
@@ -18691,9 +18727,11 @@ export const makeTestDatabase = Effect.gen(function* () {
   return Redacted.make(url.href);
 });
 
-# packages/db/src/testing.ts · 2 stacks
+# packages/db/src/testing.ts · 4 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";

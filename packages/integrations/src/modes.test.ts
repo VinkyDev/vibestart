@@ -17,7 +17,11 @@ describe("stack modes", () => {
     const output = await generate(
       registry,
       {
-        stack: compose(registry, { mode: "effect", database: "postgres" }),
+        stack: compose(registry, {
+          mode: "effect",
+          database: "postgres",
+          desktop: "electron",
+        }),
         addons: [],
         channel: "recommended",
       },
@@ -43,17 +47,27 @@ describe("stack modes", () => {
       expect(manifests).not.toContain(dependency);
     }
 
-    expect(manifests).toContain('"@effect/atom-react"');
-    expect(
-      output.files.some(({ path }) => path.endsWith("query-client.ts"))
-    ).toBeFalsy();
-    expect(
-      output.files.find(({ path }) => path === "packages/db/src/index.ts")
-        ?.content
-    ).toContain("drizzle-orm/effect-postgres");
-    expect(
-      output.files.find(({ path }) => path === "vibestart.jsonc")?.content
-    ).toContain('"mode": "effect"');
+    const sources = output.files
+      .filter(({ path }) => !path.endsWith(".md"))
+      .map(({ content }) => content)
+      .join("\n");
+
+    for (const forbidden of [
+      'from "zod"',
+      'from "es-toolkit',
+      "query-client.ts",
+    ]) {
+      expect(sources).not.toContain(forbidden);
+    }
+
+    for (const expected of [
+      '"@effect/atom-react"',
+      "drizzle-orm/effect-postgres",
+      'export const apiPaths: readonly string[] = ["/rpc", "/api"];',
+      '"mode": "effect"',
+    ]) {
+      expect(sources).toContain(expected);
+    }
   });
 
   it("equips Effect projects with the root Effect package and agent guide", async () => {
@@ -87,35 +101,39 @@ describe("stack modes", () => {
     ).toBe("standard");
   });
 
-  it("offers both test runners with optional persistence and authentication", () => {
+  it("offers both test runners with optional persistence, authentication, and desktop shell", () => {
     const { stacks } = resolve(registry, { mode: "effect" });
-    expect(stacks).toHaveLength(20);
+    expect(stacks).toHaveLength(40);
 
     for (const database of [undefined, "postgres", "sqlite"]) {
       for (const auth of database === undefined
         ? [undefined]
         : [undefined, "better-auth"]) {
-        for (const testing of ["playwright", "e2e"]) {
-          for (const deployment of [undefined, "docker"]) {
-            expect(
-              stacks.map((stack) => ({
-                mode: stack.mode,
-                database: stack.database,
-                auth: stack.auth,
-                testing: stack.testing,
-                deployment: stack.deployment,
-                orm: stack.orm,
-              }))
-            ).toContainEqual(
-              expect.objectContaining({
-                mode: "effect",
-                database,
-                auth,
-                testing,
-                deployment,
-                orm: database === undefined ? undefined : "drizzle",
-              })
-            );
+        for (const desktop of [undefined, "electron"]) {
+          for (const testing of ["playwright", "e2e"]) {
+            for (const deployment of [undefined, "docker"]) {
+              expect(
+                stacks.map((stack) => ({
+                  mode: stack.mode,
+                  database: stack.database,
+                  auth: stack.auth,
+                  desktop: stack.desktop,
+                  testing: stack.testing,
+                  deployment: stack.deployment,
+                  orm: stack.orm,
+                }))
+              ).toContainEqual(
+                expect.objectContaining({
+                  mode: "effect",
+                  database,
+                  auth,
+                  desktop,
+                  testing,
+                  deployment,
+                  orm: database === undefined ? undefined : "drizzle",
+                })
+              );
+            }
           }
         }
       }
@@ -218,6 +236,66 @@ describe("stack modes", () => {
     }
   );
 
+  it.each(["postgres", "sqlite"] as const)(
+    "trusts the packaged Electron renderer origin in %s Effect auth and stateless RPC",
+    async (database) => {
+      const [withAuth, stateless] = await Promise.all([
+        generate(
+          registry,
+          {
+            stack: compose(registry, {
+              mode: "effect",
+              database,
+              auth: "better-auth",
+              desktop: "electron",
+            }),
+            addons: [],
+            channel: "recommended",
+          },
+          { name: "effect-app" }
+        ),
+        generate(
+          registry,
+          {
+            stack: compose(registry, {
+              mode: "effect",
+              database: null,
+              auth: null,
+              orm: null,
+              desktop: "electron",
+            }),
+            addons: [],
+            channel: "recommended",
+          },
+          { name: "effect-app" }
+        ),
+      ]);
+
+      expect(
+        withAuth.files.find(
+          ({ path }) => path === "apps/desktop/vite.main.config.ts"
+        )?.content
+      ).toContain("ssr: { noExternal: true },");
+      expect(
+        withAuth.files.find(
+          ({ path }) => path === "packages/electron/src/index.ts"
+        )?.content
+      ).toContain("export const DesktopVersions = Schema.Struct({");
+      expect(
+        withAuth.files.find(({ path }) => path === "packages/auth/src/index.ts")
+          ?.content
+      ).toContain("trustedOrigins: [rendererOrigin],");
+      expect(
+        stateless.files.find(({ path }) => path === "packages/api/package.json")
+          ?.content
+      ).toContain('"@effect-app/electron": "workspace:*"');
+      expect(
+        stateless.files.find(({ path }) => path === "packages/api/src/index.ts")
+          ?.content
+      ).toContain("origin !== rendererOrigin");
+    }
+  );
+
   it.each([
     { backend: "hono" },
     { api: "orpc" },
@@ -226,7 +304,6 @@ describe("stack modes", () => {
     { framework: "next" },
     { runtime: "bun" },
     { mobile: "expo" },
-    { desktop: "electron" },
     { deployment: "void" },
   ])("rejects unadapted choices in Effect mode: %j", (choice) => {
     const stack = { ...compose(registry, { mode: "effect" }), ...choice };
