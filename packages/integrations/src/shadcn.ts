@@ -54,7 +54,7 @@ export const shadcn = defineIntegration({
         `${ctx.scope}/ui`,
         "lucide-react",
         "next-themes",
-        "sonner",
+        ...(ctx.has("effect") ? [] : ["sonner"]),
       ],
       path: "apps/web",
     }),

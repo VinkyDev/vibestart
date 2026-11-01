@@ -1,4 +1,3 @@
-import { PgClient } from "@effect/sql-pg";
 import { Context, Effect, Layer, Redacted, Schema } from "effect";
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
 import { RpcClient, RpcSerialization } from "effect/rpc";
@@ -31,7 +30,7 @@ export class TestApp extends Context.Service<
 
       const services = yield* Layer.build(
         Layer.mergeAll(
-          Database.layer.pipe(Layer.provide(PgClient.layer({ url }))),
+          Database.layerUrl(url),
           Auth.layer({
             baseURL: origin,
             databaseUrl: url,

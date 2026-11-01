@@ -1,10 +1,5 @@
 import { Effect, Layer } from "effect";
-import {
-  HttpEffect,
-  HttpRouter,
-  HttpServerRequest,
-  HttpServerResponse,
-} from "effect/http";
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http";
 import { HttpApiBuilder, HttpApiScalar } from "effect/http-api";
 import { RpcSerialization, RpcServer } from "effect/rpc";
 
@@ -12,26 +7,14 @@ import { Auth } from "@my-app/auth";
 import { Api, TodosRpcs } from "@my-app/contracts";
 
 import { AuthMiddlewareLive } from "#src/auth-middleware.ts";
+import { AuthRoutes } from "#src/auth-routes.ts";
 import { HealthLive } from "#src/health.ts";
 import { TodosLive } from "#src/rpc.ts";
 import { Todos } from "#src/todos.ts";
 
-const AuthRoutes = Layer.unwrap(
-  Effect.gen(function* () {
-    const auth = yield* Auth;
-
-    return HttpRouter.add(
-      "*",
-      "/api/auth/*",
-      HttpEffect.fromWebHandler(auth.handler)
-    );
-  })
-);
-
 const RpcOrigin = Layer.unwrap(
   Effect.gen(function* () {
-    const auth = yield* Auth;
-    const allowedOrigin = new URL(auth.options.baseURL).origin;
+    const allowedOrigin = new URL((yield* Auth).options.baseURL).origin;
 
     return HttpRouter.middleware((httpEffect) =>
       Effect.gen(function* () {

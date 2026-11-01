@@ -348,6 +348,44 @@ const apiRoutes = (ctx: Context) => {
   return ctx.has("openapi") ? ["`/api`"] : ["`/api/health`"];
 };
 
+const productionEnvironment = (ctx: Context, separateApi: boolean) => {
+  const variables = [];
+
+  if (ctx.stack.database !== undefined) {
+    variables.push("`DATABASE_URL`");
+  }
+
+  if (ctx.has("better-auth")) {
+    variables.push(
+      "`BETTER_AUTH_URL` (the public origin)",
+      "`BETTER_AUTH_SECRET`"
+    );
+  } else if (ctx.has("effect")) {
+    variables.push("`APP_URL` (the public origin)");
+  }
+
+  const port = "`PORT` (default `3000`)";
+
+  if (ctx.has("effect")) {
+    const migration =
+      ctx.stack.database === undefined
+        ? "It reads"
+        : "The migration reads `DATABASE_URL`; the server reads";
+
+    return `${migration} ${joinWords([...variables, port])}. Set the public origin to the URL visitors use, including its scheme and port.`;
+  }
+
+  if (ctx.stack.database === undefined) {
+    return separateApi
+      ? `The app reads \`SERVER_URL\`, and each server reads ${port}.`
+      : `It reads ${port}.`;
+  }
+
+  return separateApi
+    ? `The migration and the API server read ${joinWords(variables)}, and the app reads \`SERVER_URL\`. Each server also reads ${port}.`
+    : `Both read ${joinWords(variables)}; the server also reads ${port}.`;
+};
+
 const renderProduction = (ctx: Context, read: ReadSlot) => {
   if (!ctx.has("node") && !ctx.has("bun")) {
     return staticProduction;
@@ -378,12 +416,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
       ? `${pages}.`
       : `\`${apiServer.command.join(" ")}\` (the \`${apiServer.name}\` service) serves ${joinWords(routes)};\n- ${pages}, and forwards ${forwarded} to it at \`SERVER_URL\`.`;
 
-  const variables = [
-    "`DATABASE_URL`",
-    ...(auth
-      ? ["`BETTER_AUTH_URL` (the public origin)", "`BETTER_AUTH_SECRET`"]
-      : []),
-  ];
+  const environment = productionEnvironment(ctx, apiServer !== undefined);
 
   const starts = chosenDatabase(ctx).server
     ? `starts ${databaseName(ctx)}, `
@@ -397,12 +430,12 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
       "```sh\ndocker compose up --build\n```",
       ...(apiServer === undefined
         ? [
-            `This serves ${app} on http://localhost:3000. ${serves} It reads \`PORT\` (default \`3000\`).`,
+            `This serves ${app} on http://localhost:3000. ${serves} ${environment}`,
           ]
         : [
             `This serves ${app} on http://localhost:3000. The image runs two entry points from the same build:`,
             `- ${serves}`,
-            "The app reads `SERVER_URL`, and each server reads `PORT` (default `3000`).",
+            environment,
           ]),
     ].join("\n\n");
   }
@@ -413,9 +446,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
     `This ${starts}runs migrations once, then serves ${app} on http://localhost:3000.${ctx.has("sqlite") ? " The database lives at `/data/app.db` on the `data` volume." : ""}`,
     `The image runs ${apiServer === undefined ? "two" : "three"} entry points from the same build:`,
     `- \`${ctx.has("bun") ? "bun" : "node"} dist/migrate.mjs\` applies pending migrations and exits;\n- ${serves}`,
-    apiServer === undefined
-      ? `Both read ${joinWords(variables)}; the server also reads \`PORT\` (default \`3000\`).`
-      : `The migration and the API server read ${joinWords(variables)}, and the app reads \`SERVER_URL\`. Each server also reads \`PORT\` (default \`3000\`).`,
+    environment,
     ...(ctx.has("sqlite")
       ? [
           "SQLite allows one writer at a time, so run a single app replica. Back up the volume, or move to the PostgreSQL template when you need several.",

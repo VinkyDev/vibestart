@@ -682,8 +682,15 @@ migrateDatabase(db);
 
 db.$client.close();
 
-# apps/server/src/migrate.ts · 1 stack
+# apps/server/src/migrate.ts · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 import { NodeRuntime } from "@effect/platform-node";
 import { Effect } from "effect";
 
@@ -1326,7 +1333,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 265 stacks
+# packages/db/drizzle.config.ts · 268 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -1399,7 +1406,10 @@ export default defineConfig({
 #   next-hono-postgres-expo-bun-docker-e2e
 #   next-hono-postgres-expo-docker
 #   next-hono-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -1609,7 +1619,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 216 stacks
+# packages/db/drizzle.config.ts · 220 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -1682,6 +1692,10 @@ export default defineConfig({
 #   next-hono-sqlite-expo-bun-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -2817,11 +2831,14 @@ export const createDb = (path: string) => {
 
 export type Database = ReturnType<typeof createDb>;
 
-# packages/db/src/index.ts · 1 stack
+# packages/db/src/index.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
 import { PgClient } from "@effect/sql-pg";
 import * as PgDrizzle from "drizzle-orm/effect-postgres";
-import type { Effect } from "effect";
+import type { Effect, Redacted } from "effect";
 import { Config, Context, Layer } from "effect";
 
 import { relations } from "#src/relations.ts";
@@ -2834,9 +2851,44 @@ export class Database extends Context.Service<
 >()("@my-app/db/Database") {
   static readonly layer = Layer.effect(Database, make);
 
+  static readonly layerUrl = (url: Redacted.Redacted) =>
+    Database.layer.pipe(Layer.provide(PgClient.layer({ url })));
+
   static readonly layerConfig = Database.layer.pipe(
     Layer.provide(
       PgClient.layerConfig({ url: Config.Redacted("DATABASE_URL") })
+    )
+  );
+}
+
+# packages/db/src/index.ts · 4 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { SqliteClient } from "@effect/sql-sqlite-node";
+import * as SqliteDrizzle from "drizzle-orm/effect-sqlite-node";
+import type { Effect } from "effect";
+import { Config, Context, Layer, Redacted } from "effect";
+
+import { relations } from "#src/relations.ts";
+
+const make = SqliteDrizzle.makeWithDefaults({ relations });
+
+export class Database extends Context.Service<
+  Database,
+  Effect.Success<typeof make>
+>()("@my-app/db/Database") {
+  static readonly layer = Layer.effect(Database, make);
+
+  static readonly layerUrl = (url: Redacted.Redacted) =>
+    Database.layer.pipe(
+      Layer.provide(SqliteClient.layer({ filename: Redacted.value(url) }))
+    );
+
+  static readonly layerConfig = Database.layer.pipe(
+    Layer.provide(
+      SqliteClient.layerConfig({ filename: Config.String("DATABASE_URL") })
     )
   );
 }
@@ -3914,11 +3966,35 @@ export const migrateDatabase = (db: Database) => {
   migrate(db, { migrationsFolder });
 };
 
-# packages/db/src/migrate.ts · 1 stack
+# packages/db/src/migrate.ts · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
 import { fileURLToPath } from "node:url";
 
 import { migrate } from "drizzle-orm/effect-postgres/migrator";
+import { Effect } from "effect";
+
+import { Database } from "#src/index.ts";
+
+// The server bundle copies the folder beside `dist/migrate.mjs`, so this resolves from source and from the bundle.
+const migrationsFolder = fileURLToPath(new URL("migrations", import.meta.url));
+
+export const migrateDatabase = Effect.gen(function* () {
+  const db = yield* Database;
+
+  yield* migrate(db, { migrationsFolder });
+}).pipe(Effect.withSpan("migrateDatabase"));
+
+# packages/db/src/migrate.ts · 4 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+import { fileURLToPath } from "node:url";
+
+import { migrate } from "drizzle-orm/effect-sqlite-node/migrator";
 import { Effect } from "effect";
 
 import { Database } from "#src/index.ts";
@@ -4428,7 +4504,7 @@ import { defineRelations } from "drizzle-orm";
 
 export const relations = defineRelations({});
 
-# packages/db/src/relations.ts · 281 stacks
+# packages/db/src/relations.ts · 284 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -4513,7 +4589,10 @@ export const relations = defineRelations({});
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-bun-docker
 #   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
 #   spa-hono-openapi-mysql-better-auth-docker
@@ -4735,7 +4814,7 @@ export const relations = defineRelations(
   })
 );
 
-# packages/db/src/relations.ts · 280 stacks
+# packages/db/src/relations.ts · 284 stacks
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -4820,6 +4899,10 @@ export const relations = defineRelations(
 #   next-self-orpc-sqlite-docker-e2e
 #   next-self-orpc-sqlite-expo-docker
 #   next-self-orpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-hono-openapi-mysql-bun-docker
 #   spa-hono-openapi-mysql-bun-docker-e2e
 #   spa-hono-openapi-mysql-docker
@@ -5257,7 +5340,7 @@ export const verification = snakeCase.table(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-# packages/db/src/schema/auth.ts · 157 stacks
+# packages/db/src/schema/auth.ts · 158 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -5302,6 +5385,7 @@ export const verification = snakeCase.table(
 #   next-self-postgres-better-auth-docker-e2e
 #   next-self-postgres-better-auth-expo-docker
 #   next-self-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
@@ -5489,7 +5573,7 @@ export const verification = snakeCase.table(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-# packages/db/src/schema/auth.ts · 124 stacks
+# packages/db/src/schema/auth.ts · 126 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -5534,6 +5618,8 @@ export const verification = snakeCase.table(
 #   next-self-sqlite-better-auth-docker-e2e
 #   next-self-sqlite-better-auth-expo-docker
 #   next-self-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -5952,7 +6038,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 100 stacks
+# packages/db/src/schema/todos.ts · 102 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -5981,6 +6067,8 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-postgres-better-auth-docker-e2e
 #   next-self-orpc-postgres-better-auth-expo-docker
 #   next-self-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-bun-docker
 #   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
 #   spa-hono-openapi-postgres-better-auth-docker
@@ -6088,7 +6176,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 100 stacks
+# packages/db/src/schema/todos.ts · 102 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
@@ -6117,6 +6205,8 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-postgres-docker-e2e
 #   next-self-orpc-postgres-expo-docker
 #   next-self-orpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-hono-openapi-postgres-bun-docker
 #   spa-hono-openapi-postgres-bun-docker-e2e
 #   spa-hono-openapi-postgres-docker
@@ -6217,7 +6307,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 80 stacks
+# packages/db/src/schema/todos.ts · 82 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -6246,6 +6336,8 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker
 #   next-self-orpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-bun-docker
 #   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
 #   spa-hono-openapi-sqlite-better-auth-docker
@@ -6333,7 +6425,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 80 stacks
+# packages/db/src/schema/todos.ts · 82 stacks
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
 #   hono-openapi-sqlite-expo-bun-docker
@@ -6362,6 +6454,8 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-sqlite-docker-e2e
 #   next-self-orpc-sqlite-expo-docker
 #   next-self-orpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-hono-openapi-sqlite-bun-docker
 #   spa-hono-openapi-sqlite-bun-docker-e2e
 #   spa-hono-openapi-sqlite-docker
@@ -6437,42 +6531,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 1 stack
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-import { sql } from "drizzle-orm";
-import {
-  boolean,
-  check,
-  index,
-  integer,
-  snakeCase,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
-
-import { user } from "#src/schema/auth.ts";
-
-export const todos = snakeCase.table(
-  "todos",
-  {
-    completed: boolean().notNull().default(false),
-    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    title: text().notNull(),
-    userId: text()
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-  },
-  (table) => [
-    index("todos_user_id_idx").on(table.userId),
-    check(
-      "todos_title_length",
-      sql`char_length(btrim(${table.title})) between 1 and 200`
-    ),
-  ]
-);
-
-# packages/db/tsconfig.json · 873 stacks
+# packages/db/tsconfig.json · 880 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -6737,7 +6796,14 @@ export const todos = snakeCase.table(
 #   next-self-sqlite-docker-e2e
 #   next-self-sqlite-expo-docker
 #   next-self-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-hono-mysql-better-auth-bun-docker
 #   spa-hono-mysql-better-auth-bun-docker-e2e
 #   spa-hono-mysql-better-auth-docker

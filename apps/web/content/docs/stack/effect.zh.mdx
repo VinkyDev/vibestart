@@ -10,12 +10,21 @@ pnpm dlx vibestart-cli my-app --mode effect
 pnpm dlx vibestart-cli --list --mode effect
 ```
 
-Effect 模式使用 React、TanStack Router、Effect HTTP/RPC、PostgreSQL、Drizzle Effect 适配器、`@effect/sql-pg`、Better Auth 和 `@effect/atom-react`。校验使用 Effect Schema，服务依赖通过 Layer 组合，服务错误转换为不泄露内部信息的传输错误。浏览器状态由 Atom 管理，RPC 状态跟随会话隔离，不混入 Hono、oRPC、Zod 或 TanStack Query。
+Effect 模式使用 React、TanStack Router、Effect HTTP/RPC、`@effect/atom-react`，以及可选的持久化和认证。校验使用 Effect Schema，服务依赖通过 Layer 组合，服务错误转换为不泄露内部信息的传输错误。浏览器状态由 Atom 管理，RPC 状态跟随会话隔离，不混入 Hono、oRPC、Zod 或 TanStack Query。
 
-`packages/contracts` 定义共享 Schema 和协议，`packages/api` 实现服务和处理器，`packages/db` 管理持久化，`packages/auth` 适配 Better Auth。`apps/server` 负责组合和启动，`apps/web` 负责路由和展示。第三方 Promise API 只在服务边界适配。
+`packages/contracts` 定义共享 Schema 和协议，`packages/api` 实现服务和处理器，选择数据库时，`packages/db` 管理持久化；启用认证时，`packages/auth` 适配 Better Auth。`apps/server` 负责组合和启动，`apps/web` 负责路由和展示。第三方 Promise API 只在服务边界适配。
+
+数据库可选 PostgreSQL（`@effect/sql-pg`）或基于 Node 内置 SQLite 的 `@effect/sql-sqlite-node`。两者都使用 Drizzle 原生 Effect 查询与迁移，Effect 依赖版本与应用一致；SQLite 不需要独立数据库服务。Better Auth 可选，但需要数据库，其官方 Drizzle 适配器在服务边界内管理资源。
+
+有数据库但不启用认证时，Todo 是所有访问者共享的公开数据。不使用数据库时，不生成 ORM、认证、迁移和 Todo 示例，仅保留类型化的 HTTP/RPC 健康检查。RPC 边界仍校验浏览器 Origin：启用认证时使用 `BETTER_AUTH_URL`，否则使用 `APP_URL`。
+
+```sh
+pnpm dlx vibestart-cli my-app --mode effect --database sqlite --auth none --testing playwright
+pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
+```
 
 运行时为 Node，部署可以选择 Docker 或不部署。尚未适配的框架、数据库、移动端、桌面端和运行时不会出现在 Effect 模式中。CLI 拒绝混搭，不会自动改变模式。包管理器独立于运行时：pnpm 和 Bun 都可以安装同一套 Node 应用。
 
-服务测试使用 `@effect/vitest`，浏览器测试使用 `e2e`。Effect golden 与 Standard 项目使用同一套验证矩阵；Docker CI 还验证生产镜像的迁移、认证和鉴权 RPC。
+服务测试使用 `@effect/vitest`，浏览器测试可选 Playwright（默认）或 TesterArmy `e2e`。两者均运行真实 Effect 服务，并通过作用域清理测试资源。Effect golden 与 Standard 项目使用同一套验证矩阵；Docker CI 还验证生产镜像的迁移、认证和鉴权 RPC。
 
 运行时和服务模型参见 [Effect 文档](https://effect.website/docs/)。

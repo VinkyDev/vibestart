@@ -1,4 +1,4 @@
-# apps/web/playwright.config.ts · 816 stacks
+# apps/web/playwright.config.ts · 821 stacks
 #   next-docker
 #   next-expo-docker
 #   next-hono-bun-docker
@@ -208,6 +208,11 @@
 #   next-self-sqlite-docker
 #   next-self-sqlite-expo-docker
 #   spa-docker
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-electron-docker
 #   spa-electron-expo-docker
 #   spa-electron-expo-void
@@ -876,7 +881,7 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 198 stacks
+# apps/web/tests/e2e/app.e2e.ts · 199 stacks
 #   next-hono-bun-docker
 #   next-hono-docker
 #   next-hono-expo-bun-docker
@@ -927,6 +932,7 @@ test("the dark theme survives a reload", async ({ page }) => {
 #   next-self-postgres-prisma-expo-docker
 #   next-self-sqlite-docker
 #   next-self-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-docker
 #   spa-hono-bun-docker
 #   spa-hono-docker
 #   spa-hono-electron-bun-docker
@@ -1671,7 +1677,7 @@ test("login redirects stay on the app origin after URL normalization", async ({
   await expectInternalRedirect("/\n/example.com");
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 236 stacks
+# apps/web/tests/e2e/app.e2e.ts · 238 stacks
 #   next-hono-openapi-mongodb-bun-docker
 #   next-hono-openapi-mongodb-docker
 #   next-hono-openapi-mongodb-expo-bun-docker
@@ -1732,6 +1738,8 @@ test("login redirects stay on the app origin after URL normalization", async ({
 #   next-self-orpc-postgres-prisma-expo-docker
 #   next-self-orpc-sqlite-docker
 #   next-self-orpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-hono-openapi-mongodb-bun-docker
 #   spa-hono-openapi-mongodb-docker
 #   spa-hono-openapi-mongodb-electron-bun-docker
@@ -1958,6 +1966,286 @@ test("the dark theme survives a reload", async ({ page }) => {
   await page.reload({ waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
+
+# apps/web/tests/e2e/app.e2e.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+import { expect, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+
+import { createTodo, password, signUp, uniqueEmail } from "../support/api.ts";
+
+const visit = async (page: Page, path: string) => {
+  await page.goto(path, { waitUntil: "networkidle" });
+};
+
+const reload = async (page: Page) => {
+  await visit(page, page.url());
+};
+
+const gate = (): PromiseWithResolvers<void> => Promise.withResolvers();
+
+const signUpThroughUi = async (page: Page) => {
+  await visit(page, "/login");
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Email").fill(uniqueEmail());
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
+  await expect(page).toHaveURL("/todos");
+};
+
+test("the home page reports the API as connected", async ({ page }) => {
+  await visit(page, "/");
+
+  await expect(page.getByText("Connected")).toBeVisible();
+});
+
+test("visitors are sent to sign in before seeing todos", async ({ page }) => {
+  await visit(page, "/todos");
+
+  await expect(page).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("a new user signs up and manages todos that persist across reloads", async ({
+  page,
+}) => {
+  await signUpThroughUi(page);
+  const emptyState = page.getByText("No todos yet.");
+  await expect(emptyState).toBeVisible();
+
+  await page.getByLabel("New todo").fill("Buy milk");
+  await page.getByRole("button", { name: "Add" }).click();
+  const todo = page.getByRole("checkbox", { name: "Buy milk" });
+  await todo.click();
+  await expect(todo).toBeChecked();
+
+  await reload(page);
+  await expect(todo).toBeChecked();
+
+  await page.getByRole("button", { name: "Delete Buy milk" }).click();
+  await expect(emptyState).toBeVisible();
+});
+
+test("an existing user signs in and returns to the page they asked for", async ({
+  page,
+}) => {
+  const { cookie, email } = await signUp();
+  await createTodo(cookie, "Existing todo");
+
+  await visit(page, "/todos");
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page).toHaveURL("/todos");
+  await expect(page.getByText("Existing todo")).toBeVisible();
+});
+
+test("a wrong password is rejected", async ({ page }) => {
+  const { email } = await signUp();
+
+  await visit(page, "/login");
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password").fill("wrong-password");
+  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
+
+  await expect(page.getByText("Invalid email or password")).toBeVisible();
+  await expect(page).toHaveURL("/login");
+});
+
+test("signing out ends the session", async ({ page }) => {
+  await signUpThroughUi(page);
+
+  await page.getByRole("button", { name: "Ada" }).click();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
+  await expect(page).toHaveURL("/");
+
+  await visit(page, "/todos");
+  await expect(page).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("the dark theme survives a reload", async ({ page }) => {
+  await visit(page, "/");
+
+  await page.getByRole("button", { name: "Toggle theme" }).click();
+  await page.getByRole("menuitemradio", { name: "Dark" }).click();
+  const html = page.locator("html");
+  await expect(html).toHaveClass(/\bdark\b/u);
+
+  await reload(page);
+  await expect(html).toHaveClass(/\bdark\b/u);
+});
+
+test("writes to different rows both complete when their requests overlap", async ({
+  page,
+}) => {
+  await signUpThroughUi(page);
+
+  await page.getByLabel("New todo").fill("First task");
+  await page.getByRole("button", { name: "Add" }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "First task" })
+  ).toBeVisible();
+  await page.getByLabel("New todo").fill("Second task");
+  await page.getByRole("button", { name: "Add" }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "Second task" })
+  ).toBeVisible();
+
+  // Hold the first real request until the second arrives; no timing-dependent sleeps.
+  const bothStarted = gate();
+  let writes = 0;
+  await page.route("**/rpc/", async (route) => {
+    if (route.request().postData()?.includes('"tag":"todos.update"') === true) {
+      writes += 1;
+
+      if (writes === 2) {
+        bothStarted.resolve();
+      }
+
+      await bothStarted.promise;
+    }
+
+    await route.continue();
+  });
+
+  await page.getByRole("checkbox", { name: "First task" }).click();
+  await page.getByRole("checkbox", { name: "Second task" }).click();
+  await bothStarted.promise;
+  await expect(
+    page.getByRole("checkbox", { name: "First task" })
+  ).toBeChecked();
+  await expect(
+    page.getByRole("checkbox", { name: "Second task" })
+  ).toBeChecked();
+  await reload(page);
+  await expect(
+    page.getByRole("checkbox", { name: "First task" })
+  ).toBeChecked();
+  await expect(
+    page.getByRole("checkbox", { name: "Second task" })
+  ).toBeChecked();
+});
+
+test("a failed sign-out keeps the session and allows retry", async ({
+  page,
+}) => {
+  await signUpThroughUi(page);
+  // Model an unavailable upstream, without replacing the successful auth path.
+  await page.route("**/api/auth/sign-out", async (route) => {
+    await route.fulfill({ status: 503, json: { message: "Unavailable" } });
+  });
+  await page.getByRole("button", { name: "Ada" }).click();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
+  await expect(
+    page.getByText("Could not sign out. Please try again.")
+  ).toBeVisible();
+  await expect(page).toHaveURL("/todos");
+  await expect(page.getByRole("button", { name: "Ada" })).toBeVisible();
+
+  await page.unroute("**/api/auth/sign-out");
+  await page.getByRole("button", { name: "Ada" }).click();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
+  await expect(page).toHaveURL("/");
+});
+
+test("a new session never sees the previous user's cached todos", async ({
+  page,
+}) => {
+  await signUpThroughUi(page);
+  await page.getByLabel("New todo").fill("Private to the first account");
+  await page.getByRole("button", { name: "Add" }).click();
+  await expect(page.getByText("Private to the first account")).toBeVisible();
+  await page.getByRole("link", { name: "Home", exact: true }).click();
+  await expect(page.getByText("Connected")).toBeVisible();
+  await page.getByRole("button", { name: "Ada" }).click();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
+  await expect(page.getByRole("button", { name: "Ada" })).not.toBeVisible();
+  await expect(page.getByText("Connected")).toBeVisible();
+
+  await signUpThroughUi(page);
+  await expect(page.getByText("No todos yet.")).toBeVisible();
+  await expect(
+    page.getByText("Private to the first account")
+  ).not.toBeVisible();
+});
+
+test("login redirects stay on the app origin after URL normalization", async ({
+  page,
+}) => {
+  const { email } = await signUp();
+  const redirect = "/\\example.com";
+  await visit(page, `/login?redirect=${encodeURIComponent(redirect)}`);
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
+  await expect(page).toHaveURL("/todos");
+
+  const expectInternalRedirect = async (value: string) => {
+    await visit(page, `/login?redirect=${encodeURIComponent(value)}`);
+    await expect(page).toHaveURL("/todos");
+  };
+
+  await expectInternalRedirect("https://example.com");
+  await expectInternalRedirect("//example.com");
+  await expectInternalRedirect("/\\example.com");
+  await expectInternalRedirect("/\t/example.com");
+  await expectInternalRedirect("/\r/example.com");
+  await expectInternalRedirect("/\n/example.com");
+});
+
+for (const { edit, expected } of [
+  { edit: "unchanged", expected: "" },
+  { edit: "next todo", expected: "Next task" },
+  { edit: "same title", expected: "First task" },
+]) {
+  test(`creating a todo preserves the draft: ${edit}`, async ({ page }) => {
+    await signUpThroughUi(page);
+    const input = page.getByLabel("New todo");
+    const add = page.getByRole("button", { name: "Add" });
+    const started = gate();
+    const release = gate();
+
+    await page.route("**/rpc/", async (route) => {
+      if (
+        route.request().postData()?.includes('"tag":"todos.create"') === true
+      ) {
+        started.resolve();
+        await release.promise;
+      }
+
+      await route.continue();
+    });
+
+    try {
+      await input.fill("First task");
+      await add.click();
+      await started.promise;
+
+      if (edit !== "unchanged") {
+        await input.fill("Next task");
+      }
+
+      if (edit === "same title") {
+        await input.fill("First task");
+      }
+    } finally {
+      release.resolve();
+    }
+
+    await expect(
+      page.getByRole("checkbox", { name: "First task" })
+    ).toBeVisible();
+    await expect(input).toHaveValue(expected);
+
+    if (edit !== "unchanged") {
+      await add.click();
+      await expect(page.getByRole("checkbox")).toHaveCount(2);
+      await expect(input).toHaveValue("");
+    }
+  });
+}
 
 # apps/web/tests/e2e/global-setup.ts · 816 stacks
 #   next-docker
@@ -2782,6 +3070,37 @@ export default async function setup() {
   return await startTestServer(e2eBaseURL);
 }
 
+# apps/web/tests/e2e/global-setup.ts · 5 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
+import { NodeServices } from "@effect/platform-node";
+import { Effect, Exit, Layer, Scope } from "effect";
+
+import { testServer } from "../support/server.ts";
+
+export default async function setup() {
+  const scope = Effect.runSync(Scope.make());
+  const close = Scope.close(scope, Exit.void);
+
+  await Effect.runPromise(
+    Effect.gen(function* () {
+      const services = yield* Layer.buildWithScope(NodeServices.layer, scope);
+
+      yield* testServer.pipe(Effect.provideContext(services));
+    }).pipe(
+      Scope.provide(scope),
+      Effect.onError(() => close)
+    )
+  );
+
+  return async () => {
+    await Effect.runPromise(close);
+  };
+}
+
 # apps/web/tests/support/api.ts · 132 stacks
 #   next-hono-mongodb-better-auth-bun-docker
 #   next-hono-mongodb-better-auth-docker
@@ -3240,6 +3559,65 @@ export const signUp = async (email = uniqueEmail()) => {
   );
 
   return { client, email };
+};
+
+# apps/web/tests/support/api.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+import { Effect, Layer } from "effect";
+import { FetchHttpClient } from "effect/http";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { TodosRpcs } from "@my-app/contracts";
+
+import { e2eBaseURL } from "./server.ts";
+
+export const password = "correct-horse-battery";
+
+export const uniqueEmail = () => `${crypto.randomUUID()}@example.com`;
+
+export const createTodo = async (cookie: string, title: string) => {
+  const program = Effect.gen(function* () {
+    const client = yield* RpcClient.make(TodosRpcs, { flatten: true });
+
+    return yield* client("todos.create", { title });
+  }).pipe(
+    Effect.scoped,
+    Effect.provide(
+      RpcClient.layerProtocolHttp({ url: `${e2eBaseURL}/rpc` }).pipe(
+        Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer]),
+        Layer.provide(
+          Layer.succeed(FetchHttpClient.Fetch, async (input, init) => {
+            const request = new Request(input, init);
+            request.headers.set("cookie", cookie);
+
+            return await fetch(request);
+          })
+        )
+      )
+    )
+  );
+
+  return await Effect.runPromise(program);
+};
+
+export const signUp = async (email = uniqueEmail()) => {
+  const response = await fetch(`${e2eBaseURL}/api/auth/sign-up/email`, {
+    body: JSON.stringify({ email, name: "Test User", password }),
+    headers: { "content-type": "application/json", origin: e2eBaseURL },
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Sign up failed with ${response.status}`);
+  }
+
+  const cookie = response.headers
+    .getSetCookie()
+    .map((header) => header.split(";")[0])
+    .join("; ");
+
+  return { cookie, email };
 };
 
 # apps/web/tests/support/api.ts · 8 stacks
@@ -7002,6 +7380,251 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
+# apps/web/tests/support/server.ts · 1 stack
+#   spa-effect-http-effect-rpc-docker
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { Effect, Schedule } from "effect";
+import { ChildProcess } from "effect/process";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = Effect.fn("TestServer.waitForServer")(function* (
+  url: string
+) {
+  yield* Effect.tryPromise(async (signal) => {
+    const response = await fetch(url, { signal });
+    await response.arrayBuffer();
+
+    if (!response.ok) {
+      throw new Error(`Server did not become healthy at ${url}`);
+    }
+  }).pipe(
+    Effect.retry(Schedule.spaced("100 millis")),
+    Effect.timeout("60 seconds")
+  );
+});
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  ChildProcess.make(process.execPath, args, {
+    cwd,
+    env,
+    extendEnv: true,
+    forceKillAfter: "5 seconds",
+    // Vite closes its server on stdin EOF outside CI.
+    stdin: "pipe",
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+
+export const testServer = Effect.gen(function* () {
+  yield* Effect.sync(() => {
+    if (existsSync(envFile)) {
+      process.loadEnvFile(envFile);
+    }
+  });
+
+  const webPort = Number(new URL(e2eBaseURL).port);
+  const serverPort = String(webPort + 1);
+
+  yield* start(serverDir, ["src/index.ts"], {
+    APP_URL: e2eBaseURL,
+    PORT: serverPort,
+  });
+  yield* waitForServer(`http://localhost:${serverPort}/api/health`);
+  yield* start(
+    webDir,
+    [
+      "node_modules/vite-plus/bin/vp",
+      "dev",
+      "--port",
+      String(webPort),
+      "--strictPort",
+    ],
+    {
+      SERVER_URL: `http://localhost:${serverPort}`,
+    }
+  );
+  yield* waitForServer(`${e2eBaseURL}/api/health`);
+  yield* Effect.forEach(
+    ["/"],
+    (route) => waitForServer(`${e2eBaseURL}${route}`),
+    { concurrency: "unbounded" }
+  );
+});
+
+# apps/web/tests/support/server.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { Effect, Redacted, Schedule } from "effect";
+import { ChildProcess } from "effect/process";
+
+import { makeTestDatabase } from "@my-app/db/testing";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = Effect.fn("TestServer.waitForServer")(function* (
+  url: string
+) {
+  yield* Effect.tryPromise(async (signal) => {
+    const response = await fetch(url, { signal });
+    await response.arrayBuffer();
+
+    if (!response.ok) {
+      throw new Error(`Server did not become healthy at ${url}`);
+    }
+  }).pipe(
+    Effect.retry(Schedule.spaced("100 millis")),
+    Effect.timeout("60 seconds")
+  );
+});
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  ChildProcess.make(process.execPath, args, {
+    cwd,
+    env,
+    extendEnv: true,
+    forceKillAfter: "5 seconds",
+    // Vite closes its server on stdin EOF outside CI.
+    stdin: "pipe",
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+
+export const testServer = Effect.gen(function* () {
+  yield* Effect.sync(() => {
+    if (existsSync(envFile)) {
+      process.loadEnvFile(envFile);
+    }
+  });
+
+  const webPort = Number(new URL(e2eBaseURL).port);
+  const serverPort = String(webPort + 1);
+  const databaseUrl = yield* makeTestDatabase;
+
+  yield* start(serverDir, ["src/index.ts"], {
+    BETTER_AUTH_SECRET: "test-secret-that-is-at-least-32-characters",
+    BETTER_AUTH_URL: e2eBaseURL,
+    DATABASE_URL: Redacted.value(databaseUrl),
+    PORT: serverPort,
+  });
+  yield* waitForServer(`http://localhost:${serverPort}/api/health`);
+  yield* start(
+    webDir,
+    [
+      "node_modules/vite-plus/bin/vp",
+      "dev",
+      "--port",
+      String(webPort),
+      "--strictPort",
+    ],
+    {
+      SERVER_URL: `http://localhost:${serverPort}`,
+    }
+  );
+  yield* waitForServer(`${e2eBaseURL}/api/health`);
+  yield* Effect.forEach(
+    ["/", "/login", "/todos"],
+    (route) => waitForServer(`${e2eBaseURL}${route}`),
+    { concurrency: "unbounded" }
+  );
+});
+
+# apps/web/tests/support/server.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+import { Effect, Redacted, Schedule } from "effect";
+import { ChildProcess } from "effect/process";
+
+import { makeTestDatabase } from "@my-app/db/testing";
+
+export const e2eBaseURL = `http://localhost:${process.env.E2E_TEST_PORT ?? "3200"}`;
+
+const webDir = fileURLToPath(new URL("../..", import.meta.url));
+const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));
+const envFile = `${serverDir}/.env`;
+
+const waitForServer = Effect.fn("TestServer.waitForServer")(function* (
+  url: string
+) {
+  yield* Effect.tryPromise(async (signal) => {
+    const response = await fetch(url, { signal });
+    await response.arrayBuffer();
+
+    if (!response.ok) {
+      throw new Error(`Server did not become healthy at ${url}`);
+    }
+  }).pipe(
+    Effect.retry(Schedule.spaced("100 millis")),
+    Effect.timeout("60 seconds")
+  );
+});
+
+const start = (cwd: string, args: string[], env: Record<string, string>) =>
+  ChildProcess.make(process.execPath, args, {
+    cwd,
+    env,
+    extendEnv: true,
+    forceKillAfter: "5 seconds",
+    // Vite closes its server on stdin EOF outside CI.
+    stdin: "pipe",
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+
+export const testServer = Effect.gen(function* () {
+  yield* Effect.sync(() => {
+    if (existsSync(envFile)) {
+      process.loadEnvFile(envFile);
+    }
+  });
+
+  const webPort = Number(new URL(e2eBaseURL).port);
+  const serverPort = String(webPort + 1);
+  const databaseUrl = yield* makeTestDatabase;
+
+  yield* start(serverDir, ["src/index.ts"], {
+    APP_URL: e2eBaseURL,
+    DATABASE_URL: Redacted.value(databaseUrl),
+    PORT: serverPort,
+  });
+  yield* waitForServer(`http://localhost:${serverPort}/api/health`);
+  yield* start(
+    webDir,
+    [
+      "node_modules/vite-plus/bin/vp",
+      "dev",
+      "--port",
+      String(webPort),
+      "--strictPort",
+    ],
+    {
+      SERVER_URL: `http://localhost:${serverPort}`,
+    }
+  );
+  yield* waitForServer(`${e2eBaseURL}/api/health`);
+  yield* Effect.forEach(
+    ["/", "/todos"],
+    (route) => waitForServer(`${e2eBaseURL}${route}`),
+    { concurrency: "unbounded" }
+  );
+});
+
 # apps/web/tests/support/server.ts · 4 stacks
 #   spa-electron-expo-void
 #   spa-electron-void
@@ -13702,6 +14325,43 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
+# packages/api/tests/integration/health.test.ts · 1 stack
+#   spa-effect-http-effect-rpc-docker
+import { assert, layer } from "@effect/vitest";
+import { Effect } from "effect";
+
+import { makeClient, TestApp } from "../support/app.ts";
+
+layer(TestApp.layer)("health", (it) => {
+  it.effect("serves a typed RPC without database or authentication", () =>
+    Effect.gen(function* () {
+      const client = yield* makeClient;
+      assert.deepStrictEqual(yield* client("health.check", undefined), {
+        status: "ok",
+      });
+    })
+  );
+
+  it.effect("serves HTTP health and API documentation", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+
+      for (const path of ["/api/health", "/api/openapi.json", "/api/docs"]) {
+        const response = yield* Effect.promise(
+          async () => await app.fetch(new Request(`http://localhost${path}`))
+        );
+
+        assert.strictEqual(response.status, 200);
+        assert.strictEqual(
+          response.headers.get("x-content-type-options"),
+          "nosniff"
+        );
+        yield* Effect.promise(async () => await response.text());
+      }
+    })
+  );
+});
+
 # packages/api/tests/integration/todos.test.ts · 20 stacks
 #   hono-openapi-mongodb-better-auth-bun-docker
 #   hono-openapi-mongodb-better-auth-docker
@@ -14804,6 +15464,756 @@ describe("todos", () => {
   });
 });
 
+# packages/api/tests/integration/todos.test.ts · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+import { assert, layer } from "@effect/vitest";
+import { sql } from "drizzle-orm";
+import { Effect } from "effect";
+
+import {
+  ServiceUnavailable,
+  TodoNotFound,
+  Unauthorized,
+} from "@my-app/contracts";
+
+import { createRaw, makeClient, rpcRaw, TestApp } from "../support/app.ts";
+
+type Client = Effect.Success<ReturnType<typeof makeClient>>;
+
+layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
+  const anonymousCalls: readonly (readonly [
+    string,
+    (client: Client) => Effect.Effect<unknown, unknown>,
+  ])[] = [
+    ["list", (client) => client("todos.list", undefined)],
+    ["create", (client) => client("todos.create", { title: "Buy milk" })],
+    ["update", (client) => client("todos.update", { completed: true, id: 1 })],
+    ["delete", (client) => client("todos.delete", { id: 1 })],
+  ];
+
+  for (const [name, call] of anonymousCalls) {
+    it.effect(`rejects an anonymous ${name} as Unauthorized`, () =>
+      Effect.gen(function* () {
+        const client = yield* makeClient();
+
+        const error = yield* Effect.flip(call(client));
+
+        assert.instanceOf(error, Unauthorized);
+      })
+    );
+  }
+
+  it.effect("creates a todo with a trimmed title, not yet completed", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const cookie = yield* app.signUp;
+      const client = yield* makeClient(cookie);
+
+      const exit = yield* createRaw(cookie, "  Buy milk  ");
+
+      assert.deepStrictEqual(exit, {
+        _tag: "Success",
+        value: { completed: false, title: "Buy milk" },
+      });
+      const [todo] = yield* client("todos.list", undefined);
+      assert.deepInclude(todo, { completed: false, title: "Buy milk" });
+    })
+  );
+
+  for (const [origin, contentType] of [
+    ["http://localhost:4000", "text/plain"],
+    ["http://localhost:4000", "application/ndjson"],
+    ["https://attacker.example", "text/plain"],
+    ["null", "text/plain"],
+    ["", "text/plain"],
+  ] as const) {
+    it.effect(
+      `rejects ${contentType} RPC writes from the HTTP origin ${JSON.stringify(origin)}`,
+      () =>
+        Effect.gen(function* () {
+          const app = yield* TestApp;
+          const cookie = yield* app.signUp;
+          const client = yield* makeClient(cookie);
+
+          const response = yield* Effect.promise(
+            async () =>
+              await app.fetch(
+                new Request("http://localhost/rpc", {
+                  method: "POST",
+                  headers: { "content-type": contentType, cookie, origin },
+                  body: `${JSON.stringify({
+                    _tag: "Request",
+                    id: "1",
+                    headers: [["origin", "http://localhost"]],
+                    tag: "todos.create",
+                    payload: { title: "Unwanted todo" },
+                  })}\n`,
+                })
+              )
+          );
+
+          yield* Effect.promise(async () => await response.text());
+
+          assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+          assert.strictEqual(response.status, 403);
+        })
+    );
+  }
+
+  it.effect(
+    "accepts the configured public origin through an internal proxy URL",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+
+        const response = yield* Effect.promise(
+          async () =>
+            await app.fetch(
+              new Request("http://internal.example:3000/rpc", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/ndjson",
+                  cookie,
+                  origin: "http://localhost",
+                },
+                body: `${JSON.stringify({
+                  _tag: "Request",
+                  id: "1",
+                  headers: [["origin", "https://attacker.example"]],
+                  tag: "todos.create",
+                  payload: { title: "Same-origin todo" },
+                })}\n`,
+              })
+            )
+        );
+
+        yield* Effect.promise(async () => await response.text());
+
+        assert.strictEqual(response.status, 200);
+        const [todo] = yield* client("todos.list", undefined);
+        assert.deepInclude(todo, { title: "Same-origin todo" });
+      })
+  );
+
+  for (const title of [
+    "",
+    "   ",
+    "x".repeat(201),
+    "😀".repeat(201),
+    "nul\u0000byte",
+  ]) {
+    it.effect(`rejects the title ${JSON.stringify(title)}`, () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+
+        const exit = yield* createRaw(cookie, title);
+
+        assert.deepStrictEqual(exit, { _tag: "Failure" });
+        assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+      })
+    );
+  }
+
+  it.effect("completes a todo, then deletes it once", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const client = yield* makeClient(yield* app.signUp);
+      const todo = yield* client("todos.create", { title: "Buy milk" });
+
+      assert.deepStrictEqual(
+        yield* client("todos.update", { completed: true, id: todo.id }),
+        { ...todo, completed: true }
+      );
+      yield* client("todos.delete", { id: todo.id });
+      assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+      assert.deepStrictEqual(
+        yield* Effect.flip(client("todos.delete", { id: todo.id })),
+        new TodoNotFound({ id: todo.id })
+      );
+    })
+  );
+
+  it.effect("keeps each user's todos private", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const alice = yield* makeClient(yield* app.signUp);
+      const bob = yield* makeClient(yield* app.signUp);
+      const todo = yield* alice("todos.create", { title: "Alice's secret" });
+
+      assert.deepStrictEqual(yield* bob("todos.list", undefined), []);
+      assert.deepStrictEqual(
+        yield* Effect.flip(
+          bob("todos.update", { completed: true, id: todo.id })
+        ),
+        new TodoNotFound({ id: todo.id })
+      );
+      assert.deepStrictEqual(
+        yield* Effect.flip(bob("todos.delete", { id: todo.id })),
+        new TodoNotFound({ id: todo.id })
+      );
+      assert.deepStrictEqual(yield* alice("todos.list", undefined), [todo]);
+    })
+  );
+
+  it.effect(
+    "accepts 200 Unicode code points and trims Unicode whitespace",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const title = "😀".repeat(200);
+        const exit = yield* createRaw(cookie, `\u00A0${title}\u3000`);
+        assert.deepStrictEqual(exit, {
+          _tag: "Success",
+          value: { completed: false, title },
+        });
+      })
+  );
+
+  for (const id of [0, -1, 1.5, 2_147_483_648]) {
+    it.effect(`rejects id ${id} before querying storage`, () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const body = yield* rpcRaw(cookie, "todos.delete", { id });
+        assert.include(body, '"_tag":"Failure"');
+        assert.notInclude(body, "TodoNotFound");
+        assert.notInclude(body, "ServiceUnavailable");
+      })
+    );
+  }
+
+  it.effect(
+    "returns a typed storage failure without SQL or parameters on the wire",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+        yield* Effect.acquireUseRelease(
+          app.database.execute(
+            sql`alter table todos rename to unavailable_todos`
+          ),
+          () =>
+            Effect.gen(function* () {
+              assert.instanceOf(
+                yield* Effect.flip(client("todos.list", undefined)),
+                ServiceUnavailable
+              );
+
+              const body = yield* rpcRaw(cookie, "todos.create", {
+                title: "private-payload-marker",
+              });
+
+              assert.include(body, "ServiceUnavailable");
+              assert.notInclude(body, "private-payload-marker");
+              assert.notInclude(body, "insert into");
+              assert.notInclude(body, "Drizzle");
+              assert.notInclude(body, '"_tag":"Die"');
+              assert.notInclude(body, '"query"');
+            }),
+          () =>
+            app.database
+              .execute(sql`alter table unavailable_todos rename to todos`)
+              .pipe(Effect.orDie)
+        );
+      })
+  );
+
+  it.effect("sets browser security headers on public HTTP responses", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+
+      const response = yield* Effect.promise(
+        async () => await app.fetch(new Request("http://localhost/api/health"))
+      );
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(
+        response.headers.get("x-content-type-options"),
+        "nosniff"
+      );
+      assert.strictEqual(response.headers.get("x-frame-options"), "DENY");
+    })
+  );
+
+  it.effect(
+    "does not misreport an auth database outage as an anonymous session",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+        yield* Effect.acquireUseRelease(
+          app.database.execute(
+            sql`alter table session rename to unavailable_session`
+          ),
+          () =>
+            Effect.gen(function* () {
+              assert.instanceOf(
+                yield* Effect.flip(client("todos.list", undefined)),
+                ServiceUnavailable
+              );
+
+              const body = yield* rpcRaw(cookie, "todos.create", {
+                title: "Unsent",
+              });
+
+              assert.include(body, "ServiceUnavailable");
+              assert.notInclude(body, "select");
+              assert.notInclude(body, "unavailable_session");
+            }),
+          () =>
+            app.database
+              .execute(sql`alter table unavailable_session rename to session`)
+              .pipe(Effect.orDie)
+        );
+      })
+  );
+});
+
+# packages/api/tests/integration/todos.test.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
+import { assert, layer } from "@effect/vitest";
+import { Effect } from "effect";
+
+import { TodoNotFound } from "@my-app/contracts";
+
+import { makeClient, TestApp } from "../support/app.ts";
+
+layer(TestApp.layer, { timeout: "60 seconds" })("public todos", (it) => {
+  it.effect("creates, lists, updates, and deletes without authentication", () =>
+    Effect.gen(function* () {
+      const client = yield* makeClient;
+
+      const todo = yield* client("todos.create", { title: "Buy milk" });
+      assert.strictEqual(todo.title, "Buy milk");
+      assert.strictEqual(todo.completed, false);
+      assert.deepStrictEqual(yield* client("todos.list", undefined), [todo]);
+      assert.deepStrictEqual(
+        yield* client("todos.update", { id: todo.id, completed: true }),
+        { ...todo, completed: true }
+      );
+      yield* client("todos.delete", { id: todo.id });
+      assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+      assert.instanceOf(
+        yield* Effect.flip(client("todos.delete", { id: todo.id })),
+        TodoNotFound
+      );
+    })
+  );
+
+  it.effect("trims a title at the server boundary", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const client = yield* makeClient;
+
+      const response = yield* Effect.promise(
+        async () =>
+          await app.fetch(
+            new Request("http://localhost/rpc", {
+              method: "POST",
+              headers: { "content-type": "application/ndjson" },
+              body: `${JSON.stringify({ _tag: "Request", id: "1", tag: "todos.create", payload: { title: "  Buy milk  " }, headers: [] })}\n`,
+            })
+          )
+      );
+
+      const body = yield* Effect.promise(async () => await response.text());
+      assert.strictEqual(response.status, 200);
+      assert.include(body, '"_tag":"Success"');
+
+      const todos = yield* client("todos.list", undefined);
+      assert.deepStrictEqual(
+        todos.map(({ title }) => title),
+        ["Buy milk"]
+      );
+
+      for (const todo of todos) {
+        yield* client("todos.delete", { id: todo.id });
+      }
+    })
+  );
+
+  for (const title of [
+    "",
+    "   ",
+    "x".repeat(201),
+    "😀".repeat(201),
+    "nul\u0000byte",
+  ]) {
+    it.effect(
+      `rejects an invalid title on the wire: ${JSON.stringify(title)}`,
+      () =>
+        Effect.gen(function* () {
+          const app = yield* TestApp;
+
+          const response = yield* Effect.promise(
+            async () =>
+              await app.fetch(
+                new Request("http://localhost/rpc", {
+                  method: "POST",
+                  headers: { "content-type": "application/ndjson" },
+                  body: `${JSON.stringify({ _tag: "Request", id: "1", tag: "todos.create", payload: { title }, headers: [] })}\n`,
+                })
+              )
+          );
+
+          const body = yield* Effect.promise(async () => await response.text());
+          assert.include(body, '"_tag":"Failure"');
+          assert.notInclude(body, "ServiceUnavailable");
+        })
+    );
+  }
+
+  for (const origin of [
+    "",
+    "null",
+    "http://localhost:4000",
+    "https://attacker.example",
+  ]) {
+    it.effect(
+      `rejects an untrusted browser origin without auth: ${origin}`,
+      () =>
+        Effect.gen(function* () {
+          const app = yield* TestApp;
+
+          const response = yield* Effect.promise(
+            async () =>
+              await app.fetch(
+                new Request("http://localhost/rpc", {
+                  method: "POST",
+                  headers: { "content-type": "text/plain", origin },
+                  body: `${JSON.stringify({ _tag: "Request", id: "1", tag: "todos.create", payload: { title: "Unwanted" }, headers: [["origin", "http://localhost"]] })}\n`,
+                })
+              )
+          );
+
+          yield* Effect.promise(async () => await response.text());
+          assert.strictEqual(response.status, 403);
+
+          const client = yield* makeClient;
+          assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+        })
+    );
+  }
+});
+
+# packages/api/tests/integration/todos.test.ts · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+import { assert, layer } from "@effect/vitest";
+import { sql } from "drizzle-orm";
+import { Effect } from "effect";
+
+import {
+  ServiceUnavailable,
+  TodoNotFound,
+  Unauthorized,
+} from "@my-app/contracts";
+
+import { createRaw, makeClient, rpcRaw, TestApp } from "../support/app.ts";
+
+type Client = Effect.Success<ReturnType<typeof makeClient>>;
+
+layer(TestApp.layer, { timeout: "60 seconds" })("todos", (it) => {
+  const anonymousCalls: readonly (readonly [
+    string,
+    (client: Client) => Effect.Effect<unknown, unknown>,
+  ])[] = [
+    ["list", (client) => client("todos.list", undefined)],
+    ["create", (client) => client("todos.create", { title: "Buy milk" })],
+    ["update", (client) => client("todos.update", { completed: true, id: 1 })],
+    ["delete", (client) => client("todos.delete", { id: 1 })],
+  ];
+
+  for (const [name, call] of anonymousCalls) {
+    it.effect(`rejects an anonymous ${name} as Unauthorized`, () =>
+      Effect.gen(function* () {
+        const client = yield* makeClient();
+
+        const error = yield* Effect.flip(call(client));
+
+        assert.instanceOf(error, Unauthorized);
+      })
+    );
+  }
+
+  it.effect("creates a todo with a trimmed title, not yet completed", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const cookie = yield* app.signUp;
+      const client = yield* makeClient(cookie);
+
+      const exit = yield* createRaw(cookie, "  Buy milk  ");
+
+      assert.deepStrictEqual(exit, {
+        _tag: "Success",
+        value: { completed: false, title: "Buy milk" },
+      });
+      const [todo] = yield* client("todos.list", undefined);
+      assert.deepInclude(todo, { completed: false, title: "Buy milk" });
+    })
+  );
+
+  for (const [origin, contentType] of [
+    ["http://localhost:4000", "text/plain"],
+    ["http://localhost:4000", "application/ndjson"],
+    ["https://attacker.example", "text/plain"],
+    ["null", "text/plain"],
+    ["", "text/plain"],
+  ] as const) {
+    it.effect(
+      `rejects ${contentType} RPC writes from the HTTP origin ${JSON.stringify(origin)}`,
+      () =>
+        Effect.gen(function* () {
+          const app = yield* TestApp;
+          const cookie = yield* app.signUp;
+          const client = yield* makeClient(cookie);
+
+          const response = yield* Effect.promise(
+            async () =>
+              await app.fetch(
+                new Request("http://localhost/rpc", {
+                  method: "POST",
+                  headers: { "content-type": contentType, cookie, origin },
+                  body: `${JSON.stringify({
+                    _tag: "Request",
+                    id: "1",
+                    headers: [["origin", "http://localhost"]],
+                    tag: "todos.create",
+                    payload: { title: "Unwanted todo" },
+                  })}\n`,
+                })
+              )
+          );
+
+          yield* Effect.promise(async () => await response.text());
+
+          assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+          assert.strictEqual(response.status, 403);
+        })
+    );
+  }
+
+  it.effect(
+    "accepts the configured public origin through an internal proxy URL",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+
+        const response = yield* Effect.promise(
+          async () =>
+            await app.fetch(
+              new Request("http://internal.example:3000/rpc", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/ndjson",
+                  cookie,
+                  origin: "http://localhost",
+                },
+                body: `${JSON.stringify({
+                  _tag: "Request",
+                  id: "1",
+                  headers: [["origin", "https://attacker.example"]],
+                  tag: "todos.create",
+                  payload: { title: "Same-origin todo" },
+                })}\n`,
+              })
+            )
+        );
+
+        yield* Effect.promise(async () => await response.text());
+
+        assert.strictEqual(response.status, 200);
+        const [todo] = yield* client("todos.list", undefined);
+        assert.deepInclude(todo, { title: "Same-origin todo" });
+      })
+  );
+
+  for (const title of [
+    "",
+    "   ",
+    "x".repeat(201),
+    "😀".repeat(201),
+    "nul\u0000byte",
+  ]) {
+    it.effect(`rejects the title ${JSON.stringify(title)}`, () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+
+        const exit = yield* createRaw(cookie, title);
+
+        assert.deepStrictEqual(exit, { _tag: "Failure" });
+        assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+      })
+    );
+  }
+
+  it.effect("completes a todo, then deletes it once", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const client = yield* makeClient(yield* app.signUp);
+      const todo = yield* client("todos.create", { title: "Buy milk" });
+
+      assert.deepStrictEqual(
+        yield* client("todos.update", { completed: true, id: todo.id }),
+        { ...todo, completed: true }
+      );
+      yield* client("todos.delete", { id: todo.id });
+      assert.deepStrictEqual(yield* client("todos.list", undefined), []);
+      assert.deepStrictEqual(
+        yield* Effect.flip(client("todos.delete", { id: todo.id })),
+        new TodoNotFound({ id: todo.id })
+      );
+    })
+  );
+
+  it.effect("keeps each user's todos private", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+      const alice = yield* makeClient(yield* app.signUp);
+      const bob = yield* makeClient(yield* app.signUp);
+      const todo = yield* alice("todos.create", { title: "Alice's secret" });
+
+      assert.deepStrictEqual(yield* bob("todos.list", undefined), []);
+      assert.deepStrictEqual(
+        yield* Effect.flip(
+          bob("todos.update", { completed: true, id: todo.id })
+        ),
+        new TodoNotFound({ id: todo.id })
+      );
+      assert.deepStrictEqual(
+        yield* Effect.flip(bob("todos.delete", { id: todo.id })),
+        new TodoNotFound({ id: todo.id })
+      );
+      assert.deepStrictEqual(yield* alice("todos.list", undefined), [todo]);
+    })
+  );
+
+  it.effect(
+    "accepts 200 Unicode code points and trims Unicode whitespace",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const title = "😀".repeat(200);
+        const exit = yield* createRaw(cookie, `\u00A0${title}\u3000`);
+        assert.deepStrictEqual(exit, {
+          _tag: "Success",
+          value: { completed: false, title },
+        });
+      })
+  );
+
+  for (const id of [0, -1, 1.5, 2_147_483_648]) {
+    it.effect(`rejects id ${id} before querying storage`, () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const body = yield* rpcRaw(cookie, "todos.delete", { id });
+        assert.include(body, '"_tag":"Failure"');
+        assert.notInclude(body, "TodoNotFound");
+        assert.notInclude(body, "ServiceUnavailable");
+      })
+    );
+  }
+
+  it.effect(
+    "returns a typed storage failure without SQL or parameters on the wire",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+        yield* Effect.acquireUseRelease(
+          app.database.run(sql`alter table todos rename to unavailable_todos`),
+          () =>
+            Effect.gen(function* () {
+              assert.instanceOf(
+                yield* Effect.flip(client("todos.list", undefined)),
+                ServiceUnavailable
+              );
+
+              const body = yield* rpcRaw(cookie, "todos.create", {
+                title: "private-payload-marker",
+              });
+
+              assert.include(body, "ServiceUnavailable");
+              assert.notInclude(body, "private-payload-marker");
+              assert.notInclude(body, "insert into");
+              assert.notInclude(body, "Drizzle");
+              assert.notInclude(body, '"_tag":"Die"');
+              assert.notInclude(body, '"query"');
+            }),
+          () =>
+            app.database
+              .run(sql`alter table unavailable_todos rename to todos`)
+              .pipe(Effect.orDie)
+        );
+      })
+  );
+
+  it.effect("sets browser security headers on public HTTP responses", () =>
+    Effect.gen(function* () {
+      const app = yield* TestApp;
+
+      const response = yield* Effect.promise(
+        async () => await app.fetch(new Request("http://localhost/api/health"))
+      );
+
+      assert.strictEqual(response.status, 200);
+      assert.strictEqual(
+        response.headers.get("x-content-type-options"),
+        "nosniff"
+      );
+      assert.strictEqual(response.headers.get("x-frame-options"), "DENY");
+    })
+  );
+
+  it.effect(
+    "does not misreport an auth database outage as an anonymous session",
+    () =>
+      Effect.gen(function* () {
+        const app = yield* TestApp;
+        const cookie = yield* app.signUp;
+        const client = yield* makeClient(cookie);
+        yield* Effect.acquireUseRelease(
+          app.database.run(
+            sql`alter table session rename to unavailable_session`
+          ),
+          () =>
+            Effect.gen(function* () {
+              assert.instanceOf(
+                yield* Effect.flip(client("todos.list", undefined)),
+                ServiceUnavailable
+              );
+
+              const body = yield* rpcRaw(cookie, "todos.create", {
+                title: "Unsent",
+              });
+
+              assert.include(body, "ServiceUnavailable");
+              assert.notInclude(body, "select");
+              assert.notInclude(body, "unavailable_session");
+            }),
+          () =>
+            app.database
+              .run(sql`alter table unavailable_session rename to session`)
+              .pipe(Effect.orDie)
+        );
+      })
+  );
+});
+
 # packages/api/tests/support/api.ts · 128 stacks
 #   hono-openapi-mongodb-better-auth-bun-docker
 #   hono-openapi-mongodb-better-auth-docker
@@ -15502,7 +16912,289 @@ afterAll(remove);
 /** Calls the procedures in this process, through their middleware and validation. */
 export const client = createRouterClient(appRouter, { context: { db } });
 
-# packages/db/src/test-database-name.ts · 576 stacks
+# packages/api/tests/support/app.ts · 1 stack
+#   spa-effect-http-effect-rpc-docker
+import { ConfigProvider, Context, Effect, Layer } from "effect";
+import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { HealthRpcs } from "@my-app/contracts";
+
+import { Routes } from "#src/index.ts";
+
+export class TestApp extends Context.Service<
+  TestApp,
+  {
+    readonly fetch: (request: Request) => Promise<Response>;
+  }
+>()("@my-app/api/tests/TestApp") {
+  static readonly layer = Layer.effect(
+    TestApp,
+    Effect.gen(function* () {
+      const { handler, dispose } = HttpRouter.toWebHandler(
+        Routes.pipe(
+          Layer.provide(HttpServer.layerServices),
+          Layer.provide(
+            Layer.succeed(
+              ConfigProvider.ConfigProvider,
+              ConfigProvider.fromUnknown({ APP_URL: "http://localhost" })
+            )
+          )
+        ),
+        { disableLogger: true }
+      );
+
+      yield* Effect.addFinalizer(() => Effect.promise(dispose));
+
+      return { fetch: handler };
+    })
+  );
+}
+
+export const makeClient = Effect.gen(function* () {
+  const app = yield* TestApp;
+
+  return yield* RpcClient.make(HealthRpcs, { flatten: true }).pipe(
+    Effect.provide(
+      RpcClient.layerProtocolHttp({ url: "http://localhost/rpc" }).pipe(
+        Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer]),
+        Layer.provide(
+          Layer.succeed(
+            FetchHttpClient.Fetch,
+            async (input, init) => await app.fetch(new Request(input, init))
+          )
+        )
+      )
+    )
+  );
+});
+
+# packages/api/tests/support/app.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+import { Context, Effect, Layer, Redacted, Schema } from "effect";
+import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { Auth } from "@my-app/auth";
+import { TodosRpcs } from "@my-app/contracts";
+import { Database } from "@my-app/db";
+import { makeTestDatabase } from "@my-app/db/testing";
+
+import { Routes } from "#src/index.ts";
+
+const origin = "http://localhost";
+
+/**
+ * The server's routes as a Fetch handler in this process, on a migrated database of its own, so
+ * each test file runs in parallel without a port or shared rows.
+ */
+export class TestApp extends Context.Service<
+  TestApp,
+  {
+    readonly database: typeof Database.Service;
+    readonly fetch: (request: Request) => Promise<Response>;
+    readonly signUp: Effect.Effect<string>;
+  }
+>()("@my-app/api/tests/TestApp") {
+  static readonly layer = Layer.effect(
+    TestApp,
+    Effect.gen(function* () {
+      const url = yield* makeTestDatabase;
+
+      const services = yield* Layer.build(
+        Layer.mergeAll(
+          Database.layerUrl(url),
+          Auth.layer({
+            baseURL: origin,
+            databaseUrl: url,
+            secret: Redacted.make("test-secret-that-is-at-least-32-characters"),
+          })
+        )
+      );
+
+      const { dispose, handler } = HttpRouter.toWebHandler(
+        Routes.pipe(
+          Layer.provide(Layer.succeedContext(services)),
+          Layer.provide(HttpServer.layerServices)
+        ),
+        { disableLogger: true }
+      );
+
+      yield* Effect.addFinalizer(() => Effect.promise(dispose));
+
+      const signUp = Effect.promise(async () => {
+        const response = await handler(
+          new Request(`${origin}/api/auth/sign-up/email`, {
+            method: "POST",
+            headers: { "content-type": "application/json", origin },
+            body: JSON.stringify({
+              email: `${crypto.randomUUID()}@example.com`,
+              name: "Test User",
+              password: "correct-horse-battery",
+            }),
+          })
+        );
+
+        if (!response.ok) {
+          throw new Error(`Sign up failed with ${response.status}`);
+        }
+
+        const { headers } = response;
+
+        return headers
+          .getSetCookie()
+          .map((header) => header.split(";")[0])
+          .join("; ");
+      });
+
+      return {
+        database: Context.get(services, Database),
+        fetch: handler,
+        signUp,
+      };
+    })
+  );
+}
+
+export const makeClient = Effect.fnUntraced(function* (cookie?: string) {
+  const app = yield* TestApp;
+
+  const fetch = async (
+    ...[input, init]: Parameters<typeof globalThis.fetch>
+  ) => {
+    const request = new Request(input, init);
+
+    if (cookie !== undefined) {
+      request.headers.set("cookie", cookie);
+    }
+
+    return await app.fetch(request);
+  };
+
+  return yield* RpcClient.make(TodosRpcs, { flatten: true }).pipe(
+    Effect.provide(
+      RpcClient.layerProtocolHttp({ url: `${origin}/rpc` }).pipe(
+        Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer]),
+        Layer.provide(Layer.succeed(FetchHttpClient.Fetch, fetch))
+      )
+    )
+  );
+});
+
+const CreateExit = Schema.fromJsonString(
+  Schema.Struct({
+    exit: Schema.Union([
+      Schema.Struct({
+        _tag: Schema.Literal("Success"),
+        value: Schema.Struct({
+          completed: Schema.Boolean,
+          title: Schema.String,
+        }),
+      }),
+      Schema.Struct({ _tag: Schema.Literal("Failure") }),
+    ]),
+  })
+);
+
+/**
+ * Posts raw NDJSON past client validation, so tests observe the server's actual wire response.
+ */
+export const rpcRaw = Effect.fnUntraced(function* (
+  cookie: string,
+  tag: string,
+  payload: Record<string, string | number | boolean>
+) {
+  const app = yield* TestApp;
+
+  const response = yield* Effect.promise(
+    async () =>
+      await app.fetch(
+        new Request(`${origin}/rpc`, {
+          body: `${JSON.stringify({ _tag: "Request", headers: [], id: "1", payload, tag })}\n`,
+          headers: { "content-type": "application/ndjson", cookie },
+          method: "POST",
+        })
+      )
+  );
+
+  return yield* Effect.promise(async () => await response.text());
+});
+
+export const createRaw = Effect.fnUntraced(function* (
+  cookie: string,
+  title: string
+) {
+  const body = yield* rpcRaw(cookie, "todos.create", { title });
+  const { exit } = yield* Schema.decodeUnknownEffect(CreateExit)(body.trim());
+
+  return exit;
+});
+
+# packages/api/tests/support/app.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
+import { ConfigProvider, Context, Effect, Layer } from "effect";
+import { FetchHttpClient, HttpRouter, HttpServer } from "effect/http";
+import { RpcClient, RpcSerialization } from "effect/rpc";
+
+import { TodosRpcs } from "@my-app/contracts";
+import { Database } from "@my-app/db";
+import { makeTestDatabase } from "@my-app/db/testing";
+
+import { Routes } from "#src/index.ts";
+
+export class TestApp extends Context.Service<
+  TestApp,
+  {
+    readonly fetch: (request: Request) => Promise<Response>;
+  }
+>()("@my-app/api/tests/TestApp") {
+  static readonly layer = Layer.effect(
+    TestApp,
+    Effect.gen(function* () {
+      const url = yield* makeTestDatabase;
+
+      const { handler, dispose } = HttpRouter.toWebHandler(
+        Routes.pipe(
+          Layer.provide(Database.layerUrl(url)),
+          Layer.provide(HttpServer.layerServices),
+          Layer.provide(
+            Layer.succeed(
+              ConfigProvider.ConfigProvider,
+              ConfigProvider.fromUnknown({ APP_URL: "http://localhost" })
+            )
+          )
+        ),
+        { disableLogger: true }
+      );
+
+      yield* Effect.addFinalizer(() => Effect.promise(dispose));
+
+      return { fetch: handler };
+    })
+  );
+}
+
+export const makeClient = Effect.gen(function* () {
+  const app = yield* TestApp;
+
+  return yield* RpcClient.make(TodosRpcs, { flatten: true }).pipe(
+    Effect.provide(
+      RpcClient.layerProtocolHttp({ url: "http://localhost/rpc" }).pipe(
+        Layer.provide([RpcSerialization.layerNdjson, FetchHttpClient.layer]),
+        Layer.provide(
+          Layer.succeed(
+            FetchHttpClient.Fetch,
+            async (input, init) => await app.fetch(new Request(input, init))
+          )
+        )
+      )
+    )
+  );
+});
+
+# packages/db/src/test-database-name.ts · 578 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -15695,6 +17387,8 @@ export const client = createRouterClient(appRouter, { context: { db } });
 #   next-self-postgres-prisma-better-auth-expo-docker
 #   next-self-postgres-prisma-docker
 #   next-self-postgres-prisma-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-docker
 #   spa-hono-mysql-better-auth-bun-docker
 #   spa-hono-mysql-better-auth-docker
 #   spa-hono-mysql-better-auth-electron-bun-docker
@@ -17186,3 +18880,72 @@ export const createTestDatabase = async () => {
     url,
   };
 };
+
+# packages/db/src/testing.ts · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-docker
+import { PgClient } from "@effect/sql-pg";
+import { Config, Effect, Redacted } from "effect";
+import { SqlClient } from "effect/sql";
+
+import { Database } from "#src/index.ts";
+import { migrateDatabase } from "#src/migrate.ts";
+import { testDatabaseName } from "#src/test-database-name.ts";
+
+const runAsAdmin = Effect.fn("TestDatabase.runAsAdmin")(
+  (adminUrl: URL, statement: string) =>
+    SqlClient.SqlClient.pipe(
+      Effect.flatMap((sql) => sql.unsafe(statement)),
+      Effect.provide(PgClient.layer({ url: Redacted.make(adminUrl.href) }))
+    )
+);
+
+export const makeTestDatabase = Effect.gen(function* () {
+  const adminUrl = new URL(
+    Redacted.value(yield* Config.Redacted("DATABASE_URL"))
+  );
+
+  const name = testDatabaseName(adminUrl.pathname.slice(1));
+  const url = new URL(adminUrl);
+  url.pathname = `/${name}`;
+
+  yield* Effect.acquireRelease(
+    runAsAdmin(adminUrl, `create database "${name}"`),
+    () =>
+      Effect.orDie(runAsAdmin(adminUrl, `drop database "${name}" with (force)`))
+  );
+  yield* migrateDatabase.pipe(
+    Effect.provide(Database.layerUrl(Redacted.make(url.href)))
+  );
+
+  return Redacted.make(url.href);
+});
+
+# packages/db/src/testing.ts · 2 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
+import { Effect, Redacted } from "effect";
+
+import { Database } from "#src/index.ts";
+import { migrateDatabase } from "#src/migrate.ts";
+
+export const makeTestDatabase = Effect.gen(function* () {
+  const directory = yield* Effect.acquireRelease(
+    Effect.tryPromise(
+      async () => await mkdtemp(path.join(tmpdir(), "my-app-test-"))
+    ),
+    (folder) =>
+      Effect.promise(async () => {
+        await rm(folder, { recursive: true, force: true, maxRetries: 10 });
+      })
+  );
+
+  const url = Redacted.make(path.join(directory, "test.db"));
+  yield* migrateDatabase.pipe(Effect.provide(Database.layerUrl(url)));
+
+  return url;
+});

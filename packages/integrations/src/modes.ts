@@ -31,23 +31,23 @@ export const effect = defineIntegration({
     router: ["tanstack-router"],
     backend: ["effect-http"],
     api: ["effect-rpc"],
-    database: ["postgres"],
-    orm: ["drizzle"],
-    auth: ["better-auth"],
+    database: ["postgres", "sqlite", null],
+    orm: ["drizzle", null],
+    auth: ["better-auth", null],
     ui: ["shadcn"],
     desktop: [null],
     mobile: [null],
     runtime: ["node"],
     deployment: ["docker", null],
-    testing: ["e2e"],
+    testing: ["playwright", "e2e"],
   },
-  contribute: () => [
-    ...effectConventions.map((convention) =>
+  contribute: (ctx) => [
+    ...effectConventions(ctx).map((convention) =>
       contribute(agentsConventions, convention)
     ),
     contribute(
       agentsNotes,
-      "`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` atom (`src/lib/api.ts`) \u2192 `POST /rpc` (NDJSON) \u2192 `AuthMiddleware` \u2192 `packages/api` handler \u2192 Drizzle on `@effect/sql-pg` \u2192 PostgreSQL. In development Vite proxies `/rpc` and `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it. The RPC HTTP boundary also rejects any supplied `Origin` that differs from this public origin, before decoding messages. RPC envelope headers never establish origin trust; non-browser clients may omit `Origin`."
+      `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: Effect Atom → POST /rpc (NDJSON) → schema validation${ctx.has("better-auth") ? " → AuthMiddleware" : ""} → Effect services${ctx.stack.database === undefined ? "" : ` → Drizzle on ${ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg"}`}. Vite proxies /rpc and /api in development; the Effect server serves the SPA in production. Set ${ctx.has("better-auth") ? "BETTER_AUTH_URL" : "APP_URL"} to the browser-facing origin. The RPC HTTP boundary rejects a supplied Origin that differs from it before decoding messages. RPC envelope headers never establish origin trust; non-browser clients may omit Origin.${ctx.stack.database !== undefined && !ctx.has("better-auth") ? " Todos are public and shared by all visitors; add authentication before storing private data." : ""}`
     ),
     contribute(
       ultraciteOverrides,

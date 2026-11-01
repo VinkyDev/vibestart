@@ -102,7 +102,7 @@ npx vibestart-cli my-app --framework next --backend self --api orpc --database p
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect 模式组合 React、TanStack Router、Effect HTTP/RPC 与 Atom、PostgreSQL、Drizzle、Better Auth、Node 和 e2e，可选 Docker 部署。它不支持混入 Standard 的传输协议、框架或运行时。包管理器独立于 Node 运行时。
+Effect 模式组合 React、TanStack Router、Effect HTTP/RPC 与 Atom 和 Node。端到端测试可选 Playwright（默认）或 TesterArmy e2e；数据库可选原生 Effect/Drizzle 驱动的 PostgreSQL、SQLite 或不使用。Better Auth 可选，但需要数据库；不使用数据库时也不生成 ORM。可选 Docker 部署。它不支持混入 Standard 的传输协议、框架或运行时。包管理器独立于 Node 运行时。
 
 ## 文档
 

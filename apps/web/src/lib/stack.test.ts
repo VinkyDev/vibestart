@@ -256,6 +256,21 @@ describe("Effect mode", () => {
     expect(entryFromFlags({}).stack.mode).toBe("standard");
   });
 
+  it("removes dependent ORM and auth when choosing no database", () => {
+    const { stack } = entryFromFlags({
+      mode: "effect",
+      database: "sqlite",
+      auth: "better-auth",
+    });
+
+    const next = outcome(stack, "database", null)?.entry.stack;
+    expect(next?.mode).toBe("effect");
+    expect(next?.database).toBeUndefined();
+    expect(next?.orm).toBeUndefined();
+    expect(next?.auth).toBeUndefined();
+    expect(next?.testing).toBe("playwright");
+  });
+
   it("repairs incompatible links inside the selected mode", () => {
     const { stack } = entryFromFlags({
       mode: "effect",

@@ -22,7 +22,7 @@ vp run db:migrate
 vp run dev
 ```
 
-Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production. Session cookies stay first-party.
+Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production.
 
 ## Environment
 
@@ -43,11 +43,13 @@ PORT=3000
 vp check          # format, lint, type check
 vp run knip       # unused files, exports, dependencies, and catalog entries
 vp test           # unit and integration tests (Vitest)
-vp run test:e2e   # end-to-end tests against the real Effect server and PostgreSQL
+vp run test:e2e   # end-to-end tests (TesterArmy e2e) against the real Effect server and PostgreSQL
 vp run ready      # check + knip + test + test:e2e + production build
 ```
 
-The first `vp run test:e2e` needs Chromium: `cd apps/web && vp exec e2e-web install chromium`. TesterArmy e2e sends anonymous usage telemetry; set `E2E_TELEMETRY_DISABLED=1` to turn it off.
+TesterArmy e2e sends anonymous usage telemetry; set `E2E_TELEMETRY_DISABLED=1` to turn it off.
+
+The first `vp run test:e2e` needs Chromium: `cd apps/web && vp exec e2e-web install chromium`.
 
 ## Production
 
@@ -62,4 +64,4 @@ The image runs two entry points from the same build:
 - `node dist/migrate.mjs` applies pending migrations and exits;
 - `node dist/index.mjs` serves `/rpc`, `/api`, `/api/auth`, and the SPA.
 
-Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUTH_SECRET`; the server also reads `PORT` (default `3000`).
+The migration reads `DATABASE_URL`; the server reads `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), `BETTER_AUTH_SECRET`, and `PORT` (default `3000`). Set the public origin to the URL visitors use, including its scheme and port.

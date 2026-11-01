@@ -77,5 +77,4 @@ export const testServer = Effect.gen(function* () {
     (route) => waitForServer(`${e2eBaseURL}${route}`),
     { concurrency: "unbounded" }
   );
-  yield* Effect.never;
 });

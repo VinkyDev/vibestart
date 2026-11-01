@@ -35,6 +35,30 @@ Standard is the default. Interactive composition starts with the mode; `--mode e
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
+Effect mode offers 20 legal stacks: PostgreSQL or SQLite with optional Better Auth, or no database, combined with either browser runner and Docker or no deployment. The package manager and addons are independent of these combinations.
+
+| Flag         | Effect choices               | Default without prompts                             |
+| ------------ | ---------------------------- | --------------------------------------------------- |
+| `--database` | `postgres`, `sqlite`, `none` | `sqlite`                                            |
+| `--orm`      | `drizzle`, `none`            | Inferred from the database                          |
+| `--auth`     | `better-auth`, `none`        | No default; choose explicitly when using a database |
+| `--testing`  | `playwright`, `e2e`          | `playwright`                                        |
+
+Better Auth requires a database. Without auth, todos are public and shared. Without a database, the generator omits the ORM, auth, migrations and todo example, keeping typed HTTP/RPC health checks. SQLite uses the official Effect driver and needs no database server.
+
+```sh
+# SQLite with authentication and the default Playwright runner
+pnpm dlx vibestart-cli my-app --mode effect --auth better-auth
+
+# Public PostgreSQL todos with TesterArmy e2e
+pnpm dlx vibestart-cli my-app --mode effect --database postgres --auth none --testing e2e
+
+# No database, ORM or authentication
+pnpm dlx vibestart-cli my-app --mode effect --database none --orm none --auth none
+```
+
+With `--json` or `--no-interactive`, unresolved choices such as auth produce `incomplete-stack` and exit code `1`; incompatible selections produce `illegal-stack` and exit code `1`. Success still exits with `0`. Use `--list --mode effect --json` to discover choices in the installed release.
+
 ## What the CLI runs [#steps]
 
 <Steps>

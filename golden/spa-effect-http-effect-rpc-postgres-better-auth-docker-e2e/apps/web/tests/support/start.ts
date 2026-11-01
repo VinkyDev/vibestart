@@ -4,5 +4,9 @@ import { Effect } from "effect";
 import { testServer } from "./server.ts";
 
 NodeRuntime.runMain(
-  testServer.pipe(Effect.scoped, Effect.provide(NodeServices.layer))
+  testServer.pipe(
+    Effect.andThen(Effect.never),
+    Effect.scoped,
+    Effect.provide(NodeServices.layer)
+  )
 );

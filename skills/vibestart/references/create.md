@@ -70,4 +70,6 @@ Standard is the default. Use `--mode effect` for the independent Effect stack, o
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, PostgreSQL, Drizzle, Better Auth, Node, and e2e. Docker is optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
+Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, and Node. Choose Playwright (the default) or TesterArmy e2e, PostgreSQL or SQLite through native Effect/Drizzle drivers, or no database. Better Auth is optional and requires a database; no database also removes the ORM. Docker is optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
+
+For Effect, discover available choices with `--list --mode effect --json`; older CLI releases may only offer the fixed stack. Use `--auth none` to omit authentication, or `--database none --orm none --auth none` to omit persistence entirely. A database without auth generates public, shared todos. `--testing playwright` and `--testing e2e` select the browser runner.
