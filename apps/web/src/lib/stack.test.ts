@@ -283,7 +283,18 @@ describe("Effect mode", () => {
       api: "effect-rpc",
       framework: "spa",
     });
-    expect(outcome(stack, "api", "orpc")).toBeUndefined();
+    expect(outcome(stack, "api", "orpc")?.entry.stack).toMatchObject({
+      mode: "standard",
+      api: "orpc",
+      backend: "hono",
+    });
+    expect(
+      outcome(recommended, "backend", "effect-http")?.entry.stack
+    ).toMatchObject({
+      mode: "effect",
+      api: "effect-rpc",
+      backend: "effect-http",
+    });
     expect(
       ["backend", "desktop", "mobile"].map((kind) =>
         optionsOf(kind, "effect").map((option) => option?.id ?? null)

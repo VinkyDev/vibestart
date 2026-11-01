@@ -191,3 +191,25 @@ test("selects Effect testing and removes persistence through the picker", async 
     animations: "disabled",
   });
 });
+
+test("composes Effect on the home page and opens it in Studio", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("radiogroup", { name: "Backend", exact: true })
+    .getByText("Effect HTTP", { exact: true })
+    .click();
+  await expect(page).toHaveURL(/mode=effect/u);
+  await expect(page.locator("main")).toContainText("--mode effect");
+  await expect(page.locator("main")).toContainText(
+    "Adjusted to fit: Mode → Effect and API → Effect RPC"
+  );
+  await page.getByRole("link", { name: "Open in Studio", exact: true }).click();
+  await expect(page).toHaveURL(/\/studio\?.*mode=effect/u);
+  await expect(
+    page
+      .getByRole("group", { name: "Mode", exact: true })
+      .getByRole("button", { name: "Effect", exact: true })
+  ).toHaveAttribute("aria-pressed", "true");
+});

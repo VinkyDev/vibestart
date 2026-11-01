@@ -3542,7 +3542,7 @@ export declare const mode_guide_intro: ((inputs?: Mode_Guide_IntroInputs, option
 /**
 * | output |
 * | --- |
-* | "Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, mobile, desktop, and deployment targets." |
+* | "Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, runtimes, and deployment targets." |
 *
 * @param {Mode_Guide_Standard_BodyInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

@@ -1298,7 +1298,7 @@ export const mode_guide_intro = /** @type {(inputs: Mode_Guide_IntroInputs) => L
 };
 
 export const mode_guide_standard_body = /** @type {(inputs: Mode_Guide_Standard_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, mobile, desktop, and deployment targets.`)
+	return /** @type {LocalizedString} */ (`Uses familiar TypeScript with no extra learning curve, and supports the full range of frameworks, databases, runtimes, and deployment targets.`)
 };
 
 export const mode_guide_standard_title = /** @type {(inputs: Mode_Guide_Standard_TitleInputs) => LocalizedString} */ () => {

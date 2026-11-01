@@ -331,8 +331,12 @@ export const outcome = (
 ): Outcome | undefined => {
   const choices = { ...decisionsOf(stack), [kind]: id };
 
+  const keepsMode = optionsOf(kind, stack.mode).some(
+    (option) => (option?.id ?? null) === id
+  );
+
   const { fixes, stacks: legal } = resolve(registry, choices, {
-    keep: ["mode", kind],
+    keep: keepsMode ? ["mode", kind] : [kind],
   });
 
   if (legal.length > 0) {
