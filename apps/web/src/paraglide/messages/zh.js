@@ -1290,7 +1290,7 @@ export const mode_guide_intro = /** @type {(inputs: Mode_Guide_IntroInputs) => L
 };
 
 export const mode_guide_standard_body = /** @type {(inputs: Mode_Guide_Standard_BodyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`采用通用的 TypeScript 写法，零额外上手成本；支持最广泛的框架、数据库、移动端、桌面端和部署方式。`)
+	return /** @type {LocalizedString} */ (`采用通用的 TypeScript 写法，零额外上手成本；支持最广泛的框架、数据库、运行时和部署方式。`)
 };
 
 export const mode_guide_standard_title = /** @type {(inputs: Mode_Guide_Standard_TitleInputs) => LocalizedString} */ () => {

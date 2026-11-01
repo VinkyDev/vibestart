@@ -27,8 +27,8 @@ const groupName = (group: Group) =>
   group === "foundation" ? m.viz_group_foundation() : roles[group].role;
 
 const pages = new Map([
-  ["effect-http", "stack/effect"],
-  ["effect-rpc", "stack/effect"],
+  ["effect-http", "stack/effect#stack"],
+  ["effect-rpc", "stack/effect#stack"],
   ["better-auth", "stack/data"],
   ["docker", "stack/delivery"],
   ["void", "stack/delivery"],
@@ -104,14 +104,14 @@ const Mark = ({ id }: { readonly id: string }) => {
   );
 };
 
-const pageOf = (id: string) => {
+const urlOf = (id: string) => {
   const page = pages.get(id);
 
   if (page === undefined) {
     throw new Error(`No docs page explains ${id}`);
   }
 
-  return page;
+  return `/docs/${page.includes("#") ? page : `${page}#${id}`}`;
 };
 
 export const StackMap = () => (
@@ -139,7 +139,7 @@ export const StackMap = () => (
               <li className="min-w-0" key={integration.id}>
                 <DocLink
                   className="hover:bg-tint-soft group/chip flex min-w-0 flex-col rounded-lg px-3 py-2 transition-colors"
-                  url={`/docs/${pageOf(integration.id)}#${integration.id}`}
+                  url={urlOf(integration.id)}
                 >
                   <span className="flex items-baseline justify-between gap-2">
                     <span className="flex min-w-0 items-center gap-2 self-center">

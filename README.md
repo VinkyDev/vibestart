@@ -102,7 +102,7 @@ Standard is the default and suits most projects with familiar TypeScript and the
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, and Node. Choose Playwright (the default) or TesterArmy e2e, PostgreSQL or SQLite through native Effect/Drizzle drivers, or no database. Better Auth is optional and requires a database; no database also removes the ORM. Docker is optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
+Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, and Node. Choose Playwright (the default) or TesterArmy e2e, PostgreSQL or SQLite through native Effect/Drizzle drivers, or no database. Better Auth is optional and requires a database; no database also removes the ORM. Electron desktop, Expo mobile, and Docker are optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
 
 ## Documentation
 
