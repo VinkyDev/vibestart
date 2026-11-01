@@ -7,11 +7,11 @@ Studio and the CLI offer **Standard** (the default) and **Effect** as two indepe
 
 ## How to choose: Standard vs. Effect [#when]
 
-|                  | **Standard mode**                                                                                           | **Effect mode**                                                                                |
-| ---------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Best for**     | Most projects                                                                                               | Projects with complex service flows and strict reliability requirements                        |
-| **Coding model** | Familiar TypeScript with no extra learning curve                                                            | A heavier, stricter model that checks errors, dependencies, and resource cleanup in types      |
-| **Stack range**  | Widest (SPA, Next.js, TanStack Start, Hono, Expo mobile, Electron desktop, four databases, Docker and Void) | Focused (React SPA on Node, PostgreSQL or SQLite or no database, optional Better Auth, Docker) |
+|                  | **Standard mode**                                                                                           | **Effect mode**                                                                                                           |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Best for**     | Most projects                                                                                               | Projects with complex service flows and strict reliability requirements                                                   |
+| **Coding model** | Familiar TypeScript with no extra learning curve                                                            | A heavier, stricter model that checks errors, dependencies, and resource cleanup in types                                 |
+| **Stack range**  | Widest (SPA, Next.js, TanStack Start, Hono, Expo mobile, Electron desktop, four databases, Docker and Void) | Focused (React SPA on Node, PostgreSQL or SQLite or no database, optional Better Auth, optional Electron desktop, Docker) |
 
 - **Choose Standard** for general projects when you want familiar, everyday TypeScript and the full range of frameworks (SSR, SPA, mobile, desktop), databases, and deployment targets.
 - **Choose Effect** when you have complex backend service flows, want a stricter model that enforces error handling and resource management at compile time, and fit within its supported stack choices.
@@ -22,7 +22,7 @@ To learn Effect's concepts and syntax in detail, see the [official Effect docume
 
 When you select Effect mode, the generated project uses the Effect ecosystem end to end rather than mixing in Hono, oRPC, Zod, or TanStack Query:
 
-- **Web and API**: A React single-page app (TanStack Router) paired with Effect's HTTP/RPC server and reactive client state.
+- **Web, desktop, and API**: A React single-page app (TanStack Router) paired with Effect's HTTP/RPC server and reactive client state, with an optional Electron desktop shell (`apps/desktop` and `packages/electron`) validated with Effect Schema.
 - **Database and auth (optional)**: Choose PostgreSQL, SQLite (using Node's built-in SQLite with no separate database server), or no database at all. With a database, you can include Better Auth for sign-in, or omit auth for public data.
 - **Testing and AI context**: Includes service tests, browser end-to-end tests (Playwright by default, or TesterArmy `e2e`), and local Effect documentation wired for coding agents.
 

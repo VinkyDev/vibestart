@@ -58,6 +58,7 @@ import { RpcSerialization, RpcServer } from "effect/rpc";
 
 ${ctx.has("better-auth") ? `import { Auth } from "${ctx.scope}/auth";` : ""}
 import { Api, ${ctx.stack.database === undefined ? "HealthRpcs" : "TodosRpcs"} } from "${ctx.scope}/contracts";
+${ctx.has("electron") ? `import { rendererOrigin } from "${ctx.scope}/electron";` : ""}
 
 ${ctx.has("better-auth") ? 'import { AuthRoutes } from "#src/auth-routes.ts";\nimport { AuthMiddlewareLive } from "#src/auth-middleware.ts";' : ""}
 import { HealthLive } from "#src/health.ts";
@@ -73,7 +74,7 @@ const RpcOrigin = Layer.unwrap(
         const request = yield* HttpServerRequest.HttpServerRequest;
         const { origin } = request.headers;
 
-        if (origin !== undefined && origin !== allowedOrigin) {
+        if (origin !== undefined && origin !== allowedOrigin${ctx.has("electron") ? " && origin !== rendererOrigin" : ""}) {
           return HttpServerResponse.empty({ status: 403 });
         }
 

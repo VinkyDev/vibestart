@@ -22,6 +22,13 @@ import {
 
 const defaultApiOrigin = "http://localhost:3000";
 
+const effectPaths = [
+  "apps/desktop/scripts/dev.ts",
+  "apps/desktop/src/preload/index.ts",
+  "apps/desktop/vite.main.config.ts",
+  "packages/electron/src/index.ts",
+];
+
 const apiPaths = (ctx: Context) => (hasBackend(ctx) ? serverPaths(ctx) : []);
 
 const config = (ctx: Context) =>
@@ -43,7 +50,7 @@ const architecture = (ctx: Context) => {
         .map((apiPath) => `\`${apiPath}\``)
         .join(
           " and "
-        )} to \`API_ORIGIN\` (default \`${defaultApiOrigin}\`) while keeping the renderer's \`Origin\` header${ctx.has("better-auth") ? "; `packages/auth` lists `https://app.localhost` in `trustedOrigins` for the packaged window" : ""}. In development the window loads the Vite dev server, which proxies the same paths through :5173.`
+        )} to \`API_ORIGIN\` (default \`${defaultApiOrigin}\`) while keeping the renderer's \`Origin\` header${ctx.has("better-auth") ? "; `packages/auth` lists `https://app.localhost` in `trustedOrigins` for the packaged window" : ""}${ctx.has("effect-rpc") ? "; `packages/api` also accepts `https://app.localhost` at the RPC origin boundary" : ""}. In development the window loads the Vite dev server, which proxies the same paths through :5173.`
     : "";
 
   return `The desktop app wraps \`apps/web\`: \`vp run dev\` starts the web dev server and opens it in an Electron window; \`vp run package:desktop\` builds the web app and packages the installer with electron-builder. The window loads \`https://app.localhost/\`, an origin the main process answers itself from \`apps/web/dist\` with the SPA fallback.${api} Restart \`vp run dev\` after changing main or preload code. Main, preload, and the renderer share the IPC contract in \`packages/electron\`; the renderer reads it from \`window.desktop\`.`;
@@ -51,7 +58,12 @@ const architecture = (ctx: Context) => {
 
 export const electron = defineIntegration({
   contribute: (ctx) => [
-    ...templateFiles(ctx, "electron/common"),
+    ...(ctx.has("effect")
+      ? [
+          ...templateFiles(ctx, "electron/common", { except: effectPaths }),
+          ...templateFiles(ctx, "electron/effect"),
+        ]
+      : templateFiles(ctx, "electron/common")),
     config(ctx),
     // The main and preload entries are built by `vp build --config`, which Knip's plugins do not read.
     contribute(knipEntries, {
@@ -70,10 +82,9 @@ export const electron = defineIntegration({
         "@types/node",
         "electron",
         "electron-builder",
-        "es-toolkit",
+        ...(ctx.has("effect") ? ["effect"] : ["es-toolkit", "zod"]),
         "typescript",
         "vite-plus",
-        "zod",
       ],
       imports: { "#src/*": "./src/*" },
       main: "./dist/main/index.js",
@@ -86,7 +97,7 @@ export const electron = defineIntegration({
       },
     }),
     contribute(packageJson, {
-      dependencies: ["zod"],
+      dependencies: [ctx.has("effect") ? "effect" : "zod"],
       devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],
       exports: { ".": "./src/index.ts" },
       imports: { "#src/*": "./src/*" },

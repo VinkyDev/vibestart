@@ -285,9 +285,10 @@ describe("Effect mode", () => {
     });
     expect(outcome(stack, "api", "orpc")).toBeUndefined();
     expect(
-      optionsOf("backend", "effect").map((option) => option?.id)
-    ).toStrictEqual(["effect-http"]);
-    expect(optionsOf("mobile", "effect")).toStrictEqual([null]);
+      ["backend", "desktop", "mobile"].map((kind) =>
+        optionsOf(kind, "effect").map((option) => option?.id ?? null)
+      )
+    ).toStrictEqual([["effect-http"], ["electron", null], [null]]);
     expect(
       optionsOf("backend", "standard").some(
         (option) => option?.id === "effect-http"

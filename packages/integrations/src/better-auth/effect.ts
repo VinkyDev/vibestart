@@ -1,10 +1,39 @@
 import type { Context } from "@vibestart/core";
-import { contribute, packageJson } from "@vibestart/core";
+import { contribute, file, packageJson } from "@vibestart/core";
 
 import { serverEnv } from "#/app.ts";
 import { composeEnv } from "#/docker.ts";
-import { templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers } from "#/vite-plus/slots.ts";
+
+const authIndex = (ctx: Context) => {
+  const path = "packages/auth/src/index.ts";
+
+  const set = ctx.has("sqlite")
+    ? "better-auth/effect-sqlite"
+    : "better-auth/effect-postgres";
+
+  const source = templateContent(ctx, set, path);
+
+  if (!ctx.has("electron")) {
+    return file(path, source);
+  }
+
+  return file(
+    path,
+    replaceOnce(
+      replaceOnce(
+        source,
+        `import * as schema from "${ctx.scope}/db/schema/auth";`,
+        `import * as schema from "${ctx.scope}/db/schema/auth";\nimport { rendererOrigin } from "${ctx.scope}/electron";`,
+        `${set}/${path}`
+      ),
+      "    secret: Redacted.value(options.secret),",
+      "    secret: Redacted.value(options.secret),\n    trustedOrigins: [rendererOrigin],",
+      `${set}/${path}`
+    )
+  );
+};
 
 export const effectAuth = (ctx: Context) => [
   ...templateFiles(ctx, "better-auth/common"),
@@ -16,12 +45,7 @@ export const effectAuth = (ctx: Context) => [
     ],
   }),
   ...templateFiles(ctx, "better-auth/effect"),
-  ...templateFiles(
-    ctx,
-    ctx.has("sqlite")
-      ? "better-auth/effect-sqlite"
-      : "better-auth/effect-postgres"
-  ),
+  authIndex(ctx),
   contribute(packageJson, {
     dependencies: [
       "@better-auth/drizzle-adapter",

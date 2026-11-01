@@ -56,6 +56,7 @@ export const effectRpc = defineIntegration({
         ...(ctx.stack.database === undefined
           ? []
           : [`${ctx.scope}/db`, "drizzle-orm"]),
+        ...(ctx.has("electron") ? [`${ctx.scope}/electron`] : []),
         "effect",
       ],
       imports: {

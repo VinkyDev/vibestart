@@ -1,3 +1,40 @@
+# apps/desktop/package.json · 10 stacks
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+{
+  "name": "@my-app/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main/index.js",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "build": "vp build --config vite.main.config.ts && vp build --config vite.preload.config.ts",
+    "package": "vp run --filter @my-app/web build && node scripts/copy-renderer.ts && vp run build && electron-builder --config electron-builder.yml",
+    "dev": "vp run build && node scripts/dev.ts"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "electron": "catalog:",
+    "electron-builder": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
 # apps/desktop/package.json · 380 stacks
 #   spa-electron-docker
 #   spa-electron-docker-e2e
@@ -3468,9 +3505,11 @@
   }
 }
 
-# apps/server/package.json · 2 stacks
+# apps/server/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 {
   "name": "@my-app/server",
   "version": "0.0.0",
@@ -3494,11 +3533,15 @@
   }
 }
 
-# apps/server/package.json · 4 stacks
+# apps/server/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 {
   "name": "@my-app/server",
   "version": "0.0.0",
@@ -3525,11 +3568,15 @@
   }
 }
 
-# apps/server/package.json · 4 stacks
+# apps/server/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 {
   "name": "@my-app/server",
   "version": "0.0.0",
@@ -7004,8 +7051,9 @@
   }
 }
 
-# apps/web/package.json · 1 stack
+# apps/web/package.json · 2 stacks
 #   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-electron-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7049,8 +7097,9 @@
   }
 }
 
-# apps/web/package.json · 1 stack
+# apps/web/package.json · 2 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7095,9 +7144,11 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7144,9 +7195,11 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7194,9 +7247,11 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker
 #   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -7242,9 +7297,11 @@
   }
 }
 
-# apps/web/package.json · 2 stacks
+# apps/web/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 {
   "name": "@my-app/web",
   "version": "0.0.0",
@@ -15816,6 +15873,40 @@
   "packageManager": "pnpm@12.16.1"
 }
 
+# package.json · 2 stacks
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "package:desktop": "vp run --filter @my-app/desktop package",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
 # package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
@@ -15838,6 +15929,49 @@
     "db:generate": "vp run --filter @my-app/db db:generate",
     "db:migrate": "vp run --filter @my-app/server db:migrate",
     "db:studio": "vp run --filter @my-app/db db:studio",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
+# package.json · 8 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "db:generate": "vp run --filter @my-app/db db:generate",
+    "db:migrate": "vp run --filter @my-app/server db:migrate",
+    "db:studio": "vp run --filter @my-app/db db:studio",
+    "package:desktop": "vp run --filter @my-app/desktop package",
     "test:e2e": "vp run --filter @my-app/web test:e2e",
     "knip": "knip"
   },
@@ -20056,6 +20190,34 @@
   }
 }
 
+# packages/api/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+{
+  "name": "@my-app/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@my-app/contracts": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
+
 # packages/api/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
@@ -20089,6 +20251,39 @@
 }
 
 # packages/api/package.json · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+{
+  "name": "@my-app/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@my-app/auth": "workspace:*",
+    "@my-app/contracts": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
+
+# packages/api/package.json · 4 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
@@ -20107,6 +20302,38 @@
   "dependencies": {
     "@my-app/contracts": "workspace:*",
     "@my-app/db": "workspace:*",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/vitest": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
+
+# packages/api/package.json · 4 stacks
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+{
+  "name": "@my-app/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@my-app/contracts": "workspace:*",
+    "@my-app/db": "workspace:*",
+    "@my-app/electron": "workspace:*",
     "drizzle-orm": "catalog:",
     "effect": "catalog:"
   },
@@ -20936,6 +21163,36 @@
 }
 
 # packages/auth/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@my-app/db": "workspace:*",
+    "@my-app/electron": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/package.json · 2 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 {
@@ -20952,6 +21209,35 @@
   "dependencies": {
     "@better-auth/drizzle-adapter": "catalog:",
     "@my-app/db": "workspace:*",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/auth/package.json · 2 stacks
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+{
+  "name": "@my-app/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "catalog:",
+    "@my-app/db": "workspace:*",
+    "@my-app/electron": "workspace:*",
     "better-auth": "catalog:",
     "drizzle-orm": "catalog:",
     "effect": "catalog:"
@@ -21284,7 +21570,7 @@
   }
 }
 
-# packages/config/package.json · 1799 stacks
+# packages/config/package.json · 1809 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -21862,14 +22148,24 @@
 #   spa-docker-e2e
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -23094,17 +23390,27 @@
   }
 }
 
-# packages/contracts/package.json · 10 stacks
+# packages/contracts/package.json · 20 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 {
   "name": "@my-app/contracts",
   "version": "0.0.0",
@@ -25099,11 +25405,15 @@
   }
 }
 
-# packages/db/package.json · 4 stacks
+# packages/db/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 {
   "name": "@my-app/db",
   "version": "0.0.0",
@@ -25136,11 +25446,15 @@
   }
 }
 
-# packages/db/package.json · 4 stacks
+# packages/db/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 {
   "name": "@my-app/db",
   "version": "0.0.0",
@@ -25169,6 +25483,38 @@
     "@my-app/config": "workspace:*",
     "@types/node": "catalog:",
     "drizzle-kit": "catalog:",
+    "typescript": "catalog:"
+  }
+}
+
+# packages/electron/package.json · 10 stacks
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+{
+  "name": "@my-app/electron",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
     "typescript": "catalog:"
   }
 }
@@ -25575,7 +25921,7 @@
   }
 }
 
-# packages/ui/package.json · 1642 stacks
+# packages/ui/package.json · 1652 stacks
 #   next-docker
 #   next-docker-e2e
 #   next-expo-docker
@@ -25996,14 +26342,24 @@
 #   spa-docker-e2e
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker
+#   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
 #   spa-electron-docker
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker
@@ -70829,6 +71185,143 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-electron-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 packages:
   - apps/*
@@ -70974,6 +71467,163 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+  postgres: ^3.4.9
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+  postgres: ^3.4.9
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-effect-http-effect-rpc-postgres-docker
 packages:
   - apps/*
@@ -71101,6 +71751,153 @@ overrides:
 
 allowBuilds:
   esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-pg": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
 
 peerDependencyRules:
   allowAny:
@@ -71252,6 +72049,161 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # auth
+  "@better-auth/drizzle-adapter": ^1.7.14
+  better-auth: ^1.7.14
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-effect-http-effect-rpc-sqlite-docker
 packages:
   - apps/*
@@ -71379,6 +72331,153 @@ overrides:
 
 allowBuilds:
   esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.64.1
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.15.3
+  "@shadcn/lint": ^0.2.3
+  "@types/node": ^26.6.6
+  e2e: ^0.21.3
+  knip: ^6.43.0
+  typescript: ^7.0.2
+  ultracite: ^8.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+
+  # effect
+  "@effect/atom-react": 4.1.0
+  "@effect/platform-node": 4.1.0
+  "@effect/sql-sqlite-node": 4.1.0
+  "@effect/vitest": 4.1.0
+  effect: 4.1.0
+  vitest: 5.0.5
+
+  # web
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": ^1.170.46
+  "@tanstack/react-router-devtools": ^1.167.2
+  "@tanstack/router-plugin": ^1.168.48
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0
+  "@vitejs/plugin-react": ^6.1.2
+  next-themes: ^0.4.6
+  oxc-transform-react: ^0.156.0
+  react: 19.3.0
+  react-dom: 19.3.0
+  tailwindcss: ^4.3.3
+
+  # ui
+  "@base-ui/react": ^1.9.0
+  "@fontsource-variable/geist": ^5.3.0
+  class-variance-authority: ^0.7.1
+  cn: ^0.5.0
+  lucide-react: ^1.62.0
+  shadcn: ^4.23.0
+  sonner: ^2.0.8
+  tw-animate-css: ^1.4.0
+
+  # desktop
+  electron: ^45.1.0
+  electron-builder: ^26.18.0
+
+  # db
+  drizzle-kit: 1.0.0-rc.5
+  drizzle-orm: 1.0.0-rc.5
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+  electron: true
+  electron-winstaller: false
 
 peerDependencyRules:
   allowAny:
@@ -192643,6 +193742,56 @@ peerDependencyRules:
 }
 
 # vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-electron-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 {
   "$schema": "https://vibestart.net/schema.json",
@@ -192697,6 +193846,62 @@ peerDependencyRules:
 }
 
 # vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
 #   spa-effect-http-effect-rpc-postgres-docker
 {
   "$schema": "https://vibestart.net/schema.json",
@@ -192738,6 +193943,60 @@ peerDependencyRules:
     "database": "postgres",
     "orm": "drizzle",
     "ui": "shadcn",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "postgres",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
     "runtime": "node",
     "deployment": "docker",
     "testing": "e2e",
@@ -192803,6 +194062,62 @@ peerDependencyRules:
 }
 
 # vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "auth": "better-auth",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
 #   spa-effect-http-effect-rpc-sqlite-docker
 {
   "$schema": "https://vibestart.net/schema.json",
@@ -192844,6 +194159,60 @@ peerDependencyRules:
     "database": "sqlite",
     "orm": "drizzle",
     "ui": "shadcn",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "effect",
+    "toolchain": "vite-plus",
+    "frontend": "react",
+    "framework": "spa",
+    "router": "tanstack-router",
+    "backend": "effect-http",
+    "api": "effect-rpc",
+    "database": "sqlite",
+    "orm": "drizzle",
+    "ui": "shadcn",
+    "desktop": "electron",
     "runtime": "node",
     "deployment": "docker",
     "testing": "e2e",
