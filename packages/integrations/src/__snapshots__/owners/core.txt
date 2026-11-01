@@ -15735,11 +15735,9 @@
   "packageManager": "pnpm@12.16.1"
 }
 
-# package.json · 20 stacks
+# package.json · 18 stacks
 #   spa-docker
 #   spa-docker-e2e
-#   spa-effect-http-effect-rpc-docker
-#   spa-effect-http-effect-rpc-docker-e2e
 #   spa-hono-docker
 #   spa-hono-docker-e2e
 #   spa-hono-openapi-docker
@@ -15785,7 +15783,40 @@
   "packageManager": "pnpm@12.16.1"
 }
 
-# package.json · 80 stacks
+# package.json · 2 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
+# package.json · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
@@ -15794,78 +15825,6 @@
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
-#   spa-hono-mysql-better-auth-docker
-#   spa-hono-mysql-better-auth-docker-e2e
-#   spa-hono-mysql-docker
-#   spa-hono-mysql-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-docker
-#   spa-hono-openapi-mysql-better-auth-docker-e2e
-#   spa-hono-openapi-mysql-docker
-#   spa-hono-openapi-mysql-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-docker
-#   spa-hono-openapi-postgres-better-auth-docker-e2e
-#   spa-hono-openapi-postgres-docker
-#   spa-hono-openapi-postgres-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-docker
-#   spa-hono-openapi-sqlite-better-auth-docker-e2e
-#   spa-hono-openapi-sqlite-docker
-#   spa-hono-openapi-sqlite-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-docker
-#   spa-hono-orpc-mysql-better-auth-docker-e2e
-#   spa-hono-orpc-mysql-docker
-#   spa-hono-orpc-mysql-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-docker
-#   spa-hono-orpc-postgres-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-docker
-#   spa-hono-orpc-postgres-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-docker
-#   spa-hono-orpc-sqlite-better-auth-docker-e2e
-#   spa-hono-orpc-sqlite-docker
-#   spa-hono-orpc-sqlite-docker-e2e
-#   spa-hono-postgres-better-auth-docker
-#   spa-hono-postgres-better-auth-docker-e2e
-#   spa-hono-postgres-docker
-#   spa-hono-postgres-docker-e2e
-#   spa-hono-sqlite-better-auth-docker
-#   spa-hono-sqlite-better-auth-docker-e2e
-#   spa-hono-sqlite-docker
-#   spa-hono-sqlite-docker-e2e
-#   tanstack-start-hono-mysql-better-auth-docker
-#   tanstack-start-hono-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-mysql-docker
-#   tanstack-start-hono-mysql-docker-e2e
-#   tanstack-start-hono-openapi-mysql-better-auth-docker
-#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-mysql-docker
-#   tanstack-start-hono-openapi-mysql-docker-e2e
-#   tanstack-start-hono-openapi-postgres-better-auth-docker
-#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-postgres-docker
-#   tanstack-start-hono-openapi-postgres-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker
-#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-openapi-sqlite-docker
-#   tanstack-start-hono-openapi-sqlite-docker-e2e
-#   tanstack-start-hono-orpc-mysql-better-auth-docker
-#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-mysql-docker
-#   tanstack-start-hono-orpc-mysql-docker-e2e
-#   tanstack-start-hono-orpc-postgres-better-auth-docker
-#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-postgres-docker
-#   tanstack-start-hono-orpc-postgres-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker
-#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-orpc-sqlite-docker
-#   tanstack-start-hono-orpc-sqlite-docker-e2e
-#   tanstack-start-hono-postgres-better-auth-docker
-#   tanstack-start-hono-postgres-better-auth-docker-e2e
-#   tanstack-start-hono-postgres-docker
-#   tanstack-start-hono-postgres-docker-e2e
-#   tanstack-start-hono-sqlite-better-auth-docker
-#   tanstack-start-hono-sqlite-better-auth-docker-e2e
-#   tanstack-start-hono-sqlite-docker
-#   tanstack-start-hono-sqlite-docker-e2e
 {
   "name": "my-app",
   "version": "0.0.0",
@@ -15886,6 +15845,7 @@
     "@my-app/config": "workspace:*",
     "@shadcn/lint": "catalog:",
     "@types/node": "catalog:",
+    "effect": "catalog:",
     "knip": "catalog:",
     "typescript": "catalog:",
     "ultracite": "catalog:",
@@ -16820,6 +16780,111 @@
   },
   "engines": {
     "bun": ">=1.4.4",
+    "node": "26.13.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
+
+# package.json · 72 stacks
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-docker
+#   spa-hono-mysql-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-docker
+#   spa-hono-openapi-mysql-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-docker
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-docker
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-docker
+#   spa-hono-orpc-mysql-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-docker
+#   spa-hono-orpc-postgres-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-docker
+#   spa-hono-orpc-sqlite-docker-e2e
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-docker
+#   spa-hono-postgres-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-docker
+#   spa-hono-sqlite-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-docker
+#   tanstack-start-hono-mysql-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-docker
+#   tanstack-start-hono-openapi-mysql-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-docker
+#   tanstack-start-hono-orpc-mysql-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "db:generate": "vp run --filter @my-app/db db:generate",
+    "db:migrate": "vp run --filter @my-app/server db:migrate",
+    "db:studio": "vp run --filter @my-app/db db:studio",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
     "node": "26.13.0"
   },
   "packageManager": "pnpm@12.16.1"

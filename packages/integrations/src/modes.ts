@@ -1,6 +1,7 @@
-import { contribute, defineIntegration } from "@vibestart/core";
+import { contribute, defineIntegration, packageJson } from "@vibestart/core";
 
 import { effectConventions } from "#/effect/conventions.ts";
+import { knipEntries } from "#/knip.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import { agentsConventions, agentsNotes } from "#/vite-plus/slots.ts";
 
@@ -42,6 +43,15 @@ export const effect = defineIntegration({
     testing: ["playwright", "e2e"],
   },
   contribute: (ctx) => [
+    contribute(packageJson, {
+      devDependencies: ["effect"],
+      path: ".",
+    }),
+    // `AGENTS.md` directs agents to `node_modules/effect/AGENTS.md` and `node_modules/effect/src` at the root.
+    contribute(knipEntries, {
+      ignoreDependencies: ["effect"],
+      workspace: ".",
+    }),
     ...effectConventions(ctx).map((convention) =>
       contribute(agentsConventions, convention)
     ),

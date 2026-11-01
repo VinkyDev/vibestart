@@ -509,7 +509,7 @@
   }
 }
 
-# knip.json · 204 stacks
+# knip.json · 199 stacks
 #   next-docker-e2e
 #   next-hono-bun-docker-e2e
 #   next-hono-docker-e2e
@@ -583,11 +583,6 @@
 #   next-self-sqlite-better-auth-docker-e2e
 #   next-self-sqlite-docker-e2e
 #   spa-docker-e2e
-#   spa-effect-http-effect-rpc-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-hono-bun-docker-e2e
 #   spa-hono-docker-e2e
 #   spa-hono-mongodb-better-auth-bun-docker-e2e
@@ -1145,6 +1140,43 @@
     },
     "apps/mobile": {
       "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 5 stacks
+#   spa-effect-http-effect-rpc-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-docker
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["effect"]
+    }
+  }
+}
+
+# knip.json · 5 stacks
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreDependencies": ["effect"]
     },
     "apps/web": {
       "entry": [
