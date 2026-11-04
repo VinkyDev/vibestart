@@ -10,6 +10,7 @@ import { defineConfig, loadEnv } from "vite-plus";
 const generatedFiles = [
   "**/routeTree.gen.ts",
   "packages/db/src/migrations/**",
+  "**/.cloudflare/**",
   "**/.void/**",
 ];
 

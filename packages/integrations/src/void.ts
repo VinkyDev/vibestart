@@ -458,9 +458,13 @@ export const startInstance = createStart(() => ({
         scripts: { deploy: "node scripts/deploy.ts" },
       }),
       contribute(pnpmWorkspace, { allowBuilds: { workerd: true } }),
-      ...[".void/", ".void-wrangler.jsonc", ".wrangler/"].map((glob) =>
-        contribute(ignoredFiles, glob)
+      ...[".cloudflare/", ".void/", ".void-wrangler.jsonc", ".wrangler/"].map(
+        (glob) => contribute(ignoredFiles, glob)
       ),
+      contribute(generatedFiles, {
+        glob: "**/.cloudflare/**",
+        label: ".cloudflare/",
+      }),
       ...(site
         ? []
         : [

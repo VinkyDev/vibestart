@@ -87,9 +87,8 @@ export const trailingSlash = undefined;
  * 		getStore(): {
  *   		locale?: Locale,
  * 			origin?: string,
- * 			messageCalls?: Set<string>
  *   	} | undefined,
- * 		run: (store: { locale?: Locale, origin?: string, messageCalls?: Set<string>},
+ * 		run: (store: { locale?: Locale, origin?: string },
  *    cb: any) => any
  * }} ParaglideAsyncLocalStorage
  */
@@ -114,8 +113,9 @@ export function getServerAsyncLocalStorage() {
     return serverAsyncLocalStorage;
 }
 export const disableAsyncLocalStorage = false;
-export const experimentalMiddlewareLocaleSplitting = false;
 export const isServer = typeof window === 'undefined';
+/** Controls development-only runtime diagnostics. */
+export const isDevelopment = true;
 /** @type {Locale | undefined} */
 export const experimentalStaticLocale = undefined;
 /**
@@ -137,11 +137,9 @@ const TREE_SHAKE_GLOBAL_VARIABLE_STRATEGY_USED = false;
 const TREE_SHAKE_PREFERRED_LANGUAGE_STRATEGY_USED = true;
 const TREE_SHAKE_DEFAULT_URL_PATTERN_USED = true;
 const TREE_SHAKE_LOCAL_STORAGE_STRATEGY_USED = true;
-
+// Shared runtime state for backward compatibility and future runtime behavior.
 /** @type {any} */ (globalThis).__paraglide =
 	/** @type {any} */ (globalThis).__paraglide ?? {};
-/** @type {any} */ (globalThis).__paraglide.ssr =
-	/** @type {any} */ (globalThis).__paraglide.ssr ?? {};
 
 /**
  * This is a fallback to get started with a custom
@@ -184,11 +182,15 @@ export let getLocale = () => {
             return locale;
         }
     }
-    let strategyToUse = strategy;
-    if (!isServer && typeof window !== "undefined" && window.location?.href) {
-        strategyToUse = getStrategyForUrl(window.location.href);
-    }
-    const resolved = resolveLocaleWithStrategies(strategyToUse, typeof window !== "undefined" ? window.location?.href : undefined);
+    // Message calls resolve the locale on every call, and each read of
+    // `window.location.href` serializes the URL. Only route strategies and the
+    // url strategy use it.
+    const url = !isServer &&
+        (routeStrategies.length > 0 || TREE_SHAKE_URL_STRATEGY_USED) &&
+        typeof window !== "undefined"
+        ? window.location?.href
+        : undefined;
+    const resolved = resolveLocaleWithStrategies(url ? getStrategyForUrl(url) : strategy, url);
     if (resolved) {
         if (!localeInitiallySet) {
             _locale = resolved;
@@ -559,6 +561,14 @@ export let overwriteGetUrlOrigin = (fn) => {
 };
 
 /**
+ * The configured locale for each lowercased locale, built on first use. It is
+ * declared with `var` because the runtime can call `toLocale()` while its
+ * variables initialize, before this declaration is reached.
+ *
+ * @type {Map<string, Locale> | undefined}
+ */
+var localesByLowerCase;
+/**
  * Coerces a locale-like string to the canonical locale value used by the runtime.
  *
  * @param {unknown} value
@@ -568,13 +578,22 @@ export function toLocale(value) {
     if (typeof value !== "string") {
         return undefined;
     }
-    const lowerValue = value.toLowerCase();
+    localesByLowerCase ??= mapLocalesByLowerCase();
+    return localesByLowerCase.get(value.toLowerCase());
+}
+/**
+ * The first configured locale wins, as with a scan of `locales`.
+ *
+ * @returns {Map<string, Locale>}
+ */
+function mapLocalesByLowerCase() {
+    const map = new Map();
     for (const locale of locales) {
-        if (locale.toLowerCase() === lowerValue) {
-            return locale;
-        }
+        const lowerCase = locale.toLowerCase();
+        if (!map.has(lowerCase))
+            map.set(lowerCase, locale);
     }
-    return undefined;
+    return map;
 }
 /**
  * Check if something is an available locale with the canonical project casing.
@@ -826,8 +845,10 @@ function resolveEffectiveRequestUrlFromRequestAsync(request, effectiveRequestUrl
     return new URL(effectiveRequestUrl, request.url);
 }
 
-const cookieNamePattern = cookieName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const localeCookiePattern = new RegExp(`(?:^|;\\s*)${cookieNamePattern}=([^;]*)`);
+const localeCookiePattern = /* @__PURE__ */ (() => {
+    const cookieNamePattern = cookieName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(?:^|;\\s*)${cookieNamePattern}=([^;]*)`);
+})();
 const noCachedLocale = Symbol();
 /** @type {Locale | undefined | typeof noCachedLocale} */
 let cachedLocaleFromCookie = noCachedLocale;
@@ -1052,12 +1073,11 @@ export function extractLocaleFromUrl(url) {
 /**
  * https://github.com/opral/inlang-paraglide-js/issues/381
  *
- * @param {URL | string} url - The full URL from which to extract the locale.
+ * @param {URL} url - The URL from which to extract the locale.
  * @returns {Locale | undefined} The extracted locale, or undefined if no locale is found.
  */
 function defaultUrlPatternExtractLocale(url) {
-    const urlObj = new URL(url, "http://example.com");
-    const pathSegments = urlObj.pathname.split("/").filter(Boolean);
+    const pathSegments = url.pathname.split("/").filter(Boolean);
     return toLocale(pathSegments[0]) || baseLocale;
 }
 
@@ -2101,18 +2121,6 @@ function serializeProtocolRelativeHref(href, url, localized) {
     return `${result.slice(0, authorityEnd)}:${Number(port)}${result.slice(authorityEnd)}`;
 }
 
-/**
- * @param {string} safeModuleId
- * @param {Locale} locale
- */
-export function trackMessageCall(safeModuleId, locale) {
-    if (isServer === false)
-        return;
-    const store = serverAsyncLocalStorage?.getStore();
-    if (store) {
-        store.messageCalls?.add(`${safeModuleId}:${locale}`);
-    }
-}
 
 /**
  * Generates localized URL variants for all provided URLs based on your configured locales and URL patterns.

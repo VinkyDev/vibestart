@@ -395,7 +395,7 @@
 /** @typedef {{}} Viz_Tests_TypicalInputs */
 /** @typedef {{}} Viz_UsableInputs */
 /** @typedef {{ count: NonNullable<unknown>, names: NonNullable<unknown>, capabilities: NonNullable<unknown> }} Why_IncludedInputs */
-import * as registry from "../registry.js"
+import * as __paraglideRegistry from "../registry.js"
 
 
 export const add_api = /** @type {(inputs: Add_ApiInputs) => LocalizedString} */ () => {
@@ -900,7 +900,7 @@ export const extensions_none = /** @type {(inputs: Extensions_NoneInputs) => Loc
 };
 
 export const file_count = /** @type {(inputs: File_CountInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("en", i?.count, {}, true);
+	const countPlural = __paraglideRegistry.plural("en", i?.count, {}, true);
 	if (countPlural === "one") return /** @type {LocalizedString} */ (`${i?.count} file`);
 	if (countPlural === "other") return /** @type {LocalizedString} */ (`${i?.count} files`);
 	return /** @type {LocalizedString} */ ("file_count");
@@ -1055,7 +1055,7 @@ export const gate_checking = /** @type {(inputs: Gate_CheckingInputs) => Localiz
 };
 
 export const gate_e2e = /** @type {(inputs: Gate_E2eInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("en", i?.count, {}, true);
+	const countPlural = __paraglideRegistry.plural("en", i?.count, {}, true);
 	if (countPlural === "one") return /** @type {LocalizedString} */ (`${i?.count} end-to-end browser test`);
 	if (countPlural === "other") return /** @type {LocalizedString} */ (`${i?.count} end-to-end browser tests`);
 	return /** @type {LocalizedString} */ ("gate_e2e");
@@ -1090,7 +1090,7 @@ export const gate_passed = /** @type {(inputs: Gate_PassedInputs) => LocalizedSt
 };
 
 export const gate_test = /** @type {(inputs: Gate_TestInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("en", i?.count, {}, true);
+	const countPlural = __paraglideRegistry.plural("en", i?.count, {}, true);
 	if (countPlural === "one") return /** @type {LocalizedString} */ (`${i?.count} unit or integration test`);
 	if (countPlural === "other") return /** @type {LocalizedString} */ (`${i?.count} unit and integration tests`);
 	return /** @type {LocalizedString} */ ("gate_test");
@@ -2016,7 +2016,7 @@ export const viz_usable = /** @type {(inputs: Viz_UsableInputs) => LocalizedStri
 };
 
 export const why_included = /** @type {(inputs: Why_IncludedInputs) => LocalizedString} */ (i) => {
-	const countPlural = registry.plural("en", i?.count, {}, true);
+	const countPlural = __paraglideRegistry.plural("en", i?.count, {}, true);
 	if (countPlural === "one") return /** @type {LocalizedString} */ (`${i?.names} needs ${i?.capabilities}.`);
 	if (countPlural === "other") return /** @type {LocalizedString} */ (`${i?.names} need ${i?.capabilities}.`);
 	return /** @type {LocalizedString} */ ("why_included");
