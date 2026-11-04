@@ -14,11 +14,11 @@ export const useFontsReady = (ref: RefObject<HTMLElement | null>) => {
 
   useEffect(() => {
     const element = ref.current;
-    let settled = false;
+    const controller = new AbortController();
 
     const settle = () => {
-      if (!settled) {
-        settled = true;
+      if (!controller.signal.aborted) {
+        controller.abort();
         setReady(true);
       }
     };
@@ -44,7 +44,7 @@ export const useFontsReady = (ref: RefObject<HTMLElement | null>) => {
     }
 
     return () => {
-      settled = true;
+      controller.abort();
       clearTimeout(timer);
     };
   }, [ref]);

@@ -94,7 +94,7 @@
  * }
  * ```
  */
-export declare function paraglideMiddleware<T>(request: Request, resolve: (args: {
+export function paraglideMiddleware<T>(request: Request, resolve: (args: {
     request: Request;
     locale: import("./runtime.js").Locale;
 }) => T | Promise<T>, options?: {
