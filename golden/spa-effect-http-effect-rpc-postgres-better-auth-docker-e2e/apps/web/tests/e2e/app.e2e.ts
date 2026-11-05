@@ -16,10 +16,14 @@ const reload = async (browser: Browser) => {
 
 const gate = (): PromiseWithResolvers<void> => Promise.withResolvers();
 
-const signUpThroughUi = async (browser: Browser, screen: Screen) => {
+const signUpThroughUi = async (
+  browser: Browser,
+  screen: Screen,
+  name = "Ada"
+) => {
   await visit(browser, "/login");
   await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
-  await screen.getByLabel("Name").fill("Ada");
+  await screen.getByLabel("Name").fill(name);
   await screen.getByLabel("Email").fill(uniqueEmail());
   await screen.getByLabel("Password").fill(password);
   await screen.getByRole("main").getByRole("button", { name: "Sign up" }).tap();
@@ -32,7 +36,7 @@ test("the home page reports the API as connected", async ({
 }) => {
   await visit(browser, "/");
 
-  await expect(screen.getByText("Connected")).toBeVisible();
+  await expect(screen.getByText("API connected")).toBeVisible();
 });
 
 test("visitors are sent to sign in before seeing todos", async ({
@@ -47,20 +51,29 @@ test("a new user signs up and manages todos that persist across reloads", async 
   browser,
   screen,
 }) => {
+  await browser.setViewport({ height: 667, width: 375 });
   await signUpThroughUi(browser, screen);
+  const title = "a".repeat(200);
   const emptyState = screen.getByText("No todos yet.");
   await expect(emptyState).toBeVisible();
 
-  await screen.getByLabel("New todo").fill("Buy milk");
+  await screen.getByLabel("New todo").fill(title);
   await screen.getByRole("button", { name: "Add" }).tap();
-  const todo = screen.getByRole("checkbox", { name: "Buy milk" });
+  const todo = screen.getByRole("checkbox", { name: title });
   await todo.tap();
   await expect(todo).toBeChecked();
 
   await reload(browser);
   await expect(todo).toBeChecked();
 
-  await screen.getByRole("button", { name: "Delete Buy milk" }).tap();
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await browser.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
+
+  await screen.getByRole("button", { name: `Delete ${title}` }).tap();
   await expect(emptyState).toBeVisible();
 });
 
@@ -90,6 +103,9 @@ test("a wrong password is rejected", async ({ browser, screen }) => {
 
   await expect(screen.getByText("Invalid email or password")).toBeVisible();
   await expect(browser).toHaveURL("/login");
+
+  await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
+  await expect(screen.getByText("Invalid email or password")).not.toBeVisible();
 });
 
 test("signing out ends the session", async ({ browser, screen }) => {
@@ -101,6 +117,22 @@ test("signing out ends the session", async ({ browser, screen }) => {
 
   await visit(browser, "/todos");
   await expect(browser).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("the signed-in header fits a phone", async ({ browser, screen }) => {
+  await browser.setViewport({ height: 667, width: 375 });
+  await signUpThroughUi(browser, screen, "Ada Augusta King Lovelace");
+
+  await expect(
+    screen.getByRole("button", { name: "Ada Augusta King Lovelace" })
+  ).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await browser.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
 });
 
 test("the dark theme survives a reload", async ({ browser, screen }) => {
@@ -199,11 +231,11 @@ test("a new session never sees the previous user's cached todos", async ({
   await screen.getByRole("button", { name: "Add" }).tap();
   await expect(screen.getByText("Private to the first account")).toBeVisible();
   await screen.getByRole("link", { name: "Home", exact: true }).tap();
-  await expect(screen.getByText("Connected")).toBeVisible();
+  await expect(screen.getByText("API connected")).toBeVisible();
   await screen.getByRole("button", { name: "Ada" }).tap();
   await screen.getByRole("menuitem", { name: "Sign out" }).tap();
   await expect(screen.getByRole("button", { name: "Ada" })).not.toBeVisible();
-  await expect(screen.getByText("Connected")).toBeVisible();
+  await expect(screen.getByText("API connected")).toBeVisible();
 
   await signUpThroughUi(browser, screen);
   await expect(screen.getByText("No todos yet.")).toBeVisible();

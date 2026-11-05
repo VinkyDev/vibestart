@@ -13,10 +13,10 @@ const reload = async (page: Page) => {
 
 const gate = (): PromiseWithResolvers<void> => Promise.withResolvers();
 
-const signUpThroughUi = async (page: Page) => {
+const signUpThroughUi = async (page: Page, name = "Ada") => {
   await visit(page, "/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
-  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Name").fill(name);
   await page.getByLabel("Email").fill(uniqueEmail());
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
@@ -28,7 +28,7 @@ test("the home page reports the API as connected", async ({
 }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("visitors are sent to sign in before seeing todos", async ({
@@ -42,20 +42,29 @@ test("visitors are sent to sign in before seeing todos", async ({
 test("a new user signs up and manages todos that persist across reloads", async ({
   page,
 }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
   await signUpThroughUi(page);
+  const title = "a".repeat(200);
   const emptyState = page.getByText("No todos yet.");
   await expect(emptyState).toBeVisible();
 
-  await page.getByLabel("New todo").fill("Buy milk");
+  await page.getByLabel("New todo").fill(title);
   await page.getByRole("button", { name: "Add" }).click();
-  const todo = page.getByRole("checkbox", { name: "Buy milk" });
+  const todo = page.getByRole("checkbox", { name: title });
   await todo.click();
   await expect(todo).toBeChecked();
 
   await reload(page);
   await expect(todo).toBeChecked();
 
-  await page.getByRole("button", { name: "Delete Buy milk" }).click();
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await page.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
+
+  await page.getByRole("button", { name: `Delete ${title}` }).click();
   await expect(emptyState).toBeVisible();
 });
 
@@ -84,6 +93,9 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await expect(page.getByText("Invalid email or password")).toBeVisible();
   await expect(page).toHaveURL("/login");
+
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await expect(page.getByText("Invalid email or password")).not.toBeVisible();
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -95,6 +107,20 @@ test("signing out ends the session", async ({ page }) => {
 
   await visit(page, "/todos");
   await expect(page).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("the signed-in header fits a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signUpThroughUi(page, "Ada Augusta King Lovelace");
+
+  await expect(page.getByRole("button", { name: "Ada Augusta King Lovelace" })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await page.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
 });
 
 test("the dark theme survives a reload", async ({ page }) => {
@@ -190,11 +216,11 @@ test("a new session never sees the previous user's cached todos", async ({
   await page.getByRole("button", { name: "Add" }).click();
   await expect(page.getByText("Private to the first account")).toBeVisible();
   await page.getByRole("link", { name: "Home", exact: true }).click();
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
   await page.getByRole("button", { name: "Ada" }).click();
   await page.getByRole("menuitem", { name: "Sign out" }).click();
   await expect(page.getByRole("button", { name: "Ada" })).not.toBeVisible();
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 
   await signUpThroughUi(page);
   await expect(page.getByText("No todos yet.")).toBeVisible();

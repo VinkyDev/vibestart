@@ -154,7 +154,7 @@ export const openapi = defineIntegration({
       title: "Route",
     }),
     contribute(readmeTagline, "OpenAPI"),
-    contribute(stackHeadline, "OpenAPI"),
+    contribute(stackHeadline, { name: "OpenAPI", role: "API" }),
     contribute(readmeLayers, {
       choice:
         "REST routes with `@hono/zod-openapi`, a typed `hono/client`, reference docs at `/api`",

@@ -176,7 +176,7 @@ export const drizzle = defineIntegration({
         title: "Schema",
       }),
       contribute(readmeTagline, "Drizzle"),
-      contribute(stackHeadline, "Drizzle"),
+      contribute(stackHeadline, { name: "Drizzle", role: "ORM" }),
       contribute(gettingStarted, {
         run: "vp run db:migrate",
         note: ctx.has("sqlite")

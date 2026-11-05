@@ -14,7 +14,7 @@ const reload = async (browser: Browser) => {
 test("the home page reports the API as connected", async ({ browser, screen }) => {
   await visit(browser, "/");
 
-  await expect(screen.getByText("Connected")).toBeVisible();
+  await expect(screen.getByText("API connected")).toBeVisible();
 });
 
 test("navigates from home to todos", async ({ browser, screen }) => {
@@ -27,7 +27,8 @@ test("navigates from home to todos", async ({ browser, screen }) => {
 });
 
 test("creates, completes, persists and deletes a todo", async ({ browser, screen }) => {
-  const title = `Write e2e test ${crypto.randomUUID()}`;
+  await browser.setViewport({ height: 667, width: 375 });
+  const title = crypto.randomUUID().replaceAll("-", "").repeat(6);
   await visit(browser, "/todos");
 
   await screen.getByLabel("New todo").fill(title);
@@ -39,6 +40,13 @@ test("creates, completes, persists and deletes a todo", async ({ browser, screen
 
   await reload(browser);
   await expect(todo).toBeChecked();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await browser.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
 
   await screen.getByRole("button", { name: `Delete ${title}` }).tap();
   await expect(todo).toHaveCount(0);

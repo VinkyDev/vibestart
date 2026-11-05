@@ -134,7 +134,7 @@ export const mongoose = defineIntegration({
         title: "Schema",
       }),
       contribute(readmeTagline, "Mongoose"),
-      contribute(stackHeadline, "Mongoose"),
+      contribute(stackHeadline, { name: "Mongoose", role: "ORM" }),
       contribute(gettingStarted, { run: "vp run db:migrate" }),
       contribute(readmeSections, () =>
         [

@@ -223,6 +223,7 @@ const appSets = (ctx: Context) => {
 };
 
 const webSets = (ctx: Context) => [
+  "better-auth/web",
   ...appSets(ctx),
   ...(ctx.has("tanstack-router") ? ["better-auth/tanstack-router"] : []),
   ...(ctx.has("tanstack-router") && todosExample(ctx)
@@ -336,7 +337,7 @@ export const betterAuth = defineIntegration({
             title: "Proxy",
           }),
           contribute(readmeTagline, "Better Auth"),
-          contribute(stackHeadline, "Better Auth"),
+          contribute(stackHeadline, { name: "Better Auth", role: "Auth" }),
           contribute(readmeLayers, {
             choice: `Better Auth, email and password, sessions in ${databaseName(ctx)}`,
             layer: "Auth",

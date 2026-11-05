@@ -1,29 +1,59 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
+
+import { Button } from "@my-app/ui/components/button";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
+import { StackDiagram } from "#src/components/stack-diagram.tsx";
+
+const layers = [
+  { name: "React", role: "Frontend" },
+  { name: "Better Auth", role: "Auth" },
+  { name: "OpenAPI", role: "API" },
+  { name: "Hono", role: "Backend" },
+  { name: "Drizzle", role: "ORM" },
+  { name: "MySQL", role: "Database" },
+  { name: "Vite+", role: "Toolchain" },
+];
 
 const HomePage = () => (
-  <section className="grid gap-10 sm:py-8">
-    <div className="grid gap-5">
-      <div className="text-muted-foreground flex items-center gap-2 text-sm">
-        API
-        <ApiStatus />
-      </div>
-      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">
+  <div className="grid items-center gap-12 py-4 lg:min-h-160 lg:grid-cols-2 lg:gap-16">
+    <section className="flex flex-col items-start gap-6">
+      <ApiStatus />
+      <h1 className="text-5xl font-semibold tracking-tighter break-words sm:text-7xl">
         my-app
       </h1>
-      <p className="text-muted-foreground max-w-xl text-lg text-pretty">
+      <p className="text-muted-foreground max-w-md text-lg text-pretty">
         React, Hono, OpenAPI, MySQL, Drizzle and Better Auth on Vite+.
       </p>
-    </div>
-    <p className="text-muted-foreground border-t pt-6 text-sm">
-      Edit{" "}
-      <code className="text-foreground font-mono">
-        apps/web/src/routes/index.tsx
-      </code>{" "}
-      and save to see it change.
-    </p>
-  </section>
+      <div className="flex flex-wrap gap-3">
+        <Button nativeButton={false} render={<Link to="/todos" />} size="lg">
+          Try the todo list
+        </Button>
+        <Button
+          nativeButton={false}
+          render={
+            <a href="/api" rel="noreferrer" target="_blank">
+              Open the API reference
+            </a>
+          }
+          size="lg"
+          variant="outline"
+        />
+      </div>
+      <p className="text-muted-foreground text-sm">
+        Start in{" "}
+        <code className="text-foreground font-mono break-all">
+          apps/web/src/routes/index.tsx
+        </code>
+        . Run{" "}
+        <code className="text-foreground font-mono whitespace-nowrap">
+          vp run ready
+        </code>{" "}
+        before you commit.
+      </p>
+    </section>
+    <StackDiagram layers={layers} />
+  </div>
 );
 
 export const Route = createFileRoute("/")({

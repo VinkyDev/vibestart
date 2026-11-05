@@ -18,7 +18,10 @@ export const shadcn = defineIntegration({
     ...templateFiles(ctx, "shadcn/common"),
     ...templateFiles(ctx, `shadcn/${bundler(ctx)}`),
     ...(ctx.has("better-auth")
-      ? templateFiles(ctx, `shadcn/${bundler(ctx)}-auth`)
+      ? [
+          ...templateFiles(ctx, "shadcn/auth"),
+          ...templateFiles(ctx, `shadcn/${bundler(ctx)}-auth`),
+        ]
       : []),
     contribute(packageJson, {
       dependencies: [
@@ -54,6 +57,7 @@ export const shadcn = defineIntegration({
       dependencies: [
         `${ctx.scope}/ui`,
         "lucide-react",
+        "motion",
         "next-themes",
         ...(ctx.has("effect") ? [] : ["sonner"]),
       ],

@@ -297,6 +297,806 @@ const LoginPage = async ({ searchParams }: PageProps<"/login">) => {
 
 export default LoginPage;
 
+# apps/web/src/components/auth-art.tsx · 752 stacks
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-bun-docker-e2e
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-docker-e2e
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mongodb-better-auth-expo-docker-e2e
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-bun-docker-e2e
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-docker-e2e
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-better-auth-expo-docker-e2e
+#   next-hono-mysql-prisma-better-auth-bun-docker
+#   next-hono-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-mysql-prisma-better-auth-docker
+#   next-hono-mysql-prisma-better-auth-docker-e2e
+#   next-hono-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-mysql-prisma-better-auth-expo-docker
+#   next-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-orpc-sqlite-better-auth-expo-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-bun-docker-e2e
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-docker-e2e
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-bun-docker-e2e
+#   next-hono-postgres-better-auth-expo-docker
+#   next-hono-postgres-better-auth-expo-docker-e2e
+#   next-hono-postgres-prisma-better-auth-bun-docker
+#   next-hono-postgres-prisma-better-auth-bun-docker-e2e
+#   next-hono-postgres-prisma-better-auth-docker
+#   next-hono-postgres-prisma-better-auth-docker-e2e
+#   next-hono-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   next-hono-postgres-prisma-better-auth-expo-docker
+#   next-hono-postgres-prisma-better-auth-expo-docker-e2e
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-bun-docker-e2e
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-docker-e2e
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   next-hono-sqlite-better-auth-expo-docker
+#   next-hono-sqlite-better-auth-expo-docker-e2e
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-docker-e2e
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mongodb-better-auth-expo-docker-e2e
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-docker-e2e
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-better-auth-expo-docker-e2e
+#   next-self-mysql-prisma-better-auth-docker
+#   next-self-mysql-prisma-better-auth-docker-e2e
+#   next-self-mysql-prisma-better-auth-expo-docker
+#   next-self-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-docker-e2e
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-docker-e2e
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-expo-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-docker-e2e
+#   next-self-orpc-postgres-better-auth-expo-docker
+#   next-self-orpc-postgres-better-auth-expo-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-docker-e2e
+#   next-self-orpc-sqlite-better-auth-expo-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker-e2e
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-docker-e2e
+#   next-self-postgres-better-auth-expo-docker
+#   next-self-postgres-better-auth-expo-docker-e2e
+#   next-self-postgres-prisma-better-auth-docker
+#   next-self-postgres-prisma-better-auth-docker-e2e
+#   next-self-postgres-prisma-better-auth-expo-docker
+#   next-self-postgres-prisma-better-auth-expo-docker-e2e
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-docker-e2e
+#   next-self-sqlite-better-auth-expo-docker
+#   next-self-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-bun-docker
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-bun-docker
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-prisma-better-auth-bun-docker
+#   spa-hono-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-docker
+#   spa-hono-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-docker
+#   spa-hono-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-expo-docker
+#   spa-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-docker
+#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-docker
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-docker
+#   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-bun-docker
+#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-expo-docker
+#   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-prisma-better-auth-bun-docker
+#   spa-hono-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-docker
+#   spa-hono-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-bun-docker
+#   spa-hono-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-docker
+#   spa-hono-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker
+#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-expo-docker
+#   spa-hono-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-expo-bun-docker
+#   spa-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-expo-docker
+#   spa-hono-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-expo-docker
+#   spa-hono-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-sqlite-better-auth-expo-bun-docker
+#   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-expo-docker
+#   spa-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-postgres-better-auth-expo-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-better-auth-void-e2e
+#   tanstack-start-self-mysql-prisma-better-auth-docker
+#   tanstack-start-self-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker-e2e
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-expo-void-e2e
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-better-auth-void-e2e
+#   tanstack-start-self-postgres-prisma-better-auth-docker
+#   tanstack-start-self-postgres-prisma-better-auth-docker-e2e
+#   tanstack-start-self-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-postgres-prisma-better-auth-expo-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-docker-e2e
+#   tanstack-start-self-sqlite-better-auth-expo-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
+import { motion, useReducedMotion } from "motion/react";
+
+import { DotGrid } from "#src/components/dot-grid.tsx";
+import { StackPlate } from "#src/components/stack-plate.tsx";
+
+// Bottom to top. The top plate drifts first and each one below follows it.
+const plates = [0.75, 0.5, 0.25, 0];
+
+/** The `dark` class holds this panel to the dark tokens under either theme. */
+export const AuthArt = () => {
+  const reduced = useReducedMotion();
+
+  return (
+    <aside className="dark bg-card text-card-foreground relative isolate hidden flex-col justify-between gap-8 overflow-hidden rounded-3xl border p-10 lg:flex">
+      <DotGrid />
+      <div
+        aria-hidden="true"
+        className="flex flex-1 flex-col-reverse items-center justify-center"
+      >
+        {plates.map((delay, index) => (
+          <motion.div
+            animate={reduced === true ? {} : { y: [0, -12, 0] }}
+            className="w-64 not-first:-mb-24"
+            key={delay}
+            transition={{
+              delay,
+              duration: 5,
+              ease: "easeInOut",
+              repeat: Number.POSITIVE_INFINITY,
+            }}
+          >
+            <StackPlate active={index === plates.length - 1} />
+          </motion.div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="text-2xl font-semibold tracking-tight text-balance">
+          Your accounts, in your own database.
+        </p>
+        <p className="text-muted-foreground text-sm">
+          Sessions are stored beside the rest of your data.
+        </p>
+      </div>
+    </aside>
+  );
+};
+
 # apps/web/src/components/auth-form.tsx · 192 stacks
 #   next-hono-mongodb-better-auth-bun-docker
 #   next-hono-mongodb-better-auth-bun-docker-e2e
@@ -492,33 +1292,36 @@ export default LoginPage;
 #   next-self-sqlite-better-auth-expo-docker-e2e
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { CircleAlertIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
+import { Alert, AlertDescription } from "@my-app/ui/components/alert";
 import { Button } from "@my-app/ui/components/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@my-app/ui/components/field";
 import { Input } from "@my-app/ui/components/input";
-import { Label } from "@my-app/ui/components/label";
+import { Spinner } from "@my-app/ui/components/spinner";
 
+import { AuthArt } from "#src/components/auth-art.tsx";
+import { StackPlate } from "#src/components/stack-plate.tsx";
 import { authClient } from "#src/lib/auth-client.ts";
 
 type Mode = "sign-in" | "sign-up";
 
 const copy = {
   "sign-in": {
-    description: "Welcome back.",
+    description: "Sign in with your email and password.",
     submit: "Sign in",
     switchLabel: "Need an account? Sign up",
-    title: "Sign in",
+    title: "Welcome back",
   },
   "sign-up": {
     description: "Sign up with your email and a password.",
@@ -526,33 +1329,35 @@ const copy = {
     switchLabel: "Already have an account? Sign in",
     title: "Create an account",
   },
-} as const;
+} as const satisfies Record<Mode, Record<string, string>>;
 
 const formValue = (form: FormData, name: string) => {
   const value = form.get(name);
 
-  if (value === null || value instanceof File) {
-    return "";
-  }
-
-  return value;
+  return value === null || value instanceof File ? "" : value;
 };
 
-const authenticate = async (mode: Mode, form: FormData) => {
+const request = async (mode: Mode, form: FormData) => {
   const email = formValue(form, "email");
   const password = formValue(form, "password");
 
-  const { error } =
-    mode === "sign-in"
-      ? await authClient.signIn.email({ email, password })
-      : await authClient.signUp.email({
-          email,
-          name: formValue(form, "name"),
-          password,
-        });
+  return mode === "sign-in"
+    ? await authClient.signIn.email({ email, password })
+    : await authClient.signUp.email({
+        email,
+        name: formValue(form, "name"),
+        password,
+      });
+};
 
-  if (error) {
-    throw new Error(error.message ?? error.statusText);
+/** Signs in or up, and returns the message to show when that fails. */
+const authenticate = async (mode: Mode, form: FormData) => {
+  try {
+    const { error } = await request(mode, form);
+
+    return error ? (error.message ?? error.statusText) : null;
+  } catch {
+    return "Could not reach the server. Check your connection and try again.";
   }
 };
 
@@ -561,73 +1366,119 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (form: FormData) => {
-      await authenticate(mode, form);
-    },
-    onSuccess: () => {
-      router.push(redirectTo);
-      router.refresh();
-    },
-  });
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutate(new FormData(event.currentTarget));
+    const form = new FormData(event.currentTarget);
+
+    setError(null);
+    startTransition(async () => {
+      const failure = await authenticate(mode, form);
+
+      if (failure === null) {
+        router.push(redirectTo);
+        router.refresh();
+
+        return;
+      }
+
+      setError(failure);
+    });
   };
 
   return (
-    <Card className="mx-auto w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>{text.title}</CardTitle>
-        <CardDescription>{text.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {mode === "sign-up" && (
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input autoComplete="name" id="name" name="name" required />
-            </div>
-          )}
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              autoComplete="email"
-              id="email"
-              name="email"
-              required
-              type="email"
-            />
+    <div className="grid gap-10 lg:min-h-160 lg:grid-cols-2">
+      <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-8">
+        <div className="flex flex-col gap-2">
+          <div className="mb-4 w-16 lg:hidden">
+            <StackPlate active />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              autoComplete={
-                mode === "sign-in" ? "current-password" : "new-password"
-              }
-              id="password"
-              minLength={8}
-              name="password"
-              required
-              type="password"
-            />
-          </div>
-          <Button disabled={isPending} type="submit">
-            {text.submit}
-          </Button>
-          <Button
-            onClick={() => {
-              setMode(mode === "sign-in" ? "sign-up" : "sign-in");
-            }}
-            type="button"
-            variant="link"
-          >
-            {text.switchLabel}
-          </Button>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {text.title}
+          </h1>
+          <p className="text-muted-foreground">{text.description}</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <fieldset disabled={isPending}>
+            <FieldGroup>
+              {error !== null && (
+                <Alert variant="destructive">
+                  <CircleAlertIcon />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              <AnimatePresence initial={false}>
+                {mode === "sign-up" && (
+                  <motion.div
+                    animate={{ height: "auto", opacity: 1 }}
+                    className="-m-1 overflow-hidden p-1"
+                    exit={{ height: 0, opacity: 0 }}
+                    initial={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Field>
+                      <FieldLabel htmlFor="name">Name</FieldLabel>
+                      <Input
+                        autoComplete="name"
+                        id="name"
+                        name="name"
+                        required
+                      />
+                    </Field>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  autoComplete="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                  type="email"
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Input
+                  autoComplete={
+                    mode === "sign-in" ? "current-password" : "new-password"
+                  }
+                  id="password"
+                  minLength={8}
+                  name="password"
+                  required
+                  type="password"
+                />
+                {mode === "sign-up" && (
+                  <FieldDescription>At least 8 characters.</FieldDescription>
+                )}
+              </Field>
+              <Field>
+                <Button size="lg" type="submit">
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  {text.submit}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setError(null);
+                    setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+                  }}
+                  type="button"
+                  variant="link"
+                >
+                  {text.switchLabel}
+                </Button>
+              </Field>
+            </FieldGroup>
+          </fieldset>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+      <AuthArt />
+    </div>
   );
 };
 
@@ -648,65 +1499,70 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+import { CircleAlertIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
-import { toast } from "sonner";
 
+import { Alert, AlertDescription } from "@my-app/ui/components/alert";
 import { Button } from "@my-app/ui/components/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@my-app/ui/components/field";
 import { Input } from "@my-app/ui/components/input";
-import { Label } from "@my-app/ui/components/label";
+import { Spinner } from "@my-app/ui/components/spinner";
 
+import { AuthArt } from "#src/components/auth-art.tsx";
+import { StackPlate } from "#src/components/stack-plate.tsx";
 import { authClient } from "#src/lib/auth.ts";
 
 type Mode = "sign-in" | "sign-up";
 
 const copy = {
   "sign-in": {
-    title: "Sign in",
-    description: "Welcome back.",
+    description: "Sign in with your email and password.",
     submit: "Sign in",
     switchLabel: "Need an account? Sign up",
+    title: "Welcome back",
   },
   "sign-up": {
-    title: "Create an account",
     description: "Sign up with your email and a password.",
     submit: "Sign up",
     switchLabel: "Already have an account? Sign in",
+    title: "Create an account",
   },
-} as const;
+} as const satisfies Record<Mode, Record<string, string>>;
 
 const formValue = (form: FormData, name: string) => {
   const value = form.get(name);
 
-  if (value === null || value instanceof File) {
-    return "";
-  }
-
-  return value;
+  return value === null || value instanceof File ? "" : value;
 };
 
-const authenticate = async (mode: Mode, form: FormData) => {
+const request = async (mode: Mode, form: FormData) => {
   const email = formValue(form, "email");
   const password = formValue(form, "password");
 
-  const { error } =
-    mode === "sign-in"
-      ? await authClient.signIn.email({ email, password })
-      : await authClient.signUp.email({
-          email,
-          password,
-          name: formValue(form, "name"),
-        });
+  return mode === "sign-in"
+    ? await authClient.signIn.email({ email, password })
+    : await authClient.signUp.email({
+        email,
+        name: formValue(form, "name"),
+        password,
+      });
+};
 
-  if (error) {
-    throw new Error(error.message ?? error.statusText);
+/** Signs in or up, and returns the message to show when that fails. */
+const authenticate = async (mode: Mode, form: FormData) => {
+  try {
+    const { error } = await request(mode, form);
+
+    return error ? (error.message ?? error.statusText) : null;
+  } catch {
+    return "Could not reach the server. Check your connection and try again.";
   }
 };
 
@@ -714,77 +1570,118 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
 
+  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
 
+    setError(null);
     startTransition(async () => {
-      try {
-        await authenticate(mode, form);
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : String(error));
+      const failure = await authenticate(mode, form);
+
+      if (failure === null) {
+        await onSuccess();
 
         return;
       }
 
-      await onSuccess();
+      setError(failure);
     });
   };
 
   return (
-    <Card className="mx-auto w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>{text.title}</CardTitle>
-        <CardDescription>{text.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {mode === "sign-up" && (
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input autoComplete="name" id="name" name="name" required />
-            </div>
-          )}
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              autoComplete="email"
-              id="email"
-              name="email"
-              required
-              type="email"
-            />
+    <div className="grid gap-10 lg:min-h-160 lg:grid-cols-2">
+      <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-8">
+        <div className="flex flex-col gap-2">
+          <div className="mb-4 w-16 lg:hidden">
+            <StackPlate active />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              autoComplete={
-                mode === "sign-in" ? "current-password" : "new-password"
-              }
-              id="password"
-              minLength={8}
-              name="password"
-              required
-              type="password"
-            />
-          </div>
-          <Button disabled={isPending} type="submit">
-            {text.submit}
-          </Button>
-          <Button
-            onClick={() => {
-              setMode(mode === "sign-in" ? "sign-up" : "sign-in");
-            }}
-            type="button"
-            variant="link"
-          >
-            {text.switchLabel}
-          </Button>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {text.title}
+          </h1>
+          <p className="text-muted-foreground">{text.description}</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <fieldset disabled={isPending}>
+            <FieldGroup>
+              {error !== null && (
+                <Alert variant="destructive">
+                  <CircleAlertIcon />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              <AnimatePresence initial={false}>
+                {mode === "sign-up" && (
+                  <motion.div
+                    animate={{ height: "auto", opacity: 1 }}
+                    className="-m-1 overflow-hidden p-1"
+                    exit={{ height: 0, opacity: 0 }}
+                    initial={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Field>
+                      <FieldLabel htmlFor="name">Name</FieldLabel>
+                      <Input
+                        autoComplete="name"
+                        id="name"
+                        name="name"
+                        required
+                      />
+                    </Field>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  autoComplete="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                  type="email"
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Input
+                  autoComplete={
+                    mode === "sign-in" ? "current-password" : "new-password"
+                  }
+                  id="password"
+                  minLength={8}
+                  name="password"
+                  required
+                  type="password"
+                />
+                {mode === "sign-up" && (
+                  <FieldDescription>At least 8 characters.</FieldDescription>
+                )}
+              </Field>
+              <Field>
+                <Button size="lg" type="submit">
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  {text.submit}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setError(null);
+                    setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+                  }}
+                  type="button"
+                  variant="link"
+                >
+                  {text.switchLabel}
+                </Button>
+              </Field>
+            </FieldGroup>
+          </fieldset>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+      <AuthArt />
+    </div>
   );
 };
 
@@ -1333,66 +2230,71 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
 #   tanstack-start-self-sqlite-better-auth-docker-e2e
 #   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
-import { useMutation } from "@tanstack/react-query";
 import { useHydrated } from "@tanstack/react-router";
-import { useState } from "react";
+import { CircleAlertIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
+import { Alert, AlertDescription } from "@my-app/ui/components/alert";
 import { Button } from "@my-app/ui/components/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@my-app/ui/components/field";
 import { Input } from "@my-app/ui/components/input";
-import { Label } from "@my-app/ui/components/label";
+import { Spinner } from "@my-app/ui/components/spinner";
 
+import { AuthArt } from "#src/components/auth-art.tsx";
+import { StackPlate } from "#src/components/stack-plate.tsx";
 import { authClient } from "#src/lib/auth.ts";
 
 type Mode = "sign-in" | "sign-up";
 
 const copy = {
   "sign-in": {
-    title: "Sign in",
-    description: "Welcome back.",
+    description: "Sign in with your email and password.",
     submit: "Sign in",
     switchLabel: "Need an account? Sign up",
+    title: "Welcome back",
   },
   "sign-up": {
-    title: "Create an account",
     description: "Sign up with your email and a password.",
     submit: "Sign up",
     switchLabel: "Already have an account? Sign in",
+    title: "Create an account",
   },
-} as const;
+} as const satisfies Record<Mode, Record<string, string>>;
 
 const formValue = (form: FormData, name: string) => {
   const value = form.get(name);
 
-  if (value === null || value instanceof File) {
-    return "";
-  }
-
-  return value;
+  return value === null || value instanceof File ? "" : value;
 };
 
-const authenticate = async (mode: Mode, form: FormData) => {
+const request = async (mode: Mode, form: FormData) => {
   const email = formValue(form, "email");
   const password = formValue(form, "password");
 
-  const { error } =
-    mode === "sign-in"
-      ? await authClient.signIn.email({ email, password })
-      : await authClient.signUp.email({
-          email,
-          password,
-          name: formValue(form, "name"),
-        });
+  return mode === "sign-in"
+    ? await authClient.signIn.email({ email, password })
+    : await authClient.signUp.email({
+        email,
+        name: formValue(form, "name"),
+        password,
+      });
+};
 
-  if (error) {
-    throw new Error(error.message ?? error.statusText);
+/** Signs in or up, and returns the message to show when that fails. */
+const authenticate = async (mode: Mode, form: FormData) => {
+  try {
+    const { error } = await request(mode, form);
+
+    return error ? (error.message ?? error.statusText) : null;
+  } catch {
+    return "Could not reach the server. Check your connection and try again.";
   }
 };
 
@@ -1401,70 +2303,118 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (form: FormData) => {
-      await authenticate(mode, form);
-    },
-    onSuccess,
-  });
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutate(new FormData(event.currentTarget));
+    const form = new FormData(event.currentTarget);
+
+    setError(null);
+    startTransition(async () => {
+      const failure = await authenticate(mode, form);
+
+      if (failure === null) {
+        await onSuccess();
+
+        return;
+      }
+
+      setError(failure);
+    });
   };
 
   return (
-    <Card className="mx-auto w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>{text.title}</CardTitle>
-        <CardDescription>{text.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="grid gap-10 lg:min-h-160 lg:grid-cols-2">
+      <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-8">
+        <div className="flex flex-col gap-2">
+          <div className="mb-4 w-16 lg:hidden">
+            <StackPlate active />
+          </div>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {text.title}
+          </h1>
+          <p className="text-muted-foreground">{text.description}</p>
+        </div>
         <form onSubmit={handleSubmit}>
-          <fieldset className="grid gap-4" disabled={!hydrated || isPending}>
-            {mode === "sign-up" && (
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input autoComplete="name" id="name" name="name" required />
-              </div>
-            )}
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                autoComplete="email"
-                id="email"
-                name="email"
-                required
-                type="email"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                autoComplete={
-                  mode === "sign-in" ? "current-password" : "new-password"
-                }
-                id="password"
-                minLength={8}
-                name="password"
-                required
-                type="password"
-              />
-            </div>
-            <Button type="submit">{text.submit}</Button>
-            <Button
-              onClick={() => {
-                setMode(mode === "sign-in" ? "sign-up" : "sign-in");
-              }}
-              type="button"
-              variant="link"
-            >
-              {text.switchLabel}
-            </Button>
+          <fieldset disabled={!hydrated || isPending}>
+            <FieldGroup>
+              {error !== null && (
+                <Alert variant="destructive">
+                  <CircleAlertIcon />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              <AnimatePresence initial={false}>
+                {mode === "sign-up" && (
+                  <motion.div
+                    animate={{ height: "auto", opacity: 1 }}
+                    className="-m-1 overflow-hidden p-1"
+                    exit={{ height: 0, opacity: 0 }}
+                    initial={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Field>
+                      <FieldLabel htmlFor="name">Name</FieldLabel>
+                      <Input
+                        autoComplete="name"
+                        id="name"
+                        name="name"
+                        required
+                      />
+                    </Field>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  autoComplete="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                  type="email"
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Input
+                  autoComplete={
+                    mode === "sign-in" ? "current-password" : "new-password"
+                  }
+                  id="password"
+                  minLength={8}
+                  name="password"
+                  required
+                  type="password"
+                />
+                {mode === "sign-up" && (
+                  <FieldDescription>At least 8 characters.</FieldDescription>
+                )}
+              </Field>
+              <Field>
+                <Button size="lg" type="submit">
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  {text.submit}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setError(null);
+                    setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+                  }}
+                  type="button"
+                  variant="link"
+                >
+                  {text.switchLabel}
+                </Button>
+              </Field>
+            </FieldGroup>
           </fieldset>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+      <AuthArt />
+    </div>
   );
 };
 
@@ -1664,10 +2614,12 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { Avatar, AvatarFallback } from "@my-app/ui/components/avatar";
 import { Button } from "@my-app/ui/components/button";
 import {
   DropdownMenu,
@@ -1684,6 +2636,15 @@ import { authClient } from "#src/lib/auth-client.ts";
 interface UserMenuProps {
   user: { name: string; email: string } | null;
 }
+
+// The first letter of each of the first two words: "Ada Lovelace" is "AL".
+const initials = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/u)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
 
 export const UserMenu = ({ user }: UserMenuProps) => {
   const router = useRouter();
@@ -1723,12 +2684,20 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
-        {user.name}
+      <DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+        <Avatar aria-hidden="true" data-icon="inline-start" size="sm">
+          <AvatarFallback>{initials(user.name)}</AvatarFallback>
+        </Avatar>
+        <span className="sr-only sm:not-sr-only sm:max-w-40 sm:truncate">
+          {user.name}
+        </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="min-w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex flex-col">
+            <span className="text-foreground font-medium">{user.name}</span>
+            <span className="truncate">{user.email}</span>
+          </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -1738,6 +2707,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
           }}
           variant="destructive"
         >
+          <LogOutIcon />
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -1762,10 +2732,17 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
-import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import {
+  Link,
+  useLocation,
+  useRouteContext,
+  useRouter,
+} from "@tanstack/react-router";
+import { LogOutIcon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
+import { Avatar, AvatarFallback } from "@my-app/ui/components/avatar";
 import { Button } from "@my-app/ui/components/button";
 import {
   DropdownMenu,
@@ -1779,10 +2756,20 @@ import {
 
 import { authClient } from "#src/lib/auth.ts";
 
+// The first letter of each of the first two words: "Ada Lovelace" is "AL".
+const initials = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/u)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+
 export const UserMenu = () => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const { session } = useRouteContext({ from: "__root__" });
+  const pathname = useLocation({ select: (location) => location.pathname });
 
   const signOut = async () => {
     try {
@@ -1802,7 +2789,7 @@ export const UserMenu = () => {
   };
 
   if (!session) {
-    return (
+    return pathname === "/login" ? null : (
       <Button
         nativeButton={false}
         render={<Link to="/login" />}
@@ -1816,12 +2803,22 @@ export const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
-        {session.user.name}
+      <DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+        <Avatar aria-hidden="true" data-icon="inline-start" size="sm">
+          <AvatarFallback>{initials(session.user.name)}</AvatarFallback>
+        </Avatar>
+        <span className="sr-only sm:not-sr-only sm:max-w-40 sm:truncate">
+          {session.user.name}
+        </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="min-w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{session.user.email}</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex flex-col">
+            <span className="text-foreground font-medium">
+              {session.user.name}
+            </span>
+            <span className="truncate">{session.user.email}</span>
+          </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -1831,6 +2828,7 @@ export const UserMenu = () => {
           }}
           variant="destructive"
         >
+          <LogOutIcon />
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -2384,9 +3382,16 @@ export const UserMenu = () => {
 #   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import {
+  Link,
+  useLocation,
+  useRouteContext,
+  useRouter,
+} from "@tanstack/react-router";
+import { LogOutIcon } from "lucide-react";
 import { toast } from "sonner";
 
+import { Avatar, AvatarFallback } from "@my-app/ui/components/avatar";
 import { Button } from "@my-app/ui/components/button";
 import {
   DropdownMenu,
@@ -2400,10 +3405,20 @@ import {
 
 import { authClient } from "#src/lib/auth.ts";
 
+// The first letter of each of the first two words: "Ada Lovelace" is "AL".
+const initials = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/u)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+
 export const UserMenu = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { session } = useRouteContext({ from: "__root__" });
+  const pathname = useLocation({ select: (location) => location.pathname });
 
   const signOut = useMutation({
     mutationFn: async () => {
@@ -2424,7 +3439,7 @@ export const UserMenu = () => {
   });
 
   if (!session) {
-    return (
+    return pathname === "/login" ? null : (
       <Button
         nativeButton={false}
         render={<Link to="/login" />}
@@ -2438,12 +3453,22 @@ export const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
-        {session.user.name}
+      <DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+        <Avatar aria-hidden="true" data-icon="inline-start" size="sm">
+          <AvatarFallback>{initials(session.user.name)}</AvatarFallback>
+        </Avatar>
+        <span className="sr-only sm:not-sr-only sm:max-w-40 sm:truncate">
+          {session.user.name}
+        </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="min-w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{session.user.email}</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex flex-col">
+            <span className="text-foreground font-medium">
+              {session.user.name}
+            </span>
+            <span className="truncate">{session.user.email}</span>
+          </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -2453,6 +3478,7 @@ export const UserMenu = () => {
           }}
           variant="destructive"
         >
+          <LogOutIcon />
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -4054,14 +5080,26 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Trash2Icon } from "lucide-react";
+import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 
+import { Badge } from "@my-app/ui/components/badge";
 import { Button } from "@my-app/ui/components/button";
 import { Card, CardContent } from "@my-app/ui/components/card";
 import { Checkbox } from "@my-app/ui/components/checkbox";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@my-app/ui/components/empty";
 import { Input } from "@my-app/ui/components/input";
+import { Separator } from "@my-app/ui/components/separator";
+import { Spinner } from "@my-app/ui/components/spinner";
+import { cn } from "@my-app/ui/lib/utils";
 
 import { api } from "#src/lib/api.ts";
 
@@ -4097,6 +5135,7 @@ const TodosPage = () => {
       { title },
       {
         onSuccess: () => {
+          // Keep whatever was typed while the request was in flight.
           setDraft((current) => (current === draft ? { title: "" } : current));
         },
       }
@@ -4104,81 +5143,110 @@ const TodosPage = () => {
   };
 
   return (
-    <section className="grid gap-6">
-      <div className="flex items-end justify-between gap-4">
-        <div className="grid gap-1">
-          <h1 className="text-3xl font-semibold tracking-tight">Todos</h1>
+    <section className="mx-auto flex w-full max-w-2xl flex-col gap-8">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-4xl font-semibold tracking-tight">Todos</h1>
           <p className="text-muted-foreground text-sm">
             Private to your account.
           </p>
         </div>
         {todos.length > 0 && (
-          <p className="text-muted-foreground text-sm tabular-nums">
+          <Badge variant="secondary">
             {done} of {todos.length} done
-          </p>
+          </Badge>
         )}
-      </div>
+      </header>
+      {todos.length > 0 && (
+        <div className="bg-muted h-1 overflow-hidden rounded-full">
+          <motion.div
+            animate={{ scaleX: done / todos.length }}
+            className="bg-primary h-full origin-left"
+            initial={false}
+            transition={{ bounce: 0, duration: 0.5, type: "spring" }}
+          />
+        </div>
+      )}
       <Card>
         <CardContent>
           <form className="flex gap-2" onSubmit={handleSubmit}>
             <Input
               aria-label="New todo"
+              maxLength={200}
               onChange={(event) => {
                 setDraft({ title: event.target.value });
               }}
-              placeholder="What needs to be done?"
+              placeholder="Add a todo"
               value={title}
             />
             <Button
               disabled={createTodo.isPending || title.trim() === ""}
               type="submit"
             >
+              {createTodo.isPending ? (
+                <Spinner data-icon="inline-start" />
+              ) : (
+                <PlusIcon data-icon="inline-start" />
+              )}
               Add
             </Button>
           </form>
         </CardContent>
+        <Separator />
         {todos.length === 0 ? (
-          <div className="grid gap-1 border-t px-4 pt-10 pb-6 text-center">
-            <p className="text-sm font-medium">No todos yet.</p>
-            <p className="text-muted-foreground text-sm">
-              Each one you add is saved through the API.
-            </p>
-          </div>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ListTodoIcon />
+              </EmptyMedia>
+              <EmptyTitle>No todos yet.</EmptyTitle>
+              <EmptyDescription>
+                Add one above. It is saved through the API to the database.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : (
-          <ul className="-mb-4 divide-y border-t">
-            {todos.map((todo) => (
-              <li
-                className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors"
-                key={todo.id}
-              >
-                <Checkbox
-                  aria-label={todo.title}
-                  checked={todo.completed}
-                  onCheckedChange={(completed) => {
-                    updateTodo.mutate({ id: todo.id, completed });
-                  }}
-                />
-                <span
-                  className={
-                    todo.completed
-                      ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
-                      : "flex-1 text-sm"
-                  }
+          <ul className="-my-4 divide-y">
+            <AnimatePresence initial={false}>
+              {todos.map((todo) => (
+                <motion.li
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="hover:bg-muted/50 flex items-center gap-3 overflow-hidden px-4 py-3 transition-colors"
+                  exit={{ height: 0, opacity: 0, paddingBlock: 0 }}
+                  initial={{ height: 0, opacity: 0 }}
+                  layout="position"
+                  transition={{ duration: 0.2 }}
+                  key={todo.id}
                 >
-                  {todo.title}
-                </span>
-                <Button
-                  aria-label={`Delete ${todo.title}`}
-                  onClick={() => {
-                    deleteTodo.mutate({ id: todo.id });
-                  }}
-                  size="icon-sm"
-                  variant="ghost"
-                >
-                  <Trash2Icon className="text-muted-foreground" />
-                </Button>
-              </li>
-            ))}
+                  <Checkbox
+                    aria-label={todo.title}
+                    checked={todo.completed}
+                    onCheckedChange={(completed) => {
+                      updateTodo.mutate({ completed, id: todo.id });
+                    }}
+                  />
+                  <span
+                    className={cn(
+                      "flex-1 text-sm wrap-anywhere",
+                      todo.completed &&
+                        "text-muted-foreground decoration-muted-foreground/50 line-through"
+                    )}
+                  >
+                    {todo.title}
+                  </span>
+                  <Button
+                    aria-label={`Delete ${todo.title}`}
+                    onClick={() => {
+                      deleteTodo.mutate({ id: todo.id });
+                    }}
+                    size="icon-sm"
+                    variant="ghost"
+                  >
+                    <Trash2Icon className="text-muted-foreground" />
+                  </Button>
+                </motion.li>
+              ))}
+            </AnimatePresence>
           </ul>
         )}
       </Card>

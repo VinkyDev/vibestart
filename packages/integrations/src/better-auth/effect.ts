@@ -75,6 +75,7 @@ export const effectAuth = (ctx: Context) => [
       "apps/web/src/components/user-menu.tsx",
     ],
   }),
+  ...templateFiles(ctx, "better-auth/web"),
   ...templateFiles(ctx, "better-auth/effect"),
   authIndex(ctx),
   contribute(packageJson, {
@@ -133,7 +134,7 @@ export const effectAuth = (ctx: Context) => [
     path: "packages/auth",
     owns: "The Auth service: Better Auth configured from Config on its official Promise adapter",
   }),
-  contribute(stackHeadline, "Better Auth"),
+  contribute(stackHeadline, { name: "Better Auth", role: "Auth" }),
   contribute(readmeLayers, {
     layer: "Auth",
     choice: `Better Auth with an Effect service boundary and ${ctx.has("sqlite") ? "SQLite" : "PostgreSQL"} sessions`,

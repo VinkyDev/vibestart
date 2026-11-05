@@ -91,7 +91,10 @@ export const effectRpc = defineIntegration({
         ...(ctx.stack.database === undefined ? [] : ["sonner"]),
       ],
     }),
-    contribute(stackHeadline, "Effect (HttpApi, RPC, Atom)"),
+    contribute(stackHeadline, {
+      name: "Effect (HttpApi, RPC, Atom)",
+      role: "API",
+    }),
     contribute(agentsMap, {
       path: "packages/contracts",
       owns: `Effect Schema wire contracts, RPC groups, and HTTP API${ctx.has("better-auth") ? ", plus authentication context" : ""}`,

@@ -118,7 +118,7 @@ export const spa = defineIntegration({
           ...(todosExample(ctx) && !ctx.has("better-auth")
             ? templateFiles(ctx, "spa/todos")
             : []),
-          homePage(ctx, "apps/web/src/routes/index.tsx", true),
+          ...homePage(ctx, "apps/web/src/routes/index.tsx", true),
           contribute(packageJson, {
             devDependencies: [
               `${ctx.scope}/config`,
@@ -145,7 +145,7 @@ export const spa = defineIntegration({
           }),
           contribute(agentsNotes, requestFlow(ctx)),
           contribute(readmeTagline, "React"),
-          contribute(stackHeadline, "React"),
+          contribute(stackHeadline, { name: "React", role: "Frontend" }),
           contribute(readmeLayers, {
             choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
             layer: "Frontend",

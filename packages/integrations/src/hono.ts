@@ -617,7 +617,7 @@ export const hono = defineIntegration({
       )
     ),
     contribute(readmeTagline, "Hono"),
-    contribute(stackHeadline, "Hono"),
+    contribute(stackHeadline, { name: "Hono", role: "Backend" }),
     contribute(readmeLayers, {
       choice: backendChoice(ctx),
       layer: "Backend",

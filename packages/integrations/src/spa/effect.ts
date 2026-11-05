@@ -1,7 +1,7 @@
 import type { Context } from "@vibestart/core";
-import { contribute, file, packageJson, renderFile } from "@vibestart/core";
+import { contribute, file, packageJson } from "@vibestart/core";
 
-import { listStack, stackHeadline } from "#/app.ts";
+import { homePage, stackHeadline } from "#/app.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -15,7 +15,7 @@ const spaFiles = (ctx: Context) => {
   const home = "apps/web/src/routes/index.tsx";
 
   return [
-    ...templateFiles(ctx, "spa/effect", { except: [router, home] }),
+    ...templateFiles(ctx, "spa/effect", { except: [router] }),
     ...templateFiles(
       ctx,
       ctx.has("better-auth") ? "spa/effect-auth" : "spa/effect-public"
@@ -31,14 +31,7 @@ const spaFiles = (ctx: Context) => {
             router
           )
     ),
-    renderFile(home, (read) =>
-      replaceOnce(
-        templateContent(ctx, "spa/effect", home),
-        "React, Effect (HttpApi, RPC, Atom), PostgreSQL, Drizzle and Better Auth\n        on Vite+.",
-        `${listStack(read(stackHeadline))} on Vite+.`,
-        home
-      )
-    ),
+    ...homePage(ctx, home, true),
   ];
 };
 
@@ -48,7 +41,7 @@ export const effectSpa = (ctx: Context) => [
   }),
   ...templateFiles(ctx, "spa/proxy"),
   ...spaFiles(ctx),
-  contribute(stackHeadline, "React"),
+  contribute(stackHeadline, { name: "React", role: "Frontend" }),
   contribute(packageJson, {
     path: "apps/web",
     imports: { "#src/*": "./src/*" },

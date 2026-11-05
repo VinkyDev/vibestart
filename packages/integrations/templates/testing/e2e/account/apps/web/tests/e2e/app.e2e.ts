@@ -14,10 +14,14 @@ const reload = async (browser: Browser) => {
   await visit(browser, await browser.url());
 };
 
-const signUpThroughUi = async (browser: Browser, screen: Screen) => {
+const signUpThroughUi = async (
+  browser: Browser,
+  screen: Screen,
+  name = "Ada"
+) => {
   await visit(browser, "/login");
   await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
-  await screen.getByLabel("Name").fill("Ada");
+  await screen.getByLabel("Name").fill(name);
   await screen.getByLabel("Email").fill(uniqueEmail());
   await screen.getByLabel("Password").fill(password);
   await screen.getByRole("main").getByRole("button", { name: "Sign up" }).tap();
@@ -27,7 +31,7 @@ const signUpThroughUi = async (browser: Browser, screen: Screen) => {
 test("the home page reports the API as connected", async ({ browser, screen }) => {
   await visit(browser, "/");
 
-  await expect(screen.getByText("Connected")).toBeVisible();
+  await expect(screen.getByText("API connected")).toBeVisible();
 });
 
 test("a new user signs up and is signed in", async ({ browser, screen }) => {
@@ -58,6 +62,9 @@ test("a wrong password is rejected", async ({ browser, screen }) => {
 
   await expect(screen.getByText("Invalid email or password")).toBeVisible();
   await expect(browser).toHaveURL("/login");
+
+  await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
+  await expect(screen.getByText("Invalid email or password")).not.toBeVisible();
 });
 
 test("signing out ends the session", async ({ browser, screen }) => {
@@ -70,6 +77,20 @@ test("signing out ends the session", async ({ browser, screen }) => {
   await reload(browser);
   await expect(screen.getByRole("banner").getByText("Sign in")).toBeVisible();
   await expect(screen.getByRole("button", { name: "Ada" })).toBeHidden();
+});
+
+test("the signed-in header fits a phone", async ({ browser, screen }) => {
+  await browser.setViewport({ height: 667, width: 375 });
+  await signUpThroughUi(browser, screen, "Ada Augusta King Lovelace");
+
+  await expect(screen.getByRole("button", { name: "Ada Augusta King Lovelace" })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await browser.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
 });
 
 test("the dark theme survives a reload", async ({ browser, screen }) => {

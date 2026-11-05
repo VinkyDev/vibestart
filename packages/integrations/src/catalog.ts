@@ -59,6 +59,7 @@ export const catalog = {
   ui: {
     "@base-ui/react": "^1.9.0",
     "@fontsource-variable/geist": "^5.3.0",
+    motion: "^14.9.1",
     "class-variance-authority": "^0.7.1",
     cn: "^0.5.2",
     "lucide-react": "^1.69.0",

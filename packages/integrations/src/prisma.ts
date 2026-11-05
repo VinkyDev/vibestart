@@ -475,7 +475,7 @@ export const prisma = defineIntegration({
         title: "Schema",
       }),
       contribute(readmeTagline, "Prisma"),
-      contribute(stackHeadline, "Prisma"),
+      contribute(stackHeadline, { name: "Prisma", role: "ORM" }),
       contribute(gettingStarted, { run: "vp run db:migrate" }),
       contribute(readmeSections, () =>
         [

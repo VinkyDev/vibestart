@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { cn } from "@my-app/ui/lib/utils";
+
 const links = [
   { href: "/", label: "Home" },
   { href: "/todos", label: "Todos" },
@@ -15,11 +17,13 @@ export const NavLinks = () => {
     <nav className="flex gap-1 text-sm">
       {links.map(({ href, label }) => (
         <Link
-          className={
+          aria-current={pathname === href ? "page" : undefined}
+          className={cn(
+            "hover:text-foreground rounded-md px-2.5 py-1.5 font-medium transition-colors",
             pathname === href
-              ? "bg-muted text-foreground rounded-md px-2.5 py-1 font-medium"
-              : "text-muted-foreground hover:text-foreground rounded-md px-2.5 py-1 font-medium transition-colors"
-          }
+              ? "bg-muted text-foreground"
+              : "text-muted-foreground"
+          )}
           href={href}
           key={href}
         >

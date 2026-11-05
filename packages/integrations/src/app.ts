@@ -71,7 +71,13 @@ export interface EnvVariable {
 
 export const serverEnv = defineSlot<EnvVariable>("app/server-env");
 
-export const stackHeadline = defineSlot<string>("app/stack-headline");
+/** One part of the stack as the home page names it: what it does, then what it is. */
+export interface StackPart {
+  readonly role: string;
+  readonly name: string;
+}
+
+export const stackHeadline = defineSlot<StackPart>("app/stack-headline");
 
 export const renderEnvModule = (
   variables: readonly EnvVariable[],
@@ -374,47 +380,138 @@ export const clientComponent = (ctx: Context, content: string) =>
   ctx.has("next") ? `"use client";\n\n${content}` : content;
 
 /** The stack's names as one English list: "A, B and C". */
-export const listStack = (names: readonly string[]) =>
-  names.length > 1
+export const listStack = (parts: readonly StackPart[]) => {
+  const names = parts.map(({ name }) => name);
+
+  return names.length > 1
     ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`
     : names.join("");
+};
 
-/** `route` wraps the page in a TanStack file route. */
-export const homePage = (ctx: Context, path: string, route: boolean) =>
+/** Where the API's reference docs are served; a stack without an API has none. */
+const apiDocsPath = (ctx: Context) => {
+  if (ctx.stack.api === undefined) {
+    return null;
+  }
+
+  return ctx.has("effect-rpc") ? "/api/docs" : "/api";
+};
+
+const homeActions = (ctx: Context, route: boolean) => {
+  const docs = apiDocsPath(ctx);
+
+  const todos = todosExample(ctx)
+    ? [
+        "        <Button",
+        "          nativeButton={false}",
+        `          render={<Link ${route ? 'to="/todos"' : 'href="/todos"'} />}`,
+        '          size="lg"',
+        "        >",
+        "          Try the todo list",
+        "        </Button>",
+      ]
+    : [];
+
+  // The reference is served by the API, outside the app's routes: a plain link, in a tab of its own.
+  const reference =
+    docs === null
+      ? []
+      : [
+          "        <Button",
+          "          nativeButton={false}",
+          "          render={",
+          `            <a href="${docs}" rel="noreferrer" target="_blank">`,
+          "              Open the API reference",
+          "            </a>",
+          "          }",
+          '          size="lg"',
+          '          variant="outline"',
+          "        />",
+        ];
+
+  return [...todos, ...reference];
+};
+
+// Top to bottom, the way a request travels: what the user touches first, what everything rests on last.
+const layerOrder = [
+  "Mobile",
+  "Framework",
+  "Frontend",
+  "Auth",
+  "API",
+  "Backend",
+  "ORM",
+  "Database",
+];
+
+const stackLayers = (parts: readonly StackPart[]) => [
+  "const layers = [",
+  ...parts
+    .toSorted((a, b) => layerOrder.indexOf(a.role) - layerOrder.indexOf(b.role))
+    .map(
+      ({ name, role }) =>
+        `  { name: ${JSON.stringify(name)}, role: ${JSON.stringify(role)} },`
+    ),
+  '  { name: "Vite+", role: "Toolchain" },',
+  "];",
+  "",
+];
+
+const diagramPath = "apps/web/src/components/stack-diagram.tsx";
+
+/** `route` wraps the page in a TanStack file route; otherwise it is a Next.js page. */
+export const homePage = (ctx: Context, path: string, route: boolean) => [
+  ...templateFiles(ctx, "react/home", { except: [diagramPath] }),
+  file(
+    diagramPath,
+    clientComponent(ctx, templateContent(ctx, "react/home", diagramPath))
+  ),
   renderFile(path, (read) => {
-    const listed = listStack(read(stackHeadline));
-
+    const parts = read(stackHeadline);
     const status = hasBackend(ctx);
+    const actions = homeActions(ctx, route);
+    const links = todosExample(ctx);
 
     return [
       ...(route
-        ? ['import { createFileRoute } from "@tanstack/react-router";', ""]
-        : []),
-      ...(status
-        ? ['import { ApiStatus } from "#src/components/api-status.tsx";', ""]
-        : []),
-      "const HomePage = () => (",
-      '  <section className="grid gap-10 sm:py-8">',
-      '    <div className="grid gap-5">',
-      ...(status
         ? [
-            '      <div className="text-muted-foreground flex items-center gap-2 text-sm">',
-            "        API",
-            "        <ApiStatus />",
+            `import { ${links ? "Link, " : ""}createFileRoute } from "@tanstack/react-router";`,
+          ]
+        : []),
+      ...(!route && links ? ['import Link from "next/link";'] : []),
+      ...(route || links ? [""] : []),
+      ...(actions.length > 0
+        ? [`import { Button } from "${ctx.scope}/ui/components/button";`, ""]
+        : []),
+      ...(status
+        ? ['import { ApiStatus } from "#src/components/api-status.tsx";']
+        : []),
+      'import { StackDiagram } from "#src/components/stack-diagram.tsx";',
+      "",
+      ...stackLayers(parts),
+      "const HomePage = () => (",
+      '  <div className="grid items-center gap-12 py-4 lg:min-h-160 lg:grid-cols-2 lg:gap-16">',
+      '    <section className="flex flex-col items-start gap-6">',
+      ...(status ? ["      <ApiStatus />"] : []),
+      '      <h1 className="text-5xl font-semibold tracking-tighter break-words sm:text-7xl">',
+      `        ${ctx.name}`,
+      "      </h1>",
+      '      <p className="text-muted-foreground max-w-md text-lg text-pretty">',
+      `        ${listStack(parts)} on Vite+.`,
+      "      </p>",
+      ...(actions.length > 0
+        ? [
+            '      <div className="flex flex-wrap gap-3">',
+            ...actions,
             "      </div>",
           ]
         : []),
-      '      <h1 className="text-5xl font-semibold tracking-tighter text-balance break-words sm:text-7xl">',
-      `        ${ctx.name}`,
-      "      </h1>",
-      '      <p className="text-muted-foreground max-w-xl text-lg text-pretty">',
-      `        ${listed} on Vite+.`,
+      '      <p className="text-muted-foreground text-sm">',
+      `        Start in <code className="text-foreground font-mono break-all">${path}</code>. Run <code className="text-foreground font-mono whitespace-nowrap">vp run ready</code> before you commit.`,
       "      </p>",
-      "    </div>",
-      '    <p className="text-muted-foreground border-t pt-6 text-sm">',
-      `      Edit <code className="text-foreground font-mono">${path}</code> and save to see it change.`,
-      "    </p>",
-      "  </section>",
+      "    </section>",
+      "    <StackDiagram layers={layers} />",
+      "  </div>",
       ");",
       "",
       ...(route
@@ -426,7 +523,8 @@ export const homePage = (ctx: Context, path: string, route: boolean) =>
         : ["export default HomePage;"]),
       "",
     ].join("\n");
-  });
+  }),
+];
 
 const linksPattern =
   /^const links = \[\n(?<entries>(?: {2}.*,\n)+)\] as const;$/mu;

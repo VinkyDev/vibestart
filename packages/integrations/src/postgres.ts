@@ -57,7 +57,7 @@ export const postgres = defineIntegration({
             ),
           ]),
       contribute(readmeTagline, "PostgreSQL"),
-      contribute(stackHeadline, "PostgreSQL"),
+      contribute(stackHeadline, { name: "PostgreSQL", role: "Database" }),
       contribute(readmeLayers, {
         choice: `PostgreSQL 18, ${ormRelease(ctx)}`,
         layer: "Database",
