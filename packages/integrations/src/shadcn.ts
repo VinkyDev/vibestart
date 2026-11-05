@@ -45,6 +45,7 @@ export const shadcn = defineIntegration({
         "./globals.css": "./src/styles/globals.css",
         "./components/*": "./src/components/*.tsx",
         "./lib/*": "./src/lib/*.ts",
+        "./hooks/*": "./src/hooks/*.ts",
       },
       path: "packages/ui",
       peerDependencies: ["react", "react-dom"],
@@ -63,12 +64,13 @@ export const shadcn = defineIntegration({
       name: "shadcn",
     }),
     contribute(vendoredFiles, "packages/ui/src/components/**"),
+    contribute(vendoredFiles, "packages/ui/src/hooks/**"),
     contribute(agentsMap, {
       owns: "shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`",
       path: "packages/ui",
     }),
     contribute(agentsConventions, {
-      text: `From \`packages/ui\`, run \`pnpm dlx shadcn@latest add <component>\` and import \`${ctx.scope}/ui/components/<name>\`. Files in \`packages/ui/src/components\` are vendored shadcn and are not linted. ${ctx.has("ultracite") ? "App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout. " : ""}When the first file lands in \`src/hooks\`, add \`"./hooks/*": "./src/hooks/*.ts"\` to the package exports (\`components.json\` already aliases that path).`,
+      text: `From \`packages/ui\`, run \`pnpm dlx shadcn@latest add <component>\` (Bun: \`bunx --bun shadcn@latest add <component>\`) and import \`${ctx.scope}/ui/components/<name>\`. Files in \`packages/ui/src/components\` and \`packages/ui/src/hooks\` are vendored shadcn and are not linted.${ctx.has("ultracite") ? " App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout." : ""}`,
       title: "UI",
     }),
     contribute(readmeLayers, {

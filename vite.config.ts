@@ -21,7 +21,10 @@ const foreignFiles = [
 
 const generatedFiles = ["apps/web/.source/**", "apps/web/src/paraglide/**"];
 
-const vendoredFiles = ["packages/ui/src/components/**"];
+const vendoredFiles = [
+  "packages/ui/src/components/**",
+  "packages/ui/src/hooks/**",
+];
 
 export default defineConfig({
   fmt: {

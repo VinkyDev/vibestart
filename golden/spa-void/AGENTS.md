@@ -61,7 +61,7 @@ Converge on the simplest durable design that meets current requirements, and lan
 
 ## Conventions
 
-- **UI.** From `packages/ui`, run `pnpm dlx shadcn@latest add <component>` and import `@my-app/ui/components/<name>`. Files in `packages/ui/src/components` are vendored shadcn and are not linted. App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout. When the first file lands in `src/hooks`, add `"./hooks/*": "./src/hooks/*.ts"` to the package exports (`components.json` already aliases that path).
+- **UI.** From `packages/ui`, run `pnpm dlx shadcn@latest add <component>` (Bun: `bunx --bun shadcn@latest add <component>`) and import `@my-app/ui/components/<name>`. Files in `packages/ui/src/components` and `packages/ui/src/hooks` are vendored shadcn and are not linted. App code is checked by `@shadcn/lint`: style a component through its variants, and use `className` on it only for layout.
 - **Void.** Deploy with `vp run deploy`. Commit `void.lock.json`.
 - **Generated.** `routeTree.gen.ts` and `.cloudflare/` are tool output. Leave them unchanged.
 - **Utilities.** Import shared helpers from [es-toolkit](https://es-toolkit.dev/llms.txt), from the submodule the docs name (`import { retry } from "es-toolkit/function"`). `es-toolkit/compat` stays out.

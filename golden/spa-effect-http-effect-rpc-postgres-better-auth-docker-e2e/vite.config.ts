@@ -9,7 +9,10 @@ import { defineConfig, loadEnv } from "vite-plus";
 
 const generatedFiles = ["**/routeTree.gen.ts", "packages/db/src/migrations/**"];
 
-const vendoredFiles = ["packages/ui/src/components/**"];
+const vendoredFiles = [
+  "packages/ui/src/components/**",
+  "packages/ui/src/hooks/**",
+];
 
 export default defineConfig({
   fmt: {

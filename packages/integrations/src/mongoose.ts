@@ -51,11 +51,13 @@ const renderIndex = (ctx: Context) => {
 // Better Auth's MongoDB adapter creates its collections on first write but no indexes: these are the lookups it
 // makes on every sign-in and session read, and the uniqueness it expects of an email and a session token.
 const authIndexes = [
-  '    native.collection("user").createIndex({ email: 1 }, { unique: true }),',
-  '    native.collection("session").createIndex({ token: 1 }, { unique: true }),',
-  '    native.collection("session").createIndex({ userId: 1 }),',
-  '    native.collection("account").createIndex({ userId: 1 }),',
-  '    native.collection("verification").createIndex({ identifier: 1 }),',
+  '    native.collection("user").createIndexes([{ key: { email: 1 }, unique: true }]),',
+  '    native.collection("session").createIndexes([',
+  "      { key: { token: 1 }, unique: true },",
+  "      { key: { userId: 1 } },",
+  "    ]),",
+  '    native.collection("account").createIndexes([{ key: { userId: 1 } }]),',
+  '    native.collection("verification").createIndexes([{ key: { identifier: 1 } }]),',
 ];
 
 const renderMigrate = (ctx: Context) => {
