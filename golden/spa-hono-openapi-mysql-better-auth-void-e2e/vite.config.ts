@@ -14,7 +14,10 @@ const generatedFiles = [
   "**/.void/**",
 ];
 
-const vendoredFiles = ["packages/ui/src/components/**"];
+const vendoredFiles = [
+  "packages/ui/src/components/**",
+  "packages/ui/src/hooks/**",
+];
 
 export default defineConfig({
   fmt: {
