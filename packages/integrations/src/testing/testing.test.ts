@@ -13,7 +13,7 @@ import { stackLabel } from "#/stack-label.ts";
 import { verifiedGeneration, verifiedStacks } from "#/verification.ts";
 
 const journeys = import.meta.glob<string>(
-  "../../templates/testing/*/*/apps/web/tests/e2e/app.e2e.ts",
+  "../../templates/testing/*/*/apps/web/tests/e2e/*.e2e.ts",
   { eager: true, import: "default", query: "?raw" }
 );
 

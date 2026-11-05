@@ -1,3 +1,4 @@
+import { useHydrated } from "@tanstack/react-router";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -17,11 +18,13 @@ const themes = [
 ] as const;
 
 export const ModeToggle = () => {
+  const hydrated = useHydrated();
   const { theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        disabled={!hydrated}
         render={
           <Button aria-label="Toggle theme" size="icon" variant="ghost" />
         }

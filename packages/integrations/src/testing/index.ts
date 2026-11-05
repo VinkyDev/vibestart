@@ -247,6 +247,9 @@ const support = (ctx: Context) => {
 const browserTests = (ctx: Context, runner: BrowserRunner) => [
   ...support(ctx),
   browserJourney(ctx, `${runner.templates}/${e2eVariant(ctx)}`),
+  ...(ctx.has("tanstack-start")
+    ? templateFiles(ctx, `${runner.templates}/hydration`)
+    : []),
   contribute(
     readmeCommandNotes,
     `The first \`vp run test:e2e\` needs a browser: \`cd apps/web && vp exec ${runner.installer} install chromium\`.`

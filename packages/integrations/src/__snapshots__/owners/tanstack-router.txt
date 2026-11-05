@@ -3962,6 +3962,7 @@ export const Loader = () => (
 #   tanstack-start-self-sqlite-expo-docker-e2e
 #   tanstack-start-void
 #   tanstack-start-void-e2e
+import { useHydrated } from "@tanstack/react-router";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -3981,11 +3982,13 @@ const themes = [
 ] as const;
 
 export const ModeToggle = () => {
+  const hydrated = useHydrated();
   const { theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        disabled={!hydrated}
         render={
           <Button aria-label="Toggle theme" size="icon" variant="ghost" />
         }
