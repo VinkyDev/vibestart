@@ -24,13 +24,15 @@ interface UserMenuProps {
   user: { name: string; email: string } | null;
 }
 
+const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
 // The first letter of each of the first two words: "Ada Lovelace" is "AL".
 const initials = (name: string) =>
   name
     .trim()
     .split(/\s+/u)
     .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
+    .map((word) => graphemes.segment(word).containing(0)?.segment.toUpperCase() ?? "")
     .join("");
 
 export const UserMenu = ({ user }: UserMenuProps) => {

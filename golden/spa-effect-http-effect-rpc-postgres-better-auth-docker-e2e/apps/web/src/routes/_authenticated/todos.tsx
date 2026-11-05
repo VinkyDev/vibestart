@@ -7,7 +7,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import { Exit, Schema } from "effect";
 import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
@@ -134,79 +134,80 @@ const TodosPage = () => {
   };
 
   return (
-    <section className="mx-auto flex w-full max-w-2xl flex-col gap-8">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex flex-col gap-1.5">
-          <h1 className="text-4xl font-semibold tracking-tight">Todos</h1>
-          <p className="text-muted-foreground text-sm">
-            Private to your account.
-          </p>
-        </div>
+    <MotionConfig reducedMotion="user">
+      <section className="mx-auto flex w-full max-w-2xl flex-col gap-8">
+        <header className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-col gap-1.5">
+            <h1 className="text-4xl font-semibold tracking-tight">Todos</h1>
+            <p className="text-muted-foreground text-sm">
+              Private to your account.
+            </p>
+          </div>
+          {todos.length > 0 && (
+            <Badge variant="secondary">
+              {done} of {todos.length} done
+            </Badge>
+          )}
+        </header>
         {todos.length > 0 && (
-          <Badge variant="secondary">
-            {done} of {todos.length} done
-          </Badge>
-        )}
-      </header>
-      {todos.length > 0 && (
-        <div className="bg-muted h-1 overflow-hidden rounded-full">
-          <motion.div
-            animate={{ scaleX: done / todos.length }}
-            className="bg-primary h-full origin-left"
-            initial={false}
-            transition={{ bounce: 0, duration: 0.5, type: "spring" }}
-          />
-        </div>
-      )}
-      <Card>
-        <CardContent>
-          <form className="flex gap-2" onSubmit={handleSubmit}>
-            <Input
-              aria-label="New todo"
-              maxLength={200}
-              onChange={(event) => {
-                setDraft({ title: event.target.value });
-              }}
-              placeholder="Add a todo"
-              value={title}
+          <div className="bg-muted h-1 overflow-hidden rounded-full">
+            <motion.div
+              animate={{ scaleX: done / todos.length }}
+              className="bg-primary h-full origin-left"
+              initial={false}
+              transition={{ bounce: 0, duration: 0.5, type: "spring" }}
             />
-            <Button
-              disabled={isCreating || Exit.isFailure(validTitle)}
-              type="submit"
-            >
-              {isCreating ? (
-                <Spinner data-icon="inline-start" />
-              ) : (
-                <PlusIcon data-icon="inline-start" />
-              )}
-              Add
-            </Button>
-          </form>
-        </CardContent>
-        <Separator />
-        {todos.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <ListTodoIcon />
-              </EmptyMedia>
-              <EmptyTitle>No todos yet.</EmptyTitle>
-              <EmptyDescription>
-                Add one above. It is saved through the API to the database.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <ul className="-my-4 divide-y">
+          </div>
+        )}
+        <Card>
+          <CardContent>
+            <form className="flex gap-2" onSubmit={handleSubmit}>
+              <Input
+                aria-label="New todo"
+                maxLength={200}
+                onChange={(event) => {
+                  setDraft({ title: event.target.value });
+                }}
+                placeholder="Add a todo"
+                value={title}
+              />
+              <Button
+                disabled={isCreating || Exit.isFailure(validTitle)}
+                type="submit"
+              >
+                {isCreating ? (
+                  <Spinner data-icon="inline-start" />
+                ) : (
+                  <PlusIcon data-icon="inline-start" />
+                )}
+                Add
+              </Button>
+            </form>
+          </CardContent>
+          <Separator />
+          <ul className="-my-4 divide-y empty:hidden">
             <AnimatePresence initial={false}>
               {todos.map((todo) => (
                 <TodoItem key={todo.id} todo={todo} />
               ))}
             </AnimatePresence>
           </ul>
-        )}
-      </Card>
-    </section>
+          {todos.length === 0 && (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <ListTodoIcon />
+                </EmptyMedia>
+                <EmptyTitle>No todos yet.</EmptyTitle>
+                <EmptyDescription>
+                  Add one above. It is saved through the API to the database.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          )}
+        </Card>
+      </section>
+    </MotionConfig>
   );
 };
 

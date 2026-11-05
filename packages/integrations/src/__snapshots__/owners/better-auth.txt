@@ -1293,7 +1293,7 @@ export const AuthArt = () => {
 "use client";
 
 import { CircleAlertIcon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -1409,27 +1409,19 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <AnimatePresence initial={false}>
-                {mode === "sign-up" && (
-                  <motion.div
-                    animate={{ height: "auto", opacity: 1 }}
-                    className="-m-1 overflow-hidden p-1"
-                    exit={{ height: 0, opacity: 0 }}
-                    initial={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Field>
-                      <FieldLabel htmlFor="name">Name</FieldLabel>
-                      <Input
-                        autoComplete="name"
-                        id="name"
-                        name="name"
-                        required
-                      />
-                    </Field>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {mode === "sign-up" && (
+                <motion.div
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="-m-1 overflow-hidden p-1"
+                  initial={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Field>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input autoComplete="name" id="name" name="name" required />
+                  </Field>
+                </motion.div>
+              )}
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -1500,7 +1492,7 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
 import { CircleAlertIcon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
@@ -1612,27 +1604,19 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <AnimatePresence initial={false}>
-                {mode === "sign-up" && (
-                  <motion.div
-                    animate={{ height: "auto", opacity: 1 }}
-                    className="-m-1 overflow-hidden p-1"
-                    exit={{ height: 0, opacity: 0 }}
-                    initial={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Field>
-                      <FieldLabel htmlFor="name">Name</FieldLabel>
-                      <Input
-                        autoComplete="name"
-                        id="name"
-                        name="name"
-                        required
-                      />
-                    </Field>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {mode === "sign-up" && (
+                <motion.div
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="-m-1 overflow-hidden p-1"
+                  initial={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Field>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input autoComplete="name" id="name" name="name" required />
+                  </Field>
+                </motion.div>
+              )}
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -2232,7 +2216,7 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 import { useHydrated } from "@tanstack/react-router";
 import { CircleAlertIcon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
@@ -2345,27 +2329,19 @@ export const AuthForm = ({ onSuccess }: { onSuccess: () => Promise<void> }) => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <AnimatePresence initial={false}>
-                {mode === "sign-up" && (
-                  <motion.div
-                    animate={{ height: "auto", opacity: 1 }}
-                    className="-m-1 overflow-hidden p-1"
-                    exit={{ height: 0, opacity: 0 }}
-                    initial={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Field>
-                      <FieldLabel htmlFor="name">Name</FieldLabel>
-                      <Input
-                        autoComplete="name"
-                        id="name"
-                        name="name"
-                        required
-                      />
-                    </Field>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {mode === "sign-up" && (
+                <motion.div
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="-m-1 overflow-hidden p-1"
+                  initial={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Field>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input autoComplete="name" id="name" name="name" required />
+                  </Field>
+                </motion.div>
+              )}
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -2637,13 +2613,18 @@ interface UserMenuProps {
   user: { name: string; email: string } | null;
 }
 
+const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
 // The first letter of each of the first two words: "Ada Lovelace" is "AL".
 const initials = (name: string) =>
   name
     .trim()
     .split(/\s+/u)
     .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
+    .map(
+      (word) =>
+        graphemes.segment(word).containing(0)?.segment.toUpperCase() ?? ""
+    )
     .join("");
 
 export const UserMenu = ({ user }: UserMenuProps) => {
@@ -2756,13 +2737,18 @@ import {
 
 import { authClient } from "#src/lib/auth.ts";
 
+const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
 // The first letter of each of the first two words: "Ada Lovelace" is "AL".
 const initials = (name: string) =>
   name
     .trim()
     .split(/\s+/u)
     .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
+    .map(
+      (word) =>
+        graphemes.segment(word).containing(0)?.segment.toUpperCase() ?? ""
+    )
     .join("");
 
 export const UserMenu = () => {
@@ -3405,13 +3391,18 @@ import {
 
 import { authClient } from "#src/lib/auth.ts";
 
+const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
 // The first letter of each of the first two words: "Ada Lovelace" is "AL".
 const initials = (name: string) =>
   name
     .trim()
     .split(/\s+/u)
     .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
+    .map(
+      (word) =>
+        graphemes.segment(word).containing(0)?.segment.toUpperCase() ?? ""
+    )
     .join("");
 
 export const UserMenu = () => {
@@ -5081,7 +5072,7 @@ import {
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 
@@ -5143,70 +5134,58 @@ const TodosPage = () => {
   };
 
   return (
-    <section className="mx-auto flex w-full max-w-2xl flex-col gap-8">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex flex-col gap-1.5">
-          <h1 className="text-4xl font-semibold tracking-tight">Todos</h1>
-          <p className="text-muted-foreground text-sm">
-            Private to your account.
-          </p>
-        </div>
+    <MotionConfig reducedMotion="user">
+      <section className="mx-auto flex w-full max-w-2xl flex-col gap-8">
+        <header className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-col gap-1.5">
+            <h1 className="text-4xl font-semibold tracking-tight">Todos</h1>
+            <p className="text-muted-foreground text-sm">
+              Private to your account.
+            </p>
+          </div>
+          {todos.length > 0 && (
+            <Badge variant="secondary">
+              {done} of {todos.length} done
+            </Badge>
+          )}
+        </header>
         {todos.length > 0 && (
-          <Badge variant="secondary">
-            {done} of {todos.length} done
-          </Badge>
-        )}
-      </header>
-      {todos.length > 0 && (
-        <div className="bg-muted h-1 overflow-hidden rounded-full">
-          <motion.div
-            animate={{ scaleX: done / todos.length }}
-            className="bg-primary h-full origin-left"
-            initial={false}
-            transition={{ bounce: 0, duration: 0.5, type: "spring" }}
-          />
-        </div>
-      )}
-      <Card>
-        <CardContent>
-          <form className="flex gap-2" onSubmit={handleSubmit}>
-            <Input
-              aria-label="New todo"
-              maxLength={200}
-              onChange={(event) => {
-                setDraft({ title: event.target.value });
-              }}
-              placeholder="Add a todo"
-              value={title}
+          <div className="bg-muted h-1 overflow-hidden rounded-full">
+            <motion.div
+              animate={{ scaleX: done / todos.length }}
+              className="bg-primary h-full origin-left"
+              initial={false}
+              transition={{ bounce: 0, duration: 0.5, type: "spring" }}
             />
-            <Button
-              disabled={createTodo.isPending || title.trim() === ""}
-              type="submit"
-            >
-              {createTodo.isPending ? (
-                <Spinner data-icon="inline-start" />
-              ) : (
-                <PlusIcon data-icon="inline-start" />
-              )}
-              Add
-            </Button>
-          </form>
-        </CardContent>
-        <Separator />
-        {todos.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <ListTodoIcon />
-              </EmptyMedia>
-              <EmptyTitle>No todos yet.</EmptyTitle>
-              <EmptyDescription>
-                Add one above. It is saved through the API to the database.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <ul className="-my-4 divide-y">
+          </div>
+        )}
+        <Card>
+          <CardContent>
+            <form className="flex gap-2" onSubmit={handleSubmit}>
+              <Input
+                aria-label="New todo"
+                maxLength={200}
+                onChange={(event) => {
+                  setDraft({ title: event.target.value });
+                }}
+                placeholder="Add a todo"
+                value={title}
+              />
+              <Button
+                disabled={createTodo.isPending || title.trim() === ""}
+                type="submit"
+              >
+                {createTodo.isPending ? (
+                  <Spinner data-icon="inline-start" />
+                ) : (
+                  <PlusIcon data-icon="inline-start" />
+                )}
+                Add
+              </Button>
+            </form>
+          </CardContent>
+          <Separator />
+          <ul className="-my-4 divide-y empty:hidden">
             <AnimatePresence initial={false}>
               {todos.map((todo) => (
                 <motion.li
@@ -5248,9 +5227,22 @@ const TodosPage = () => {
               ))}
             </AnimatePresence>
           </ul>
-        )}
-      </Card>
-    </section>
+          {todos.length === 0 && (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <ListTodoIcon />
+                </EmptyMedia>
+                <EmptyTitle>No todos yet.</EmptyTitle>
+                <EmptyDescription>
+                  Add one above. It is saved through the API to the database.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          )}
+        </Card>
+      </section>
+    </MotionConfig>
   );
 };
 

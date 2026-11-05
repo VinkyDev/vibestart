@@ -86,6 +86,18 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
   await expect(page.getByText("Invalid email or password")).not.toBeVisible();
+
+  // Validate in the first frame after switching, while an exiting field would still be mounted.
+  const valid = await page.evaluate<boolean>(
+    `(async () => {
+      const form = document.querySelector("form");
+      form.querySelector('button[type="button"]').click();
+      await new Promise(requestAnimationFrame);
+      return form.checkValidity();
+    })()`
+  );
+
+  expect(valid).toBe(true);
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -101,11 +113,13 @@ test("signing out ends the session", async ({ page }) => {
 
 test("the signed-in header fits a phone", async ({ page }) => {
   await page.setViewportSize({ height: 667, width: 375 });
-  await signUpThroughUi(page, "Ada Augusta King Lovelace");
+  await signUpThroughUi(page, "😀 Ada Augusta King Lovelace");
 
   await expect(
-    page.getByRole("button", { name: "Ada Augusta King Lovelace" })
+    page.getByRole("button", { name: "😀 Ada Augusta King Lovelace" })
   ).toBeVisible();
+
+  await expect(page.getByText("😀A", { exact: true })).toBeVisible();
 
   // A string: this test project has no DOM types, and the expression runs in the page.
   const overflow = await page.evaluate<number>(

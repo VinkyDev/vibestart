@@ -1,7 +1,7 @@
 "use client";
 
 import { CircleAlertIcon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -117,27 +117,19 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <AnimatePresence initial={false}>
-                {mode === "sign-up" && (
-                  <motion.div
-                    animate={{ height: "auto", opacity: 1 }}
-                    className="-m-1 overflow-hidden p-1"
-                    exit={{ height: 0, opacity: 0 }}
-                    initial={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Field>
-                      <FieldLabel htmlFor="name">Name</FieldLabel>
-                      <Input
-                        autoComplete="name"
-                        id="name"
-                        name="name"
-                        required
-                      />
-                    </Field>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {mode === "sign-up" && (
+                <motion.div
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="-m-1 overflow-hidden p-1"
+                  initial={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Field>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input autoComplete="name" id="name" name="name" required />
+                  </Field>
+                </motion.div>
+              )}
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
