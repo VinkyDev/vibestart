@@ -138,27 +138,29 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-test("login redirects stay on the app origin after URL normalization", async ({ page }) => {
-  const { email } = await signUp();
-  const redirect = "/\\example.com";
-  await visit(page, `/login?redirect=${encodeURIComponent(redirect)}`);
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL("/todos");
-  await expect(page.getByLabel("New todo")).toBeVisible();
+for (const redirect of [
+  "https://example.com",
+  "//example.com",
+  "/\\example.com",
+  "/\t/example.com",
+  "/\r/example.com",
+  "/\n/example.com",
+]) {
+  test.describe(`redirect ${JSON.stringify(redirect)}`, () => {
+    test("login redirects stay on the app origin after URL normalization", async ({ page }) => {
+      const { email } = await signUp();
+      const path = `/login?redirect=${encodeURIComponent(redirect)}`;
+      await visit(page, path);
+      await page.getByLabel("Email").fill(email);
+      await page.getByLabel("Password").fill(password);
+      await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
+      await expect(page).toHaveURL("/todos");
+      await expect(page.getByLabel("New todo")).toBeVisible();
 
-  const expectInternalRedirect = async (value: string) => {
-    await visit(page, `/login?redirect=${encodeURIComponent(value)}`);
-    await expect(page).toHaveURL("/todos");
-    // The URL can change while the destination's loader is still running.
-    await expect(page.getByLabel("New todo")).toBeVisible();
-  };
-
-  await expectInternalRedirect("https://example.com");
-  await expectInternalRedirect("//example.com");
-  await expectInternalRedirect("/\\example.com");
-  await expectInternalRedirect("/\t/example.com");
-  await expectInternalRedirect("/\r/example.com");
-  await expectInternalRedirect("/\n/example.com");
-});
+      await visit(page, path);
+      await expect(page).toHaveURL("/todos");
+      // The URL can change while the destination's loader is still running.
+      await expect(page.getByLabel("New todo")).toBeVisible();
+    });
+  });
+}
