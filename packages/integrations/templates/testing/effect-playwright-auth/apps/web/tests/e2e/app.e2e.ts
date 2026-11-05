@@ -253,10 +253,13 @@ test("login redirects stay on the app origin after URL normalization", async ({
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL("/todos");
+  await expect(page.getByLabel("New todo")).toBeVisible();
 
   const expectInternalRedirect = async (value: string) => {
     await visit(page, `/login?redirect=${encodeURIComponent(value)}`);
     await expect(page).toHaveURL("/todos");
+    // The URL can change while the destination's loader is still running.
+    await expect(page.getByLabel("New todo")).toBeVisible();
   };
 
   await expectInternalRedirect("https://example.com");
