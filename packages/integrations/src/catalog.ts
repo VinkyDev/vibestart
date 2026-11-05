@@ -10,8 +10,8 @@ export const toolchainVersions = {
 export const catalog = {
   toolchain: {
     "@types/bun": "^1.4.4",
-    "@e2e-dev/web": "^0.15.4",
-    e2e: "^0.22.0",
+    "@e2e-dev/web": "^0.15.5",
+    e2e: "^0.23.0",
     "@playwright/test": "^1.64.1",
     "@shadcn/lint": "^0.2.5",
     "@types/node": "^26.6.6",
