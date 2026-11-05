@@ -31,7 +31,7 @@ import {
 import agentsTestsIntro from "./agents-tests-intro.md?raw";
 import { effectTesting } from "./effect.ts";
 import type { BrowserRunner } from "./runners.ts";
-import { e2e, playwright } from "./runners.ts";
+import { browserJourney, e2e, playwright } from "./runners.ts";
 import { renderTestServer } from "./server.ts";
 
 const apiStyle = (ctx: Context) => (ctx.has("openapi") ? "openapi" : "orpc");
@@ -246,7 +246,7 @@ const support = (ctx: Context) => {
 
 const browserTests = (ctx: Context, runner: BrowserRunner) => [
   ...support(ctx),
-  ...templateFiles(ctx, `${runner.templates}/${e2eVariant(ctx)}`),
+  browserJourney(ctx, `${runner.templates}/${e2eVariant(ctx)}`),
   contribute(
     readmeCommandNotes,
     `The first \`vp run test:e2e\` needs a browser: \`cd apps/web && vp exec ${runner.installer} install chromium\`.`

@@ -65,7 +65,7 @@ describe.each(generations)("$golden", ({ generation, golden, stack }) => {
             `vp exec --filter @my-app/${stack.backend === "hono" ? "server" : "web"} void prepare`,
           ]
         : []),
-      ...(stack.router === "tanstack-router" ? ["vp build apps/web"] : []),
+      ...(stack.router === "tanstack-router" ? ["vp run typegen"] : []),
       ...(stack.orm === "drizzle" ? ["vp run db:generate --name init"] : []),
     ]);
   });

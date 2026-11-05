@@ -41,11 +41,12 @@ BETTER_AUTH_SECRET=
 ## Commands
 
 ```sh
+vp run typegen    # route types; dev generates these automatically
 vp check          # format, lint, type check
 vp run knip       # unused files, exports, dependencies, and catalog entries
 vp test           # unit and integration tests (Vitest)
 vp run test:e2e   # end-to-end tests (TesterArmy e2e) in Chromium, against a real server and database
-vp run ready      # check + knip + test + test:e2e + production build
+vp run ready      # typegen + check + knip + test + test:e2e + production build
 ```
 
 The first `vp run test:e2e` needs a browser: `cd apps/web && vp exec e2e-web install chromium`.

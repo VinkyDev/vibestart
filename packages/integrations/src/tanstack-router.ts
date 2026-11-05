@@ -6,9 +6,15 @@ import {
 } from "@vibestart/core";
 
 import { authVariant, navigation } from "#/app.ts";
+import { knipEntries } from "#/knip.ts";
 import { templateFiles } from "#/templates.ts";
 import { ultracitePresets, ultraciteOverrides } from "#/ultracite.ts";
-import { generatedFiles, ignoredFiles } from "#/vite-plus/slots.ts";
+import {
+  generatedFiles,
+  ignoredFiles,
+  readySteps,
+  rootTypeScriptFiles,
+} from "#/vite-plus/slots.ts";
 
 const routesOverride = `{
   // A loader throws \`notFound()\` and \`beforeLoad\` throws \`redirect()\`. Both are objects rather than an \`Error\`.
@@ -44,10 +50,22 @@ export const tanstackRouter = defineIntegration({
       `tanstack-router/${authVariant(ctx)}`,
       "apps/web/src/components/header.tsx"
     ),
-    // The router plugin writes the route tree during a build, from the routes the stack has.
     contribute(setupCommand, {
-      run: "vp build apps/web",
+      run: "vp run typegen",
       writes: ["apps/web/src/routeTree.gen.ts"],
+    }),
+    contribute(packageJson, {
+      path: ".",
+      scripts: { typegen: "vpx scripts/typegen.ts" },
+    }),
+    contribute(rootTypeScriptFiles, "scripts/typegen.ts"),
+    // Knip does not discover TypeScript entry points run through vpx.
+    contribute(knipEntries, { entry: ["scripts/typegen.ts"], workspace: "." }),
+    contribute(readySteps, {
+      command: "vp run typegen",
+      description: "route types; dev generates these automatically",
+      label: "typegen",
+      phase: "prepare",
     }),
     contribute(packageJson, {
       dependencies: [

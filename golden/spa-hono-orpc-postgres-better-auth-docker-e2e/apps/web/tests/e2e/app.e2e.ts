@@ -6,7 +6,7 @@ import type { Screen } from "e2e";
 import { createTodo, password, signUp, uniqueEmail } from "../support/api.ts";
 
 const visit = async (browser: Browser, path: string) => {
-  await browser.goto(path, { waitUntil: "networkidle" });
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
 };
 
 // `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.

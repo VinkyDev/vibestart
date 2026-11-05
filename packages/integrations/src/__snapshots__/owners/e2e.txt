@@ -908,17 +908,9 @@ export default {
   trace: "retain-on-failure",
 } satisfies E2EConfig;
 
-# apps/web/tests/e2e/app.e2e.ts · 14 stacks
+# apps/web/tests/e2e/app.e2e.ts · 6 stacks
 #   next-docker-e2e
 #   next-expo-docker-e2e
-#   spa-docker-e2e
-#   spa-electron-docker-e2e
-#   spa-electron-expo-docker-e2e
-#   spa-electron-expo-void-e2e
-#   spa-electron-void-e2e
-#   spa-expo-docker-e2e
-#   spa-expo-void-e2e
-#   spa-void-e2e
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker-e2e
 #   tanstack-start-expo-void-e2e
@@ -954,7 +946,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 202 stacks
+# apps/web/tests/e2e/app.e2e.ts · 106 stacks
 #   next-hono-bun-docker-e2e
 #   next-hono-docker-e2e
 #   next-hono-expo-bun-docker-e2e
@@ -1005,102 +997,6 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 #   next-self-postgres-prisma-expo-docker-e2e
 #   next-self-sqlite-docker-e2e
 #   next-self-sqlite-expo-docker-e2e
-#   spa-effect-http-effect-rpc-docker-e2e
-#   spa-effect-http-effect-rpc-electron-docker-e2e
-#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-expo-docker-e2e
-#   spa-hono-bun-docker-e2e
-#   spa-hono-docker-e2e
-#   spa-hono-electron-bun-docker-e2e
-#   spa-hono-electron-docker-e2e
-#   spa-hono-electron-expo-bun-docker-e2e
-#   spa-hono-electron-expo-docker-e2e
-#   spa-hono-electron-expo-void-e2e
-#   spa-hono-electron-void-e2e
-#   spa-hono-expo-bun-docker-e2e
-#   spa-hono-expo-docker-e2e
-#   spa-hono-expo-void-e2e
-#   spa-hono-mongodb-bun-docker-e2e
-#   spa-hono-mongodb-docker-e2e
-#   spa-hono-mongodb-electron-bun-docker-e2e
-#   spa-hono-mongodb-electron-docker-e2e
-#   spa-hono-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-mongodb-electron-expo-docker-e2e
-#   spa-hono-mongodb-expo-bun-docker-e2e
-#   spa-hono-mongodb-expo-docker-e2e
-#   spa-hono-mysql-bun-docker-e2e
-#   spa-hono-mysql-docker-e2e
-#   spa-hono-mysql-electron-bun-docker-e2e
-#   spa-hono-mysql-electron-docker-e2e
-#   spa-hono-mysql-electron-expo-bun-docker-e2e
-#   spa-hono-mysql-electron-expo-docker-e2e
-#   spa-hono-mysql-electron-expo-void-e2e
-#   spa-hono-mysql-electron-void-e2e
-#   spa-hono-mysql-expo-bun-docker-e2e
-#   spa-hono-mysql-expo-docker-e2e
-#   spa-hono-mysql-expo-void-e2e
-#   spa-hono-mysql-prisma-bun-docker-e2e
-#   spa-hono-mysql-prisma-docker-e2e
-#   spa-hono-mysql-prisma-electron-bun-docker-e2e
-#   spa-hono-mysql-prisma-electron-docker-e2e
-#   spa-hono-mysql-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-mysql-prisma-electron-expo-docker-e2e
-#   spa-hono-mysql-prisma-expo-bun-docker-e2e
-#   spa-hono-mysql-prisma-expo-docker-e2e
-#   spa-hono-mysql-void-e2e
-#   spa-hono-openapi-bun-docker-e2e
-#   spa-hono-openapi-docker-e2e
-#   spa-hono-openapi-electron-bun-docker-e2e
-#   spa-hono-openapi-electron-docker-e2e
-#   spa-hono-openapi-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-electron-expo-docker-e2e
-#   spa-hono-openapi-electron-expo-void-e2e
-#   spa-hono-openapi-electron-void-e2e
-#   spa-hono-openapi-expo-bun-docker-e2e
-#   spa-hono-openapi-expo-docker-e2e
-#   spa-hono-openapi-expo-void-e2e
-#   spa-hono-openapi-void-e2e
-#   spa-hono-orpc-bun-docker-e2e
-#   spa-hono-orpc-docker-e2e
-#   spa-hono-orpc-electron-bun-docker-e2e
-#   spa-hono-orpc-electron-docker-e2e
-#   spa-hono-orpc-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-electron-expo-docker-e2e
-#   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-electron-void-e2e
-#   spa-hono-orpc-expo-bun-docker-e2e
-#   spa-hono-orpc-expo-docker-e2e
-#   spa-hono-orpc-expo-void-e2e
-#   spa-hono-orpc-void-e2e
-#   spa-hono-postgres-bun-docker-e2e
-#   spa-hono-postgres-docker-e2e
-#   spa-hono-postgres-electron-bun-docker-e2e
-#   spa-hono-postgres-electron-docker-e2e
-#   spa-hono-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-electron-expo-docker-e2e
-#   spa-hono-postgres-electron-expo-void-e2e
-#   spa-hono-postgres-electron-void-e2e
-#   spa-hono-postgres-expo-bun-docker-e2e
-#   spa-hono-postgres-expo-docker-e2e
-#   spa-hono-postgres-expo-void-e2e
-#   spa-hono-postgres-prisma-bun-docker-e2e
-#   spa-hono-postgres-prisma-docker-e2e
-#   spa-hono-postgres-prisma-electron-bun-docker-e2e
-#   spa-hono-postgres-prisma-electron-docker-e2e
-#   spa-hono-postgres-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-prisma-electron-expo-docker-e2e
-#   spa-hono-postgres-prisma-expo-bun-docker-e2e
-#   spa-hono-postgres-prisma-expo-docker-e2e
-#   spa-hono-postgres-void-e2e
-#   spa-hono-sqlite-bun-docker-e2e
-#   spa-hono-sqlite-docker-e2e
-#   spa-hono-sqlite-electron-bun-docker-e2e
-#   spa-hono-sqlite-electron-docker-e2e
-#   spa-hono-sqlite-electron-expo-bun-docker-e2e
-#   spa-hono-sqlite-electron-expo-docker-e2e
-#   spa-hono-sqlite-expo-bun-docker-e2e
-#   spa-hono-sqlite-expo-docker-e2e
-#   spa-hono-void-e2e
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-docker-e2e
 #   tanstack-start-hono-expo-bun-docker-e2e
@@ -1191,7 +1087,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 132 stacks
+# apps/web/tests/e2e/app.e2e.ts · 76 stacks
 #   next-hono-mongodb-better-auth-bun-docker-e2e
 #   next-hono-mongodb-better-auth-docker-e2e
 #   next-hono-mongodb-better-auth-expo-bun-docker-e2e
@@ -1228,62 +1124,6 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 #   next-self-postgres-prisma-better-auth-expo-docker-e2e
 #   next-self-sqlite-better-auth-docker-e2e
 #   next-self-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-mongodb-better-auth-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-mysql-better-auth-bun-docker-e2e
-#   spa-hono-mysql-better-auth-docker-e2e
-#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
-#   spa-hono-mysql-better-auth-electron-docker-e2e
-#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
-#   spa-hono-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-mysql-better-auth-electron-void-e2e
-#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
-#   spa-hono-mysql-better-auth-expo-docker-e2e
-#   spa-hono-mysql-better-auth-expo-void-e2e
-#   spa-hono-mysql-better-auth-void-e2e
-#   spa-hono-mysql-prisma-better-auth-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-mysql-prisma-better-auth-expo-docker-e2e
-#   spa-hono-postgres-better-auth-bun-docker-e2e
-#   spa-hono-postgres-better-auth-docker-e2e
-#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-postgres-better-auth-electron-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-postgres-better-auth-electron-void-e2e
-#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-postgres-better-auth-expo-docker-e2e
-#   spa-hono-postgres-better-auth-expo-void-e2e
-#   spa-hono-postgres-better-auth-void-e2e
-#   spa-hono-postgres-prisma-better-auth-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-postgres-prisma-better-auth-expo-docker-e2e
-#   spa-hono-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-mongodb-better-auth-bun-docker-e2e
 #   tanstack-start-hono-mongodb-better-auth-docker-e2e
 #   tanstack-start-hono-mongodb-better-auth-expo-bun-docker-e2e
@@ -1413,7 +1253,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 236 stacks
+# apps/web/tests/e2e/app.e2e.ts · 124 stacks
 #   next-hono-openapi-mongodb-better-auth-bun-docker-e2e
 #   next-hono-openapi-mongodb-better-auth-docker-e2e
 #   next-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
@@ -1474,118 +1314,6 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 #   next-self-orpc-postgres-prisma-better-auth-expo-docker-e2e
 #   next-self-orpc-sqlite-better-auth-docker-e2e
 #   next-self-orpc-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
-#   spa-hono-openapi-mysql-better-auth-void-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
-#   spa-hono-openapi-postgres-better-auth-void-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-void-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-void-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-better-auth-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
@@ -1790,7 +1518,7 @@ test("login redirects stay on the app origin after URL normalization", async ({
   await expectInternalRedirect("/\n/example.com");
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 244 stacks
+# apps/web/tests/e2e/app.e2e.ts · 124 stacks
 #   next-hono-openapi-mongodb-bun-docker-e2e
 #   next-hono-openapi-mongodb-docker-e2e
 #   next-hono-openapi-mongodb-expo-bun-docker-e2e
@@ -1851,126 +1579,6 @@ test("login redirects stay on the app origin after URL normalization", async ({
 #   next-self-orpc-postgres-prisma-expo-docker-e2e
 #   next-self-orpc-sqlite-docker-e2e
 #   next-self-orpc-sqlite-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
-#   spa-hono-openapi-mongodb-bun-docker-e2e
-#   spa-hono-openapi-mongodb-docker-e2e
-#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
-#   spa-hono-openapi-mongodb-electron-docker-e2e
-#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
-#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
-#   spa-hono-openapi-mongodb-expo-docker-e2e
-#   spa-hono-openapi-mysql-bun-docker-e2e
-#   spa-hono-openapi-mysql-docker-e2e
-#   spa-hono-openapi-mysql-electron-bun-docker-e2e
-#   spa-hono-openapi-mysql-electron-docker-e2e
-#   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-electron-expo-docker-e2e
-#   spa-hono-openapi-mysql-electron-expo-void-e2e
-#   spa-hono-openapi-mysql-electron-void-e2e
-#   spa-hono-openapi-mysql-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-expo-docker-e2e
-#   spa-hono-openapi-mysql-expo-void-e2e
-#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-docker-e2e
-#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
-#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
-#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
-#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
-#   spa-hono-openapi-mysql-void-e2e
-#   spa-hono-openapi-postgres-bun-docker-e2e
-#   spa-hono-openapi-postgres-docker-e2e
-#   spa-hono-openapi-postgres-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-electron-docker-e2e
-#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-electron-expo-void-e2e
-#   spa-hono-openapi-postgres-electron-void-e2e
-#   spa-hono-openapi-postgres-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-expo-docker-e2e
-#   spa-hono-openapi-postgres-expo-void-e2e
-#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-docker-e2e
-#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
-#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
-#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
-#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
-#   spa-hono-openapi-postgres-void-e2e
-#   spa-hono-openapi-sqlite-bun-docker-e2e
-#   spa-hono-openapi-sqlite-docker-e2e
-#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
-#   spa-hono-openapi-sqlite-electron-docker-e2e
-#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
-#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
-#   spa-hono-openapi-sqlite-expo-docker-e2e
-#   spa-hono-orpc-mongodb-bun-docker-e2e
-#   spa-hono-orpc-mongodb-docker-e2e
-#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
-#   spa-hono-orpc-mongodb-electron-docker-e2e
-#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
-#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
-#   spa-hono-orpc-mongodb-expo-docker-e2e
-#   spa-hono-orpc-mysql-bun-docker-e2e
-#   spa-hono-orpc-mysql-docker-e2e
-#   spa-hono-orpc-mysql-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-electron-docker-e2e
-#   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-electron-void-e2e
-#   spa-hono-orpc-mysql-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-expo-docker-e2e
-#   spa-hono-orpc-mysql-expo-void-e2e
-#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
-#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
-#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
-#   spa-hono-orpc-mysql-void-e2e
-#   spa-hono-orpc-postgres-bun-docker-e2e
-#   spa-hono-orpc-postgres-docker-e2e
-#   spa-hono-orpc-postgres-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-electron-docker-e2e
-#   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-electron-void-e2e
-#   spa-hono-orpc-postgres-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-expo-docker-e2e
-#   spa-hono-orpc-postgres-expo-void-e2e
-#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
-#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
-#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
-#   spa-hono-orpc-postgres-void-e2e
-#   spa-hono-orpc-sqlite-bun-docker-e2e
-#   spa-hono-orpc-sqlite-docker-e2e
-#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
-#   spa-hono-orpc-sqlite-electron-docker-e2e
-#   spa-hono-orpc-sqlite-electron-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-electron-expo-docker-e2e
-#   spa-hono-orpc-sqlite-expo-bun-docker-e2e
-#   spa-hono-orpc-sqlite-expo-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-bun-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-docker-e2e
 #   tanstack-start-hono-openapi-mongodb-expo-bun-docker-e2e
@@ -2100,6 +1708,177 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 });
 
 # apps/web/tests/e2e/app.e2e.ts · 8 stacks
+#   spa-docker-e2e
+#   spa-electron-docker-e2e
+#   spa-electron-expo-docker-e2e
+#   spa-electron-expo-void-e2e
+#   spa-electron-void-e2e
+#   spa-expo-docker-e2e
+#   spa-expo-void-e2e
+#   spa-void-e2e
+import { test } from "@e2e-dev/web";
+import type { Browser } from "@e2e-dev/web";
+import { expect } from "e2e";
+
+const visit = async (browser: Browser, path: string) => {
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
+};
+
+// `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.
+const reload = async (browser: Browser) => {
+  await visit(browser, await browser.url());
+};
+
+test("the home page names the stack", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await expect(screen.getByText("on Vite+.", { exact: false })).toBeVisible();
+});
+
+test("the dark theme survives a reload", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await screen.getByRole("button", { name: "Toggle theme" }).tap();
+  await screen.getByRole("menuitemradio", { name: "Dark" }).tap();
+  const html = browser.locator("html");
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+
+  await reload(browser);
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+});
+
+# apps/web/tests/e2e/app.e2e.ts · 96 stacks
+#   spa-effect-http-effect-rpc-docker-e2e
+#   spa-effect-http-effect-rpc-electron-docker-e2e
+#   spa-effect-http-effect-rpc-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-expo-docker-e2e
+#   spa-hono-bun-docker-e2e
+#   spa-hono-docker-e2e
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-docker-e2e
+#   spa-hono-electron-expo-bun-docker-e2e
+#   spa-hono-electron-expo-docker-e2e
+#   spa-hono-electron-expo-void-e2e
+#   spa-hono-electron-void-e2e
+#   spa-hono-expo-bun-docker-e2e
+#   spa-hono-expo-docker-e2e
+#   spa-hono-expo-void-e2e
+#   spa-hono-mongodb-bun-docker-e2e
+#   spa-hono-mongodb-docker-e2e
+#   spa-hono-mongodb-electron-bun-docker-e2e
+#   spa-hono-mongodb-electron-docker-e2e
+#   spa-hono-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-electron-expo-docker-e2e
+#   spa-hono-mongodb-expo-bun-docker-e2e
+#   spa-hono-mongodb-expo-docker-e2e
+#   spa-hono-mysql-bun-docker-e2e
+#   spa-hono-mysql-docker-e2e
+#   spa-hono-mysql-electron-bun-docker-e2e
+#   spa-hono-mysql-electron-docker-e2e
+#   spa-hono-mysql-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-electron-expo-docker-e2e
+#   spa-hono-mysql-electron-expo-void-e2e
+#   spa-hono-mysql-electron-void-e2e
+#   spa-hono-mysql-expo-bun-docker-e2e
+#   spa-hono-mysql-expo-docker-e2e
+#   spa-hono-mysql-expo-void-e2e
+#   spa-hono-mysql-prisma-bun-docker-e2e
+#   spa-hono-mysql-prisma-docker-e2e
+#   spa-hono-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-mysql-prisma-electron-docker-e2e
+#   spa-hono-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-expo-docker-e2e
+#   spa-hono-mysql-void-e2e
+#   spa-hono-openapi-bun-docker-e2e
+#   spa-hono-openapi-docker-e2e
+#   spa-hono-openapi-electron-bun-docker-e2e
+#   spa-hono-openapi-electron-docker-e2e
+#   spa-hono-openapi-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-electron-expo-docker-e2e
+#   spa-hono-openapi-electron-expo-void-e2e
+#   spa-hono-openapi-electron-void-e2e
+#   spa-hono-openapi-expo-bun-docker-e2e
+#   spa-hono-openapi-expo-docker-e2e
+#   spa-hono-openapi-expo-void-e2e
+#   spa-hono-openapi-void-e2e
+#   spa-hono-orpc-bun-docker-e2e
+#   spa-hono-orpc-docker-e2e
+#   spa-hono-orpc-electron-bun-docker-e2e
+#   spa-hono-orpc-electron-docker-e2e
+#   spa-hono-orpc-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-electron-expo-docker-e2e
+#   spa-hono-orpc-electron-expo-void-e2e
+#   spa-hono-orpc-electron-void-e2e
+#   spa-hono-orpc-expo-bun-docker-e2e
+#   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-orpc-expo-void-e2e
+#   spa-hono-orpc-void-e2e
+#   spa-hono-postgres-bun-docker-e2e
+#   spa-hono-postgres-docker-e2e
+#   spa-hono-postgres-electron-bun-docker-e2e
+#   spa-hono-postgres-electron-docker-e2e
+#   spa-hono-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-electron-expo-docker-e2e
+#   spa-hono-postgres-electron-expo-void-e2e
+#   spa-hono-postgres-electron-void-e2e
+#   spa-hono-postgres-expo-bun-docker-e2e
+#   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-postgres-expo-void-e2e
+#   spa-hono-postgres-prisma-bun-docker-e2e
+#   spa-hono-postgres-prisma-docker-e2e
+#   spa-hono-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-postgres-prisma-electron-docker-e2e
+#   spa-hono-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-expo-docker-e2e
+#   spa-hono-postgres-void-e2e
+#   spa-hono-sqlite-bun-docker-e2e
+#   spa-hono-sqlite-docker-e2e
+#   spa-hono-sqlite-electron-bun-docker-e2e
+#   spa-hono-sqlite-electron-docker-e2e
+#   spa-hono-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-sqlite-electron-expo-docker-e2e
+#   spa-hono-sqlite-expo-bun-docker-e2e
+#   spa-hono-sqlite-expo-docker-e2e
+#   spa-hono-void-e2e
+import { test } from "@e2e-dev/web";
+import type { Browser } from "@e2e-dev/web";
+import { expect } from "e2e";
+
+const visit = async (browser: Browser, path: string) => {
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
+};
+
+// `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.
+const reload = async (browser: Browser) => {
+  await visit(browser, await browser.url());
+};
+
+test("the home page reports the API as connected", async ({
+  browser,
+  screen,
+}) => {
+  await visit(browser, "/");
+
+  await expect(screen.getByText("Connected")).toBeVisible();
+});
+
+test("the dark theme survives a reload", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await screen.getByRole("button", { name: "Toggle theme" }).tap();
+  await screen.getByRole("menuitemradio", { name: "Dark" }).tap();
+  const html = browser.locator("html");
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+
+  await reload(browser);
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+});
+
+# apps/web/tests/e2e/app.e2e.ts · 8 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
@@ -2116,7 +1895,7 @@ import type { Screen } from "e2e";
 import { createTodo, password, signUp, uniqueEmail } from "../support/api.ts";
 
 const visit = async (browser: Browser, path: string) => {
-  await browser.goto(path, { waitUntil: "networkidle" });
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
 };
 
 // `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.
@@ -2399,6 +2178,590 @@ for (const { edit, expected } of [
     }
   });
 }
+
+# apps/web/tests/e2e/app.e2e.ts · 120 stacks
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+#   spa-hono-openapi-mongodb-bun-docker-e2e
+#   spa-hono-openapi-mongodb-docker-e2e
+#   spa-hono-openapi-mongodb-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-expo-docker-e2e
+#   spa-hono-openapi-mysql-bun-docker-e2e
+#   spa-hono-openapi-mysql-docker-e2e
+#   spa-hono-openapi-mysql-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-electron-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-electron-void-e2e
+#   spa-hono-openapi-mysql-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-expo-docker-e2e
+#   spa-hono-openapi-mysql-expo-void-e2e
+#   spa-hono-openapi-mysql-prisma-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-expo-docker-e2e
+#   spa-hono-openapi-mysql-void-e2e
+#   spa-hono-openapi-postgres-bun-docker-e2e
+#   spa-hono-openapi-postgres-docker-e2e
+#   spa-hono-openapi-postgres-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-electron-void-e2e
+#   spa-hono-openapi-postgres-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-expo-docker-e2e
+#   spa-hono-openapi-postgres-expo-void-e2e
+#   spa-hono-openapi-postgres-prisma-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-expo-docker-e2e
+#   spa-hono-openapi-postgres-void-e2e
+#   spa-hono-openapi-sqlite-bun-docker-e2e
+#   spa-hono-openapi-sqlite-docker-e2e
+#   spa-hono-openapi-sqlite-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-expo-docker-e2e
+#   spa-hono-orpc-mongodb-bun-docker-e2e
+#   spa-hono-orpc-mongodb-docker-e2e
+#   spa-hono-orpc-mongodb-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-expo-docker-e2e
+#   spa-hono-orpc-mysql-bun-docker-e2e
+#   spa-hono-orpc-mysql-docker-e2e
+#   spa-hono-orpc-mysql-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-electron-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-electron-void-e2e
+#   spa-hono-orpc-mysql-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-expo-docker-e2e
+#   spa-hono-orpc-mysql-expo-void-e2e
+#   spa-hono-orpc-mysql-prisma-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-expo-docker-e2e
+#   spa-hono-orpc-mysql-void-e2e
+#   spa-hono-orpc-postgres-bun-docker-e2e
+#   spa-hono-orpc-postgres-docker-e2e
+#   spa-hono-orpc-postgres-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-electron-void-e2e
+#   spa-hono-orpc-postgres-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-expo-docker-e2e
+#   spa-hono-orpc-postgres-expo-void-e2e
+#   spa-hono-orpc-postgres-prisma-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-expo-docker-e2e
+#   spa-hono-orpc-postgres-void-e2e
+#   spa-hono-orpc-sqlite-bun-docker-e2e
+#   spa-hono-orpc-sqlite-docker-e2e
+#   spa-hono-orpc-sqlite-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-docker-e2e
+#   spa-hono-orpc-sqlite-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-expo-docker-e2e
+import { test } from "@e2e-dev/web";
+import type { Browser } from "@e2e-dev/web";
+import { expect } from "e2e";
+
+const visit = async (browser: Browser, path: string) => {
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
+};
+
+// `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.
+const reload = async (browser: Browser) => {
+  await visit(browser, await browser.url());
+};
+
+test("the home page reports the API as connected", async ({
+  browser,
+  screen,
+}) => {
+  await visit(browser, "/");
+
+  await expect(screen.getByText("Connected")).toBeVisible();
+});
+
+test("navigates from home to todos", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await screen.getByRole("link", { name: "Todos" }).tap();
+
+  await expect(browser).toHaveURL("/todos");
+  await expect(screen.getByLabel("New todo")).toBeVisible();
+});
+
+test("creates, completes, persists and deletes a todo", async ({
+  browser,
+  screen,
+}) => {
+  const title = `Write e2e test ${crypto.randomUUID()}`;
+  await visit(browser, "/todos");
+
+  await screen.getByLabel("New todo").fill(title);
+  await screen.getByRole("button", { name: "Add" }).tap();
+  const todo = screen.getByRole("checkbox", { name: title });
+  await expect(todo).not.toBeChecked();
+  await todo.tap();
+  await expect(todo).toBeChecked();
+
+  await reload(browser);
+  await expect(todo).toBeChecked();
+
+  await screen.getByRole("button", { name: `Delete ${title}` }).tap();
+  await expect(todo).toHaveCount(0);
+});
+
+test("the dark theme survives a reload", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await screen.getByRole("button", { name: "Toggle theme" }).tap();
+  await screen.getByRole("menuitemradio", { name: "Dark" }).tap();
+  const html = browser.locator("html");
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+
+  await reload(browser);
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+});
+
+# apps/web/tests/e2e/app.e2e.ts · 56 stacks
+#   spa-hono-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-bun-docker-e2e
+#   spa-hono-mysql-better-auth-docker-e2e
+#   spa-hono-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-mysql-better-auth-electron-void-e2e
+#   spa-hono-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-better-auth-expo-docker-e2e
+#   spa-hono-mysql-better-auth-expo-void-e2e
+#   spa-hono-mysql-better-auth-void-e2e
+#   spa-hono-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-bun-docker-e2e
+#   spa-hono-postgres-better-auth-docker-e2e
+#   spa-hono-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-postgres-better-auth-electron-void-e2e
+#   spa-hono-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-better-auth-expo-docker-e2e
+#   spa-hono-postgres-better-auth-expo-void-e2e
+#   spa-hono-postgres-better-auth-void-e2e
+#   spa-hono-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-sqlite-better-auth-expo-docker-e2e
+import { test } from "@e2e-dev/web";
+import type { Browser } from "@e2e-dev/web";
+import { expect } from "e2e";
+import type { Screen } from "e2e";
+
+import { password, signUp, uniqueEmail } from "../support/api.ts";
+
+const visit = async (browser: Browser, path: string) => {
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
+};
+
+// `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.
+const reload = async (browser: Browser) => {
+  await visit(browser, await browser.url());
+};
+
+const signUpThroughUi = async (browser: Browser, screen: Screen) => {
+  await visit(browser, "/login");
+  await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
+  await screen.getByLabel("Name").fill("Ada");
+  await screen.getByLabel("Email").fill(uniqueEmail());
+  await screen.getByLabel("Password").fill(password);
+  await screen.getByRole("main").getByRole("button", { name: "Sign up" }).tap();
+  await expect(browser).toHaveURL("/");
+};
+
+test("the home page reports the API as connected", async ({
+  browser,
+  screen,
+}) => {
+  await visit(browser, "/");
+
+  await expect(screen.getByText("Connected")).toBeVisible();
+});
+
+test("a new user signs up and is signed in", async ({ browser, screen }) => {
+  await signUpThroughUi(browser, screen);
+
+  await expect(screen.getByRole("button", { name: "Ada" })).toBeVisible();
+});
+
+test("an existing user signs in", async ({ browser, screen }) => {
+  const { email } = await signUp();
+
+  await visit(browser, "/login");
+  await screen.getByLabel("Email").fill(email);
+  await screen.getByLabel("Password").fill(password);
+  await screen.getByRole("main").getByRole("button", { name: "Sign in" }).tap();
+
+  await expect(browser).toHaveURL("/");
+  await expect(screen.getByRole("button", { name: "Test User" })).toBeVisible();
+});
+
+test("a wrong password is rejected", async ({ browser, screen }) => {
+  const { email } = await signUp();
+
+  await visit(browser, "/login");
+  await screen.getByLabel("Email").fill(email);
+  await screen.getByLabel("Password").fill("wrong-password");
+  await screen.getByRole("main").getByRole("button", { name: "Sign in" }).tap();
+
+  await expect(screen.getByText("Invalid email or password")).toBeVisible();
+  await expect(browser).toHaveURL("/login");
+});
+
+test("signing out ends the session", async ({ browser, screen }) => {
+  await signUpThroughUi(browser, screen);
+
+  await screen.getByRole("button", { name: "Ada" }).tap();
+  await screen.getByRole("menuitem", { name: "Sign out" }).tap();
+  await expect(screen.getByRole("banner").getByText("Sign in")).toBeVisible();
+
+  await reload(browser);
+  await expect(screen.getByRole("banner").getByText("Sign in")).toBeVisible();
+  await expect(screen.getByRole("button", { name: "Ada" })).toBeHidden();
+});
+
+test("the dark theme survives a reload", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await screen.getByRole("button", { name: "Toggle theme" }).tap();
+  await screen.getByRole("menuitemradio", { name: "Dark" }).tap();
+  const html = browser.locator("html");
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+
+  await reload(browser);
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+});
+
+# apps/web/tests/e2e/app.e2e.ts · 112 stacks
+#   spa-hono-openapi-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-docker-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
+#   spa-hono-openapi-mysql-better-auth-void-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-docker-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
+#   spa-hono-openapi-postgres-better-auth-void-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-openapi-sqlite-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mongodb-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-docker-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
+#   spa-hono-orpc-mysql-better-auth-void-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-mysql-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-docker-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
+#   spa-hono-orpc-postgres-better-auth-void-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-postgres-prisma-better-auth-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-bun-docker-e2e
+#   spa-hono-orpc-sqlite-better-auth-expo-docker-e2e
+import { test } from "@e2e-dev/web";
+import type { Browser } from "@e2e-dev/web";
+import { expect } from "e2e";
+import type { Screen } from "e2e";
+
+import { createTodo, password, signUp, uniqueEmail } from "../support/api.ts";
+
+const visit = async (browser: Browser, path: string) => {
+  await browser.goto(path, { waitUntil: "domcontentloaded" });
+};
+
+// `browser.reload()` takes no `waitUntil`, so a reload is a visit to the current URL.
+const reload = async (browser: Browser) => {
+  await visit(browser, await browser.url());
+};
+
+const signUpThroughUi = async (browser: Browser, screen: Screen) => {
+  await visit(browser, "/login");
+  await screen.getByRole("button", { name: "Need an account? Sign up" }).tap();
+  await screen.getByLabel("Name").fill("Ada");
+  await screen.getByLabel("Email").fill(uniqueEmail());
+  await screen.getByLabel("Password").fill(password);
+  await screen.getByRole("main").getByRole("button", { name: "Sign up" }).tap();
+  await expect(browser).toHaveURL("/todos");
+};
+
+test("the home page reports the API as connected", async ({
+  browser,
+  screen,
+}) => {
+  await visit(browser, "/");
+
+  await expect(screen.getByText("Connected")).toBeVisible();
+});
+
+test("visitors are sent to sign in before seeing todos", async ({
+  browser,
+}) => {
+  await visit(browser, "/todos");
+
+  await expect(browser).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("a new user signs up and manages todos that persist across reloads", async ({
+  browser,
+  screen,
+}) => {
+  await signUpThroughUi(browser, screen);
+  const emptyState = screen.getByText("No todos yet.");
+  await expect(emptyState).toBeVisible();
+
+  await screen.getByLabel("New todo").fill("Buy milk");
+  await screen.getByRole("button", { name: "Add" }).tap();
+  const todo = screen.getByRole("checkbox", { name: "Buy milk" });
+  await todo.tap();
+  await expect(todo).toBeChecked();
+
+  await reload(browser);
+  await expect(todo).toBeChecked();
+
+  await screen.getByRole("button", { name: "Delete Buy milk" }).tap();
+  await expect(emptyState).toBeVisible();
+});
+
+test("an existing user signs in and returns to the page they asked for", async ({
+  browser,
+  screen,
+}) => {
+  const { email, client } = await signUp();
+  await createTodo(client, "Existing todo");
+
+  await visit(browser, "/todos");
+  await screen.getByLabel("Email").fill(email);
+  await screen.getByLabel("Password").fill(password);
+  await screen.getByRole("main").getByRole("button", { name: "Sign in" }).tap();
+
+  await expect(browser).toHaveURL("/todos");
+  await expect(screen.getByText("Existing todo")).toBeVisible();
+});
+
+test("a wrong password is rejected", async ({ browser, screen }) => {
+  const { email } = await signUp();
+
+  await visit(browser, "/login");
+  await screen.getByLabel("Email").fill(email);
+  await screen.getByLabel("Password").fill("wrong-password");
+  await screen.getByRole("main").getByRole("button", { name: "Sign in" }).tap();
+
+  await expect(screen.getByText("Invalid email or password")).toBeVisible();
+  await expect(browser).toHaveURL("/login");
+});
+
+test("signing out ends the session", async ({ browser, screen }) => {
+  await signUpThroughUi(browser, screen);
+
+  await screen.getByRole("button", { name: "Ada" }).tap();
+  await screen.getByRole("menuitem", { name: "Sign out" }).tap();
+  await expect(browser).toHaveURL("/");
+
+  await visit(browser, "/todos");
+  await expect(browser).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("the dark theme survives a reload", async ({ browser, screen }) => {
+  await visit(browser, "/");
+
+  await screen.getByRole("button", { name: "Toggle theme" }).tap();
+  await screen.getByRole("menuitemradio", { name: "Dark" }).tap();
+  const html = browser.locator("html");
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+
+  await reload(browser);
+  await expect(browser).toHaveClass(html, /\bdark\b/u);
+});
+
+test("login redirects stay on the app origin after URL normalization", async ({
+  browser,
+  screen,
+}) => {
+  const { email } = await signUp();
+  const redirect = "/\\example.com";
+  await visit(browser, `/login?redirect=${encodeURIComponent(redirect)}`);
+  await screen.getByLabel("Email").fill(email);
+  await screen.getByLabel("Password").fill(password);
+  await screen.getByRole("main").getByRole("button", { name: "Sign in" }).tap();
+  await expect(browser).toHaveURL("/todos");
+
+  const expectInternalRedirect = async (value: string) => {
+    await visit(browser, `/login?redirect=${encodeURIComponent(value)}`);
+    await expect(browser).toHaveURL("/todos");
+  };
+
+  await expectInternalRedirect("https://example.com");
+  await expectInternalRedirect("//example.com");
+  await expectInternalRedirect("/\\example.com");
+  await expectInternalRedirect("/\t/example.com");
+  await expectInternalRedirect("/\r/example.com");
+  await expectInternalRedirect("/\n/example.com");
+});
 
 # apps/web/tests/support/api.ts · 132 stacks
 #   next-hono-mongodb-better-auth-bun-docker-e2e

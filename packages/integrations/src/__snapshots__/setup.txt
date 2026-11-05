@@ -957,7 +957,7 @@ vp run typegen  # writes apps/web/.next/**, apps/web/next-env.d.ts
 #   tanstack-start-self-sqlite-expo-docker
 #   tanstack-start-self-sqlite-expo-docker-e2e
 vp install  # writes pnpm-lock.yaml
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 428 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
@@ -1389,7 +1389,7 @@ vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 #   tanstack-start-self-sqlite-better-auth-expo-docker
 #   tanstack-start-self-sqlite-better-auth-expo-docker-e2e
 vp install  # writes pnpm-lock.yaml
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 vp run db:generate --name init  # writes packages/db/src/migrations/**
 
 # setup · 40 stacks
@@ -1435,7 +1435,7 @@ vp run db:generate --name init  # writes packages/db/src/migrations/**
 #   spa-hono-void-e2e
 vp install  # writes pnpm-lock.yaml
 vp exec --filter @my-app/server void prepare  # writes apps/server/.void/**
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 80 stacks
 #   spa-hono-mysql-better-auth-electron-expo-void
@@ -1520,7 +1520,7 @@ vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 #   spa-hono-postgres-better-auth-void-e2e
 vp install  # writes pnpm-lock.yaml
 vp exec --filter @my-app/server void prepare  # writes apps/server/.void/**
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 vp run db:generate --name init  # writes packages/db/src/migrations/**
 
 # setup · 264 stacks
@@ -1791,7 +1791,7 @@ vp run db:generate --name init  # writes packages/db/src/migrations/**
 vp install  # writes pnpm-lock.yaml
 vp run --filter @my-app/db db:init  # writes packages/db/src/migrations/0_init/**
 vp run db:client  # writes packages/db/src/generated/**
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 56 stacks
 #   spa-hono-mysql-prisma-bun-docker
@@ -1852,7 +1852,7 @@ vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 #   tanstack-start-self-postgres-prisma-expo-docker-e2e
 vp install  # writes pnpm-lock.yaml
 vp run db:client  # writes packages/db/src/generated/**
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 16 stacks
 #   tanstack-start-expo-void
@@ -1873,7 +1873,7 @@ vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 #   tanstack-start-void-e2e
 vp install  # writes pnpm-lock.yaml
 vp exec --filter @my-app/web void prepare  # writes apps/web/.void/**
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 
 # setup · 24 stacks
 #   tanstack-start-self-mysql-better-auth-expo-void
@@ -1902,5 +1902,5 @@ vp build apps/web  # writes apps/web/src/routeTree.gen.ts
 #   tanstack-start-self-postgres-better-auth-void-e2e
 vp install  # writes pnpm-lock.yaml
 vp exec --filter @my-app/web void prepare  # writes apps/web/.void/**
-vp build apps/web  # writes apps/web/src/routeTree.gen.ts
+vp run typegen  # writes apps/web/src/routeTree.gen.ts
 vp run db:generate --name init  # writes packages/db/src/migrations/**

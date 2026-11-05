@@ -280,11 +280,11 @@ const exactly = (labels: readonly string[]) =>
   `^(?:${labels.map(escapeRegExp).join("|")})$`;
 
 /**
- * Most of a job is preparing the runner, and a stack verifies in under a minute. Linux runs two stacks at a time
- * across up to eight shards; Windows runs its goldens one at a time on a single runner.
+ * Linux runs two stacks at a time across up to sixteen shards to bound concurrent builds and browser processes.
+ * Windows runs its goldens one at a time on a single runner.
  */
 const capacity = {
-  linux: { jobs: 2, runner: "ubuntu-24.04", shards: 8 },
+  linux: { jobs: 2, runner: "ubuntu-24.04", shards: 16 },
   windows: { jobs: 1, runner: "windows-2025", shards: 1 },
 } satisfies Record<Platform, { jobs: number; runner: string; shards: number }>;
 
