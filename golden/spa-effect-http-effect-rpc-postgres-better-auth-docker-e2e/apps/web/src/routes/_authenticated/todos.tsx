@@ -6,16 +6,39 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import { Exit, Schema } from "effect";
-import { Trash2Icon } from "lucide-react";
+import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useReducedMotion,
+} from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
 import { TodoTitle } from "@my-app/contracts";
 import type { Todo } from "@my-app/contracts";
+import {
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertTitle,
+} from "@my-app/ui/components/alert";
+import { Badge } from "@my-app/ui/components/badge";
 import { Button } from "@my-app/ui/components/button";
 import { Card, CardContent } from "@my-app/ui/components/card";
 import { Checkbox } from "@my-app/ui/components/checkbox";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@my-app/ui/components/empty";
 import { Input } from "@my-app/ui/components/input";
+import { Separator } from "@my-app/ui/components/separator";
+import { Spinner } from "@my-app/ui/components/spinner";
+import { cn } from "@my-app/ui/lib/utils";
 
 import {
   createTodoAtom,
@@ -29,6 +52,7 @@ import { toastFailure } from "#src/lib/notify.ts";
 const decodeTitle = Schema.decodeUnknownExit(TodoTitle);
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
+  const reduced = useReducedMotion() === true;
   const [pending, startMutation] = useTransition();
 
   const updateTodo = useAtomSet(updateTodoAtom(todo.id), {
@@ -40,7 +64,16 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
   });
 
   return (
-    <li className="hover:bg-muted/40 flex items-center gap-3 px-4 py-2.5 transition-colors">
+    <motion.li
+      animate={{ height: "auto", opacity: 1 }}
+      className="hover:bg-muted/50 flex items-center gap-3 overflow-hidden px-4 py-3 transition-colors"
+      exit={
+        reduced ? { opacity: 0 } : { height: 0, opacity: 0, paddingBlock: 0 }
+      }
+      initial={{ height: 0, opacity: 0 }}
+      layout="position"
+      transition={{ duration: 0.2 }}
+    >
       <Checkbox
         aria-label={todo.title}
         checked={todo.completed}
@@ -52,11 +85,11 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
         }}
       />
       <span
-        className={
-          todo.completed
-            ? "text-muted-foreground decoration-muted-foreground/50 flex-1 text-sm line-through"
-            : "flex-1 text-sm"
-        }
+        className={cn(
+          "flex-1 text-sm wrap-anywhere",
+          todo.completed &&
+            "text-muted-foreground decoration-muted-foreground/50 line-through"
+        )}
       >
         {todo.title}
       </span>
@@ -73,7 +106,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
       >
         <Trash2Icon className="text-muted-foreground" />
       </Button>
-    </li>
+    </motion.li>
   );
 };
 
@@ -109,55 +142,80 @@ const TodosPage = () => {
   };
 
   return (
-    <section className="grid gap-6">
-      <div className="flex items-end justify-between gap-4">
-        <div className="grid gap-1">
-          <h1 className="text-3xl font-semibold tracking-tight">Todos</h1>
-          <p className="text-muted-foreground text-sm">
-            Private to your account.
-          </p>
-        </div>
-        {todos.length > 0 && (
-          <p className="text-muted-foreground text-sm tabular-nums">
-            {done} of {todos.length} done
-          </p>
-        )}
-      </div>
-      <Card>
-        <CardContent>
-          <form className="flex gap-2" onSubmit={handleSubmit}>
-            <Input
-              aria-label="New todo"
-              onChange={(event) => {
-                setDraft({ title: event.target.value });
-              }}
-              placeholder="What needs to be done?"
-              value={title}
-            />
-            <Button
-              disabled={isCreating || Exit.isFailure(validTitle)}
-              type="submit"
-            >
-              Add
-            </Button>
-          </form>
-        </CardContent>
-        {todos.length === 0 ? (
-          <div className="grid gap-1 border-t px-4 pt-10 pb-6 text-center">
-            <p className="text-sm font-medium">No todos yet.</p>
+    <MotionConfig reducedMotion="user">
+      <section className="mx-auto flex w-full max-w-2xl flex-col gap-8">
+        <header className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-col gap-1.5">
+            <h1 className="text-4xl font-semibold tracking-tight">Todos</h1>
             <p className="text-muted-foreground text-sm">
-              Each one you add is saved through the API.
+              Private to your account.
             </p>
           </div>
-        ) : (
-          <ul className="-mb-4 divide-y border-t">
-            {todos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
-            ))}
-          </ul>
+          {todos.length > 0 && (
+            <Badge variant="secondary">
+              {done} of {todos.length} done
+            </Badge>
+          )}
+        </header>
+        {todos.length > 0 && (
+          <div className="bg-muted h-1 overflow-hidden rounded-full">
+            <motion.div
+              animate={{ scaleX: done / todos.length }}
+              className="bg-primary h-full origin-left"
+              initial={false}
+              transition={{ bounce: 0, duration: 0.5, type: "spring" }}
+            />
+          </div>
         )}
-      </Card>
-    </section>
+        <Card>
+          <CardContent>
+            <form className="flex gap-2" onSubmit={handleSubmit}>
+              <Input
+                aria-label="New todo"
+                maxLength={200}
+                onChange={(event) => {
+                  setDraft({ title: event.target.value });
+                }}
+                placeholder="Add a todo"
+                value={title}
+              />
+              <Button
+                disabled={isCreating || Exit.isFailure(validTitle)}
+                type="submit"
+              >
+                {isCreating ? (
+                  <Spinner data-icon="inline-start" />
+                ) : (
+                  <PlusIcon data-icon="inline-start" />
+                )}
+                Add
+              </Button>
+            </form>
+          </CardContent>
+          <Separator />
+          <ul className="-my-4 divide-y empty:hidden">
+            <AnimatePresence initial={false}>
+              {todos.map((todo) => (
+                <TodoItem key={todo.id} todo={todo} />
+              ))}
+            </AnimatePresence>
+          </ul>
+          {todos.length === 0 && (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <ListTodoIcon />
+                </EmptyMedia>
+                <EmptyTitle>No todos yet.</EmptyTitle>
+                <EmptyDescription>
+                  Add one above. It is saved through the API to the database.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          )}
+        </Card>
+      </section>
+    </MotionConfig>
   );
 };
 
@@ -165,17 +223,24 @@ const TodosError = ({ reset }: ErrorComponentProps) => {
   const refresh = useAtomRefresh(todosAtom);
 
   return (
-    <section className="grid justify-items-start gap-4" role="alert">
-      <p>Could not load your todos.</p>
-      <Button
-        onClick={() => {
-          refresh();
-          reset();
-        }}
-      >
-        Try again
-      </Button>
-    </section>
+    <Alert className="mx-auto max-w-2xl" variant="destructive">
+      <AlertTitle>Could not load your todos.</AlertTitle>
+      <AlertDescription>
+        The API did not answer. Check that the server is running.
+      </AlertDescription>
+      <AlertAction>
+        <Button
+          onClick={() => {
+            refresh();
+            reset();
+          }}
+          size="sm"
+          variant="outline"
+        >
+          Try again
+        </Button>
+      </AlertAction>
+    </Alert>
   );
 };
 

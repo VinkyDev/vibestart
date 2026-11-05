@@ -26,7 +26,7 @@ export const sqlite = defineIntegration({
       contribute(ignoredFiles, pattern)
     ),
     contribute(readmeTagline, "SQLite"),
-    contribute(stackHeadline, "SQLite"),
+    contribute(stackHeadline, { name: "SQLite", role: "Database" }),
     contribute(readmeLayers, {
       choice: ctx.has("bun")
         ? `SQLite through Bun's compatible \`node:sqlite\`, ${ormRelease(ctx)}`

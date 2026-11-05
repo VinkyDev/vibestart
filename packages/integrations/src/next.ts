@@ -333,7 +333,7 @@ export const next = defineIntegration({
         : []),
       navigation(ctx, "next/common", navLinksPath),
       nextConfig(ctx),
-      homePage(ctx, "apps/web/src/app/page.tsx", false),
+      ...homePage(ctx, "apps/web/src/app/page.tsx", false),
       contribute(packageJson, {
         dependencies: ["next", "react", "react-dom"],
         devDependencies: [
@@ -416,7 +416,7 @@ export const next = defineIntegration({
         "This is Next.js 16. Before calling a Next API, read the matching guide in `apps/web/node_modules/next/dist/docs/`. `params` and `searchParams` are promises, and `middleware` is now `proxy`."
       ),
       contribute(readmeTagline, "Next.js"),
-      contribute(stackHeadline, "Next.js"),
+      contribute(stackHeadline, { name: "Next.js", role: "Framework" }),
       contribute(readmeLayers, {
         choice:
           "Next.js 16 App Router, React 19 with React Compiler, typed routes",

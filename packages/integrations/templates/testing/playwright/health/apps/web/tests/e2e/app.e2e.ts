@@ -8,7 +8,7 @@ const visit = async (page: Page, path: string) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("the dark theme survives a reload", async ({ page }) => {

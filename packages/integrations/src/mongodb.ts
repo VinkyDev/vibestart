@@ -52,7 +52,7 @@ export const mongodb = defineIntegration({
             ),
           ]),
       contribute(readmeTagline, "MongoDB"),
-      contribute(stackHeadline, "MongoDB"),
+      contribute(stackHeadline, { name: "MongoDB", role: "Database" }),
       contribute(readmeLayers, {
         choice: `MongoDB 8, ${ormRelease(ctx)}`,
         layer: "Database",

@@ -80,7 +80,7 @@ export const effectDatabase = (ctx: Context) => [
         }
       : undefined,
   }),
-  contribute(stackHeadline, "Drizzle"),
+  contribute(stackHeadline, { name: "Drizzle", role: "ORM" }),
   contribute(agentsMap, {
     path: "packages/db",
     owns: `Drizzle schema, relations, migrations, and the Database service on ${ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg"}`,

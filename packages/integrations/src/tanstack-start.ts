@@ -342,7 +342,7 @@ export const tanstackStart = defineIntegration({
             ),
           ]
         : []),
-      homePage(ctx, "apps/web/src/routes/index.tsx", true),
+      ...homePage(ctx, "apps/web/src/routes/index.tsx", true),
       contribute(packageJson, {
         dependencies: [
           "@tanstack/react-router-ssr-query",
@@ -404,7 +404,7 @@ export const tanstackStart = defineIntegration({
       }),
       ...backendContributions(ctx),
       contribute(readmeTagline, "TanStack Start"),
-      contribute(stackHeadline, "TanStack Start"),
+      contribute(stackHeadline, { name: "TanStack Start", role: "Framework" }),
       contribute(readmeLayers, {
         choice: "TanStack Start (SSR, file routes, server routes), React 19",
         layer: "Framework",

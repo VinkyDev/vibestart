@@ -14,7 +14,7 @@ const reload = async (browser: Browser) => {
 test("the home page reports the API as connected", async ({ browser, screen }) => {
   await visit(browser, "/");
 
-  await expect(screen.getByText("Connected")).toBeVisible();
+  await expect(screen.getByText("API connected")).toBeVisible();
 });
 
 test("the dark theme survives a reload", async ({ browser, screen }) => {

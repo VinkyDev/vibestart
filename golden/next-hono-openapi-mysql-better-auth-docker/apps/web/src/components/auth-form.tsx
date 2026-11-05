@@ -1,32 +1,36 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { CircleAlertIcon } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
+import { Alert, AlertDescription } from "@my-app/ui/components/alert";
 import { Button } from "@my-app/ui/components/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@my-app/ui/components/card";
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@my-app/ui/components/field";
 import { Input } from "@my-app/ui/components/input";
-import { Label } from "@my-app/ui/components/label";
+import { Spinner } from "@my-app/ui/components/spinner";
 
+import { AuthArt } from "#src/components/auth-art.tsx";
+import { StackPlate } from "#src/components/stack-plate.tsx";
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { authClient } from "#src/lib/auth-client.ts";
 
 type Mode = "sign-in" | "sign-up";
 
 const copy = {
   "sign-in": {
-    description: "Welcome back.",
+    description: "Sign in with your email and password.",
     submit: "Sign in",
     switchLabel: "Need an account? Sign up",
-    title: "Sign in",
+    title: "Welcome back",
   },
   "sign-up": {
     description: "Sign up with your email and a password.",
@@ -34,107 +38,151 @@ const copy = {
     switchLabel: "Already have an account? Sign in",
     title: "Create an account",
   },
-} as const;
+} as const satisfies Record<Mode, Record<string, string>>;
 
 const formValue = (form: FormData, name: string) => {
   const value = form.get(name);
 
-  if (value === null || value instanceof File) {
-    return "";
-  }
-
-  return value;
+  return value === null || value instanceof File ? "" : value;
 };
 
-const authenticate = async (mode: Mode, form: FormData) => {
+const request = async (mode: Mode, form: FormData) => {
   const email = formValue(form, "email");
   const password = formValue(form, "password");
 
-  const { error } =
-    mode === "sign-in"
-      ? await authClient.signIn.email({ email, password })
-      : await authClient.signUp.email({
-          email,
-          name: formValue(form, "name"),
-          password,
-        });
+  return mode === "sign-in"
+    ? await authClient.signIn.email({ email, password })
+    : await authClient.signUp.email({
+        email,
+        name: formValue(form, "name"),
+        password,
+      });
+};
 
-  if (error) {
-    throw new Error(error.message ?? error.statusText);
+/** Signs in or up, and returns the message to show when that fails. */
+const authenticate = async (mode: Mode, form: FormData) => {
+  try {
+    const { error } = await request(mode, form);
+
+    return error ? (error.message ?? error.statusText) : null;
+  } catch {
+    return "Could not reach the server. Check your connection and try again.";
   }
 };
 
 export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
+  const hydrated = useHydrated();
+  const reduced = useReducedMotion() === true;
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (form: FormData) => {
-      await authenticate(mode, form);
-    },
-    onSuccess: () => {
-      router.push(redirectTo);
-      router.refresh();
-    },
-  });
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutate(new FormData(event.currentTarget));
+    const form = new FormData(event.currentTarget);
+
+    setError(null);
+    startTransition(async () => {
+      const failure = await authenticate(mode, form);
+
+      if (failure === null) {
+        router.push(redirectTo);
+        router.refresh();
+
+        return;
+      }
+
+      setError(failure);
+    });
   };
 
   return (
-    <Card className="mx-auto w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>{text.title}</CardTitle>
-        <CardDescription>{text.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {mode === "sign-up" && (
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input autoComplete="name" id="name" name="name" required />
-            </div>
-          )}
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              autoComplete="email"
-              id="email"
-              name="email"
-              required
-              type="email"
-            />
+    <div className="grid gap-10 lg:min-h-160 lg:grid-cols-2">
+      <div className="mx-auto flex w-full max-w-sm flex-col justify-center gap-8">
+        <div className="flex flex-col gap-2">
+          <div className="mb-4 w-16 lg:hidden">
+            <StackPlate active />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              autoComplete={
-                mode === "sign-in" ? "current-password" : "new-password"
-              }
-              id="password"
-              minLength={8}
-              name="password"
-              required
-              type="password"
-            />
-          </div>
-          <Button disabled={isPending} type="submit">
-            {text.submit}
-          </Button>
-          <Button
-            onClick={() => {
-              setMode(mode === "sign-in" ? "sign-up" : "sign-in");
-            }}
-            type="button"
-            variant="link"
-          >
-            {text.switchLabel}
-          </Button>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {text.title}
+          </h1>
+          <p className="text-muted-foreground">{text.description}</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <fieldset disabled={!hydrated || isPending}>
+            <FieldGroup>
+              {error !== null && (
+                <Alert variant="destructive">
+                  <CircleAlertIcon />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              {mode === "sign-up" && (
+                <motion.div
+                  animate={
+                    reduced ? { opacity: 1 } : { height: "auto", opacity: 1 }
+                  }
+                  className="-m-1 overflow-hidden p-1"
+                  initial={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Field>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input autoComplete="name" id="name" name="name" required />
+                  </Field>
+                </motion.div>
+              )}
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  autoComplete="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                  type="email"
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Input
+                  autoComplete={
+                    mode === "sign-in" ? "current-password" : "new-password"
+                  }
+                  id="password"
+                  minLength={8}
+                  name="password"
+                  required
+                  type="password"
+                />
+                {mode === "sign-up" && (
+                  <FieldDescription>At least 8 characters.</FieldDescription>
+                )}
+              </Field>
+              <Field>
+                <Button size="lg" type="submit">
+                  {isPending && <Spinner data-icon="inline-start" />}
+                  {text.submit}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setError(null);
+                    setMode(mode === "sign-in" ? "sign-up" : "sign-in");
+                  }}
+                  type="button"
+                  variant="link"
+                >
+                  {text.switchLabel}
+                </Button>
+              </Field>
+            </FieldGroup>
+          </fieldset>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+      <AuthArt />
+    </div>
   );
 };

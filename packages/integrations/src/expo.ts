@@ -506,7 +506,7 @@ export const expo = defineIntegration({
     // Metro loads its config in Node, outside the React Native preset `apps/mobile/tsconfig.json` checks.
     contribute(rootTypeScriptFiles, "apps/mobile/metro.config.ts"),
     contribute(unitTestSources, "apps/mobile/src"),
-    contribute(stackHeadline, "Expo"),
+    contribute(stackHeadline, { name: "Expo", role: "Mobile" }),
     contribute(agentsMap, {
       owns: "Expo Router screens, mobile UI components, and the Uniwind theme",
       path: "apps/mobile",

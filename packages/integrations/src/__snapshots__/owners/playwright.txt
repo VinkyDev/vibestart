@@ -1005,7 +1005,7 @@ const visit = async (page: Page, path: string) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("the dark theme survives a reload", async ({ page }) => {
@@ -1105,10 +1105,10 @@ const visit = async (page: Page, path: string) => {
   await page.goto(path, { waitUntil: "networkidle" });
 };
 
-const signUpThroughUi = async (page: Page) => {
+const signUpThroughUi = async (page: Page, name = "Ada") => {
   await visit(page, "/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
-  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Name").fill(name);
   await page.getByLabel("Email").fill(uniqueEmail());
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
@@ -1118,7 +1118,7 @@ const signUpThroughUi = async (page: Page) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("a new user signs up and is signed in", async ({ page }) => {
@@ -1149,6 +1149,21 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await expect(page.getByText("Invalid email or password")).toBeVisible();
   await expect(page).toHaveURL("/login");
+
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await expect(page.getByText("Invalid email or password")).not.toBeVisible();
+
+  // Validate in the first frame after switching, while an exiting field would still be mounted.
+  const valid = await page.evaluate<boolean>(
+    `(async () => {
+      const form = document.querySelector("form");
+      form.querySelector('button[type="button"]').click();
+      await new Promise(requestAnimationFrame);
+      return form.checkValidity();
+    })()`
+  );
+
+  expect(valid).toBe(true);
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -1161,6 +1176,24 @@ test("signing out ends the session", async ({ page }) => {
   await page.reload({ waitUntil: "networkidle" });
   await expect(page.getByRole("banner").getByText("Sign in")).toBeVisible();
   await expect(page.getByRole("button", { name: "Ada" })).toBeHidden();
+});
+
+test("the signed-in header fits a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signUpThroughUi(page, "😀 Ada Augusta King Lovelace");
+
+  await expect(
+    page.getByRole("button", { name: "😀 Ada Augusta King Lovelace" })
+  ).toBeVisible();
+
+  await expect(page.getByText("😀A", { exact: true })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await page.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
 });
 
 test("the dark theme survives a reload", async ({ page }) => {
@@ -1308,10 +1341,10 @@ const visit = async (page: Page, path: string) => {
   await page.goto(path, { waitUntil: "networkidle" });
 };
 
-const signUpThroughUi = async (page: Page) => {
+const signUpThroughUi = async (page: Page, name = "Ada") => {
   await visit(page, "/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
-  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Name").fill(name);
   await page.getByLabel("Email").fill(uniqueEmail());
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
@@ -1321,7 +1354,7 @@ const signUpThroughUi = async (page: Page) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("visitors are sent to sign in before seeing todos", async ({ page }) => {
@@ -1333,20 +1366,29 @@ test("visitors are sent to sign in before seeing todos", async ({ page }) => {
 test("a new user signs up and manages todos that persist across reloads", async ({
   page,
 }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
   await signUpThroughUi(page);
+  const title = "a".repeat(200);
   const emptyState = page.getByText("No todos yet.");
   await expect(emptyState).toBeVisible();
 
-  await page.getByLabel("New todo").fill("Buy milk");
+  await page.getByLabel("New todo").fill(title);
   await page.getByRole("button", { name: "Add" }).click();
-  const todo = page.getByRole("checkbox", { name: "Buy milk" });
+  const todo = page.getByRole("checkbox", { name: title });
   await todo.click();
   await expect(todo).toBeChecked();
 
   await page.reload({ waitUntil: "networkidle" });
   await expect(todo).toBeChecked();
 
-  await page.getByRole("button", { name: "Delete Buy milk" }).click();
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await page.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
+
+  await page.getByRole("button", { name: `Delete ${title}` }).click();
   await expect(emptyState).toBeVisible();
 });
 
@@ -1375,6 +1417,21 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await expect(page.getByText("Invalid email or password")).toBeVisible();
   await expect(page).toHaveURL("/login");
+
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await expect(page.getByText("Invalid email or password")).not.toBeVisible();
+
+  // Validate in the first frame after switching, while an exiting field would still be mounted.
+  const valid = await page.evaluate<boolean>(
+    `(async () => {
+      const form = document.querySelector("form");
+      form.querySelector('button[type="button"]').click();
+      await new Promise(requestAnimationFrame);
+      return form.checkValidity();
+    })()`
+  );
+
+  expect(valid).toBe(true);
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -1388,6 +1445,24 @@ test("signing out ends the session", async ({ page }) => {
   await expect(page).toHaveURL("/login?redirect=%2Ftodos");
 });
 
+test("the signed-in header fits a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signUpThroughUi(page, "😀 Ada Augusta King Lovelace");
+
+  await expect(
+    page.getByRole("button", { name: "😀 Ada Augusta King Lovelace" })
+  ).toBeVisible();
+
+  await expect(page.getByText("😀A", { exact: true })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await page.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
+});
+
 test("the dark theme survives a reload", async ({ page }) => {
   await visit(page, "/");
 
@@ -1399,29 +1474,37 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-test("login redirects stay on the app origin after URL normalization", async ({
-  page,
-}) => {
-  const { email } = await signUp();
-  const redirect = "/\\example.com";
-  await visit(page, `/login?redirect=${encodeURIComponent(redirect)}`);
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL("/todos");
+for (const redirect of [
+  "https://example.com",
+  "//example.com",
+  "/\\example.com",
+  "/\t/example.com",
+  "/\r/example.com",
+  "/\n/example.com",
+]) {
+  test.describe(`redirect ${JSON.stringify(redirect)}`, () => {
+    test("login redirects stay on the app origin after URL normalization", async ({
+      page,
+    }) => {
+      const { email } = await signUp();
+      const path = `/login?redirect=${encodeURIComponent(redirect)}`;
+      await visit(page, path);
+      await page.getByLabel("Email").fill(email);
+      await page.getByLabel("Password").fill(password);
+      await page
+        .getByRole("main")
+        .getByRole("button", { name: "Sign in" })
+        .click();
+      await expect(page).toHaveURL("/todos");
+      await expect(page.getByLabel("New todo")).toBeVisible();
 
-  const expectInternalRedirect = async (value: string) => {
-    await visit(page, `/login?redirect=${encodeURIComponent(value)}`);
-    await expect(page).toHaveURL("/todos");
-  };
-
-  await expectInternalRedirect("https://example.com");
-  await expectInternalRedirect("//example.com");
-  await expectInternalRedirect("/\\example.com");
-  await expectInternalRedirect("/\t/example.com");
-  await expectInternalRedirect("/\r/example.com");
-  await expectInternalRedirect("/\n/example.com");
-});
+      await visit(page, path);
+      await expect(page).toHaveURL("/todos");
+      // The URL can change while the destination's loader is still running.
+      await expect(page.getByLabel("New todo")).toBeVisible();
+    });
+  });
+}
 
 # apps/web/tests/e2e/app.e2e.ts · 124 stacks
 #   next-hono-openapi-mongodb-bun-docker
@@ -1558,7 +1641,7 @@ const visit = async (page: Page, path: string) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("navigates from home to todos", async ({ page }) => {
@@ -1571,7 +1654,8 @@ test("navigates from home to todos", async ({ page }) => {
 });
 
 test("creates, completes, persists and deletes a todo", async ({ page }) => {
-  const title = `Write e2e test ${crypto.randomUUID()}`;
+  await page.setViewportSize({ height: 667, width: 375 });
+  const title = crypto.randomUUID().replaceAll("-", "").repeat(6);
   await visit(page, "/todos");
 
   await page.getByLabel("New todo").fill(title);
@@ -1583,6 +1667,13 @@ test("creates, completes, persists and deletes a todo", async ({ page }) => {
 
   await page.reload({ waitUntil: "networkidle" });
   await expect(todo).toBeChecked();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await page.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
 
   await page.getByRole("button", { name: `Delete ${title}` }).click();
   await expect(todo).toHaveCount(0);
@@ -1739,7 +1830,7 @@ const visit = async (page: Page, path: string) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("the dark theme survives a reload", async ({ page }) => {
@@ -1777,10 +1868,10 @@ const reload = async (page: Page) => {
 
 const gate = (): PromiseWithResolvers<void> => Promise.withResolvers();
 
-const signUpThroughUi = async (page: Page) => {
+const signUpThroughUi = async (page: Page, name = "Ada") => {
   await visit(page, "/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
-  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Name").fill(name);
   await page.getByLabel("Email").fill(uniqueEmail());
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
@@ -1790,7 +1881,7 @@ const signUpThroughUi = async (page: Page) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("visitors are sent to sign in before seeing todos", async ({ page }) => {
@@ -1802,20 +1893,29 @@ test("visitors are sent to sign in before seeing todos", async ({ page }) => {
 test("a new user signs up and manages todos that persist across reloads", async ({
   page,
 }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
   await signUpThroughUi(page);
+  const title = "a".repeat(200);
   const emptyState = page.getByText("No todos yet.");
   await expect(emptyState).toBeVisible();
 
-  await page.getByLabel("New todo").fill("Buy milk");
+  await page.getByLabel("New todo").fill(title);
   await page.getByRole("button", { name: "Add" }).click();
-  const todo = page.getByRole("checkbox", { name: "Buy milk" });
+  const todo = page.getByRole("checkbox", { name: title });
   await todo.click();
   await expect(todo).toBeChecked();
 
   await reload(page);
   await expect(todo).toBeChecked();
 
-  await page.getByRole("button", { name: "Delete Buy milk" }).click();
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await page.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
+
+  await page.getByRole("button", { name: `Delete ${title}` }).click();
   await expect(emptyState).toBeVisible();
 });
 
@@ -1844,6 +1944,21 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await expect(page.getByText("Invalid email or password")).toBeVisible();
   await expect(page).toHaveURL("/login");
+
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await expect(page.getByText("Invalid email or password")).not.toBeVisible();
+
+  // Validate in the first frame after switching, while an exiting field would still be mounted.
+  const valid = await page.evaluate<boolean>(
+    `(async () => {
+      const form = document.querySelector("form");
+      form.querySelector('button[type="button"]').click();
+      await new Promise(requestAnimationFrame);
+      return form.checkValidity();
+    })()`
+  );
+
+  expect(valid).toBe(true);
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -1855,6 +1970,24 @@ test("signing out ends the session", async ({ page }) => {
 
   await visit(page, "/todos");
   await expect(page).toHaveURL("/login?redirect=%2Ftodos");
+});
+
+test("the signed-in header fits a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signUpThroughUi(page, "😀 Ada Augusta King Lovelace");
+
+  await expect(
+    page.getByRole("button", { name: "😀 Ada Augusta King Lovelace" })
+  ).toBeVisible();
+
+  await expect(page.getByText("😀A", { exact: true })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await page.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
 });
 
 test("the dark theme survives a reload", async ({ page }) => {
@@ -1950,11 +2083,11 @@ test("a new session never sees the previous user's cached todos", async ({
   await page.getByRole("button", { name: "Add" }).click();
   await expect(page.getByText("Private to the first account")).toBeVisible();
   await page.getByRole("link", { name: "Home", exact: true }).click();
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
   await page.getByRole("button", { name: "Ada" }).click();
   await page.getByRole("menuitem", { name: "Sign out" }).click();
   await expect(page.getByRole("button", { name: "Ada" })).not.toBeVisible();
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 
   await signUpThroughUi(page);
   await expect(page.getByText("No todos yet.")).toBeVisible();
@@ -1963,29 +2096,37 @@ test("a new session never sees the previous user's cached todos", async ({
   ).not.toBeVisible();
 });
 
-test("login redirects stay on the app origin after URL normalization", async ({
-  page,
-}) => {
-  const { email } = await signUp();
-  const redirect = "/\\example.com";
-  await visit(page, `/login?redirect=${encodeURIComponent(redirect)}`);
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL("/todos");
+for (const redirect of [
+  "https://example.com",
+  "//example.com",
+  "/\\example.com",
+  "/\t/example.com",
+  "/\r/example.com",
+  "/\n/example.com",
+]) {
+  test.describe(`redirect ${JSON.stringify(redirect)}`, () => {
+    test("login redirects stay on the app origin after URL normalization", async ({
+      page,
+    }) => {
+      const { email } = await signUp();
+      const path = `/login?redirect=${encodeURIComponent(redirect)}`;
+      await visit(page, path);
+      await page.getByLabel("Email").fill(email);
+      await page.getByLabel("Password").fill(password);
+      await page
+        .getByRole("main")
+        .getByRole("button", { name: "Sign in" })
+        .click();
+      await expect(page).toHaveURL("/todos");
+      await expect(page.getByLabel("New todo")).toBeVisible();
 
-  const expectInternalRedirect = async (value: string) => {
-    await visit(page, `/login?redirect=${encodeURIComponent(value)}`);
-    await expect(page).toHaveURL("/todos");
-  };
-
-  await expectInternalRedirect("https://example.com");
-  await expectInternalRedirect("//example.com");
-  await expectInternalRedirect("/\\example.com");
-  await expectInternalRedirect("/\t/example.com");
-  await expectInternalRedirect("/\r/example.com");
-  await expectInternalRedirect("/\n/example.com");
-});
+      await visit(page, path);
+      await expect(page).toHaveURL("/todos");
+      // The URL can change while the destination's loader is still running.
+      await expect(page.getByLabel("New todo")).toBeVisible();
+    });
+  });
+}
 
 for (const { edit, expected } of [
   { edit: "unchanged", expected: "" },
@@ -2170,7 +2311,7 @@ const visit = async (page: Page, path: string) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("navigates from home to todos", async ({ page }) => {
@@ -2183,7 +2324,8 @@ test("navigates from home to todos", async ({ page }) => {
 });
 
 test("creates, completes, persists and deletes a todo", async ({ page }) => {
-  const title = `Write e2e test ${crypto.randomUUID()}`;
+  await page.setViewportSize({ height: 667, width: 375 });
+  const title = crypto.randomUUID().replaceAll("-", "").repeat(6);
   await visit(page, "/todos");
 
   await page.getByLabel("New todo").fill(title);
@@ -2195,6 +2337,13 @@ test("creates, completes, persists and deletes a todo", async ({ page }) => {
 
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(todo).toBeChecked();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await page.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
 
   await page.getByRole("button", { name: `Delete ${title}` }).click();
   await expect(todo).toHaveCount(0);
@@ -2277,10 +2426,10 @@ const visit = async (page: Page, path: string) => {
   await page.goto(path, { waitUntil: "domcontentloaded" });
 };
 
-const signUpThroughUi = async (page: Page) => {
+const signUpThroughUi = async (page: Page, name = "Ada") => {
   await visit(page, "/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
-  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Name").fill(name);
   await page.getByLabel("Email").fill(uniqueEmail());
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
@@ -2290,7 +2439,7 @@ const signUpThroughUi = async (page: Page) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("a new user signs up and is signed in", async ({ page }) => {
@@ -2321,6 +2470,21 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await expect(page.getByText("Invalid email or password")).toBeVisible();
   await expect(page).toHaveURL("/login");
+
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await expect(page.getByText("Invalid email or password")).not.toBeVisible();
+
+  // Validate in the first frame after switching, while an exiting field would still be mounted.
+  const valid = await page.evaluate<boolean>(
+    `(async () => {
+      const form = document.querySelector("form");
+      form.querySelector('button[type="button"]').click();
+      await new Promise(requestAnimationFrame);
+      return form.checkValidity();
+    })()`
+  );
+
+  expect(valid).toBe(true);
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -2333,6 +2497,24 @@ test("signing out ends the session", async ({ page }) => {
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.getByRole("banner").getByText("Sign in")).toBeVisible();
   await expect(page.getByRole("button", { name: "Ada" })).toBeHidden();
+});
+
+test("the signed-in header fits a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signUpThroughUi(page, "😀 Ada Augusta King Lovelace");
+
+  await expect(
+    page.getByRole("button", { name: "😀 Ada Augusta King Lovelace" })
+  ).toBeVisible();
+
+  await expect(page.getByText("😀A", { exact: true })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await page.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
 });
 
 test("the dark theme survives a reload", async ({ page }) => {
@@ -2468,10 +2650,10 @@ const visit = async (page: Page, path: string) => {
   await page.goto(path, { waitUntil: "domcontentloaded" });
 };
 
-const signUpThroughUi = async (page: Page) => {
+const signUpThroughUi = async (page: Page, name = "Ada") => {
   await visit(page, "/login");
   await page.getByRole("button", { name: "Need an account? Sign up" }).click();
-  await page.getByLabel("Name").fill("Ada");
+  await page.getByLabel("Name").fill(name);
   await page.getByLabel("Email").fill(uniqueEmail());
   await page.getByLabel("Password").fill(password);
   await page.getByRole("main").getByRole("button", { name: "Sign up" }).click();
@@ -2481,7 +2663,7 @@ const signUpThroughUi = async (page: Page) => {
 test("the home page reports the API as connected", async ({ page }) => {
   await visit(page, "/");
 
-  await expect(page.getByText("Connected")).toBeVisible();
+  await expect(page.getByText("API connected")).toBeVisible();
 });
 
 test("visitors are sent to sign in before seeing todos", async ({ page }) => {
@@ -2493,20 +2675,29 @@ test("visitors are sent to sign in before seeing todos", async ({ page }) => {
 test("a new user signs up and manages todos that persist across reloads", async ({
   page,
 }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
   await signUpThroughUi(page);
+  const title = "a".repeat(200);
   const emptyState = page.getByText("No todos yet.");
   await expect(emptyState).toBeVisible();
 
-  await page.getByLabel("New todo").fill("Buy milk");
+  await page.getByLabel("New todo").fill(title);
   await page.getByRole("button", { name: "Add" }).click();
-  const todo = page.getByRole("checkbox", { name: "Buy milk" });
+  const todo = page.getByRole("checkbox", { name: title });
   await todo.click();
   await expect(todo).toBeChecked();
 
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(todo).toBeChecked();
 
-  await page.getByRole("button", { name: "Delete Buy milk" }).click();
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const deleteRight = await page.evaluate<number>(
+    `document.querySelector('button[aria-label="Delete ${title}"]').getBoundingClientRect().right`
+  );
+
+  expect(deleteRight).toBeLessThanOrEqual(375);
+
+  await page.getByRole("button", { name: `Delete ${title}` }).click();
   await expect(emptyState).toBeVisible();
 });
 
@@ -2535,6 +2726,21 @@ test("a wrong password is rejected", async ({ page }) => {
 
   await expect(page.getByText("Invalid email or password")).toBeVisible();
   await expect(page).toHaveURL("/login");
+
+  await page.getByRole("button", { name: "Need an account? Sign up" }).click();
+  await expect(page.getByText("Invalid email or password")).not.toBeVisible();
+
+  // Validate in the first frame after switching, while an exiting field would still be mounted.
+  const valid = await page.evaluate<boolean>(
+    `(async () => {
+      const form = document.querySelector("form");
+      form.querySelector('button[type="button"]').click();
+      await new Promise(requestAnimationFrame);
+      return form.checkValidity();
+    })()`
+  );
+
+  expect(valid).toBe(true);
 });
 
 test("signing out ends the session", async ({ page }) => {
@@ -2548,6 +2754,24 @@ test("signing out ends the session", async ({ page }) => {
   await expect(page).toHaveURL("/login?redirect=%2Ftodos");
 });
 
+test("the signed-in header fits a phone", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signUpThroughUi(page, "😀 Ada Augusta King Lovelace");
+
+  await expect(
+    page.getByRole("button", { name: "😀 Ada Augusta King Lovelace" })
+  ).toBeVisible();
+
+  await expect(page.getByText("😀A", { exact: true })).toBeVisible();
+
+  // A string: this test project has no DOM types, and the expression runs in the page.
+  const overflow = await page.evaluate<number>(
+    "document.documentElement.scrollWidth - document.documentElement.clientWidth"
+  );
+
+  expect(overflow).toBe(0);
+});
+
 test("the dark theme survives a reload", async ({ page }) => {
   await visit(page, "/");
 
@@ -2559,29 +2783,37 @@ test("the dark theme survives a reload", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 
-test("login redirects stay on the app origin after URL normalization", async ({
-  page,
-}) => {
-  const { email } = await signUp();
-  const redirect = "/\\example.com";
-  await visit(page, `/login?redirect=${encodeURIComponent(redirect)}`);
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("main").getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL("/todos");
+for (const redirect of [
+  "https://example.com",
+  "//example.com",
+  "/\\example.com",
+  "/\t/example.com",
+  "/\r/example.com",
+  "/\n/example.com",
+]) {
+  test.describe(`redirect ${JSON.stringify(redirect)}`, () => {
+    test("login redirects stay on the app origin after URL normalization", async ({
+      page,
+    }) => {
+      const { email } = await signUp();
+      const path = `/login?redirect=${encodeURIComponent(redirect)}`;
+      await visit(page, path);
+      await page.getByLabel("Email").fill(email);
+      await page.getByLabel("Password").fill(password);
+      await page
+        .getByRole("main")
+        .getByRole("button", { name: "Sign in" })
+        .click();
+      await expect(page).toHaveURL("/todos");
+      await expect(page.getByLabel("New todo")).toBeVisible();
 
-  const expectInternalRedirect = async (value: string) => {
-    await visit(page, `/login?redirect=${encodeURIComponent(value)}`);
-    await expect(page).toHaveURL("/todos");
-  };
-
-  await expectInternalRedirect("https://example.com");
-  await expectInternalRedirect("//example.com");
-  await expectInternalRedirect("/\\example.com");
-  await expectInternalRedirect("/\t/example.com");
-  await expectInternalRedirect("/\r/example.com");
-  await expectInternalRedirect("/\n/example.com");
-});
+      await visit(page, path);
+      await expect(page).toHaveURL("/todos");
+      // The URL can change while the destination's loader is still running.
+      await expect(page.getByLabel("New todo")).toBeVisible();
+    });
+  });
+}
 
 # apps/web/tests/e2e/global-setup.ts · 816 stacks
 #   next-docker
@@ -3450,6 +3682,655 @@ export default async function setup() {
   return async () => {
     await Effect.runPromise(close);
   };
+}
+
+# apps/web/tests/e2e/hydration.e2e.ts · 112 stacks
+#   next-docker
+#   next-expo-docker
+#   next-hono-bun-docker
+#   next-hono-docker
+#   next-hono-expo-bun-docker
+#   next-hono-expo-docker
+#   next-hono-mongodb-bun-docker
+#   next-hono-mongodb-docker
+#   next-hono-mongodb-expo-bun-docker
+#   next-hono-mongodb-expo-docker
+#   next-hono-mysql-bun-docker
+#   next-hono-mysql-docker
+#   next-hono-mysql-expo-bun-docker
+#   next-hono-mysql-expo-docker
+#   next-hono-mysql-prisma-bun-docker
+#   next-hono-mysql-prisma-docker
+#   next-hono-mysql-prisma-expo-bun-docker
+#   next-hono-mysql-prisma-expo-docker
+#   next-hono-openapi-bun-docker
+#   next-hono-openapi-docker
+#   next-hono-openapi-expo-bun-docker
+#   next-hono-openapi-expo-docker
+#   next-hono-orpc-bun-docker
+#   next-hono-orpc-docker
+#   next-hono-orpc-expo-bun-docker
+#   next-hono-orpc-expo-docker
+#   next-hono-postgres-bun-docker
+#   next-hono-postgres-docker
+#   next-hono-postgres-expo-bun-docker
+#   next-hono-postgres-expo-docker
+#   next-hono-postgres-prisma-bun-docker
+#   next-hono-postgres-prisma-docker
+#   next-hono-postgres-prisma-expo-bun-docker
+#   next-hono-postgres-prisma-expo-docker
+#   next-hono-sqlite-bun-docker
+#   next-hono-sqlite-docker
+#   next-hono-sqlite-expo-bun-docker
+#   next-hono-sqlite-expo-docker
+#   next-self-mongodb-docker
+#   next-self-mongodb-expo-docker
+#   next-self-mysql-docker
+#   next-self-mysql-expo-docker
+#   next-self-mysql-prisma-docker
+#   next-self-mysql-prisma-expo-docker
+#   next-self-orpc-docker
+#   next-self-orpc-expo-docker
+#   next-self-postgres-docker
+#   next-self-postgres-expo-docker
+#   next-self-postgres-prisma-docker
+#   next-self-postgres-prisma-expo-docker
+#   next-self-sqlite-docker
+#   next-self-sqlite-expo-docker
+#   tanstack-start-docker
+#   tanstack-start-expo-docker
+#   tanstack-start-expo-void
+#   tanstack-start-hono-bun-docker
+#   tanstack-start-hono-docker
+#   tanstack-start-hono-expo-bun-docker
+#   tanstack-start-hono-expo-docker
+#   tanstack-start-hono-mongodb-bun-docker
+#   tanstack-start-hono-mongodb-docker
+#   tanstack-start-hono-mongodb-expo-bun-docker
+#   tanstack-start-hono-mongodb-expo-docker
+#   tanstack-start-hono-mysql-bun-docker
+#   tanstack-start-hono-mysql-docker
+#   tanstack-start-hono-mysql-expo-bun-docker
+#   tanstack-start-hono-mysql-expo-docker
+#   tanstack-start-hono-mysql-prisma-bun-docker
+#   tanstack-start-hono-mysql-prisma-docker
+#   tanstack-start-hono-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-bun-docker
+#   tanstack-start-hono-openapi-docker
+#   tanstack-start-hono-openapi-expo-bun-docker
+#   tanstack-start-hono-openapi-expo-docker
+#   tanstack-start-hono-orpc-bun-docker
+#   tanstack-start-hono-orpc-docker
+#   tanstack-start-hono-orpc-expo-bun-docker
+#   tanstack-start-hono-orpc-expo-docker
+#   tanstack-start-hono-postgres-bun-docker
+#   tanstack-start-hono-postgres-docker
+#   tanstack-start-hono-postgres-expo-bun-docker
+#   tanstack-start-hono-postgres-expo-docker
+#   tanstack-start-hono-postgres-prisma-bun-docker
+#   tanstack-start-hono-postgres-prisma-docker
+#   tanstack-start-hono-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-postgres-prisma-expo-docker
+#   tanstack-start-hono-sqlite-bun-docker
+#   tanstack-start-hono-sqlite-docker
+#   tanstack-start-hono-sqlite-expo-bun-docker
+#   tanstack-start-hono-sqlite-expo-docker
+#   tanstack-start-self-mongodb-docker
+#   tanstack-start-self-mongodb-expo-docker
+#   tanstack-start-self-mysql-docker
+#   tanstack-start-self-mysql-expo-docker
+#   tanstack-start-self-mysql-expo-void
+#   tanstack-start-self-mysql-prisma-docker
+#   tanstack-start-self-mysql-prisma-expo-docker
+#   tanstack-start-self-mysql-void
+#   tanstack-start-self-orpc-docker
+#   tanstack-start-self-orpc-expo-docker
+#   tanstack-start-self-orpc-expo-void
+#   tanstack-start-self-orpc-void
+#   tanstack-start-self-postgres-docker
+#   tanstack-start-self-postgres-expo-docker
+#   tanstack-start-self-postgres-expo-void
+#   tanstack-start-self-postgres-prisma-docker
+#   tanstack-start-self-postgres-prisma-expo-docker
+#   tanstack-start-self-postgres-void
+#   tanstack-start-self-sqlite-docker
+#   tanstack-start-self-sqlite-expo-docker
+#   tanstack-start-void
+import { expect, test } from "@playwright/test";
+
+const paths: readonly string[] = ["/"];
+
+for (const path of paths) {
+  test.describe(path, () => {
+    test("interactive controls wait for hydration", async ({ page }) => {
+      // Both drivers need an active page before the gated navigation.
+      await page.goto("/", { waitUntil: "networkidle" });
+      const assets = Promise.withResolvers<undefined>();
+
+      // Hold real scripts so these assertions reach the server-rendered controls.
+      await page.route("**/*", async (route) => {
+        if (route.request().resourceType() === "script") {
+          await assets.promise;
+        }
+
+        await route.continue();
+      });
+
+      const navigation = page.goto(path, { waitUntil: "networkidle" });
+
+      const controls = [
+        page.getByRole("button", { name: "Toggle theme" }),
+        ...(path === "/login"
+          ? [
+              page.getByLabel("Email"),
+              page.getByLabel("Password"),
+              page
+                .getByRole("main")
+                .getByRole("button", { exact: true, name: "Sign in" }),
+              page.getByRole("button", { name: "Need an account? Sign up" }),
+            ]
+          : []),
+        ...(path === "/todos" ? [page.getByLabel("New todo")] : []),
+      ];
+
+      try {
+        await Promise.all(
+          controls.map(async (control) => {
+            await expect(control).toBeDisabled();
+          })
+        );
+      } finally {
+        assets.resolve(undefined);
+
+        try {
+          await navigation;
+        } finally {
+          await page.unroute("**/*");
+        }
+      }
+
+      await Promise.all(
+        controls.map(async (control) => {
+          await expect(control).toBeEnabled();
+        })
+      );
+
+      if (path === "/todos") {
+        await page.getByLabel("New todo").fill("Hydrated input");
+        await expect(
+          page.getByRole("button", { exact: true, name: "Add" })
+        ).toBeEnabled();
+        await page.getByLabel("New todo").fill("");
+      }
+    });
+  });
+}
+
+# apps/web/tests/e2e/hydration.e2e.ts · 200 stacks
+#   next-hono-mongodb-better-auth-bun-docker
+#   next-hono-mongodb-better-auth-docker
+#   next-hono-mongodb-better-auth-expo-bun-docker
+#   next-hono-mongodb-better-auth-expo-docker
+#   next-hono-mysql-better-auth-bun-docker
+#   next-hono-mysql-better-auth-docker
+#   next-hono-mysql-better-auth-expo-bun-docker
+#   next-hono-mysql-better-auth-expo-docker
+#   next-hono-mysql-prisma-better-auth-bun-docker
+#   next-hono-mysql-prisma-better-auth-docker
+#   next-hono-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-mongodb-better-auth-bun-docker
+#   next-hono-openapi-mongodb-better-auth-docker
+#   next-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   next-hono-openapi-mongodb-better-auth-expo-docker
+#   next-hono-openapi-mysql-better-auth-bun-docker
+#   next-hono-openapi-mysql-better-auth-docker
+#   next-hono-openapi-mysql-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-better-auth-expo-docker
+#   next-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   next-hono-openapi-postgres-better-auth-bun-docker
+#   next-hono-openapi-postgres-better-auth-docker
+#   next-hono-openapi-postgres-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-better-auth-expo-docker
+#   next-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   next-hono-openapi-sqlite-better-auth-bun-docker
+#   next-hono-openapi-sqlite-better-auth-docker
+#   next-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   next-hono-openapi-sqlite-better-auth-expo-docker
+#   next-hono-orpc-mongodb-better-auth-bun-docker
+#   next-hono-orpc-mongodb-better-auth-docker
+#   next-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   next-hono-orpc-mongodb-better-auth-expo-docker
+#   next-hono-orpc-mysql-better-auth-bun-docker
+#   next-hono-orpc-mysql-better-auth-docker
+#   next-hono-orpc-mysql-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-better-auth-expo-docker
+#   next-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   next-hono-orpc-postgres-better-auth-bun-docker
+#   next-hono-orpc-postgres-better-auth-docker
+#   next-hono-orpc-postgres-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-better-auth-expo-docker
+#   next-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   next-hono-orpc-sqlite-better-auth-bun-docker
+#   next-hono-orpc-sqlite-better-auth-docker
+#   next-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   next-hono-orpc-sqlite-better-auth-expo-docker
+#   next-hono-postgres-better-auth-bun-docker
+#   next-hono-postgres-better-auth-docker
+#   next-hono-postgres-better-auth-expo-bun-docker
+#   next-hono-postgres-better-auth-expo-docker
+#   next-hono-postgres-prisma-better-auth-bun-docker
+#   next-hono-postgres-prisma-better-auth-docker
+#   next-hono-postgres-prisma-better-auth-expo-bun-docker
+#   next-hono-postgres-prisma-better-auth-expo-docker
+#   next-hono-sqlite-better-auth-bun-docker
+#   next-hono-sqlite-better-auth-docker
+#   next-hono-sqlite-better-auth-expo-bun-docker
+#   next-hono-sqlite-better-auth-expo-docker
+#   next-self-mongodb-better-auth-docker
+#   next-self-mongodb-better-auth-expo-docker
+#   next-self-mysql-better-auth-docker
+#   next-self-mysql-better-auth-expo-docker
+#   next-self-mysql-prisma-better-auth-docker
+#   next-self-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-mongodb-better-auth-docker
+#   next-self-orpc-mongodb-better-auth-expo-docker
+#   next-self-orpc-mysql-better-auth-docker
+#   next-self-orpc-mysql-better-auth-expo-docker
+#   next-self-orpc-mysql-prisma-better-auth-docker
+#   next-self-orpc-mysql-prisma-better-auth-expo-docker
+#   next-self-orpc-postgres-better-auth-docker
+#   next-self-orpc-postgres-better-auth-expo-docker
+#   next-self-orpc-postgres-prisma-better-auth-docker
+#   next-self-orpc-postgres-prisma-better-auth-expo-docker
+#   next-self-orpc-sqlite-better-auth-docker
+#   next-self-orpc-sqlite-better-auth-expo-docker
+#   next-self-postgres-better-auth-docker
+#   next-self-postgres-better-auth-expo-docker
+#   next-self-postgres-prisma-better-auth-docker
+#   next-self-postgres-prisma-better-auth-expo-docker
+#   next-self-sqlite-better-auth-docker
+#   next-self-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-mysql-better-auth-bun-docker
+#   tanstack-start-hono-mysql-better-auth-docker
+#   tanstack-start-hono-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-better-auth-expo-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-better-auth-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-better-auth-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-hono-postgres-better-auth-bun-docker
+#   tanstack-start-hono-postgres-better-auth-docker
+#   tanstack-start-hono-postgres-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-better-auth-expo-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-bun-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-bun-docker
+#   tanstack-start-hono-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-hono-sqlite-better-auth-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-bun-docker
+#   tanstack-start-hono-sqlite-better-auth-expo-docker
+#   tanstack-start-self-mongodb-better-auth-docker
+#   tanstack-start-self-mongodb-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-docker
+#   tanstack-start-self-mysql-better-auth-expo-docker
+#   tanstack-start-self-mysql-better-auth-expo-void
+#   tanstack-start-self-mysql-better-auth-void
+#   tanstack-start-self-mysql-prisma-better-auth-docker
+#   tanstack-start-self-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-docker
+#   tanstack-start-self-orpc-mongodb-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-docker
+#   tanstack-start-self-orpc-mysql-better-auth-expo-void
+#   tanstack-start-self-orpc-mysql-better-auth-void
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-docker
+#   tanstack-start-self-orpc-mysql-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-better-auth-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-docker
+#   tanstack-start-self-orpc-postgres-better-auth-expo-void
+#   tanstack-start-self-orpc-postgres-better-auth-void
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-docker
+#   tanstack-start-self-orpc-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-docker
+#   tanstack-start-self-orpc-sqlite-better-auth-expo-docker
+#   tanstack-start-self-postgres-better-auth-docker
+#   tanstack-start-self-postgres-better-auth-expo-docker
+#   tanstack-start-self-postgres-better-auth-expo-void
+#   tanstack-start-self-postgres-better-auth-void
+#   tanstack-start-self-postgres-prisma-better-auth-docker
+#   tanstack-start-self-postgres-prisma-better-auth-expo-docker
+#   tanstack-start-self-sqlite-better-auth-docker
+#   tanstack-start-self-sqlite-better-auth-expo-docker
+import { expect, test } from "@playwright/test";
+
+const paths: readonly string[] = ["/", "/login"];
+
+for (const path of paths) {
+  test.describe(path, () => {
+    test("interactive controls wait for hydration", async ({ page }) => {
+      // Both drivers need an active page before the gated navigation.
+      await page.goto("/", { waitUntil: "networkidle" });
+      const assets = Promise.withResolvers<undefined>();
+
+      // Hold real scripts so these assertions reach the server-rendered controls.
+      await page.route("**/*", async (route) => {
+        if (route.request().resourceType() === "script") {
+          await assets.promise;
+        }
+
+        await route.continue();
+      });
+
+      const navigation = page.goto(path, { waitUntil: "networkidle" });
+
+      const controls = [
+        page.getByRole("button", { name: "Toggle theme" }),
+        ...(path === "/login"
+          ? [
+              page.getByLabel("Email"),
+              page.getByLabel("Password"),
+              page
+                .getByRole("main")
+                .getByRole("button", { exact: true, name: "Sign in" }),
+              page.getByRole("button", { name: "Need an account? Sign up" }),
+            ]
+          : []),
+        ...(path === "/todos" ? [page.getByLabel("New todo")] : []),
+      ];
+
+      try {
+        await Promise.all(
+          controls.map(async (control) => {
+            await expect(control).toBeDisabled();
+          })
+        );
+      } finally {
+        assets.resolve(undefined);
+
+        try {
+          await navigation;
+        } finally {
+          await page.unroute("**/*");
+        }
+      }
+
+      await Promise.all(
+        controls.map(async (control) => {
+          await expect(control).toBeEnabled();
+        })
+      );
+
+      if (path === "/todos") {
+        await page.getByLabel("New todo").fill("Hydrated input");
+        await expect(
+          page.getByRole("button", { exact: true, name: "Add" })
+        ).toBeEnabled();
+        await page.getByLabel("New todo").fill("");
+      }
+    });
+  });
+}
+
+# apps/web/tests/e2e/hydration.e2e.ts · 124 stacks
+#   next-hono-openapi-mongodb-bun-docker
+#   next-hono-openapi-mongodb-docker
+#   next-hono-openapi-mongodb-expo-bun-docker
+#   next-hono-openapi-mongodb-expo-docker
+#   next-hono-openapi-mysql-bun-docker
+#   next-hono-openapi-mysql-docker
+#   next-hono-openapi-mysql-expo-bun-docker
+#   next-hono-openapi-mysql-expo-docker
+#   next-hono-openapi-mysql-prisma-bun-docker
+#   next-hono-openapi-mysql-prisma-docker
+#   next-hono-openapi-mysql-prisma-expo-bun-docker
+#   next-hono-openapi-mysql-prisma-expo-docker
+#   next-hono-openapi-postgres-bun-docker
+#   next-hono-openapi-postgres-docker
+#   next-hono-openapi-postgres-expo-bun-docker
+#   next-hono-openapi-postgres-expo-docker
+#   next-hono-openapi-postgres-prisma-bun-docker
+#   next-hono-openapi-postgres-prisma-docker
+#   next-hono-openapi-postgres-prisma-expo-bun-docker
+#   next-hono-openapi-postgres-prisma-expo-docker
+#   next-hono-openapi-sqlite-bun-docker
+#   next-hono-openapi-sqlite-docker
+#   next-hono-openapi-sqlite-expo-bun-docker
+#   next-hono-openapi-sqlite-expo-docker
+#   next-hono-orpc-mongodb-bun-docker
+#   next-hono-orpc-mongodb-docker
+#   next-hono-orpc-mongodb-expo-bun-docker
+#   next-hono-orpc-mongodb-expo-docker
+#   next-hono-orpc-mysql-bun-docker
+#   next-hono-orpc-mysql-docker
+#   next-hono-orpc-mysql-expo-bun-docker
+#   next-hono-orpc-mysql-expo-docker
+#   next-hono-orpc-mysql-prisma-bun-docker
+#   next-hono-orpc-mysql-prisma-docker
+#   next-hono-orpc-mysql-prisma-expo-bun-docker
+#   next-hono-orpc-mysql-prisma-expo-docker
+#   next-hono-orpc-postgres-bun-docker
+#   next-hono-orpc-postgres-docker
+#   next-hono-orpc-postgres-expo-bun-docker
+#   next-hono-orpc-postgres-expo-docker
+#   next-hono-orpc-postgres-prisma-bun-docker
+#   next-hono-orpc-postgres-prisma-docker
+#   next-hono-orpc-postgres-prisma-expo-bun-docker
+#   next-hono-orpc-postgres-prisma-expo-docker
+#   next-hono-orpc-sqlite-bun-docker
+#   next-hono-orpc-sqlite-docker
+#   next-hono-orpc-sqlite-expo-bun-docker
+#   next-hono-orpc-sqlite-expo-docker
+#   next-self-orpc-mongodb-docker
+#   next-self-orpc-mongodb-expo-docker
+#   next-self-orpc-mysql-docker
+#   next-self-orpc-mysql-expo-docker
+#   next-self-orpc-mysql-prisma-docker
+#   next-self-orpc-mysql-prisma-expo-docker
+#   next-self-orpc-postgres-docker
+#   next-self-orpc-postgres-expo-docker
+#   next-self-orpc-postgres-prisma-docker
+#   next-self-orpc-postgres-prisma-expo-docker
+#   next-self-orpc-sqlite-docker
+#   next-self-orpc-sqlite-expo-docker
+#   tanstack-start-hono-openapi-mongodb-bun-docker
+#   tanstack-start-hono-openapi-mongodb-docker
+#   tanstack-start-hono-openapi-mongodb-expo-bun-docker
+#   tanstack-start-hono-openapi-mongodb-expo-docker
+#   tanstack-start-hono-openapi-mysql-bun-docker
+#   tanstack-start-hono-openapi-mysql-docker
+#   tanstack-start-hono-openapi-mysql-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-expo-docker
+#   tanstack-start-hono-openapi-mysql-prisma-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-mysql-prisma-expo-docker
+#   tanstack-start-hono-openapi-postgres-bun-docker
+#   tanstack-start-hono-openapi-postgres-docker
+#   tanstack-start-hono-openapi-postgres-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-expo-docker
+#   tanstack-start-hono-openapi-postgres-prisma-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-openapi-postgres-prisma-expo-docker
+#   tanstack-start-hono-openapi-sqlite-bun-docker
+#   tanstack-start-hono-openapi-sqlite-docker
+#   tanstack-start-hono-openapi-sqlite-expo-bun-docker
+#   tanstack-start-hono-openapi-sqlite-expo-docker
+#   tanstack-start-hono-orpc-mongodb-bun-docker
+#   tanstack-start-hono-orpc-mongodb-docker
+#   tanstack-start-hono-orpc-mongodb-expo-bun-docker
+#   tanstack-start-hono-orpc-mongodb-expo-docker
+#   tanstack-start-hono-orpc-mysql-bun-docker
+#   tanstack-start-hono-orpc-mysql-docker
+#   tanstack-start-hono-orpc-mysql-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-expo-docker
+#   tanstack-start-hono-orpc-mysql-prisma-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-mysql-prisma-expo-docker
+#   tanstack-start-hono-orpc-postgres-bun-docker
+#   tanstack-start-hono-orpc-postgres-docker
+#   tanstack-start-hono-orpc-postgres-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-expo-docker
+#   tanstack-start-hono-orpc-postgres-prisma-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-bun-docker
+#   tanstack-start-hono-orpc-postgres-prisma-expo-docker
+#   tanstack-start-hono-orpc-sqlite-bun-docker
+#   tanstack-start-hono-orpc-sqlite-docker
+#   tanstack-start-hono-orpc-sqlite-expo-bun-docker
+#   tanstack-start-hono-orpc-sqlite-expo-docker
+#   tanstack-start-self-orpc-mongodb-docker
+#   tanstack-start-self-orpc-mongodb-expo-docker
+#   tanstack-start-self-orpc-mysql-docker
+#   tanstack-start-self-orpc-mysql-expo-docker
+#   tanstack-start-self-orpc-mysql-expo-void
+#   tanstack-start-self-orpc-mysql-prisma-docker
+#   tanstack-start-self-orpc-mysql-prisma-expo-docker
+#   tanstack-start-self-orpc-mysql-void
+#   tanstack-start-self-orpc-postgres-docker
+#   tanstack-start-self-orpc-postgres-expo-docker
+#   tanstack-start-self-orpc-postgres-expo-void
+#   tanstack-start-self-orpc-postgres-prisma-docker
+#   tanstack-start-self-orpc-postgres-prisma-expo-docker
+#   tanstack-start-self-orpc-postgres-void
+#   tanstack-start-self-orpc-sqlite-docker
+#   tanstack-start-self-orpc-sqlite-expo-docker
+import { expect, test } from "@playwright/test";
+
+const paths: readonly string[] = ["/", "/todos"];
+
+for (const path of paths) {
+  test.describe(path, () => {
+    test("interactive controls wait for hydration", async ({ page }) => {
+      // Both drivers need an active page before the gated navigation.
+      await page.goto("/", { waitUntil: "networkidle" });
+      const assets = Promise.withResolvers<undefined>();
+
+      // Hold real scripts so these assertions reach the server-rendered controls.
+      await page.route("**/*", async (route) => {
+        if (route.request().resourceType() === "script") {
+          await assets.promise;
+        }
+
+        await route.continue();
+      });
+
+      const navigation = page.goto(path, { waitUntil: "networkidle" });
+
+      const controls = [
+        page.getByRole("button", { name: "Toggle theme" }),
+        ...(path === "/login"
+          ? [
+              page.getByLabel("Email"),
+              page.getByLabel("Password"),
+              page
+                .getByRole("main")
+                .getByRole("button", { exact: true, name: "Sign in" }),
+              page.getByRole("button", { name: "Need an account? Sign up" }),
+            ]
+          : []),
+        ...(path === "/todos" ? [page.getByLabel("New todo")] : []),
+      ];
+
+      try {
+        await Promise.all(
+          controls.map(async (control) => {
+            await expect(control).toBeDisabled();
+          })
+        );
+      } finally {
+        assets.resolve(undefined);
+
+        try {
+          await navigation;
+        } finally {
+          await page.unroute("**/*");
+        }
+      }
+
+      await Promise.all(
+        controls.map(async (control) => {
+          await expect(control).toBeEnabled();
+        })
+      );
+
+      if (path === "/todos") {
+        await page.getByLabel("New todo").fill("Hydrated input");
+        await expect(
+          page.getByRole("button", { exact: true, name: "Add" })
+        ).toBeEnabled();
+        await page.getByLabel("New todo").fill("");
+      }
+    });
+  });
 }
 
 # apps/web/tests/support/api.ts · 132 stacks

@@ -30,6 +30,7 @@ export const react = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "react/common"),
     ...healthStatus(ctx),
+    ...(hasBackend(ctx) ? templateFiles(ctx, "react/status") : []),
     contribute(packageJson, {
       dependencies: [
         ...(ctx.has("effect")

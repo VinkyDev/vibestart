@@ -1,10 +1,12 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+import { Avatar, AvatarFallback } from "@my-app/ui/components/avatar";
 import { Button } from "@my-app/ui/components/button";
 import {
   DropdownMenu,
@@ -16,13 +18,29 @@ import {
   DropdownMenuTrigger,
 } from "@my-app/ui/components/dropdown-menu";
 
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { authClient } from "#src/lib/auth-client.ts";
 
 interface UserMenuProps {
   user: { name: string; email: string } | null;
 }
 
+const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
+// The first letter of each of the first two words: "Ada Lovelace" is "AL".
+const initials = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/u)
+    .slice(0, 2)
+    .map(
+      (word) =>
+        graphemes.segment(word).containing(0)?.segment.toUpperCase() ?? ""
+    )
+    .join("");
+
 export const UserMenu = ({ user }: UserMenuProps) => {
+  const hydrated = useHydrated();
   const router = useRouter();
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -60,12 +78,23 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
-        {user.name}
+      <DropdownMenuTrigger
+        disabled={!hydrated}
+        render={<Button size="sm" variant="ghost" />}
+      >
+        <Avatar aria-hidden="true" data-icon="inline-start" size="sm">
+          <AvatarFallback>{initials(user.name)}</AvatarFallback>
+        </Avatar>
+        <span className="sr-only sm:not-sr-only sm:max-w-40 sm:truncate">
+          {user.name}
+        </span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="min-w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+          <DropdownMenuLabel className="flex flex-col">
+            <span className="text-foreground font-medium">{user.name}</span>
+            <span className="truncate">{user.email}</span>
+          </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -75,6 +104,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
           }}
           variant="destructive"
         >
+          <LogOutIcon />
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>

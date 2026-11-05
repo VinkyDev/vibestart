@@ -18,6 +18,7 @@ Everything else, including a style or naming preference, is Nit at most.
 ## Always check
 
 - A template change: is the helper's teardown in `finally`, and does it release what it acquired when the step before it throws? Read the failure path the same way you read the happy path.
+- A UI animation change: exercise entry and exit with the browser's reduced-motion preference. Check the installed library's handling of position, size, and spacing against the affected elements' actual movement.
 - A new branch on `ctx.has(id)`: does every sibling of that id get the same decision? `rg 'ctx.has\("<sibling>"\)' packages/integrations/src` finds them.
 - A new or changed integration: are the Studio messages in both languages, the goldens, and the docs carried along? `.agents/skills/add-integration/SKILL.md` lists every layer.
 - Generated SQL, URLs, and identifiers: bounded length, quoted, and escaped for every database the template renders for.

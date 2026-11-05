@@ -55,7 +55,7 @@ export const mysql = defineIntegration({
             ),
           ]),
       contribute(readmeTagline, "MySQL"),
-      contribute(stackHeadline, "MySQL"),
+      contribute(stackHeadline, { name: "MySQL", role: "Database" }),
       contribute(readmeLayers, {
         choice: `MySQL 8.4, ${ormRelease(ctx)}`,
         layer: "Database",

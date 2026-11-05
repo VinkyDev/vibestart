@@ -125,7 +125,7 @@ export const orpc = defineIntegration({
       title: "Procedure",
     }),
     contribute(readmeTagline, "oRPC"),
-    contribute(stackHeadline, "oRPC"),
+    contribute(stackHeadline, { name: "oRPC", role: "API" }),
     contribute(readmeLayers, {
       choice: "oRPC (end-to-end types, no codegen) plus OpenAPI at `/api`",
       layer: "API",
