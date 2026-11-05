@@ -32,7 +32,7 @@ for (const path of paths) {
               screen.getByLabel("Password"),
               screen
                 .getByRole("main")
-                .getByRole("button", { name: "Sign in", exact: true }),
+                .getByRole("button", { exact: true, name: "Sign in" }),
               screen.getByRole("button", { name: "Need an account? Sign up" }),
             ]
           : []),
@@ -64,7 +64,7 @@ for (const path of paths) {
       if (path === "/todos") {
         await screen.getByLabel("New todo").fill("Hydrated input");
         await expect(
-          screen.getByRole("button", { name: "Add", exact: true })
+          screen.getByRole("button", { exact: true, name: "Add" })
         ).toBeEnabled();
         await screen.getByLabel("New todo").fill("");
       }

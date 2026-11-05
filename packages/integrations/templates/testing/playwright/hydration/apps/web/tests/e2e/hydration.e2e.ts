@@ -28,7 +28,7 @@ for (const path of paths) {
               page.getByLabel("Password"),
               page
                 .getByRole("main")
-                .getByRole("button", { name: "Sign in", exact: true }),
+                .getByRole("button", { exact: true, name: "Sign in" }),
               page.getByRole("button", { name: "Need an account? Sign up" }),
             ]
           : []),
@@ -60,7 +60,7 @@ for (const path of paths) {
       if (path === "/todos") {
         await page.getByLabel("New todo").fill("Hydrated input");
         await expect(
-          page.getByRole("button", { name: "Add", exact: true })
+          page.getByRole("button", { exact: true, name: "Add" })
         ).toBeEnabled();
         await page.getByLabel("New todo").fill("");
       }
