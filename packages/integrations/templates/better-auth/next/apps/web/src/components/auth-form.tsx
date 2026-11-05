@@ -20,6 +20,7 @@ import { Spinner } from "@my-app/ui/components/spinner";
 
 import { AuthArt } from "#src/components/auth-art.tsx";
 import { StackPlate } from "#src/components/stack-plate.tsx";
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { authClient } from "#src/lib/auth-client.ts";
 
 type Mode = "sign-in" | "sign-up";
@@ -70,6 +71,7 @@ const authenticate = async (mode: Mode, form: FormData) => {
 };
 
 export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
+  const hydrated = useHydrated();
   const reduced = useReducedMotion() === true;
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("sign-in");
@@ -110,7 +112,7 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
           <p className="text-muted-foreground">{text.description}</p>
         </div>
         <form onSubmit={handleSubmit}>
-          <fieldset disabled={isPending}>
+          <fieldset disabled={!hydrated || isPending}>
             <FieldGroup>
               {error !== null && (
                 <Alert variant="destructive">

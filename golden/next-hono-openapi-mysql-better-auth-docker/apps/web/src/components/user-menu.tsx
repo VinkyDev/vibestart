@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@my-app/ui/components/dropdown-menu";
 
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { authClient } from "#src/lib/auth-client.ts";
 
 interface UserMenuProps {
@@ -39,6 +40,7 @@ const initials = (name: string) =>
     .join("");
 
 export const UserMenu = ({ user }: UserMenuProps) => {
+  const hydrated = useHydrated();
   const router = useRouter();
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -76,7 +78,10 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+      <DropdownMenuTrigger
+        disabled={!hydrated}
+        render={<Button size="sm" variant="ghost" />}
+      >
         <Avatar aria-hidden="true" data-icon="inline-start" size="sm">
           <AvatarFallback>{initials(user.name)}</AvatarFallback>
         </Avatar>

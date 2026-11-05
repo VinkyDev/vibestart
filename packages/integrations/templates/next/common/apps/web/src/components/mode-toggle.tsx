@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@my-app/ui/components/dropdown-menu";
 
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
+
 const themes = [
   { icon: SunIcon, label: "Light", value: "light" },
   { icon: MoonIcon, label: "Dark", value: "dark" },
@@ -19,11 +21,13 @@ const themes = [
 ] as const;
 
 export const ModeToggle = () => {
+  const hydrated = useHydrated();
   const { theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        disabled={!hydrated}
         render={
           <Button aria-label="Toggle theme" size="icon" variant="ghost" />
         }

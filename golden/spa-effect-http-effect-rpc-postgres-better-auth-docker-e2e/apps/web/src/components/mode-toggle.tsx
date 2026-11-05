@@ -1,4 +1,3 @@
-import { useHydrated } from "@tanstack/react-router";
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -10,6 +9,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@my-app/ui/components/dropdown-menu";
+
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 
 const themes = [
   { icon: SunIcon, label: "Light", value: "light" },

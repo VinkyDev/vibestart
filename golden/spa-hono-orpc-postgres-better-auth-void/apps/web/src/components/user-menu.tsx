@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@my-app/ui/components/dropdown-menu";
 
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { authClient } from "#src/lib/auth.ts";
 
 const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
@@ -37,6 +38,7 @@ const initials = (name: string) =>
     .join("");
 
 export const UserMenu = () => {
+  const hydrated = useHydrated();
   const router = useRouter();
   const queryClient = useQueryClient();
   const { session } = useRouteContext({ from: "__root__" });
@@ -75,7 +77,10 @@ export const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+      <DropdownMenuTrigger
+        disabled={!hydrated}
+        render={<Button size="sm" variant="ghost" />}
+      >
         <Avatar aria-hidden="true" data-icon="inline-start" size="sm">
           <AvatarFallback>{initials(session.user.name)}</AvatarFallback>
         </Avatar>

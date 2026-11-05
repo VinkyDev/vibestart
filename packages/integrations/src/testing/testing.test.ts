@@ -27,7 +27,7 @@ const journeysOf = (runner: string) =>
         ? [
             [
               variant,
-              [...content.matchAll(/^test\("(?<title>[^"]+)"/gmu)].map(
+              [...content.matchAll(/^\s*test\("(?<title>[^"]+)"/gmu)].map(
                 ({ groups }) => groups?.title
               ),
             ],

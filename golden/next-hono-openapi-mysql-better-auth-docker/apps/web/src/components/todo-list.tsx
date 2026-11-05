@@ -31,9 +31,11 @@ import { Separator } from "@my-app/ui/components/separator";
 import { Spinner } from "@my-app/ui/components/spinner";
 import { cn } from "@my-app/ui/lib/utils";
 
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { api } from "#src/lib/api.ts";
 
 export const TodoList = () => {
+  const hydrated = useHydrated();
   const reduced = useReducedMotion() === true;
   const [draft, setDraft] = useState({ title: "" });
   const { title } = draft;
@@ -104,6 +106,7 @@ export const TodoList = () => {
             <form className="flex gap-2" onSubmit={handleSubmit}>
               <Input
                 aria-label="New todo"
+                disabled={!hydrated}
                 maxLength={200}
                 onChange={(event) => {
                   setDraft({ title: event.target.value });
@@ -112,7 +115,9 @@ export const TodoList = () => {
                 value={title}
               />
               <Button
-                disabled={createTodo.isPending || title.trim() === ""}
+                disabled={
+                  !hydrated || createTodo.isPending || title.trim() === ""
+                }
                 type="submit"
               >
                 {createTodo.isPending ? (
@@ -144,6 +149,7 @@ export const TodoList = () => {
                   <Checkbox
                     aria-label={todo.title}
                     checked={todo.completed}
+                    disabled={!hydrated}
                     onCheckedChange={(completed) => {
                       updateTodo.mutate({ completed, id: todo.id });
                     }}
@@ -159,6 +165,7 @@ export const TodoList = () => {
                   </span>
                   <Button
                     aria-label={`Delete ${todo.title}`}
+                    disabled={!hydrated}
                     onClick={() => {
                       deleteTodo.mutate({ id: todo.id });
                     }}

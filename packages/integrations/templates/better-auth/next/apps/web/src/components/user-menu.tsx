@@ -18,6 +18,8 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { toast } from "sonner";
 
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
+
 import { authClient } from "#src/lib/auth-client.ts";
 
 interface UserMenuProps {
@@ -36,6 +38,7 @@ const initials = (name: string) =>
     .join("");
 
 export const UserMenu = ({ user }: UserMenuProps) => {
+  const hydrated = useHydrated();
   const router = useRouter();
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -74,6 +77,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        disabled={!hydrated}
         render={<Button size="sm" variant="ghost" />}
       >
         <Avatar aria-hidden="true" data-icon="inline-start" size="sm">

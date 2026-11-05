@@ -244,12 +244,37 @@ const support = (ctx: Context) => {
   ];
 };
 
+const hydrationTest = (ctx: Context, runner: BrowserRunner) => {
+  if (!ctx.has("tanstack-start") && !ctx.has("next")) {
+    return [];
+  }
+
+  const path = "apps/web/tests/e2e/hydration.e2e.ts";
+  const set = `${runner.templates}/hydration`;
+
+  const paths = [
+    "/",
+    ...(ctx.has("better-auth") ? ["/login"] : []),
+    ...(todosExample(ctx) && !ctx.has("better-auth") ? ["/todos"] : []),
+  ];
+
+  return [
+    file(
+      path,
+      replaceOnce(
+        templateContent(ctx, set, path),
+        '["/"]',
+        JSON.stringify(paths),
+        `${set}/${path}`
+      )
+    ),
+  ];
+};
+
 const browserTests = (ctx: Context, runner: BrowserRunner) => [
   ...support(ctx),
   browserJourney(ctx, `${runner.templates}/${e2eVariant(ctx)}`),
-  ...(ctx.has("tanstack-start")
-    ? templateFiles(ctx, `${runner.templates}/hydration`)
-    : []),
+  ...hydrationTest(ctx, runner),
   contribute(
     readmeCommandNotes,
     `The first \`vp run test:e2e\` needs a browser: \`cd apps/web && vp exec ${runner.installer} install chromium\`.`

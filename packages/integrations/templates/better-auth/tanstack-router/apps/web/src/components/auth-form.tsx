@@ -1,4 +1,3 @@
-import { useHydrated } from "@tanstack/react-router";
 import { CircleAlertIcon } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useState, useTransition } from "react";
@@ -17,6 +16,7 @@ import { Spinner } from "@my-app/ui/components/spinner";
 
 import { AuthArt } from "#src/components/auth-art.tsx";
 import { StackPlate } from "#src/components/stack-plate.tsx";
+import { useHydrated } from "#src/hooks/use-hydrated.ts";
 import { authClient } from "#src/lib/auth.ts";
 
 type Mode = "sign-in" | "sign-up";
