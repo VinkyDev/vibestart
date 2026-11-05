@@ -69,7 +69,7 @@ Generated code uses the idiom a library documents. When a lint rule misfires on 
 - Static files live in `packages/integrations/templates/<owner>/<set>/<output path>`, where the owner is an integration or, for the two testing integrations, `testing`, and are read with `import.meta.glob(..., { query: "?raw" })`. The `common` set always ships; other sets depend on the stack. A template is a file of a project named `my-app`, and the name is replaced on output.
 - Files that vary are rendered in TypeScript. A file that differs in one place stays a template, and its owner rewrites that place with an assertion that it matches.
 - Templates hold no dot-files, because Vite's glob skips them; those are small and rendered in code.
-- Output derived from other files, or stamped with the time of creation, is a `setup` command run after writing: `vp install` writes the lockfile, `vp build apps/web` writes the route tree, `vp run db:generate --name init` writes the first migration. Each command declares the paths it writes, and the golden comparison skips them.
+- Output derived from other files, or stamped with the time of creation, is a `setup` command run after writing: `vp install` writes the lockfile, `vp run typegen` writes the route types, `vp run db:generate --name init` writes the first migration. Each command declares the paths it writes, and the golden comparison skips them.
 - `generate` ends by formatting every file with the project's own `oxfmt`, so templates and renderers only need correct code.
 
 ## Verification

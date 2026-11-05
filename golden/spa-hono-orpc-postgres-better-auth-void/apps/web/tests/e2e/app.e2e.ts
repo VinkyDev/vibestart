@@ -4,7 +4,7 @@ import type { Page } from "@playwright/test";
 import { createTodo, password, signUp, uniqueEmail } from "../support/api.ts";
 
 const visit = async (page: Page, path: string) => {
-  await page.goto(path, { waitUntil: "networkidle" });
+  await page.goto(path, { waitUntil: "domcontentloaded" });
 };
 
 const signUpThroughUi = async (page: Page) => {
@@ -42,7 +42,7 @@ test("a new user signs up and manages todos that persist across reloads", async 
   await todo.click();
   await expect(todo).toBeChecked();
 
-  await page.reload({ waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "domcontentloaded" });
   await expect(todo).toBeChecked();
 
   await page.getByRole("button", { name: "Delete Buy milk" }).click();
@@ -94,7 +94,7 @@ test("the dark theme survives a reload", async ({ page }) => {
   await page.getByRole("menuitemradio", { name: "Dark" }).click();
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 
-  await page.reload({ waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.locator("html")).toHaveClass(/\bdark\b/u);
 });
 

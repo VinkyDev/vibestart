@@ -40,11 +40,12 @@ PORT=3000
 ## Commands
 
 ```sh
+vp run typegen    # route types; dev generates these automatically
 vp check          # format, lint, type check
 vp run knip       # unused files, exports, dependencies, and catalog entries
 vp test           # unit and integration tests (Vitest)
 vp run test:e2e   # end-to-end tests (TesterArmy e2e) against the real Effect server and PostgreSQL
-vp run ready      # check + knip + test + test:e2e + production build
+vp run ready      # typegen + check + knip + test + test:e2e + production build
 ```
 
 TesterArmy e2e sends anonymous usage telemetry; set `E2E_TELEMETRY_DISABLED=1` to turn it off.

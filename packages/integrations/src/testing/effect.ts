@@ -14,6 +14,7 @@ import {
 import agentsTestsIntro from "./agents-tests-intro.md?raw";
 import { publicTestApp } from "./effect-app.ts";
 import type { BrowserRunner } from "./runners.ts";
+import { browserJourney } from "./runners.ts";
 
 const server = (ctx: Context) => {
   const path = "apps/web/tests/support/server.ts";
@@ -101,7 +102,7 @@ export const effectTesting = (ctx: Context, runner: BrowserRunner) => [
       ]),
   ...integrationTests(ctx),
   ...(ctx.has("better-auth") ? [] : [publicTestApp(ctx)]),
-  ...templateFiles(
+  browserJourney(
     ctx,
     ctx.has("better-auth")
       ? `testing/effect-${ctx.stack.testing}-auth`

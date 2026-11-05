@@ -45,7 +45,7 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 `.github/workflows/ci.yml` is one workflow for pull requests and `main`:
 
 1. `ready` runs `vp run ready`.
-2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the fewest tasks whose passes cover every task no record covers. Linux tasks split across up to eight shards; the Windows tasks run on a single runner. A change that touches no generated output plans no job.
+2. `plan` collects evidence, pulls the store and that evidence, and prints the jobs for the fewest tasks whose passes cover every task no record covers. Linux tasks split across up to sixteen shards, with two stacks at a time per runner; the Windows tasks run on a single runner. A change that touches no generated output plans no job.
 3. `verify` runs each planned job. Linux runs PostgreSQL 18, MySQL 8.4, and MongoDB 8 as service containers; Windows starts the PostgreSQL 17 its runner image ships, and installs MySQL 8.4 and MongoDB 7.0. A job uploads its passes as it goes, so a job that fails or times out keeps what it finished.
 4. `studio` builds the Studio and checks mode switching in desktop and mobile Chromium; `effect` smoke-tests the production golden image, including repeated migrations and authenticated RPC.
 5. `ci`, the one required check, passes when `ready`, `plan`, `studio`, and `effect` passed and `verify` passed or had nothing to run.
@@ -54,5 +54,7 @@ Records live on the orphan `verification` branch as `<platform>/<fingerprint>.js
 **Evidence.** On a pull request, `plan` downloads the results of the branch's latest runs; on `main`, those of the pull request merged as that commit. A run re-uploads the results it reused, so the latest runs carry all of a branch's evidence. Only runs from this repository count: a fork controls the workflow its pull request runs. A result counts only when its platform and fingerprint match a task at the current output, so a stale branch or a later merge re-runs only what covers the facets that changed. Each `main` commit runs to the end instead of being cancelled, so no merge's evidence is dropped.
 
 `verify` installs Chromium in each project with a browser test, through the project's own runner as its README says, so the browser build follows the runner version that project resolved rather than the registry's latest. A Linux job first installs Chromium's system libraries. Tests run once, and Vite+ owns the pnpm cache.
+
+Router and Start generate route types by resolving the app's Vite config, without bundling it. Setup and `ready` both run `typegen`, so creation and a fresh clone have their route types before checking; the production build runs only at the end of `ready`. SPA browser journeys wait for the document and use the runner's element and assertion waits instead of waiting for network idle on every navigation. SSR journeys keep their existing navigation waits.
 
 The Linux MongoDB service sets `GLIBC_TUNABLES=glibc.pthread.rseq=1`, keeping glibc in charge of rseq so MongoDB uses per-thread caches. MongoDB's per-CPU allocator is unsafe on kernels 6.19 through 7.0.13 ([SERVER-125742](https://jira.mongodb.org/browse/SERVER-125742)); remove the setting once every hosted runner kernel includes the fix. Database tests still run against the same MongoDB 8 service.

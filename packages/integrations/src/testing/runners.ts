@@ -17,6 +17,19 @@ export interface BrowserRunner {
   readonly contribute: (ctx: Context) => readonly Contribution[];
 }
 
+export const browserJourney = (ctx: Context, set: string) => {
+  const path = "apps/web/tests/e2e/app.e2e.ts";
+  const content = templateContent(ctx, set, path);
+
+  // SPA controls exist only after React renders them; SSR controls can precede hydration.
+  return file(
+    path,
+    ctx.has("spa")
+      ? content.replaceAll('"networkidle"', '"domcontentloaded"')
+      : content
+  );
+};
+
 export const playwright: BrowserRunner = {
   command: "playwright test",
   contribute: (ctx) => [

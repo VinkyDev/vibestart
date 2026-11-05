@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vp run -r --parallel dev",
     "build": "vp run -r build",
-    "ready": "vp run db:client && vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "ready": "vp run typegen && vp run db:client && vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
     "prepare": "vp config",
+    "typegen": "vpx scripts/typegen.ts",
     "db:client": "vp run --filter @my-app/db db:client",
     "db:generate": "vp run --filter @my-app/db db:generate",
     "db:migrate": "vp run --filter @my-app/web db:migrate",

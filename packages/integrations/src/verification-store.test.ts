@@ -75,7 +75,7 @@ describe(batchesOf, () => {
   it("shards Linux tasks by count and runs the Windows goldens on one runner", () => {
     const batches = batchesOf(tasks);
     expect(batches.map((batch) => batch.name)).toStrictEqual([
-      ...Array.from({ length: 8 }, (_, shard) => `linux-${shard}`),
+      ...Array.from({ length: 16 }, (_, shard) => `linux-${shard}`),
       "windows-0",
     ]);
 
