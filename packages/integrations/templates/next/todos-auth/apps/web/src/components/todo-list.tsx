@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { cn } from "@my-app/ui/lib/utils";
 import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 
@@ -29,6 +29,7 @@ import { Spinner } from "@my-app/ui/components/spinner";
 import { api } from "#src/lib/api.ts";
 
 export const TodoList = () => {
+  const reduced = useReducedMotion() === true;
   const [draft, setDraft] = useState({ title: "" });
   const { title } = draft;
   const queryClient = useQueryClient();
@@ -125,7 +126,7 @@ export const TodoList = () => {
               <motion.li
                 animate={{ height: "auto", opacity: 1 }}
                 className="hover:bg-muted/50 flex items-center gap-3 overflow-hidden px-4 py-3 transition-colors"
-                exit={{ height: 0, opacity: 0, paddingBlock: 0 }}
+                exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0, paddingBlock: 0 }}
                 initial={{ height: 0, opacity: 0 }}
                 layout="position"
                 transition={{ duration: 0.2 }}

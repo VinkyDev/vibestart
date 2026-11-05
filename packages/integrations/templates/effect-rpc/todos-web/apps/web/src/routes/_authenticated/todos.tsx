@@ -8,7 +8,7 @@ import type { ErrorComponentProps } from "@tanstack/react-router";
 import { cn } from "@my-app/ui/lib/utils";
 import { Exit, Schema } from "effect";
 import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
@@ -47,6 +47,7 @@ import { toastFailure } from "#src/lib/notify.ts";
 const decodeTitle = Schema.decodeUnknownExit(TodoTitle);
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
+  const reduced = useReducedMotion() === true;
   const [pending, startMutation] = useTransition();
 
   const updateTodo = useAtomSet(updateTodoAtom(todo.id), {
@@ -61,7 +62,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
     <motion.li
       animate={{ height: "auto", opacity: 1 }}
       className="hover:bg-muted/50 flex items-center gap-3 overflow-hidden px-4 py-3 transition-colors"
-      exit={{ height: 0, opacity: 0, paddingBlock: 0 }}
+      exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0, paddingBlock: 0 }}
       initial={{ height: 0, opacity: 0 }}
       layout="position"
       transition={{ duration: 0.2 }}

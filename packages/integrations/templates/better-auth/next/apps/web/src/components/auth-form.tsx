@@ -3,7 +3,7 @@
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { CircleAlertIcon } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useState, useTransition } from "react";
 import type { SubmitEvent } from "react";
 
@@ -70,6 +70,7 @@ const authenticate = async (mode: Mode, form: FormData) => {
 };
 
 export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
+  const reduced = useReducedMotion() === true;
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("sign-in");
   const text = copy[mode];
@@ -119,9 +120,9 @@ export const AuthForm = ({ redirectTo }: { redirectTo: Route }) => {
               )}
               {mode === "sign-up" && (
                 <motion.div
-                  animate={{ height: "auto", opacity: 1 }}
+                  animate={reduced ? { opacity: 1 } : { height: "auto", opacity: 1 }}
                   className="-m-1 overflow-hidden p-1"
-                  initial={{ height: 0, opacity: 0 }}
+                  initial={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <Field>
