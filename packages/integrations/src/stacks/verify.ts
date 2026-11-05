@@ -6,6 +6,7 @@ import {
   existsSync,
   openSync,
   readFileSync,
+  rmSync,
 } from "node:fs";
 import { arch, platform, release } from "node:os";
 import path from "node:path";
@@ -150,6 +151,11 @@ export const verifyStack = async ({
       path.join(out, "results"),
       new Map([[`${hostPlatform}/${hash}`, record]])
     );
+  }
+
+  // CI needs the record and log; retaining every installed project exhausts the runner's disk.
+  if (process.env.CI === "true") {
+    rmSync(dir, { force: true, recursive: true });
   }
 
   return true;

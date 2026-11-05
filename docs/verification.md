@@ -30,6 +30,8 @@ Two classes stand outside the facets:
 
 `verify` runs stacks concurrently (`--jobs`). Each takes its own e2e ports from 20000 through `E2E_TEST_PORT`, below the ephemeral ranges of Linux and macOS; integration tests run in process and listen on none. Database stacks reach their server at `STACKS_POSTGRES_URL`, `STACKS_MYSQL_URL`, or `STACKS_MONGODB_URL`.
 
+On CI, a passing task's project directory is removed after its record is written, keeping disk use from accumulating across the batch. Its log and record remain in the output directory. Failed projects and local runs keep their project directories for debugging.
+
 ## The store
 
 A **task** is one stack on one platform: every verified stack on Linux under each package manager, and each golden also on Windows. A record is keyed by platform and fingerprint, so it vouches for an output wherever that output appears, and a Linux golden is an ordinary Linux task. On Windows, each golden needs its own record; on Linux, a task needs a record that covers it.
