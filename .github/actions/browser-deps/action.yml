@@ -1,0 +1,13 @@
+name: Browser system dependencies
+description: Install Chromium system libraries from Ubuntu's official mirrors
+runs:
+  using: composite
+  steps:
+    # Hosted Ubuntu images prefer an Azure mirror whose DNS can prevent every browser job from starting.
+    - name: Use Ubuntu mirrors
+      shell: bash
+      run: |
+        printf '%s\n' 'https://archive.ubuntu.com/ubuntu/' | sudo tee /etc/apt/apt-mirrors.txt
+    - run: vp exec playwright install-deps chromium
+      shell: bash
+      working-directory: apps/web
