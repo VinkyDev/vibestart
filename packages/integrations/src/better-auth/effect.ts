@@ -89,9 +89,6 @@ export const effectAuth = (ctx: Context) => [
       ...(ctx.has("postgres") ? ["postgres"] : []),
     ],
     devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],
-    imports: {
-      "#src/*": "./src/*",
-    },
     exports: {
       ".": "./src/index.ts",
     },

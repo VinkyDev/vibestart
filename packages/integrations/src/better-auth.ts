@@ -263,7 +263,6 @@ export const betterAuth = defineIntegration({
               "typescript",
             ],
             exports: { ".": "./src/index.ts" },
-            imports: { "#src/*": "./src/*" },
             path: "packages/auth",
           }),
           contribute(packageJson, {
