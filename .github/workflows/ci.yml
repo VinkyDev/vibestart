@@ -143,8 +143,7 @@ jobs:
       - run: vp install
       # Chromium's system libraries. Each project's own runner installs the browser build its version needs.
       - if: runner.os == 'Linux'
-        run: vp exec playwright install-deps chromium
-        working-directory: apps/web
+        uses: ./.github/actions/browser-deps
         timeout-minutes: 10
       - run: vp run stacks verify "$PATTERN" --jobs "$JOBS" --out "$RUNNER_TEMP/stacks"
         env:
@@ -177,7 +176,9 @@ jobs:
       - run: vp install
       - run: vp build
         working-directory: apps/web
-      - run: vp exec playwright install chromium --with-deps
+      - uses: ./.github/actions/browser-deps
+        timeout-minutes: 10
+      - run: vp exec playwright install chromium
         working-directory: apps/web
       - run: vp run test:e2e
         working-directory: apps/web

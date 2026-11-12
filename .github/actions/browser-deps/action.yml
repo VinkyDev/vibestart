@@ -1,0 +1,13 @@
+name: Browser system dependencies
+description: Install Chromium system libraries from the Kernel.org Ubuntu mirror
+runs:
+  using: composite
+  steps:
+    # Ubuntu archive domains can fail DNS together; Kernel.org mirrors the same signed Ubuntu packages.
+    - name: Use the Kernel.org Ubuntu mirror
+      shell: bash
+      run: |
+        printf '%s\n' 'https://mirrors.kernel.org/ubuntu/' | sudo tee /etc/apt/apt-mirrors.txt
+    - run: vp exec playwright install-deps chromium
+      shell: bash
+      working-directory: apps/web

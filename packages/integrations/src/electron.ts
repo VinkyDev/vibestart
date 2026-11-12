@@ -100,7 +100,6 @@ export const electron = defineIntegration({
       dependencies: [ctx.has("effect") ? "effect" : "zod"],
       devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],
       exports: { ".": "./src/index.ts" },
-      imports: { "#src/*": "./src/*" },
       path: "packages/electron",
     }),
     contribute(packageJson, {
