@@ -113,7 +113,7 @@ export function getServerAsyncLocalStorage() {
     return serverAsyncLocalStorage;
 }
 export const disableAsyncLocalStorage = false;
-export const isServer = typeof window === 'undefined';
+export const isServer = import.meta.env?.SSR ?? typeof window === 'undefined';
 /** Controls development-only runtime diagnostics. */
 export const isDevelopment = true;
 /** @type {Locale | undefined} */
