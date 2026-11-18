@@ -25,11 +25,14 @@ describe("the best-agents-md standard", () => {
       installed
     );
 
-    const start = repoAgents.indexOf(bestAgentsMd);
+    const agents = repoAgents.replaceAll("\r\n", "\n");
+    expect(agents.split(installed).length - 1).toBe(1);
+
+    const start = agents.indexOf(bestAgentsMd);
     expect(start).toBeGreaterThanOrEqual(0);
-    expect(repoAgents.indexOf(bestAgentsMd, start + 1)).toBe(-1);
+    expect(agents.indexOf(bestAgentsMd, start + 1)).toBe(-1);
     expect(
-      repoAgents.match(/<!-- best-agents-md:(?:start|end) -->/gu)
+      agents.match(/<!-- best-agents-md:(?:start|end) -->/gu)
     ).toStrictEqual([
       "<!-- best-agents-md:start -->",
       "<!-- best-agents-md:end -->",
