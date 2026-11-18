@@ -49,9 +49,8 @@ import {
 } from "#/vite-plus/slots.ts";
 import type { ReadyStep, TestProject } from "#/vite-plus/slots.ts";
 
+import { bestAgentsMd } from "../best-agents-md.ts";
 import agentsEffect from "../effect/agents-effect.md?raw";
-import agentsCode from "./agents-code.md?raw";
-import agentsDone from "./agents-done.md?raw";
 import agentsVitePlus from "./agents-vite-plus.md?raw";
 
 const formattedFile = /\.(?:css|html|js|json|jsonc|md|mjs|ts|tsx|ya?ml)$/u;
@@ -336,7 +335,7 @@ const renderAgents = (ctx: Context, read: ReadSlot) => {
     ...(ctx.has("effect") ? [agentsEffect.trimEnd()] : []),
     "# Project",
     "`vibestart.jsonc` records the stack this project was created with. When it also records the `name` and `version` of the vibestart release that generated the project, the vibestart CLI maintains the project from it: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. Leave `vibestart.jsonc` as the CLI wrote it. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source, which is yours to edit, as manual changes to port.",
-    agentsCode.trimEnd(),
+    bestAgentsMd,
     "## Map",
     markdownTable(
       ["Path", "Owns"],
@@ -349,7 +348,8 @@ const renderAgents = (ctx: Context, read: ReadSlot) => {
     "## Conventions",
     conventions.map(({ title, text }) => `- **${title}.** ${text}`).join("\n"),
     ...read(agentsSections),
-    agentsDone.trimEnd(),
+    "## Done",
+    "The change is done when every modified path works end to end, every rule in this file holds in every modified file, and `vp run ready` passes.",
   ].join("\n\n")}\n`;
 };
 

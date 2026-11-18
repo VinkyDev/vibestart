@@ -4,18 +4,20 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { repoRoot } from "#/repo.ts";
 
-import agentsTests from "../testing/agents-tests-intro.md?raw";
-import agentsCode from "./agents-code.md?raw";
-import agentsDone from "./agents-done.md?raw";
+import { bestAgentsMd } from "../best-agents-md.ts";
 
 const repoAgents = readFileSync(`${repoRoot}AGENTS.md`, "utf-8");
 
 describe("the repository's AGENTS.md", () => {
-  it.each([
-    ["agents-code.md", agentsCode],
-    ["agents-tests-intro.md", agentsTests],
-    ["agents-done.md", agentsDone],
-  ])("carries the text of %s", (_file, text) => {
-    expect(repoAgents).toContain(text.trimEnd());
+  it("carries the best-agents-md standard once, in its markers", () => {
+    const start = repoAgents.indexOf(bestAgentsMd);
+    expect(start).toBeGreaterThanOrEqual(0);
+    expect(repoAgents.indexOf(bestAgentsMd, start + 1)).toBe(-1);
+    expect(
+      repoAgents.match(/<!-- best-agents-md:(?:start|end) -->/gu)
+    ).toStrictEqual([
+      "<!-- best-agents-md:start -->",
+      "<!-- best-agents-md:end -->",
+    ]);
   });
 });

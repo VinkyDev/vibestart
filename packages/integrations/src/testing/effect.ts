@@ -11,7 +11,6 @@ import {
   testProjects,
 } from "#/vite-plus/slots.ts";
 
-import agentsTestsIntro from "./agents-tests-intro.md?raw";
 import { publicTestApp } from "./effect-app.ts";
 import type { BrowserRunner } from "./runners.ts";
 import { browserJourney } from "./runners.ts";
@@ -75,7 +74,7 @@ const integrationTests = (ctx: Context) => {
 
 const testGuide = (ctx: Context, runner: BrowserRunner) =>
   [
-    agentsTestsIntro.trimEnd(),
+    "## Tests",
     `${runner.name} drives Chromium against the real Effect server and Vite on :3200 (\`E2E_TEST_PORT\`). ${ctx.stack.database === undefined ? "No database or authentication service is required." : `Each run creates and migrates its own ${databaseName(ctx)} database and removes it when the scope closes.`} ${ctx.has("postgres") ? "Tests need PostgreSQL running at DATABASE_URL from apps/server/.env." : ""}`,
     "Integration tests use `@effect/vitest` and `HttpRouter.toWebHandler` to exercise real routes in process, without a port. Each test file owns its scoped services. Raw NDJSON requests exercise server-side schema validation.",
     ...runner.practice,

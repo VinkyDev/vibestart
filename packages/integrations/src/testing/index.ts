@@ -28,7 +28,6 @@ import {
   testProjects,
 } from "#/vite-plus/slots.ts";
 
-import agentsTestsIntro from "./agents-tests-intro.md?raw";
 import { effectTesting } from "./effect.ts";
 import type { BrowserRunner } from "./runners.ts";
 import { browserJourney, e2e, playwright } from "./runners.ts";
@@ -202,7 +201,7 @@ const practice = (ctx: Context, runner: BrowserRunner) => {
 
 const renderTestsSection = (ctx: Context, runner: BrowserRunner) =>
   [
-    agentsTestsIntro.trimEnd(),
+    "## Tests",
     layerTable(ctx, runner),
     ...isolation(ctx, runner),
     ...practice(ctx, runner),

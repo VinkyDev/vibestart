@@ -1,0 +1,1 @@
+../node_modules/best-agents-md/AGENTS.md
