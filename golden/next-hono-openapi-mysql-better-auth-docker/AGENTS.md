@@ -34,19 +34,34 @@ release. Add a tool name to select part of the graph. For example, run
 
 `vibestart.jsonc` records the stack this project was created with. When it also records the `name` and `version` of the vibestart release that generated the project, the vibestart CLI maintains the project from it: `npx vibestart-cli add` adds a capability, and `npx vibestart-cli upgrade --dry-run` previews a template upgrade. Leave `vibestart.jsonc` as the CLI wrote it. An upgrade merges infrastructure files such as `package.json`, `vite.config.ts`, and this file, and lists template changes to starter source, which is yours to edit, as manual changes to port.
 
+<!-- best-agents-md:start -->
+
 ## Code
 
-Converge on the simplest durable design that meets current requirements, and land it directly. The change you land is the design that stays.
+- Read the relevant code before editing, follow the user's instructions, and clean up anything your change leaves unused.
+- Keep code highly cohesive and loosely coupled. Keep related logic in one place, and use as little code as possible.
+- Abstract at the right level and reuse what already exists. Keep the architecture easy to follow, and avoid overengineering.
+- Use well-maintained libraries for solved problems instead of reinventing them. Check their current docs before use.
+- Don't add or keep compatibility layers unless required. Remove dead code and replaced paths.
+- Don't write comments unless the code can't explain itself, such as a hidden constraint, a workaround, or a non-obvious reason.
 
-- Make routine judgment calls yourself. Ask when readings of the request lead to materially different work; when no one can answer, take the reading the code supports and state it in your report.
-- Fix the root cause at the abstraction that owns it. Carry the change through every layer it touches, and leave unrelated areas intact.
-- Open with a tracer bullet: the smallest end-to-end slice that works, grown in complete layers. Add a concept, configuration option, or extension point only for a use case that exists now.
-- One representation, one execution path. Move every in-repository consumer to the final interface, and delete the obsolete API, schema, implementation, configuration, tests, and documentation in the same change. The final interface stands alone: no adapter, deprecated alias, dual read or write, fallback, feature flag, or migration layer beside it.
-- A compatibility path exists only for a verified external constraint: a deployed consumer, a public contract, persisted production data, or a staged rollout. An assumed consumer is not a constraint. Isolate the path, name the condition that removes it, and let the final state shape the core. When production state cannot change atomically, ship an explicit, reversible migration with a defined end.
-- Validate untrusted data where it enters, then trust it. Type it as `unknown`, narrow it with a schema or a type guard, and make invalid states unrepresentable so later code does not re-check them. `any` is not a type in this repo. Back every type assertion and non-null assertion with a runtime check or a stated invariant. Catch an error only where you recover from it or add context; let the rest propagate.
-- Names carry the meaning. A comment states a why the code cannot: an external constraint, counterintuitive behavior, an invariant, or a tradeoff. It speaks to the next reader, never about the change, its history, or its reviewer. Delete a comment that restates the code or has gone stale.
-- Lint serves the design. When a rule's concern applies, fix the code. When a rule misfires on the idiom a library documents, keep the idiom and turn the rule off for that library's files in a `lint.overrides` entry in `vite.config.ts`, with a comment naming the idiom.
-- Reuse before you write: search the repo's own modules, then its dependencies, their docs, and their types. Otherwise add one mature, maintained library when it lowers total complexity or raises reliability, at the latest stable version the toolchain accepts, and follow its current docs. One library per capability; a few lines of domain logic stay inline.
+## Tests
+
+- Only write tests that catch real regressions. Don't test implementation details, constants, or what the type system already guarantees.
+- Prefer end-to-end and integration tests that cover real user workflows. Use unit tests only for complex logic.
+- Test real behavior through public interfaces. Mock only external boundaries, never the code under test.
+
+## Bug fixes
+
+- Reproduce the bug with a minimal test when practical. Confirm it fails before the fix and passes after.
+- Fix the root cause, not the symptom.
+- After the fix, keep the test, merge it into existing tests, or delete it, based on its value.
+
+## Done
+
+- Run the project's checks and verify the affected behavior. Report what changed, how you verified it, and what you couldn't verify.
+
+<!-- best-agents-md:end -->
 
 ## Map
 
@@ -84,15 +99,6 @@ This is Next.js 16. Before calling a Next API, read the matching guide in `apps/
 
 ## Tests
 
-A test earns its upkeep when its expected values come from a source independent of the code: the request, an acceptance criterion, a documented contract, or a domain rule, written down before the implementation. A test derived from reading the implementation restates it and catches nothing.
-
-- Cover a change with the broadest test that reaches it. End-to-end journeys and integration tests through the real stack carry most of the confidence; a unit test is for dense logic with many cases: calculations, parsers, state machines, permissions.
-- Test behavior at the boundary that owns it: the exported API, the command, the route or procedure, the page. A test that breaks under a behavior-preserving refactor is pinned to the implementation; move it to that boundary.
-- Before adding a test, name the regression that makes it fail, and confirm no type, schema, lint rule, or existing test already catches it. Each contract has one owning test; extend its table of cases rather than adding a near-copy.
-- Run this repo's own code for real. A fake stands in only for a service this repo does not run, with the reason next to it and a contract test that pins the request and response it imitates.
-- Watch every new test go red before it goes green. A bug fix starts from a test that reproduces the bug.
-- When a test fails, fix the code. Change, skip, or weaken an assertion only when the specified behavior changed, and say so in your report.
-
 | Layer       | Location                                                             | Runs against                                                                                                            | Write it for                                                                             |
 | ----------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | End-to-end  | `apps/web/tests/e2e/*.e2e.ts`                                        | Playwright driving Chromium against the real web app, API, and MySQL                                                    | Journeys that decide whether the product works                                           |
@@ -112,5 +118,3 @@ While iterating, run the narrowest set that covers the change: `vp test --projec
 ## Done
 
 The change is done when every modified path works end to end, every rule in this file holds in every modified file, and `vp run ready` passes.
-
-Before you report it, review the whole diff in a fresh context when your tools allow one: read the failure and cleanup paths, a second run against existing state, and every caller of what changed, and fix what you find.

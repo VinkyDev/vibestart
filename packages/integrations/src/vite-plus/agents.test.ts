@@ -1,21 +1,41 @@
 import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 
 import { describe, expect, it } from "vite-plus/test";
 
 import { repoRoot } from "#/repo.ts";
 
-import agentsTests from "../testing/agents-tests-intro.md?raw";
-import agentsCode from "./agents-code.md?raw";
-import agentsDone from "./agents-done.md?raw";
+import bestAgentsStandard from "../best-agents-md.md?raw";
+import { bestAgentsMd } from "../best-agents-md.ts";
+
+const require = createRequire(import.meta.url);
+
+const installed = readFileSync(
+  require.resolve("best-agents-md/AGENTS.md"),
+  "utf-8"
+)
+  .replaceAll("\r\n", "\n")
+  .trimEnd();
 
 const repoAgents = readFileSync(`${repoRoot}AGENTS.md`, "utf-8");
 
-describe("the repository's AGENTS.md", () => {
-  it.each([
-    ["agents-code.md", agentsCode],
-    ["agents-tests-intro.md", agentsTests],
-    ["agents-done.md", agentsDone],
-  ])("carries the text of %s", (_file, text) => {
-    expect(repoAgents).toContain(text.trimEnd());
+describe("the best-agents-md standard", () => {
+  it("is the pinned release, once, in this repository's markers", () => {
+    expect(bestAgentsStandard.replaceAll("\r\n", "\n").trimEnd()).toBe(
+      installed
+    );
+
+    const agents = repoAgents.replaceAll("\r\n", "\n");
+    expect(agents.split(installed).length - 1).toBe(1);
+
+    const start = agents.indexOf(bestAgentsMd);
+    expect(start).toBeGreaterThanOrEqual(0);
+    expect(agents.indexOf(bestAgentsMd, start + 1)).toBe(-1);
+    expect(
+      agents.match(/<!-- best-agents-md:(?:start|end) -->/gu)
+    ).toStrictEqual([
+      "<!-- best-agents-md:start -->",
+      "<!-- best-agents-md:end -->",
+    ]);
   });
 });
