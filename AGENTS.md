@@ -34,7 +34,7 @@ release. Add a tool name to select part of the graph. For example, run
 
 vibestart generates a project from a stack. The generator and the projects it writes follow one toolchain: Vite+, pnpm catalog, `@vibestart/config` TypeScript presets, Oxlint, and Knip. The Studio in `apps/web` is the web app; it extends `@vibestart/config/typescript/react.json`.
 
-The general coding standard comes from [best-agents-md](https://github.com/VinkyDev/best-agents-md), inside the `best-agents-md` markers below and in every generated project. `npx best-agents-md` updates this copy; `src/vite-plus/agents.test.ts` holds it to the installed release.
+The general coding standard comes from [best-agents-md](https://github.com/VinkyDev/best-agents-md). `packages/integrations/src/best-agents-md.md` is the pinned release, and the markers below and every generated project carry that file. To move the pin, replace the file with the new release's `AGENTS.md`, run its `bin/cli.js` from the repository root so these markers match, then refresh snapshots and goldens. `src/vite-plus/agents.test.ts` fails until the file, these markers, and the installed release are the same text.
 
 ## Context
 

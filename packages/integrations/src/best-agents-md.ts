@@ -1,6 +1,6 @@
 import bestAgentsStandard from "./best-agents-md.md?raw";
 
-/** The general coding standard from best-agents-md. Its CLI replaces this block on the next release. */
+/** The pinned best-agents-md release, inside the markers its CLI replaces. */
 export const bestAgentsMd = [
   "<!-- best-agents-md:start -->",
   "",
