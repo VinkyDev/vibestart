@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/voidzero-dev/vite-plus:1.6.0 AS build
+FROM ghcr.io/voidzero-dev/vite-plus:1.7.0 AS build
 WORKDIR /app
 
 COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -14,7 +14,7 @@ COPY --chown=vp:vp . .
 RUN vp run --filter "@my-app/server..." build
 RUN cp "$(vp env which node | head -1)" /tmp/node
 
-FROM oven/bun:1.4.4-slim AS runtime
+FROM oven/bun:1.4.5-slim AS runtime
 RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 ENV NODE_ENV=production PORT=3000 DATABASE_URL=/data/app.db

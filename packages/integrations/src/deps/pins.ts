@@ -99,14 +99,13 @@ const toolchainKeys: ReadonlyMap<string, string> = new Map([
   ["vite-plus", "vitePlus"],
 ]);
 
-/** Its `vite` is written from `toolchainVersions.vitePlus`, so it has no pin of its own. */
 const generatedFile = (): PinFile => {
   const path = "packages/integrations/src/catalog.ts";
   const file = fileAt(path);
 
   const packages = Object.values(catalog)
     .flatMap((group) => Object.entries(group))
-    .filter(([name]) => name !== "vite" && !toolchainKeys.has(name));
+    .filter(([name]) => !toolchainKeys.has(name));
 
   const pins = new Map([
     ...packages,

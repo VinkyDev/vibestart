@@ -4,6 +4,7 @@ import { major, minVersion } from "semver";
 import { describe, expect, it } from "vite-plus/test";
 import { z } from "zod";
 
+import { catalog } from "#/catalog.ts";
 import { pinFiles, pinsOf, setPin, workspaceCatalog } from "#/deps/pins.ts";
 import { repoRoot } from "#/repo.ts";
 
@@ -79,10 +80,14 @@ describe("the pins of this repository and the projects it generates", () => {
   });
 
   // `vp run deps update` moves these with the pin they follow, and the rest of the repo relies on the match.
-  it("pins the oxfmt and vite core that Vite+ runs", () => {
+  it("pins the oxfmt, vite core, and Vitest that Vite+ runs", () => {
     const vitePlus = z
       .object({
-        dependencies: z.object({ oxfmt: z.string(), vite: z.string() }),
+        dependencies: z.object({
+          oxfmt: z.string(),
+          vite: z.string(),
+          vitest: z.string(),
+        }),
       })
       .parse(
         JSON.parse(
@@ -97,6 +102,10 @@ describe("the pins of this repository and the projects it generates", () => {
       minVersion(vitePlus.dependencies.oxfmt)?.version
     );
     expect(only("vite")).toBe(vitePlus.dependencies.vite);
+    expect(catalog.toolchain.vite).toBe(vitePlus.dependencies.vite);
+    expect(only("vitest")).toBe(
+      minVersion(vitePlus.dependencies.vitest)?.version
+    );
   });
 
   it("pins the types of the Node.js major it runs", () => {

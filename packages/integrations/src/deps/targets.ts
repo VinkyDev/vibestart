@@ -76,6 +76,17 @@ interface Follower {
   readonly version: (source: string, releases: Releases) => string | undefined;
 }
 
+const vitePlusVersion = (name: string): Follower => ({
+  rule: "vite-plus",
+  source: "vite-plus",
+  version: (vitePlus, releases) => {
+    const range =
+      releases.packument("vite-plus").versions[vitePlus]?.dependencies?.[name];
+
+    return range === undefined ? undefined : minVersion(range)?.version;
+  },
+});
+
 const followers: ReadonlyMap<string, Follower> = new Map([
   [
     // Its types describe one Node.js major, the one projects run.
@@ -93,17 +104,7 @@ const followers: ReadonlyMap<string, Follower> = new Map([
   [
     // Vite+ formats with its own oxfmt, and generated files must pass the formatter projects check with.
     "oxfmt",
-    {
-      rule: "vite-plus",
-      source: "vite-plus",
-      version: (vitePlus, releases) => {
-        const range =
-          releases.packument("vite-plus").versions[vitePlus]?.dependencies
-            ?.oxfmt;
-
-        return range === undefined ? undefined : minVersion(range)?.version;
-      },
-    },
+    vitePlusVersion("oxfmt"),
   ],
   [
     // `vite` resolves to the Vite+ core, so a plugin that imports `vite` gets the one Vite+ runs.
@@ -120,6 +121,8 @@ const followers: ReadonlyMap<string, Follower> = new Map([
       },
     },
   ],
+  // @effect/vitest must load the same Vitest instance as the Vite+ runner.
+  ["vitest", vitePlusVersion("vitest")],
 ]);
 
 /** A prerelease's channel: `1.0.0-rc.4` is on `rc.#`, which `1.0.0-rc.5` shares and `1.0.0-rc.5-ab785fc` does not. */
