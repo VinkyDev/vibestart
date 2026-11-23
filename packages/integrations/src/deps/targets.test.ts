@@ -65,14 +65,17 @@ const releases: Releases = {
       oxfmt: packument("0.71.0", ["0.70.0"]),
       react: packument("19.4.0", ["19.3.0", "19.3.1"]),
       "react-native": packument("0.89.0", ["0.88.0-rc.4", "0.88.0"]),
+      vitest: packument("5.1.2", ["5.1.0", "5.1.1"]),
       "vite-plus": packument("1.1.0", ["1.0.0"], {
         "1.0.0": {
           oxfmt: "=0.70.0",
           vite: "npm:@voidzero-dev/vite-plus-core@1.0.0",
+          vitest: "5.1.0",
         },
         "1.1.0": {
           oxfmt: "=0.71.0",
           vite: "npm:@voidzero-dev/vite-plus-core@1.1.0",
+          vitest: "5.1.1",
         },
       }),
     }[name];
@@ -170,11 +173,12 @@ describe("where a pin moves", () => {
     await expect(targetOf(pins, "@types/node")).resolves.toBe("^24.19.0");
   });
 
-  it("moves oxfmt and the vite core to the ones Vite+ runs", async () => {
+  it("moves oxfmt, the vite core, and Vitest to the versions Vite+ runs", async () => {
     const pins = [
       pin("vite-plus", "1.0.0"),
       pin("oxfmt", "0.70.0"),
       pin("vite", "npm:@voidzero-dev/vite-plus-core@1.0.0"),
+      pin("vitest", "5.1.0"),
     ];
 
     await expect(targetOf(pins, "vite-plus")).resolves.toBe("1.1.0");
@@ -182,6 +186,7 @@ describe("where a pin moves", () => {
     await expect(targetOf(pins, "vite")).resolves.toBe(
       "npm:@voidzero-dev/vite-plus-core@1.1.0"
     );
+    await expect(targetOf(pins, "vitest")).resolves.toBe("5.1.1");
   });
 
   it("moves only the selected pins, and the pins that follow them", async () => {
