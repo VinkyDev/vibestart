@@ -3,8 +3,8 @@ import type { Catalog } from "@vibestart/core";
 export const toolchainVersions = {
   bun: "1.4.5",
   node: "26.13.1",
-  pnpm: "12.21.0",
-  vitePlus: "1.7.0",
+  pnpm: "12.23.0",
+  vitePlus: "1.8.0",
 };
 
 export const catalog = {
@@ -19,7 +19,7 @@ export const catalog = {
     typescript: "^7.0.2",
     ultracite: "^8.3.1",
     undici: "^8.13.1",
-    vite: "npm:@voidzero-dev/vite-plus-core@8.3.8000",
+    vite: "npm:@voidzero-dev/vite-plus-core@8.3.8001",
     "vite-plus": toolchainVersions.vitePlus,
   },
   effect: {
@@ -30,13 +30,13 @@ export const catalog = {
     "@effect/sql-sqlite-node": "4.1.5",
     "@effect/vitest": "4.1.5",
     // @effect/vitest must share the Vitest instance that Vite+ runs.
-    vitest: "5.1.0",
+    vitest: "5.1.1",
   },
   web: {
     "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/vite": "^4.3.5",
-    "@tanstack/react-query": "^5.108.3",
-    "@tanstack/react-query-devtools": "^5.108.3",
+    "@tanstack/react-query": "^5.108.4",
+    "@tanstack/react-query-devtools": "^5.108.4",
     "@tanstack/react-router": "^1.170.46",
     "@tanstack/react-router-devtools": "^1.167.4",
     "@tanstack/react-router-ssr-query": "^1.167.3",
@@ -62,7 +62,7 @@ export const catalog = {
     motion: "^14.14.0",
     "class-variance-authority": "^0.7.1",
     cn: "^0.5.2",
-    "lucide-react": "^1.77.0",
+    "lucide-react": "^1.79.0",
     shadcn: "^4.23.0",
     sonner: "^2.0.8",
     "tw-animate-css": "^1.4.0",
@@ -87,7 +87,7 @@ export const catalog = {
     "expo-status-bar": "~58.0.5",
     "expo-system-ui": "~58.0.7",
     "expo-web-browser": "~58.1.0",
-    "lucide-react-native": "^1.77.0",
+    "lucide-react-native": "^1.79.0",
     "react-native": "0.88.1",
     "react-native-gesture-handler": "~3.3.0",
     "react-native-reanimated": "4.7.1",
@@ -106,7 +106,7 @@ export const catalog = {
     "@hono/bun": "^1.0.1",
     "@hono/node-server": "^2.1.11",
     "@t3-oss/env-core": "^0.13.11",
-    hono: "^4.13.20",
+    hono: "^4.13.21",
   },
   auth: {
     "@better-auth/drizzle-adapter": "^1.7.27",
@@ -121,7 +121,7 @@ export const catalog = {
     "@prisma/client": "^7.10.1",
     "drizzle-kit": "1.0.0-rc.6",
     "drizzle-orm": "1.0.0-rc.6",
-    mongoose: "^9.12.3",
+    mongoose: "^9.13.0",
     mysql2: "^3.24.6",
     postgres: "^4.1.1",
     prisma: "^7.10.0",

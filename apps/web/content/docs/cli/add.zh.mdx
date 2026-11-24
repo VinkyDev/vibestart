@@ -19,7 +19,7 @@ npx vibestart-cli add knip ultracite docker --yes
 
 ## 安装与检查 [#checks]
 
-默认安装依赖一次，然后执行 `vp check`、已选择的 Knip，以及存在的 `unit` 测试项目。`--full-check` 改为执行完整的 `vp run ready`。
+默认安装依赖一次，然后执行 `vp check`、已选择的 Knip，以及存在的 `unit` 测试项目。对于 pnpm 项目，如果 PATH 中没有 pnpm，CLI 会通过 `npx` 提供 pnpm。`--full-check` 改为执行完整的 `vp run ready`。
 
 `--no-install` 只写文件，返回 `needs-install`，并给出需要执行的安装与检查命令。这两个参数不能同时使用。
 

@@ -11,7 +11,7 @@ import {
   checksOf,
   commandLine,
   installAndCheck,
-  installStep,
+  maintenanceSteps,
   undoHint,
   writePlan,
 } from "#/maintenance/apply.ts";
@@ -243,7 +243,9 @@ const inspect = async (cwd: string, offline: boolean) => {
     project.blueprint.packageManager === "bun" ? "bun.lock" : "pnpm-lock.yaml";
 
   if (readText(cwd, lockfile) === null) {
-    issues.push(`Missing ${lockfile}: run vp install`);
+    issues.push(
+      `Missing ${lockfile}: install dependencies with ${project.blueprint.packageManager}`
+    );
   }
 
   // Another release's templates come from npm, which --offline rules out.
@@ -364,8 +366,12 @@ const execute = async (
       ? ["Port the template changes listed under manual by hand."]
       : [];
 
-  const checks = checksOf(cwd, plan, values["full-check"]);
-  const finish = `${commandLine([installStep, ...checks])}.`;
+  const steps = await maintenanceSteps(
+    plan.target.blueprint.packageManager,
+    checksOf(cwd, plan, values["full-check"])
+  );
+
+  const finish = `${commandLine(steps)}.`;
 
   if (plan.conflicts.length > 0) {
     return {
@@ -389,7 +395,7 @@ const execute = async (
     };
   }
 
-  await installAndCheck(cwd, checks);
+  await installAndCheck(cwd, steps);
   const completed = { ...result, exitCode: 0, status: "completed" };
 
   return port.length === 0 ? completed : { ...completed, next: port.join(" ") };

@@ -1,8 +1,12 @@
 import { execa } from "execa";
 
+import type { PackageManager } from "@vibestart/core";
+import { toolchainVersions } from "@vibestart/integrations";
+
 import { modeOf, readText, writeText } from "#/maintenance/files.ts";
 import { MaintenanceError } from "#/maintenance/model.ts";
 import type { Plan } from "#/maintenance/plan.ts";
+import { hasCommand } from "#/project.ts";
 
 export const undoHint =
   "git diff shows every change; git restore . && git clean -fd undoes them.";
@@ -45,6 +49,8 @@ export const writePlan = (cwd: string, plan: Plan) => {
   }
 };
 
+type Command = readonly [string, ...string[]];
+
 /** Default validation: static checks, Knip when selected, and the unit test project when present. */
 export const checksOf = (cwd: string, plan: Plan, fullCheck: boolean) => {
   if (fullCheck) {
@@ -64,32 +70,57 @@ export const checksOf = (cwd: string, plan: Plan, fullCheck: boolean) => {
   return steps;
 };
 
-export const commandLine = (steps: readonly (readonly string[])[]) =>
-  steps.map((args) => `vp ${args.join(" ")}`).join(" && ");
+export const commandLine = (steps: readonly Command[]) =>
+  steps.map((args) => args.join(" ")).join(" && ");
 
-export const installStep = ["install", "--no-frozen-lockfile"] as const;
-
-const runVp = async (cwd: string, args: readonly string[]) => {
-  const result = await execa("vp", args, {
-    all: true,
-    cwd,
-    preferLocal: true,
-    reject: false,
-    stdin: "ignore",
-  });
-
-  if (result.failed) {
-    throw new MaintenanceError(
-      `vp ${args.join(" ")} failed:\n${result.all.slice(-12_000)}\nThe files are written. Fix the cause and rerun the step, or undo: ${undoHint}`
-    );
+const vpPrefix = async (packageManager: PackageManager): Promise<Command> => {
+  if (packageManager === "pnpm" && !(await hasCommand("pnpm"))) {
+    return [
+      "npx",
+      "--yes",
+      `--package=pnpm@${toolchainVersions.pnpm}`,
+      "--",
+      "vp",
+    ];
   }
+
+  if (await hasCommand("vp")) {
+    return ["vp"];
+  }
+
+  return packageManager === "pnpm"
+    ? ["pnpm", "exec", "vp"]
+    : ["bun", "x", "--no-install", "vp"];
+};
+
+export const maintenanceSteps = async (
+  packageManager: PackageManager,
+  checks: readonly string[][]
+): Promise<Command[]> => {
+  const prefix = await vpPrefix(packageManager);
+
+  return [["install", "--no-frozen-lockfile"], ...checks].map(
+    (args): Command => [...prefix, ...args]
+  );
 };
 
 export const installAndCheck = async (
   cwd: string,
-  checks: readonly (readonly string[])[]
+  steps: readonly Command[]
 ) => {
-  for (const args of [installStep, ...checks]) {
-    await runVp(cwd, args);
+  for (const [command, ...args] of steps) {
+    const result = await execa(command, args, {
+      all: true,
+      cwd,
+      preferLocal: true,
+      reject: false,
+      stdin: "ignore",
+    });
+
+    if (result.failed) {
+      throw new MaintenanceError(
+        `${[command, ...args].join(" ")} failed:\n${result.all.slice(-12_000)}\nThe files are written. Fix the cause and rerun the step, or undo: ${undoHint}`
+      );
+    }
   }
 };

@@ -8,13 +8,19 @@ import { z } from "zod";
 
 import { resolve, withDefaults } from "@vibestart/core";
 import type { Choices } from "@vibestart/core";
-import { registry } from "@vibestart/integrations";
+import { registry, toolchainVersions } from "@vibestart/integrations";
 
 import { maintenanceCommand } from "#/maintenance/commands.ts";
 import { readText, writeText } from "#/maintenance/files.ts";
 import { projectSchema } from "#/maintenance/model.ts";
 import { currentSnapshot, runningVersion } from "#/maintenance/release.ts";
+import { hasCommand } from "#/project.ts";
 import { loadRecipe, readBlueprint } from "#/stack.ts";
+
+vi.mock(import("#/project.ts"), async (importOriginal) => ({
+  ...(await importOriginal()),
+  hasCommand: vi.fn<typeof hasCommand>().mockResolvedValue(true),
+}));
 
 const roots: string[] = [];
 
@@ -159,7 +165,9 @@ describe("project maintenance CLI", () => {
     const result = await capture("doctor", "--cwd", cwd, "--offline");
     expect(result.exitCode).toBe(1);
     expect(result.output).toContain(`Project template: ${runningVersion}`);
-    expect(result.output).toContain("Missing pnpm-lock.yaml: run vp install");
+    expect(result.output).toContain(
+      "Missing pnpm-lock.yaml: install dependencies with pnpm"
+    );
     expect(result.output).toContain("not queried (--offline)");
     expect(result.output).toContain("0 to apply, 0 to port by hand");
   });
@@ -203,24 +211,32 @@ describe("project maintenance CLI", () => {
     );
   });
 
-  it("names the installation and checks that deferred installation leaves", async () => {
-    const { cwd } = await fixture("pnpm", business("node"));
+  it.each([true, false])(
+    "names the deferred installation and checks with pnpm on PATH = %s",
+    async (pnpmAvailable) => {
+      const { cwd } = await fixture("pnpm", business("node"));
+      vi.mocked(hasCommand).mockResolvedValueOnce(pnpmAvailable);
 
-    const result = await capture(
-      "add",
-      "knip",
-      "--cwd",
-      cwd,
-      "--yes",
-      "--no-install"
-    );
+      const result = await capture(
+        "add",
+        "knip",
+        "--cwd",
+        cwd,
+        "--yes",
+        "--no-install"
+      );
 
-    expect(result.exitCode).toBe(0);
-    expect(result.output).toContain("Installation and checks were not run");
-    expect(result.output).toContain(
-      "vp install --no-frozen-lockfile && vp check && vp run knip"
-    );
-  });
+      const prefix = pnpmAvailable
+        ? ""
+        : `npx --yes --package=pnpm@${toolchainVersions.pnpm} -- `;
+
+      expect(result.exitCode).toBe(0);
+      expect(result.output).toContain("Installation and checks were not run");
+      expect(result.output).toContain(
+        `Next (in the project directory): ${prefix}vp install --no-frozen-lockfile && ${prefix}vp check && ${prefix}vp run knip`
+      );
+    }
+  );
 
   it("previews a conflict without writing anything", async () => {
     const { cwd } = await fixture("pnpm", business("node"));
