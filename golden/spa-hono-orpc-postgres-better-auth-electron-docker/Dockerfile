@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/voidzero-dev/vite-plus:1.7.0 AS build
+FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
 WORKDIR /app
 
 COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./

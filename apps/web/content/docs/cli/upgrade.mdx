@@ -27,7 +27,7 @@ Upgrades perform a three-way merge of the original template, current project, an
 
 Application pages, API implementations, and other starter source belong to the project. When the target template changes one of them, the plan lists it under `manual` with the template's own diff, and the upgrade never writes it. Port the change into your code, or ask your coding agent to. A change the project already made is not listed.
 
-The default installs dependencies and runs static checks, selected Knip checks, and existing unit tests. Use `--full-check` for the complete `vp run ready`. `--no-install` writes the files only and names the installation and checks to run.
+The default installs dependencies and runs static checks, selected Knip checks, and existing unit tests. For pnpm projects, the CLI uses `npx` to supply pnpm when it is unavailable on PATH. Use `--full-check` for the complete `vp run ready`. `--no-install` writes the files only and names the installation and checks to run.
 
 Maintenance does not initialize, migrate, or reset databases. Review and execute production data migrations separately.
 

@@ -36,7 +36,7 @@ The target is the template bundled with the running CLI, not implicitly the late
 
 The CLI compares the original template, current project, and target template. `changes` updates supported configuration and dependency files while preserving business edits, and records the target release in `vibestart.jsonc`. `manual` lists template changes to files the project owns, such as starter source, with the previous (`before`) and target (`after`) template content; the CLI never writes them. This command does not promise arbitrary application migrations or update every dependency to npm's latest version.
 
-Review the returned changes, conflicts, and manual entries before applying. The default write flow installs dependencies through `vp install`, runs `vp check`, runs Knip if selected, and runs the existing unit test project if present. It does not automatically initialize, migrate, or reset a database.
+Review the returned changes, conflicts, and manual entries before applying. The default write flow installs dependencies through `vp install` (with a pinned pnpm supplied by `npx` when pnpm is unavailable on PATH), runs `vp check`, runs Knip if selected, and runs the existing unit test project if present. It does not automatically initialize, migrate, or reset a database.
 
 - `--full-check` on `add` or `upgrade` selects `vp run ready` instead of the default checks. It may need databases, listening ports, and a browser.
 - `--no-install` on `add` or `upgrade` writes files and returns `needs-install`; `next` names the installation and checks to run. Only use it when deferral is intentional; report the operation as unfinished.

@@ -19,7 +19,7 @@ If `vibestart.jsonc` records a release other than the running CLI, [upgrade](/do
 
 ## Installation and checks [#checks]
 
-By default, the command installs once, then runs `vp check`, selected Knip checks, and an existing `unit` test project. `--full-check` runs the complete `vp run ready` instead.
+By default, the command installs once, then runs `vp check`, selected Knip checks, and an existing `unit` test project. For pnpm projects, the CLI uses `npx` to supply pnpm when it is unavailable on PATH. `--full-check` runs the complete `vp run ready` instead.
 
 `--no-install` writes files only and returns `needs-install`, with the installation and checks to run. These flags cannot be combined.
 
