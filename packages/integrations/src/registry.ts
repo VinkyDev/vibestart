@@ -105,7 +105,7 @@ export const registry = defineRegistry({
     { id: "database", name: "Database", optional: true, default: "sqlite" },
     { id: "orm", name: "ORM", optional: true, default: "drizzle" },
     { id: "auth", name: "Auth", optional: true },
-    { id: "ui", name: "UI", optional: true, default: "shadcn" },
+    { id: "ui", name: "UI", optional: true },
     { id: "desktop", name: "Desktop", optional: true, default: null },
     { id: "mobile", name: "Mobile", optional: true, default: null },
     { id: "runtime", name: "Runtime", optional: true, default: "node" },

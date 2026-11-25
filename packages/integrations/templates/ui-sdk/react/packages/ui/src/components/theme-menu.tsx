@@ -23,7 +23,7 @@ export const ThemeMenu = ({
       <MenuRadioGroup name="Theme" onValueChange={onValueChange} value={value}>
         {["Light", "Dark", "System"].map((theme) => (
           <MenuRadioItem
-            className="data-[highlighted]:bg-muted rounded px-3 py-1"
+            className="data-[highlighted]:bg-muted data-[checked]:font-bold rounded px-3 py-1"
             key={theme}
             value={theme.toLowerCase()}
           >

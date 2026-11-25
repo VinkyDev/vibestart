@@ -152,7 +152,7 @@ export const Block = ({
                     kind="ui"
                   >
                     <span className="bg-foreground/5 inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs">
-                      {chip.name}
+                      {shown.ui === undefined ? roles.ui.none : chip.name}
                       <ChevronsUpDown className="size-3" />
                     </span>
                   </DecisionTrigger>
