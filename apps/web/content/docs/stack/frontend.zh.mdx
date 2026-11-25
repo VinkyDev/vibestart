@@ -7,15 +7,20 @@ description: 选择页面的渲染方式，了解路由、数据请求和共享�
 
 ## 渲染方式 [#choose]
 
-三种选择都基于 React，区别在于页面的渲染位置和部署方式：
+可以选择浏览器渲染的 React 或 Solid SPA，也可以选择服务端渲染的 React 框架：
 
 | 选项                    | 渲染与部署                                          | 适用场景                     |
 | ----------------------- | --------------------------------------------------- | ---------------------------- |
 | TanStack Router（Vite） | 浏览器渲染，静态资源或 Hono 提供页面                | 管理后台、工具、桌面应用     |
+| Solid Router（Vite）    | Solid 2 客户端渲染，静态托管或 Hono 服务            | 响应式 Web 应用              |
 | TanStack Start          | 服务端渲染，Node.js 服务                            | 使用 TanStack 路由的全栈应用 |
 | Next.js                 | App Router 与 React Server Components，Node.js 服务 | 内容网站、全栈产品           |
 
 <RenderRace />
+
+## Solid 2 [#solid]
+
+在 Studio 选择 **Solid Router (Vite)**，或在 CLI 中选择 `--frontend solid`。生成项目使用 Solid 2、官方路由和 UI SDK 的 Solid 适配器。可以选择静态托管或 Hono 健康检查 API。开发服务器会将 API 请求代理到 Hono，生成的 Docker 镜像由 Hono 同时提供页面和 API。
 
 ## React [#react]
 
@@ -43,7 +48,7 @@ Next.js 项目使用 App Router 和 React Server Components。服务端组件可
 
 ## 路由 [#tanstack-router]
 
-单页应用和 TanStack Start 使用 TanStack Router，Next.js 使用 App Router。页面位于各框架约定的路由目录中，新增页面时沿用相应框架的文件结构。
+React SPA 和 TanStack Start 使用 TanStack Router。Solid SPA 在 `apps/web/src/router.tsx` 中注册路由。Next.js 使用 App Router。
 
 ## TanStack Query [#tanstack-query]
 
@@ -59,4 +64,4 @@ TanStack Query 管理服务端数据的缓存、加载状态和刷新。oRPC 集
 
 ## UI SDK [#ui-sdk]
 
-选择 **UI SDK** 可生成 Standard 模式的 Vite SPA，共享 UI 包提供支持键盘操作的主题菜单。支持静态网站或 Hono 健康检查 API。默认 UI 为 shadcn/ui。
+选择 **UI SDK** 可生成 Standard 模式的 Vite SPA，共享 UI 包提供支持键盘操作的主题菜单。支持静态网站或 Hono 健康检查 API。React 默认选择 shadcn/ui。Solid 使用 UI SDK。

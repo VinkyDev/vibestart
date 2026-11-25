@@ -30,6 +30,7 @@
 /** @typedef {{}} Cap_RouterInputs */
 /** @typedef {{}} Cap_RpcInputs */
 /** @typedef {{}} Cap_Single_Page_AppInputs */
+/** @typedef {{}} Cap_SolidInputs */
 /** @typedef {{}} Cap_Sql_DatabaseInputs */
 /** @typedef {{}} Cap_Sql_OrmInputs */
 /** @typedef {{}} Cap_Ui_ComponentsInputs */
@@ -96,6 +97,9 @@
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
 /** @typedef {{}} Desc_ShadcnInputs */
+/** @typedef {{}} Desc_SolidInputs */
+/** @typedef {{}} Desc_Solid_RouterInputs */
+/** @typedef {{}} Desc_Solid_SpaInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
 /** @typedef {{}} Desc_StandardInputs */
@@ -153,6 +157,7 @@
 /** @typedef {{}} Fit_PostgresInputs */
 /** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
+/** @typedef {{}} Fit_Solid_SpaInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
@@ -523,6 +528,10 @@ export const cap_single_page_app = /** @type {(inputs: Cap_Single_Page_AppInputs
 	return /** @type {LocalizedString} */ (`a single-page app`)
 };
 
+export const cap_solid = /** @type {(inputs: Cap_SolidInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Solid 2`)
+};
+
 export const cap_sql_database = /** @type {(inputs: Cap_Sql_DatabaseInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`a SQL database`)
 };
@@ -792,6 +801,18 @@ export const desc_shadcn = /** @type {(inputs: Desc_ShadcnInputs) => LocalizedSt
 	return /** @type {LocalizedString} */ (`Base UI components in a shared UI package`)
 };
 
+export const desc_solid = /** @type {(inputs: Desc_SolidInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Fine-grained reactive components with Solid 2`)
+};
+
+export const desc_solid_router = /** @type {(inputs: Desc_Solid_RouterInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Typed client-side routing for Solid 2`)
+};
+
+export const desc_solid_spa = /** @type {(inputs: Desc_Solid_SpaInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Client-rendered Solid app built with Vite`)
+};
+
 export const desc_spa = /** @type {(inputs: Desc_SpaInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Client-rendered React app built with Vite`)
 };
@@ -1021,6 +1042,10 @@ export const fit_prisma = /** @type {(inputs: Fit_PrismaInputs) => LocalizedStri
 
 export const fit_self = /** @type {(inputs: Fit_SelfInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For one app to build and deploy. The simplest setup.`)
+};
+
+export const fit_solid_spa = /** @type {(inputs: Fit_Solid_SpaInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For a Solid 2 SPA with typed routes and UI SDK components.`)
 };
 
 export const fit_spa = /** @type {(inputs: Fit_SpaInputs) => LocalizedString} */ () => {

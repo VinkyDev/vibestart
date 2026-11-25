@@ -24,6 +24,7 @@ const goldenLabels = [
   "spa-hono-orpc-postgres-better-auth-electron-docker",
   "hono-orpc-mongodb-better-auth-expo-docker",
   "hono-openapi-sqlite-bun-docker",
+  "solid-spa-hono-ui-sdk-docker",
   "spa-ui-sdk-docker",
   "spa-void",
   "tanstack-start-self-orpc-postgres-better-auth-void",

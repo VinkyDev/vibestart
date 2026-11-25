@@ -32,6 +32,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Cap_RouterInputs */
 /** @typedef {{}} Cap_RpcInputs */
 /** @typedef {{}} Cap_Single_Page_AppInputs */
+/** @typedef {{}} Cap_SolidInputs */
 /** @typedef {{}} Cap_Sql_DatabaseInputs */
 /** @typedef {{}} Cap_Sql_OrmInputs */
 /** @typedef {{}} Cap_Ui_ComponentsInputs */
@@ -98,6 +99,9 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_ReactInputs */
 /** @typedef {{}} Desc_SelfInputs */
 /** @typedef {{}} Desc_ShadcnInputs */
+/** @typedef {{}} Desc_SolidInputs */
+/** @typedef {{}} Desc_Solid_RouterInputs */
+/** @typedef {{}} Desc_Solid_SpaInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
 /** @typedef {{}} Desc_StandardInputs */
@@ -155,6 +159,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_PostgresInputs */
 /** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
+/** @typedef {{}} Fit_Solid_SpaInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
@@ -823,6 +828,20 @@ export const cap_single_page_app = /** @type {((inputs?: Cap_Single_Page_AppInpu
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.cap_single_page_app(inputs)
 	return __en.cap_single_page_app(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Solid 2" |
+*
+* @param {Cap_SolidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const cap_solid = /** @type {((inputs?: Cap_SolidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_SolidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.cap_solid(inputs)
+	return __en.cap_solid(inputs)
 });
 /**
 * | output |
@@ -1751,6 +1770,48 @@ export const desc_shadcn = /** @type {((inputs?: Desc_ShadcnInputs, options?: { 
 /**
 * | output |
 * | --- |
+* | "Fine-grained reactive components with Solid 2" |
+*
+* @param {Desc_SolidInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_solid = /** @type {((inputs?: Desc_SolidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_SolidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_solid(inputs)
+	return __en.desc_solid(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Typed client-side routing for Solid 2" |
+*
+* @param {Desc_Solid_RouterInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_solid_router = /** @type {((inputs?: Desc_Solid_RouterInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Solid_RouterInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_solid_router(inputs)
+	return __en.desc_solid_router(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Client-rendered Solid app built with Vite" |
+*
+* @param {Desc_Solid_SpaInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_solid_spa = /** @type {((inputs?: Desc_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_solid_spa(inputs)
+	return __en.desc_solid_spa(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Client-rendered React app built with Vite" |
 *
 * @param {Desc_SpaInputs} inputs
@@ -2546,6 +2607,20 @@ export const fit_self = /** @type {((inputs?: Fit_SelfInputs, options?: { locale
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_self(inputs)
 	return __en.fit_self(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "For a Solid 2 SPA with typed routes and UI SDK components." |
+*
+* @param {Fit_Solid_SpaInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_solid_spa = /** @type {((inputs?: Fit_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_solid_spa(inputs)
+	return __en.fit_solid_spa(inputs)
 });
 /**
 * | output |

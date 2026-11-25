@@ -69,7 +69,7 @@ VibeStart does not host your application, does not migrate production data, and 
 | Layer                    | Choices                                                                                        |
 | ------------------------ | ---------------------------------------------------------------------------------------------- |
 | Mode                     | Standard (default) or [Effect](https://vibestart.net/docs/stack/effect) (`--mode effect`)      |
-| App                      | React SPA (TanStack Router), TanStack Start, Next.js                                           |
+| App                      | React SPA (TanStack Router), Solid 2 SPA (Solid Router), TanStack Start, Next.js               |
 | Desktop                  | Electron                                                                                       |
 | Mobile                   | Expo (React Native), iOS and Android                                                           |
 | Backend                  | Hono, Effect HTTP, or the framework's own server                                               |

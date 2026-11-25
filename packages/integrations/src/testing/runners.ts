@@ -1,7 +1,7 @@
 import type { Context, Contribution } from "@vibestart/core";
 import { contribute, file } from "@vibestart/core";
 
-import { chosenDatabase } from "#/app.ts";
+import { chosenDatabase, isSpa } from "#/app.ts";
 import { knipEntries } from "#/knip.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ignoredFiles, readmeCommandNotes } from "#/vite-plus/slots.ts";
@@ -24,7 +24,7 @@ export const browserJourney = (ctx: Context, set: string) => {
   // SPA controls exist only after React renders them; SSR controls can precede hydration.
   return file(
     path,
-    ctx.has("spa")
+    isSpa(ctx)
       ? content.replaceAll('"networkidle"', '"domcontentloaded"')
       : content
   );
@@ -33,6 +33,7 @@ export const browserJourney = (ctx: Context, set: string) => {
 export const playwright: BrowserRunner = {
   command: "playwright test",
   contribute: (ctx) => [
+    ...(ctx.has("solid") ? templateFiles(ctx, "testing/playwright/solid") : []),
     ...templateFiles(ctx, "testing/playwright/runner", {
       except: ctx.has("effect") ? ["apps/web/tests/e2e/global-setup.ts"] : [],
     }),
@@ -73,6 +74,7 @@ const e2eConfig = (ctx: Context) => {
 export const e2e: BrowserRunner = {
   command: "e2e run",
   contribute: (ctx) => [
+    ...(ctx.has("solid") ? templateFiles(ctx, "testing/e2e/solid") : []),
     e2eConfig(ctx),
     ...templateFiles(ctx, "testing/e2e/runner", {
       except: [

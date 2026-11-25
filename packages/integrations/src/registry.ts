@@ -24,6 +24,8 @@ import { prisma } from "#/prisma.ts";
 import { react } from "#/react.ts";
 import { self } from "#/self.ts";
 import { shadcn } from "#/shadcn.ts";
+import { solidSpa } from "#/solid-spa.ts";
+import { solid, solidRouter } from "#/solid.ts";
 import { spa } from "#/spa.ts";
 import { sqlite } from "#/sqlite.ts";
 import { tanstackRouter } from "#/tanstack-router.ts";
@@ -47,6 +49,7 @@ export const registry = defineRegistry({
     "workers-runtime": "the Cloudflare Workers runtime",
     "cloudflare-deployment": "deployment to Cloudflare through Void",
     react: "React",
+    solid: "Solid 2",
     router: "a router",
     "single-page-app": "a single-page app",
     rpc: "a typed RPC layer",
@@ -63,11 +66,14 @@ export const registry = defineRegistry({
     effect,
     vitePlus,
     react,
+    solid,
     spa,
+    solidSpa,
     tanstackStart,
     next,
     expo,
     tanstackRouter,
+    solidRouter,
     hono,
     effectHttp,
     self,

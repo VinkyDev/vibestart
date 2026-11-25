@@ -262,6 +262,7 @@ const fits = {
   postgres: () => m.fit_postgres(),
   self: () => m.fit_self(),
   spa: () => m.fit_spa(),
+  "solid-spa": () => m.fit_solid_spa(),
   sqlite: () => m.fit_sqlite(),
   "tanstack-start": () => m.fit_tanstack_start(),
   e2e: () => m.desc_e2e(),

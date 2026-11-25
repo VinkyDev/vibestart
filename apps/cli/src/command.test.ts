@@ -108,6 +108,26 @@ describe("choosing a stack", () => {
     expect(web.output).toHaveProperty("stack.ui", "shadcn");
   });
 
+  it("selects the Solid router and UI adapter from the frontend flag", async () => {
+    const { output } = await run(
+      "app",
+      "--frontend",
+      "solid",
+      "--backend",
+      "none",
+      "--dry-run"
+    );
+
+    expect(output).toMatchObject({
+      stack: {
+        framework: "solid-spa",
+        frontend: "solid",
+        router: "solid-router",
+        ui: "ui-sdk",
+      },
+    });
+  });
+
   it("selects e2e explicitly and keeps Playwright by default", async () => {
     const choices = [
       "app",

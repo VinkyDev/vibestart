@@ -17,6 +17,7 @@ import {
   databaseName,
   environmentConvention,
   hasWebApp,
+  isSpa,
   proxiesToHono,
   renderEnvModule,
   rpcPath,
@@ -42,7 +43,7 @@ import { workerNodeEnv, workerServices, workerTsconfig } from "#/void.ts";
 
 // Beside a full-stack framework, whose dev server takes :3000, the API listens on :3001.
 const port = (ctx: Context) => {
-  const value = hasWebApp(ctx) && !ctx.has("spa") ? 3001 : 3000;
+  const value = hasWebApp(ctx) && !isSpa(ctx) ? 3001 : 3000;
 
   return {
     example: String(value),
@@ -211,7 +212,7 @@ const renderApp = (ctx: Context) => {
 
 // The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
 const staticImports = (ctx: Context) =>
-  ctx.has("spa")
+  isSpa(ctx)
     ? [
         ctx.has("bun")
           ? 'import { serveStatic } from "@hono/bun";'
@@ -220,7 +221,7 @@ const staticImports = (ctx: Context) =>
     : [];
 
 const serveSpa = (ctx: Context) =>
-  ctx.has("spa")
+  isSpa(ctx)
     ? [
         'const publicDir = fileURLToPath(new URL("public", import.meta.url));',
         "",
@@ -236,7 +237,7 @@ const serveSpa = (ctx: Context) =>
 const renderIndex = (ctx: Context) =>
   [
     'import { once } from "node:events";',
-    ...(ctx.has("spa")
+    ...(isSpa(ctx)
       ? [
           'import { existsSync } from "node:fs";',
           'import { fileURLToPath } from "node:url";',
@@ -317,7 +318,7 @@ const owns = (ctx: Context) => {
   const parts = [
     services(ctx),
     ...apiOwns(ctx),
-    ...(ctx.has("spa") ? ["the built SPA in production"] : []),
+    ...(isSpa(ctx) ? ["the built SPA in production"] : []),
   ];
 
   const runtime = ctx.has("bun") ? "Bun" : "Node";
@@ -451,7 +452,7 @@ const runtimeDependencies = (ctx: Context): string[] => {
     return ["@hono/node-server"];
   }
 
-  return ctx.has("spa") ? ["@hono/bun"] : [];
+  return isSpa(ctx) ? ["@hono/bun"] : [];
 };
 
 const contextFiles = (ctx: Context) => {
@@ -601,7 +602,7 @@ export const hono = defineIntegration({
     contribute(dockerRuntime, {
       copies: [
         ["/app/apps/server/dist", "./dist"],
-        ...(ctx.has("spa")
+        ...(isSpa(ctx)
           ? [["/app/apps/web/dist", "./dist/public"] as const]
           : []),
       ],

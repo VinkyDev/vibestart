@@ -717,6 +717,39 @@
 **/.env
 **/.env.*
 
+# .dockerignore · 3 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-ui-sdk-docker
+.git
+**/node_modules
+**/dist
+**/coverage
+**/.vitest
+**/*.tsbuildinfo
+**/*.local
+**/*.log
+**/playwright-report
+**/test-results
+**/.env
+**/.env.*
+
+# .dockerignore · 3 stacks
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker-e2e
+.git
+**/node_modules
+**/dist
+**/coverage
+**/.vitest
+**/*.tsbuildinfo
+**/*.local
+**/*.log
+**/.e2e
+**/.env
+**/.env.*
+
 # .dockerignore · 95 stacks
 #   spa-docker
 #   spa-effect-http-effect-rpc-docker
@@ -2114,7 +2147,7 @@
 **/.env
 **/.env.*
 
-# docker-compose.yml · 90 stacks
+# docker-compose.yml · 96 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
@@ -2135,6 +2168,12 @@
 #   next-self-orpc-docker-e2e
 #   next-self-orpc-expo-docker
 #   next-self-orpc-expo-docker-e2e
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
 #   spa-electron-docker
@@ -9380,7 +9419,85 @@ HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 CMD ["node", "apps/web/server.js"]
 
-# Dockerfile · 4 stacks
+# Dockerfile · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-bun-docker
+#   spa-hono-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
+# syntax=docker/dockerfile:1
+
+FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
+WORKDIR /app
+
+COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY --chown=vp:vp apps/server/package.json apps/server/
+COPY --chown=vp:vp apps/web/package.json apps/web/
+COPY --chown=vp:vp packages/config/package.json packages/config/
+COPY --chown=vp:vp packages/ui/package.json packages/ui/
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
+
+COPY --chown=vp:vp . .
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
+RUN cp "$(vp env which node | head -1)" /tmp/node
+
+FROM oven/bun:1.4.5-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+ENV NODE_ENV=production PORT=3000
+
+COPY --from=build /tmp/node /usr/local/bin/node
+COPY --from=build /app/apps/server/dist ./dist
+COPY --from=build /app/apps/web/dist ./dist/public
+
+USER nobody
+EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+CMD ["bun", "dist/index.mjs"]
+
+# Dockerfile · 6 stacks
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   spa-hono-docker
+#   spa-hono-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
+# syntax=docker/dockerfile:1
+
+FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
+WORKDIR /app
+
+COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY --chown=vp:vp apps/server/package.json apps/server/
+COPY --chown=vp:vp apps/web/package.json apps/web/
+COPY --chown=vp:vp packages/config/package.json packages/config/
+COPY --chown=vp:vp packages/ui/package.json packages/ui/
+RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
+
+COPY --chown=vp:vp . .
+RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
+RUN cp "$(vp env which node | head -1)" /tmp/node
+
+FROM debian:trixie-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+ENV NODE_ENV=production PORT=3000
+
+COPY --from=build /tmp/node /usr/local/bin/node
+COPY --from=build /app/apps/server/dist ./dist
+COPY --from=build /app/apps/web/dist ./dist/public
+
+USER nobody
+EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+CMD ["node", "dist/index.mjs"]
+
+# Dockerfile · 6 stacks
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
 #   spa-ui-sdk-docker
@@ -10309,78 +10426,6 @@ COPY --from=build /app/apps/web/dist /usr/share/nginx/html
 EXPOSE 3000
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --quiet --spider http://127.0.0.1:3000/ || exit 1
-
-# Dockerfile · 4 stacks
-#   spa-hono-bun-docker
-#   spa-hono-bun-docker-e2e
-#   spa-hono-ui-sdk-bun-docker
-#   spa-hono-ui-sdk-bun-docker-e2e
-# syntax=docker/dockerfile:1
-
-FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
-WORKDIR /app
-
-COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY --chown=vp:vp apps/server/package.json apps/server/
-COPY --chown=vp:vp apps/web/package.json apps/web/
-COPY --chown=vp:vp packages/config/package.json packages/config/
-COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
-
-COPY --chown=vp:vp . .
-RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
-RUN cp "$(vp env which node | head -1)" /tmp/node
-
-FROM oven/bun:1.4.5-slim AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
-WORKDIR /app
-ENV NODE_ENV=production PORT=3000
-
-COPY --from=build /tmp/node /usr/local/bin/node
-COPY --from=build /app/apps/server/dist ./dist
-COPY --from=build /app/apps/web/dist ./dist/public
-
-USER nobody
-EXPOSE 3000
-HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
-  CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
-CMD ["bun", "dist/index.mjs"]
-
-# Dockerfile · 4 stacks
-#   spa-hono-docker
-#   spa-hono-docker-e2e
-#   spa-hono-ui-sdk-docker
-#   spa-hono-ui-sdk-docker-e2e
-# syntax=docker/dockerfile:1
-
-FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
-WORKDIR /app
-
-COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY --chown=vp:vp apps/server/package.json apps/server/
-COPY --chown=vp:vp apps/web/package.json apps/web/
-COPY --chown=vp:vp packages/config/package.json packages/config/
-COPY --chown=vp:vp packages/ui/package.json packages/ui/
-RUN vp install --frozen-lockfile --filter "@my-app/server..." --filter "@my-app/web..."
-
-COPY --chown=vp:vp . .
-RUN vp run --filter "@my-app/server..." --filter "@my-app/web..." build
-RUN cp "$(vp env which node | head -1)" /tmp/node
-
-FROM debian:trixie-slim AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
-WORKDIR /app
-ENV NODE_ENV=production PORT=3000
-
-COPY --from=build /tmp/node /usr/local/bin/node
-COPY --from=build /app/apps/server/dist ./dist
-COPY --from=build /app/apps/web/dist ./dist/public
-
-USER nobody
-EXPOSE 3000
-HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
-  CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
-CMD ["node", "dist/index.mjs"]
 
 # Dockerfile · 2 stacks
 #   spa-hono-electron-bun-docker
