@@ -30,7 +30,7 @@ description: 使用 Docker 或 Alchemy 部署应用，或将 Web 界面打包为
 
 选择 `--deployment cloudflare-workers --runtime workers` 可将 React 或 Solid SPA、搭配 Hono 的 SPA 或 TanStack Start SSR 部署到自己的 Cloudflare 账号。静态 SPA 支持直接打开前端路由。搭配 Hono 时，Worker 处理 `/api` 和 `/api/*`（含 `/api/rpc`），Cloudflare 提供前端资源。Start 通过 Cloudflare Vite 插件同时构建 SSR Worker 和浏览器资源。
 
-在生成的项目根目录执行 `vp exec alchemy profile edit --add Cloudflare` 连接账号。CI 中设置 `CLOUDFLARE_ACCOUNT_ID` 和 `CLOUDFLARE_API_TOKEN`。新账号首次在 CI 执行 plan 前，先运行 `vp exec alchemy state bootstrap --backend cloudflare`。状态存储使用账号下的 Worker、Durable Object 和 Secrets Store 凭据。权限要求见 [Alchemy 状态存储说明](https://alchemy.run/state-store/)。
+在生成的项目根目录执行 `vp exec alchemy profile edit --add Cloudflare` 连接账号。CI 中设置 `CLOUDFLARE_ACCOUNT_ID` 和 `CLOUDFLARE_API_TOKEN`。新账号首次在 CI 执行 plan 前，先运行 `vp exec alchemy state bootstrap --backend cloudflare`。本地首次执行 plan 也可能创建状态存储，其中包括账号下的 Worker、Durable Object 和 Secrets Store 凭据。权限要求见 [Alchemy 状态存储说明](https://alchemy.run/state-store/)。
 
 使用 PostgreSQL 或 MySQL 时，为生产数据库创建 Hyperdrive 并**关闭查询缓存**，然后在部署终端设置指向同一个数据库的 `HYPERDRIVE_ID` 和 `DATABASE_URL`。使用 Better Auth 时还需设置 `BETTER_AUTH_SECRET`。首次部署使用 Alchemy 提供的 Worker URL，自定义 HTTPS 域名可通过 `BETTER_AUTH_URL` 设置。部署脚本检查配置并执行 Drizzle 迁移。Worker 通过 Hyperdrive 为每个请求创建客户端，在响应流结束时释放连接。
 

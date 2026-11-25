@@ -130,7 +130,7 @@ if (origin !== undefined) {
 const deploymentGuide = (ctx: Context) =>
   [
     "# Deploy to Cloudflare with Alchemy",
-    "The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your account with `vp exec alchemy profile edit --add Cloudflare`. For unattended deployments, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. Before the first plan in CI, run `vp exec alchemy state bootstrap --backend cloudflare` once with the deployment account. On first deploy, Alchemy bootstraps an account-wide state Worker, SQLite-backed Durable Object and Secrets Store credentials. See [Cloudflare setup](https://alchemy.run/cloudflare/setup/) and [state store permissions](https://alchemy.run/state-store/).",
+    "The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your account with `vp exec alchemy profile edit --add Cloudflare`. For unattended deployments, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. Before the first plan in CI, run `vp exec alchemy state bootstrap --backend cloudflare` once with the deployment account. If state is missing outside CI, even the first local plan can provision the account-wide state Worker, SQLite-backed Durable Object and Secrets Store credentials. See [Cloudflare setup](https://alchemy.run/cloudflare/setup/) and [state store permissions](https://alchemy.run/state-store/).",
     ...(ctx.stack.database === undefined
       ? []
       : [
