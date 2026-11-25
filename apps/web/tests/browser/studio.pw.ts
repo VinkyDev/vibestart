@@ -205,11 +205,84 @@ test("composes Effect on the home page and opens it in Studio", async ({
   await expect(page.locator("main")).toContainText(
     "Adjusted to fit: Mode → Effect and API → Effect RPC"
   );
+  await page.getByRole("checkbox", { name: "Alchemy", exact: true }).check();
   await page.getByRole("link", { name: "Open in Studio", exact: true }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "Alchemy", exact: true })
+  ).toBeChecked();
   await expect(page).toHaveURL(/\/studio\?.*mode=effect/u);
   await expect(
     page
       .getByRole("group", { name: "Mode", exact: true })
       .getByRole("button", { name: "Effect", exact: true })
   ).toHaveAttribute("aria-pressed", "true");
+});
+
+test("switches only the React UI kit and toggles Alchemy alongside Docker", async ({
+  page,
+}) => {
+  await page.goto(
+    "/studio?framework=next&backend=self&api=orpc&database=sqlite&auth=better-auth&deployment=docker"
+  );
+  await page.getByRole("button", { name: /shadcn\/ui/u }).click();
+  await page.getByRole("button", { name: /^UI SDK/u }).click();
+  await expect(
+    page.getByRole("button", { name: /Next\.js/u }).first()
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Better Auth/u }).first()
+  ).toBeVisible();
+  const docker = page.getByRole("checkbox", { name: "Docker", exact: true });
+  const alchemy = page.getByRole("checkbox", { name: "Alchemy", exact: true });
+  await expect(docker).toBeChecked();
+  await alchemy.click();
+  await expect(alchemy).toBeChecked();
+  await expect(docker).toBeChecked();
+  await expect(
+    page.getByRole("button", { name: /^alchemy\.run\.ts\b/u })
+  ).toBeVisible();
+  await docker.click();
+  await expect(docker).not.toBeChecked();
+  await expect(alchemy).toBeChecked();
+  await expect(
+    page.getByRole("button", { name: /UI SDK/u }).first()
+  ).toBeVisible();
+});
+
+test("chooses Solid as the frontend and keeps its Vite and UI SDK selections", async ({
+  page,
+}) => {
+  await page.goto(
+    "/studio?framework=spa&frontend=react&backend=none&database=none&auth=none"
+  );
+  await page.getByRole("button", { name: /Frontend.*React/u }).click();
+  await page.getByRole("button", { name: /^Solid 2/u }).click();
+  await expect(
+    page.getByRole("button", { name: /Frontend.*Solid 2/u })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /UI SDK/u }).first()
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: /^(?:App framework )?Vite(?:$| )/u })
+    .first()
+    .click();
+  await expect(page.getByRole("button", { name: /^Next\.js/u })).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: /^TanStack Start/u })
+  ).toHaveCount(0);
+});
+
+test("selects the Workers runtime without changing TanStack Start", async ({
+  page,
+}) => {
+  await page.goto(
+    "/studio?framework=tanstack-start&backend=self&deployment=none"
+  );
+  await page.getByRole("button", { name: /^(?:Runtime )?Node\.js$/u }).click();
+  await page.getByRole("button", { name: /^Cloudflare Workers/u }).click();
+  await expect(page).toHaveURL(/runtime=workers/u);
+  await expect(
+    page.getByRole("button", { name: /TanStack Start/u }).first()
+  ).toBeVisible();
 });

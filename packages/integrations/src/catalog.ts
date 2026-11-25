@@ -111,9 +111,6 @@ export const catalog = {
   },
   server: {
     alchemy: "2.0.0-beta.87",
-    "@alchemy.run/cloudflare": "2.0.0-beta.87",
-    "@alchemy.run/gcp": "2.0.0-beta.87",
-    "@alchemy.run/fly": "2.0.0-beta.87",
     "@cloudflare/vite-plugin": "1.70.1",
     "@cloudflare/workers-types": "5.20261125.1",
     "@hono/bun": "^1.0.1",

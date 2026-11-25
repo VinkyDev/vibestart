@@ -31,6 +31,7 @@ const icons: Record<Decision, LucideIcon> = {
   desktop: AppWindow,
   mobile: Smartphone,
   framework: PanelsTopLeft,
+  frontend: PanelsTopLeft,
 };
 
 export const Swatch = ({

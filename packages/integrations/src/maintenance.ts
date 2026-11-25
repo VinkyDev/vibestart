@@ -8,19 +8,11 @@ export const maintenanceFiles = (files: readonly GeneratedFile[]) =>
   files.filter(
     ({ path, owner }) =>
       owner === "docker" ||
-      path === "DEPLOYMENT.md" ||
-      ((owner === "gcp-cloud-run" || owner === "fly-machines") &&
-        (path === "Dockerfile" ||
-          path === ".dockerignore" ||
-          path === "alchemy.run.ts" ||
-          path === "scripts/deploy.ts" ||
-          path.startsWith("infra/"))) ||
-      (owner === "cloudflare-workers" &&
-        (path === "alchemy.run.ts" ||
-          path.endsWith("/wrangler.jsonc") ||
+      (owner === "alchemy" && path === "alchemy.run.ts") ||
+      (owner === "workers" &&
+        (path.endsWith("/wrangler.jsonc") ||
           path.endsWith("/env.ts") ||
-          path.endsWith("/worker-env.d.ts") ||
-          path === "scripts/deploy.ts")) ||
+          path.endsWith("/worker-env.d.ts"))) ||
       path === ".vite-hooks/pre-commit" ||
       /(?:^|\/)(?:package\.json|pnpm-workspace\.yaml|tsconfig(?:\.[\w-]+)?\.json|vite\.config\.ts|metro\.config\.ts|knip\.jsonc?|\.gitignore|\.npmrc|AGENTS\.md)$/u.test(
         path

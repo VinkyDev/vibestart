@@ -309,47 +309,14 @@ describe("project maintenance CLI", () => {
     }
   );
 
-  it.each(["gcp-cloud-run", "fly-machines"])(
-    "adds %s and its deployment guide to an existing API",
-    async (deployment) => {
-      const { cwd } = await fixture("pnpm", {
-        framework: null,
-        backend: "hono",
-        runtime: "node",
-        database: deployment === "gcp-cloud-run" ? "postgres" : null,
-        api: null,
-        auth: null,
-      });
-
-      const result = await run(
-        "add",
-        deployment,
-        "--cwd",
-        cwd,
-        "--yes",
-        "--no-install"
-      );
-
-      expect(result.output).toMatchObject({
-        ok: true,
-        status: "needs-install",
-      });
-      expect(readText(cwd, "Dockerfile")).toContain("dist/index.mjs");
-      expect(readText(cwd, "DEPLOYMENT.md")).toContain("DEPLOY_IMAGE");
-      expect(readText(cwd, "infra/image.ts")).toContain("DEPLOY_IMAGE");
-
-      expect(
-        readText(cwd, "infra/migration.ts")?.includes("--wait") ?? false
-      ).toBe(deployment === "gcp-cloud-run");
-    }
-  );
-
-  it("adds Alchemy to a SPA without a server, whose runtime Alchemy then chooses", async () => {
-    const { cwd } = await fixture("pnpm", { framework: "spa", backend: null });
+  it("adds editable Alchemy infrastructure without changing an existing Docker stack", async () => {
+    const { cwd } = await fixture("pnpm", { deployment: "docker" });
+    const before = projectSchema.parse(await loadRecipe(cwd)).blueprint.stack;
+    const dockerfile = readText(cwd, "Dockerfile");
 
     const result = await run(
       "add",
-      "cloudflare-workers",
+      "alchemy",
       "--cwd",
       cwd,
       "--yes",
@@ -357,40 +324,11 @@ describe("project maintenance CLI", () => {
     );
 
     expect(result.output).toMatchObject({ ok: true, status: "needs-install" });
-    expect(
-      projectSchema.parse(await loadRecipe(cwd)).blueprint.stack
-    ).toMatchObject({
-      deployment: "cloudflare-workers",
-      runtime: "workers",
-    });
-    expect(readText(cwd, "alchemy.run.ts")).toContain(
-      "Cloudflare.Website.StaticSite"
-    );
-    expect(readText(cwd, "scripts/deploy.ts")).toContain("alchemy");
-  });
-
-  it("refuses adding Alchemy where it would replace the server's runtime", async () => {
-    const { cwd } = await fixture("pnpm", {
-      ...business("node"),
-      database: "postgres",
-    });
-
-    const before = readText(cwd, "vibestart.jsonc");
-
-    const result = await run(
-      "add",
-      "cloudflare-workers",
-      "--cwd",
-      cwd,
-      "--yes",
-      "--no-install"
-    );
-
-    expect(result).toMatchObject({ exitCode: 1, output: { ok: false } });
-    expect(result.output.error).toBe(
-      "Adding cloudflare-workers would replace node with workers; this needs an explicit migration."
-    );
-    expect(readText(cwd, "vibestart.jsonc")).toBe(before);
+    const after = projectSchema.parse(await loadRecipe(cwd)).blueprint;
+    expect(after.stack).toStrictEqual(before);
+    expect(after.addons).toContain("alchemy");
+    expect(readText(cwd, "alchemy.run.ts")).toContain("Alchemy.Stack");
+    expect(readText(cwd, "Dockerfile")).toBe(dockerfile);
   });
 
   it("previews without modifying project files", async () => {

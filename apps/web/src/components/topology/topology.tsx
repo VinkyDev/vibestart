@@ -138,7 +138,7 @@ const Anchored = ({
   </motion.div>
 );
 
-const frameworkChips = ["frontend", "router"] as const;
+const frameworkChips = ["framework", "router"] as const;
 
 export const Topology = ({
   choosing,
@@ -211,7 +211,7 @@ export const Topology = ({
               delay={0.08 * (index + 1)}
               folded={folded}
               key={kind}
-              kind={kind}
+              kind={kind === "framework" ? "frontend" : kind}
               rect={rect}
               shown={shown}
             />,

@@ -9,7 +9,7 @@ npx vibestart-cli add knip ultracite docker --dry-run
 npx vibestart-cli add knip ultracite docker --yes
 ```
 
-Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks. Deployment choices include Docker Compose, Cloudflare Workers, Google Cloud Run, and Fly Machines. Adding capabilities preserves the package manager and application runtime.
+Without explicit capabilities, the terminal offers a multi-select prompt. Knip and Ultracite extend code checks. Docker and Alchemy can be added independently. Adding capabilities preserves the package manager and application runtime.
 
 ## Preview and apply [#apply]
 
@@ -25,6 +25,4 @@ By default, the command installs once, then runs `vp check`, selected Knip check
 
 Adding Ultracite may require changes to existing application code to satisfy new rules. When a check fails, the files stay written: fix the code and rerun the check, or undo with Git. Adding capabilities does not migrate databases automatically.
 
-`add cloudflare-workers` deploys a SPA without a server to Cloudflare; such a project has no runtime yet, and Alchemy serves it as static assets on Workers. A project with a server already runs on Node.js or Bun, and `add` refuses to replace that runtime: moving server code to Workers is a migration. Create an Alchemy project with `--deployment cloudflare-workers --runtime workers` instead. An existing deployment is never replaced implicitly. See [Alchemy delivery](/docs/stack/delivery#alchemy).
-
-Use `add gcp-cloud-run` or `add fly-machines` on a compatible standalone Node/Hono API. Inspect the patch with `--dry-run` and follow the generated deployment instructions.
+Select **Alchemy** to generate an editable `alchemy.run.ts`. The initial stack uses local state and declares no resources. Install your provider packages, register their layers and declare the resources your app needs. A single stack can combine several providers. Select **Docker** as well if you need a production image. Configure shared state before deploying from CI. Run `vp run plan --stage dev` to inspect changes and `vp run deploy --stage dev` to apply them. Add the same entry to an existing project with `vibestart add alchemy`.

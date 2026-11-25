@@ -2,6 +2,7 @@ import type { PackageManager, Stack } from "@vibestart/core";
 
 export const stackLabel = (stack: Stack) =>
   [
+    ...(stack.frontend === "solid" ? ["solid"] : []),
     stack.framework,
     stack.backend,
     stack.api,
@@ -12,6 +13,7 @@ export const stackLabel = (stack: Stack) =>
     stack.desktop,
     stack.mobile,
     ...(stack.runtime === "bun" ? ["bun"] : []),
+    ...(stack.runtime === "workers" ? ["workers"] : []),
     stack.deployment,
     ...(stack.testing === "e2e" ? ["e2e"] : []),
   ]

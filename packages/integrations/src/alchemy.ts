@@ -1,101 +1,58 @@
-import { contribute, file, packageJson } from "@vibestart/core";
+import { contribute, defineAddon, file, packageJson } from "@vibestart/core";
 
 import { knipEntries } from "#/knip.ts";
-import { ignoredFiles, rootTypeScriptFiles } from "#/vite-plus/slots.ts";
+import {
+  ignoredFiles,
+  readmeSections,
+  rootTypeScriptFiles,
+} from "#/vite-plus/slots.ts";
 
-interface AlchemyProject {
-  providers: string[];
-  checks?: string;
-  buildWorkspace?: string;
-  migrate?: boolean;
-  previewVariables?: string[];
-}
-
-const deploymentCommand = ({
-  checks = "",
-  buildWorkspace,
-  migrate = false,
-  previewVariables = [],
-}: AlchemyProject) =>
-  `import { spawnSync } from "node:child_process";
-
-const env = { ...process.env };
-const [action = "deploy", ...flags] = process.argv.slice(2);
-
-const confirmDestroy = action === "destroy" && flags.length === 1 && flags[0] === "--yes";
-
-if (!["plan", "deploy", "destroy"].includes(action)) {
-  throw new Error("Expected plan, deploy or destroy");
-}
-
-if (flags.length > 0 && !confirmDestroy) {
-  throw new Error("Only destroy accepts an optional --yes flag");
-}
-
-if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
-  throw new Error("Set ALCHEMY_STAGE explicitly before destroying a deployment");
-}
-
-const stage = env.ALCHEMY_STAGE ?? "prod";
-
-if (!/^[a-z][a-z0-9-]{0,30}$/u.test(stage)) {
-  throw new Error("Set ALCHEMY_STAGE to a lowercase stage name of up to 31 characters");
-}
-
-${
-  previewVariables.length > 0
-    ? `
-if (stage !== "prod") {
-  const prefix = stage.toUpperCase().replaceAll("-", "_");
-
-  for (const name of ${JSON.stringify(previewVariables)}) {
-    env[name] = env[\`\${prefix}_\${name}\`];
-  }
-}
-`
-    : ""
-}
-${checks.trim() === "" ? "" : `if (action !== "destroy") {\n${checks.trim()}\n}\n\n`}const run = (args: string[]) => {
-  const result = spawnSync("vp", args, { env, stdio: "inherit", shell: process.platform === "win32" });
-
-  if (result.error) {
-    throw result.error;
-  }
-
-  if (result.status !== 0) {
-    process.exit(result.status ?? 1);
-  }
-};
-
-${buildWorkspace === undefined ? "" : `if (action !== "destroy") {\n  run(["run", "--filter", "${buildWorkspace}...", "build"]);\n}\n\n`}${migrate ? 'if (action === "deploy") {\n  run(["run", "db:migrate"]);\n}\n\n' : ""}run(["exec", "alchemy", action, "--stage", stage, ...(action === "deploy" || confirmDestroy ? ["--yes"] : [])]);
-`;
-
-export const alchemyProject = (settings: AlchemyProject) => {
-  const platforms = ["@effect/platform-node", "@effect/platform-bun"];
-
-  return [
-    file("scripts/deploy.ts", deploymentCommand(settings)),
+export const alchemy = defineAddon({
+  id: "alchemy",
+  name: "Alchemy",
+  description:
+    "Define cloud infrastructure in TypeScript with your choice of providers",
+  homepage: "https://alchemy.run/",
+  default: false,
+  supportsAdd: true,
+  contribute: (ctx) => [
+    file(
+      "alchemy.run.ts",
+      [
+        'import * as Alchemy from "alchemy";',
+        'import { Effect, Layer } from "effect";',
+        "",
+        `export default Alchemy.Stack("${ctx.name}", {`,
+        "  providers: Layer.empty,",
+        "  state: Alchemy.localState(),",
+        "}, Effect.succeed({}));",
+        "",
+      ].join("\n")
+    ),
     contribute(rootTypeScriptFiles, "alchemy.run.ts"),
-    contribute(rootTypeScriptFiles, "scripts/deploy.ts"),
     contribute(ignoredFiles, ".alchemy/"),
     contribute(packageJson, {
       path: ".",
       devDependencies: [
         "alchemy",
         "effect",
-        ...settings.providers,
-        ...platforms,
+        "@effect/platform-node",
+        "@effect/platform-bun",
       ],
       scripts: {
-        plan: "node scripts/deploy.ts plan",
-        deploy: "node scripts/deploy.ts",
-        destroy: "node scripts/deploy.ts destroy",
+        plan: "alchemy plan",
+        deploy: "alchemy deploy",
+        destroy: "alchemy destroy",
       },
     }),
     contribute(knipEntries, {
       workspace: ".",
       entry: ["alchemy.run.ts"],
-      ignoreDependencies: platforms,
     }),
-  ];
-};
+    contribute(
+      readmeSections,
+      () =>
+        "## Cloud infrastructure\n\nEdit `alchemy.run.ts` to provision resources with [Alchemy](https://alchemy.run/). Install the provider package for your cloud, register its provider layer, and declare resources in the stack. You can combine providers in one stack. The starter has no resources and uses local state under `.alchemy/`. Configure a durable shared state backend before deploying from CI. Run `vp run plan --stage dev` to inspect changes and `vp run deploy --stage dev` to apply them."
+    ),
+  ],
+});

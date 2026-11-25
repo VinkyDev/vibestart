@@ -13,17 +13,20 @@ import { cn } from "@vibestart/ui/lib/utils";
 
 import { Verified } from "#/components/command.tsx";
 import { useComposed } from "#/components/home/use-composed.ts";
+import { DeploymentOptions } from "#/components/topology/deployment-options.tsx";
 import { Tile } from "#/components/topology/tile.tsx";
 import { list } from "#/lib/i18n.ts";
 import { ease, spring } from "#/lib/motion.ts";
 import { changeText, flagTintClass, roles, tintClass } from "#/lib/roles.ts";
 import type { Decision } from "#/lib/stack.ts";
 import {
+  addonsFlag,
   commandWords,
   decisions,
   flagsOf,
   optionsOf,
   outcome,
+  verificationWith,
 } from "#/lib/stack.ts";
 import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
@@ -126,6 +129,13 @@ const Layer = ({
           const checked = id === current;
           const reachable = checked || outcome(stack, kind, id) !== undefined;
 
+          if (
+            (kind === "framework" || kind === "ui") &&
+            (id === null || !reachable)
+          ) {
+            return null;
+          }
+
           return (
             <label
               className={cn(
@@ -186,14 +196,14 @@ const Halo = ({ stack }: { readonly stack: Stack }) => (
 );
 
 export const Composer = () => {
-  const { compose, entry } = useComposed();
+  const { addons, compose, entry } = useComposed();
 
   const [adjustment, setAdjustment] = useState<Adjustment>({
     changes: [],
     version: 0,
   });
 
-  const words = commandWords(flagsOf(entry.stack), previewName, "pnpm");
+  const words = commandWords(flagsOf(entry.stack), previewName, "pnpm", addons);
 
   const choose = (kind: Decision, id: string | null) => {
     const next = outcome(entry.stack, kind, id);
@@ -228,20 +238,57 @@ export const Composer = () => {
             </span>
           </p>
           <div className="flex flex-col">
-            {decisions.map((kind, index) => (
-              <Layer
-                flash={
-                  adjustment.changes.some((change) => change.kind === kind)
-                    ? adjustment.version
-                    : undefined
-                }
-                index={index}
-                key={kind}
-                kind={kind}
-                onChoose={choose}
-                stack={entry.stack}
-              />
-            ))}
+            {decisions
+              .filter(
+                (kind) =>
+                  entry.stack.frontend !== undefined ||
+                  (kind !== "framework" && kind !== "ui")
+              )
+              .map((kind, index) =>
+                kind === "deployment" ? (
+                  <fieldset
+                    className="flex min-h-10 items-center gap-2 px-3 sm:gap-3"
+                    key={kind}
+                  >
+                    <legend className="sr-only">{roles.deployment.role}</legend>
+                    <span
+                      aria-hidden
+                      className="tint-deployment text-snippet flex w-[5.5rem] shrink-0 items-center gap-1.5 font-medium sm:w-[8.5rem] sm:gap-2.5 sm:text-sm"
+                    >
+                      <span className="bg-tint size-1.5 shrink-0 rounded-full sm:hidden" />
+                      <span className="hidden sm:contents">
+                        <Tile kind="deployment" />
+                      </span>
+                      {roles.deployment.role}
+                    </span>
+                    <DeploymentOptions
+                      choosing={{
+                        addons,
+                        baseline: entry.stack,
+                        onAddons: (next) => {
+                          compose(entry.stack, next);
+                        },
+                        onChoose: (next) => {
+                          compose(next.stack);
+                        },
+                      }}
+                    />
+                  </fieldset>
+                ) : (
+                  <Layer
+                    flash={
+                      adjustment.changes.some((change) => change.kind === kind)
+                        ? adjustment.version
+                        : undefined
+                    }
+                    index={index}
+                    key={kind}
+                    kind={kind}
+                    onChoose={choose}
+                    stack={entry.stack}
+                  />
+                )
+              )}
           </div>
         </div>
 
@@ -270,7 +317,7 @@ export const Composer = () => {
               </span>
             ))}
           </p>
-          <Verified verification={entry.verification} />
+          <Verified verification={verificationWith(entry, addons)} />
           <AnimatePresence initial={false} mode="popLayout">
             {adjustment.changes.length > 0 && (
               <motion.p
@@ -296,7 +343,7 @@ export const Composer = () => {
               buttonVariants({ variant: "secondary" }),
               "mt-1 h-10 self-start rounded-full px-5 text-sm font-medium lg:mt-auto"
             )}
-            search={flagsOf(entry.stack)}
+            search={{ ...flagsOf(entry.stack), addons: addonsFlag(addons) }}
             to="/studio"
           >
             {m.home_open_stack()}

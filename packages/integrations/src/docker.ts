@@ -456,7 +456,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
   ].join("\n\n");
 };
 
-export const containerImageFiles = (ctx: Context) => [
+const containerImageFiles = (ctx: Context) => [
   renderFile("Dockerfile", (read) => renderDockerfile(ctx, read)),
   renderFile(".dockerignore", renderDockerignore),
 ];

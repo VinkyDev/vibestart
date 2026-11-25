@@ -144,7 +144,7 @@ describe("choosing a stack", () => {
 
     expect(output).toMatchObject({
       stack: {
-        framework: "solid-spa",
+        framework: "spa",
         frontend: "solid",
         router: "solid-router",
         ui: "ui-sdk",
@@ -239,7 +239,7 @@ describe("choosing a stack", () => {
     const { exitCode, message } = await run("--addons", "knip,eslint");
     expect(exitCode).toBe(1);
     expect(message).toContain(
-      '--addons takes knip, ultracite, or none; got "eslint"'
+      '--addons takes alchemy, knip, ultracite, or none; got "eslint"'
     );
   });
 });
@@ -534,7 +534,7 @@ describe("Effect mode", () => {
 
     const output = listingSchema.parse(result.output);
 
-    expect(output.stacks).toHaveLength(80);
+    expect(output.stacks).toHaveLength(160);
     expect(
       ["mode", "database", "desktop", "mobile", "testing"].map(
         (kind) => output.kinds.find(({ id }) => id === kind)?.default

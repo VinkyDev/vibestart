@@ -65,6 +65,4 @@ Node.js 是默认应用运行时，也是工具链使用的运行时。项目通
 
 ## Cloudflare Workers [#workers]
 
-<Tech href="https://developers.cloudflare.com/workers/" icon="workers" />
-
-Cloudflare Workers 部署使用 Workers 运行时。Cloud Run 和 Fly Machines 部署使用 Node.js 运行时。构建工具和数据库迁移脚本仍运行于 Node.js；可以独立选择 Bun 包管理器。详见[交付](/docs/stack/delivery#alchemy)。
+显式选择 `--runtime workers` 会生成 Workers 运行时代码。数据库连接使用 Hyperdrive。Alchemy 可用于任何运行时。

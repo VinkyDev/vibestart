@@ -35,10 +35,11 @@ Standard is the default and suits most projects with familiar TypeScript and the
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect mode offers 80 legal stacks: PostgreSQL or SQLite with optional Better Auth, or no database, combined with optional Electron desktop and Expo mobile, either browser runner, and Docker or no deployment. The package manager and addons are independent of these combinations.
+Effect mode supports PostgreSQL or SQLite with optional Better Auth, or a stateless application. Choose either React UI kit and browser runner, then add Electron, Expo or Docker as needed. The package manager and addons are independent of these combinations.
 
 | Flag         | Effect choices               | Default without prompts                             |
 | ------------ | ---------------------------- | --------------------------------------------------- |
+| `--ui`       | `shadcn`, `ui-sdk`           | `shadcn`                                            |
 | `--database` | `postgres`, `sqlite`, `none` | `sqlite`                                            |
 | `--orm`      | `drizzle`, `none`            | Inferred from the database                          |
 | `--auth`     | `better-auth`, `none`        | No default; choose explicitly when using a database |
@@ -132,7 +133,7 @@ Change them to one of:
   --framework spa --backend hono
 ```
 
-## Package manager and Hono runtime [#runtime]
+## Package manager and server runtime [#runtime]
 
 These two choices are independent. The package manager defaults to `pnpm`; choose Bun with `--package-manager bun`. Hono runs on `node` by default; use `--runtime bun` to run its server on Bun. The Bun runtime choice applies to Hono only: Next.js, TanStack Start, Electron, Vite+, and Vitest run as they otherwise would.
 
@@ -147,7 +148,7 @@ bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth
 bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --package-manager bun --runtime bun
 ```
 
-The command that launches the CLI (`pnpm dlx`, `npx`, or `bunx`) does not choose the project's package manager. `--package-manager` takes precedence over a recipe; without either, the interactive choice or the pnpm default applies. In the studio, the package manager is chosen in the creation panel and the runtime on Hono's process box.
+The command that launches the CLI (`pnpm dlx`, `npx`, or `bunx`) does not choose the project's package manager. `--package-manager` takes precedence over a recipe; without either, the interactive choice or the pnpm default applies. In Studio, choose the package manager in the creation panel. For Vite with Hono or a TanStack Start app with its own server, select Cloudflare Workers on the corresponding process box, or pass `--runtime workers`.
 
 With Bun, workspaces and the catalog live in the root `package.json`, and the lockfile is `bun.lock`; pnpm keeps `pnpm-workspace.yaml` and `pnpm-lock.yaml`. Both install through `vp install`. Hono on Bun uses `bun --watch` in development and `bun dist/index.mjs` in production, and loads `.env` automatically. Generated projects require Bun 1.4.3 or later. Each combination of package manager and runtime is verified separately.
 
@@ -157,6 +158,7 @@ Add-ons are tools that any stack can include. They are not part of the stack's l
 
 | Add-on      | What it sets up                                                                                                                                             | Default |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `alchemy`   | An editable `alchemy.run.ts` and commands to plan, deploy, and destroy infrastructure                                                                       | No      |
 | `knip`      | [Knip](https://knip.dev): `vp run knip` reports unused files, exports, dependencies, and catalog entries, and `vp run ready` runs it after `vp check`       | Yes     |
 | `ultracite` | [Ultracite](https://www.ultracite.ai): lint and formatting presets for `vp check`, with rules for the frameworks in use and checks aimed at AI-written code | Yes     |
 
@@ -165,6 +167,7 @@ npx vibestart-cli my-app --addons none             # no add-ons
 npx vibestart-cli my-app --addons knip             # Knip only
 npx vibestart-cli my-app --addons ultracite        # Ultracite only
 npx vibestart-cli my-app --addons knip,ultracite   # the defaults
+npx vibestart-cli my-app --addons alchemy,knip,ultracite  # Alchemy plus the defaults
 ```
 
 Without `--addons`, the CLI asks in a terminal and uses the defaults otherwise. Verification runs with the default add-ons. Leaving out Knip removes its task and check step; leaving out Ultracite removes its presets and their dependencies. The Vite+ baseline checks, type checks, tests, and build remain either way.
@@ -287,8 +290,6 @@ On failure:
 | `1`   | Failure   |
 | `130` | Cancelled |
 
-For Cloudflare deployment, use `--deployment cloudflare-workers --runtime workers`. Alchemy supports static SPA, SPA + Hono, and TanStack Start; server stacks use optional external Postgres/MySQL + Drizzle. Node.js still runs tooling and migrations. See [Alchemy delivery](/docs/stack/delivery#alchemy).
+Select **Alchemy** to generate an editable `alchemy.run.ts`. The initial stack uses local state and declares no resources. Install your provider packages, register their layers and declare the resources your app needs. A single stack can combine several providers. Select **Docker** as well if you need a production image. Configure shared state before deploying from CI. Run `vp run plan --stage dev` to inspect changes and `vp run deploy --stage dev` to apply them. Add the same entry to an existing project with `vibestart add alchemy`.
 
-For a standalone Node/Hono API, choose `--deployment gcp-cloud-run` or `--deployment fly-machines`. Cloud Run also supports external PostgreSQL with Drizzle. Both targets accept an immutable registry image. See [container deployment](/docs/stack/delivery#cloud-containers).
-
-With a React SPA, omitting `--ui` selects shadcn. Use `--ui ui-sdk` to select UI SDK. The filtered `--list --json` output reports the UI default for the supplied flags.
+With a React application, omitting `--ui` selects shadcn. Use `--ui ui-sdk` to select UI SDK. The filtered `--list --json` output reports the UI default for the supplied flags.

@@ -1,3 +1,5 @@
+"use client";
+
 import { useTheme } from "next-themes";
 
 import { ThemeMenu } from "@my-app/ui/components/theme-menu";

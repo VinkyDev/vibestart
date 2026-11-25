@@ -17,7 +17,7 @@ import {
 } from "#/lib/focus.ts";
 import { integrationDescription } from "#/lib/i18n.ts";
 import { ease, spring } from "#/lib/motion.ts";
-import { addLabel, roles, tintClass } from "#/lib/roles.ts";
+import { addLabel, groupOfKind, roles, tintClass } from "#/lib/roles.ts";
 import type { OptionalDecision } from "#/lib/stack.ts";
 import { chosen } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
@@ -40,7 +40,8 @@ export const Block = ({
   readonly shown: Stack;
 }) => {
   const { focus } = useFocus();
-  const { enter, leave } = useFocusTarget({ group: kind });
+  const group = groupOfKind[kind];
+  const { enter, leave } = useFocusTarget({ group });
   const id = shown[kind];
   const integration = chosen(shown, kind);
   const changing = id !== choosing.baseline[kind];
@@ -79,7 +80,7 @@ export const Block = ({
             integration !== undefined &&
             "shadow-rest hover:shadow-lift data-[focused]:shadow-lift"
         )}
-        data-focused={focusesGroup(focus, kind) ? "" : undefined}
+        data-focused={focusesGroup(focus, group) ? "" : undefined}
       >
         <DecisionTrigger
           choosing={choosing}
@@ -143,16 +144,18 @@ export const Block = ({
         </DecisionTrigger>
         {chips.length > 0 && (
           <div className="flex flex-wrap gap-1.5 px-4.5 pb-4.5">
-            <FocusScope value={{ group: kind }}>
+            <FocusScope value={{ group }}>
               {chips.map((chip) =>
-                chip.kind === "ui" ? (
+                chip.kind === "ui" || chip.kind === "framework" ? (
                   <DecisionTrigger
                     choosing={choosing}
                     key={chip.kind}
-                    kind="ui"
+                    kind={chip.kind}
                   >
                     <span className="bg-foreground/5 inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs">
-                      {shown.ui === undefined ? roles.ui.none : chip.name}
+                      {shown[chip.kind] === undefined
+                        ? roles[chip.kind].none
+                        : chip.name}
                       <ChevronsUpDown className="size-3" />
                     </span>
                   </DecisionTrigger>

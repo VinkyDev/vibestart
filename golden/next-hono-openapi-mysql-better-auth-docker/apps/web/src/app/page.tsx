@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Button } from "@my-app/ui/components/button";
+import { buttonVariants } from "@my-app/ui/components/button";
 
 import { ApiStatus } from "#src/components/api-status.tsx";
 import { StackDiagram } from "#src/components/stack-diagram.tsx";
@@ -26,19 +26,17 @@ const HomePage = () => (
         Next.js, Hono, OpenAPI, MySQL, Drizzle and Better Auth on Vite+.
       </p>
       <div className="flex flex-wrap gap-3">
-        <Button nativeButton={false} render={<Link href="/todos" />} size="lg">
+        <Link href="/todos" className={buttonVariants({ size: "lg" })}>
           Try the todo list
-        </Button>
-        <Button
-          nativeButton={false}
-          render={
-            <a href="/api" rel="noreferrer" target="_blank">
-              Open the API reference
-            </a>
-          }
-          size="lg"
-          variant="outline"
-        />
+        </Link>
+        <a
+          href="/api"
+          rel="noreferrer"
+          target="_blank"
+          className={buttonVariants({ size: "lg", variant: "outline" })}
+        >
+          Open the API reference
+        </a>
       </div>
       <p className="text-muted-foreground text-sm">
         Start in{" "}

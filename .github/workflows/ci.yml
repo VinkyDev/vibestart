@@ -26,6 +26,14 @@ jobs:
           cache: true
       - run: vp install
       - run: vp run ready
+      - name: Plan an Alchemy project with Docker
+        run: |
+          vp run --filter vibestart-cli build
+          node apps/cli/dist/cli.mjs "$RUNNER_TEMP/alchemy-smoke" --recipe golden/solid-spa-hono-ui-sdk-docker --addons alchemy,knip,ultracite --no-git --no-install --json
+          cd "$RUNNER_TEMP/alchemy-smoke"
+          vp install
+          vp run knip
+          vp run plan --stage smoke
 
   # The tasks whose current output no record vouches for, in the store or in this branch's earlier runs.
   plan:

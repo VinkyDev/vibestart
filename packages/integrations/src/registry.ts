@@ -1,10 +1,9 @@
 import { defineRegistry } from "@vibestart/core";
 
+import { alchemy } from "#/alchemy.ts";
 import { betterAuth } from "#/better-auth.ts";
 import { bun } from "#/bun.ts";
 import { catalog } from "#/catalog.ts";
-import { cloudRun, flyMachines } from "#/cloud-containers.ts";
-import { cloudflareWorkers } from "#/cloudflare-workers.ts";
 import { docker } from "#/docker.ts";
 import { drizzle } from "#/drizzle.ts";
 import { effectHttp } from "#/effect-http.ts";
@@ -26,7 +25,6 @@ import { prisma } from "#/prisma.ts";
 import { react } from "#/react.ts";
 import { self } from "#/self.ts";
 import { shadcn } from "#/shadcn.ts";
-import { solidSpa } from "#/solid-spa.ts";
 import { solid, solidRouter } from "#/solid.ts";
 import { spa } from "#/spa.ts";
 import { sqlite } from "#/sqlite.ts";
@@ -39,7 +37,8 @@ import { vitePlus } from "#/vite-plus/index.ts";
 import { workers } from "#/workers.ts";
 
 export const registry = defineRegistry({
-  addons: [knip, ultracite],
+  // Infrastructure contributes its entry point before Knip decides whether a config is needed.
+  addons: [alchemy, knip, ultracite],
   capabilities: {
     "effect-http-server": "an Effect HTTP server",
     "frontend-framework": "a frontend framework",
@@ -48,7 +47,6 @@ export const registry = defineRegistry({
     "http-server": "an HTTP server",
     "node-runtime": "a Node.js-compatible runtime",
     "workers-runtime": "the Cloudflare Workers runtime",
-    "cloudflare-deployment": "deployment to Cloudflare through Alchemy",
     react: "React",
     solid: "Solid 2",
     router: "a router",
@@ -69,7 +67,6 @@ export const registry = defineRegistry({
     react,
     solid,
     spa,
-    solidSpa,
     tanstackStart,
     next,
     expo,
@@ -96,9 +93,6 @@ export const registry = defineRegistry({
     bun,
     workers,
     docker,
-    cloudflareWorkers,
-    cloudRun,
-    flyMachines,
     playwrightTests,
     e2eTests,
   ],

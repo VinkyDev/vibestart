@@ -1,4 +1,4 @@
-# apps/server/src/index.ts · 8 stacks
+# apps/server/src/index.ts · 16 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
@@ -7,6 +7,14 @@
 #   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-expo-docker
 #   spa-effect-http-effect-rpc-expo-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-docker
+#   spa-effect-http-effect-rpc-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-ui-sdk-expo-docker-e2e
 import { existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
@@ -34,7 +42,7 @@ const HttpLive = HttpRouter.serve(Layer.mergeAll(Routes, StaticRoutes)).pipe(
 
 NodeRuntime.runMain(Layer.launch(HttpLive));
 
-# apps/server/src/index.ts · 16 stacks
+# apps/server/src/index.ts · 32 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
@@ -43,6 +51,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
@@ -51,6 +67,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 import { existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
@@ -81,7 +105,7 @@ const HttpLive = HttpRouter.serve(Layer.mergeAll(Routes, StaticRoutes)).pipe(
 
 NodeRuntime.runMain(Layer.launch(HttpLive));
 
-# apps/server/src/index.ts · 16 stacks
+# apps/server/src/index.ts · 32 stacks
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
@@ -90,6 +114,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
@@ -98,6 +130,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 import { existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
@@ -127,7 +167,7 @@ const HttpLive = HttpRouter.serve(Layer.mergeAll(Routes, StaticRoutes)).pipe(
 
 NodeRuntime.runMain(Layer.launch(HttpLive));
 
-# apps/server/tsconfig.json · 40 stacks
+# apps/server/tsconfig.json · 80 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
@@ -144,6 +184,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
@@ -152,6 +200,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
@@ -160,6 +216,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
@@ -168,12 +232,28 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-docker
+#   spa-effect-http-effect-rpc-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-ui-sdk-expo-docker-e2e
 {
   "extends": "@my-app/config/typescript/node.json",
   "include": ["src", "vite.config.ts"]
 }
 
-# apps/server/vite.config.ts · 8 stacks
+# apps/server/vite.config.ts · 16 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker
@@ -182,6 +262,14 @@ NodeRuntime.runMain(Layer.launch(HttpLive));
 #   spa-effect-http-effect-rpc-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-expo-docker
 #   spa-effect-http-effect-rpc-expo-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-docker
+#   spa-effect-http-effect-rpc-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-ui-sdk-expo-docker-e2e
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({
@@ -191,7 +279,7 @@ export default defineConfig({
   },
 });
 
-# apps/server/vite.config.ts · 32 stacks
+# apps/server/vite.config.ts · 64 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
@@ -200,6 +288,14 @@ export default defineConfig({
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-docker
 #   spa-effect-http-effect-rpc-postgres-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-electron-docker
@@ -208,6 +304,14 @@ export default defineConfig({
 #   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-expo-docker
 #   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
@@ -216,6 +320,14 @@ export default defineConfig({
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-docker
 #   spa-effect-http-effect-rpc-sqlite-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-electron-docker
@@ -224,6 +336,14 @@ export default defineConfig({
 #   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-expo-docker
 #   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({

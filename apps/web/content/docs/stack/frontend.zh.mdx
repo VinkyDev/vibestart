@@ -3,24 +3,23 @@ title: 前端
 description: 选择页面的渲染方式，了解路由、数据请求和共享组件。
 ---
 
-前端是运行在浏览器中的全部内容：页面、路由、数据请求和组件。首先选择框架，它决定页面在哪里渲染、应用如何部署；后续各节分别介绍每种框架以及它们共用的工具。
+先选择 React 或 Solid 2，再选择应用框架和 UI 组件库。
 
 ## 渲染方式 [#choose]
 
 可以选择浏览器渲染的 React 或 Solid SPA，也可以选择服务端渲染的 React 框架：
 
-| 选项                    | 渲染与部署                                          | 适用场景                     |
-| ----------------------- | --------------------------------------------------- | ---------------------------- |
-| TanStack Router（Vite） | 浏览器渲染，静态资源或 Hono 提供页面                | 管理后台、工具、桌面应用     |
-| Solid Router（Vite）    | Solid 2 客户端渲染，静态托管或 Hono 服务            | 响应式 Web 应用              |
-| TanStack Start          | 服务端渲染，Node.js 服务                            | 使用 TanStack 路由的全栈应用 |
-| Next.js                 | App Router 与 React Server Components，Node.js 服务 | 内容网站、全栈产品           |
+| 选项           | 渲染与部署                                          | 适用场景                     |
+| -------------- | --------------------------------------------------- | ---------------------------- |
+| Vite           | 浏览器渲染，静态资源或 Hono 提供页面                | 管理后台、工具、桌面应用     |
+| TanStack Start | 服务端渲染，Node.js 服务                            | 使用 TanStack 路由的全栈应用 |
+| Next.js        | App Router 与 React Server Components，Node.js 服务 | 内容网站、全栈产品           |
 
 <RenderRace />
 
 ## Solid 2 [#solid]
 
-在 Studio 选择 **Solid Router (Vite)**，或在 CLI 中选择 `--frontend solid`。生成项目使用 Solid 2、官方路由和 UI SDK 的 Solid 适配器。可以选择静态托管或 Hono 健康检查 API。开发服务器会将 API 请求代理到 Hono，生成的 Docker 镜像由 Hono 同时提供页面和 API。
+在 Studio 选择 **Solid 2**，或在 CLI 中选择 `--frontend solid`。生成项目使用 Solid 2、官方路由和 UI SDK 的 Solid 适配器。可以选择静态托管或 Hono 健康检查 API。开发服务器会将 API 请求代理到 Hono，生成的 Docker 镜像由 Hono 同时提供页面和 API。
 
 ## React [#react]
 
@@ -28,7 +27,7 @@ description: 选择页面的渲染方式，了解路由、数据请求和共享�
 
 React 用组件组织界面。生成项目包含页面、表单和共享组件，并启用 React Compiler。状态与事件处理均使用 React 的标准 API。
 
-## TanStack Router（Vite） [#spa]
+## Vite [#spa]
 
 <Tech href="https://tanstack.com/router" icon="tanstack" paired="vite" />
 
@@ -64,4 +63,4 @@ TanStack Query 管理服务端数据的缓存、加载状态和刷新。oRPC 集
 
 ## UI SDK [#ui-sdk]
 
-选择 **UI SDK** 可生成 Standard 模式的 Vite SPA，共享 UI 包提供支持键盘操作的主题菜单。支持静态网站或 Hono 健康检查 API。React 默认选择 shadcn/ui。Solid 使用 UI SDK。
+React 项目可在 shadcn/ui 与 UI SDK 之间切换，其他技术栈选择保持不变。Solid 2 使用 UI SDK。

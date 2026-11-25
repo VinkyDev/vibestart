@@ -16,7 +16,6 @@
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
-/** @typedef {{}} Cap_Cloudflare_DeploymentInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
@@ -67,9 +66,6 @@
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_Cloud_Run_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
@@ -85,8 +81,6 @@
 /** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
-/** @typedef {{}} Desc_Fly_MachinesInputs */
-/** @typedef {{}} Desc_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_MongodbInputs */
 /** @typedef {{}} Desc_MongooseInputs */
@@ -103,7 +97,6 @@
 /** @typedef {{}} Desc_ShadcnInputs */
 /** @typedef {{}} Desc_SolidInputs */
 /** @typedef {{}} Desc_Solid_RouterInputs */
-/** @typedef {{}} Desc_Solid_SpaInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
 /** @typedef {{}} Desc_StandardInputs */
@@ -133,7 +126,6 @@
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
-/** @typedef {{}} Fit_AlchemyInputs */
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
@@ -142,8 +134,6 @@
 /** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
-/** @typedef {{}} Fit_Fly_MachinesInputs */
-/** @typedef {{}} Fit_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_MongodbInputs */
 /** @typedef {{}} Fit_MongooseInputs */
@@ -163,12 +153,13 @@
 /** @typedef {{}} Fit_PostgresInputs */
 /** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
-/** @typedef {{}} Fit_Solid_SpaInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
 /** @typedef {{}} Fit_Ui_SdkInputs */
 /** @typedef {{}} Fit_WorkersInputs */
+/** @typedef {{}} Frontend_AboutInputs */
+/** @typedef {{}} Frontend_QuestionInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
 /** @typedef {{}} Gate_CheckInputs */
@@ -477,10 +468,6 @@ export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => L
 	return /** @type {LocalizedString} */ (`Every client calls this one API, with its types taken from the server code.`)
 };
 
-export const cap_cloudflare_deployment = /** @type {(inputs: Cap_Cloudflare_DeploymentInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`deployment to Cloudflare through Alchemy`)
-};
-
 export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`a database server (PostgreSQL or MySQL)`)
 };
@@ -686,18 +673,6 @@ export const current = /** @type {(inputs: CurrentInputs) => LocalizedString} */
 	return /** @type {LocalizedString} */ (`current`)
 };
 
-export const deployment_alchemy = /** @type {(inputs: Deployment_AlchemyInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`${i?.name} · Cloudflare Worker + static assets`)
-};
-
-export const deployment_alchemy_database = /** @type {(inputs: Deployment_Alchemy_DatabaseInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · external database`)
-};
-
-export const deployment_cloud_run_database = /** @type {(inputs: Deployment_Cloud_Run_DatabaseInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`${i?.name} · Cloud Run service + migration job · external PostgreSQL`)
-};
-
 export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} image`)
 };
@@ -715,7 +690,7 @@ export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs
 };
 
 export const desc_alchemy = /** @type {(inputs: Desc_AlchemyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)`)
+	return /** @type {LocalizedString} */ (`Define cloud infrastructure in TypeScript with your choice of providers`)
 };
 
 export const desc_better_auth = /** @type {(inputs: Desc_Better_AuthInputs) => LocalizedString} */ () => {
@@ -756,14 +731,6 @@ export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => Localiz
 
 export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`iOS and Android app on React Native, with Expo Router`)
-};
-
-export const desc_fly_machines = /** @type {(inputs: Desc_Fly_MachinesInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Deploy a stateless Node API to Fly Machines (preview)`)
-};
-
-export const desc_gcp_cloud_run = /** @type {(inputs: Desc_Gcp_Cloud_RunInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Deploy a standalone Node API to Google Cloud Run (preview)`)
 };
 
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
@@ -830,12 +797,8 @@ export const desc_solid_router = /** @type {(inputs: Desc_Solid_RouterInputs) =>
 	return /** @type {LocalizedString} */ (`Typed client-side routing for Solid 2`)
 };
 
-export const desc_solid_spa = /** @type {(inputs: Desc_Solid_SpaInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Client-rendered Solid app built with Vite`)
-};
-
 export const desc_spa = /** @type {(inputs: Desc_SpaInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Client-rendered React app built with Vite`)
+	return /** @type {LocalizedString} */ (`Client-rendered web app built with Vite`)
 };
 
 export const desc_sqlite = /** @type {(inputs: Desc_SqliteInputs) => LocalizedString} */ () => {
@@ -863,7 +826,7 @@ export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => Local
 };
 
 export const desc_workers = /** @type {(inputs: Desc_WorkersInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Cloudflare Workers runtime, deployed with Alchemy`)
+	return /** @type {LocalizedString} */ (`Run the web app on Cloudflare Workers`)
 };
 
 export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => LocalizedString} */ () => {
@@ -953,10 +916,6 @@ export const file_count = /** @type {(inputs: File_CountInputs) => LocalizedStri
 	return /** @type {LocalizedString} */ ("file_count");
 };
 
-export const fit_alchemy = /** @type {(inputs: Fit_AlchemyInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle.`)
-};
-
 export const fit_better_auth = /** @type {(inputs: Fit_Better_AuthInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For apps where users have accounts.`)
 };
@@ -987,14 +946,6 @@ export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => Localized
 
 export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For an iOS and Android app, beside the web app or on its own.`)
-};
-
-export const fit_fly_machines = /** @type {(inputs: Fit_Fly_MachinesInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Run a stateless API in a Fly.io region from a published image.`)
-};
-
-export const fit_gcp_cloud_run = /** @type {(inputs: Fit_Gcp_Cloud_RunInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Serve a container over HTTPS on Google Cloud, optionally with an external PostgreSQL database.`)
 };
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
@@ -1073,10 +1024,6 @@ export const fit_self = /** @type {(inputs: Fit_SelfInputs) => LocalizedString} 
 	return /** @type {LocalizedString} */ (`For one app to build and deploy. The simplest setup.`)
 };
 
-export const fit_solid_spa = /** @type {(inputs: Fit_Solid_SpaInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`For a Solid 2 SPA with typed routes and UI SDK components.`)
-};
-
 export const fit_spa = /** @type {(inputs: Fit_SpaInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For dashboards and tools behind a sign-in.`)
 };
@@ -1090,11 +1037,19 @@ export const fit_tanstack_start = /** @type {(inputs: Fit_Tanstack_StartInputs) 
 };
 
 export const fit_ui_sdk = /** @type {(inputs: Fit_Ui_SdkInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`For a Vite SPA with accessible, unstyled primitives.`)
+	return /** @type {LocalizedString} */ (`Accessible, unstyled primitives with React and Solid adapters.`)
 };
 
 export const fit_workers = /** @type {(inputs: Fit_WorkersInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Runs your server in Cloudflare Workers; database clients belong to each request.`)
+};
+
+export const frontend_about = /** @type {(inputs: Frontend_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Choose React or Solid. The app framework and component kit follow below.`)
+};
+
+export const frontend_question = /** @type {(inputs: Frontend_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Which UI library renders the page?`)
 };
 
 export const gate_build = /** @type {(inputs: Gate_BuildInputs) => LocalizedString} */ () => {
@@ -1670,7 +1625,7 @@ export const role_desktop_question = /** @type {(inputs: Role_Desktop_QuestionIn
 };
 
 export const role_framework = /** @type {(inputs: Role_FrameworkInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Frontend`)
+	return /** @type {LocalizedString} */ (`App framework`)
 };
 
 export const role_framework_about = /** @type {(inputs: Role_Framework_AboutInputs) => LocalizedString} */ () => {
@@ -1710,7 +1665,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun.`)
+	return /** @type {LocalizedString} */ (`Choose the runtime that executes your server.`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {

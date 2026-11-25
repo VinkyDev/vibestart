@@ -18,7 +18,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Api_Client_MobileInputs */
 /** @typedef {{}} Api_ClientsInputs */
 /** @typedef {{}} Api_Clients_SameInputs */
-/** @typedef {{}} Cap_Cloudflare_DeploymentInputs */
 /** @typedef {{}} Cap_Database_ServerInputs */
 /** @typedef {{}} Cap_Document_DatabaseInputs */
 /** @typedef {{}} Cap_Document_OrmInputs */
@@ -69,9 +68,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_Cloud_Run_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
@@ -87,8 +83,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
-/** @typedef {{}} Desc_Fly_MachinesInputs */
-/** @typedef {{}} Desc_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_MongodbInputs */
 /** @typedef {{}} Desc_MongooseInputs */
@@ -105,7 +99,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_ShadcnInputs */
 /** @typedef {{}} Desc_SolidInputs */
 /** @typedef {{}} Desc_Solid_RouterInputs */
-/** @typedef {{}} Desc_Solid_SpaInputs */
 /** @typedef {{}} Desc_SpaInputs */
 /** @typedef {{}} Desc_SqliteInputs */
 /** @typedef {{}} Desc_StandardInputs */
@@ -135,7 +128,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
-/** @typedef {{}} Fit_AlchemyInputs */
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
@@ -144,8 +136,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
-/** @typedef {{}} Fit_Fly_MachinesInputs */
-/** @typedef {{}} Fit_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_MongodbInputs */
 /** @typedef {{}} Fit_MongooseInputs */
@@ -165,12 +155,13 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_PostgresInputs */
 /** @typedef {{}} Fit_PrismaInputs */
 /** @typedef {{}} Fit_SelfInputs */
-/** @typedef {{}} Fit_Solid_SpaInputs */
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
 /** @typedef {{}} Fit_Ui_SdkInputs */
 /** @typedef {{}} Fit_WorkersInputs */
+/** @typedef {{}} Frontend_AboutInputs */
+/** @typedef {{}} Frontend_QuestionInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
 /** @typedef {{}} Gate_CheckInputs */
@@ -637,20 +628,6 @@ export const api_clients_same = /** @type {((inputs?: Api_Clients_SameInputs, op
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.api_clients_same(inputs)
 	return __en.api_clients_same(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "deployment to Cloudflare through Alchemy" |
-*
-* @param {Cap_Cloudflare_DeploymentInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const cap_cloudflare_deployment = /** @type {((inputs?: Cap_Cloudflare_DeploymentInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Cap_Cloudflare_DeploymentInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.cap_cloudflare_deployment(inputs)
-	return __en.cap_cloudflare_deployment(inputs)
 });
 /**
 * | output |
@@ -1355,48 +1332,6 @@ export const current = /** @type {((inputs?: CurrentInputs, options?: { locale?:
 /**
 * | output |
 * | --- |
-* | "{name} · Cloudflare Worker + static assets" |
-*
-* @param {Deployment_AlchemyInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const deployment_alchemy = /** @type {((inputs: Deployment_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_AlchemyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.deployment_alchemy(inputs)
-	return __en.deployment_alchemy(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "{name} · Worker + Hyperdrive · external database" |
-*
-* @param {Deployment_Alchemy_DatabaseInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const deployment_alchemy_database = /** @type {((inputs: Deployment_Alchemy_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Alchemy_DatabaseInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.deployment_alchemy_database(inputs)
-	return __en.deployment_alchemy_database(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "{name} · Cloud Run service + migration job · external PostgreSQL" |
-*
-* @param {Deployment_Cloud_Run_DatabaseInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const deployment_cloud_run_database = /** @type {((inputs: Deployment_Cloud_Run_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Cloud_Run_DatabaseInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.deployment_cloud_run_database(inputs)
-	return __en.deployment_cloud_run_database(inputs)
-});
-/**
-* | output |
-* | --- |
 * | "{name} image" |
 *
 * @param {Deployment_ImageInputs} inputs
@@ -1453,7 +1388,7 @@ export const deployment_postgres = /** @type {((inputs: Deployment_PostgresInput
 /**
 * | output |
 * | --- |
-* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
+* | "Define cloud infrastructure in TypeScript with your choice of providers" |
 *
 * @param {Desc_AlchemyInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1603,34 +1538,6 @@ export const desc_expo = /** @type {((inputs?: Desc_ExpoInputs, options?: { loca
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_expo(inputs)
 	return __en.desc_expo(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Deploy a stateless Node API to Fly Machines (preview)" |
-*
-* @param {Desc_Fly_MachinesInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desc_fly_machines = /** @type {((inputs?: Desc_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desc_fly_machines(inputs)
-	return __en.desc_fly_machines(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Deploy a standalone Node API to Google Cloud Run (preview)" |
-*
-* @param {Desc_Gcp_Cloud_RunInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desc_gcp_cloud_run = /** @type {((inputs?: Desc_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desc_gcp_cloud_run(inputs)
-	return __en.desc_gcp_cloud_run(inputs)
 });
 /**
 * | output |
@@ -1859,21 +1766,7 @@ export const desc_solid_router = /** @type {((inputs?: Desc_Solid_RouterInputs, 
 /**
 * | output |
 * | --- |
-* | "Client-rendered Solid app built with Vite" |
-*
-* @param {Desc_Solid_SpaInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desc_solid_spa = /** @type {((inputs?: Desc_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desc_solid_spa(inputs)
-	return __en.desc_solid_spa(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Client-rendered React app built with Vite" |
+* | "Client-rendered web app built with Vite" |
 *
 * @param {Desc_SpaInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1971,7 +1864,7 @@ export const desc_vite_plus = /** @type {((inputs?: Desc_Vite_PlusInputs, option
 /**
 * | output |
 * | --- |
-* | "Cloudflare Workers runtime, deployed with Alchemy" |
+* | "Run the web app on Cloudflare Workers" |
 *
 * @param {Desc_WorkersInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -2280,20 +2173,6 @@ export const file_count = /** @type {((inputs: File_CountInputs, options?: { loc
 /**
 * | output |
 * | --- |
-* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
-*
-* @param {Fit_AlchemyInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const fit_alchemy = /** @type {((inputs?: Fit_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_AlchemyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.fit_alchemy(inputs)
-	return __en.fit_alchemy(inputs)
-});
-/**
-* | output |
-* | --- |
 * | "For apps where users have accounts." |
 *
 * @param {Fit_Better_AuthInputs} inputs
@@ -2402,34 +2281,6 @@ export const fit_expo = /** @type {((inputs?: Fit_ExpoInputs, options?: { locale
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_expo(inputs)
 	return __en.fit_expo(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Run a stateless API in a Fly.io region from a published image." |
-*
-* @param {Fit_Fly_MachinesInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const fit_fly_machines = /** @type {((inputs?: Fit_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.fit_fly_machines(inputs)
-	return __en.fit_fly_machines(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Serve a container over HTTPS on Google Cloud, optionally with an external PostgreSQL database." |
-*
-* @param {Fit_Gcp_Cloud_RunInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const fit_gcp_cloud_run = /** @type {((inputs?: Fit_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.fit_gcp_cloud_run(inputs)
-	return __en.fit_gcp_cloud_run(inputs)
 });
 /**
 * | output |
@@ -2700,20 +2551,6 @@ export const fit_self = /** @type {((inputs?: Fit_SelfInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "For a Solid 2 SPA with typed routes and UI SDK components." |
-*
-* @param {Fit_Solid_SpaInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const fit_solid_spa = /** @type {((inputs?: Fit_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.fit_solid_spa(inputs)
-	return __en.fit_solid_spa(inputs)
-});
-/**
-* | output |
-* | --- |
 * | "For dashboards and tools behind a sign-in." |
 *
 * @param {Fit_SpaInputs} inputs
@@ -2756,7 +2593,7 @@ export const fit_tanstack_start = /** @type {((inputs?: Fit_Tanstack_StartInputs
 /**
 * | output |
 * | --- |
-* | "For a Vite SPA with accessible, unstyled primitives." |
+* | "Accessible, unstyled primitives with React and Solid adapters." |
 *
 * @param {Fit_Ui_SdkInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -2780,6 +2617,34 @@ export const fit_workers = /** @type {((inputs?: Fit_WorkersInputs, options?: { 
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_workers(inputs)
 	return __en.fit_workers(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Choose React or Solid. The app framework and component kit follow below." |
+*
+* @param {Frontend_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const frontend_about = /** @type {((inputs?: Frontend_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Frontend_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.frontend_about(inputs)
+	return __en.frontend_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Which UI library renders the page?" |
+*
+* @param {Frontend_QuestionInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const frontend_question = /** @type {((inputs?: Frontend_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Frontend_QuestionInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.frontend_question(inputs)
+	return __en.frontend_question(inputs)
 });
 /**
 * | output |
@@ -4726,7 +4591,7 @@ export const role_desktop_question = /** @type {((inputs?: Role_Desktop_Question
 /**
 * | output |
 * | --- |
-* | "Frontend" |
+* | "App framework" |
 *
 * @param {Role_FrameworkInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -4866,7 +4731,7 @@ export const runs_in_electron = /** @type {((inputs?: Runs_In_ElectronInputs, op
 /**
 * | output |
 * | --- |
-* | "Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun." |
+* | "Choose the runtime that executes your server." |
 *
 * @param {Runtime_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

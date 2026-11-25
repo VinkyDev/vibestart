@@ -19,18 +19,19 @@ import { cn } from "@vibestart/ui/lib/utils";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
+import { DeploymentOptions } from "#/components/topology/deployment-options.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
 import {
   CardHeading,
   IntegrationCard,
 } from "#/components/topology/integration-card.tsx";
 import type { Rect } from "#/components/topology/layout.ts";
-import { Swatch, Tile } from "#/components/topology/tile.tsx";
+import { Swatch } from "#/components/topology/tile.tsx";
 import { ToolDetails } from "#/components/topology/tool-details.tsx";
 import { focusesGroup, useFocus, useFocusTarget } from "#/lib/focus.ts";
 import { ease, spring } from "#/lib/motion.ts";
-import { addLabel, groupOf, roles } from "#/lib/roles.ts";
-import { chosen, e2eRunner, selected } from "#/lib/stack.ts";
+import { groupOf, roles } from "#/lib/roles.ts";
+import { e2eRunner, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const Frame = ({
@@ -199,8 +200,6 @@ export const Rail = ({
       integration.kind !== "mode" && groupOf(integration.id) === "foundation"
   );
 
-  const deployment = chosen(stack, "deployment");
-
   return (
     <motion.div
       animate={{ opacity: 1, top: rect.y, y: 0 }}
@@ -255,36 +254,7 @@ export const Rail = ({
           onPointerEnter={enterDeployment}
           onPointerLeave={leaveDeployment}
         >
-          <DecisionTrigger
-            choosing={choosing}
-            className="h-full flex-1"
-            kind="deployment"
-            side="top"
-          >
-            <span
-              className={cn(
-                "transition-surface flex size-full min-w-0 items-center gap-3 rounded-2xl px-3",
-                deployment === undefined
-                  ? "border-foreground/15 group-hover/trigger:border-foreground/25 border border-dashed"
-                  : "bg-card shadow-rest group-hover/trigger:shadow-lift group-data-popup-open/trigger:shadow-lift",
-                stack.deployment !== choosing.baseline.deployment &&
-                  "shadow-preview"
-              )}
-            >
-              <Tile empty={deployment === undefined} kind="deployment" />
-              <span
-                className={cn(
-                  "min-w-0 flex-1 truncate text-sm font-medium transition-colors",
-                  deployment === undefined
-                    ? "text-muted-foreground group-hover/trigger:text-foreground"
-                    : "text-foreground"
-                )}
-              >
-                {deployment?.name ?? addLabel("deployment")}
-              </span>
-              <ChevronsUpDown className="text-muted-foreground size-3.5 shrink-0 opacity-60 transition-opacity group-hover/trigger:opacity-100" />
-            </span>
-          </DecisionTrigger>
+          <DeploymentOptions choosing={choosing} />
         </div>
       </Frame>
     </motion.div>

@@ -27,7 +27,7 @@ export const chosenDatabase = (ctx: Context) =>
 
 export const databaseName = (ctx: Context) => chosenDatabase(ctx).name;
 
-export const isSpa = (ctx: Context) => ctx.has("spa") || ctx.has("solid-spa");
+export const isSpa = (ctx: Context) => ctx.has("spa");
 
 export const hasWebApp = (ctx: Context) => ctx.stack.framework !== undefined;
 
@@ -179,7 +179,7 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
 export const hasBackend = (ctx: Context) => ctx.stack.backend !== undefined;
 
-// Alchemy runs a Hono Worker before static assets only under `/api`; any other route would put every asset request behind the Worker.
+// Cloudflare runs a Hono Worker before static assets only under `/api`; any other route would put every asset request behind the Worker.
 export const rpcPath = (ctx: Context) =>
   ctx.has("hono") && ctx.has("workers") ? "/api/rpc" : "/rpc";
 
@@ -404,13 +404,9 @@ const homeActions = (ctx: Context, route: boolean) => {
 
   const todos = todosExample(ctx)
     ? [
-        "        <Button",
-        "          nativeButton={false}",
-        `          render={<Link ${route ? 'to="/todos"' : 'href="/todos"'} />}`,
-        '          size="lg"',
-        "        >",
+        `        <Link ${route ? 'to="/todos"' : 'href="/todos"'} className={buttonVariants({ size: "lg" })}>`,
         "          Try the todo list",
-        "        </Button>",
+        "        </Link>",
       ]
     : [];
 
@@ -419,16 +415,9 @@ const homeActions = (ctx: Context, route: boolean) => {
     docs === null
       ? []
       : [
-          "        <Button",
-          "          nativeButton={false}",
-          "          render={",
-          `            <a href="${docs}" rel="noreferrer" target="_blank">`,
-          "              Open the API reference",
-          "            </a>",
-          "          }",
-          '          size="lg"',
-          '          variant="outline"',
-          "        />",
+          `        <a href="${docs}" rel="noreferrer" target="_blank" className={buttonVariants({ size: "lg", variant: "outline" })}>`,
+          "          Open the API reference",
+          "        </a>",
         ];
 
   return [...todos, ...reference];
@@ -483,7 +472,10 @@ export const homePage = (ctx: Context, path: string, route: boolean) => [
       ...(!route && links ? ['import Link from "next/link";'] : []),
       ...(route || links ? [""] : []),
       ...(actions.length > 0
-        ? [`import { Button } from "${ctx.scope}/ui/components/button";`, ""]
+        ? [
+            `import { buttonVariants } from "${ctx.scope}/ui/components/button";`,
+            "",
+          ]
         : []),
       ...(status
         ? ['import { ApiStatus } from "#src/components/api-status.tsx";']

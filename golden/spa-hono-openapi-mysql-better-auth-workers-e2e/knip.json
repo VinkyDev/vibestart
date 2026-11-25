@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}

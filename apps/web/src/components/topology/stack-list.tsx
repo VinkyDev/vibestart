@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { cn } from "@vibestart/ui/lib/utils";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
+import { DeploymentOptions } from "#/components/topology/deployment-options.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
 import { Picker } from "#/components/topology/picker.tsx";
 import { Tile } from "#/components/topology/tile.tsx";
@@ -150,6 +151,12 @@ export const StackList = ({
       </div>
       <ul className="divide-border/70 flex flex-col divide-y">
         {decisions
+          .filter(
+            (kind) =>
+              kind !== "deployment" &&
+              (choosing.baseline.frontend !== undefined ||
+                (kind !== "framework" && kind !== "ui"))
+          )
           .filter((kind) =>
             optionsOf(kind, choosing.baseline.mode).some(
               (option) => option !== null
@@ -161,6 +168,12 @@ export const StackList = ({
             </li>
           ))}
       </ul>
+      <fieldset className="border-border border-t px-4 py-3">
+        <legend className="text-muted-foreground text-xs">
+          {roles.deployment.role}
+        </legend>
+        <DeploymentOptions choosing={choosing} />
+      </fieldset>
       <div className="tint-foundation border-border/70 flex flex-col gap-2.5 border-t px-4 pt-3.5 pb-4">
         <h3 className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
           <Layers className="size-3.5" strokeWidth={1.75} />

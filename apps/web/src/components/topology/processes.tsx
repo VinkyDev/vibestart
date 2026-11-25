@@ -18,16 +18,6 @@ import { m } from "#/paraglide/messages.js";
 const deploymentLabel = (stack: Stack, name: string) => {
   const { database } = stack;
 
-  if (stack.deployment === "cloudflare-workers") {
-    return database === undefined
-      ? m.deployment_alchemy({ name })
-      : m.deployment_alchemy_database({ name });
-  }
-
-  if (stack.deployment === "gcp-cloud-run" && database === "postgres") {
-    return m.deployment_cloud_run_database({ name });
-  }
-
   if (database === "postgres") {
     return m.deployment_postgres({ name });
   }
@@ -83,7 +73,10 @@ export const Boxes = ({
             </AnimatePresence>
             {box.node && runtime !== undefined && (
               <span className="translate-y-1">
-                {box.id === "server" && stack.backend === "hono" ? (
+                {(box.id === "server" && stack.backend === "hono") ||
+                (box.id === "web" &&
+                  stack.framework === "tanstack-start" &&
+                  stack.backend !== "hono") ? (
                   <DecisionTrigger choosing={choosing} kind="runtime">
                     <span className="hover:bg-foreground/10 focus-visible:focus-ring bg-foreground/5 flex items-center gap-1.5 rounded-full px-2 py-1 text-xs">
                       {runtime.name}

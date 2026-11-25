@@ -1,9 +1,18 @@
 import type { Context, ReadSlot } from "@vibestart/core";
-import { file, defineIntegration } from "@vibestart/core";
+import {
+  contribute,
+  file,
+  defineIntegration,
+  renderFile,
+  packageJson,
+  pnpmWorkspace,
+} from "@vibestart/core";
 
 import { closeDatabase, renderEnvModule, serverEnv } from "#/app.ts";
+import { knipEntries } from "#/knip.ts";
+import { ignoredFiles, readmeSections } from "#/vite-plus/slots.ts";
 
-export const workerApp = (ctx: Context) =>
+const workerApp = (ctx: Context) =>
   ctx.has("hono") ? "apps/server" : "apps/web";
 
 /** Workers own a client per request; the stream owns it after the handler returns. */
@@ -55,7 +64,7 @@ export const workerServices = (ctx: Context) => {
     "  handle: (services: Services) => Promise<Response>",
     ") => {",
     "  const env = readEnv(bindings);",
-    "  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);",
+    "  const db = createDb(env.DATABASE_URL);",
     "  let streaming = false;",
     "",
     "  const dispose = async () => {",
@@ -167,14 +176,12 @@ export const workerNodeEnv = (read: ReadSlot) =>
     false
   );
 
-export const bindingNames = (ctx: Context) => [
-  "DATABASE_URL",
-  ...(ctx.has("better-auth") ? ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL"] : []),
-];
+const authSecrets = ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL"];
 
 export const workerViteConfig = (ctx: Context) => {
   const start = ctx.has("tanstack-start");
   const database = ctx.stack.database !== undefined;
+  const auth = ctx.has("better-auth");
 
   return [
     'import { cloudflare } from "@cloudflare/vite-plugin";',
@@ -189,20 +196,28 @@ export const workerViteConfig = (ctx: Context) => {
     "",
     ...(database
       ? [
-          "export default defineConfig(({ command, mode, isPreview }) => {",
+          "export default defineConfig(({ command, mode }) => {",
           "  // Build artifacts must not include the local database URL or auth secret.",
           '  process.env.CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV = String(command === "serve");',
           "",
-          "  if (isPreview === true) {",
+          '  if (command === "serve") {',
           '    const local = loadEnv(mode, import.meta.dirname, "");',
           "",
-          `    for (const name of ${JSON.stringify(bindingNames(ctx))}) {`,
-          "      const value = local[name];",
-          "",
-          "      if (value !== undefined) {",
-          "        process.env[name] = value;",
-          "      }",
+          "    if (local.DATABASE_URL !== undefined) {",
+          "      process.env.CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE = local.DATABASE_URL;",
           "    }",
+          ...(auth
+            ? [
+                "",
+                `    for (const name of ${JSON.stringify(authSecrets)}) {`,
+                "      const value = local[name];",
+                "",
+                "      if (value !== undefined) {",
+                "        process.env[name] = value;",
+                "      }",
+                "    }",
+              ]
+            : []),
           "  }",
           "",
           "  return {",
@@ -226,14 +241,145 @@ export const workerViteConfig = (ctx: Context) => {
   ].join("\n");
 };
 
+const environment = (read: ReadSlot) =>
+  [
+    'import { z } from "zod";',
+    "",
+    "const schema = z.object({",
+    ...read(serverEnv).map(({ name, schema }) => `  ${name}: ${schema},`),
+    "});",
+    "",
+    "export const readEnv = ({ HYPERDRIVE, ...bindings }: Cloudflare.Env) =>",
+    "  schema.parse({ ...bindings, DATABASE_URL: HYPERDRIVE.connectionString });",
+    "",
+  ].join("\n");
+
+const compatibilityDate = "2026-10-01";
+const compatibilityFlags = ["nodejs_compat", "enable_request_signal"];
+
 export const workers = defineIntegration({
   auxiliary: true,
-  contribute: () => [],
-  description: "Cloudflare Workers runtime, deployed with Alchemy",
-  homepage: "https://developers.cloudflare.com/workers/",
   id: "workers",
   kind: "runtime",
   name: "Cloudflare Workers",
+  description: "Run the web app on Cloudflare Workers",
+  homepage: "https://developers.cloudflare.com/workers/",
   provides: ["workers-runtime"],
-  requires: ["cloudflare-deployment"],
+  requires: ["frontend-framework"],
+  choices: { deployment: [null] },
+  contribute: (ctx) => {
+    const dir = workerApp(ctx);
+    const database = ctx.stack.database !== undefined;
+    const hono = ctx.has("hono");
+    const worker = hono || ctx.has("tanstack-start");
+
+    return [
+      ...(worker
+        ? [
+            file(
+              `${dir}/wrangler.jsonc`,
+              JSON.stringify({
+                name: ctx.name,
+                main: hono
+                  ? "./src/worker.ts"
+                  : "@tanstack/react-start/server-entry",
+                assets: hono
+                  ? {
+                      not_found_handling: "single-page-application",
+                      run_worker_first: ["/api", "/api/*"],
+                    }
+                  : undefined,
+                hyperdrive: database
+                  ? [{ binding: "HYPERDRIVE", id: "your-hyperdrive-id" }]
+                  : undefined,
+                secrets: ctx.has("better-auth")
+                  ? { required: authSecrets }
+                  : undefined,
+                compatibility_date: compatibilityDate,
+                compatibility_flags: compatibilityFlags,
+              })
+            ),
+            contribute(packageJson, {
+              path: dir,
+              devDependencies: [
+                "@cloudflare/vite-plugin",
+                "@cloudflare/workers-types",
+              ],
+            }),
+          ]
+        : []),
+      ...(database
+        ? [
+            renderFile(`${dir}/env.ts`, environment),
+            contribute(
+              readmeSections,
+              () =>
+                `## Workers database\n\nLocal development and migrations use \`DATABASE_URL\`. Before deploying, replace \`your-hyperdrive-id\` in \`${dir}/wrangler.jsonc\` with the ID of a cache-disabled [Hyperdrive configuration](https://developers.cloudflare.com/hyperdrive/) for the same database. The deployed Worker connects through the \`HYPERDRIVE\` binding. Run migrations against that database before switching traffic.`
+            ),
+            file(
+              `${dir}/worker-env.d.ts`,
+              "declare namespace Cloudflare {\n  interface Env {\n    HYPERDRIVE: Hyperdrive;\n  }\n}\n"
+            ),
+          ]
+        : []),
+      ...(hono
+        ? [
+            file(
+              `${dir}/src/worker.ts`,
+              [
+                'import { createApp } from "#src/app.ts";',
+                ...(database
+                  ? ['import { withServices } from "#src/context.ts";']
+                  : []),
+                "",
+                "export default {",
+                "  async fetch(request: Request) {",
+                database
+                  ? "    return await withServices(async (services) => await createApp(services).fetch(request));"
+                  : "    return await createApp().fetch(request);",
+                "  },",
+                "} satisfies ExportedHandler;",
+                "",
+              ].join("\n")
+            ),
+          ]
+        : []),
+      ...(ctx.has("tanstack-start") && database
+        ? [
+            file(
+              "apps/web/src/start.ts",
+              `import { createCsrfMiddleware, createMiddleware, createStart } from "@tanstack/react-start";
+
+import { withServices } from "#src/server/context.ts";
+
+const services = createMiddleware().server(async ({ next, request }) =>
+  await withServices(request, async () => {
+    const result = await next();
+
+    return result.response;
+  })
+);
+
+const csrf = createCsrfMiddleware({ filter: (ctx) => ctx.handlerType === "serverFn" });
+
+export const startInstance = createStart(() => ({
+  requestMiddleware: [csrf, services],
+}));
+`
+            ),
+          ]
+        : []),
+      contribute(pnpmWorkspace, { allowBuilds: { workerd: true } }),
+      contribute(ignoredFiles, ".wrangler/"),
+      ...(hono
+        ? [
+            contribute(knipEntries, {
+              workspace: dir,
+              entry: ["src/worker.ts"],
+              ignoreDependencies: [`${ctx.scope}/web`],
+            }),
+          ]
+        : []),
+    ];
+  },
 });

@@ -255,9 +255,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
 
   if (server !== undefined) {
     boxes.push({
-      deployed:
-        stack.deployment !== "cloudflare-workers" &&
-        stack.deployment !== "gcp-cloud-run",
+      deployed: stack.runtime !== "workers",
       group: "database",
       id: "database",
       label: server(),
