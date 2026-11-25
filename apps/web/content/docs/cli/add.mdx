@@ -25,4 +25,6 @@ By default, the command installs once, then runs `vp check`, selected Knip check
 
 Adding Ultracite may require changes to existing application code to satisfy new rules. When a check fails, the files stay written: fix the code and rerun the check, or undo with Git. Adding capabilities does not migrate databases automatically.
 
-`add alchemy` deploys a SPA without a server to Cloudflare; such a project has no runtime yet, and Alchemy serves it as static assets on Workers. A project with a server already runs on Node.js or Bun, and `add` refuses to replace that runtime: moving server code to Workers is a migration. Create an Alchemy project with `--deployment alchemy --runtime workers` instead. An existing deployment is never replaced implicitly. See [Alchemy delivery](/docs/stack/delivery#alchemy).
+`add cloudflare-workers` deploys a SPA without a server to Cloudflare; such a project has no runtime yet, and Alchemy serves it as static assets on Workers. A project with a server already runs on Node.js or Bun, and `add` refuses to replace that runtime: moving server code to Workers is a migration. Create an Alchemy project with `--deployment cloudflare-workers --runtime workers` instead. An existing deployment is never replaced implicitly. See [Alchemy delivery](/docs/stack/delivery#alchemy).
+
+Use `add gcp-cloud-run` or `add fly-machines` on a compatible standalone Node/Hono API. Inspect the patch with `--dry-run` and follow the generated deployment instructions.

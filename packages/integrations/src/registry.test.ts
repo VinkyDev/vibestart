@@ -45,7 +45,7 @@ describe("the registry", () => {
     ["runtime", ["workers"]],
   ])("deploys with Alchemy the %s choices %j", (kind, ids) => {
     const offered = new Set(
-      resolve(registry, { deployment: "alchemy" }).stacks.map(
+      resolve(registry, { deployment: "cloudflare-workers" }).stacks.map(
         (stack) => stack[kind] ?? "none"
       )
     );
@@ -54,6 +54,32 @@ describe("the registry", () => {
       ids
     );
   });
+
+  it.each([
+    ["gcp-cloud-run", ["none", "postgres"]],
+    ["fly-machines", ["none"]],
+  ] as const)(
+    "offers %s only for supported single-container services",
+    (deployment, databases) => {
+      const { stacks } = resolve(registry, { deployment });
+      expect(
+        [
+          ...new Set(stacks.map(({ database }) => database ?? "none")),
+        ].toSorted()
+      ).toStrictEqual(databases);
+      expect(
+        stacks.every(
+          (stack) =>
+            stack.backend === "hono" &&
+            stack.runtime === "node" &&
+            stack.framework === undefined &&
+            stack.auth === undefined &&
+            stack.desktop === undefined &&
+            stack.mobile === undefined
+        )
+      ).toBeTruthy();
+    }
+  );
 
   it("runs on Workers only what Alchemy deploys", () => {
     expect(

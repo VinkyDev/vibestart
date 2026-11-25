@@ -22,7 +22,7 @@ npx --yes vibestart-cli add knip ultracite --yes --json
 
 Pass capability IDs returned by `add --list --json` as separate positional arguments; that list is authoritative for the running release. Use the same IDs for preview and application. Already selected capabilities are not duplicated.
 
-`requires-upgrade` means the recorded template and current CLI release differ. Preview an upgrade first; apply it only if it fits the user's requested scope. `add` is not a framework, database, runtime, or package-manager migration command. `add alchemy` applies to a SPA without a server, which has no runtime yet; for a project with a server it fails, and Alchemy needs a new project created with `--deployment alchemy --runtime workers`. An occupied deployment choice is never replaced implicitly.
+`requires-upgrade` means the recorded template and current CLI release differ. Preview an upgrade first; apply it only if it fits the user's requested scope. `add` is not a framework, database, runtime, or package-manager migration command. `add cloudflare-workers` applies to a SPA without a server, which has no runtime yet; for a project with a server it fails, and Alchemy needs a new project created with `--deployment cloudflare-workers --runtime workers`. Use `add gcp-cloud-run` or `add fly-machines` on a compatible standalone Node/Hono project. An occupied deployment choice is never replaced implicitly.
 
 ## Upgrade templates
 

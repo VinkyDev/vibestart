@@ -287,4 +287,6 @@ npx vibestart-cli my-app --framework spa --backend hono --json
 | `1`    | 失败   |
 | `130`  | 已取消 |
 
-部署到 Cloudflare 时使用 `--deployment alchemy --runtime workers`。Alchemy 支持静态 SPA、SPA + Hono 和 TanStack Start；服务端可选外部 Postgres/MySQL + Drizzle。工具和迁移脚本仍运行于 Node.js。详见 [Alchemy 部署](/docs/stack/delivery#alchemy)。
+部署到 Cloudflare 时使用 `--deployment cloudflare-workers --runtime workers`。Alchemy 支持静态 SPA、SPA + Hono 和 TanStack Start；服务端可选外部 Postgres/MySQL + Drizzle。工具和迁移脚本仍运行于 Node.js。详见 [Alchemy 部署](/docs/stack/delivery#alchemy)。
+
+独立的 Node/Hono API 可选择 `--deployment gcp-cloud-run` 或 `--deployment fly-machines`。Cloud Run 还支持外部 PostgreSQL 和 Drizzle。两个目标均使用固定摘要的镜像。详见[容器部署](/docs/stack/delivery#cloud-containers)。

@@ -71,6 +71,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Cloud_Run_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
@@ -86,6 +87,8 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
+/** @typedef {{}} Desc_Fly_MachinesInputs */
+/** @typedef {{}} Desc_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_MongodbInputs */
 /** @typedef {{}} Desc_MongooseInputs */
@@ -141,6 +144,8 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
+/** @typedef {{}} Fit_Fly_MachinesInputs */
+/** @typedef {{}} Fit_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_MongodbInputs */
 /** @typedef {{}} Fit_MongooseInputs */
@@ -1378,6 +1383,20 @@ export const deployment_alchemy_database = /** @type {((inputs: Deployment_Alche
 /**
 * | output |
 * | --- |
+* | "{name} · Cloud Run service + migration job · external PostgreSQL" |
+*
+* @param {Deployment_Cloud_Run_DatabaseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_cloud_run_database = /** @type {((inputs: Deployment_Cloud_Run_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Cloud_Run_DatabaseInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_cloud_run_database(inputs)
+	return __en.deployment_cloud_run_database(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "{name} image" |
 *
 * @param {Deployment_ImageInputs} inputs
@@ -1584,6 +1603,34 @@ export const desc_expo = /** @type {((inputs?: Desc_ExpoInputs, options?: { loca
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.desc_expo(inputs)
 	return __en.desc_expo(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Deploy a stateless Node API to Fly Machines (preview)" |
+*
+* @param {Desc_Fly_MachinesInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_fly_machines = /** @type {((inputs?: Desc_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_fly_machines(inputs)
+	return __en.desc_fly_machines(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Deploy a standalone Node API to Google Cloud Run (preview)" |
+*
+* @param {Desc_Gcp_Cloud_RunInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_gcp_cloud_run = /** @type {((inputs?: Desc_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_gcp_cloud_run(inputs)
+	return __en.desc_gcp_cloud_run(inputs)
 });
 /**
 * | output |
@@ -2355,6 +2402,34 @@ export const fit_expo = /** @type {((inputs?: Fit_ExpoInputs, options?: { locale
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_expo(inputs)
 	return __en.fit_expo(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Run a stateless API in a Fly.io region from a published image." |
+*
+* @param {Fit_Fly_MachinesInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_fly_machines = /** @type {((inputs?: Fit_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_fly_machines(inputs)
+	return __en.fit_fly_machines(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Serve a container over HTTPS on Google Cloud, optionally with an external PostgreSQL database." |
+*
+* @param {Fit_Gcp_Cloud_RunInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_gcp_cloud_run = /** @type {((inputs?: Fit_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_gcp_cloud_run(inputs)
+	return __en.fit_gcp_cloud_run(inputs)
 });
 /**
 * | output |

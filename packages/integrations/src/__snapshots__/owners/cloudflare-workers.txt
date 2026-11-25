@@ -1,0 +1,1807 @@
+# alchemy.run.ts · 28 stacks
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Worker("Website", {
+      main: "apps/server/dist/ssr/index.js",
+      bundle: false,
+      compatibility: {
+        date: "2026-10-01",
+        flags: ["nodejs_compat", "enable_request_signal"],
+      },
+      assets: {
+        directory: "apps/web/dist",
+        notFoundHandling: "single-page-application",
+        runWorkerFirst: ["/api", "/api/*"],
+      },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# alchemy.run.ts · 12 stacks
+#   solid-spa-ui-sdk-cloudflare-workers
+#   solid-spa-ui-sdk-cloudflare-workers-e2e
+#   spa-cloudflare-workers
+#   spa-cloudflare-workers-e2e
+#   spa-electron-cloudflare-workers
+#   spa-electron-cloudflare-workers-e2e
+#   spa-electron-expo-cloudflare-workers
+#   spa-electron-expo-cloudflare-workers-e2e
+#   spa-expo-cloudflare-workers
+#   spa-expo-cloudflare-workers-e2e
+#   spa-ui-sdk-cloudflare-workers
+#   spa-ui-sdk-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Website.StaticSite("Website", {
+      command: "vp run --filter @my-app/web build",
+      outdir: "apps/web/dist",
+      assets: { notFoundHandling: "single-page-application" },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# alchemy.run.ts · 48 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Config, Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Worker("Website", {
+      main: "apps/server/dist/ssr/index.js",
+      bundle: false,
+      compatibility: {
+        date: "2026-10-01",
+        flags: ["nodejs_compat", "enable_request_signal"],
+      },
+      assets: {
+        directory: "apps/web/dist",
+        notFoundHandling: "single-page-application",
+        runWorkerFirst: ["/api", "/api/*"],
+      },
+      env: {
+        HYPERDRIVE: Cloudflare.Hyperdrive.Connection.lookup({
+          hyperdriveId: yield* Config.String("HYPERDRIVE_ID"),
+        }),
+        BETTER_AUTH_SECRET: yield* Config.Redacted("BETTER_AUTH_SECRET"),
+        BETTER_AUTH_URL: process.env.BETTER_AUTH_URL ?? Cloudflare.Worker.URL,
+      },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# alchemy.run.ts · 48 stacks
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Config, Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Worker("Website", {
+      main: "apps/server/dist/ssr/index.js",
+      bundle: false,
+      compatibility: {
+        date: "2026-10-01",
+        flags: ["nodejs_compat", "enable_request_signal"],
+      },
+      assets: {
+        directory: "apps/web/dist",
+        notFoundHandling: "single-page-application",
+        runWorkerFirst: ["/api", "/api/*"],
+      },
+      env: {
+        HYPERDRIVE: Cloudflare.Hyperdrive.Connection.lookup({
+          hyperdriveId: yield* Config.String("HYPERDRIVE_ID"),
+        }),
+      },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# alchemy.run.ts · 8 stacks
+#   tanstack-start-cloudflare-workers
+#   tanstack-start-cloudflare-workers-e2e
+#   tanstack-start-expo-cloudflare-workers
+#   tanstack-start-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-cloudflare-workers
+#   tanstack-start-self-orpc-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-expo-cloudflare-workers
+#   tanstack-start-self-orpc-expo-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Worker("Website", {
+      main: "apps/web/dist/server/index.js",
+      bundle: false,
+      compatibility: {
+        date: "2026-10-01",
+        flags: ["nodejs_compat", "enable_request_signal"],
+      },
+      assets: { directory: "apps/web/dist/client" },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# alchemy.run.ts · 16 stacks
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Config, Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Worker("Website", {
+      main: "apps/web/dist/server/index.js",
+      bundle: false,
+      compatibility: {
+        date: "2026-10-01",
+        flags: ["nodejs_compat", "enable_request_signal"],
+      },
+      assets: { directory: "apps/web/dist/client" },
+      env: {
+        HYPERDRIVE: Cloudflare.Hyperdrive.Connection.lookup({
+          hyperdriveId: yield* Config.String("HYPERDRIVE_ID"),
+        }),
+        BETTER_AUTH_SECRET: yield* Config.Redacted("BETTER_AUTH_SECRET"),
+        BETTER_AUTH_URL: process.env.BETTER_AUTH_URL ?? Cloudflare.Worker.URL,
+      },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# alchemy.run.ts · 16 stacks
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+import * as Cloudflare from "@alchemy.run/cloudflare";
+import * as Alchemy from "alchemy";
+import { Config, Effect } from "effect";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Cloudflare.providers(),
+    state: Cloudflare.state(),
+  },
+  Effect.gen(function* website() {
+    const site = yield* Cloudflare.Worker("Website", {
+      main: "apps/web/dist/server/index.js",
+      bundle: false,
+      compatibility: {
+        date: "2026-10-01",
+        flags: ["nodejs_compat", "enable_request_signal"],
+      },
+      assets: { directory: "apps/web/dist/client" },
+      env: {
+        HYPERDRIVE: Cloudflare.Hyperdrive.Connection.lookup({
+          hyperdriveId: yield* Config.String("HYPERDRIVE_ID"),
+        }),
+      },
+    });
+
+    return { url: site.url };
+  })
+);
+
+# apps/server/env.ts · 24 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url().optional(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+});
+
+export const readEnv = (bindings: Cloudflare.Env) => schema.parse(bindings);
+
+# apps/server/env.ts · 24 stacks
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url().optional(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+  NODE_ENV: z.enum(["development", "production", "test"]).optional(),
+});
+
+export const readEnv = (bindings: Cloudflare.Env) => schema.parse(bindings);
+
+# apps/server/env.ts · 48 stacks
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url().optional(),
+});
+
+export const readEnv = (bindings: Cloudflare.Env) => schema.parse(bindings);
+
+# apps/server/src/worker.ts · 28 stacks
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
+import { createApp } from "#src/app.ts";
+
+export default {
+  async fetch(request: Request) {
+    return await createApp().fetch(request);
+  },
+} satisfies ExportedHandler;
+
+# apps/server/src/worker.ts · 96 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+import { createApp } from "#src/app.ts";
+import { withServices } from "#src/context.ts";
+
+export default {
+  async fetch(request: Request) {
+    return await withServices(
+      async (services) => await createApp(services).fetch(request)
+    );
+  },
+} satisfies ExportedHandler;
+
+# apps/server/worker-env.d.ts · 96 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
+  }
+}
+
+# apps/server/wrangler.jsonc · 28 stacks
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
+{
+  "name": "my-app",
+  "main": "./src/worker.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/server/wrangler.jsonc · 48 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+{
+  "name": "my-app",
+  "main": "./src/worker.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  "secrets": {
+    "required": ["DATABASE_URL", "BETTER_AUTH_SECRET", "BETTER_AUTH_URL"],
+  },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/server/wrangler.jsonc · 48 stacks
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+{
+  "name": "my-app",
+  "main": "./src/worker.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  "secrets": { "required": ["DATABASE_URL"] },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/web/env.ts · 16 stacks
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url().optional(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+});
+
+export const readEnv = (bindings: Cloudflare.Env) => schema.parse(bindings);
+
+# apps/web/env.ts · 16 stacks
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url().optional(),
+});
+
+export const readEnv = (bindings: Cloudflare.Env) => schema.parse(bindings);
+
+# apps/web/src/start.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+import {
+  createCsrfMiddleware,
+  createMiddleware,
+  createStart,
+} from "@tanstack/react-start";
+
+import { withServices } from "#src/server/context.ts";
+
+const services = createMiddleware().server(
+  async ({ next, request }) =>
+    await withServices(request, async () => {
+      const result = await next();
+
+      return result.response;
+    })
+);
+
+const csrf = createCsrfMiddleware({
+  filter: (ctx) => ctx.handlerType === "serverFn",
+});
+
+export const startInstance = createStart(() => ({
+  requestMiddleware: [csrf, services],
+}));
+
+# apps/web/worker-env.d.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
+  }
+}
+
+# apps/web/wrangler.jsonc · 8 stacks
+#   tanstack-start-cloudflare-workers
+#   tanstack-start-cloudflare-workers-e2e
+#   tanstack-start-expo-cloudflare-workers
+#   tanstack-start-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-cloudflare-workers
+#   tanstack-start-self-orpc-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-expo-cloudflare-workers
+#   tanstack-start-self-orpc-expo-cloudflare-workers-e2e
+{
+  "name": "my-app",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/web/wrangler.jsonc · 16 stacks
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+{
+  "name": "my-app",
+  "main": "@tanstack/react-start/server-entry",
+  "secrets": {
+    "required": ["DATABASE_URL", "BETTER_AUTH_SECRET", "BETTER_AUTH_URL"],
+  },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/web/wrangler.jsonc · 16 stacks
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+{
+  "name": "my-app",
+  "main": "@tanstack/react-start/server-entry",
+  "secrets": { "required": ["DATABASE_URL"] },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# DEPLOYMENT.md · 48 stacks
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   solid-spa-ui-sdk-cloudflare-workers
+#   solid-spa-ui-sdk-cloudflare-workers-e2e
+#   spa-cloudflare-workers
+#   spa-cloudflare-workers-e2e
+#   spa-electron-cloudflare-workers
+#   spa-electron-cloudflare-workers-e2e
+#   spa-electron-expo-cloudflare-workers
+#   spa-electron-expo-cloudflare-workers-e2e
+#   spa-expo-cloudflare-workers
+#   spa-expo-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-ui-sdk-cloudflare-workers
+#   spa-ui-sdk-cloudflare-workers-e2e
+#   tanstack-start-cloudflare-workers
+#   tanstack-start-cloudflare-workers-e2e
+#   tanstack-start-expo-cloudflare-workers
+#   tanstack-start-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-cloudflare-workers
+#   tanstack-start-self-orpc-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-expo-cloudflare-workers
+#   tanstack-start-self-orpc-expo-cloudflare-workers-e2e
+# Deploy to Cloudflare with Alchemy
+
+The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your account with `vp exec alchemy profile edit --add Cloudflare`. For unattended deployments, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. On first deploy, Alchemy bootstraps an account-wide state Worker, SQLite-backed Durable Object and Secrets Store credentials. See [Cloudflare setup](https://alchemy.run/cloudflare/setup/) and [state store permissions](https://alchemy.run/state-store/).
+
+Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same stage, profile and bindings.
+
+# DEPLOYMENT.md · 64 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+# Deploy to Cloudflare with Alchemy
+
+The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your account with `vp exec alchemy profile edit --add Cloudflare`. For unattended deployments, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. On first deploy, Alchemy bootstraps an account-wide state Worker, SQLite-backed Durable Object and Secrets Store credentials. See [Cloudflare setup](https://alchemy.run/cloudflare/setup/) and [state store permissions](https://alchemy.run/state-store/).
+
+In the Cloudflare dashboard, create a Hyperdrive connection to the production database with **query caching disabled** so writes and revoked sessions take effect immediately. Export its ID as `HYPERDRIVE_ID` and the matching production database URL as `DATABASE_URL` in the deployment shell. Drizzle migrates this database before upload. The deployed Worker receives only the Hyperdrive binding.
+
+Export `BETTER_AUTH_SECRET` (at least 32 characters). Alchemy uploads it as an encrypted Worker binding and supplies the Worker URL as the auth origin on first deploy. Set `BETTER_AUTH_URL` only to use your own public HTTPS origin.
+
+Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same stage, profile and bindings.
+
+# DEPLOYMENT.md · 64 stacks
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+# Deploy to Cloudflare with Alchemy
+
+The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your account with `vp exec alchemy profile edit --add Cloudflare`. For unattended deployments, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. On first deploy, Alchemy bootstraps an account-wide state Worker, SQLite-backed Durable Object and Secrets Store credentials. See [Cloudflare setup](https://alchemy.run/cloudflare/setup/) and [state store permissions](https://alchemy.run/state-store/).
+
+In the Cloudflare dashboard, create a Hyperdrive connection to the production database with **query caching disabled** so writes and revoked sessions take effect immediately. Export its ID as `HYPERDRIVE_ID` and the matching production database URL as `DATABASE_URL` in the deployment shell. Drizzle migrates this database before upload. The deployed Worker receives only the Hyperdrive binding.
+
+Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same stage, profile and bindings.
+
+# scripts/deploy.ts · 36 stacks
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
+#   tanstack-start-cloudflare-workers
+#   tanstack-start-cloudflare-workers-e2e
+#   tanstack-start-expo-cloudflare-workers
+#   tanstack-start-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-cloudflare-workers
+#   tanstack-start-self-orpc-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-expo-cloudflare-workers
+#   tanstack-start-self-orpc-expo-cloudflare-workers-e2e
+import { spawnSync } from "node:child_process";
+
+const env = { ...process.env };
+const action = process.argv[2] ?? "deploy";
+
+if (!["plan", "deploy", "destroy"].includes(action)) {
+  throw new Error("Expected plan, deploy or destroy");
+}
+
+if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
+  throw new Error(
+    "Set ALCHEMY_STAGE explicitly before destroying a deployment"
+  );
+}
+
+const stage = env.ALCHEMY_STAGE ?? "prod";
+
+if (!/^[a-z][a-z0-9-]{0,30}$/u.test(stage)) {
+  throw new Error(
+    "Set ALCHEMY_STAGE to a lowercase stage name of up to 31 characters"
+  );
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    env,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+if (action !== "destroy") {
+  run(["run", "build"]);
+}
+
+run([
+  "exec",
+  "alchemy",
+  action,
+  "--stage",
+  stage,
+  ...(action === "deploy" ? ["--yes"] : []),
+]);
+
+# scripts/deploy.ts · 12 stacks
+#   solid-spa-ui-sdk-cloudflare-workers
+#   solid-spa-ui-sdk-cloudflare-workers-e2e
+#   spa-cloudflare-workers
+#   spa-cloudflare-workers-e2e
+#   spa-electron-cloudflare-workers
+#   spa-electron-cloudflare-workers-e2e
+#   spa-electron-expo-cloudflare-workers
+#   spa-electron-expo-cloudflare-workers-e2e
+#   spa-expo-cloudflare-workers
+#   spa-expo-cloudflare-workers-e2e
+#   spa-ui-sdk-cloudflare-workers
+#   spa-ui-sdk-cloudflare-workers-e2e
+import { spawnSync } from "node:child_process";
+
+const env = { ...process.env };
+const action = process.argv[2] ?? "deploy";
+
+if (!["plan", "deploy", "destroy"].includes(action)) {
+  throw new Error("Expected plan, deploy or destroy");
+}
+
+if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
+  throw new Error(
+    "Set ALCHEMY_STAGE explicitly before destroying a deployment"
+  );
+}
+
+const stage = env.ALCHEMY_STAGE ?? "prod";
+
+if (!/^[a-z][a-z0-9-]{0,30}$/u.test(stage)) {
+  throw new Error(
+    "Set ALCHEMY_STAGE to a lowercase stage name of up to 31 characters"
+  );
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    env,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+run([
+  "exec",
+  "alchemy",
+  action,
+  "--stage",
+  stage,
+  ...(action === "deploy" ? ["--yes"] : []),
+]);
+
+# scripts/deploy.ts · 64 stacks
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+import { spawnSync } from "node:child_process";
+
+const env = { ...process.env };
+const action = process.argv[2] ?? "deploy";
+
+if (!["plan", "deploy", "destroy"].includes(action)) {
+  throw new Error("Expected plan, deploy or destroy");
+}
+
+if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
+  throw new Error(
+    "Set ALCHEMY_STAGE explicitly before destroying a deployment"
+  );
+}
+
+const stage = env.ALCHEMY_STAGE ?? "prod";
+
+if (!/^[a-z][a-z0-9-]{0,30}$/u.test(stage)) {
+  throw new Error(
+    "Set ALCHEMY_STAGE to a lowercase stage name of up to 31 characters"
+  );
+}
+
+if (stage !== "prod") {
+  const prefix = stage.toUpperCase().replaceAll("-", "_");
+
+  for (const name of [
+    "DATABASE_URL",
+    "HYPERDRIVE_ID",
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
+  ]) {
+    env[name] = env[`${prefix}_${name}`];
+  }
+}
+
+if (action === "deploy" && (env.DATABASE_URL ?? "") === "") {
+  throw new Error(
+    "Set DATABASE_URL in the deployment shell to the database URL for this stage"
+  );
+}
+
+if (!/^[a-f0-9]{32}$/iu.test(env.HYPERDRIVE_ID ?? "")) {
+  throw new Error(
+    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see DEPLOYMENT.md before deploying"
+  );
+}
+
+if ((env.BETTER_AUTH_SECRET ?? "").length < 32) {
+  throw new Error(
+    "Set BETTER_AUTH_SECRET to at least 32 characters in the deployment shell"
+  );
+}
+
+const origin = env.BETTER_AUTH_URL;
+
+if (origin !== undefined) {
+  const url = URL.parse(origin);
+
+  if (
+    url?.protocol !== "https:" ||
+    (origin !== url.origin && origin !== `${url.origin}/`)
+  ) {
+    throw new Error(
+      "Set BETTER_AUTH_URL to a public HTTPS origin, or omit it to use the Worker URL"
+    );
+  }
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    env,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+if (action !== "destroy") {
+  run(["run", "build"]);
+}
+
+if (action === "deploy") {
+  run(["run", "db:migrate"]);
+}
+
+run([
+  "exec",
+  "alchemy",
+  action,
+  "--stage",
+  stage,
+  ...(action === "deploy" ? ["--yes"] : []),
+]);
+
+# scripts/deploy.ts · 64 stacks
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
+import { spawnSync } from "node:child_process";
+
+const env = { ...process.env };
+const action = process.argv[2] ?? "deploy";
+
+if (!["plan", "deploy", "destroy"].includes(action)) {
+  throw new Error("Expected plan, deploy or destroy");
+}
+
+if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
+  throw new Error(
+    "Set ALCHEMY_STAGE explicitly before destroying a deployment"
+  );
+}
+
+const stage = env.ALCHEMY_STAGE ?? "prod";
+
+if (!/^[a-z][a-z0-9-]{0,30}$/u.test(stage)) {
+  throw new Error(
+    "Set ALCHEMY_STAGE to a lowercase stage name of up to 31 characters"
+  );
+}
+
+if (stage !== "prod") {
+  const prefix = stage.toUpperCase().replaceAll("-", "_");
+
+  for (const name of ["DATABASE_URL", "HYPERDRIVE_ID"]) {
+    env[name] = env[`${prefix}_${name}`];
+  }
+}
+
+if (action === "deploy" && (env.DATABASE_URL ?? "") === "") {
+  throw new Error(
+    "Set DATABASE_URL in the deployment shell to the database URL for this stage"
+  );
+}
+
+if (!/^[a-f0-9]{32}$/iu.test(env.HYPERDRIVE_ID ?? "")) {
+  throw new Error(
+    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see DEPLOYMENT.md before deploying"
+  );
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    env,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+if (action !== "destroy") {
+  run(["run", "build"]);
+}
+
+if (action === "deploy") {
+  run(["run", "db:migrate"]);
+}
+
+run([
+  "exec",
+  "alchemy",
+  action,
+  "--stage",
+  stage,
+  ...(action === "deploy" ? ["--yes"] : []),
+]);

@@ -25,4 +25,6 @@ npx vibestart-cli add knip ultracite docker --yes
 
 接入 Ultracite 后，已有业务代码可能需要按新增规则调整。检查失败时，文件保持已写入的状态：修改代码后重新执行检查，或用 Git 撤销。添加能力不会自动迁移数据库。
 
-`add alchemy` 可将没有服务端的 SPA 部署到 Cloudflare：这类项目尚无运行时，Alchemy 将其作为静态资源部署到 Workers。已有服务端的项目运行在 Node.js 或 Bun 上，`add` 不会替换其运行时，因为把服务端代码迁到 Workers 属于迁移；请改用 `--deployment alchemy --runtime workers` 创建新项目。已有部署不会被隐式替换。详见 [Alchemy 部署](/docs/stack/delivery#alchemy)。
+`add cloudflare-workers` 可将没有服务端的 SPA 部署到 Cloudflare：这类项目尚无运行时，Alchemy 将其作为静态资源部署到 Workers。已有服务端的项目运行在 Node.js 或 Bun 上，`add` 不会替换其运行时，因为把服务端代码迁到 Workers 属于迁移；请改用 `--deployment cloudflare-workers --runtime workers` 创建新项目。已有部署不会被隐式替换。详见 [Alchemy 部署](/docs/stack/delivery#alchemy)。
+
+独立的 Node/Hono API 可以用 `add gcp-cloud-run` 或 `add fly-machines` 添加兼容的部署目标。用 `--dry-run` 查看改动，再按生成的 `DEPLOYMENT.md` 配置部署。

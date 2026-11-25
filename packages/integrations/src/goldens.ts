@@ -26,10 +26,12 @@ const goldenLabels = [
   "hono-openapi-sqlite-bun-docker",
   "solid-spa-hono-ui-sdk-docker",
   "spa-ui-sdk-docker",
-  "spa-alchemy",
-  "tanstack-start-self-orpc-postgres-better-auth-alchemy",
-  "spa-hono-orpc-postgres-better-auth-alchemy",
-  "spa-hono-openapi-mysql-better-auth-alchemy-e2e",
+  "spa-cloudflare-workers",
+  "hono-openapi-postgres-gcp-cloud-run",
+  "hono-fly-machines",
+  "tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers",
+  "spa-hono-orpc-postgres-better-auth-cloudflare-workers",
+  "spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e",
 ];
 
 export const goldens: Record<string, Stack> = Object.fromEntries(

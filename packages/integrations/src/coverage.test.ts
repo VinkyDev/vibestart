@@ -81,7 +81,9 @@ describe(pnpmFacets, () => {
   // Docker changes only its own files; Alchemy changes the code it deploys, so it is a choice in its own stacks.
   it.each([
     { deployment: "docker", choice: false },
-    { deployment: "alchemy", choice: true },
+    { deployment: "cloudflare-workers", choice: true },
+    { deployment: "gcp-cloud-run", choice: true },
+    { deployment: "fly-machines", choice: true },
   ])(
     "takes every three choices together, $deployment a choice: $choice",
     async ({ deployment, choice }) => {

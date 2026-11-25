@@ -4,7 +4,7 @@ import { confirm, isCancel } from "@clack/prompts";
 
 import { MaintenanceError } from "#/maintenance/model.ts";
 
-export const usage = `vibestart add [knip ultracite docker] [--list]
+export const usage = `vibestart add [capabilities...] [--list]
 vibestart doctor [--offline]
 vibestart upgrade [--to <exact-version>] [--check | --dry-run]
 

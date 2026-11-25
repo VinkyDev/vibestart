@@ -1,0 +1,177 @@
+# .dockerignore · 1 stack
+#   hono-fly-machines
+.git
+**/node_modules
+**/dist
+**/coverage
+**/.vitest
+**/*.tsbuildinfo
+**/*.local
+**/*.log
+**/.alchemy/
+**/.env
+**/.env.*
+
+# alchemy.run.ts · 1 stack
+#   hono-fly-machines
+import * as Fly from "@alchemy.run/fly";
+import { state } from "@alchemy.run/gcp/StateStore";
+import * as Alchemy from "alchemy";
+import { Config, Effect } from "effect";
+
+import { releaseImage } from "./infra/image.ts";
+
+export default Alchemy.Stack(
+  "my-app",
+  {
+    providers: Fly.providers(),
+    state: state({ prefix: "fly-machines" }),
+  },
+  Effect.gen(function* deploy() {
+    const app = yield* Fly.App("App", {
+      orgSlug: yield* Config.String("FLY_ORG"),
+    });
+
+    yield* Fly.IpAssignment("PublicIPv4", { app, type: "shared_v4" });
+
+    yield* Fly.Machine("Api", {
+      app,
+      image: yield* releaseImage,
+      region: yield* Config.String("FLY_REGION"),
+      services: [
+        {
+          protocol: "tcp",
+          internalPort: 3000,
+          ports: [
+            { port: 80, handlers: ["http"], forceHttps: true },
+            { port: 443, handlers: ["tls", "http"] },
+          ],
+          checks: [
+            {
+              type: "http",
+              path: "/api/health",
+              interval: "15s",
+              timeout: "2s",
+              gracePeriod: "10s",
+            },
+          ],
+        },
+      ],
+    });
+
+    return { url: app.url };
+  })
+);
+
+# DEPLOYMENT.md · 1 stack
+#   hono-fly-machines
+# Deploy to Fly Machines with Alchemy
+
+Build the generated Dockerfile from the workspace root. Publish a Linux AMD64 image to a registry the runtime can pull from. Use the fully qualified digest reported by Buildx for both preview and production.
+
+```sh
+docker buildx build --platform linux/amd64 --push --tag "$IMAGE_REPOSITORY:$RELEASE_TAG" .
+export DEPLOY_IMAGE="$IMAGE_REPOSITORY@sha256:<64 hex digits>"
+```
+
+Set up a GCP profile (`vp exec alchemy profile edit --add GCP`) and bootstrap the shared GCS state bucket once with `vp exec alchemy state bootstrap --backend gcp`. Use the same GCP project, profile and backend on each run. Restrict bucket access to deployment identities. For CI, configure the project's GCP credentials and `GOOGLE_PROJECT_ID`.
+
+Set `FLY_API_TOKEN`, `FLY_ORG` and `FLY_REGION`. The stack creates an app, a shared IPv4 address and one stateless Machine with HTTPS and an HTTP health check. A public Docker Hub image is one option for a digest accessible to both Fly and Cloud Run. Fly hosts the app and GCS stores deployment state.
+
+Run `vp run plan`, then `vp run deploy` with the same environment. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for a preview and keep the target account, region, state backend and stage consistent on redeploy. Check `/api/health` at the printed URL. Use `vp run destroy` with the preview environment to remove its resources. The shared state bucket, published image and externally supplied secrets and databases have separate lifecycles.
+
+# Dockerfile · 1 stack
+#   hono-fly-machines
+# syntax=docker/dockerfile:1
+
+FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
+WORKDIR /app
+
+COPY --chown=vp:vp package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY --chown=vp:vp apps/server/package.json apps/server/
+COPY --chown=vp:vp packages/config/package.json packages/config/
+RUN vp install --frozen-lockfile --filter "@my-app/server..."
+
+COPY --chown=vp:vp . .
+RUN vp run --filter "@my-app/server..." build
+RUN cp "$(vp env which node | head -1)" /tmp/node
+
+FROM debian:trixie-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends libatomic1 && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+ENV NODE_ENV=production PORT=3000
+
+COPY --from=build /tmp/node /usr/local/bin/node
+COPY --from=build /app/apps/server/dist ./dist
+
+USER nobody
+EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+  CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+CMD ["node", "dist/index.mjs"]
+
+# infra/image.ts · 1 stack
+#   hono-fly-machines
+import { Config, Effect } from "effect";
+
+export const releaseImage = Effect.gen(function* releaseImage() {
+  const image = yield* Config.String("DEPLOY_IMAGE");
+
+  if (!/^[^\s@]+\/[^\s@]+@sha256:[a-f0-9]{64}$/u.test(image)) {
+    throw new Error(
+      "Set DEPLOY_IMAGE to the full registry path and sha256 digest of the published linux/amd64 image"
+    );
+  }
+
+  return image;
+});
+
+# scripts/deploy.ts · 1 stack
+#   hono-fly-machines
+import { spawnSync } from "node:child_process";
+
+const env = { ...process.env };
+const action = process.argv[2] ?? "deploy";
+
+if (!["plan", "deploy", "destroy"].includes(action)) {
+  throw new Error("Expected plan, deploy or destroy");
+}
+
+if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
+  throw new Error(
+    "Set ALCHEMY_STAGE explicitly before destroying a deployment"
+  );
+}
+
+const stage = env.ALCHEMY_STAGE ?? "prod";
+
+if (!/^[a-z][a-z0-9-]{0,30}$/u.test(stage)) {
+  throw new Error(
+    "Set ALCHEMY_STAGE to a lowercase stage name of up to 31 characters"
+  );
+}
+
+const run = (args: string[]) => {
+  const result = spawnSync("vp", args, {
+    env,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    process.exit(result.status ?? 1);
+  }
+};
+
+run([
+  "exec",
+  "alchemy",
+  action,
+  "--stage",
+  stage,
+  ...(action === "deploy" ? ["--yes"] : []),
+]);

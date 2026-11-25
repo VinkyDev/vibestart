@@ -368,7 +368,7 @@ describe("stack modes", () => {
     { database: "mysql" },
     { framework: "next" },
     { runtime: "bun" },
-    { deployment: "alchemy" },
+    { deployment: "cloudflare-workers" },
   ])("rejects unadapted choices in Effect mode: %j", (choice) => {
     const stack = { ...compose(registry, { mode: "effect" }), ...choice };
     expect(check(registry, stack).length).toBeGreaterThan(0);

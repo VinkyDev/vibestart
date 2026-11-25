@@ -3,7 +3,7 @@ title: 交付
 description: 使用 Docker 或 Alchemy 部署应用，或将 Web 界面打包为 Electron 桌面应用。
 ---
 
-交付决定应用如何到达用户：通过 Docker 部署到服务器、通过 Alchemy 部署到 Cloudflare，或作为 Electron 桌面应用安装。各项均为可选项，Docker 和 Alchemy 也可以添加到兼容的已有项目。
+交付决定应用如何到达用户：通过 Docker 部署到服务器、通过 Alchemy 部署到云平台，或作为 Electron 桌面应用安装。各项均为可选项，Docker 和 Alchemy 也可以添加到兼容的已有项目。
 
 ## Docker [#docker]
 
@@ -28,13 +28,21 @@ description: 使用 Docker 或 Alchemy 部署应用，或将 Web 界面打包为
 
 <Tech href="https://alchemy.run" icon="alchemy" />
 
-选择 `--deployment alchemy --runtime workers` 可将 React 或 Solid SPA、搭配 Hono 的 SPA 或 TanStack Start SSR 部署到自己的 Cloudflare 账号。静态 SPA 支持直接打开前端路由。搭配 Hono 时，Worker 处理 `/api` 和 `/api/*`（含 `/api/rpc`），Cloudflare 提供前端资源。Start 通过 Cloudflare Vite 插件同时构建 SSR Worker 和浏览器资源。
+选择 `--deployment cloudflare-workers --runtime workers` 可将 React 或 Solid SPA、搭配 Hono 的 SPA 或 TanStack Start SSR 部署到自己的 Cloudflare 账号。静态 SPA 支持直接打开前端路由。搭配 Hono 时，Worker 处理 `/api` 和 `/api/*`（含 `/api/rpc`），Cloudflare 提供前端资源。Start 通过 Cloudflare Vite 插件同时构建 SSR Worker 和浏览器资源。
 
 在生成的项目根目录执行 `vp exec alchemy profile edit --add Cloudflare` 连接账号。CI 中设置 `CLOUDFLARE_ACCOUNT_ID` 和 `CLOUDFLARE_API_TOKEN`。首次部署会在账号下创建保存状态的 Worker、Durable Object 和 Secrets Store 凭据。权限要求见 [Alchemy 状态存储说明](https://alchemy.run/state-store/)。
 
 使用 PostgreSQL 或 MySQL 时，为生产数据库创建 Hyperdrive 并**关闭查询缓存**，然后在部署终端设置指向同一个数据库的 `HYPERDRIVE_ID` 和 `DATABASE_URL`。使用 Better Auth 时还需设置 `BETTER_AUTH_SECRET`。首次部署使用 Alchemy 提供的 Worker URL，自定义 HTTPS 域名可通过 `BETTER_AUTH_URL` 设置。部署脚本检查配置并执行 Drizzle 迁移。Worker 通过 Hyperdrive 为每个请求创建客户端，在响应流结束时释放连接。
 
-执行 `vp run deploy` 发布到 `prod` 环境，再次执行会更新同一个部署。本地开发和检查使用 `vp run dev` 和 `vp run ready`。对没有服务端的已有 SPA，可运行 `vibestart add alchemy --dry-run` 预览配置变更。
+执行 `vp run deploy` 发布到 `prod` 环境，再次执行会更新同一个部署。本地开发和检查使用 `vp run dev` 和 `vp run ready`。对没有服务端的已有 SPA，可运行 `vibestart add cloudflare-workers --dry-run` 预览配置变更。
+
+## Cloud Run 和 Fly Machines [#cloud-containers]
+
+独立的 Hono/Node.js API 可以选择 `gcp-cloud-run` 或 `fly-machines`。两个目标都生成 Alchemy stack，并复用同一应用选择在 Docker 部署下的 Dockerfile。发布 Linux AMD64 镜像后，将仓库路径和 SHA-256 摘要赋给 `DEPLOY_IMAGE`。部署平台需要有拉取镜像的权限。
+
+Cloud Run 提供公开 HTTPS 服务。选择外部 PostgreSQL 和 Drizzle 时，Cloud Run Job 使用与服务相同的镜像执行迁移，成功后才更新服务版本。数据库连接地址通过 Secret Manager 的指定版本注入。Fly Machines 创建一台无状态 Machine，分配共享公网 IPv4，并配置 HTTPS 入口和健康检查。
+
+两个目标使用 GCS 保存团队共享的部署状态，各自使用独立的前缀。选择 Fly 也需要能访问 GCP 状态项目。生成的 `DEPLOYMENT.md` 列出了账号、凭据和区域配置。在同一环境中运行 `vp run plan` 和 `vp run deploy`。可用 `ALCHEMY_STAGE=pr-42` 隔离预览，确认 stage 后用 `vp run destroy` 回收。自托管项目仍可选 `--deployment docker` 使用 Docker Compose。
 
 ## Electron [#electron]
 

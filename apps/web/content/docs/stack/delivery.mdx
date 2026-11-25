@@ -3,7 +3,7 @@ title: Delivery
 description: Deploy with Docker or Alchemy, or package the web interface as an Electron desktop app.
 ---
 
-Delivery is how the finished application reaches its users: through Docker on a server, Alchemy on Cloudflare, or an Electron desktop app. Each is optional; Docker and Alchemy can also be added to compatible existing projects.
+Delivery is how the finished application reaches its users: through Docker on a server, Alchemy on Cloudflare Workers, Cloud Run or Fly Machines, or an Electron desktop app. Each is optional; Docker and Alchemy can also be added to compatible existing projects.
 
 ## Docker [#docker]
 
@@ -32,13 +32,21 @@ Configure secrets and database addresses in the deployment environment, then sta
 
 <Tech href="https://alchemy.run" icon="alchemy" />
 
-Select `--deployment alchemy --runtime workers` to deploy a React or Solid SPA, a SPA with Hono, or TanStack Start SSR to your Cloudflare account. A static SPA uses Cloudflare assets with history fallback. With Hono, the Worker handles `/api` and `/api/*`, including `/api/rpc`, while Cloudflare serves the frontend. Start builds both the SSR Worker and browser assets with the Cloudflare Vite plugin.
+Select `--deployment cloudflare-workers --runtime workers` to deploy a React or Solid SPA, a SPA with Hono, or TanStack Start SSR to your Cloudflare account. A static SPA uses Cloudflare assets with history fallback. With Hono, the Worker handles `/api` and `/api/*`, including `/api/rpc`, while Cloudflare serves the frontend. Start builds both the SSR Worker and browser assets with the Cloudflare Vite plugin.
 
 From the generated workspace, run `vp exec alchemy profile edit --add Cloudflare`. In CI, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. The first deployment bootstraps an account-level state Worker, Durable Object and Secrets Store credentials. Follow the [state store setup](https://alchemy.run/state-store/) for the permissions these resources need.
 
 For PostgreSQL or MySQL, provision Hyperdrive with **query caching disabled**. Export `HYPERDRIVE_ID` and `DATABASE_URL` for the same production database. If Better Auth is selected, export `BETTER_AUTH_SECRET`. Alchemy supplies the Worker URL on first deploy. Set `BETTER_AUTH_URL` for a custom HTTPS origin. The deployment script checks the prerequisites and runs Drizzle migrations. The Worker uses the Hyperdrive binding and obtains a client per request. It releases that client after the response stream ends.
 
-Run `vp run deploy` to publish the `prod` stage. Repeat the command to update the same stack. Use `vp run dev` and `vp run ready` for local work. `vibestart add alchemy --dry-run` previews adding Alchemy to a SPA without a server.
+Run `vp run deploy` to publish the `prod` stage. Repeat the command to update the same stack. Use `vp run dev` and `vp run ready` for local work. `vibestart add cloudflare-workers --dry-run` previews adding Alchemy to a SPA without a server.
+
+## Cloud Run and Fly Machines [#cloud-containers]
+
+The `gcp-cloud-run` and `fly-machines` deployment choices generate an Alchemy stack for a standalone Hono API running on Node.js. Both generate the same production Dockerfile as the corresponding Docker stack. Publish the Linux AMD64 image once and set `DEPLOY_IMAGE` to its registry path and SHA-256 digest. The runtime needs permission to pull that image.
+
+Cloud Run publishes a public HTTPS service. With external PostgreSQL and Drizzle, a Cloud Run Job runs the migration using the same image as the service. Deployment waits for the job before updating the serving revision. The database URL comes from a versioned Secret Manager reference. Fly Machines creates a stateless Machine, a shared public IPv4 address and HTTPS routing with a health check.
+
+Both targets use GCS for shared deployment state, with a distinct prefix per target. Fly deployments therefore also require access to a GCP state project. The generated `DEPLOYMENT.md` lists the credentials and region inputs. Run `vp run plan` and `vp run deploy` from the same environment. Use `ALCHEMY_STAGE=pr-42` to isolate a preview and `vp run destroy` to remove that stage. Docker Compose remains available as `--deployment docker` for self-hosting.
 
 ## Electron [#electron]
 

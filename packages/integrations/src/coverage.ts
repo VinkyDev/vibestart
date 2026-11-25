@@ -44,7 +44,9 @@ const choiceFacets = (stack: Stack, size: number) =>
   combinations(
     [
       ...choiceKinds.map((kind) => `${kind}=${stack[kind] ?? "none"}`),
-      ...(stack.deployment === "alchemy" ? ["deployment=alchemy"] : []),
+      ...(stack.deployment !== undefined && stack.deployment !== "docker"
+        ? [`deployment=${stack.deployment}`]
+        : []),
     ],
     size
   ).map((choices) => `choices ${choices.join(" ")}`);
