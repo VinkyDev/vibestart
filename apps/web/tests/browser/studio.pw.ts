@@ -235,8 +235,10 @@ test("switches only the React UI kit and toggles Alchemy alongside Docker", asyn
   const docker = page.getByRole("checkbox", { name: "Docker", exact: true });
   const alchemy = page.getByRole("checkbox", { name: "Alchemy", exact: true });
   await expect(docker).toBeChecked();
-  await alchemy.click();
+  await alchemy.focus();
+  await page.keyboard.press("Space");
   await expect(alchemy).toBeChecked();
+  await expect(alchemy).toBeFocused();
   await expect(docker).toBeChecked();
   await expect(
     page.getByRole("button", { name: /^alchemy\.run\.ts\b/u })
@@ -285,4 +287,37 @@ test("selects the Workers runtime without changing TanStack Start", async ({
   await expect(
     page.getByRole("button", { name: /TanStack Start/u }).first()
   ).toBeVisible();
+});
+
+test("keeps deployment choices visible with larger text and high contrast", async ({
+  page,
+}, testInfo) => {
+  await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  await page.goto("/studio?framework=spa&deployment=docker");
+  await page.addStyleTag({ content: "html { font-size: 18px }" });
+
+  const deployment = page.getByRole(
+    testInfo.project.name === "desktop" ? "region" : "group",
+    { name: "Deployment", exact: true }
+  );
+
+  const docker = deployment.getByRole("checkbox", { name: "Docker" });
+  const alchemy = deployment.getByRole("checkbox", { name: "Alchemy" });
+  await docker.focus();
+  await page.keyboard.press("Tab");
+  await expect(alchemy).toBeFocused();
+  const label = alchemy.locator("..");
+  await expect(label).toHaveCSS("outline-style", "solid");
+  await expect
+    .poll(async () => {
+      const frame = await deployment.boundingBox();
+      const card = await label.boundingBox();
+
+      return (
+        frame !== null &&
+        card !== null &&
+        card.y + card.height <= frame.y + frame.height + 1
+      );
+    })
+    .toBe(true);
 });

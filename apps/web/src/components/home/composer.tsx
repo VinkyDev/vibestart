@@ -247,7 +247,7 @@ export const Composer = () => {
               .map((kind, index) =>
                 kind === "deployment" ? (
                   <fieldset
-                    className="flex min-h-10 items-center gap-2 px-3 sm:gap-3"
+                    className="grid min-w-0 items-center gap-2 px-3 py-1.5 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-3"
                     key={kind}
                   >
                     <legend className="sr-only">{roles.deployment.role}</legend>

@@ -97,7 +97,7 @@ const chooser = (
   <ChevronsUpDown className="text-muted-foreground size-3.5 shrink-0 opacity-60 transition-opacity group-hover/trigger:opacity-100" />
 );
 
-// Equal shares keep the rail balanced and prevent option changes from moving adjacent cards.
+// Fixed shares keep selection changes from moving adjacent cards.
 const cardClass = "h-full min-w-0 flex-1";
 
 const Toolchain = ({
@@ -235,22 +235,17 @@ export const Rail = ({
             />
           )
         )}
-        <div
-          className={cn(
-            "bg-card shadow-rest transition-surface hover:shadow-lift has-data-popup-open:shadow-lift flex min-w-0 rounded-2xl",
-            cardClass
-          )}
-        >
+        <div className="bg-card shadow-rest transition-surface hover:shadow-lift has-data-popup-open:shadow-lift flex h-full min-w-0 flex-[1.25] rounded-2xl">
           <Extensions choosing={choosing} />
         </div>
       </Frame>
       <Frame
-        className="tint-deployment w-[228px]"
+        className="tint-deployment w-82"
         focused={focusesGroup(focus, "deployment")}
         label={roles.deployment.role}
       >
         <div
-          className="flex min-w-0 flex-1"
+          className="flex min-w-0 flex-1 [&_label]:min-h-0"
           onPointerEnter={enterDeployment}
           onPointerLeave={leaveDeployment}
         >
