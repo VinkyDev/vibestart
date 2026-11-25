@@ -1,5 +1,6 @@
 import {
   ChevronsUpDown,
+  Cloud,
   FlaskConical,
   MousePointerClick,
   Wrench,
@@ -19,7 +20,7 @@ import { cn } from "@vibestart/ui/lib/utils";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
-import { DeploymentOptions } from "#/components/topology/deployment-options.tsx";
+import { DeploymentPicker } from "#/components/topology/deployment-picker.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
 import {
   CardHeading,
@@ -72,14 +73,16 @@ const FoundationFace = ({
 }: {
   readonly empty?: boolean;
   readonly icon: LucideIcon;
-  readonly kind: string;
+  readonly kind?: string;
   readonly name: string;
   readonly trailing?: ReactNode;
 }) => (
-  <span className="bg-card shadow-rest transition-surface group-hover/trigger:shadow-lift group-data-popup-open/trigger:shadow-lift group-hover/card:shadow-lift group-data-[focused]/card:shadow-lift group-data-popup-open/card:shadow-lift group-focus-visible/card:focus-ring flex size-full min-w-0 items-center gap-2 rounded-2xl px-2.5">
+  <span className="bg-card shadow-rest transition-surface group-hover/trigger:shadow-lift group-data-popup-open/trigger:shadow-lift group-hover/card:shadow-lift group-data-[focused]/card:shadow-lift group-data-popup-open/card:shadow-lift group-focus-visible/card:focus-ring flex size-full min-w-0 items-center gap-2 rounded-2xl px-2.5 forced-colors:group-focus-visible/card:outline-2 forced-colors:group-focus-visible/card:-outline-offset-2">
     <Swatch icon={icon} />
     <span className="flex min-w-0 flex-1 flex-col">
-      <span className="text-muted-foreground truncate text-xs">{kind}</span>
+      {kind !== undefined && (
+        <span className="text-muted-foreground truncate text-xs">{kind}</span>
+      )}
       <span
         className={cn(
           "truncate text-sm font-medium",
@@ -242,7 +245,7 @@ export const Rail = ({
         </div>
       </Frame>
       <Frame
-        className="tint-deployment w-82"
+        className="tint-deployment min-h-23 w-60"
         focused={focusesGroup(focus, "deployment")}
         label={roles.deployment.role}
       >
@@ -251,7 +254,14 @@ export const Rail = ({
           onPointerEnter={enterDeployment}
           onPointerLeave={leaveDeployment}
         >
-          <DeploymentOptions choosing={choosing} />
+          <DeploymentPicker
+            choosing={choosing}
+            className="group/card flex w-full min-w-0 text-left"
+          >
+            {(summary) => (
+              <FoundationFace icon={Cloud} name={summary} trailing={chooser} />
+            )}
+          </DeploymentPicker>
         </div>
       </Frame>
     </motion.div>

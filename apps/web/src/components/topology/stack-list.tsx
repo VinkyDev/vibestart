@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import { cn } from "@vibestart/ui/lib/utils";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
-import { DeploymentOptions } from "#/components/topology/deployment-options.tsx";
+import { DeploymentPicker } from "#/components/topology/deployment-picker.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
 import { Picker } from "#/components/topology/picker.tsx";
 import { Tile } from "#/components/topology/tile.tsx";
@@ -22,6 +22,41 @@ import {
   selected,
 } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
+
+const rowTrigger = "group/trigger flex w-full text-left";
+
+const RowFace = ({
+  empty = false,
+  kind,
+  name,
+}: {
+  readonly empty?: boolean;
+  readonly kind: Decision;
+  readonly name: string;
+}) => (
+  <span className="hover:bg-foreground/[0.025] active:bg-foreground/[0.045] group-focus-visible/trigger:ring-foreground/30 flex w-full items-center gap-3.5 px-4 py-3 transition-colors group-focus-visible/trigger:ring-2 group-focus-visible/trigger:ring-inset forced-colors:group-focus-visible/trigger:outline-2 forced-colors:group-focus-visible/trigger:-outline-offset-2">
+    <Tile empty={empty} kind={kind} />
+    <span className="flex min-w-0 flex-1 flex-col">
+      <span className="text-muted-foreground text-xs">{roles[kind].role}</span>
+      <AnimatePresence initial={false} mode="popLayout">
+        <motion.span
+          animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+          className={cn(
+            "truncate text-sm font-medium",
+            empty ? "text-muted-foreground" : "text-foreground"
+          )}
+          exit={{ filter: "blur(4px)", opacity: 0, y: -6 }}
+          initial={{ filter: "blur(4px)", opacity: 0, y: 6 }}
+          key={name}
+          transition={{ duration: 0.4, ease }}
+        >
+          {name}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+    <ChevronRight className="text-muted-foreground/60 size-4 shrink-0 transition-transform group-active/trigger:translate-x-0.5" />
+  </span>
+);
 
 const Row = ({
   choosing: { addons, baseline, onChoose, onPreview, project },
@@ -48,36 +83,16 @@ const Row = ({
       open={open}
     >
       <Dialog.Trigger
-        className={cn(
-          tintClass[kind],
-          "group/trigger hover:bg-foreground/[0.025] active:bg-foreground/[0.045] focus-visible:ring-foreground/30 flex w-full items-center gap-3.5 px-4 py-3 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset"
-        )}
+        className={cn(tintClass[kind], rowTrigger, "outline-none")}
       >
-        <Tile empty={integration === undefined} kind={kind} />
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-muted-foreground text-xs">
-            {roles[kind].role}
-          </span>
-          <AnimatePresence initial={false} mode="popLayout">
-            <motion.span
-              animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-              className={cn(
-                "truncate text-sm font-medium",
-                integration === undefined
-                  ? "text-muted-foreground"
-                  : "text-foreground"
-              )}
-              exit={{ filter: "blur(4px)", opacity: 0, y: -6 }}
-              initial={{ filter: "blur(4px)", opacity: 0, y: 6 }}
-              key={integration?.id ?? "none"}
-              transition={{ duration: 0.4, ease }}
-            >
-              {integration?.name ??
-                (kind === "testing" ? m.testing_none() : addLabel(kind))}
-            </motion.span>
-          </AnimatePresence>
-        </span>
-        <ChevronRight className="text-muted-foreground/60 size-4 shrink-0 transition-transform group-active/trigger:translate-x-0.5" />
+        <RowFace
+          empty={integration === undefined}
+          kind={kind}
+          name={
+            integration?.name ??
+            (kind === "testing" ? m.testing_none() : addLabel(kind))
+          }
+        />
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop className="bg-foreground/20 fixed inset-0 z-50 transition-opacity duration-300 data-ending-style:opacity-0 data-starting-style:opacity-0" />
@@ -167,13 +182,15 @@ export const StackList = ({
               <Row choosing={choosing} kind={kind} />
             </li>
           ))}
+        <li>
+          <DeploymentPicker
+            choosing={choosing}
+            className={cn("tint-deployment", rowTrigger)}
+          >
+            {(summary) => <RowFace kind="deployment" name={summary} />}
+          </DeploymentPicker>
+        </li>
       </ul>
-      <fieldset className="border-border min-w-0 border-t px-4 py-3">
-        <legend className="text-muted-foreground text-xs">
-          {roles.deployment.role}
-        </legend>
-        <DeploymentOptions choosing={choosing} />
-      </fieldset>
       <div className="tint-foundation border-border/70 flex flex-col gap-2.5 border-t px-4 pt-3.5 pb-4">
         <h3 className="text-muted-foreground flex items-center gap-1.5 text-xs font-medium">
           <Layers className="size-3.5" strokeWidth={1.75} />

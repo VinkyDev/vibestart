@@ -73,7 +73,7 @@ const webBoxBlocks = (stack: Stack): Rect[] => [
  * its process box, and the others fold into a row each beneath, so the stage grows only with what it shows.
  * The desktop shell comes first, right under the web app it loads.
  */
-export const layoutOf = (stack: Stack, railHeight = 128): Layout => {
+export const layoutOf = (stack: Stack, railHeight = 92): Layout => {
   const web = stack.framework !== undefined;
   const inWebBox = webBoxBlocks(stack);
 

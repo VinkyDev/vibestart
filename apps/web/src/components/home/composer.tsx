@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { compact } from "es-toolkit/array";
 import { sumBy } from "es-toolkit/math";
-import { CornerDownRight } from "lucide-react";
+import { ChevronDown, CornerDownRight } from "lucide-react";
 import type { Variants } from "motion/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -13,7 +13,7 @@ import { cn } from "@vibestart/ui/lib/utils";
 
 import { Verified } from "#/components/command.tsx";
 import { useComposed } from "#/components/home/use-composed.ts";
-import { DeploymentOptions } from "#/components/topology/deployment-options.tsx";
+import { DeploymentPicker } from "#/components/topology/deployment-picker.tsx";
 import { Tile } from "#/components/topology/tile.tsx";
 import { list } from "#/lib/i18n.ts";
 import { ease, spring } from "#/lib/motion.ts";
@@ -247,7 +247,7 @@ export const Composer = () => {
               .map((kind, index) =>
                 kind === "deployment" ? (
                   <fieldset
-                    className="grid min-w-0 items-center gap-2 px-3 py-1.5 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-3"
+                    className="grid min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-0.5 py-0.5 pl-3 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-3 sm:px-3 sm:py-1.5"
                     key={kind}
                   >
                     <legend className="sr-only">{roles.deployment.role}</legend>
@@ -261,7 +261,7 @@ export const Composer = () => {
                       </span>
                       {roles.deployment.role}
                     </span>
-                    <DeploymentOptions
+                    <DeploymentPicker
                       choosing={{
                         addons,
                         baseline: entry.stack,
@@ -272,7 +272,18 @@ export const Composer = () => {
                           compose(next.stack);
                         },
                       }}
-                    />
+                      className="group/deployment flex w-fit max-w-full"
+                    >
+                      {(summary) => (
+                        <span className="tint-deployment bg-tint-soft text-tint group-focus-visible/deployment:focus-ring flex min-h-8 min-w-0 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium sm:px-3 forced-colors:group-focus-visible/deployment:outline-2 forced-colors:group-focus-visible/deployment:-outline-offset-2">
+                          <span className="min-w-0">{summary}</span>
+                          <ChevronDown
+                            aria-hidden
+                            className="size-3.5 shrink-0"
+                          />
+                        </span>
+                      )}
+                    </DeploymentPicker>
                   </fieldset>
                 ) : (
                   <Layer

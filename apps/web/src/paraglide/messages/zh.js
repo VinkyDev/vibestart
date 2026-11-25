@@ -66,11 +66,9 @@
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
-/** @typedef {{}} Deployment_Alchemy_GuideInputs */
 /** @typedef {{}} Deployment_Alchemy_PurposeInputs */
-/** @typedef {{}} Deployment_Docker_GuideInputs */
+/** @typedef {{}} Deployment_Docker_LockedInputs */
 /** @typedef {{}} Deployment_Docker_PurposeInputs */
-/** @typedef {{}} Deployment_HelpInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
@@ -678,24 +676,16 @@ export const current = /** @type {(inputs: CurrentInputs) => LocalizedString} */
 	return /** @type {LocalizedString} */ (`当前`)
 };
 
-export const deployment_alchemy_guide = /** @type {(inputs: Deployment_Alchemy_GuideInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`在 alchemy.run.ts 中选择云厂商，用 TypeScript 声明资源。初始文件是空栈，由你添加需要的资源。`)
-};
-
 export const deployment_alchemy_purpose = /** @type {(inputs: Deployment_Alchemy_PurposeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`管理云资源`)
+	return /** @type {LocalizedString} */ (`在 alchemy.run.ts 中选择云厂商，用 TypeScript 定义云资源。`)
 };
 
-export const deployment_docker_guide = /** @type {(inputs: Deployment_Docker_GuideInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`用 Dockerfile 将应用构建成镜像，再用 Docker Compose 在本机或服务器上运行。`)
+export const deployment_docker_locked = /** @type {(inputs: Deployment_Docker_LockedInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`更改 Docker 选项需要先调整技术栈。Alchemy 可独立选用。`)
 };
 
 export const deployment_docker_purpose = /** @type {(inputs: Deployment_Docker_PurposeInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`构建容器镜像`)
-};
-
-export const deployment_help = /** @type {(inputs: Deployment_HelpInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Docker 和 Alchemy 怎么选？`)
+	return /** @type {LocalizedString} */ (`用 Dockerfile 构建镜像，通过 Compose 在本机或服务器运行应用。`)
 };
 
 export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => LocalizedString} */ (i) => {
@@ -715,7 +705,7 @@ export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs
 };
 
 export const deployment_together = /** @type {(inputs: Deployment_TogetherInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`如果要把容器部署到云上，可以同时选择两项，用 Alchemy 配置运行 Docker 镜像的基础设施。`)
+	return /** @type {LocalizedString} */ (`要把容器部署到云上，可以两项都选。`)
 };
 
 export const desc_alchemy = /** @type {(inputs: Desc_AlchemyInputs) => LocalizedString} */ () => {
