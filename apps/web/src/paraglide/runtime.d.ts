@@ -569,7 +569,7 @@ export let serverAsyncLocalStorage: ParaglideAsyncLocalStorage | undefined;
 export const disableAsyncLocalStorage: false;
 export const isServer: boolean;
 /** Controls development-only runtime diagnostics. */
-export const isDevelopment: true;
+export const isDevelopment: false;
 /** @type {Locale | undefined} */
 export const experimentalStaticLocale: Locale | undefined;
 export function getLocale(): Locale;

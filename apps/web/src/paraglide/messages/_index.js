@@ -4866,7 +4866,7 @@ export const runs_in_electron = /** @type {((inputs?: Runs_In_ElectronInputs, op
 /**
 * | output |
 * | --- |
-* | "Node.js and Bun run server processes. Alchemy uses Cloudflare Workers; build tools still run on Node.js." |
+* | "Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun." |
 *
 * @param {Runtime_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

@@ -18,6 +18,9 @@ const deploy = async (
 ) => {
   const stack = compose(registry, {
     auth: "better-auth",
+    backend: "hono",
+    desktop: "electron",
+    mobile: "expo",
     database,
     deployment: "cloudflare-workers",
   });
@@ -85,7 +88,7 @@ describe("Alchemy production deploy", () => {
     const plan = await deploy("postgres", env, "plan");
     expect(plan.status).toBe(0);
     expect(plan.stdout.trim().split(/\r?\n/u)).toStrictEqual([
-      "run build",
+      "run --filter @my-app/server... build",
       "exec alchemy plan --stage pr-42",
     ]);
     const apply = await deploy("postgres", env);
@@ -140,7 +143,7 @@ describe("Alchemy production deploy", () => {
     const result = await deploy("postgres", {});
     expect(result.status).toBe(0);
     expect(result.stdout.trim().split(/\r?\n/u)).toStrictEqual([
-      "run build",
+      "run --filter @my-app/server... build",
       "run db:migrate",
       "exec alchemy deploy --stage prod --yes",
     ]);

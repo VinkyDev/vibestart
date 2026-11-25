@@ -3720,6 +3720,31 @@ test("a linked Solid route survives a deep-link reload", async ({
   ).toBeVisible();
 });
 
+test("an unknown route offers a way home even while the API is pending", async ({
+  browser,
+  screen,
+}) => {
+  await browser.goto("/missing-page");
+  await expect(
+    screen.getByRole("heading", { name: "Page not found" })
+  ).toBeVisible();
+
+  const release = Promise.withResolvers<undefined>();
+
+  await browser.route("**/api/health", async (route) => {
+    await release.promise;
+    await route.continue();
+  });
+
+  try {
+    await screen.getByRole("link", { name: "Home" }).tap();
+    await expect(screen.getByRole("heading", { name: "my-app" })).toBeVisible();
+  } finally {
+    release.resolve(undefined);
+    await browser.unroute("**/api/health");
+  }
+});
+
 # apps/web/tests/support/api.ts · 132 stacks
 #   next-hono-mongodb-better-auth-bun-docker-e2e
 #   next-hono-mongodb-better-auth-docker-e2e

@@ -1,5 +1,4 @@
 import { render } from "@solidjs/web";
-import { Loading } from "solid-js";
 
 import { ThemeMenu } from "@my-app/ui/components/theme-menu";
 import "@my-app/ui/globals.css";
@@ -17,7 +16,7 @@ const App = () => (
           </nav>
           <ThemeMenu />
         </header>
-        <Loading fallback={<output>Loading…</output>}>{route.children}</Loading>
+        {route.children}
       </>
     )}
   </Router>

@@ -1,4 +1,4 @@
-# Deploy to Cloud Run with Alchemy
+# Deploy to Google Cloud Run with Alchemy
 
 Build the generated Dockerfile from the workspace root. Publish a Linux AMD64 image to a registry the runtime can pull from. Use the fully qualified digest reported by Buildx for both preview and production.
 

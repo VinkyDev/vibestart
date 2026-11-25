@@ -1702,7 +1702,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Node.js 和 Bun 运行服务进程；Alchemy 使用 Cloudflare Workers，构建工具仍运行于 Node.js。`)
+	return /** @type {LocalizedString} */ (`Cloud Run 和 Fly Machines 运行 Node.js 容器。Cloudflare 使用 Workers 运行时。Docker 可运行 Node.js 或 Bun。`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {

@@ -2218,7 +2218,7 @@ export const runs_in_electron: ((inputs?: Runs_In_ElectronInputs, options?: { lo
 /**
 * | output |
 * | --- |
-* | "Node.js and Bun run server processes. Alchemy uses Cloudflare Workers; build tools still run on Node.js." |
+* | "Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun." |
 *
 */
 export const runtime_about: ((inputs?: Runtime_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Runtime_AboutInputs, { locale?: "en" | "zh" }, {}>;

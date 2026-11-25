@@ -79,3 +79,5 @@ Select `--frontend solid` for a Solid 2 SPA when listed. It uses the Solid route
 Discover the available UI libraries in the running release's `--list --json` output. When it offers `ui-sdk`, select it with `--ui ui-sdk` for a compatible SPA. Use the resolver's reported choices when a requested backend or API needs a different UI.
 
 Standalone Hono/Node APIs can select `gcp-cloud-run` (optionally external PostgreSQL and Drizzle) or `fly-machines` (stateless). Both use Alchemy and a published Linux AMD64 image pinned by digest. Follow the generated README for stage, remote state and runtime credentials.
+
+With a React SPA, omitting `--ui` selects shadcn. Use `--ui ui-sdk` to select UI SDK. The filtered `--list --json` output reports the UI default for the supplied flags.

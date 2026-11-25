@@ -93,7 +93,7 @@ const run = (args: string[]) => {
 };
 
 if (action !== "destroy") {
-  run(["run", "build"]);
+  run(["run", "--filter", "@my-app/web...", "build"]);
 }
 
 if (action === "deploy") {

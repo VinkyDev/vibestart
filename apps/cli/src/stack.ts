@@ -5,12 +5,28 @@ import type { ParseError } from "jsonc-parser";
 import { parse, printParseErrorCode } from "jsonc-parser";
 import { z } from "zod";
 
-import type { Resolution, Stack } from "@vibestart/core";
-import { createBlueprintSchema } from "@vibestart/core";
+import type { Choices, Resolution, Stack } from "@vibestart/core";
+import { createBlueprintSchema, resolve, withDefaults } from "@vibestart/core";
 import { registry } from "@vibestart/integrations";
 
 import { CliError } from "#/errors.ts";
 import { kindFlag } from "#/options.ts";
+
+/** A UI preference applies only once the remaining choices already require a frontend. */
+export const noninteractiveDefaults = (choices: Choices): Choices => {
+  const fixed = withDefaults(registry, choices);
+
+  if (fixed.ui !== undefined) {
+    return fixed;
+  }
+
+  const { stacks } = resolve(registry, fixed);
+
+  return stacks.every((stack) => stack.ui !== undefined) &&
+    stacks.some((stack) => stack.ui === "shadcn")
+    ? { ...fixed, ui: "shadcn" }
+    : fixed;
+};
 
 /**
  * Kinds left to decide, with each kind's remaining choices: those the kinds before them do not

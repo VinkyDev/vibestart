@@ -6,14 +6,14 @@ import { ignoredFiles, rootTypeScriptFiles } from "#/vite-plus/slots.ts";
 interface AlchemyProject {
   providers: string[];
   checks?: string;
-  build?: boolean;
+  buildWorkspace?: string;
   migrate?: boolean;
   previewVariables?: string[];
 }
 
 const deploymentCommand = ({
   checks = "",
-  build = false,
+  buildWorkspace,
   migrate = false,
   previewVariables = [],
 }: AlchemyProject) =>
@@ -67,7 +67,7 @@ ${checks.trim() === "" ? "" : `if (action !== "destroy") {\n${checks.trim()}\n}\
   }
 };
 
-${build ? 'if (action !== "destroy") {\n  run(["run", "build"]);\n}\n\n' : ""}${migrate ? 'if (action === "deploy") {\n  run(["run", "db:migrate"]);\n}\n\n' : ""}run(["exec", "alchemy", action, "--stage", stage, ...(action === "deploy" || confirmDestroy ? ["--yes"] : [])]);
+${buildWorkspace === undefined ? "" : `if (action !== "destroy") {\n  run(["run", "--filter", "${buildWorkspace}...", "build"]);\n}\n\n`}${migrate ? 'if (action === "deploy") {\n  run(["run", "db:migrate"]);\n}\n\n' : ""}run(["exec", "alchemy", action, "--stage", stage, ...(action === "deploy" || confirmDestroy ? ["--yes"] : [])]);
 `;
 
 export const alchemyProject = (settings: AlchemyProject) => {

@@ -290,3 +290,5 @@ On failure:
 For Cloudflare deployment, use `--deployment cloudflare-workers --runtime workers`. Alchemy supports static SPA, SPA + Hono, and TanStack Start; server stacks use optional external Postgres/MySQL + Drizzle. Node.js still runs tooling and migrations. See [Alchemy delivery](/docs/stack/delivery#alchemy).
 
 For a standalone Node/Hono API, choose `--deployment gcp-cloud-run` or `--deployment fly-machines`. Cloud Run also supports external PostgreSQL with Drizzle. Both targets accept an immutable registry image. See [container deployment](/docs/stack/delivery#cloud-containers).
+
+With a React SPA, omitting `--ui` selects shadcn. Use `--ui ui-sdk` to select UI SDK. The filtered `--list --json` output reports the UI default for the supplied flags.

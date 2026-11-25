@@ -13,7 +13,6 @@ import {
   defaultAddons,
   generate,
   resolve,
-  withDefaults,
 } from "@vibestart/core";
 import {
   materializeEnv,
@@ -41,7 +40,12 @@ import {
   promptName,
   promptPackageManager,
 } from "#/prompts.ts";
-import { illegalStack, incompleteStack, loadRecipe } from "#/stack.ts";
+import {
+  illegalStack,
+  incompleteStack,
+  loadRecipe,
+  noninteractiveDefaults,
+} from "#/stack.ts";
 import type { Ui } from "#/ui.ts";
 
 type Verification = NonNullable<
@@ -107,15 +111,10 @@ const chooseStack = async (
     return await promptCompose(choices);
   }
 
-  const candidates = resolve(registry, withDefaults(registry, choices)).stacks;
-
-  // Choosing a UI must not decide whether a project has a frontend.
-  const defaulted =
-    choices.ui === undefined &&
-    candidates.every((stack) => stack.ui !== undefined) &&
-    candidates.some((stack) => stack.ui === "shadcn")
-      ? candidates.filter((stack) => stack.ui === "shadcn")
-      : candidates;
+  const { stacks: defaulted } = resolve(
+    registry,
+    noninteractiveDefaults(choices)
+  );
 
   const [chosen, ...rest] = defaulted;
 

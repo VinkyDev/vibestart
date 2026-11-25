@@ -37,13 +37,22 @@ export const solidSpa = defineIntegration({
         "apps/web/src/home.tsx",
         [
           ...(backend
-            ? ['import { ApiStatus } from "#src/api-status.tsx";', ""]
+            ? [
+                'import { Loading } from "solid-js";',
+                "",
+                'import { ApiStatus } from "#src/api-status.tsx";',
+                "",
+              ]
             : []),
           "export const Home = () => (",
           '  <main class="mx-auto grid max-w-3xl gap-4 px-6 py-16">',
           `    <h1 class="text-4xl font-semibold">${ctx.name}</h1>`,
           "    <p>Solid 2 and UI SDK on Vite+.</p>",
-          ...(backend ? ["    <ApiStatus />"] : []),
+          ...(backend
+            ? [
+                "    <Loading fallback={<output>Checking API…</output>}><ApiStatus /></Loading>",
+              ]
+            : []),
           "  </main>",
           ");",
         ].join("\n")
