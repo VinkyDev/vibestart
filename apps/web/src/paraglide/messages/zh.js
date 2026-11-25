@@ -67,12 +67,13 @@
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_VoidInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_Void_DatabaseInputs */
+/** @typedef {{}} Desc_AlchemyInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
@@ -107,7 +108,6 @@
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Ui_SdkInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
-/** @typedef {{}} Desc_VoidInputs */
 /** @typedef {{}} Desc_WorkersInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
@@ -130,6 +130,7 @@
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
+/** @typedef {{}} Fit_AlchemyInputs */
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
@@ -162,7 +163,6 @@
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
 /** @typedef {{}} Fit_Ui_SdkInputs */
-/** @typedef {{}} Fit_VoidInputs */
 /** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
@@ -472,7 +472,7 @@ export const api_clients_same = /** @type {(inputs: Api_Clients_SameInputs) => L
 };
 
 export const cap_cloudflare_deployment = /** @type {(inputs: Cap_Cloudflare_DeploymentInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`通过 Void 部署到 Cloudflare`)
+	return /** @type {LocalizedString} */ (`通过 Alchemy 部署到 Cloudflare`)
 };
 
 export const cap_database_server = /** @type {(inputs: Cap_Database_ServerInputs) => LocalizedString} */ () => {
@@ -680,6 +680,14 @@ export const current = /** @type {(inputs: CurrentInputs) => LocalizedString} */
 	return /** @type {LocalizedString} */ (`当前`)
 };
 
+export const deployment_alchemy = /** @type {(inputs: Deployment_AlchemyInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Cloudflare Worker + 静态资源`)
+};
+
+export const deployment_alchemy_database = /** @type {(inputs: Deployment_Alchemy_DatabaseInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · 外部数据库`)
+};
+
 export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} 镜像`)
 };
@@ -696,12 +704,8 @@ export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs
 	return /** @type {LocalizedString} */ (`${i?.name} 镜像，Compose 运行 PostgreSQL`)
 };
 
-export const deployment_void = /** @type {(inputs: Deployment_VoidInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`${i?.name} · Cloudflare Worker + 静态资源`)
-};
-
-export const deployment_void_database = /** @type {(inputs: Deployment_Void_DatabaseInputs) => LocalizedString} */ (i) => {
-	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · 外部数据库`)
+export const desc_alchemy = /** @type {(inputs: Desc_AlchemyInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`将 SPA、SPA + Hono 或 TanStack Start 部署到 Cloudflare Workers（预览）`)
 };
 
 export const desc_better_auth = /** @type {(inputs: Desc_Better_AuthInputs) => LocalizedString} */ () => {
@@ -840,12 +844,8 @@ export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => Local
 	return /** @type {LocalizedString} */ (`统一工具链：开发、构建、测试、检查与格式化`)
 };
 
-export const desc_void = /** @type {(inputs: Desc_VoidInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`将 SPA、SPA + Hono 或 TanStack Start 部署到 Cloudflare Workers（预览）`)
-};
-
 export const desc_workers = /** @type {(inputs: Desc_WorkersInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`通过 Void 部署到 Cloudflare Workers`)
+	return /** @type {LocalizedString} */ (`通过 Alchemy 部署到 Cloudflare Workers`)
 };
 
 export const desktop_dist = /** @type {(inputs: Desktop_DistInputs) => LocalizedString} */ () => {
@@ -930,6 +930,10 @@ export const extensions_none = /** @type {(inputs: Extensions_NoneInputs) => Loc
 
 export const file_count = /** @type {(inputs: File_CountInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.count} 个文件`)
+};
+
+export const fit_alchemy = /** @type {(inputs: Fit_AlchemyInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`部署到你的 Cloudflare 账号，通过 Hyperdrive 连接外部 Postgres 或 MySQL，使用 Drizzle。`)
 };
 
 export const fit_better_auth = /** @type {(inputs: Fit_Better_AuthInputs) => LocalizedString} */ () => {
@@ -1058,10 +1062,6 @@ export const fit_tanstack_start = /** @type {(inputs: Fit_Tanstack_StartInputs) 
 
 export const fit_ui_sdk = /** @type {(inputs: Fit_Ui_SdkInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合用无样式、支持无障碍交互的组件构建 Vite SPA。`)
-};
-
-export const fit_void = /** @type {(inputs: Fit_VoidInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`部署到你的 Cloudflare 账号，通过 Hyperdrive 连接外部 Postgres 或 MySQL，使用 Drizzle。`)
 };
 
 export const fit_workers = /** @type {(inputs: Fit_WorkersInputs) => LocalizedString} */ () => {
@@ -1677,7 +1677,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Node.js 和 Bun 运行服务进程；Void 使用 Cloudflare Workers，构建工具仍运行于 Node.js。`)
+	return /** @type {LocalizedString} */ (`Node.js 和 Bun 运行服务进程；Alchemy 使用 Cloudflare Workers，构建工具仍运行于 Node.js。`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {

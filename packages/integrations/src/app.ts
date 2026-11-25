@@ -167,7 +167,7 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
   return {
     text: [
-      `Declare every server variable in \`${envPath}\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}${ctx.has("workers") ? " from `void/env`" : ""}.`,
+      `Declare every server variable in \`${envPath}\` and list it, with a safe example value, under Environment in \`README.md\`. Keep real values in the ignored \`.env\` file. Code reads ${reads}${ctx.has("workers") ? " from the Worker environment schema" : ""}.`,
       loading,
       ...(ctx.has("sqlite")
         ? [`\`DATABASE_URL\` resolves from the \`${dir}\` directory.`]
@@ -179,7 +179,7 @@ export const environmentConvention = (ctx: Context, loading: string) => {
 
 export const hasBackend = (ctx: Context) => ctx.stack.backend !== undefined;
 
-// Void runs a Hono Worker before static assets only under `/api`; any other route would put every asset request behind the Worker.
+// Alchemy runs a Hono Worker before static assets only under `/api`; any other route would put every asset request behind the Worker.
 export const rpcPath = (ctx: Context) =>
   ctx.has("hono") && ctx.has("workers") ? "/api/rpc" : "/rpc";
 

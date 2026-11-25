@@ -309,12 +309,12 @@ describe("project maintenance CLI", () => {
     }
   );
 
-  it("adds Void to a SPA without a server, whose runtime Void then chooses", async () => {
+  it("adds Alchemy to a SPA without a server, whose runtime Alchemy then chooses", async () => {
     const { cwd } = await fixture("pnpm", { framework: "spa", backend: null });
 
     const result = await run(
       "add",
-      "void",
+      "alchemy",
       "--cwd",
       cwd,
       "--yes",
@@ -325,16 +325,16 @@ describe("project maintenance CLI", () => {
     expect(
       projectSchema.parse(await loadRecipe(cwd)).blueprint.stack
     ).toMatchObject({
-      deployment: "void",
+      deployment: "alchemy",
       runtime: "workers",
     });
-    expect(readText(cwd, "apps/web/void.config.ts")).toContain(
-      'appType: "spa"'
+    expect(readText(cwd, "alchemy.run.ts")).toContain(
+      "Cloudflare.Website.StaticSite"
     );
-    expect(readText(cwd, "scripts/deploy.ts")).toContain("void");
+    expect(readText(cwd, "scripts/deploy.ts")).toContain("alchemy");
   });
 
-  it("refuses adding Void where it would replace the server's runtime", async () => {
+  it("refuses adding Alchemy where it would replace the server's runtime", async () => {
     const { cwd } = await fixture("pnpm", {
       ...business("node"),
       database: "postgres",
@@ -344,7 +344,7 @@ describe("project maintenance CLI", () => {
 
     const result = await run(
       "add",
-      "void",
+      "alchemy",
       "--cwd",
       cwd,
       "--yes",
@@ -353,7 +353,7 @@ describe("project maintenance CLI", () => {
 
     expect(result).toMatchObject({ exitCode: 1, output: { ok: false } });
     expect(result.output.error).toBe(
-      "Adding void would replace node with workers; this needs an explicit migration."
+      "Adding alchemy would replace node with workers; this needs an explicit migration."
     );
     expect(readText(cwd, "vibestart.jsonc")).toBe(before);
   });

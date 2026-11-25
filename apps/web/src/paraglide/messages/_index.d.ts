@@ -115,7 +115,7 @@ export const api_clients_same: ((inputs?: Api_Clients_SameInputs, options?: { lo
 /**
 * | output |
 * | --- |
-* | "deployment to Cloudflare through Void" |
+* | "deployment to Cloudflare through Alchemy" |
 *
 */
 export const cap_cloudflare_deployment: ((inputs?: Cap_Cloudflare_DeploymentInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Cap_Cloudflare_DeploymentInputs, { locale?: "en" | "zh" }, {}>;
@@ -472,6 +472,20 @@ export const current: ((inputs?: CurrentInputs, options?: { locale?: "en" | "zh"
 /**
 * | output |
 * | --- |
+* | "{name} · Cloudflare Worker + static assets" |
+*
+*/
+export const deployment_alchemy: ((inputs: Deployment_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_AlchemyInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "{name} · Worker + Hyperdrive · external database" |
+*
+*/
+export const deployment_alchemy_database: ((inputs: Deployment_Alchemy_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Alchemy_DatabaseInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "{name} image" |
 *
 */
@@ -500,17 +514,10 @@ export const deployment_postgres: ((inputs: Deployment_PostgresInputs, options?:
 /**
 * | output |
 * | --- |
-* | "{name} · Cloudflare Worker + static assets" |
+* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
 *
 */
-export const deployment_void: ((inputs: Deployment_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_VoidInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "{name} · Worker + Hyperdrive · external database" |
-*
-*/
-export const deployment_void_database: ((inputs: Deployment_Void_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Void_DatabaseInputs, { locale?: "en" | "zh" }, {}>;
+export const desc_alchemy: ((inputs?: Desc_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_AlchemyInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -752,14 +759,7 @@ export const desc_vite_plus: ((inputs?: Desc_Vite_PlusInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
-*
-*/
-export const desc_void: ((inputs?: Desc_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_VoidInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Cloudflare Workers runtime, deployed with Void" |
+* | "Cloudflare Workers runtime, deployed with Alchemy" |
 *
 */
 export const desc_workers: ((inputs?: Desc_WorkersInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_WorkersInputs, { locale?: "en" | "zh" }, {}>;
@@ -911,6 +911,13 @@ export const extensions_none: ((inputs?: Extensions_NoneInputs, options?: { loca
 *
 */
 export const file_count: ((inputs: File_CountInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<File_CountInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
+*
+*/
+export const fit_alchemy: ((inputs?: Fit_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_AlchemyInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -1135,13 +1142,6 @@ export const fit_tanstack_start: ((inputs?: Fit_Tanstack_StartInputs, options?: 
 *
 */
 export const fit_ui_sdk: ((inputs?: Fit_Ui_SdkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Ui_SdkInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
-*
-*/
-export const fit_void: ((inputs?: Fit_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_VoidInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -2183,7 +2183,7 @@ export const runs_in_electron: ((inputs?: Runs_In_ElectronInputs, options?: { lo
 /**
 * | output |
 * | --- |
-* | "Node.js and Bun run server processes. Void uses Cloudflare Workers; build tools still run on Node.js." |
+* | "Node.js and Bun run server processes. Alchemy uses Cloudflare Workers; build tools still run on Node.js." |
 *
 */
 export const runtime_about: ((inputs?: Runtime_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Runtime_AboutInputs, { locale?: "en" | "zh" }, {}>;
@@ -2907,12 +2907,13 @@ export type Create_Agent_TitleInputs = {};
 export type Create_Agent_TriggerInputs = {};
 export type Create_ItInputs = {};
 export type CurrentInputs = {};
+export type Deployment_AlchemyInputs = { name: NonNullable<unknown> };
+export type Deployment_Alchemy_DatabaseInputs = { name: NonNullable<unknown> };
 export type Deployment_ImageInputs = { name: NonNullable<unknown> };
 export type Deployment_MongodbInputs = { name: NonNullable<unknown> };
 export type Deployment_MysqlInputs = { name: NonNullable<unknown> };
 export type Deployment_PostgresInputs = { name: NonNullable<unknown> };
-export type Deployment_VoidInputs = { name: NonNullable<unknown> };
-export type Deployment_Void_DatabaseInputs = { name: NonNullable<unknown> };
+export type Desc_AlchemyInputs = {};
 export type Desc_Better_AuthInputs = {};
 export type Desc_BunInputs = {};
 export type Desc_DockerInputs = {};
@@ -2947,7 +2948,6 @@ export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
 export type Desc_Ui_SdkInputs = {};
 export type Desc_Vite_PlusInputs = {};
-export type Desc_VoidInputs = {};
 export type Desc_WorkersInputs = {};
 export type Desktop_DistInputs = {};
 export type Desktop_Dist_PillInputs = {};
@@ -2970,6 +2970,7 @@ export type Expo_ProcessInputs = {};
 export type Extensions_AboutInputs = {};
 export type Extensions_NoneInputs = {};
 export type File_CountInputs = { count: NonNullable<unknown> };
+export type Fit_AlchemyInputs = {};
 export type Fit_Better_AuthInputs = {};
 export type Fit_BunInputs = {};
 export type Fit_DockerInputs = {};
@@ -3002,7 +3003,6 @@ export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
 export type Fit_Tanstack_StartInputs = {};
 export type Fit_Ui_SdkInputs = {};
-export type Fit_VoidInputs = {};
 export type Fit_WorkersInputs = {};
 export type Gate_BuildInputs = {};
 export type Gate_Build_WebInputs = {};

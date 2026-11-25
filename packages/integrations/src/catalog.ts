@@ -25,6 +25,7 @@ export const catalog = {
   effect: {
     effect: "4.1.5",
     "@effect/atom-react": "4.1.5",
+    "@effect/platform-bun": "4.1.5",
     "@effect/platform-node": "4.1.5",
     "@effect/sql-pg": "4.1.5",
     "@effect/sql-sqlite-node": "4.1.5",
@@ -109,7 +110,10 @@ export const catalog = {
     "electron-builder": "^26.18.0",
   },
   server: {
-    void: "1.11.0",
+    alchemy: "2.0.0-beta.87",
+    "@alchemy.run/cloudflare": "2.0.0-beta.87",
+    "@cloudflare/vite-plugin": "1.70.1",
+    "@cloudflare/workers-types": "5.20261125.1",
     "@hono/bun": "^1.0.1",
     "@hono/node-server": "^2.1.11",
     "@t3-oss/env-core": "^0.13.11",

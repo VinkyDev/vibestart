@@ -1,5 +1,6 @@
 import { defineRegistry } from "@vibestart/core";
 
+import { alchemyDeployment } from "#/alchemy.ts";
 import { betterAuth } from "#/better-auth.ts";
 import { bun } from "#/bun.ts";
 import { catalog } from "#/catalog.ts";
@@ -34,7 +35,6 @@ import { e2eTests, playwrightTests } from "#/testing/index.ts";
 import { uiSdk } from "#/ui-sdk.ts";
 import { ultracite } from "#/ultracite.ts";
 import { vitePlus } from "#/vite-plus/index.ts";
-import { voidDeployment } from "#/void.ts";
 import { workers } from "#/workers.ts";
 
 export const registry = defineRegistry({
@@ -47,7 +47,7 @@ export const registry = defineRegistry({
     "http-server": "an HTTP server",
     "node-runtime": "a Node.js-compatible runtime",
     "workers-runtime": "the Cloudflare Workers runtime",
-    "cloudflare-deployment": "deployment to Cloudflare through Void",
+    "cloudflare-deployment": "deployment to Cloudflare through Alchemy",
     react: "React",
     solid: "Solid 2",
     router: "a router",
@@ -95,7 +95,7 @@ export const registry = defineRegistry({
     bun,
     workers,
     docker,
-    voidDeployment,
+    alchemyDeployment,
     playwrightTests,
     e2eTests,
   ],

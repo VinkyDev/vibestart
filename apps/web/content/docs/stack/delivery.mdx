@@ -1,9 +1,9 @@
 ---
 title: Delivery
-description: Deploy with Docker or Void, or package the web interface as an Electron desktop app.
+description: Deploy with Docker or Alchemy, or package the web interface as an Electron desktop app.
 ---
 
-Delivery is how the finished application reaches its users: through Docker on a server, Void on Cloudflare, or an Electron desktop app. Each is optional; Docker and Void can also be added to compatible existing projects.
+Delivery is how the finished application reaches its users: through Docker on a server, Alchemy on Cloudflare, or an Electron desktop app. Each is optional; Docker and Alchemy can also be added to compatible existing projects.
 
 ## Docker [#docker]
 
@@ -28,23 +28,17 @@ Configure secrets and database addresses in the deployment environment, then sta
   ]}
 />
 
-## Void (preview) [#void]
+## Alchemy (preview) [#alchemy]
 
-<Tech href="https://void.cloud" icon="void" />
+<Tech href="https://alchemy.run" icon="alchemy" />
 
-Void 1.4.0 builds and deploys to your own Cloudflare Workers account. Choose `--deployment void --runtime workers` for a static React SPA, a React SPA hosted by Hono, or TanStack Start. Next.js, a standalone Hono server, and TanStack Start paired with Hono are excluded. A static SPA deploys as assets alone. With Hono, Cloudflare serves the SPA's assets and runs the Worker only for `/api/*`, so oRPC is served at `/api/rpc`.
+Select `--deployment alchemy --runtime workers` to deploy a React or Solid SPA, a SPA with Hono, or TanStack Start SSR to your Cloudflare account. A static SPA uses Cloudflare assets with history fallback. With Hono, the Worker handles `/api` and `/api/*`, including `/api/rpc`, while Cloudflare serves the frontend. Start builds both the SSR Worker and browser assets with the Cloudflare Vite plugin.
 
-Database-backed server stacks use Drizzle with an external PostgreSQL or MySQL database, optionally with Better Auth. A SPA + Hono stack can omit the database. Hyperdrive pools production connections; every request creates its own client and releases it after the response stream completes or fails. Void's database migrations and auth are not used. SQLite, Prisma, MongoDB, D1, and Void Platform are excluded.
+From the generated workspace, run `vp exec alchemy profile edit --add Cloudflare`. In CI, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. The first deployment bootstraps an account-level state Worker, Durable Object and Secrets Store credentials. Follow the [state store setup](https://alchemy.run/state-store/) for the permissions these resources need.
 
-Before the first database-backed deployment, create a Hyperdrive configuration in the Cloudflare dashboard for the production database and turn **Query caching off**. Set its ID as `HYPERDRIVE_ID` in every deployment shell; `void.config.ts` binds the existing resource. Browser login can deploy this binding without a Hyperdrive-edit API token, but cannot create it. Automatic provisioning enables query caching, which does not invalidate reads after writes and can return stale todos or revoked sessions. Cache-disabled Hyperdrive still pools connections; keep caching disabled and use the same database as the migration URL.
+For PostgreSQL or MySQL, provision Hyperdrive with **query caching disabled**. Export `HYPERDRIVE_ID` and `DATABASE_URL` for the same production database. If Better Auth is selected, export `BETTER_AUTH_SECRET`. Alchemy supplies the Worker URL on first deploy. Set `BETTER_AUTH_URL` for a custom HTTPS origin. The deployment script checks the prerequisites and runs Drizzle migrations. The Worker uses the Hyperdrive binding and obtains a client per request. It releases that client after the response stream ends.
 
-After cloning, recreate local `.env` files from the generated README. A stack with a server runs `void prepare` in the deployed app to generate ignored Worker types; installation also runs it through `prepare`. Worker and Node tooling have separate TypeScript configs.
-
-Follow the generated README to log in with `void connect --platform cloudflare` and set production server values with `void secret put`. Local `.env` values are never uploaded. For database-backed stacks, `HYPERDRIVE_ID='<cache-disabled-config-id>' DATABASE_URL='production-url' vp run deploy` checks both shell values before applying Drizzle migrations, builds the SPA when needed, then calls `void deploy`. The database URL must be explicitly present in the deployment shell, so a local `.env` cannot silently select the migration target. Keep both deployment values out of Worker secrets. Commit `void.lock.json`, which records your deployment state. Never regenerate it through vibestart maintenance. Generated projects contain no GitHub Actions.
-
-In PowerShell, set `$env:HYPERDRIVE_ID = '<cache-disabled-config-id>'` and `$env:DATABASE_URL = 'production-url'`, then run `vp run deploy`. Stacks without a database need only `vp run deploy`, with no database URL or Hyperdrive.
-
-`vibestart add void --dry-run` previews adding this deployment to a SPA without a server, which then runs on Workers. A project with a server keeps its Node.js or Bun runtime: `add` refuses to replace it, because moving server code to Workers is a migration. Docker cannot be replaced implicitly either.
+Run `vp run deploy` to publish the `prod` stage. Repeat the command to update the same stack. Use `vp run dev` and `vp run ready` for local work. `vibestart add alchemy --dry-run` previews adding Alchemy to a SPA without a server.
 
 ## Electron [#electron]
 

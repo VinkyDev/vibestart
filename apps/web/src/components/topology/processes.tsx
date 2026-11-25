@@ -18,10 +18,10 @@ import { m } from "#/paraglide/messages.js";
 const deploymentLabel = (stack: Stack, name: string) => {
   const { database } = stack;
 
-  if (stack.deployment === "void") {
+  if (stack.deployment === "alchemy") {
     return database === undefined
-      ? m.deployment_void({ name })
-      : m.deployment_void_database({ name });
+      ? m.deployment_alchemy({ name })
+      : m.deployment_alchemy_database({ name });
   }
 
   if (database === "postgres") {

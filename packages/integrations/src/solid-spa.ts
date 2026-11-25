@@ -22,7 +22,6 @@ export const solidSpa = defineIntegration({
   homepage: "https://docs.solidjs.com/",
   provides: ["frontend-framework", "single-page-app"],
   requires: ["solid", "router"],
-  choices: { deployment: ["docker", null] },
   contribute: (ctx) => {
     const backend = hasBackend(ctx);
 
