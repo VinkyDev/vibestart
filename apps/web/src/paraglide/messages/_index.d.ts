@@ -465,6 +465,41 @@ export const current: ((inputs?: CurrentInputs, options?: { locale?: "en" | "zh"
 /**
 * | output |
 * | --- |
+* | "Edit alchemy.run.ts to choose your cloud providers and define resources in TypeScript. The starter declares no resources until you add them." |
+*
+*/
+export const deployment_alchemy_guide: ((inputs?: Deployment_Alchemy_GuideInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Alchemy_GuideInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Manage cloud resources" |
+*
+*/
+export const deployment_alchemy_purpose: ((inputs?: Deployment_Alchemy_PurposeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Alchemy_PurposeInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Build an image from the Dockerfile and run the app with Docker Compose on your machine or a server." |
+*
+*/
+export const deployment_docker_guide: ((inputs?: Deployment_Docker_GuideInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Docker_GuideInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Build an image" |
+*
+*/
+export const deployment_docker_purpose: ((inputs?: Deployment_Docker_PurposeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Docker_PurposeInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "When should I use each?" |
+*
+*/
+export const deployment_help: ((inputs?: Deployment_HelpInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_HelpInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "{name} image" |
 *
 */
@@ -490,6 +525,13 @@ export const deployment_mysql: ((inputs: Deployment_MysqlInputs, options?: { loc
 *
 */
 export const deployment_postgres: ((inputs: Deployment_PostgresInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_PostgresInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Choose both when you want to run your Docker image on infrastructure you define in Alchemy." |
+*
+*/
+export const deployment_together: ((inputs?: Deployment_TogetherInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_TogetherInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -2878,10 +2920,16 @@ export type Create_Agent_TitleInputs = {};
 export type Create_Agent_TriggerInputs = {};
 export type Create_ItInputs = {};
 export type CurrentInputs = {};
+export type Deployment_Alchemy_GuideInputs = {};
+export type Deployment_Alchemy_PurposeInputs = {};
+export type Deployment_Docker_GuideInputs = {};
+export type Deployment_Docker_PurposeInputs = {};
+export type Deployment_HelpInputs = {};
 export type Deployment_ImageInputs = { name: NonNullable<unknown> };
 export type Deployment_MongodbInputs = { name: NonNullable<unknown> };
 export type Deployment_MysqlInputs = { name: NonNullable<unknown> };
 export type Deployment_PostgresInputs = { name: NonNullable<unknown> };
+export type Deployment_TogetherInputs = {};
 export type Desc_AlchemyInputs = {};
 export type Desc_Better_AuthInputs = {};
 export type Desc_BunInputs = {};

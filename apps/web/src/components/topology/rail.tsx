@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import { Fragment } from "react";
 
 import type { IntegrationInfo, Stack } from "@vibestart/core";
@@ -183,10 +183,12 @@ const EndToEndTests = ({
 export const Rail = ({
   choosing,
   rect,
+  ref,
   stack,
 }: {
   readonly choosing: Choosing;
   readonly rect: Rect;
+  readonly ref: Ref<HTMLDivElement>;
   readonly stack: Stack;
 }) => {
   const { focus } = useFocus();
@@ -203,17 +205,17 @@ export const Rail = ({
   return (
     <motion.div
       animate={{ opacity: 1, top: rect.y, y: 0 }}
-      className="absolute left-(--x) flex h-(--h) w-(--w) gap-3"
+      className="absolute left-(--x) flex w-(--w) gap-3"
+      ref={ref}
       initial={{ opacity: 0, top: rect.y, y: 10 }}
       style={{
-        "--h": `${rect.height}px`,
         "--w": `${rect.width}px`,
         "--x": `${rect.x}px`,
       }}
       transition={{ default: { delay: 0.5, duration: 0.8, ease }, top: spring }}
     >
       <Frame
-        className="tint-foundation flex-1"
+        className="tint-foundation h-23 flex-1 self-start"
         focused={focusesGroup(focus, "foundation")}
         label={m.engineering_capabilities()}
       >
@@ -245,7 +247,7 @@ export const Rail = ({
         label={roles.deployment.role}
       >
         <div
-          className="flex min-w-0 flex-1 [&_label]:min-h-0"
+          className="flex min-w-0 flex-1"
           onPointerEnter={enterDeployment}
           onPointerLeave={leaveDeployment}
         >

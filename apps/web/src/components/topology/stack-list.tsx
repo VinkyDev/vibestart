@@ -168,7 +168,7 @@ export const StackList = ({
             </li>
           ))}
       </ul>
-      <fieldset className="border-border border-t px-4 py-3">
+      <fieldset className="border-border min-w-0 border-t px-4 py-3">
         <legend className="text-muted-foreground text-xs">
           {roles.deployment.role}
         </legend>

@@ -66,10 +66,16 @@
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
+/** @typedef {{}} Deployment_Alchemy_GuideInputs */
+/** @typedef {{}} Deployment_Alchemy_PurposeInputs */
+/** @typedef {{}} Deployment_Docker_GuideInputs */
+/** @typedef {{}} Deployment_Docker_PurposeInputs */
+/** @typedef {{}} Deployment_HelpInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
+/** @typedef {{}} Deployment_TogetherInputs */
 /** @typedef {{}} Desc_AlchemyInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
@@ -673,6 +679,26 @@ export const current = /** @type {(inputs: CurrentInputs) => LocalizedString} */
 	return /** @type {LocalizedString} */ (`current`)
 };
 
+export const deployment_alchemy_guide = /** @type {(inputs: Deployment_Alchemy_GuideInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Edit alchemy.run.ts to choose your cloud providers and define resources in TypeScript. The starter declares no resources until you add them.`)
+};
+
+export const deployment_alchemy_purpose = /** @type {(inputs: Deployment_Alchemy_PurposeInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Manage cloud resources`)
+};
+
+export const deployment_docker_guide = /** @type {(inputs: Deployment_Docker_GuideInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Build an image from the Dockerfile and run the app with Docker Compose on your machine or a server.`)
+};
+
+export const deployment_docker_purpose = /** @type {(inputs: Deployment_Docker_PurposeInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Build an image`)
+};
+
+export const deployment_help = /** @type {(inputs: Deployment_HelpInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`When should I use each?`)
+};
+
 export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} image`)
 };
@@ -687,6 +713,10 @@ export const deployment_mysql = /** @type {(inputs: Deployment_MysqlInputs) => L
 
 export const deployment_postgres = /** @type {(inputs: Deployment_PostgresInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} image, with PostgreSQL via Compose`)
+};
+
+export const deployment_together = /** @type {(inputs: Deployment_TogetherInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Choose both when you want to run your Docker image on infrastructure you define in Alchemy.`)
 };
 
 export const desc_alchemy = /** @type {(inputs: Desc_AlchemyInputs) => LocalizedString} */ () => {

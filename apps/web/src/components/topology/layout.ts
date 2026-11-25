@@ -53,7 +53,6 @@ const serverFloor =
   blocks.auth.y + blocks.auth.height + boxPadding + framePadding;
 
 const railGap = 48;
-const railHeight = 92;
 
 export interface Layout {
   readonly blocks: Record<BlockKind, Placed>;
@@ -74,7 +73,7 @@ const webBoxBlocks = (stack: Stack): Rect[] => [
  * its process box, and the others fold into a row each beneath, so the stage grows only with what it shows.
  * The desktop shell comes first, right under the web app it loads.
  */
-export const layoutOf = (stack: Stack): Layout => {
+export const layoutOf = (stack: Stack, railHeight = 128): Layout => {
   const web = stack.framework !== undefined;
   const inWebBox = webBoxBlocks(stack);
 

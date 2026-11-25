@@ -1,6 +1,13 @@
 import type { LucideIcon } from "lucide-react";
-import { Check, Cloud, Container } from "lucide-react";
+import { Check, CircleHelp, Cloud, Container } from "lucide-react";
 import { useId } from "react";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@vibestart/ui/components/popover";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { Swatch } from "#/components/topology/tile.tsx";
@@ -11,7 +18,7 @@ const DeploymentOption = ({
   checked,
   description,
   disabled = false,
-  file,
+  purpose,
   icon,
   name,
   onChange,
@@ -19,7 +26,7 @@ const DeploymentOption = ({
   readonly checked: boolean;
   readonly description: string;
   readonly disabled?: boolean;
-  readonly file: string;
+  readonly purpose: string;
   readonly icon: LucideIcon;
   readonly name: string;
   readonly onChange: () => void;
@@ -51,8 +58,8 @@ const DeploymentOption = ({
             {checked && <Check className="size-3 text-white" strokeWidth={3} />}
           </span>
         </span>
-        <span className="text-muted-foreground text-fine truncate font-mono">
-          {file}
+        <span className="text-muted-foreground text-xs leading-tight">
+          {purpose}
         </span>
       </span>
       <span className="sr-only" id={descriptionId}>
@@ -76,34 +83,70 @@ export const DeploymentOptions = ({
   const alchemy = addons.includes("alchemy");
 
   return (
-    <div className="tint-deployment grid w-full min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,9.5rem),1fr))] gap-1.5">
-      <DeploymentOption
-        name="Docker"
-        file="Dockerfile"
-        description={m.desc_docker()}
-        icon={Container}
-        checked={docker}
-        disabled={change === undefined || change.changes.length > 0}
-        onChange={() => {
-          if (change !== undefined) {
-            onChoose(change.entry);
-          }
-        }}
-      />
-      <DeploymentOption
-        name="Alchemy"
-        file="alchemy.run.ts"
-        description={m.desc_alchemy()}
-        icon={Cloud}
-        checked={alchemy}
-        onChange={() => {
-          onAddons(
-            alchemy
-              ? addons.filter((id) => id !== "alchemy")
-              : [...addons, "alchemy"]
-          );
-        }}
-      />
+    <div className="tint-deployment flex w-full min-w-0 flex-col gap-1">
+      <div className="grid w-full min-w-0 flex-1 grid-cols-[repeat(auto-fit,minmax(min(100%,9.5rem),1fr))] gap-1.5">
+        <DeploymentOption
+          name="Docker"
+          purpose={m.deployment_docker_purpose()}
+          description={m.desc_docker()}
+          icon={Container}
+          checked={docker}
+          disabled={change === undefined || change.changes.length > 0}
+          onChange={() => {
+            if (change !== undefined) {
+              onChoose(change.entry);
+            }
+          }}
+        />
+        <DeploymentOption
+          name="Alchemy"
+          purpose={m.deployment_alchemy_purpose()}
+          description={m.desc_alchemy()}
+          icon={Cloud}
+          checked={alchemy}
+          onChange={() => {
+            onAddons(
+              alchemy
+                ? addons.filter((id) => id !== "alchemy")
+                : [...addons, "alchemy"]
+            );
+          }}
+        />
+      </div>
+      <Popover>
+        <PopoverTrigger className="group/help w-fit">
+          <span className="text-muted-foreground group-hover/help:text-foreground group-focus-visible/help:focus-ring flex min-h-7 items-center gap-1.5 rounded-md px-2 text-xs forced-colors:group-focus-visible/help:outline-2">
+            <CircleHelp aria-hidden className="size-3.5" />
+            {m.deployment_help()}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent
+          side="top"
+          align="end"
+          className="w-80 max-w-(--available-width)"
+        >
+          <div className="flex flex-col gap-3 p-2.5">
+            <PopoverTitle>{m.deployment_help()}</PopoverTitle>
+            <dl className="grid gap-3">
+              <div>
+                <dt className="font-medium">Docker</dt>
+                <dd className="text-muted-foreground leading-relaxed">
+                  {m.deployment_docker_guide()}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-medium">Alchemy</dt>
+                <dd className="text-muted-foreground leading-relaxed">
+                  {m.deployment_alchemy_guide()}
+                </dd>
+              </div>
+            </dl>
+            <p className="border-border border-t pt-3 leading-relaxed">
+              {m.deployment_together()}
+            </p>
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

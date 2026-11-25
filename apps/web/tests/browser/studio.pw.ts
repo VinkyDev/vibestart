@@ -235,6 +235,13 @@ test("switches only the React UI kit and toggles Alchemy alongside Docker", asyn
   const docker = page.getByRole("checkbox", { name: "Docker", exact: true });
   const alchemy = page.getByRole("checkbox", { name: "Alchemy", exact: true });
   await expect(docker).toBeChecked();
+  await page.getByRole("button", { name: "When should I use each?" }).click();
+  const guide = page.getByRole("dialog", { name: "When should I use each?" });
+  await expect(guide).toContainText("Docker Compose");
+  await expect(guide).toContainText("alchemy.run.ts");
+  await expect(guide).toContainText("Choose both");
+  await page.keyboard.press("Escape");
+  await expect(guide).toBeHidden();
   await alchemy.focus();
   await page.keyboard.press("Space");
   await expect(alchemy).toBeChecked();
@@ -320,4 +327,11 @@ test("keeps deployment choices visible with larger text and high contrast", asyn
       );
     })
     .toBe(true);
+  await page.addStyleTag({ content: "html { font-size: 32px }" });
+  await deployment
+    .getByRole("button", { name: "When should I use each?" })
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "When should I use each?" })
+  ).toBeVisible();
 });

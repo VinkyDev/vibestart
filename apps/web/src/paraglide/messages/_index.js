@@ -68,10 +68,16 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
+/** @typedef {{}} Deployment_Alchemy_GuideInputs */
+/** @typedef {{}} Deployment_Alchemy_PurposeInputs */
+/** @typedef {{}} Deployment_Docker_GuideInputs */
+/** @typedef {{}} Deployment_Docker_PurposeInputs */
+/** @typedef {{}} Deployment_HelpInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
+/** @typedef {{}} Deployment_TogetherInputs */
 /** @typedef {{}} Desc_AlchemyInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
@@ -1332,6 +1338,76 @@ export const current = /** @type {((inputs?: CurrentInputs, options?: { locale?:
 /**
 * | output |
 * | --- |
+* | "Edit alchemy.run.ts to choose your cloud providers and define resources in TypeScript. The starter declares no resources until you add them." |
+*
+* @param {Deployment_Alchemy_GuideInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_alchemy_guide = /** @type {((inputs?: Deployment_Alchemy_GuideInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Alchemy_GuideInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_alchemy_guide(inputs)
+	return __en.deployment_alchemy_guide(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Manage cloud resources" |
+*
+* @param {Deployment_Alchemy_PurposeInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_alchemy_purpose = /** @type {((inputs?: Deployment_Alchemy_PurposeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Alchemy_PurposeInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_alchemy_purpose(inputs)
+	return __en.deployment_alchemy_purpose(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Build an image from the Dockerfile and run the app with Docker Compose on your machine or a server." |
+*
+* @param {Deployment_Docker_GuideInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_docker_guide = /** @type {((inputs?: Deployment_Docker_GuideInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Docker_GuideInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_docker_guide(inputs)
+	return __en.deployment_docker_guide(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Build an image" |
+*
+* @param {Deployment_Docker_PurposeInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_docker_purpose = /** @type {((inputs?: Deployment_Docker_PurposeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Docker_PurposeInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_docker_purpose(inputs)
+	return __en.deployment_docker_purpose(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "When should I use each?" |
+*
+* @param {Deployment_HelpInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_help = /** @type {((inputs?: Deployment_HelpInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_HelpInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_help(inputs)
+	return __en.deployment_help(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "{name} image" |
 *
 * @param {Deployment_ImageInputs} inputs
@@ -1384,6 +1460,20 @@ export const deployment_postgres = /** @type {((inputs: Deployment_PostgresInput
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.deployment_postgres(inputs)
 	return __en.deployment_postgres(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Choose both when you want to run your Docker image on infrastructure you define in Alchemy." |
+*
+* @param {Deployment_TogetherInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_together = /** @type {((inputs?: Deployment_TogetherInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_TogetherInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_together(inputs)
+	return __en.deployment_together(inputs)
 });
 /**
 * | output |
