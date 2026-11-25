@@ -19,6 +19,7 @@ import { cn } from "@vibestart/ui/lib/utils";
 import type { Decision } from "#/lib/stack.ts";
 
 const icons: Record<Decision, LucideIcon> = {
+  ui: Layers,
   testing: MousePointerClick,
   runtime: Cpu,
   orm: Layers,

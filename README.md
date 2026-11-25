@@ -78,7 +78,7 @@ VibeStart does not host your application, does not migrate production data, and 
 | ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL; Mongoose on MongoDB                                |
 | Auth                     | Better Auth                                                                                    |
 | Deployment               | Docker, [Void on Cloudflare Workers](https://vibestart.net/docs/stack/delivery#void) (preview) |
-| UI                       | shadcn (Base UI) and Tailwind 4                                                                |
+| UI                       | shadcn (Base UI) or UI SDK (Vite SPA), with Tailwind 4                                         |
 | Unit & integration tests | Vitest                                                                                         |
 | End-to-end tests         | Playwright or TesterArmy e2e                                                                   |
 | Toolchain                | Vite+, Oxlint, Knip, `AGENTS.md`                                                               |

@@ -94,6 +94,7 @@ const descriptions = {
   prisma: () => m.desc_prisma(),
   react: () => m.desc_react(),
   self: () => m.desc_self(),
+  "ui-sdk": () => m.desc_ui_sdk(),
   shadcn: () => m.desc_shadcn(),
   spa: () => m.desc_spa(),
   sqlite: () => m.desc_sqlite(),

@@ -1,4 +1,4 @@
-# apps/web/e2e.config.ts · 204 stacks
+# apps/web/e2e.config.ts · 209 stacks
 #   next-docker-e2e
 #   next-expo-docker-e2e
 #   next-hono-bun-docker-e2e
@@ -149,7 +149,12 @@
 #   spa-hono-sqlite-electron-expo-docker-e2e
 #   spa-hono-sqlite-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker-e2e
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void-e2e
+#   spa-ui-sdk-docker-e2e
+#   spa-ui-sdk-void-e2e
 #   spa-void-e2e
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker-e2e
@@ -1806,7 +1811,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 8 stacks
+# apps/web/tests/e2e/app.e2e.ts · 10 stacks
 #   spa-docker-e2e
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker-e2e
@@ -1814,6 +1819,8 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 #   spa-electron-void-e2e
 #   spa-expo-docker-e2e
 #   spa-expo-void-e2e
+#   spa-ui-sdk-docker-e2e
+#   spa-ui-sdk-void-e2e
 #   spa-void-e2e
 import { test } from "@e2e-dev/web";
 import type { Browser } from "@e2e-dev/web";
@@ -1846,7 +1853,7 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
   await expect(browser).toHaveClass(html, /\bdark\b/u);
 });
 
-# apps/web/tests/e2e/app.e2e.ts · 96 stacks
+# apps/web/tests/e2e/app.e2e.ts · 99 stacks
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-electron-docker-e2e
 #   spa-effect-http-effect-rpc-electron-expo-docker-e2e
@@ -1942,6 +1949,9 @@ test("the dark theme survives a reload", async ({ browser, screen }) => {
 #   spa-hono-sqlite-electron-expo-docker-e2e
 #   spa-hono-sqlite-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker-e2e
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void-e2e
 import { test } from "@e2e-dev/web";
 import type { Browser } from "@e2e-dev/web";
@@ -4248,7 +4258,7 @@ export const signUp = async (email = uniqueEmail()) => {
   return { client, email };
 };
 
-# apps/web/tests/support/http.ts · 802 stacks
+# apps/web/tests/support/http.ts · 805 stacks
 #   next-hono-bun-docker-e2e
 #   next-hono-docker-e2e
 #   next-hono-expo-bun-docker-e2e
@@ -4826,6 +4836,9 @@ export const signUp = async (email = uniqueEmail()) => {
 #   spa-hono-sqlite-electron-expo-docker-e2e
 #   spa-hono-sqlite-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker-e2e
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void-e2e
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-docker-e2e
@@ -7819,11 +7832,12 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 6 stacks
+# apps/web/tests/support/server.ts · 7 stacks
 #   spa-docker-e2e
 #   spa-electron-docker-e2e
 #   spa-electron-expo-docker-e2e
 #   spa-expo-docker-e2e
+#   spa-ui-sdk-docker-e2e
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker-e2e
 import { spawn, spawnSync } from "node:child_process";
@@ -8221,10 +8235,11 @@ export const testServer = Effect.gen(function* () {
   );
 });
 
-# apps/web/tests/support/server.ts · 4 stacks
+# apps/web/tests/support/server.ts · 5 stacks
 #   spa-electron-expo-void-e2e
 #   spa-electron-void-e2e
 #   spa-expo-void-e2e
+#   spa-ui-sdk-void-e2e
 #   spa-void-e2e
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
@@ -8361,7 +8376,7 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 12 stacks
+# apps/web/tests/support/server.ts · 13 stacks
 #   spa-hono-bun-docker-e2e
 #   spa-hono-electron-bun-docker-e2e
 #   spa-hono-electron-expo-bun-docker-e2e
@@ -8374,6 +8389,7 @@ export const startTestServer = async (baseURL: string) => {
 #   spa-hono-orpc-electron-bun-docker-e2e
 #   spa-hono-orpc-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-expo-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker-e2e
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -8536,7 +8552,7 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 12 stacks
+# apps/web/tests/support/server.ts · 13 stacks
 #   spa-hono-docker-e2e
 #   spa-hono-electron-docker-e2e
 #   spa-hono-electron-expo-docker-e2e
@@ -8549,6 +8565,7 @@ export const startTestServer = async (baseURL: string) => {
 #   spa-hono-orpc-electron-docker-e2e
 #   spa-hono-orpc-electron-expo-docker-e2e
 #   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-ui-sdk-docker-e2e
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
 import { once } from "node:events";
@@ -8704,7 +8721,7 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/server.ts · 12 stacks
+# apps/web/tests/support/server.ts · 13 stacks
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void-e2e
 #   spa-hono-expo-void-e2e
@@ -8716,6 +8733,7 @@ export const startTestServer = async (baseURL: string) => {
 #   spa-hono-orpc-electron-void-e2e
 #   spa-hono-orpc-expo-void-e2e
 #   spa-hono-orpc-void-e2e
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void-e2e
 import { spawn, spawnSync } from "node:child_process";
 import type { ChildProcess } from "node:child_process";
@@ -14921,7 +14939,7 @@ export const startTestServer = async (baseURL: string) => {
   return stopAll;
 };
 
-# apps/web/tests/support/start.ts · 816 stacks
+# apps/web/tests/support/start.ts · 821 stacks
 #   next-docker-e2e
 #   next-expo-docker-e2e
 #   next-hono-bun-docker-e2e
@@ -15508,7 +15526,12 @@ export const startTestServer = async (baseURL: string) => {
 #   spa-hono-sqlite-electron-expo-docker-e2e
 #   spa-hono-sqlite-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker-e2e
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void-e2e
+#   spa-ui-sdk-docker-e2e
+#   spa-ui-sdk-void-e2e
 #   spa-void-e2e
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker-e2e

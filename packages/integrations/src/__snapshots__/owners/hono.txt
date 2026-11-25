@@ -1,4 +1,4 @@
-# apps/server/src/app.ts · 36 stacks
+# apps/server/src/app.ts · 40 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
@@ -27,6 +27,10 @@
 #   spa-hono-expo-bun-docker-e2e
 #   spa-hono-expo-docker
 #   spa-hono-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-docker
@@ -1658,13 +1662,15 @@ export const app = new Hono()
   .use(secureHeaders())
   .get("/api/health", health);
 
-# apps/server/src/app.ts · 8 stacks
+# apps/server/src/app.ts · 10 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
 #   spa-hono-electron-void-e2e
 #   spa-hono-expo-void
 #   spa-hono-expo-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { Hono } from "hono";
@@ -3588,7 +3594,7 @@ export const withServices = async (
   }
 };
 
-# apps/server/src/env.ts · 60 stacks
+# apps/server/src/env.ts · 64 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
@@ -3649,6 +3655,10 @@ export const withServices = async (
 #   spa-hono-orpc-expo-bun-docker-e2e
 #   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
@@ -6212,7 +6222,7 @@ await once(server, "close");
 
 db.$client.close();
 
-# apps/server/src/index.ts · 24 stacks
+# apps/server/src/index.ts · 26 stacks
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-electron-bun-docker
@@ -6237,6 +6247,8 @@ db.$client.close();
 #   spa-hono-orpc-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-expo-bun-docker
 #   spa-hono-orpc-expo-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
 import { once } from "node:events";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -6264,7 +6276,7 @@ await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
 
 await server.stop();
 
-# apps/server/src/index.ts · 24 stacks
+# apps/server/src/index.ts · 26 stacks
 #   spa-hono-docker
 #   spa-hono-docker-e2e
 #   spa-hono-electron-docker
@@ -6289,6 +6301,8 @@ await server.stop();
 #   spa-hono-orpc-electron-expo-docker-e2e
 #   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
 import { once } from "node:events";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -8182,7 +8196,7 @@ export const createRpc = ({ db }: Services) => {
   };
 };
 
-# apps/server/tsconfig.json · 702 stacks
+# apps/server/tsconfig.json · 704 stacks
 #   hono-bun-docker
 #   hono-expo-bun-docker
 #   hono-mongodb-better-auth-bun-docker
@@ -8729,6 +8743,8 @@ export const createRpc = ({ db }: Services) => {
 #   spa-hono-sqlite-electron-expo-bun-docker-e2e
 #   spa-hono-sqlite-expo-bun-docker
 #   spa-hono-sqlite-expo-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-expo-bun-docker
@@ -8891,7 +8907,7 @@ export const createRpc = ({ db }: Services) => {
   "include": ["src", "vite.config.ts"]
 }
 
-# apps/server/tsconfig.json · 702 stacks
+# apps/server/tsconfig.json · 704 stacks
 #   hono-docker
 #   hono-expo-docker
 #   hono-mongodb-better-auth-docker
@@ -9438,6 +9454,8 @@ export const createRpc = ({ db }: Services) => {
 #   spa-hono-sqlite-electron-expo-docker-e2e
 #   spa-hono-sqlite-expo-docker
 #   spa-hono-sqlite-expo-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
 #   tanstack-start-hono-docker
 #   tanstack-start-hono-docker-e2e
 #   tanstack-start-hono-expo-docker
@@ -9599,7 +9617,7 @@ export const createRpc = ({ db }: Services) => {
   "include": ["src", "vite.config.ts"]
 }
 
-# apps/server/tsconfig.json · 120 stacks
+# apps/server/tsconfig.json · 122 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -9718,6 +9736,8 @@ export const createRpc = ({ db }: Services) => {
 #   spa-hono-postgres-expo-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 {
@@ -9728,7 +9748,7 @@ export const createRpc = ({ db }: Services) => {
   ]
 }
 
-# apps/server/tsconfig.node.json · 24 stacks
+# apps/server/tsconfig.node.json · 26 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -9751,6 +9771,8 @@ export const createRpc = ({ db }: Services) => {
 #   spa-hono-orpc-expo-void-e2e
 #   spa-hono-orpc-void
 #   spa-hono-orpc-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 {
@@ -9869,7 +9891,7 @@ export const createRpc = ({ db }: Services) => {
   ]
 }
 
-# apps/server/tsconfig.worker.json · 120 stacks
+# apps/server/tsconfig.worker.json · 122 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -9988,6 +10010,8 @@ export const createRpc = ({ db }: Services) => {
 #   spa-hono-postgres-expo-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 {
@@ -9997,7 +10021,7 @@ export const createRpc = ({ db }: Services) => {
   "exclude": ["src/migrate.ts", "src/node-env.ts", "src/**/*.test.ts"]
 }
 
-# apps/server/vite.config.ts · 54 stacks
+# apps/server/vite.config.ts · 56 stacks
 #   hono-bun-docker
 #   hono-expo-bun-docker
 #   hono-openapi-bun-docker
@@ -10040,6 +10064,8 @@ export const createRpc = ({ db }: Services) => {
 #   spa-hono-orpc-electron-expo-bun-docker-e2e
 #   spa-hono-orpc-expo-bun-docker
 #   spa-hono-orpc-expo-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
 #   tanstack-start-hono-bun-docker
 #   tanstack-start-hono-bun-docker-e2e
 #   tanstack-start-hono-expo-bun-docker
@@ -10061,7 +10087,7 @@ export default defineConfig({
   },
 });
 
-# apps/server/vite.config.ts · 54 stacks
+# apps/server/vite.config.ts · 56 stacks
 #   hono-docker
 #   hono-expo-docker
 #   hono-openapi-docker
@@ -10104,6 +10130,8 @@ export default defineConfig({
 #   spa-hono-orpc-electron-expo-docker-e2e
 #   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
 #   tanstack-start-hono-docker
 #   tanstack-start-hono-docker-e2e
 #   tanstack-start-hono-expo-docker
@@ -11463,7 +11491,7 @@ export default defineConfig({
   },
 });
 
-# apps/server/vite.config.ts · 120 stacks
+# apps/server/vite.config.ts · 122 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -11582,6 +11610,8 @@ export default defineConfig({
 #   spa-hono-postgres-expo-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { defineConfig } from "vite-plus";

@@ -29,6 +29,7 @@ import { sqlite } from "#/sqlite.ts";
 import { tanstackRouter } from "#/tanstack-router.ts";
 import { tanstackStart } from "#/tanstack-start.ts";
 import { e2eTests, playwrightTests } from "#/testing/index.ts";
+import { uiSdk } from "#/ui-sdk.ts";
 import { ultracite } from "#/ultracite.ts";
 import { vitePlus } from "#/vite-plus/index.ts";
 import { voidDeployment } from "#/void.ts";
@@ -82,6 +83,7 @@ export const registry = defineRegistry({
     mongoose,
     betterAuth,
     shadcn,
+    uiSdk,
     electron,
     node,
     bun,
@@ -103,7 +105,7 @@ export const registry = defineRegistry({
     { id: "database", name: "Database", optional: true, default: "sqlite" },
     { id: "orm", name: "ORM", optional: true, default: "drizzle" },
     { id: "auth", name: "Auth", optional: true },
-    { id: "ui", name: "UI", optional: true },
+    { id: "ui", name: "UI", optional: true, default: "shadcn" },
     { id: "desktop", name: "Desktop", optional: true, default: null },
     { id: "mobile", name: "Mobile", optional: true, default: null },
     { id: "runtime", name: "Runtime", optional: true, default: "node" },

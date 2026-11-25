@@ -103,6 +103,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
+/** @typedef {{}} Desc_Ui_SdkInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desc_VoidInputs */
 /** @typedef {{}} Desc_WorkersInputs */
@@ -157,6 +158,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_Ui_SdkInputs */
 /** @typedef {{}} Fit_VoidInputs */
 /** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
@@ -335,6 +337,9 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Tool_TestInputs */
 /** @typedef {{}} Tool_Test_IntegrationInputs */
 /** @typedef {{}} Toolchain_ScopeInputs */
+/** @typedef {{}} Ui_AboutInputs */
+/** @typedef {{}} Ui_NoneInputs */
+/** @typedef {{}} Ui_QuestionInputs */
 /** @typedef {{}} Ultracite_ScopeInputs */
 /** @typedef {{ when: NonNullable<unknown> }} VerifiedInputs */
 /** @typedef {{}} Verified_PassedInputs */
@@ -1816,6 +1821,20 @@ export const desc_tanstack_start = /** @type {((inputs?: Desc_Tanstack_StartInpu
 /**
 * | output |
 * | --- |
+* | "Accessible UI SDK components in a shared UI package" |
+*
+* @param {Desc_Ui_SdkInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const desc_ui_sdk = /** @type {((inputs?: Desc_Ui_SdkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_Ui_SdkInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.desc_ui_sdk(inputs)
+	return __en.desc_ui_sdk(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "Unified toolchain for dev, build, test, lint, and format" |
 *
 * @param {Desc_Vite_PlusInputs} inputs
@@ -2569,6 +2588,20 @@ export const fit_tanstack_start = /** @type {((inputs?: Fit_Tanstack_StartInputs
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_tanstack_start(inputs)
 	return __en.fit_tanstack_start(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "For a Vite SPA with accessible, unstyled primitives." |
+*
+* @param {Fit_Ui_SdkInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_ui_sdk = /** @type {((inputs?: Fit_Ui_SdkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_Ui_SdkInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_ui_sdk(inputs)
+	return __en.fit_ui_sdk(inputs)
 });
 /**
 * | output |
@@ -5085,6 +5118,48 @@ export const toolchain_scope = /** @type {((inputs?: Toolchain_ScopeInputs, opti
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.toolchain_scope(inputs)
 	return __en.toolchain_scope(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Controls, keyboard interaction and theme styles for the browser." |
+*
+* @param {Ui_AboutInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const ui_about = /** @type {((inputs?: Ui_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Ui_AboutInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.ui_about(inputs)
+	return __en.ui_about(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "No web UI" |
+*
+* @param {Ui_NoneInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const ui_none = /** @type {((inputs?: Ui_NoneInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Ui_NoneInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.ui_none(inputs)
+	return __en.ui_none(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Which UI library should the web app use?" |
+*
+* @param {Ui_QuestionInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const ui_question = /** @type {((inputs?: Ui_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Ui_QuestionInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.ui_question(inputs)
+	return __en.ui_question(inputs)
 });
 /**
 * | output |

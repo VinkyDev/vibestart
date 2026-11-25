@@ -50,6 +50,7 @@ const pages = new Map([
   ["react", "stack/frontend"],
   ["self", "stack/backend"],
   ["shadcn", "stack/frontend"],
+  ["ui-sdk", "stack/frontend"],
   ["spa", "stack/frontend"],
   ["sqlite", "stack/data"],
   ["tanstack-router", "stack/frontend"],

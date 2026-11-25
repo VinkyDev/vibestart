@@ -101,6 +101,7 @@
 /** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
+/** @typedef {{}} Desc_Ui_SdkInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desc_VoidInputs */
 /** @typedef {{}} Desc_WorkersInputs */
@@ -155,6 +156,7 @@
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_Ui_SdkInputs */
 /** @typedef {{}} Fit_VoidInputs */
 /** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
@@ -333,6 +335,9 @@
 /** @typedef {{}} Tool_TestInputs */
 /** @typedef {{}} Tool_Test_IntegrationInputs */
 /** @typedef {{}} Toolchain_ScopeInputs */
+/** @typedef {{}} Ui_AboutInputs */
+/** @typedef {{}} Ui_NoneInputs */
+/** @typedef {{}} Ui_QuestionInputs */
 /** @typedef {{}} Ultracite_ScopeInputs */
 /** @typedef {{ when: NonNullable<unknown> }} VerifiedInputs */
 /** @typedef {{}} Verified_PassedInputs */
@@ -806,6 +811,10 @@ export const desc_tanstack_start = /** @type {(inputs: Desc_Tanstack_StartInputs
 	return /** @type {LocalizedString} */ (`全栈 React：SSR、服务端路由与服务端函数`)
 };
 
+export const desc_ui_sdk = /** @type {(inputs: Desc_Ui_SdkInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`共享 UI 包中的无障碍 UI SDK 组件`)
+};
+
 export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`统一工具链：开发、构建、测试、检查与格式化`)
 };
@@ -1020,6 +1029,10 @@ export const fit_sqlite = /** @type {(inputs: Fit_SqliteInputs) => LocalizedStri
 
 export const fit_tanstack_start = /** @type {(inputs: Fit_Tanstack_StartInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合需要 SEO 或首屏速度的网站`)
+};
+
+export const fit_ui_sdk = /** @type {(inputs: Fit_Ui_SdkInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`适合用无样式、支持无障碍交互的组件构建 Vite SPA。`)
 };
 
 export const fit_void = /** @type {(inputs: Fit_VoidInputs) => LocalizedString} */ () => {
@@ -1752,6 +1765,18 @@ export const tool_test_integration = /** @type {(inputs: Tool_Test_IntegrationIn
 
 export const toolchain_scope = /** @type {(inputs: Toolchain_ScopeInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`开发、生产构建、格式化、lint 和类型检查使用同一套配置与命令。`)
+};
+
+export const ui_about = /** @type {(inputs: Ui_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`浏览器中的控件、键盘交互和主题样式。`)
+};
+
+export const ui_none = /** @type {(inputs: Ui_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`无网页 UI`)
+};
+
+export const ui_question = /** @type {(inputs: Ui_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`网页使用哪个 UI 库？`)
 };
 
 export const ultracite_scope = /** @type {(inputs: Ultracite_ScopeInputs) => LocalizedString} */ () => {

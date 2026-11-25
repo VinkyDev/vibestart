@@ -57,6 +57,8 @@ export const catalog = {
     tailwindcss: "^4.3.5",
   },
   ui: {
+    "@ui-sdk/core": "0.1.0-beta.17",
+    "@ui-sdk/react": "0.1.0-beta.17",
     "@base-ui/react": "^1.9.0",
     "@fontsource-variable/geist": "^5.3.0",
     motion: "^14.14.0",

@@ -1,0 +1,12 @@
+name: my-app
+
+x-app: &app
+  build: .
+  image: my-app
+
+services:
+  app:
+    <<: *app
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
