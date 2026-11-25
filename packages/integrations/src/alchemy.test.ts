@@ -13,7 +13,8 @@ import { verifiedGeneration } from "#/verification.ts";
 const deploy = async (
   database: string,
   overrides: Record<string, string>,
-  action = "deploy"
+  action = "deploy",
+  ...args: string[]
 ) => {
   const stack = compose(registry, {
     auth: "better-auth",
@@ -39,7 +40,7 @@ const deploy = async (
       { mode: 0o755 }
     );
 
-    return spawnSync(process.execPath, ["deploy.ts", action], {
+    return spawnSync(process.execPath, ["deploy.ts", action, ...args], {
       cwd: dir,
       encoding: "utf-8",
       env: {
@@ -93,20 +94,35 @@ describe("Alchemy production deploy", () => {
     expect(apply.stdout).toBe("");
   });
 
-  it("requires an explicit stage for destroy and skips builds and migrations", async () => {
-    const implicit = await deploy("postgres", {}, "destroy");
-    expect(implicit.status).toBe(1);
-    expect(implicit.stdout).toBe("");
+  it.each([
+    { stage: null, flags: [], status: 1, output: "" },
+    { stage: null, flags: ["--yes"], status: 1, output: "" },
+    {
+      stage: "prod",
+      flags: [],
+      status: 0,
+      output: "exec alchemy destroy --stage prod",
+    },
+    {
+      stage: "pr-42",
+      flags: ["--yes"],
+      status: 0,
+      output: "exec alchemy destroy --stage pr-42 --yes",
+    },
+  ])(
+    "destroys stage $stage with flags $flags only when explicitly selected",
+    async ({ stage, flags, status, output }) => {
+      const result = await deploy(
+        "postgres",
+        stage === null ? {} : { ALCHEMY_STAGE: stage },
+        "destroy",
+        ...flags
+      );
 
-    const explicit = await deploy(
-      "postgres",
-      { ALCHEMY_STAGE: "prod" },
-      "destroy"
-    );
-
-    expect(explicit.status).toBe(0);
-    expect(explicit.stdout.trim()).toBe("exec alchemy destroy --stage prod");
-  });
+      expect(result.status).toBe(status);
+      expect(result.stdout.trim()).toBe(output);
+    }
+  );
 
   it("rejects an invalid custom auth origin before running any command", async () => {
     const result = await deploy("postgres", {

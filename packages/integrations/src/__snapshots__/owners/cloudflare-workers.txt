@@ -1198,7 +1198,7 @@ declare namespace Cloudflare {
 
 The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your account with `vp exec alchemy profile edit --add Cloudflare`. For unattended deployments, set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`. On first deploy, Alchemy bootstraps an account-wide state Worker, SQLite-backed Durable Object and Secrets Store credentials. See [Cloudflare setup](https://alchemy.run/cloudflare/setup/) and [state store permissions](https://alchemy.run/state-store/).
 
-Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same stage, profile and bindings.
+Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same explicit stage and Cloudflare profile. Use `vp run destroy --yes` for unattended cleanup.
 
 # DEPLOYMENT.md · 64 stacks
 #   spa-hono-mysql-better-auth-cloudflare-workers
@@ -1273,7 +1273,7 @@ In the Cloudflare dashboard, create a Hyperdrive connection to the production da
 
 Export `BETTER_AUTH_SECRET` (at least 32 characters). Alchemy uploads it as an encrypted Worker binding and supplies the Worker URL as the auth origin on first deploy. Set `BETTER_AUTH_URL` only to use your own public HTTPS origin.
 
-Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same stage, profile and bindings.
+Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same explicit stage and Cloudflare profile. Use `vp run destroy --yes` for unattended cleanup.
 
 # DEPLOYMENT.md · 64 stacks
 #   spa-hono-mysql-cloudflare-workers
@@ -1346,7 +1346,7 @@ The root `alchemy.run.ts` deploys to your Cloudflare account. Connect your accou
 
 In the Cloudflare dashboard, create a Hyperdrive connection to the production database with **query caching disabled** so writes and revoked sessions take effect immediately. Export its ID as `HYPERDRIVE_ID` and the matching production database URL as `DATABASE_URL` in the deployment shell. Drizzle migrates this database before upload. The deployed Worker receives only the Hyperdrive binding.
 
-Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same stage, profile and bindings.
+Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both default to stage `prod`. Set `ALCHEMY_STAGE=pr-42` for an isolated preview. For previews, prefix database and auth variables with the uppercased stage and an underscore (for example `PR_42_HYPERDRIVE_ID`), using a separate database and secret. Only deploy runs Drizzle. Clean up with `vp run destroy` using the same explicit stage and Cloudflare profile. Use `vp run destroy --yes` for unattended cleanup.
 
 # scripts/deploy.ts · 36 stacks
 #   solid-spa-hono-ui-sdk-cloudflare-workers
@@ -1388,10 +1388,17 @@ Run `vp run plan` to inspect changes and `vp run deploy` to apply them. Both def
 import { spawnSync } from "node:child_process";
 
 const env = { ...process.env };
-const action = process.argv[2] ?? "deploy";
+const [action = "deploy", ...flags] = process.argv.slice(2);
+
+const confirmDestroy =
+  action === "destroy" && flags.length === 1 && flags[0] === "--yes";
 
 if (!["plan", "deploy", "destroy"].includes(action)) {
   throw new Error("Expected plan, deploy or destroy");
+}
+
+if (flags.length > 0 && !confirmDestroy) {
+  throw new Error("Only destroy accepts an optional --yes flag");
 }
 
 if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
@@ -1434,7 +1441,7 @@ run([
   action,
   "--stage",
   stage,
-  ...(action === "deploy" ? ["--yes"] : []),
+  ...(action === "deploy" || confirmDestroy ? ["--yes"] : []),
 ]);
 
 # scripts/deploy.ts · 12 stacks
@@ -1453,10 +1460,17 @@ run([
 import { spawnSync } from "node:child_process";
 
 const env = { ...process.env };
-const action = process.argv[2] ?? "deploy";
+const [action = "deploy", ...flags] = process.argv.slice(2);
+
+const confirmDestroy =
+  action === "destroy" && flags.length === 1 && flags[0] === "--yes";
 
 if (!["plan", "deploy", "destroy"].includes(action)) {
   throw new Error("Expected plan, deploy or destroy");
+}
+
+if (flags.length > 0 && !confirmDestroy) {
+  throw new Error("Only destroy accepts an optional --yes flag");
 }
 
 if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
@@ -1495,7 +1509,7 @@ run([
   action,
   "--stage",
   stage,
-  ...(action === "deploy" ? ["--yes"] : []),
+  ...(action === "deploy" || confirmDestroy ? ["--yes"] : []),
 ]);
 
 # scripts/deploy.ts · 64 stacks
@@ -1566,10 +1580,17 @@ run([
 import { spawnSync } from "node:child_process";
 
 const env = { ...process.env };
-const action = process.argv[2] ?? "deploy";
+const [action = "deploy", ...flags] = process.argv.slice(2);
+
+const confirmDestroy =
+  action === "destroy" && flags.length === 1 && flags[0] === "--yes";
 
 if (!["plan", "deploy", "destroy"].includes(action)) {
   throw new Error("Expected plan, deploy or destroy");
+}
+
+if (flags.length > 0 && !confirmDestroy) {
+  throw new Error("Only destroy accepts an optional --yes flag");
 }
 
 if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
@@ -1599,36 +1620,38 @@ if (stage !== "prod") {
   }
 }
 
-if (action === "deploy" && (env.DATABASE_URL ?? "") === "") {
-  throw new Error(
-    "Set DATABASE_URL in the deployment shell to the database URL for this stage"
-  );
-}
-
-if (!/^[a-f0-9]{32}$/iu.test(env.HYPERDRIVE_ID ?? "")) {
-  throw new Error(
-    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see DEPLOYMENT.md before deploying"
-  );
-}
-
-if ((env.BETTER_AUTH_SECRET ?? "").length < 32) {
-  throw new Error(
-    "Set BETTER_AUTH_SECRET to at least 32 characters in the deployment shell"
-  );
-}
-
-const origin = env.BETTER_AUTH_URL;
-
-if (origin !== undefined) {
-  const url = URL.parse(origin);
-
-  if (
-    url?.protocol !== "https:" ||
-    (origin !== url.origin && origin !== `${url.origin}/`)
-  ) {
+if (action !== "destroy") {
+  if (action === "deploy" && (env.DATABASE_URL ?? "") === "") {
     throw new Error(
-      "Set BETTER_AUTH_URL to a public HTTPS origin, or omit it to use the Worker URL"
+      "Set DATABASE_URL in the deployment shell to the database URL for this stage"
     );
+  }
+
+  if (!/^[a-f0-9]{32}$/iu.test(env.HYPERDRIVE_ID ?? "")) {
+    throw new Error(
+      "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see DEPLOYMENT.md before deploying"
+    );
+  }
+
+  if ((env.BETTER_AUTH_SECRET ?? "").length < 32) {
+    throw new Error(
+      "Set BETTER_AUTH_SECRET to at least 32 characters in the deployment shell"
+    );
+  }
+
+  const origin = env.BETTER_AUTH_URL;
+
+  if (origin !== undefined) {
+    const url = URL.parse(origin);
+
+    if (
+      url?.protocol !== "https:" ||
+      (origin !== url.origin && origin !== `${url.origin}/`)
+    ) {
+      throw new Error(
+        "Set BETTER_AUTH_URL to a public HTTPS origin, or omit it to use the Worker URL"
+      );
+    }
   }
 }
 
@@ -1662,7 +1685,7 @@ run([
   action,
   "--stage",
   stage,
-  ...(action === "deploy" ? ["--yes"] : []),
+  ...(action === "deploy" || confirmDestroy ? ["--yes"] : []),
 ]);
 
 # scripts/deploy.ts · 64 stacks
@@ -1733,10 +1756,17 @@ run([
 import { spawnSync } from "node:child_process";
 
 const env = { ...process.env };
-const action = process.argv[2] ?? "deploy";
+const [action = "deploy", ...flags] = process.argv.slice(2);
+
+const confirmDestroy =
+  action === "destroy" && flags.length === 1 && flags[0] === "--yes";
 
 if (!["plan", "deploy", "destroy"].includes(action)) {
   throw new Error("Expected plan, deploy or destroy");
+}
+
+if (flags.length > 0 && !confirmDestroy) {
+  throw new Error("Only destroy accepts an optional --yes flag");
 }
 
 if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
@@ -1761,16 +1791,18 @@ if (stage !== "prod") {
   }
 }
 
-if (action === "deploy" && (env.DATABASE_URL ?? "") === "") {
-  throw new Error(
-    "Set DATABASE_URL in the deployment shell to the database URL for this stage"
-  );
-}
+if (action !== "destroy") {
+  if (action === "deploy" && (env.DATABASE_URL ?? "") === "") {
+    throw new Error(
+      "Set DATABASE_URL in the deployment shell to the database URL for this stage"
+    );
+  }
 
-if (!/^[a-f0-9]{32}$/iu.test(env.HYPERDRIVE_ID ?? "")) {
-  throw new Error(
-    "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see DEPLOYMENT.md before deploying"
-  );
+  if (!/^[a-f0-9]{32}$/iu.test(env.HYPERDRIVE_ID ?? "")) {
+    throw new Error(
+      "Set HYPERDRIVE_ID to a cache-disabled Hyperdrive config ID; see DEPLOYMENT.md before deploying"
+    );
+  }
 }
 
 const run = (args: string[]) => {
@@ -1803,5 +1835,5 @@ run([
   action,
   "--stage",
   stage,
-  ...(action === "deploy" ? ["--yes"] : []),
+  ...(action === "deploy" || confirmDestroy ? ["--yes"] : []),
 ]);

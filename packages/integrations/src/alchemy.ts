@@ -20,10 +20,16 @@ const deploymentCommand = ({
   `import { spawnSync } from "node:child_process";
 
 const env = { ...process.env };
-const action = process.argv[2] ?? "deploy";
+const [action = "deploy", ...flags] = process.argv.slice(2);
+
+const confirmDestroy = action === "destroy" && flags.length === 1 && flags[0] === "--yes";
 
 if (!["plan", "deploy", "destroy"].includes(action)) {
   throw new Error("Expected plan, deploy or destroy");
+}
+
+if (flags.length > 0 && !confirmDestroy) {
+  throw new Error("Only destroy accepts an optional --yes flag");
 }
 
 if (action === "destroy" && env.ALCHEMY_STAGE === undefined) {
@@ -49,7 +55,7 @@ if (stage !== "prod") {
 `
     : ""
 }
-${checks}const run = (args: string[]) => {
+${checks.trim() === "" ? "" : `if (action !== "destroy") {\n${checks.trim()}\n}\n\n`}const run = (args: string[]) => {
   const result = spawnSync("vp", args, { env, stdio: "inherit", shell: process.platform === "win32" });
 
   if (result.error) {
@@ -61,7 +67,7 @@ ${checks}const run = (args: string[]) => {
   }
 };
 
-${build ? 'if (action !== "destroy") {\n  run(["run", "build"]);\n}\n\n' : ""}${migrate ? 'if (action === "deploy") {\n  run(["run", "db:migrate"]);\n}\n\n' : ""}run(["exec", "alchemy", action, "--stage", stage, ...(action === "deploy" ? ["--yes"] : [])]);
+${build ? 'if (action !== "destroy") {\n  run(["run", "build"]);\n}\n\n' : ""}${migrate ? 'if (action === "deploy") {\n  run(["run", "db:migrate"]);\n}\n\n' : ""}run(["exec", "alchemy", action, "--stage", stage, ...(action === "deploy" || confirmDestroy ? ["--yes"] : [])]);
 `;
 
 export const alchemyProject = (settings: AlchemyProject) => {
