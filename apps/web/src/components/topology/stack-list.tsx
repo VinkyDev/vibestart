@@ -11,6 +11,7 @@ import { DeploymentPicker } from "#/components/topology/deployment-picker.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
 import { Picker } from "#/components/topology/picker.tsx";
 import { Tile } from "#/components/topology/tile.tsx";
+import { VitestCard } from "#/components/topology/vitest-card.tsx";
 import { ease } from "#/lib/motion.ts";
 import { addLabel, groupOf, roles, tintClass } from "#/lib/roles.ts";
 import type { Decision } from "#/lib/stack.ts";
@@ -22,6 +23,9 @@ import {
   selected,
 } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
+
+const foundationChip =
+  "bg-foreground/[0.04] text-foreground rounded-full px-3 py-1 text-xs font-medium";
 
 const rowTrigger = "group/trigger flex w-full text-left";
 
@@ -135,17 +139,12 @@ export const StackList = ({
   readonly choosing: Choosing;
   readonly className?: string;
 }) => {
-  const foundation = [
-    ...selected(choosing.baseline)
-      .filter(
-        (integration) =>
-          groupOf(integration.id) === "foundation" &&
-          integration.kind !== "testing" &&
-          integration.kind !== "mode"
-      )
-      .map(({ name }) => name),
-    "Vitest",
-  ];
+  const foundation = selected(choosing.baseline).filter(
+    (integration) =>
+      groupOf(integration.id) === "foundation" &&
+      integration.kind !== "testing" &&
+      integration.kind !== "mode"
+  );
 
   return (
     <section
@@ -198,14 +197,23 @@ export const StackList = ({
           <span className="ml-auto font-normal">{m.tool_builtin()}</span>
         </h3>
         <ul className="flex flex-wrap gap-1.5">
-          {foundation.map((name) => (
-            <li
-              className="bg-foreground/[0.04] text-foreground rounded-full px-3 py-1 text-xs font-medium"
-              key={name}
-            >
+          {foundation.map(({ id, name }) => (
+            <li className={foundationChip} key={id}>
               {name}
             </li>
           ))}
+          <li>
+            <VitestCard className="group/card flex" stack={choosing.baseline}>
+              <span
+                className={cn(
+                  foundationChip,
+                  "group-focus-visible/card:focus-ring group-hover/card:bg-foreground/[0.08]"
+                )}
+              >
+                Vitest
+              </span>
+            </VitestCard>
+          </li>
         </ul>
         <div className="bg-foreground/[0.03] hover:bg-foreground/[0.05] has-data-popup-open:bg-foreground/[0.05] flex h-14 rounded-2xl transition-colors">
           <Extensions choosing={choosing} />

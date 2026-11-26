@@ -6,9 +6,10 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import { serverEnv } from "#/app.ts";
-import { dockerRuntime } from "#/docker.ts";
+import { dockerRuntime } from "#/docker/slots.ts";
 import { envFiles } from "#/env-files.ts";
+import { devServer } from "#/server-address.ts";
+import { serverEnv } from "#/server-environment.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers, unitTestSources } from "#/vite-plus/slots.ts";
 
@@ -106,7 +107,11 @@ export const effectHttp = defineIntegration({
       path: "apps/server/.env",
       lines: (read) => [
         ...read(serverEnv),
-        { name: "PORT", example: "3000", schema: "Config.Port" },
+        {
+          name: "PORT",
+          example: String(devServer(ctx.stack).port),
+          schema: "Config.Port",
+        },
       ],
     }),
     contribute(dockerRuntime, {

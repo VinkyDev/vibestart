@@ -4,18 +4,14 @@ import { fileURLToPath } from "node:url";
 
 import { z } from "zod";
 
+import { projectionSchema } from "@vibestart/integrations/verification-projection";
+
 // Release attaches the CI projection. The Studio checks it against the output it generates.
 const repository = "VinkyDev/vibestart";
 
 const root = fileURLToPath(new URL("../../..", import.meta.url));
 
 const versionSchema = z.object({ version: z.string().min(1) });
-
-const projectionSchema = z.object({
-  coverage: z.unknown(),
-  linux: z.unknown(),
-  windows: z.unknown(),
-});
 
 const versionOf = (file: string) => {
   const parsed = versionSchema.safeParse(

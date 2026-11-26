@@ -8,19 +8,15 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import {
-  hasBackend,
-  hasWebApp,
-  listStack,
-  rpcPath,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { hasBackend, hasDevServers } from "#/app-shape.ts";
 import { envFiles } from "#/env-files.ts";
+import { todosExample } from "#/example.ts";
 import { effectExpo } from "#/expo/effect.ts";
 import { quote } from "#/format.ts";
 import { knipEntries } from "#/knip.ts";
 import { openapiQueriesContent } from "#/openapi.ts";
+import { rpcPath } from "#/request-paths.ts";
+import { listStack, stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides, ultracitePresets } from "#/ultracite.ts";
 import {
@@ -64,10 +60,10 @@ const renderAppJson = (ctx: Context) =>
 
 // Generated files are formatted afterwards, so the renderers below build content, not layout.
 const rootLayout = (ctx: Context) => {
-  const query = hasBackend(ctx) && !ctx.has("effect");
+  const query = hasBackend(ctx.stack) && !ctx.has("effect");
   const auth = ctx.has("better-auth");
 
-  const todos = todosExample(ctx)
+  const todos = todosExample(ctx.stack)
     ? ['<Stack.Screen name="todos" options={{ title: "Todos" }} />']
     : [];
 
@@ -175,7 +171,7 @@ const todosCard = [
 const homeScreen = (ctx: Context) =>
   renderFile("apps/mobile/src/app/index.tsx", (read) => {
     const auth = ctx.has("better-auth");
-    const todos = todosExample(ctx);
+    const todos = todosExample(ctx.stack);
 
     const links = auth || todos;
 
@@ -186,7 +182,7 @@ const homeScreen = (ctx: Context) =>
       '<View className="gap-3">',
       `<Text className="text-4xl font-semibold tracking-tight">${ctx.name}</Text>`,
       `<Text className="text-muted-foreground leading-6">${listed} on Vite+.</Text>`,
-      ...(hasBackend(ctx) ? ["<ApiStatus />"] : []),
+      ...(hasBackend(ctx.stack) ? ["<ApiStatus />"] : []),
       "</View>",
       ...(auth ? accountCard(todos) : []),
       ...(!auth && todos ? todosCard : []),
@@ -202,7 +198,7 @@ const homeScreen = (ctx: Context) =>
         : []),
       `import { ${links ? "Pressable, ScrollView, View" : "ScrollView, View"} } from "react-native";`,
       "",
-      ...(hasBackend(ctx)
+      ...(hasBackend(ctx.stack)
         ? ['import { ApiStatus } from "#src/components/api-status.tsx";']
         : []),
       ...(links ? ['import { Card } from "#src/components/ui/card.tsx";'] : []),
@@ -337,7 +333,7 @@ const openapiFiles = (ctx: Context) => [
 const backendFiles = (ctx: Context) => [
   ...templateFiles(ctx, "expo/backend"),
   ...(ctx.has("orpc") ? orpcFiles(ctx) : templateFiles(ctx, "expo/health")),
-  ...(ctx.has("openapi") && todosExample(ctx) ? openapiFiles(ctx) : []),
+  ...(ctx.has("openapi") && todosExample(ctx.stack) ? openapiFiles(ctx) : []),
   contribute(envFiles, { lines: () => [apiUrl], path: "apps/mobile/.env" }),
   contribute(packageJson, {
     dependencies: ["@tanstack/react-query", "zod"],
@@ -413,18 +409,16 @@ const sessionSender = (ctx: Context) => {
     return "`src/lib/api.ts` sends";
   }
 
-  return ctx.has("openapi") && todosExample(ctx)
+  return ctx.has("openapi") && todosExample(ctx.stack)
     ? "`src/lib/client.ts` sends"
     : "a request to the API sends";
 };
 
-const devServers = (ctx: Context) => hasWebApp(ctx) || hasBackend(ctx);
-
 const architecture = (ctx: Context) =>
   [
     "The mobile app in `apps/mobile` runs on Expo with Expo Router: each file in `src/app` is a screen, and `_layout.tsx` holds the navigation stack.",
-    `\`vp run dev:mobile\` starts Metro and prints a QR code for Expo Go. ${devServers(ctx) ? "It runs beside `vp run dev`, in a terminal of its own, because Expo's terminal UI cannot share one." : "Expo's terminal UI takes the whole terminal."}`,
-    ...(hasBackend(ctx)
+    `\`vp run dev:mobile\` starts Metro and prints a QR code for Expo Go. ${hasDevServers(ctx.stack) ? "It runs beside `vp run dev`, in a terminal of its own, because Expo's terminal UI cannot share one." : "Expo's terminal UI takes the whole terminal."}`,
+    ...(hasBackend(ctx.stack)
       ? [
           "The app calls the server at the origin `src/env.ts` resolves: `EXPO_PUBLIC_API_URL` when it is set, otherwise, in development, port 3000 on the machine Metro runs on (`src/lib/api-url.ts`). A release build has no Metro, so it needs `EXPO_PUBLIC_API_URL`.",
         ]
@@ -435,7 +429,7 @@ const architecture = (ctx: Context) =>
         ]
       : []),
     "Uniwind compiles Tailwind classes for React Native; the theme is the CSS variables in `apps/mobile/global.css`.",
-    `Unit tests run in Node, where \`react-native\` does not load, so they cover logic kept out of components${hasBackend(ctx) ? ", as `src/lib/api-url.test.ts` does" : ""}.`,
+    `Unit tests run in Node, where \`react-native\` does not load, so they cover logic kept out of components${hasBackend(ctx.stack) ? ", as `src/lib/api-url.test.ts` does" : ""}.`,
     `\`vp run build\` exports the iOS and Android bundles with \`expo export\`. A native module Expo Go does not ship needs a development build: \`vp run --filter ${ctx.scope}/mobile ios\` or \`android\`.`,
   ].join(" ");
 
@@ -445,11 +439,13 @@ export const expo = defineIntegration({
     ...(ctx.has("effect")
       ? effectExpo(ctx, apiUrl)
       : [
-          ...(hasBackend(ctx) ? backendFiles(ctx) : []),
+          ...(hasBackend(ctx.stack) ? backendFiles(ctx) : []),
           ...(ctx.has("better-auth") ? authFiles(ctx) : []),
-          ...(todosExample(ctx) ? todosFiles(ctx) : []),
+          ...(todosExample(ctx.stack) ? todosFiles(ctx) : []),
         ]),
-    ...(ctx.has("better-auth") || todosExample(ctx) ? formFiles(ctx) : []),
+    ...(ctx.has("better-auth") || todosExample(ctx.stack)
+      ? formFiles(ctx)
+      : []),
     rootLayout(ctx),
     file("apps/mobile/app.json", renderAppJson(ctx)),
     file("apps/mobile/.gitignore", ".expo\nexpo-env.d.ts\nios\nandroid\n"),
@@ -532,7 +528,7 @@ export const expo = defineIntegration({
     }),
     contribute(
       readmeOpen,
-      `\`vp run dev:mobile\` prints a QR code: scan it with Expo Go on a phone on the same network as this machine, or press \`i\` or \`a\` for a simulator.${hasBackend(ctx) ? " The app reaches the server on port 3000 of this machine, so let the firewall pass it; a release build takes the server's origin from `EXPO_PUBLIC_API_URL` in `apps/mobile/.env`." : ""}`
+      `\`vp run dev:mobile\` prints a QR code: scan it with Expo Go on a phone on the same network as this machine, or press \`i\` or \`a\` for a simulator.${hasBackend(ctx.stack) ? " The app reaches the server on port 3000 of this machine, so let the firewall pass it; a release build takes the server's origin from `EXPO_PUBLIC_API_URL` in `apps/mobile/.env`." : ""}`
     ),
   ],
   id: "expo",

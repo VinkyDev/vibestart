@@ -1,12 +1,13 @@
 import { z } from "zod";
 
 import type { Blueprint, GeneratedFile } from "@vibestart/core";
+import { packageManagers } from "@vibestart/core";
 
 // Persist historical choices without filling them from a future registry's defaults.
 export const inputSchema = z.strictObject({
   addons: z.array(z.string()),
   channel: z.literal("recommended"),
-  packageManager: z.enum(["pnpm", "bun"]),
+  packageManager: z.enum(packageManagers),
   stack: z.record(z.string(), z.string()),
 });
 

@@ -1,9 +1,17 @@
 import { ArrowUpRight } from "lucide-react";
 
 import type { Stack } from "@vibestart/core";
+import { hasWebApp } from "@vibestart/integrations/app-shape";
+import { devCommands } from "@vibestart/integrations/dev-commands";
+import { integrationExample } from "@vibestart/integrations/example";
 
 import { optionsOf } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
+
+const integrationDescriptions = {
+  health: m.tests_scope_health,
+  todos: m.tests_scope_integration,
+};
 
 const Commands = ({
   commands,
@@ -65,13 +73,11 @@ export const ToolDetails = ({
           <p>{m.toolchain_scope()}</p>
           <Commands
             commands={[
-              // A mobile app alone has no `dev`: Expo's terminal UI runs in a terminal of its own.
-              ...(stack.framework === undefined && stack.backend === undefined
-                ? []
-                : [{ label: m.tool_dev(), run: "vp run dev" }]),
-              ...(stack.mobile === undefined
-                ? []
-                : [{ label: m.tool_dev_mobile(), run: "vp run dev:mobile" }]),
+              ...devCommands(stack).map((run) => ({
+                label:
+                  run === "vp run dev" ? m.tool_dev() : m.tool_dev_mobile(),
+                run,
+              })),
               { label: m.tool_check(), run: "vp check" },
               { label: m.tool_build(), run: "vp run build" },
             ]}
@@ -81,19 +87,22 @@ export const ToolDetails = ({
     }
 
     case "vitest": {
-      // Integration tests pin the todo example, which needs both an API and a database.
-      const integration =
-        stack.api !== undefined && stack.database !== undefined;
+      const example = integrationExample(stack);
 
       return (
         <>
           <p>
-            {integration ? m.tests_scope_integration() : m.tests_scope_unit()}
+            {example === undefined
+              ? m.tests_scope_unit()
+              : integrationDescriptions[example]()}
           </p>
           <Commands
             commands={[
               {
-                label: integration ? m.tool_test_integration() : m.tool_test(),
+                label:
+                  example === undefined
+                    ? m.tool_test()
+                    : m.tool_test_integration(),
                 run: "vp test",
               },
             ]}
@@ -106,12 +115,12 @@ export const ToolDetails = ({
     case "playwright": {
       return (
         <>
-          {stack.framework === undefined ? (
-            <p>{m.tests_scope_e2e_none()}</p>
-          ) : (
+          {hasWebApp(stack) ? (
             <Commands
               commands={[{ label: m.tool_e2e(), run: "vp run test:e2e" }]}
             />
+          ) : (
+            <p>{m.tests_scope_e2e_none()}</p>
           )}
           {stack.mobile !== undefined && <p>{m.tests_scope_mobile()}</p>}
           <Sites kind="testing" mode={stack.mode} />

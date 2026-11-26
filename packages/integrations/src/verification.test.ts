@@ -5,9 +5,12 @@ import { defaultAddons, legalStacks } from "@vibestart/core";
 
 import { registry } from "#/registry.ts";
 import { taskLabel } from "#/stack-label.ts";
-import type { Projection, StackVerification } from "#/verification.ts";
+import type {
+  Projection,
+  StackVerification,
+} from "#/verification-projection.ts";
+import { emptyProjection } from "#/verification-projection.ts";
 import {
-  emptyProjection,
   verificationOf,
   verifiedAs,
   verifiedFingerprint,

@@ -9,6 +9,7 @@ import type {
   Change,
   Choices,
   IntegrationInfo,
+  PackageManager,
   Stack,
 } from "@vibestart/core";
 import {
@@ -21,6 +22,7 @@ import {
   packageManagers,
   resolve,
 } from "@vibestart/core";
+import { hasWebApp } from "@vibestart/integrations/app-shape";
 
 import { capabilityText, list } from "#/lib/i18n.ts";
 import type { StackEntry, StackVerification } from "#/lib/project.ts";
@@ -94,7 +96,7 @@ export const chosen = (
 
 /** A stack without a web app keeps the default runner, which then runs no end-to-end tests. */
 export const e2eRunner = (stack: Stack): IntegrationInfo | undefined =>
-  stack.framework === undefined ? undefined : chosen(stack, "testing");
+  hasWebApp(stack) ? chosen(stack, "testing") : undefined;
 
 export const optionsOf = (
   kind: string,
@@ -280,7 +282,7 @@ export const addonsFlag = (addons: readonly string[]) => {
 export const verificationWith = (
   entry: StackEntry,
   addons: readonly string[],
-  packageManager: "pnpm" | "bun" = "pnpm"
+  packageManager: PackageManager = "pnpm"
 ): StackVerification | null => {
   if (!defaultsCover(registry, addons)) {
     return null;
@@ -289,7 +291,7 @@ export const verificationWith = (
   return packageManager === "bun" ? entry.bunVerification : entry.verification;
 };
 
-export type PackageRunner = "pnpm" | "npm" | "bun";
+type PackageRunner = PackageManager | "npm";
 
 const runners: Record<PackageRunner, string> = {
   bun: "bunx vibestart-cli",
@@ -302,7 +304,7 @@ export const commandWords = (
   name: string,
   runner: PackageRunner,
   addons: readonly string[] = verifiedAddons,
-  packageManager: "pnpm" | "bun" = "pnpm"
+  packageManager: PackageManager = "pnpm"
 ) => {
   const addonsValue = addonsFlag(addons);
 

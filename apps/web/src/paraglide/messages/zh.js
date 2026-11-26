@@ -327,6 +327,7 @@
 /** @typedef {{}} Testing_QuestionInputs */
 /** @typedef {{}} Tests_Layer_UnitInputs */
 /** @typedef {{}} Tests_Scope_E2e_NoneInputs */
+/** @typedef {{}} Tests_Scope_HealthInputs */
 /** @typedef {{}} Tests_Scope_IntegrationInputs */
 /** @typedef {{}} Tests_Scope_MobileInputs */
 /** @typedef {{}} Tests_Scope_UnitInputs */
@@ -1738,6 +1739,10 @@ export const tests_layer_unit = /** @type {(inputs: Tests_Layer_UnitInputs) => L
 
 export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`没有 Web 应用的项目没有端到端测试。`)
+};
+
+export const tests_scope_health = /** @type {(inputs: Tests_Scope_HealthInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Vitest 通过 Effect 服务验证 HTTP 和 RPC 健康检查以及 API 文档路由。`)
 };
 
 export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {

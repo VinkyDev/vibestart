@@ -6,15 +6,16 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import { clientComponent, hasBackend } from "#/app.ts";
+import { hasBackend } from "#/app-shape.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
+import { clientComponent } from "#/web-pages.ts";
 
 const apiStatusPath = "apps/web/src/components/api-status.tsx";
 
 // RPC integrations own their status component; REST calls `/api/health` directly.
 const healthStatus = (ctx: Context) =>
-  hasBackend(ctx) && !ctx.has("orpc") && !ctx.has("effect")
+  hasBackend(ctx.stack) && !ctx.has("orpc") && !ctx.has("effect")
     ? [
         file(
           apiStatusPath,
@@ -30,7 +31,7 @@ export const react = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "react/common"),
     ...healthStatus(ctx),
-    ...(hasBackend(ctx) ? templateFiles(ctx, "react/status") : []),
+    ...(hasBackend(ctx.stack) ? templateFiles(ctx, "react/status") : []),
     contribute(packageJson, {
       dependencies: [
         ...(ctx.has("effect")

@@ -1,17 +1,8 @@
-import {
-  contribute,
-  defineIntegration,
-  gettingStarted,
-  renderFile,
-} from "@vibestart/core";
+import { contribute, defineIntegration, gettingStarted } from "@vibestart/core";
 
-import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
-import {
-  composeEnv,
-  composeServices,
-  composeVolumes,
-  renderDevCompose,
-} from "#/docker.ts";
+import { ormRelease } from "#/database.ts";
+import { databaseService } from "#/docker/database-service.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 
 export const mongodb = defineIntegration({
@@ -19,19 +10,10 @@ export const mongodb = defineIntegration({
     const database = ctx.name.replaceAll("-", "_");
 
     return [
-      contribute(serverEnv, {
-        example: `mongodb://localhost:27017/${database}`,
-        name: "DATABASE_URL",
-        schema: "z.url()",
-      }),
-      contribute(composeEnv, {
-        name: "DATABASE_URL",
-        value: `mongodb://db:27017/${database}`,
-      }),
-      contribute(composeServices, {
-        name: "db",
-        readyWhen: "service_healthy",
-        yaml: `  db:
+      ...databaseService(
+        ctx,
+        (host) => `mongodb://${host}:27017/${database}`,
+        `  db:
     image: mongo:8
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
@@ -41,16 +23,8 @@ export const mongodb = defineIntegration({
     ports:
       - "127.0.0.1:27017:27017"
     volumes:
-      - db-data:/data/db`,
-      }),
-      contribute(composeVolumes, "db-data"),
-      ...(ctx.has("docker")
-        ? []
-        : [
-            renderFile("docker-compose.yml", (read) =>
-              renderDevCompose(ctx, read)
-            ),
-          ]),
+      - db-data:/data/db`
+      ),
       contribute(readmeTagline, "MongoDB"),
       contribute(stackHeadline, { name: "MongoDB", role: "Database" }),
       contribute(readmeLayers, {

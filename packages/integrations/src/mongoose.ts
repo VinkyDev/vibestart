@@ -7,15 +7,11 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import {
-  authVariant,
-  closeDatabase,
-  migrationEntry,
-  serverApp,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { closeDatabase, migrationEntry } from "#/database.ts";
+import { authVariant, todosExample } from "#/example.ts";
 import { commentedShell } from "#/format.ts";
+import { serverApp } from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -25,7 +21,7 @@ import {
 } from "#/vite-plus/slots.ts";
 
 const renderIndex = (ctx: Context) => {
-  const todos = todosExample(ctx);
+  const todos = todosExample(ctx.stack);
 
   return [
     'import mongoose from "mongoose";',
@@ -106,11 +102,14 @@ export const mongoose = defineIntegration({
     return [
       ...templateFiles(ctx, "mongoose/common"),
       file("packages/db/src/index.ts", renderIndex(ctx)),
-      ...(todosExample(ctx)
-        ? templateFiles(ctx, `mongoose/${authVariant(ctx)}`)
+      ...(todosExample(ctx.stack)
+        ? templateFiles(ctx, `mongoose/${authVariant(ctx.stack)}`)
         : []),
       file("packages/db/src/migrate.ts", renderMigrate(ctx)),
-      migrationEntry(ctx, ["await migrateDatabase(db);", closeDatabase(ctx)]),
+      migrationEntry(ctx, [
+        "await migrateDatabase(db);",
+        closeDatabase(ctx.stack),
+      ]),
       contribute(packageJson, {
         dependencies: ["mongoose"],
         devDependencies: [`${ctx.scope}/config`, "@types/node", "typescript"],

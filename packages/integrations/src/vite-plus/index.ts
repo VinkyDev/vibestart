@@ -18,8 +18,9 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import { hasBackend, hasWebApp } from "#/app.ts";
+import { hasDevServers, hasWebApp } from "#/app-shape.ts";
 import { toolchainVersions } from "#/catalog.ts";
+import { devCommands } from "#/dev-commands.ts";
 import { envFiles, renderEnvLines } from "#/env-files.ts";
 import { commentedShell, joinWords, markdownTable, quote } from "#/format.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
@@ -356,24 +357,6 @@ const renderAgents = (ctx: Context, read: ReadSlot) => {
   ].join("\n\n")}\n`;
 };
 
-// The web app and the API run together; the mobile app has an interactive terminal of its own.
-const hasDevServers = (ctx: Context) => hasWebApp(ctx) || hasBackend(ctx);
-
-const devCommands = (ctx: Context): (readonly [string, string?])[] => {
-  const servers = hasDevServers(ctx);
-
-  return [
-    ...(servers ? [["vp run dev"] as const] : []),
-    ...(ctx.has("expo")
-      ? [
-          servers
-            ? (["vp run dev:mobile", "in a second terminal"] as const)
-            : (["vp run dev:mobile"] as const),
-        ]
-      : []),
-  ];
-};
-
 // Git ignores every `.env`, so a fresh clone recreates them from this section.
 const renderEnvironment = (ctx: Context, read: ReadSlot) => {
   const files = read(envFiles);
@@ -435,7 +418,11 @@ const renderReadme = (ctx: Context, read: ReadSlot) => {
         ...read(gettingStarted).map(({ run, note }) =>
           note === undefined ? ([run] as const) : ([run, note.text] as const)
         ),
-        ...devCommands(ctx),
+        ...devCommands(ctx.stack).map((run, index) =>
+          index === 0
+            ? ([run] as const)
+            : ([run, "in a second terminal"] as const)
+        ),
       ]),
       "```",
     ].join("\n"),
@@ -464,7 +451,7 @@ export const vitePlus = defineIntegration({
       stage: "install",
       writes: [ctx.packageManager === "bun" ? "bun.lock" : "pnpm-lock.yaml"],
     }),
-    ...(hasDevServers(ctx)
+    ...(hasDevServers(ctx.stack)
       ? [
           contribute(packageJson, {
             path: ".",
@@ -485,7 +472,7 @@ export const vitePlus = defineIntegration({
         `${ctx.scope}/config`,
         "@types/node",
         "typescript",
-        ...(hasWebApp(ctx) ? ["vite"] : []),
+        ...(hasWebApp(ctx.stack) ? ["vite"] : []),
         "vite-plus",
       ],
       engines: packageEngines(ctx),
@@ -502,7 +489,7 @@ export const vitePlus = defineIntegration({
     }),
     contribute(pnpmWorkspace, { allowBuilds: { esbuild: false } }),
     // Vite's plugins resolve `vite`, which Vite+ provides; a stack without a web app has no plugin.
-    ...(hasWebApp(ctx)
+    ...(hasWebApp(ctx.stack)
       ? [
           contribute(pnpmWorkspace, {
             overrides: { "vite@*": "catalog:" },

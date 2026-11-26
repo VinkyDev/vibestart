@@ -1,7 +1,6 @@
 import { contribute, defineIntegration, packageJson } from "@vibestart/core";
 
-import { serverEnv, stackHeadline } from "#/app.ts";
-import { composeEnv } from "#/docker.ts";
+import { composeEnv } from "#/docker/slots.ts";
 import {
   contractIndex,
   databaseHealth,
@@ -9,6 +8,9 @@ import {
   todoFiles,
   todoWebFiles,
 } from "#/effect-rpc/files.ts";
+import { devOrigin } from "#/server-address.ts";
+import { serverEnv } from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers } from "#/vite-plus/slots.ts";
 
@@ -39,7 +41,7 @@ export const effectRpc = defineIntegration({
       : [
           contribute(serverEnv, {
             name: "APP_URL",
-            example: "http://localhost:5173",
+            example: devOrigin(ctx.stack),
             schema: "Config.String",
           }),
           contribute(composeEnv, {

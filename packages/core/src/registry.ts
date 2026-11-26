@@ -4,6 +4,7 @@ import type {
   Integration,
   IntegrationInfo,
   Kind,
+  Stack,
 } from "#/integration.ts";
 import { alternatives } from "#/integration.ts";
 
@@ -156,3 +157,14 @@ export const addonsInOrder = (
     .filter((addon) => ids.includes(addon.id))
     .map((addon) => addon.id);
 };
+
+/** Integrations of a stack in kind order, which is also the order contributions are collected in. */
+export const selectedIntegrations = <I extends IntegrationInfo>(
+  registry: RegistryInfo & { readonly integrations: readonly I[] },
+  stack: Stack
+): I[] =>
+  registry.kinds.flatMap((kind) => {
+    const id = stack[kind.id];
+
+    return id === undefined ? [] : [getIntegration(registry, id)];
+  });

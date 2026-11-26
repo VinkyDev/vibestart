@@ -6,20 +6,17 @@ import {
   packageJson,
 } from "@vibestart/core";
 
+import { hasBackend, hasWebApp, pageRendering } from "#/app-shape.ts";
 import {
-  authVariant,
   databaseName,
-  exampleVariant,
-  hasBackend,
-  hasWebApp,
-  isSpa,
-  rpcPath,
-  serverApp,
   chosenDatabase,
-  todosExample,
+  hasDatabaseServer,
   ormId,
-} from "#/app.ts";
+} from "#/database.ts";
+import { authVariant, exampleVariant, todosExample } from "#/example.ts";
 import { joinWords, markdownTable } from "#/format.ts";
+import { rpcPath } from "#/request-paths.ts";
+import { serverApp } from "#/server-environment.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
 import {
@@ -36,26 +33,23 @@ import { renderTestServer } from "./server.ts";
 
 const apiStyle = (ctx: Context) => (ctx.has("openapi") ? "openapi" : "orpc");
 
-// The todo example is the behavior an integration test pins. A health check alone is covered by the e2e tests and the build.
-const hasIntegrationTests = todosExample;
-
 // The todos example, accounts alone, a server's health, or the pages alone.
 const e2eVariant = (ctx: Context) => {
-  const example = exampleVariant(ctx);
+  const example = exampleVariant(ctx.stack);
 
   if (example !== "none") {
     return example;
   }
 
-  return hasBackend(ctx) ? "health" : "home";
+  return hasBackend(ctx.stack) ? "health" : "home";
 };
 
 const usesTestDatabase = (ctx: Context) =>
   ctx.stack.database !== undefined &&
-  (hasWebApp(ctx) || hasIntegrationTests(ctx));
+  (hasWebApp(ctx.stack) || todosExample(ctx.stack));
 
 const e2eServers = (ctx: Context) => {
-  if (!hasBackend(ctx)) {
+  if (!hasBackend(ctx.stack)) {
     return "the dev server";
   }
 
@@ -89,7 +83,7 @@ const integrationRow = (ctx: Context) => {
 
 const unitSources = (ctx: Context) => [
   ...(ctx.has("hono") ? ["apps/server/src"] : []),
-  ...(!ctx.has("hono") && hasWebApp(ctx) ? ["apps/web/src"] : []),
+  ...(!ctx.has("hono") && hasWebApp(ctx.stack) ? ["apps/web/src"] : []),
   ...(ctx.has("expo") ? ["apps/mobile/src"] : []),
 ];
 
@@ -97,7 +91,7 @@ const layerTable = (ctx: Context, runner: BrowserRunner) =>
   markdownTable(
     ["Layer", "Location", "Runs against", "Write it for"],
     [
-      ...(hasWebApp(ctx)
+      ...(hasWebApp(ctx.stack)
         ? [
             [
               "End-to-end",
@@ -107,7 +101,7 @@ const layerTable = (ctx: Context, runner: BrowserRunner) =>
             ],
           ]
         : []),
-      ...(hasIntegrationTests(ctx) ? [integrationRow(ctx)] : []),
+      ...(todosExample(ctx.stack) ? [integrationRow(ctx)] : []),
       [
         "Unit",
         `\`*.test.ts\` beside the code in ${unitSources(ctx)
@@ -124,7 +118,9 @@ const frontServer = (ctx: Context) => {
     return "`next dev` in its own `.next-test-<port>`, beside any running dev server";
   }
 
-  return isSpa(ctx) && ctx.has("hono") ? "Vite" : "`vp dev`";
+  return pageRendering(ctx.stack) === "client" && ctx.has("hono")
+    ? "Vite"
+    : "`vp dev`";
 };
 
 const e2eStack = (ctx: Context) => {
@@ -145,19 +141,19 @@ const e2eStack = (ctx: Context) => {
 };
 
 const isolationSentences = (ctx: Context, runner: BrowserRunner) => [
-  ...(hasWebApp(ctx)
+  ...(hasWebApp(ctx.stack)
     ? [
         `${runner.startsStack} the stack for the e2e tests on :3200 (\`E2E_TEST_PORT\`): ${e2eStack(ctx)}. A second checkout runs its tests at the same time on another port.`,
       ]
     : []),
-  ...(hasIntegrationTests(ctx)
+  ...(todosExample(ctx.stack)
     ? [
         `Each integration test file gets a database of its own from \`createTestDatabase()\` in \`${ctx.scope}/db/testing\`, migrated and removed when the file ends, so files run in parallel.`,
       ]
     : []),
   ...(usesTestDatabase(ctx)
     ? [
-        chosenDatabase(ctx).server
+        hasDatabaseServer(ctx)
           ? `Test databases are created beside \`DATABASE_URL\` from \`${serverApp(ctx).dir}/.env\`, so the tests need ${databaseName(ctx)} running.`
           : "Test databases are SQLite files in the system temp directory with the real migrations applied.",
         ctx.has("better-auth")
@@ -175,11 +171,11 @@ const isolation = (ctx: Context, runner: BrowserRunner) => {
 };
 
 const practice = (ctx: Context, runner: BrowserRunner) => {
-  const web = hasWebApp(ctx);
+  const web = hasWebApp(ctx.stack);
 
   return [
     ...(web ? runner.practice : []),
-    ...(hasIntegrationTests(ctx)
+    ...(todosExample(ctx.stack)
       ? [
           `Integration tests ${ctx.has("openapi") ? "send requests to `createApi` in this process, through the same routing and validation as the server" : "call the procedures in this process, through the same middleware and validation as a request"}, with ${ctx.has("better-auth") ? "real Better Auth sessions and " : ""}a real database.`,
         ]
@@ -191,7 +187,7 @@ const practice = (ctx: Context, runner: BrowserRunner) => {
       : []),
     `While iterating, run the narrowest set that covers the change: ${[
       "`vp test --project unit`",
-      ...(hasIntegrationTests(ctx) ? ["`vp test --project integration`"] : []),
+      ...(todosExample(ctx.stack) ? ["`vp test --project integration`"] : []),
       "`vp test --changed`",
       web
         ? `a single file, or \`vp exec ${runner.command} <file>\` in \`apps/web\``
@@ -240,7 +236,9 @@ const support = (ctx: Context) => {
       ? templateFiles(ctx, "testing/support/account")
       : []),
     ...(variant === "auth" ? authSupport(ctx) : []),
-    ...(hasBackend(ctx) ? templateFiles(ctx, "testing/support/http") : []),
+    ...(hasBackend(ctx.stack)
+      ? templateFiles(ctx, "testing/support/http")
+      : []),
   ];
 };
 
@@ -255,7 +253,7 @@ const hydrationTest = (ctx: Context, runner: BrowserRunner) => {
   const paths = [
     "/",
     ...(ctx.has("better-auth") ? ["/login"] : []),
-    ...(todosExample(ctx) && !ctx.has("better-auth") ? ["/todos"] : []),
+    ...(todosExample(ctx.stack) && !ctx.has("better-auth") ? ["/todos"] : []),
   ];
 
   return [
@@ -284,7 +282,7 @@ const browserTests = (ctx: Context, runner: BrowserRunner) => [
     devDependencies: [
       ...runner.devDependencies,
       "es-toolkit",
-      ...(hasBackend(ctx) ? ["undici"] : []),
+      ...(hasBackend(ctx.stack) ? ["undici"] : []),
       ...(ctx.stack.database === undefined ? [] : [`${ctx.scope}/db`]),
     ],
     path: "apps/web",
@@ -341,7 +339,7 @@ const mongodbTodosTest = (ctx: Context, set: string) => {
 };
 
 const integrationTestFiles = (ctx: Context) => {
-  const set = `testing/integration/${apiStyle(ctx)}-${authVariant(ctx)}`;
+  const set = `testing/integration/${apiStyle(ctx)}-${authVariant(ctx.stack)}`;
   const todosTest = ctx.has("mongodb") ? mongodbTodosTest(ctx, set) : undefined;
 
   return todosTest
@@ -375,8 +373,8 @@ const testing = (ctx: Context, runner: BrowserRunner): Contribution[] => [
         }),
       ]
     : []),
-  ...(hasWebApp(ctx) ? browserTests(ctx, runner) : []),
-  ...(hasIntegrationTests(ctx) ? integrationTests(ctx) : []),
+  ...(hasWebApp(ctx.stack) ? browserTests(ctx, runner) : []),
+  ...(todosExample(ctx.stack) ? integrationTests(ctx) : []),
   contribute(ultracitePresets, {
     module: "ultracite/oxlint/vitest",
     name: "vitest",

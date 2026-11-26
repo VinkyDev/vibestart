@@ -2,21 +2,28 @@ import type { Context, ReadSlot } from "@vibestart/core";
 import {
   contribute,
   defineIntegration,
-  defineSlot,
   packageJson,
   renderFile,
 } from "@vibestart/core";
 
 import {
-  databaseName,
+  backendHost,
   hasBackend,
   hasWebApp,
-  isSpa,
-  proxiesToHono,
-  chosenDatabase,
-  serverApp,
-} from "#/app.ts";
+  separateServers,
+  staticSite,
+  pageRendering,
+} from "#/app-shape.ts";
 import { toolchainVersions } from "#/catalog.ts";
+import { databaseName, hasDatabaseServer } from "#/database.ts";
+import {
+  composeEnv,
+  composeServices,
+  composeServers,
+  composeVolumes,
+  composeAppVolumes,
+  dockerRuntime,
+} from "#/docker/slots.ts";
 import { joinWords, quote } from "#/format.ts";
 import {
   ignoredFiles,
@@ -25,39 +32,6 @@ import {
   readmeTagline,
 } from "#/vite-plus/slots.ts";
 
-/** The runtime stage of the image. Exactly one contribution sets `cmd`. */
-export const dockerRuntime = defineSlot<{
-  env?: readonly (readonly [string, string])[];
-  copies?: readonly (readonly [from: string, to: string])[];
-  runs?: readonly string[];
-  volumes?: readonly string[];
-  cmd?: readonly string[];
-}>("docker/runtime");
-
-export const composeServices = defineSlot<{
-  name: string;
-  readyWhen: "service_healthy";
-  yaml: string;
-}>("docker/compose-services");
-
-export const composeEnv = defineSlot<{ name: string; value: string }>(
-  "docker/compose-env"
-);
-
-export const composeAppVolumes = defineSlot<string>(
-  "docker/compose-app-volumes"
-);
-
-export const composeVolumes = defineSlot<string>("docker/compose-volumes");
-
-/** The `app` service waits for it to be healthy and gets `appEnv` to reach it. */
-export const composeServers = defineSlot<{
-  name: string;
-  command: readonly string[];
-  appEnv: readonly (readonly [name: string, value: string])[];
-}>("docker/compose-servers");
-
-// Without a Node.js runtime the build is static files, which nginx serves with the SPA fallback.
 const staticRuntime = [
   [
     "FROM nginxinc/nginx-unprivileged:1.30-alpine AS runtime",
@@ -94,7 +68,7 @@ const nodeRuntime = (ctx: Context, read: ReadSlot) => {
     throw new Error("Exactly one integration must set the Docker CMD");
   }
 
-  const health = hasBackend(ctx) ? "/api/health" : "/";
+  const health = hasBackend(ctx.stack) ? "/api/health" : "/";
 
   return [
     [
@@ -127,14 +101,12 @@ const nodeRuntime = (ctx: Context, read: ReadSlot) => {
  * workspace packages they use, and nothing else, so another app in the workspace (Electron) stays out of the image.
  */
 const deployedPackages = (ctx: Context) => [
-  ...(hasBackend(ctx) && serverApp(ctx).dir === "apps/server"
-    ? [`${ctx.scope}/server`]
-    : []),
-  ...(hasWebApp(ctx) ? [`${ctx.scope}/web`] : []),
+  ...(backendHost(ctx.stack) === "standalone" ? [`${ctx.scope}/server`] : []),
+  ...(hasWebApp(ctx.stack) ? [`${ctx.scope}/web`] : []),
 ];
 
 const renderDockerfile = (ctx: Context, read: ReadSlot) => {
-  const node = ctx.has("node") || ctx.has("bun");
+  const site = staticSite(ctx.stack);
 
   const filters = deployedPackages(ctx)
     .map((name) => `--filter "${name}..."`)
@@ -171,10 +143,20 @@ const renderDockerfile = (ctx: Context, read: ReadSlot) => {
     [
       "COPY --chown=vp:vp . .",
       `RUN vp run ${filters} build`,
-      ...(node ? ['RUN cp "$(vp env which node | head -1)" /tmp/node'] : []),
+      ...(site ? [] : ['RUN cp "$(vp env which node | head -1)" /tmp/node']),
     ].join("\n"),
-    ...(node ? nodeRuntime(ctx, read) : staticRuntime),
+    ...(site ? staticRuntime : nodeRuntime(ctx, read)),
   ].join("\n\n")}\n`;
+};
+
+const migrationCommand = (ctx: Context) => {
+  const { runtime } = ctx.stack;
+
+  if (runtime !== "node" && runtime !== "bun") {
+    throw new Error("Docker migrations require Node or Bun");
+  }
+
+  return [runtime, "dist/migrate.mjs"];
 };
 
 const migrateService = (
@@ -184,7 +166,7 @@ const migrateService = (
   [
     "  migrate:",
     "    <<: *app",
-    `    command: ["${ctx.has("bun") ? "bun" : "node"}", "dist/migrate.mjs"]`,
+    `    command: [${migrationCommand(ctx).map(quote).join(", ")}]`,
     ...(services.length > 0
       ? [
           "    depends_on:",
@@ -280,20 +262,6 @@ const renderCompose = (ctx: Context, read: ReadSlot) => {
   ].join("\n\n")}\n`;
 };
 
-export const renderDevCompose = (ctx: Context, read: ReadSlot) => {
-  const volumes = read(composeVolumes);
-
-  return `${[
-    `name: ${ctx.name}`,
-    ["services:", ...read(composeServices).map((service) => service.yaml)].join(
-      "\n\n"
-    ),
-    ...(volumes.length > 0
-      ? [["volumes:", ...volumes.map((volume) => `  ${volume}:`)].join("\n")]
-      : []),
-  ].join("\n\n")}\n`;
-};
-
 const renderDockerignore = (read: ReadSlot) =>
   [
     ".git",
@@ -304,11 +272,11 @@ const renderDockerignore = (read: ReadSlot) =>
   ].join("\n");
 
 const deployChoice = (ctx: Context) => {
-  if (!ctx.has("node") && !ctx.has("bun")) {
+  if (staticSite(ctx.stack)) {
     return "Docker: nginx serving the static build";
   }
 
-  if (proxiesToHono(ctx)) {
+  if (separateServers(ctx.stack)) {
     return `Docker: the ${ctx.has("next") ? "Next.js standalone" : "Nitro"} server and the Hono server from one image${ctx.has("sqlite") ? ", SQLite on a volume" : ""}`;
   }
 
@@ -320,19 +288,19 @@ const deployChoice = (ctx: Context) => {
 };
 
 const serverServes = (ctx: Context, routes: readonly string[]) => {
-  if (isSpa(ctx)) {
+  if (pageRendering(ctx.stack) === "client") {
     return [...routes, "the SPA"];
   }
 
-  return hasWebApp(ctx) ? ["the pages", ...routes] : routes;
+  return hasWebApp(ctx.stack) ? ["the pages", ...routes] : routes;
 };
 
 const appServed = (ctx: Context) => {
-  if (isSpa(ctx)) {
+  if (pageRendering(ctx.stack) === "client") {
     return "the API and the web app";
   }
 
-  return hasWebApp(ctx) ? "the app" : "the API";
+  return hasWebApp(ctx.stack) ? "the app" : "the API";
 };
 
 const staticProduction = [
@@ -388,7 +356,7 @@ const productionEnvironment = (ctx: Context, separateApi: boolean) => {
 };
 
 const renderProduction = (ctx: Context, read: ReadSlot) => {
-  if (!ctx.has("node") && !ctx.has("bun")) {
+  if (staticSite(ctx.stack)) {
     return staticProduction;
   }
 
@@ -398,7 +366,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
     part.cmd === undefined ? [] : [part.cmd]
   );
 
-  const routes = hasBackend(ctx)
+  const routes = hasBackend(ctx.stack)
     ? [...apiRoutes(ctx), ...(auth ? ["`/api/auth`"] : [])]
     : [];
 
@@ -419,9 +387,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
 
   const environment = productionEnvironment(ctx, apiServer !== undefined);
 
-  const starts = chosenDatabase(ctx).server
-    ? `starts ${databaseName(ctx)}, `
-    : "";
+  const starts = hasDatabaseServer(ctx) ? `starts ${databaseName(ctx)}, ` : "";
 
   const app = appServed(ctx);
 
@@ -446,7 +412,7 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
     `\`\`\`sh\n${auth ? "BETTER_AUTH_SECRET=$(openssl rand -base64 32) " : ""}docker compose up --build\n\`\`\``,
     `This ${starts}runs migrations once, then serves ${app} on http://localhost:3000.${ctx.has("sqlite") ? " The database lives at `/data/app.db` on the `data` volume." : ""}`,
     `The image runs ${apiServer === undefined ? "two" : "three"} entry points from the same build:`,
-    `- \`${ctx.has("bun") ? "bun" : "node"} dist/migrate.mjs\` applies pending migrations and exits;\n- ${serves}`,
+    `- \`${migrationCommand(ctx).join(" ")}\` applies pending migrations and exits;\n- ${serves}`,
     environment,
     ...(ctx.has("sqlite")
       ? [

@@ -6,18 +6,15 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import {
-  authVariant,
-  databaseFlow,
-  hasBackend,
-  homePage,
-  rpcPath,
-  serverPaths,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { hasBackend } from "#/app-shape.ts";
+import { databaseFlow } from "#/database.ts";
+import { authVariant, todosExample } from "#/example.ts";
+import { rpcPath, serverPaths } from "#/request-paths.ts";
+import { devServer } from "#/server-address.ts";
 import { effectSpa } from "#/spa/effect.ts";
 import { solidSpa } from "#/spa/solid.ts";
+import { viteConfig } from "#/spa/vite-config.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -26,9 +23,7 @@ import {
   readmeOpen,
   readmeTagline,
 } from "#/vite-plus/slots.ts";
-
-const viteConfigPath = "apps/web/vite.config.ts";
-const rpcProxy = '        "/rpc": SERVER_URL,\n';
+import { homePage } from "#/web-pages.ts";
 
 const proxied = (ctx: Context) =>
   serverPaths(ctx)
@@ -36,24 +31,26 @@ const proxied = (ctx: Context) =>
     .join(" and ");
 
 const flow = (ctx: Context) => {
+  const { port } = devServer(ctx.stack);
+
   if (ctx.has("orpc")) {
-    return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\` → \`api.*\` (\`src/lib/api.ts\`) → \`POST ${rpcPath(ctx)}/*\` → \`packages/api\` procedure${databaseFlow(ctx)}.`;
+    return `\`vp run dev\` serves the web app on :5173 and the API on :${port}. Request flow: \`apps/web\` → \`api.*\` (\`src/lib/api.ts\`) → \`POST ${rpcPath(ctx)}/*\` → \`packages/api\` procedure${databaseFlow(ctx)}.`;
   }
 
   if (!ctx.has("openapi")) {
-    return "`vp run dev` serves the web app on :5173 and the server on :3000.";
+    return `\`vp run dev\` serves the web app on :5173 and the server on :${port}.`;
   }
 
-  const client = todosExample(ctx) ? " → `api.*` (`src/lib/api.ts`)" : "";
+  const client = todosExample(ctx.stack) ? " → `api.*` (`src/lib/api.ts`)" : "";
 
-  return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\`${client} → \`/api/*\` → \`packages/api\` route${databaseFlow(ctx)}.`;
+  return `\`vp run dev\` serves the web app on :5173 and the API on :${port}. Request flow: \`apps/web\`${client} → \`/api/*\` → \`packages/api\` route${databaseFlow(ctx)}.`;
 };
 
 const workersHosting =
   "Cloudflare serves the SPA through Workers Static Assets and routes /api requests to Hono";
 
 const requestFlow = (ctx: Context) => {
-  if (!hasBackend(ctx)) {
+  if (!hasBackend(ctx.stack)) {
     return "`vp run dev` serves the app on :5173. `vp run build` writes static files to `apps/web/dist`; there is no server.";
   }
 
@@ -67,7 +64,7 @@ const requestFlow = (ctx: Context) => {
 };
 
 const open = (ctx: Context) => {
-  if (!hasBackend(ctx)) {
+  if (!hasBackend(ctx.stack)) {
     return ["Open http://localhost:5173."];
   }
 
@@ -84,25 +81,6 @@ const open = (ctx: Context) => {
     : [`Open http://localhost:5173.${docs}`];
 };
 
-const viteConfig = (ctx: Context) => {
-  const set = ctx.has("solid") ? "solid-spa" : "spa";
-
-  if (!hasBackend(ctx)) {
-    return templateFiles(ctx, `${set}/static`);
-  }
-
-  const config = templateContent(ctx, `${set}/proxy`, viteConfigPath);
-
-  return [
-    file(
-      viteConfigPath,
-      serverPaths(ctx).includes("/rpc")
-        ? config
-        : replaceOnce(config, rpcProxy, "", `${set}/proxy/${viteConfigPath}`)
-    ),
-  ];
-};
-
 const orpcClientPath = "apps/web/src/lib/api.ts";
 
 const orpcClient = (ctx: Context) =>
@@ -116,64 +94,69 @@ const orpcClient = (ctx: Context) =>
     )
   );
 
-const spaSetup = (ctx: Context) => [
-  ...viteConfig(ctx),
+const setupNotes = (ctx: Context) => [
   contribute(agentsNotes, requestFlow(ctx)),
   ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
 ];
+
+const webPackage = (ctx: Context) =>
+  contribute(packageJson, {
+    devDependencies: [
+      `${ctx.scope}/config`,
+      "@tailwindcss/vite",
+      "@tanstack/router-plugin",
+      "@types/node",
+      "@vitejs/plugin-react",
+      "oxc-transform-react",
+      "typescript",
+      "vite",
+      "vite-plus",
+    ],
+    imports: { "#src/*": "./src/*" },
+    path: "apps/web",
+    scripts: {
+      dev: "vp dev",
+      build: "vp build",
+      preview: "vp preview",
+    },
+  });
 
 export const spa = defineIntegration({
   contribute: (ctx) => {
     if (ctx.has("solid")) {
       return [
         ...solidSpa(ctx),
-        ...(ctx.has("effect") ? viteConfig(ctx) : spaSetup(ctx)),
+        viteConfig(ctx),
+        ...(ctx.has("effect") ? [] : setupNotes(ctx)),
       ];
     }
 
-    if (ctx.has("effect")) {
-      return effectSpa(ctx);
-    }
-
     return [
-      ...templateFiles(ctx, "spa/common"),
-      ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
-      ...spaSetup(ctx),
-      ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
-      ...(todosExample(ctx) && !ctx.has("better-auth")
-        ? templateFiles(ctx, "spa/todos")
-        : []),
-      ...homePage(ctx, "apps/web/src/routes/index.tsx", true),
-      contribute(packageJson, {
-        devDependencies: [
-          `${ctx.scope}/config`,
-          "@tailwindcss/vite",
-          "@tanstack/router-plugin",
-          "@types/node",
-          "@vitejs/plugin-react",
-          "oxc-transform-react",
-          "typescript",
-          "vite",
-          "vite-plus",
-        ],
-        imports: { "#src/*": "./src/*" },
-        path: "apps/web",
-        scripts: {
-          dev: "vp dev",
-          build: "vp build",
-          preview: "vp preview",
-        },
-      }),
-      contribute(agentsMap, {
-        owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
-        path: "apps/web",
-      }),
-      contribute(readmeTagline, "React"),
+      viteConfig(ctx),
+      webPackage(ctx),
       contribute(stackHeadline, { name: "React", role: "Frontend" }),
-      contribute(readmeLayers, {
-        choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
-        layer: "Frontend",
-      }),
+      ...(ctx.has("effect")
+        ? effectSpa(ctx)
+        : [
+            ...templateFiles(ctx, "spa/common"),
+            ...templateFiles(ctx, `spa/${authVariant(ctx.stack)}`),
+            ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
+            ...(todosExample(ctx.stack) && !ctx.has("better-auth")
+              ? templateFiles(ctx, "spa/todos")
+              : []),
+            ...homePage(ctx, "apps/web/src/routes/index.tsx", true),
+            contribute(agentsMap, {
+              owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
+              path: "apps/web",
+            }),
+            contribute(readmeTagline, "React"),
+            contribute(readmeLayers, {
+              choice:
+                "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
+              layer: "Frontend",
+            }),
+            ...setupNotes(ctx),
+          ]),
     ];
   },
   id: "spa",

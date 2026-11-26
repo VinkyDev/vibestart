@@ -6,13 +6,15 @@ import { parseArgs } from "node:util";
 import { limitAsync } from "es-toolkit/promise";
 
 import type { PackageManager, Stack } from "@vibestart/core";
-import { legalStacks } from "@vibestart/core";
+import { legalStacks, packageManagers } from "@vibestart/core";
 
 import { downloadEvidence } from "#/evidence.ts";
 import { formatWithProjectConfig } from "#/oxfmt.ts";
 import { registry } from "#/registry.ts";
 import { repoRoot } from "#/repo.ts";
 import { taskLabel } from "#/stack-label.ts";
+import type { Platform } from "#/verification-projection.ts";
+import { platforms } from "#/verification-projection.ts";
 import type { Task } from "#/verification-store.ts";
 import {
   batchesOf,
@@ -24,9 +26,7 @@ import {
   tasks,
   writeRecords,
 } from "#/verification-store.ts";
-import type { Platform } from "#/verification.ts";
 import {
-  platforms,
   verification,
   verifiedGeneration,
   verifiedFingerprint,
@@ -194,7 +194,7 @@ const pull = async (evidence: string | undefined) => {
 
   writeFileSync(projectionPath, code);
 
-  for (const packageManager of ["pnpm", "bun"] as const) {
+  for (const packageManager of packageManagers) {
     const covered = Object.values(projection.coverage[packageManager]);
     print(
       `${covered.length} of ${verifiedStacks.length} stacks under ${packageManager} covered by ${new Set(covered.map(({ by }) => by)).size} Linux records`
@@ -239,7 +239,7 @@ const runStackCommand = async (
   }
 
   const managers: readonly PackageManager[] =
-    requested === "all" ? ["pnpm", "bun"] : [requested];
+    requested === "all" ? packageManagers : [requested];
 
   const matching = pattern === undefined ? undefined : new RegExp(pattern, "u");
 

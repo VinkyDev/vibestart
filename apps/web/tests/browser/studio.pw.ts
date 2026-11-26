@@ -47,6 +47,20 @@ test("switches independent modes and restores them through browser history", asy
   ).toBeVisible();
 });
 
+test("shows the development command for Expo alone or beside a server", async ({
+  page,
+}) => {
+  const create = page.locator("section").filter({
+    has: page.getByRole("heading", { name: "Create", exact: true }),
+  });
+
+  const lastStep = create.locator("ol code").last();
+  await page.goto("/studio?framework=none&backend=none&mobile=expo");
+  await expect(lastStep).toHaveText("vp run dev:mobile");
+  await page.goto("/studio?framework=none&backend=hono&mobile=expo");
+  await expect(lastStep).toHaveText("vp run dev");
+});
+
 test("keeps an incompatible deep link inside Effect mode", async ({ page }) => {
   await page.goto("/studio?mode=effect&api=orpc&framework=next");
   await expect(page.locator("main")).toContainText("Effect RPC");
@@ -190,6 +204,11 @@ test("selects Effect testing and removes persistence through the picker", async 
     fullPage: true,
     animations: "disabled",
   });
+
+  await page.getByRole("button", { name: /Vitest/u }).click();
+  const details = page.getByRole("dialog");
+  await expect(details).toContainText("HTTP and RPC health checks");
+  await expect(details).toContainText("API documentation routes");
 });
 
 test("composes Effect on the home page and opens it in Studio", async ({

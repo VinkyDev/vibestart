@@ -1,5 +1,10 @@
 import type { Choices } from "@vibestart/core";
-import { compose, defaultAddons, resolve } from "@vibestart/core";
+import {
+  compose,
+  defaultAddons,
+  packageManagers,
+  resolve,
+} from "@vibestart/core";
 import { registry, stackLabel, verificationOf } from "@vibestart/integrations";
 
 import { addonsValue, kindFlag, none, noneLabel } from "#/options.ts";
@@ -17,7 +22,7 @@ export const listing = async (choices: Choices = {}) => {
   const defaults = compose(registry, choices);
 
   return {
-    packageManagers: ["pnpm", "bun"],
+    packageManagers,
     defaultPackageManager: "pnpm",
     addons: registry.addons.map(
       ({ default: isDefault, description, id, name }) => ({

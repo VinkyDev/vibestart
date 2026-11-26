@@ -327,6 +327,7 @@
 /** @typedef {{}} Testing_QuestionInputs */
 /** @typedef {{}} Tests_Layer_UnitInputs */
 /** @typedef {{}} Tests_Scope_E2e_NoneInputs */
+/** @typedef {{}} Tests_Scope_HealthInputs */
 /** @typedef {{}} Tests_Scope_IntegrationInputs */
 /** @typedef {{}} Tests_Scope_MobileInputs */
 /** @typedef {{}} Tests_Scope_UnitInputs */
@@ -1746,6 +1747,10 @@ export const tests_layer_unit = /** @type {(inputs: Tests_Layer_UnitInputs) => L
 
 export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`A project without a web app has no end-to-end tests.`)
+};
+
+export const tests_scope_health = /** @type {(inputs: Tests_Scope_HealthInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Vitest exercises the HTTP and RPC health checks and the API documentation routes through the Effect server.`)
 };
 
 export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {

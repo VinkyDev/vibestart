@@ -329,6 +329,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Testing_QuestionInputs */
 /** @typedef {{}} Tests_Layer_UnitInputs */
 /** @typedef {{}} Tests_Scope_E2e_NoneInputs */
+/** @typedef {{}} Tests_Scope_HealthInputs */
 /** @typedef {{}} Tests_Scope_IntegrationInputs */
 /** @typedef {{}} Tests_Scope_MobileInputs */
 /** @typedef {{}} Tests_Scope_UnitInputs */
@@ -5011,6 +5012,20 @@ export const tests_scope_e2e_none = /** @type {((inputs?: Tests_Scope_E2e_NoneIn
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.tests_scope_e2e_none(inputs)
 	return __en.tests_scope_e2e_none(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Vitest exercises the HTTP and RPC health checks and the API documentation routes through the Effect server." |
+*
+* @param {Tests_Scope_HealthInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const tests_scope_health = /** @type {((inputs?: Tests_Scope_HealthInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Tests_Scope_HealthInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.tests_scope_health(inputs)
+	return __en.tests_scope_health(inputs)
 });
 /**
 * | output |

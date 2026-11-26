@@ -22,7 +22,11 @@ import {
   toolchainVersions,
   verificationOf,
 } from "@vibestart/integrations";
+import type { VerificationMatch } from "@vibestart/integrations";
+import { devCommands } from "@vibestart/integrations/dev-commands";
 
+import type { NextStep } from "#/create-summary.ts";
+import { nextStepsText, stackSummary } from "#/create-summary.ts";
 import type { Options } from "#/options.ts";
 import type { StepResult, Target } from "#/project.ts";
 import {
@@ -47,10 +51,6 @@ import {
   noninteractiveDefaults,
 } from "#/stack.ts";
 import type { Ui } from "#/ui.ts";
-
-type Verification = NonNullable<
-  Awaited<ReturnType<typeof verificationOf>>
->["record"];
 
 const chooseTarget = async ({ directory, interactive }: Options) => {
   if (directory === undefined && interactive) {
@@ -130,23 +130,6 @@ const installVitePlus = {
   run: "curl -fsSL https://vite.plus | bash",
 };
 
-const relativeTime = (iso: string) => {
-  const seconds = (Date.parse(iso) - Date.now()) / 1000;
-  const format = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-
-  const units = [
-    ["day", 86_400],
-    ["hour", 3600],
-    ["minute", 60],
-  ] as const;
-
-  const [unit, size] = units.find(
-    ([, length]) => Math.abs(seconds) >= length
-  ) ?? ["second", 1];
-
-  return format.format(Math.round(seconds / size), unit);
-};
-
 const chooseAddons = async (options: Options, addons: Given["addons"]) => {
   if (addons !== undefined) {
     return addons;
@@ -159,72 +142,6 @@ const chooseAddons = async (options: Options, addons: Given["addons"]) => {
     : defaults;
 };
 
-const testRows = (stack: Stack, kind: string, runner: string) => [
-  ["Unit & integration tests", "Vitest"],
-  ...(stack.framework === undefined ? [] : [[kind, runner]]),
-];
-
-const summary = (
-  stack: Stack,
-  addons: readonly string[],
-  verification: Verification | undefined,
-  packageManager: PackageManager
-) => {
-  const rows = [
-    ...registry.kinds.flatMap((kind) => {
-      const integration = registry.integrations.find(
-        (candidate) => candidate.id === stack[kind.id]
-      );
-
-      if (integration === undefined) {
-        return [];
-      }
-
-      return kind.id === "testing"
-        ? testRows(stack, kind.name, integration.name)
-        : [[kind.name, integration.name]];
-    }),
-    ["Package manager", packageManager],
-    [
-      "Extensions",
-      registry.addons
-        .filter((addon) => addons.includes(addon.id))
-        .map((addon) => addon.name)
-        .join(", ") || "None",
-    ],
-  ];
-
-  const width = Math.max(...rows.map(([kind = ""]) => kind.length));
-
-  return [
-    ...rows.map(([kind = "", name = ""]) => `${kind.padEnd(width)}  ${name}`),
-    "",
-    "✓ Compatible",
-    verification === undefined
-      ? "! Not verified at this version; run `vp run ready` in the project"
-      : `✓ Verified ${relativeTime(verification.verifiedAt)}: \`vp run ready\` passed on ${verification.environment.os} ${verification.environment.arch}, Node ${verification.environment.node}`,
-  ].join("\n");
-};
-
-const nextStepsText = (steps: readonly NextStep[]) => {
-  const width = Math.max(
-    ...steps.map((step) => (step.note === undefined ? 0 : step.run.length))
-  );
-
-  return steps
-    .map((step) =>
-      step.note === undefined
-        ? step.run
-        : `${step.run.padEnd(width)}   # ${step.note}`
-    )
-    .join("\n");
-};
-
-interface NextStep {
-  readonly run: string;
-  readonly note?: string | undefined;
-}
-
 export interface CreateResult {
   readonly packageManager: PackageManager;
   readonly dryRun: boolean;
@@ -233,7 +150,7 @@ export interface CreateResult {
   readonly stack: Stack;
   readonly addons: readonly string[];
   /** The stack's last passing `vp run ready` at this version, or `null`. */
-  readonly verification: NonNullable<Verification> | null;
+  readonly verification: VerificationMatch["record"] | null;
   readonly fileCount: number;
   /** Only in a dry run. */
   readonly files?: readonly { readonly path: string; readonly owner: string }[];
@@ -330,7 +247,10 @@ export const create = async (
 
   let match = await verificationOf(stack, addons, packageManager);
   let verification = match?.record;
-  ui.note("Your stack", summary(stack, addons, verification, packageManager));
+  ui.note(
+    "Your stack",
+    stackSummary(stack, addons, verification, packageManager)
+  );
 
   while (
     options.interactive &&
@@ -341,7 +261,10 @@ export const create = async (
     packageManager = await promptPackageManager(packageManager);
     match = await verificationOf(stack, addons, packageManager);
     verification = match?.record;
-    ui.note("Your stack", summary(stack, addons, verification, packageManager));
+    ui.note(
+      "Your stack",
+      stackSummary(stack, addons, verification, packageManager)
+    );
   }
 
   const generation = await generate(
@@ -374,7 +297,7 @@ export const create = async (
       note: note?.text,
       run,
     })),
-    { run: "vp run dev" },
+    { run: devCommands(stack)[0] },
   ];
 
   const result = {

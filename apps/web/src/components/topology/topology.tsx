@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 
 import type { Stack } from "@vibestart/core";
+import { hasWebApp } from "@vibestart/integrations/app-shape";
 import { cn } from "@vibestart/ui/lib/utils";
 
 import { Block } from "#/components/topology/block.tsx";
@@ -91,7 +92,7 @@ const ApiClients = ({ stack }: { readonly stack: Stack }) =>
   );
 
 const Visitors = ({ stack }: { readonly stack: Stack }) => {
-  const browser = stack.framework !== undefined;
+  const browser = hasWebApp(stack);
   const Icon = browser ? Globe : TerminalSquare;
 
   return (

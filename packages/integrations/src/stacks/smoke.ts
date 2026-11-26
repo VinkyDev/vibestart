@@ -4,6 +4,8 @@ import path from "node:path";
 
 import type { Generation, Stack } from "@vibestart/core";
 
+import { closeDatabase } from "#/database.ts";
+
 import httpSmoke from "../../templates/testing/http-smoke/http-smoke.mjs.txt?raw";
 import {
   print,
@@ -12,25 +14,6 @@ import {
   writeEnvFiles,
   writeProject,
 } from "./project.ts";
-
-// What the generated `migrate.ts` closes `db` with, for the stack's ORM and driver.
-const closeStatement = ({ database, orm }: Stack) => {
-  if (orm === "prisma") {
-    return "await db.$disconnect();";
-  }
-
-  if (orm === "mongoose") {
-    return "await db.connection.close();";
-  }
-
-  if (database === "sqlite") {
-    return "db.$client.close();";
-  }
-
-  return database === "mysql"
-    ? "await db.$client.promise().end();"
-    : "await db.$client.end();";
-};
 
 export const smokeStack = ({
   generation,
@@ -96,7 +79,7 @@ export const smokeStack = ({
         ]
       : []),
     "} finally {",
-    ...(database === undefined ? [] : [`  ${closeStatement(stack)}`]),
+    ...(database === undefined ? [] : [`  ${closeDatabase(stack)}`]),
     "}",
     server
       ? 'console.log("Runtime imports passed; live database requests require stacks verify.");'

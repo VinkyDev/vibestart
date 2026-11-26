@@ -1,5 +1,6 @@
 import type {
   GeneratedFile,
+  PackageManager,
   GettingStartedStep,
   SetupCommand,
   Stack,
@@ -7,7 +8,7 @@ import type {
 } from "@vibestart/core";
 
 export interface Project {
-  readonly packageManager: "pnpm" | "bun";
+  readonly packageManager: PackageManager;
   readonly files: readonly GeneratedFile[];
   readonly setup: readonly SetupCommand[];
   readonly gettingStarted: readonly GettingStartedStep[];
@@ -43,7 +44,7 @@ const addonsKey = (addons: readonly string[]) =>
 
 export const projectKey = (
   addons: readonly string[],
-  packageManager: "pnpm" | "bun" = "pnpm"
+  packageManager: PackageManager = "pnpm"
 ) => `${packageManager === "bun" ? "bun:" : ""}${addonsKey(addons)}`;
 
 interface PreviewProject extends Omit<Project, "files"> {

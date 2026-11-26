@@ -22,19 +22,48 @@
 
 **App shape is not a kind.** It is a legal pairing of `framework` and `backend`. At least one of them is set, unless the stack has a mobile app:
 
-| `framework`              | `backend`     | Shape                                                                                                |
-| ------------------------ | ------------- | ---------------------------------------------------------------------------------------------------- |
-| `spa`                    | `effect-http` | Effect HTTP serves Effect RPC and the built SPA; Vite proxies both API paths in development          |
-| `spa`                    | `hono`        | Vite proxies `/api` (and `/rpc` with oRPC) in dev; Hono serves the built SPA in production           |
-| `spa`                    | none          | A static SPA served by nginx                                                                         |
-| `tanstack-start`, `next` | `self`        | The framework's own server                                                                           |
-| `tanstack-start`, `next` | `hono`        | Two processes: route handlers forward `/api` and `/rpc` to Hono, so session cookies stay first-party |
-| `tanstack-start`, `next` | none          | Server-rendered pages only, with no API or database                                                  |
-| none                     | `hono`        | A backend alone, tested by integration tests                                                         |
+| `framework`              | `backend`     | Shape                                                                                                                                |
+| ------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `spa`                    | `effect-http` | Effect HTTP serves Effect RPC and the built SPA; Vite proxies both API paths in development                                          |
+| `spa`                    | `hono`        | Vite proxies API requests in development. Node or Bun serves the built SPA with Hono. Cloudflare Workers serves it as static assets. |
+| `spa`                    | none          | A static SPA. Docker serves it with nginx and Cloudflare Workers serves it as static assets.                                         |
+| `tanstack-start`, `next` | `self`        | The framework's own server                                                                                                           |
+| `tanstack-start`, `next` | `hono`        | Two processes: route handlers forward `/api` and `/rpc` to Hono, so session cookies stay first-party                                 |
+| `tanstack-start`, `next` | none          | Server-rendered pages only, with no API or database                                                                                  |
+| none                     | `hono`        | A standalone Hono server. Selecting both an API and a database adds integration tests.                                               |
 
 A mobile app (`mobile`: `expo`) joins any of these shapes or stands alone. With a backend, it calls the API on port 3000 of the machine Metro runs on in development, which is Hono or the framework that forwards to it, and the origin in `EXPO_PUBLIC_API_URL` in a release build. Docker requires a web app or an HTTP server, so a mobile app alone has no deployment.
 
-`self` contributes nothing. It makes "has a backend" a value of the same kind in every shape, and frameworks branch on `ctx.has("self")`.
+`self` contributes nothing. It makes "has a backend" a value of the same kind in every shape, and the framework owns the API files for that shape.
+
+The generator and Studio derive page rendering and the API host from the stack in `app-shape.ts`. The Studio describes the integration tests selected by the generator, including the HTTP and RPC health checks for a stateless Effect stack. Development server ports depend on that shape. The SPA proxy and Electron share request prefixes, including the Worker RPC prefix under `/api`. Production file owners consume the shape separately: Hono renders its Node or Bun entry and image command, while the Workers integration configures routing and static assets.
+
+For a fixed legal stack, the request-handling decisions have these dependencies. A mark means changing the column can change the behavior in the row.
+
+| Observable behavior                         | Page and API ownership | Development wiring | Production hosting |
+| ------------------------------------------- | ---------------------- | ------------------ | ------------------ |
+| Which app owns page rendering and the API   | ×                      |                    |                    |
+| Where a browser request goes in development | ×                      | ×                  |                    |
+| Which process serves a production deep link | ×                      |                    | ×                  |
+
+For example, changing a local API port updates the local server and proxy configuration. Container service addresses and the executable's defaults belong to production or shared configuration. Changing Hono's static fallback affects the production entry for a Node or Bun SPA. Next.js serves its own pages and a Worker delegates static assets to the platform.
+
+## Design matrix
+
+Read the columns as design parameters (DPs) and the rows as functional requirements (FRs). A mark means a change to the column can affect the row, including through an earlier result. Compare the same user input, installed release and external services. An input such as a different database selection can legitimately change several results.
+
+| Functional requirement                                                                   | Registry and constraints | App and data contracts | Contributions and rendering | Verification rules and records | Maintenance policy | CLI and Studio presentation |
+| ---------------------------------------------------------------------------------------- | ------------------------ | ---------------------- | --------------------------- | ------------------------------ | ------------------ | --------------------------- |
+| Determine which stacks are legal                                                         | ×                        |                        |                             |                                |                    |                             |
+| Determine page rendering, API host, SQL dialect and extra desktop or mobile auth origins | ×                        | ×                      |                             |                                |                    |                             |
+| Generate owned files, workspace manifests and setup steps                                | ×                        | ×                      | ×                           |                                |                    |                             |
+| Decide whether recorded CI passes cover the generated output                             | ×                        | ×                      | ×                           | ×                              |                    |                             |
+| Plan edits to an existing project from its recorded release                              | ×                        | ×                      | ×                           |                                | ×                  |                             |
+| Present choices, previews, verification and maintenance results                          | ×                        | ×                      | ×                           | ×                              | ×                  | ×                           |
+
+This matrix is block lower triangular. Its first diagonal block includes constraints in both directions. For example, a SQL database needs a SQL ORM and Drizzle needs a SQL database. The resolver chooses those pairs together. Reordering individual kinds cannot remove those dependencies.
+
+The interfaces make the zero entries observable. The resolver checks integration metadata. The generator calls contributors after the stack passes those checks. Generation derives host and database facts from the resolved stack, collects contributions, then renders files. Verification checks the output against the union of the facets covered by passes. The projection names one representative pass for display. Maintenance compares the original and target outputs with the user's files. Changing a record can change a verification badge, while the same blueprint still generates the same files and upgrade plan. The Studio build and the CLI validate the same verification projection.
 
 ## Resolver
 
@@ -98,4 +127,4 @@ Git is the record of a write. A write requires a clean worktree, so `git diff` s
 - **Contributions, not AST transforms.** One owner renders each shared file, which is what lets `add` merge correctly.
 - **The resolver enumerates and explains.** Every refusal has a `reason` and the smallest fix.
 - **Verification is static data.** CI keeps it on the `verification` branch, and the CLI and the Studio embed it at build, so "Verified" works offline and only CI's environment counts.
-- **Tests follow risk.** Playwright or TesterArmy e2e covers the main path black-box against a real server and a test database of its own; Vitest integration tests call the API in process against a real database, one database per test file; unit tests go to dense logic; nothing of the project is mocked. The rules ship in each project's `AGENTS.md`.
+- **Tests follow risk.** Playwright or TesterArmy e2e drives a real browser against the server. Vitest integration tests call the API in process. A stateless Effect stack exercises HTTP and RPC health checks. With persistence, each Vitest integration test file gets its own database. Browser tests share one database for the end-to-end run. Unit tests cover branching logic. Tests use the project’s real components. The rules ship in each project's `AGENTS.md`.

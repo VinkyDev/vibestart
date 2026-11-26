@@ -6,15 +6,11 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import {
-  apiTemplates,
-  databaseCheck,
-  databaseName,
-  hasWebApp,
-  ormDependencies,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { apiTemplates } from "#/api-templates.ts";
+import { hasWebApp } from "#/app-shape.ts";
+import { databaseCheck, databaseName, ormDependencies } from "#/database.ts";
+import { todosExample } from "#/example.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -130,7 +126,7 @@ export const openapi = defineIntegration({
     }),
     ...apiTemplates(ctx, "openapi", "packages/api/src/routes/todos.ts"),
     file("packages/api/src/routes/health.ts", renderHealth(ctx)),
-    ...(hasWebApp(ctx) && todosExample(ctx) ? webFiles(ctx) : []),
+    ...(hasWebApp(ctx.stack) && todosExample(ctx.stack) ? webFiles(ctx) : []),
     contribute(packageJson, {
       dependencies: [
         ...(ctx.stack.database === undefined
@@ -151,11 +147,11 @@ export const openapi = defineIntegration({
       path: "apps/server",
     }),
     contribute(agentsMap, {
-      owns: `OpenAPI routes (\`createApi\`), their Zod schemas, the reference docs, and the \`Api\` type ${hasWebApp(ctx) ? "the web client is" : "clients are"} typed from`,
+      owns: `OpenAPI routes (\`createApi\`), their Zod schemas, the reference docs, and the \`Api\` type ${hasWebApp(ctx.stack) ? "the web client is" : "clients are"} typed from`,
       path: "packages/api",
     }),
     contribute(agentsConventions, {
-      text: `Declare it with \`createRoute\` in a module under \`packages/api/src/routes/\`, with a Zod schema for every request part and every response status, and mount that module in \`packages/api/src/index.ts\`. ${ctx.stack.database === undefined ? "Pass what a route needs through `createApi`'s parameters" : "Read the database from the `db` the routes are created with"}, and answer an expected failure with its declared status. The OpenAPI document and ${hasWebApp(ctx) ? "the web client's" : "`hono/client`'s"} types follow with no codegen step.`,
+      text: `Declare it with \`createRoute\` in a module under \`packages/api/src/routes/\`, with a Zod schema for every request part and every response status, and mount that module in \`packages/api/src/index.ts\`. ${ctx.stack.database === undefined ? "Pass what a route needs through `createApi`'s parameters" : "Read the database from the `db` the routes are created with"}, and answer an expected failure with its declared status. The OpenAPI document and ${hasWebApp(ctx.stack) ? "the web client's" : "`hono/client`'s"} types follow with no codegen step.`,
       title: "Route",
     }),
     contribute(readmeTagline, "OpenAPI"),

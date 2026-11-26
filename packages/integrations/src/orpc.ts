@@ -6,18 +6,14 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import {
-  apiTemplates,
-  clientComponent,
-  databaseCheck,
-  importBlock,
-  ormDependencies,
-  rpcPath,
-  hasWebApp,
-  serverApp,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { apiTemplates } from "#/api-templates.ts";
+import { hasWebApp } from "#/app-shape.ts";
+import { databaseCheck, ormDependencies } from "#/database.ts";
+import { todosExample } from "#/example.ts";
+import { importBlock } from "#/format.ts";
+import { rpcPath } from "#/request-paths.ts";
+import { serverApp } from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -25,6 +21,7 @@ import {
   readmeLayers,
   readmeTagline,
 } from "#/vite-plus/slots.ts";
+import { clientComponent } from "#/web-pages.ts";
 
 const routerPath = "packages/api/src/index.ts";
 
@@ -34,7 +31,7 @@ const router = (ctx: Context) => {
 
   return file(
     routerPath,
-    todosExample(ctx)
+    todosExample(ctx.stack)
       ? content
       : content
           .split("\n")
@@ -107,7 +104,7 @@ export const orpc = defineIntegration({
     router(ctx),
     ...apiTemplates(ctx, "orpc", "packages/api/src/routers/todos.ts"),
     file("packages/api/src/routers/health.ts", renderHealth(ctx)),
-    ...(hasWebApp(ctx) ? webClient(ctx) : []),
+    ...(hasWebApp(ctx.stack) ? webClient(ctx) : []),
     contribute(packageJson, {
       dependencies: [
         ...(ctx.stack.database === undefined
@@ -129,7 +126,7 @@ export const orpc = defineIntegration({
       ],
       path: serverApp(ctx).dir,
     }),
-    ...(hasWebApp(ctx)
+    ...(hasWebApp(ctx.stack)
       ? [
           contribute(packageJson, {
             dependencies: [
@@ -142,11 +139,11 @@ export const orpc = defineIntegration({
         ]
       : []),
     contribute(agentsMap, {
-      owns: `oRPC routers, \`publicProcedure\`, ${ctx.has("better-auth") ? "`protectedProcedure`, " : ""}and the \`AppRouter\` type ${hasWebApp(ctx) ? "the web client is" : "clients are"} typed from`,
+      owns: `oRPC routers, \`publicProcedure\`, ${ctx.has("better-auth") ? "`protectedProcedure`, " : ""}and the \`AppRouter\` type ${hasWebApp(ctx.stack) ? "the web client is" : "clients are"} typed from`,
       path: "packages/api",
     }),
     contribute(agentsConventions, {
-      text: `Add it on a router in \`packages/api/src/routers/\` and register that router in \`packages/api/src/index.ts\`. Validate input with Zod, ${ctx.stack.database === undefined ? "add what a procedure reads per request to `Context` in `packages/api/src/context.ts`" : "read the database from `context.db`"}, and throw \`ORPCError\` for an expected failure. ${hasWebApp(ctx) ? "The web client takes" : "Clients typed from `AppRouterClient` take"} the new type with no codegen step.`,
+      text: `Add it on a router in \`packages/api/src/routers/\` and register that router in \`packages/api/src/index.ts\`. Validate input with Zod, ${ctx.stack.database === undefined ? "add what a procedure reads per request to `Context` in `packages/api/src/context.ts`" : "read the database from `context.db`"}, and throw \`ORPCError\` for an expected failure. ${hasWebApp(ctx.stack) ? "The web client takes" : "Clients typed from `AppRouterClient` take"} the new type with no codegen step.`,
       title: "Procedure",
     }),
     contribute(readmeTagline, "oRPC"),

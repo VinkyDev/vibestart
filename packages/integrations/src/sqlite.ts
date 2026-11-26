@@ -1,7 +1,13 @@
 import { contribute, defineIntegration } from "@vibestart/core";
 
-import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
-import { composeAppVolumes, composeVolumes, dockerRuntime } from "#/docker.ts";
+import { ormRelease } from "#/database.ts";
+import {
+  composeAppVolumes,
+  composeVolumes,
+  dockerRuntime,
+} from "#/docker/slots.ts";
+import { serverEnv } from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import {
   ignoredFiles,
   readmeLayers,

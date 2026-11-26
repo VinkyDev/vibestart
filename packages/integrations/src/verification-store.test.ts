@@ -6,6 +6,8 @@ import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import { goldens } from "#/goldens.ts";
 import { taskLabel } from "#/stack-label.ts";
+import type { StackVerification } from "#/verification-projection.ts";
+import { emptyProjection } from "#/verification-projection.ts";
 import {
   batchesOf,
   currentRecords,
@@ -15,12 +17,7 @@ import {
   tasks,
   writeRecords,
 } from "#/verification-store.ts";
-import type { StackVerification } from "#/verification.ts";
-import {
-  emptyProjection,
-  verifiedFingerprint,
-  verifiedStacks,
-} from "#/verification.ts";
+import { verifiedFingerprint, verifiedStacks } from "#/verification.ts";
 
 const dirs: string[] = [];
 

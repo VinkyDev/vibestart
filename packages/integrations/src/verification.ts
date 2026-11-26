@@ -1,50 +1,24 @@
-import { z } from "zod";
-
-import type {
-  Blueprint,
-  PackageManager,
-  Stack,
-  Verification,
-} from "@vibestart/core";
+import type { Blueprint, PackageManager, Stack } from "@vibestart/core";
 import {
   defaultAddons,
   defaultsCover,
   fingerprint,
   generate,
   legalStacks,
-  verificationSchema,
 } from "@vibestart/core";
 
 import type { Facets } from "#/coverage.ts";
 import { bunFacets, pnpmFacets } from "#/coverage.ts";
 import { registry } from "#/registry.ts";
 import { stackLabel, taskLabel } from "#/stack-label.ts";
-
-/** Every stack is covered on Linux; the goldens are also verified on Windows. */
-export const platforms = ["linux", "windows"] as const;
-
-export type Platform = (typeof platforms)[number];
-
-/** For each verified stack's task label, its fingerprint when the store was read and the task whose record covers it. */
-const coverageSchema = z.record(
-  z.string(),
-  z.strictObject({ by: z.string(), fingerprint: z.string() })
-);
-
-/** Each platform's records for the current output by task label, and the Linux tasks they cover. */
-const projectionSchema = z.strictObject({
-  coverage: z.strictObject({ bun: coverageSchema, pnpm: coverageSchema }),
-  linux: verificationSchema,
-  windows: verificationSchema,
-});
-
-export type Projection = z.infer<typeof projectionSchema>;
-
-export const emptyProjection = (): Projection => ({
-  coverage: { bun: {}, pnpm: {} },
-  linux: {},
-  windows: {},
-});
+import {
+  emptyProjection,
+  projectionSchema,
+} from "#/verification-projection.ts";
+import type {
+  Projection,
+  StackVerification,
+} from "#/verification-projection.ts";
 
 /** `vp run stacks pull` writes this from the verification store; a checkout without it verifies nothing. */
 const projections = import.meta.glob("../verification.json", {
@@ -149,8 +123,6 @@ export const verifiedFingerprint = async (
   return output.fingerprint;
 };
 
-export type StackVerification = Verification[string];
-
 /** Whether `record` passed at the stack's current output. */
 export const vouchesFor = async (
   record: StackVerification | undefined,
@@ -166,21 +138,6 @@ export interface VerificationMatch {
   readonly record: StackVerification;
 }
 
-const matchRecorded = (
-  projection: Projection,
-  stack: Stack,
-  packageManager: PackageManager
-): VerificationMatch | undefined => {
-  const entry =
-    projection.coverage[packageManager][taskLabel(stack, packageManager)];
-
-  const record = entry === undefined ? undefined : projection.linux[entry.by];
-
-  return entry !== undefined && record !== undefined
-    ? { label: entry.by, record }
-    : undefined;
-};
-
 const matchOf = async (
   projection: Projection,
   stack: Stack,
@@ -189,12 +146,15 @@ const matchOf = async (
   const entry =
     projection.coverage[packageManager][taskLabel(stack, packageManager)];
 
-  const match = matchRecorded(projection, stack, packageManager);
+  if (entry === undefined) {
+    return undefined;
+  }
 
-  return match !== undefined &&
-    entry !== undefined &&
+  const record = projection.linux[entry.by];
+
+  return record !== undefined &&
     entry.fingerprint === (await verifiedFingerprint(stack, packageManager))
-    ? match
+    ? { label: entry.by, record }
     : undefined;
 };
 

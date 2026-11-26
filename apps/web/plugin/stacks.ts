@@ -7,6 +7,7 @@ import {
   defaultAddons,
   generate,
   legalStacks,
+  packageManagers,
 } from "@vibestart/core";
 import { verificationOf, registry, stackLabel } from "@vibestart/integrations";
 import type { VerificationMatch } from "@vibestart/integrations";
@@ -113,7 +114,7 @@ const subsets = (ids: readonly string[]) => {
 
 const projectSets = new Map(
   subsets(registry.addons.map((addon) => addon.id)).flatMap((addons) =>
-    (["pnpm", "bun"] as const).map(
+    packageManagers.map(
       (packageManager) =>
         [
           projectKey(addons, packageManager),

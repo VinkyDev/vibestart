@@ -29,7 +29,7 @@ Docker 部署网页应用和服务端。镜像中不包含移动端，因此只�
 
 ## Expo Go 与开发构建 [#builds]
 
-`vp run dev:mobile` 在单独的终端中启动 Metro，与 `vp run dev` 分开。用 Expo Go 扫描二维码即可在手机上打开 App，也可以按 `a` 或 `i` 使用 Android 模拟器或 iOS 模拟器。Expo Go 已包含生成的 App 用到的所有原生模块，因此开始开发不需要原生构建。
+`vp run dev:mobile` 启动 Metro。纯 Expo 项目只需这条开发命令。如果项目还有 Web 应用或 API，请在另一个终端用 `vp run dev` 启动它。用 Expo Go 扫描二维码即可在手机上打开 App，也可以按 `a` 或 `i` 使用 Android 模拟器或 iOS 模拟器。Expo Go 已包含生成的 App 用到的所有原生模块，因此开始开发不需要原生构建。
 
 <Callout title="每个 Expo Go 构建只有一个 SDK 版本" type="warn">
   每个 Expo Go 构建只运行一个 Expo SDK。App Store 中的 Expo Go 止步于 SDK

@@ -1,20 +1,21 @@
 import type { Context } from "@vibestart/core";
 
-import { hasBackend, todosExample } from "#/app.ts";
+import { backendHost, hasBackend } from "#/app-shape.ts";
+import { todosExample } from "#/example.ts";
 
 const startCall = (dir: string, args: string[], env: string[], bun = false) =>
   `    children.push(start(${dir}, [${args.join(", ")}], { ${env.join(", ")} }${bun ? ', "bun"' : ""}));`;
 
 // Requesting each page once compiles it before the first test waits on it.
 const warmUp = (ctx: Context) => {
-  if (!hasBackend(ctx)) {
+  if (!hasBackend(ctx.stack)) {
     return [];
   }
 
   const routes = [
     "/",
     ...(ctx.has("better-auth") ? ["/login"] : []),
-    ...(todosExample(ctx) ? ["/todos"] : []),
+    ...(todosExample(ctx.stack) ? ["/todos"] : []),
   ].map((route) => `"${route}"`);
 
   return [
@@ -50,10 +51,10 @@ const nextDistDir = (ctx: Context, port: string) =>
   ctx.has("next") ? [`NEXT_DIST_DIR: \`.next-test-\${${port}}\``] : [];
 
 const healthCheck = (ctx: Context) =>
-  `    await waitForServer(\`\${baseURL}${hasBackend(ctx) ? "/api/health" : "/"}\`);`;
+  `    await waitForServer(\`\${baseURL}${hasBackend(ctx.stack) ? "/api/health" : "/"}\`);`;
 
 const loadEnv = (ctx: Context) =>
-  hasBackend(ctx)
+  hasBackend(ctx.stack)
     ? [
         "  if (existsSync(envFile)) {",
         "    process.loadEnvFile(envFile);",
@@ -98,7 +99,7 @@ const singleServerBody = (ctx: Context) => ({
 const cleanup = (ctx: Context) => {
   const tasks = [
     ...(ctx.stack.database === undefined ? [] : ["database.remove()"]),
-    ...(hasBackend(ctx) ? ["closeTestHttp()"] : []),
+    ...(hasBackend(ctx.stack) ? ["closeTestHttp()"] : []),
   ];
 
   return tasks.length === 0
@@ -112,9 +113,10 @@ const cleanup = (ctx: Context) => {
 const startBody = (ctx: Context) => {
   const database = ctx.stack.database !== undefined;
 
-  const { ports, starts } = ctx.has("hono")
-    ? separateServerBody(ctx)
-    : singleServerBody(ctx);
+  const { ports, starts } =
+    backendHost(ctx.stack) === "standalone"
+      ? separateServerBody(ctx)
+      : singleServerBody(ctx);
 
   return [
     ...loadEnv(ctx),
@@ -162,7 +164,7 @@ const imports = (ctx: Context) => [
   'import { spawn, spawnSync } from "node:child_process";',
   'import type { ChildProcess } from "node:child_process";',
   'import { once } from "node:events";',
-  ...(hasBackend(ctx) ? ['import { existsSync } from "node:fs";'] : []),
+  ...(hasBackend(ctx.stack) ? ['import { existsSync } from "node:fs";'] : []),
   'import { fileURLToPath } from "node:url";',
   "",
   'import { retry } from "es-toolkit/function";',
@@ -170,7 +172,7 @@ const imports = (ctx: Context) => [
   ...(ctx.stack.database === undefined
     ? []
     : [`import { createTestDatabase } from "${ctx.scope}/db/testing";`, ""]),
-  ...(hasBackend(ctx)
+  ...(hasBackend(ctx.stack)
     ? ['import { closeTestHttp } from "./http.ts";', ""]
     : []),
 ];
@@ -180,14 +182,14 @@ const declarations = (ctx: Context) => [
   `export const e2eBaseURL = \`http://localhost:\${process.env.E2E_TEST_PORT ?? "3200"}\`;`,
   "",
   'const webDir = fileURLToPath(new URL("../..", import.meta.url));',
-  ...(ctx.has("hono")
+  ...(backendHost(ctx.stack) === "standalone"
     ? [
         'const serverDir = fileURLToPath(new URL("../../../server", import.meta.url));',
       ]
     : []),
-  ...(hasBackend(ctx)
+  ...(hasBackend(ctx.stack)
     ? [
-        `const envFile = \`\${${ctx.has("hono") ? "serverDir" : "webDir"}}/.env\`;`,
+        `const envFile = \`\${${backendHost(ctx.stack) === "standalone" ? "serverDir" : "webDir"}}/.env\`;`,
       ]
     : []),
   "",
@@ -196,7 +198,7 @@ const declarations = (ctx: Context) => [
 // workerd can optimize Worker dependencies before listening; it needs the same cold start budget as Next.
 const helpers = (
   ctx: Context
-) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") || (ctx.has("workers") && (ctx.has("tanstack-start") || hasBackend(ctx))) ? 300 : 100}): Promise<void> => {
+) => `const waitForServer = async (url: string, attempts = ${ctx.has("next") || (ctx.has("workers") && (ctx.has("tanstack-start") || hasBackend(ctx.stack))) ? 300 : 100}): Promise<void> => {
   await retry(
     async () => {
       const response = await fetch(url);

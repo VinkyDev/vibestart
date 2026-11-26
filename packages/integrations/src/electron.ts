@@ -7,8 +7,9 @@ import {
   pnpmWorkspace,
 } from "@vibestart/core";
 
-import { hasBackend, serverPaths } from "#/app.ts";
+import { hasBackend } from "#/app-shape.ts";
 import { knipEntries } from "#/knip.ts";
+import { serverPaths } from "#/request-paths.ts";
 import { templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -29,13 +30,11 @@ const effectPaths = [
   "packages/electron/src/index.ts",
 ];
 
-const apiPaths = (ctx: Context) => (hasBackend(ctx) ? serverPaths(ctx) : []);
-
 const config = (ctx: Context) =>
   file(
     "apps/desktop/src/main/config.ts",
     [
-      `export const apiPaths: readonly string[] = [${apiPaths(ctx)
+      `export const apiPaths: readonly string[] = [${serverPaths(ctx)
         .map((apiPath) => `"${apiPath}"`)
         .join(", ")}];`,
       "",
@@ -45,8 +44,8 @@ const config = (ctx: Context) =>
   );
 
 const architecture = (ctx: Context) => {
-  const api = hasBackend(ctx)
-    ? ` The packaged app forwards ${apiPaths(ctx)
+  const api = hasBackend(ctx.stack)
+    ? ` The packaged app forwards ${serverPaths(ctx)
         .map((apiPath) => `\`${apiPath}\``)
         .join(
           " and "

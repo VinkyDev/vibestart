@@ -1,9 +1,9 @@
 import type { Context } from "@vibestart/core";
-import { contribute, file, packageJson } from "@vibestart/core";
+import { contribute, file } from "@vibestart/core";
 
-import { homePage, stackHeadline } from "#/app.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
+import { homePage } from "#/web-pages.ts";
 
 const spaFiles = (ctx: Context) => {
   const router = "apps/web/src/router.tsx";
@@ -34,25 +34,7 @@ export const effectSpa = (ctx: Context) => [
   ...templateFiles(ctx, "spa/common", {
     except: ["apps/web/src/router.tsx"],
   }),
-  ...templateFiles(ctx, "spa/proxy"),
   ...spaFiles(ctx),
-  contribute(stackHeadline, { name: "React", role: "Frontend" }),
-  contribute(packageJson, {
-    path: "apps/web",
-    imports: { "#src/*": "./src/*" },
-    scripts: { dev: "vp dev", build: "vp build", preview: "vp preview" },
-    devDependencies: [
-      `${ctx.scope}/config`,
-      "@tailwindcss/vite",
-      "@tanstack/router-plugin",
-      "@types/node",
-      "@vitejs/plugin-react",
-      "oxc-transform-react",
-      "typescript",
-      "vite",
-      "vite-plus",
-    ],
-  }),
   contribute(agentsMap, {
     path: "apps/web",
     owns: `React SPA: TanStack Router file routes, Effect Atom clients${ctx.has("better-auth") ? ", Better Auth" : ""}, and browser tests`,

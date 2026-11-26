@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import { check } from "#/constraints.ts";
 import type { Requirement } from "#/integration.ts";
 import { defineIntegration } from "#/integration.ts";
 import { defineRegistry } from "#/registry.ts";
 import {
-  check,
   choicesOf,
   compose,
   kindOptions,
@@ -468,15 +468,18 @@ describe("integration choice constraints", () => {
     ),
   });
 
-  it("prunes incompatible branches while retaining an allowed absent choice", () => {
-    const stacks = legalStacks(constrained);
-    expect(stacks.length).toBeGreaterThan(0);
-    expect(
-      stacks.every(
-        (stack) => stack.framework === "static" || stack.framework === undefined
-      )
-    ).toBeTruthy();
-    expect(stacks.some((stack) => stack.framework === undefined)).toBeTruthy();
+  it("finds the same legal stacks when an allowlist applies to an earlier or later kind", () => {
+    const expected = legalStacks(registry).filter(
+      (stack) => stack.framework === "static" || stack.framework === undefined
+    );
+
+    const reversed = defineRegistry({
+      ...constrained,
+      kinds: constrained.kinds.toReversed(),
+    });
+
+    expect(legalStacks(constrained)).toStrictEqual(expected);
+    expect(new Set(legalStacks(reversed))).toStrictEqual(new Set(expected));
     expect(
       check(constrained, {
         toolchain: "vp",

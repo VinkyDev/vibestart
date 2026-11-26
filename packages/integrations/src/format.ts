@@ -34,3 +34,7 @@ export const commentedShell = (
     )
     .join("\n");
 };
+
+/** The import block of a generated module: the imports, then a blank line, or nothing. */
+export const importBlock = (imports: readonly string[]) =>
+  imports.length === 0 ? [] : [...imports, ""];

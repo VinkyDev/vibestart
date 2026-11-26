@@ -1,9 +1,8 @@
 import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
-import { serverEnv, stackHeadline } from "#/app.ts";
-import { composeEnv } from "#/docker.ts";
-import { quote } from "#/format.ts";
+import { authEnvironment, trustedOrigins } from "#/better-auth/settings.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { agentsMap, readmeLayers } from "#/vite-plus/slots.ts";
 
@@ -17,10 +16,7 @@ const authIndex = (ctx: Context) => {
   let source = templateContent(ctx, set, path);
   const mobile = ctx.has("expo");
 
-  const trustedOrigins = [
-    ...(ctx.has("electron") ? ["rendererOrigin"] : []),
-    ...(mobile ? [quote(`${ctx.name}://`)] : []),
-  ];
+  const origins = trustedOrigins(ctx);
 
   if (mobile) {
     source = replaceOnce(
@@ -47,9 +43,9 @@ const authIndex = (ctx: Context) => {
           "    plugins: [expo()],",
         ]
       : []),
-    ...(trustedOrigins.length === 0
+    ...(origins.length === 0
       ? []
-      : [`    trustedOrigins: [${trustedOrigins.join(", ")}],`]),
+      : [`    trustedOrigins: [${origins.join(", ")}],`]),
   ];
 
   if (extraOptions.length > 0) {
@@ -103,35 +99,7 @@ export const effectAuth = (ctx: Context) => [
       ? ["better-auth"]
       : ["better-auth", "sonner"],
   }),
-  contribute(serverEnv, {
-    name: "BETTER_AUTH_URL",
-    example: "http://localhost:5173",
-    schema: "Config.string",
-  }),
-  contribute(serverEnv, {
-    name: "BETTER_AUTH_SECRET",
-    example: "",
-    schema: "Config.Redacted",
-  }),
-  // Expo Go from the app stores may send exp:// as the origin, which the Expo plugin trusts only
-  // in development. `node --watch` does not set NODE_ENV.
-  ...(ctx.has("expo")
-    ? [
-        contribute(serverEnv, {
-          name: "NODE_ENV",
-          example: "development",
-          schema: "Config.String",
-        }),
-      ]
-    : []),
-  contribute(composeEnv, {
-    name: "BETTER_AUTH_URL",
-    value: `\${BETTER_AUTH_URL:-http://localhost:3000}`,
-  }),
-  contribute(composeEnv, {
-    name: "BETTER_AUTH_SECRET",
-    value: `\${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}`,
-  }),
+  ...authEnvironment(ctx),
   contribute(agentsMap, {
     path: "packages/auth",
     owns: "The Auth service: Better Auth configured from Config on its official Promise adapter",

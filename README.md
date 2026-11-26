@@ -42,7 +42,8 @@ The agent installs the [vibestart skill](skills/vibestart/SKILL.md), chooses the
 Inside a generated project, [Vite+](https://viteplus.dev) (`vp`) runs development and checks, and the CLI keeps the template up to date:
 
 ```sh
-vp run dev                     # Start local development
+vp run dev                     # Start the web app or API
+vp run dev:mobile              # Start Expo, if selected
 vp run ready                   # Check types, lint, unused code, tests, and build
 npx vibestart-cli doctor       # Inspect project state and available template updates
 npx vibestart-cli upgrade      # Three-way merge template updates while keeping your code

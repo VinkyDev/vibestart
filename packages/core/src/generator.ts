@@ -1,13 +1,17 @@
 import type { Blueprint } from "#/blueprint.ts";
 import { renderBlueprint } from "#/blueprint.ts";
+import type { Violation } from "#/constraints.ts";
+import { check } from "#/constraints.ts";
 import type { Context, ReadSlot } from "#/integration.ts";
 import { defineSlot } from "#/integration.ts";
 import { packageJson, renderPackageJsons } from "#/package-json.ts";
 import { pnpmWorkspace, renderPnpmWorkspace } from "#/pnpm-workspace.ts";
-import type { Registry } from "#/registry.ts";
-import { addonsInOrder, getIntegration } from "#/registry.ts";
-import type { Violation } from "#/resolver.ts";
-import { check, selectedIntegrations } from "#/resolver.ts";
+import type { Catalog, Registry } from "#/registry.ts";
+import {
+  addonsInOrder,
+  getIntegration,
+  selectedIntegrations,
+} from "#/registry.ts";
 
 export interface GeneratedFile {
   readonly path: string;
@@ -94,6 +98,91 @@ export const projectNameError = (name: string) =>
     ? undefined
     : `Project name "${name}" must start with a lowercase letter, contain only lowercase letters, digits, and dashes, and be at most ${maxProjectNameLength} characters`;
 
+const collectContributions = (
+  registry: Registry,
+  blueprint: Blueprint,
+  name: string
+) => {
+  const integrations = selectedIntegrations(registry, blueprint.stack);
+  const addonIds = addonsInOrder(registry, blueprint.addons);
+  const addons = registry.addons.filter((addon) => addonIds.includes(addon.id));
+
+  const contributors = [...integrations, ...addons];
+  const selected = new Set(contributors.map(({ id }) => id));
+
+  const ctx: Context = {
+    packageManager: blueprint.packageManager ?? "pnpm",
+    addons: addonIds,
+    has: (id) => {
+      const included = selected.has(id);
+
+      // A misspelled id would otherwise read as an integration the stack left out.
+      if (!included && !registry.addons.some((addon) => addon.id === id)) {
+        getIntegration(registry, id);
+      }
+
+      return included;
+    },
+    name,
+    scope: `@${name}`,
+    stack: blueprint.stack,
+  };
+
+  const read: ReadSlot = (slot) => slot.values(ctx);
+
+  const owned: {
+    path: string;
+    owner: string;
+    render: (read: ReadSlot) => string;
+  }[] = [];
+
+  // Add-ons after the stack, so a slot lists what the stack contributes first.
+  for (const integration of contributors) {
+    for (const contribution of integration.contribute(ctx)) {
+      if (contribution.type === "slot") {
+        contribution.add(ctx);
+      } else {
+        owned.push({ ...contribution, owner: integration.id });
+      }
+    }
+  }
+
+  return { ctx, owned, read };
+};
+
+const workspaceFiles = (ctx: Context, catalog: Catalog, read: ReadSlot) => {
+  const manifests = read(packageJson);
+  const workspace = read(pnpmWorkspace);
+
+  const packages = renderPackageJsons(manifests, {
+    catalog,
+    name: ctx.name,
+    packageManager: ctx.packageManager,
+    read,
+    scope: ctx.scope,
+    workspaceContributions: workspace,
+  });
+
+  if (ctx.packageManager === "bun") {
+    return packages;
+  }
+
+  return [
+    ...packages,
+    {
+      content: renderPnpmWorkspace({
+        catalog,
+        contributions: workspace,
+        packagePaths: manifests.map(({ path }) => path),
+        usedDependencies: new Set(
+          packages.flatMap((pkg) => pkg.catalogDependencies)
+        ),
+      }),
+      path: "pnpm-workspace.yaml",
+    },
+  ];
+};
+
 export const generate = async (
   registry: Registry,
   blueprint: Blueprint,
@@ -119,75 +208,10 @@ export const generate = async (
     throw new IllegalStackError(violations);
   }
 
-  const integrations = selectedIntegrations(registry, blueprint.stack);
-  const addonIds = addonsInOrder(registry, blueprint.addons);
-  const addons = registry.addons.filter((addon) => addonIds.includes(addon.id));
-
-  const ctx: Context = {
-    packageManager: blueprint.packageManager ?? "pnpm",
-    addons: addonIds,
-    has: (id) => {
-      if (registry.addons.some((addon) => addon.id === id)) {
-        return addonIds.includes(id);
-      }
-
-      // A misspelled id would otherwise read as an integration the stack left out.
-      getIntegration(registry, id);
-
-      return integrations.some((integration) => integration.id === id);
-    },
-    name,
-    scope: `@${name}`,
-    stack: blueprint.stack,
-  };
-
-  const read: ReadSlot = (slot) => slot.values(ctx);
-
-  const owned: {
-    path: string;
-    owner: string;
-    render: (read: ReadSlot) => string;
-  }[] = [];
-
-  // Add-ons after the stack, so a slot lists what the stack contributes first.
-  for (const integration of [...integrations, ...addons]) {
-    for (const contribution of integration.contribute(ctx)) {
-      if (contribution.type === "slot") {
-        contribution.add(ctx);
-      } else {
-        owned.push({ ...contribution, owner: integration.id });
-      }
-    }
-  }
-
-  const packages = renderPackageJsons(read(packageJson), {
-    catalog: registry.catalog,
-    name,
-    packageManager: ctx.packageManager,
-    read,
-    scope: ctx.scope,
-    workspaceContributions: read(pnpmWorkspace),
-  });
+  const { ctx, owned, read } = collectContributions(registry, blueprint, name);
 
   const coreFiles = [
-    ...packages,
-    ...(ctx.packageManager === "bun"
-      ? []
-      : [
-          {
-            content: renderPnpmWorkspace({
-              catalog: registry.catalog,
-              contributions: read(pnpmWorkspace),
-              packagePaths: read(packageJson).map(
-                (contribution) => contribution.path
-              ),
-              usedDependencies: new Set(
-                packages.flatMap((pkg) => pkg.catalogDependencies)
-              ),
-            }),
-            path: "pnpm-workspace.yaml",
-          },
-        ]),
+    ...workspaceFiles(ctx, registry.catalog, read),
     {
       content: renderBlueprint(
         registry,
