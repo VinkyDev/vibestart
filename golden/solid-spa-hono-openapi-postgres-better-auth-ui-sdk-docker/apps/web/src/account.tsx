@@ -49,7 +49,7 @@ export const Account = () => {
               name={user().name}
               onSignOut={() => {
                 signOut().catch(() => {
-                  setError("Could not sign out. Try again.");
+                  setError("Could not sign out. Please try again.");
                 });
               }}
             />

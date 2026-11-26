@@ -3,7 +3,11 @@ import { contribute, defineIntegration, packageJson } from "@vibestart/core";
 import { effectConventions } from "#/effect/conventions.ts";
 import { knipEntries } from "#/knip.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
-import { agentsConventions, agentsNotes } from "#/vite-plus/slots.ts";
+import {
+  agentsConventions,
+  agentsNotes,
+  readmeOpen,
+} from "#/vite-plus/slots.ts";
 
 export const standard = defineIntegration({
   id: "standard",
@@ -28,9 +32,9 @@ export const effect = defineIntegration({
   homepage: "https://effect.website",
   choices: {
     toolchain: ["vite-plus"],
-    frontend: ["react"],
+    frontend: ["react", "solid"],
     framework: ["spa"],
-    router: ["tanstack-router"],
+    router: ["tanstack-router", "solid-router"],
     backend: ["effect-http"],
     api: ["effect-rpc"],
     database: ["postgres", "sqlite", null],
@@ -59,6 +63,10 @@ export const effect = defineIntegration({
     contribute(
       agentsNotes,
       `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: Effect Atom → POST /rpc (NDJSON) → schema validation${ctx.has("better-auth") ? " → AuthMiddleware" : ""} → Effect services${ctx.stack.database === undefined ? "" : ` → Drizzle on ${ctx.has("sqlite") ? "@effect/sql-sqlite-node" : "@effect/sql-pg"}`}. Vite proxies /rpc and /api in development; the Effect server serves the SPA in production. Set ${ctx.has("better-auth") ? "BETTER_AUTH_URL" : "APP_URL"} to the browser-facing origin. The RPC HTTP boundary rejects a supplied Origin that differs from it${ctx.has("electron") ? " or `rendererOrigin`" : ""} before decoding messages. RPC envelope headers never establish origin trust; non-browser clients may omit Origin.${ctx.stack.database !== undefined && !ctx.has("better-auth") ? " Todos are public and shared by all visitors; add authentication before storing private data." : ""}`
+    ),
+    contribute(
+      readmeOpen,
+      `Open http://localhost:5173${ctx.has("better-auth") ? " and create an account" : ""}. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production.`
     ),
     contribute(
       ultraciteOverrides,

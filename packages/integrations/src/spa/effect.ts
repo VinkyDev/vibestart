@@ -3,12 +3,7 @@ import { contribute, file, packageJson } from "@vibestart/core";
 
 import { homePage, stackHeadline } from "#/app.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
-import {
-  agentsMap,
-  readmeLayers,
-  readmeOpen,
-  readmeTagline,
-} from "#/vite-plus/slots.ts";
+import { agentsMap, readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 
 const spaFiles = (ctx: Context) => {
   const router = "apps/web/src/router.tsx";
@@ -67,8 +62,4 @@ export const effectSpa = (ctx: Context) => [
     choice: "React 19, TanStack Router, Effect Atom, Tailwind CSS 4",
   }),
   contribute(readmeTagline, "Effect"),
-  contribute(
-    readmeOpen,
-    `Open http://localhost:5173${ctx.has("better-auth") ? " and create an account" : ""}. API docs are at http://localhost:5173/api/docs. Vite proxies the API in development; the Effect server serves the SPA in production.`
-  ),
 ];

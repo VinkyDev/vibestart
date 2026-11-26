@@ -35,11 +35,12 @@ Standard is the default and suits most projects with familiar TypeScript and the
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect mode supports PostgreSQL or SQLite with optional Better Auth, or a stateless application. Choose either React UI kit and browser runner, then add Electron, Expo or Docker as needed. The package manager and addons are independent of these combinations.
+Effect mode supports PostgreSQL or SQLite with optional Better Auth, or a stateless application. Choose React with either UI kit, or Solid 2 with UI SDK. Select either browser runner, then add Electron, Expo or Docker as needed. The package manager and addons are independent of these combinations.
 
 | Flag         | Effect choices               | Default without prompts                             |
 | ------------ | ---------------------------- | --------------------------------------------------- |
-| `--ui`       | `shadcn`, `ui-sdk`           | `shadcn`                                            |
+| `--frontend` | `react`, `solid`             | `react`                                             |
+| `--ui`       | `shadcn`, `ui-sdk`           | React: `shadcn`; Solid: `ui-sdk`                    |
 | `--database` | `postgres`, `sqlite`, `none` | `sqlite`                                            |
 | `--orm`      | `drizzle`, `none`            | Inferred from the database                          |
 | `--auth`     | `better-auth`, `none`        | No default; choose explicitly when using a database |

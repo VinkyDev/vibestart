@@ -2,6 +2,7 @@ import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
 import { hasBackend, todosExample } from "#/app.ts";
+import { todoPageSource } from "#/spa/todo-page.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -49,19 +50,22 @@ const entry = (ctx: Context) => {
 
 export const solidSpa = (ctx: Context) => {
   const backend = hasBackend(ctx);
+  const todos = "apps/web/src/todos.tsx";
 
   return [
     ...templateFiles(ctx, "solid-spa/common", {
       except: ["apps/web/src/main.tsx"],
     }),
     entry(ctx),
-    ...(todosExample(ctx) ? templateFiles(ctx, "solid-spa/todos") : []),
+    ...(todosExample(ctx) && !ctx.has("effect-rpc")
+      ? [file(todos, todoPageSource(ctx, "solid-spa/todos", todos))]
+      : []),
     ...["index.html", "tsconfig.json", "tsconfig.node.json"].map((name) => {
       const path = `apps/web/${name}`;
 
       return file(path, templateContent(ctx, "spa/common", path));
     }),
-    ...(backend && !ctx.has("orpc")
+    ...(ctx.has("hono") && !ctx.has("orpc")
       ? templateFiles(ctx, "solid-spa/hono")
       : []),
     file(

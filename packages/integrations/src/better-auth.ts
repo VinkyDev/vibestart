@@ -16,7 +16,7 @@ import {
   stackHeadline,
   todosExample,
 } from "#/app.ts";
-import { effectAuth } from "#/better-auth/effect.ts";
+import { effectAuth, effectAuthPages } from "#/better-auth/effect.ts";
 import { composeEnv } from "#/docker.ts";
 import { quote } from "#/format.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
@@ -256,6 +256,10 @@ const webFiles = (ctx: Context) => {
     ];
   }
 
+  if (ctx.has("effect")) {
+    return effectAuthPages(ctx);
+  }
+
   const login = loginTemplate(ctx);
 
   return [
@@ -269,7 +273,7 @@ const webFiles = (ctx: Context) => {
 export const betterAuth = defineIntegration({
   contribute: (ctx) =>
     ctx.has("effect")
-      ? effectAuth(ctx)
+      ? [...effectAuth(ctx), ...webFiles(ctx)]
       : [
           ...templateFiles(ctx, "better-auth/common"),
           ...(hasWebApp(ctx) ? webFiles(ctx) : []),

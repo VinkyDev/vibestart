@@ -285,6 +285,25 @@ test("chooses Solid as the frontend and keeps its Vite and UI SDK selections", a
   ).toHaveCount(0);
 });
 
+test("switches an Effect PostgreSQL project to Solid and preserves its services", async ({
+  page,
+}) => {
+  await page.goto(
+    "/studio?mode=effect&frontend=react&database=postgres&auth=better-auth"
+  );
+  await page.getByRole("button", { name: /Frontend.*React/u }).click();
+  await page.getByRole("button", { name: /^Solid 2/u }).click();
+
+  await expect(page.locator("main")).toContainText("--frontend solid");
+  await expect(page.locator("main")).toContainText("--mode effect");
+  await expect(page.locator("main")).toContainText("Effect RPC");
+  await expect(page.locator("main")).toContainText("PostgreSQL");
+  await expect(page.locator("main")).toContainText("Better Auth");
+  await expect(
+    page.getByRole("button", { name: /UI SDK/u }).first()
+  ).toBeVisible();
+});
+
 test("selects the Workers runtime without changing TanStack Start", async ({
   page,
 }) => {

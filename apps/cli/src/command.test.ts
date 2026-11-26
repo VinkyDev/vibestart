@@ -528,13 +528,45 @@ describe("Effect mode", () => {
     expect(paths).not.toContain("apps/web/src/lib/query-client.ts");
   });
 
+  it.each([
+    { flags: ["--mode", "effect"], entry: "apps/web/src/routes/index.tsx" },
+    { flags: ["--api", "effect-rpc"], entry: "apps/web/src/routes/index.tsx" },
+    {
+      flags: ["--mode", "effect", "--frontend", "solid"],
+      entry: "apps/web/src/home.tsx",
+    },
+    {
+      flags: ["--backend", "effect-http", "--router", "solid-router"],
+      entry: "apps/web/src/home.tsx",
+    },
+  ])(
+    "resolves the Effect UI SDK frontend with $flags",
+    async ({ flags, entry }) => {
+      const result = await run(
+        "effect-app",
+        "--ui",
+        "ui-sdk",
+        "--auth",
+        "none",
+        ...flags,
+        "--dry-run"
+      );
+
+      const paths = previewSchema
+        .parse(result.output)
+        .files.map((file) => file.path);
+
+      expect(paths).toContain(entry);
+    }
+  );
+
   it("lists only adapted options in Effect mode", async () => {
     const result = await run("--list", "--mode", "effect");
     expect(result.exitCode).toBe(0);
 
     const output = listingSchema.parse(result.output);
 
-    expect(output.stacks).toHaveLength(160);
+    expect(output.stacks).toHaveLength(240);
     expect(
       ["mode", "database", "desktop", "mobile", "testing"].map(
         (kind) => output.kinds.find(({ id }) => id === kind)?.default

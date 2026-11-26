@@ -125,7 +125,10 @@ const spaSetup = (ctx: Context) => [
 export const spa = defineIntegration({
   contribute: (ctx) => {
     if (ctx.has("solid")) {
-      return [...solidSpa(ctx), ...spaSetup(ctx)];
+      return [
+        ...solidSpa(ctx),
+        ...(ctx.has("effect") ? viteConfig(ctx) : spaSetup(ctx)),
+      ];
     }
 
     if (ctx.has("effect")) {

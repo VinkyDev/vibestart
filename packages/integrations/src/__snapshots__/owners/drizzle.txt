@@ -1546,6 +1546,111 @@ migrateDatabase(db);
 
 db.$client.close();
 
+# apps/server/src/migrate.ts · 96 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
+import { NodeRuntime } from "@effect/platform-node";
+import { Effect } from "effect";
+
+import { Database } from "@my-app/db";
+import { migrateDatabase } from "@my-app/db/migrate";
+
+NodeRuntime.runMain(migrateDatabase.pipe(Effect.provide(Database.layerConfig)));
+
 # apps/server/src/migrate.ts · 144 stacks
 #   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
 #   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
@@ -1861,79 +1966,6 @@ try {
 } finally {
   await db.$client.end();
 }
-
-# apps/server/src/migrate.ts · 64 stacks
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-docker
-#   spa-effect-http-effect-rpc-postgres-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-electron-docker
-#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-expo-docker
-#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-docker
-#   spa-effect-http-effect-rpc-sqlite-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
-import { NodeRuntime } from "@effect/platform-node";
-import { Effect } from "effect";
-
-import { Database } from "@my-app/db";
-import { migrateDatabase } from "@my-app/db/migrate";
-
-NodeRuntime.runMain(migrateDatabase.pipe(Effect.provide(Database.layerConfig)));
 
 # apps/web/src/server/migrate.ts · 32 stacks
 #   next-self-mysql-better-auth-docker
@@ -2957,7 +2989,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 680 stacks
+# packages/db/drizzle.config.ts · 696 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -3078,6 +3110,22 @@ export default defineConfig({
 #   next-hono-postgres-ui-sdk-expo-bun-docker-e2e
 #   next-hono-postgres-ui-sdk-expo-docker
 #   next-hono-postgres-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-docker
@@ -3655,7 +3703,7 @@ export default defineConfig({
   schema: "./src/schema",
 });
 
-# packages/db/drizzle.config.ts · 536 stacks
+# packages/db/drizzle.config.ts · 552 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -3776,6 +3824,22 @@ export default defineConfig({
 #   next-hono-sqlite-ui-sdk-expo-bun-docker-e2e
 #   next-hono-sqlite-ui-sdk-expo-docker
 #   next-hono-sqlite-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-docker
@@ -6271,6 +6335,156 @@ export const createDb = (path: string) => {
 
 export type Database = ReturnType<typeof createDb>;
 
+# packages/db/src/index.ts · 48 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-docker
+#   spa-effect-http-effect-rpc-postgres-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-docker
+#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-expo-docker
+#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
+import { PgClient } from "@effect/sql-pg";
+import * as PgDrizzle from "drizzle-orm/effect-postgres";
+import type { Effect, Redacted } from "effect";
+import { Config, Context, Layer } from "effect";
+
+import { relations } from "#src/relations.ts";
+
+const make = PgDrizzle.makeWithDefaults({ relations });
+
+export class Database extends Context.Service<
+  Database,
+  Effect.Success<typeof make>
+>()("@my-app/db/Database") {
+  static readonly layer = Layer.effect(Database, make);
+
+  static readonly layerUrl = (url: Redacted.Redacted) =>
+    Database.layer.pipe(Layer.provide(PgClient.layer({ url })));
+
+  static readonly layerConfig = Database.layer.pipe(
+    Layer.provide(
+      PgClient.layerConfig({ url: Config.Redacted("DATABASE_URL") })
+    )
+  );
+}
+
+# packages/db/src/index.ts · 48 stacks
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-docker
+#   spa-effect-http-effect-rpc-sqlite-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
+import { SqliteClient } from "@effect/sql-sqlite-node";
+import * as SqliteDrizzle from "drizzle-orm/effect-sqlite-node";
+import type { Effect } from "effect";
+import { Config, Context, Layer, Redacted } from "effect";
+
+import { relations } from "#src/relations.ts";
+
+const make = SqliteDrizzle.makeWithDefaults({ relations });
+
+export class Database extends Context.Service<
+  Database,
+  Effect.Success<typeof make>
+>()("@my-app/db/Database") {
+  static readonly layer = Layer.effect(Database, make);
+
+  static readonly layerUrl = (url: Redacted.Redacted) =>
+    Database.layer.pipe(
+      Layer.provide(SqliteClient.layer({ filename: Redacted.value(url) }))
+    );
+
+  static readonly layerConfig = Database.layer.pipe(
+    Layer.provide(
+      SqliteClient.layerConfig({ filename: Config.String("DATABASE_URL") })
+    )
+  );
+}
+
 # packages/db/src/index.ts · 176 stacks
 #   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
 #   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
@@ -6656,124 +6870,6 @@ export const createDb = (url: string) =>
   });
 
 export type Database = ReturnType<typeof createDb>;
-
-# packages/db/src/index.ts · 32 stacks
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-docker
-#   spa-effect-http-effect-rpc-postgres-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-electron-docker
-#   spa-effect-http-effect-rpc-postgres-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-expo-docker
-#   spa-effect-http-effect-rpc-postgres-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
-import { PgClient } from "@effect/sql-pg";
-import * as PgDrizzle from "drizzle-orm/effect-postgres";
-import type { Effect, Redacted } from "effect";
-import { Config, Context, Layer } from "effect";
-
-import { relations } from "#src/relations.ts";
-
-const make = PgDrizzle.makeWithDefaults({ relations });
-
-export class Database extends Context.Service<
-  Database,
-  Effect.Success<typeof make>
->()("@my-app/db/Database") {
-  static readonly layer = Layer.effect(Database, make);
-
-  static readonly layerUrl = (url: Redacted.Redacted) =>
-    Database.layer.pipe(Layer.provide(PgClient.layer({ url })));
-
-  static readonly layerConfig = Database.layer.pipe(
-    Layer.provide(
-      PgClient.layerConfig({ url: Config.Redacted("DATABASE_URL") })
-    )
-  );
-}
-
-# packages/db/src/index.ts · 32 stacks
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-docker
-#   spa-effect-http-effect-rpc-sqlite-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
-import { SqliteClient } from "@effect/sql-sqlite-node";
-import * as SqliteDrizzle from "drizzle-orm/effect-sqlite-node";
-import type { Effect } from "effect";
-import { Config, Context, Layer, Redacted } from "effect";
-
-import { relations } from "#src/relations.ts";
-
-const make = SqliteDrizzle.makeWithDefaults({ relations });
-
-export class Database extends Context.Service<
-  Database,
-  Effect.Success<typeof make>
->()("@my-app/db/Database") {
-  static readonly layer = Layer.effect(Database, make);
-
-  static readonly layerUrl = (url: Redacted.Redacted) =>
-    Database.layer.pipe(
-      Layer.provide(SqliteClient.layer({ filename: Redacted.value(url) }))
-    );
-
-  static readonly layerConfig = Database.layer.pipe(
-    Layer.provide(
-      SqliteClient.layerConfig({ filename: Config.String("DATABASE_URL") })
-    )
-  );
-}
 
 # packages/db/src/migrate.ts · 744 stacks
 #   hono-mysql-better-auth-bun-docker
@@ -8870,7 +8966,23 @@ export const migrateDatabase = (db: Database) => {
   migrate(db, { migrationsFolder });
 };
 
-# packages/db/src/migrate.ts · 32 stacks
+# packages/db/src/migrate.ts · 48 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
@@ -8919,7 +9031,23 @@ export const migrateDatabase = Effect.gen(function* () {
   yield* migrate(db, { migrationsFolder });
 }).pipe(Effect.withSpan("migrateDatabase"));
 
-# packages/db/src/migrate.ts · 32 stacks
+# packages/db/src/migrate.ts · 48 stacks
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker
 #   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
 #   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
@@ -10088,7 +10216,7 @@ import { defineRelations } from "drizzle-orm";
 
 export const relations = defineRelations({});
 
-# packages/db/src/relations.ts · 696 stacks
+# packages/db/src/relations.ts · 712 stacks
 #   hono-openapi-mysql-better-auth-bun-docker
 #   hono-openapi-mysql-better-auth-docker
 #   hono-openapi-mysql-better-auth-expo-bun-docker
@@ -10233,6 +10361,22 @@ export const relations = defineRelations({});
 #   next-self-orpc-sqlite-better-auth-ui-sdk-docker-e2e
 #   next-self-orpc-sqlite-better-auth-ui-sdk-expo-docker
 #   next-self-orpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-docker
@@ -10810,7 +10954,7 @@ export const relations = defineRelations(
   })
 );
 
-# packages/db/src/relations.ts · 696 stacks
+# packages/db/src/relations.ts · 712 stacks
 #   hono-openapi-mysql-bun-docker
 #   hono-openapi-mysql-docker
 #   hono-openapi-mysql-expo-bun-docker
@@ -10955,6 +11099,22 @@ export const relations = defineRelations(
 #   next-self-orpc-sqlite-ui-sdk-docker-e2e
 #   next-self-orpc-sqlite-ui-sdk-expo-docker
 #   next-self-orpc-sqlite-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-mysql-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-mysql-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-mysql-ui-sdk-docker
@@ -11964,7 +12124,7 @@ export const verification = snakeCase.table(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-# packages/db/src/schema/auth.ts · 388 stacks
+# packages/db/src/schema/auth.ts · 396 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -12041,6 +12201,14 @@ export const verification = snakeCase.table(
 #   next-self-postgres-better-auth-ui-sdk-docker-e2e
 #   next-self-postgres-better-auth-ui-sdk-expo-docker
 #   next-self-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-docker
@@ -12427,7 +12595,7 @@ export const verification = snakeCase.table(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-# packages/db/src/schema/auth.ts · 300 stacks
+# packages/db/src/schema/auth.ts · 308 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -12504,6 +12672,14 @@ export const verification = snakeCase.table(
 #   next-self-sqlite-better-auth-ui-sdk-docker-e2e
 #   next-self-sqlite-better-auth-ui-sdk-expo-docker
 #   next-self-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-docker
@@ -13346,7 +13522,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 256 stacks
+# packages/db/src/schema/todos.ts · 264 stacks
 #   hono-openapi-postgres-better-auth-bun-docker
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-bun-docker
@@ -13395,6 +13571,14 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-postgres-better-auth-ui-sdk-docker-e2e
 #   next-self-orpc-postgres-better-auth-ui-sdk-expo-docker
 #   next-self-orpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-docker
@@ -13638,7 +13822,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 256 stacks
+# packages/db/src/schema/todos.ts · 264 stacks
 #   hono-openapi-postgres-bun-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
@@ -13687,6 +13871,14 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-postgres-ui-sdk-docker-e2e
 #   next-self-orpc-postgres-ui-sdk-expo-docker
 #   next-self-orpc-postgres-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-postgres-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-postgres-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-postgres-ui-sdk-docker
@@ -13923,7 +14115,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 200 stacks
+# packages/db/src/schema/todos.ts · 208 stacks
 #   hono-openapi-sqlite-better-auth-bun-docker
 #   hono-openapi-sqlite-better-auth-docker
 #   hono-openapi-sqlite-better-auth-expo-bun-docker
@@ -13972,6 +14164,14 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-sqlite-better-auth-ui-sdk-docker-e2e
 #   next-self-orpc-sqlite-better-auth-ui-sdk-expo-docker
 #   next-self-orpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-docker
@@ -14159,7 +14359,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/src/schema/todos.ts · 200 stacks
+# packages/db/src/schema/todos.ts · 208 stacks
 #   hono-openapi-sqlite-bun-docker
 #   hono-openapi-sqlite-docker
 #   hono-openapi-sqlite-expo-bun-docker
@@ -14208,6 +14408,14 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-orpc-sqlite-ui-sdk-docker-e2e
 #   next-self-orpc-sqlite-ui-sdk-expo-docker
 #   next-self-orpc-sqlite-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-sqlite-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-sqlite-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-sqlite-ui-sdk-docker
@@ -14383,7 +14591,7 @@ export const todos = snakeCase.table(
 
 export type Todo = typeof todos.$inferSelect;
 
-# packages/db/tsconfig.json · 2120 stacks
+# packages/db/tsconfig.json · 2152 stacks
 #   hono-mysql-better-auth-bun-docker
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-bun-docker
@@ -14840,6 +15048,38 @@ export type Todo = typeof todos.$inferSelect;
 #   next-self-sqlite-ui-sdk-docker-e2e
 #   next-self-sqlite-ui-sdk-expo-docker
 #   next-self-sqlite-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-mysql-better-auth-ui-sdk-docker

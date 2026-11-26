@@ -12,20 +12,28 @@ import { registry } from "@vibestart/integrations";
 import { CliError } from "#/errors.ts";
 import { kindFlag } from "#/options.ts";
 
-/** A UI preference applies only once the remaining choices already require a frontend. */
+/** Apply frontend preferences only when they are compatible with the user's choices. */
 export const noninteractiveDefaults = (choices: Choices): Choices => {
-  const fixed = withDefaults(registry, choices);
-
-  if (fixed.ui !== undefined) {
-    return fixed;
-  }
-
+  const fixed = { ...withDefaults(registry, choices) };
   const { stacks } = resolve(registry, fixed);
 
-  return stacks.every((stack) => stack.ui !== undefined) &&
+  if (
+    fixed.frontend === undefined &&
+    stacks.every((stack) => stack.mode === "effect") &&
+    stacks.some((stack) => stack.frontend === "react")
+  ) {
+    fixed.frontend = "react";
+  }
+
+  if (
+    fixed.ui === undefined &&
+    stacks.every((stack) => stack.ui !== undefined) &&
     stacks.some((stack) => stack.ui === "shadcn")
-    ? { ...fixed, ui: "shadcn" }
-    : fixed;
+  ) {
+    fixed.ui = "shadcn";
+  }
+
+  return fixed;
 };
 
 /**

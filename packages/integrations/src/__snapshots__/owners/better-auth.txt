@@ -1,4 +1,20 @@
-# apps/web/src/account.tsx · 336 stacks
+# apps/web/src/account.tsx · 352 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-docker
@@ -386,7 +402,7 @@ export const Account = () => {
               name={user().name}
               onSignOut={() => {
                 signOut().catch(() => {
-                  setError("Could not sign out. Try again.");
+                  setError("Could not sign out. Please try again.");
                 });
               }}
             />
@@ -6779,7 +6795,23 @@ import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient();
 
-# apps/web/src/lib/auth.ts · 336 stacks
+# apps/web/src/lib/auth.ts · 352 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-docker
@@ -8320,256 +8352,23 @@ export const getSession = createServerFn({ method: "GET" }).handler(
     await getServices().auth.api.getSession({ headers: getRequestHeaders() })
 );
 
-# apps/web/src/login.tsx · 112 stacks
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-bun-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-bun-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-bun-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-bun-docker-e2e
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-docker
-#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-bun-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-bun-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-bun-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-bun-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-workers
-#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-bun-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-bun-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-docker
-#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-docker-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-workers
-#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
-#   solid-spa-hono-mysql-better-auth-ui-sdk-workers
-#   solid-spa-hono-mysql-better-auth-ui-sdk-workers-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-bun-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-bun-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-bun-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-bun-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-docker
-#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-bun-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-bun-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-bun-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-bun-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-bun-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-bun-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-workers
-#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-bun-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-bun-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-docker
-#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-docker-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-workers
-#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
-#   solid-spa-hono-postgres-better-auth-ui-sdk-workers
-#   solid-spa-hono-postgres-better-auth-ui-sdk-workers-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-bun-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-bun-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-bun-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-bun-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-docker
-#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-bun-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-bun-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-bun-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-bun-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-bun-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-bun-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker
-#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { useLocation } from "@solidjs/router";
-import { createSignal, Show } from "solid-js";
-
-import { authClient } from "#src/lib/auth.ts";
-import { SessionPage } from "#src/session-page.tsx";
-
-const defaultTarget = "/";
-
-export const Login = () => {
-  const location = useLocation();
-
-  const target = () =>
-    new URLSearchParams(location.search).get("redirect") === "/"
-      ? "/"
-      : defaultTarget;
-
-  const [name, setName] = createSignal("");
-  const [email, setEmail] = createSignal("");
-  const [password, setPassword] = createSignal("");
-  const [register, setRegister] = createSignal(false);
-  const [error, setError] = createSignal("");
-  const [pending, setPending] = createSignal(false);
-
-  const submit = async (
-    event: SubmitEvent & { currentTarget: HTMLFormElement }
-  ) => {
-    event.preventDefault();
-
-    if (pending()) {
-      return;
-    }
-
-    const credentials = { email: email(), password: password() };
-
-    setPending(true);
-    setError("");
-
-    try {
-      const result = register()
-        ? await authClient.signUp.email({ ...credentials, name: name() })
-        : await authClient.signIn.email(credentials);
-
-      if (result.error) {
-        setError(result.error.message ?? result.error.statusText);
-
-        return;
-      }
-
-      window.location.replace(target());
-    } finally {
-      setPending(false);
-    }
-  };
-
-  return (
-    <SessionPage signedIn={false} redirectTo={target()}>
-      <main class="mx-auto grid max-w-sm gap-4 px-6 py-12">
-        <h1 class="text-3xl font-semibold">
-          {register() ? "Create an account" : "Sign in"}
-        </h1>
-        <form
-          class="grid gap-3"
-          onSubmit={(event) => {
-            submit(event).catch(() => {
-              setError("Could not reach the server. Try again.");
-            });
-          }}
-        >
-          <Show when={register()}>
-            <label>
-              Name
-              <input
-                class="block w-full rounded border p-2"
-                name="name"
-                onInput={(event) => {
-                  setName(event.currentTarget.value);
-                }}
-                value={name()}
-                autocomplete="name"
-                required
-              />
-            </label>
-          </Show>
-          <label>
-            Email
-            <input
-              class="block w-full rounded border p-2"
-              name="email"
-              onInput={(event) => {
-                setEmail(event.currentTarget.value);
-              }}
-              value={email()}
-              type="email"
-              autocomplete="email"
-              required
-            />
-          </label>
-          <label>
-            Password
-            <input
-              class="block w-full rounded border p-2"
-              name="password"
-              onInput={(event) => {
-                setPassword(event.currentTarget.value);
-              }}
-              value={password()}
-              type="password"
-              autocomplete={register() ? "new-password" : "current-password"}
-              required
-              minlength={8}
-            />
-          </label>
-          <Show when={error()}>
-            <p role="alert">{error()}</p>
-          </Show>
-          <button class="rounded border p-2" type="submit" disabled={pending()}>
-            {register() ? "Sign up" : "Sign in"}
-          </button>
-          <button
-            type="button"
-            disabled={pending()}
-            onClick={() => {
-              setError("");
-              setRegister((value) => !value);
-            }}
-          >
-            {register()
-              ? "Already have an account? Sign in"
-              : "Need an account? Sign up"}
-          </button>
-        </form>
-      </main>
-    </SessionPage>
-  );
-};
-
-# apps/web/src/login.tsx · 224 stacks
+# apps/web/src/login.tsx · 240 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-docker
@@ -8930,7 +8729,272 @@ export const Login = () => {
   );
 };
 
-# apps/web/src/protected-todos.tsx · 224 stacks
+# apps/web/src/login.tsx · 112 stacks
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker-e2e
+import { useLocation } from "@solidjs/router";
+import { createSignal, Show } from "solid-js";
+
+import { authClient } from "#src/lib/auth.ts";
+import { SessionPage } from "#src/session-page.tsx";
+
+const defaultTarget = "/";
+
+export const Login = () => {
+  const location = useLocation();
+
+  const target = () =>
+    new URLSearchParams(location.search).get("redirect") === "/"
+      ? "/"
+      : defaultTarget;
+
+  const [name, setName] = createSignal("");
+  const [email, setEmail] = createSignal("");
+  const [password, setPassword] = createSignal("");
+  const [register, setRegister] = createSignal(false);
+  const [error, setError] = createSignal("");
+  const [pending, setPending] = createSignal(false);
+
+  const submit = async (
+    event: SubmitEvent & { currentTarget: HTMLFormElement }
+  ) => {
+    event.preventDefault();
+
+    if (pending()) {
+      return;
+    }
+
+    const credentials = { email: email(), password: password() };
+
+    setPending(true);
+    setError("");
+
+    try {
+      const result = register()
+        ? await authClient.signUp.email({ ...credentials, name: name() })
+        : await authClient.signIn.email(credentials);
+
+      if (result.error) {
+        setError(result.error.message ?? result.error.statusText);
+
+        return;
+      }
+
+      window.location.replace(target());
+    } finally {
+      setPending(false);
+    }
+  };
+
+  return (
+    <SessionPage signedIn={false} redirectTo={target()}>
+      <main class="mx-auto grid max-w-sm gap-4 px-6 py-12">
+        <h1 class="text-3xl font-semibold">
+          {register() ? "Create an account" : "Sign in"}
+        </h1>
+        <form
+          class="grid gap-3"
+          onSubmit={(event) => {
+            submit(event).catch(() => {
+              setError("Could not reach the server. Try again.");
+            });
+          }}
+        >
+          <Show when={register()}>
+            <label>
+              Name
+              <input
+                class="block w-full rounded border p-2"
+                name="name"
+                onInput={(event) => {
+                  setName(event.currentTarget.value);
+                }}
+                value={name()}
+                autocomplete="name"
+                required
+              />
+            </label>
+          </Show>
+          <label>
+            Email
+            <input
+              class="block w-full rounded border p-2"
+              name="email"
+              onInput={(event) => {
+                setEmail(event.currentTarget.value);
+              }}
+              value={email()}
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </label>
+          <label>
+            Password
+            <input
+              class="block w-full rounded border p-2"
+              name="password"
+              onInput={(event) => {
+                setPassword(event.currentTarget.value);
+              }}
+              value={password()}
+              type="password"
+              autocomplete={register() ? "new-password" : "current-password"}
+              required
+              minlength={8}
+            />
+          </label>
+          <Show when={error()}>
+            <p role="alert">{error()}</p>
+          </Show>
+          <button class="rounded border p-2" type="submit" disabled={pending()}>
+            {register() ? "Sign up" : "Sign in"}
+          </button>
+          <button
+            type="button"
+            disabled={pending()}
+            onClick={() => {
+              setError("");
+              setRegister((value) => !value);
+            }}
+          >
+            {register()
+              ? "Already have an account? Sign in"
+              : "Need an account? Sign up"}
+          </button>
+        </form>
+      </main>
+    </SessionPage>
+  );
+};
+
+# apps/web/src/protected-todos.tsx · 240 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-docker
@@ -12627,7 +12691,23 @@ export const getSession = cache(async () => {
   return await getServices().auth.api.getSession({ headers: requestHeaders });
 });
 
-# apps/web/src/session-page.tsx · 336 stacks
+# apps/web/src/session-page.tsx · 352 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-docker
@@ -14921,6 +15001,600 @@ export type Auth = ReturnType<typeof createAuth>;
 
 export type Session = Auth["$Infer"]["Session"];
 
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+import postgres from "postgres";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.sync(() =>
+      postgres(Redacted.value(options.databaseUrl), {
+        connection: { client_min_messages: "warning" },
+        max: 4,
+      })
+    ),
+    (sql) =>
+      Effect.promise(async () => {
+        await sql.end();
+      })
+  );
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "pg",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+import postgres from "postgres";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.sync(() =>
+      postgres(Redacted.value(options.databaseUrl), {
+        connection: { client_min_messages: "warning" },
+        max: 4,
+      })
+    ),
+    (sql) =>
+      Effect.promise(async () => {
+        await sql.end();
+      })
+  );
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "pg",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+    trustedOrigins: [rendererOrigin],
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+import postgres from "postgres";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.sync(() =>
+      postgres(Redacted.value(options.databaseUrl), {
+        connection: { client_min_messages: "warning" },
+        max: 4,
+      })
+    ),
+    (sql) =>
+      Effect.promise(async () => {
+        await sql.end();
+      })
+  );
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "pg",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    trustedOrigins: [rendererOrigin, "my-app://"],
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+import postgres from "postgres";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.sync(() =>
+      postgres(Redacted.value(options.databaseUrl), {
+        connection: { client_min_messages: "warning" },
+        max: 4,
+      })
+    ),
+    (sql) =>
+      Effect.promise(async () => {
+        await sql.end();
+      })
+  );
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "pg",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    trustedOrigins: ["my-app://"],
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+import { DatabaseSync } from "node:sqlite";
+
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/node-sqlite";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.try(
+      () =>
+        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
+    ),
+    (database) =>
+      Effect.sync(() => {
+        database.close();
+      })
+  );
+
+  yield* Effect.try(() => {
+    client.exec("pragma journal_mode = wal");
+  });
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "sqlite",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+import { DatabaseSync } from "node:sqlite";
+
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/node-sqlite";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.try(
+      () =>
+        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
+    ),
+    (database) =>
+      Effect.sync(() => {
+        database.close();
+      })
+  );
+
+  yield* Effect.try(() => {
+    client.exec("pragma journal_mode = wal");
+  });
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "sqlite",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+    trustedOrigins: [rendererOrigin],
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+import { DatabaseSync } from "node:sqlite";
+
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/node-sqlite";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+import { rendererOrigin } from "@my-app/electron";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.try(
+      () =>
+        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
+    ),
+    (database) =>
+      Effect.sync(() => {
+        database.close();
+      })
+  );
+
+  yield* Effect.try(() => {
+    client.exec("pragma journal_mode = wal");
+  });
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "sqlite",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    trustedOrigins: [rendererOrigin, "my-app://"],
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
+# packages/auth/src/index.ts · 6 stacks
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+import { DatabaseSync } from "node:sqlite";
+
+import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
+import { expo } from "@better-auth/expo";
+import { betterAuth } from "better-auth";
+import { drizzle } from "drizzle-orm/node-sqlite";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+
+import { relations } from "@my-app/db/relations";
+import * as schema from "@my-app/db/schema/auth";
+
+interface AuthOptions {
+  readonly baseURL: string;
+  readonly databaseUrl: Redacted.Redacted;
+  readonly secret: Redacted.Redacted;
+}
+
+// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
+const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
+  const client = yield* Effect.acquireRelease(
+    Effect.try(
+      () =>
+        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
+    ),
+    (database) =>
+      Effect.sync(() => {
+        database.close();
+      })
+  );
+
+  yield* Effect.try(() => {
+    client.exec("pragma journal_mode = wal");
+  });
+
+  return betterAuth({
+    baseURL: options.baseURL,
+    database: drizzleAdapter(drizzle({ client, relations }), {
+      provider: "sqlite",
+      schema,
+    }),
+    emailAndPassword: { enabled: true },
+    secret: Redacted.value(options.secret),
+    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
+    plugins: [expo()],
+    trustedOrigins: ["my-app://"],
+  });
+});
+
+export class Auth extends Context.Service<
+  Auth,
+  Effect.Success<ReturnType<typeof makeAuth>>
+>()("@my-app/auth/Auth") {
+  static readonly layer = (options: AuthOptions) =>
+    Layer.effect(Auth, makeAuth(options));
+
+  static readonly layerConfig = Layer.unwrap(
+    Effect.map(
+      Config.all({
+        baseURL: Config.String("BETTER_AUTH_URL"),
+        databaseUrl: Config.Redacted("DATABASE_URL"),
+        secret: Config.schema(
+          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
+          "BETTER_AUTH_SECRET"
+        ),
+      }),
+      Auth.layer
+    )
+  );
+}
+
 # packages/auth/src/index.ts · 36 stacks
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker-e2e
@@ -15761,584 +16435,6 @@ export type Auth = ReturnType<typeof createAuth>;
 
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-import postgres from "postgres";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.sync(() =>
-      postgres(Redacted.value(options.databaseUrl), {
-        connection: { client_min_messages: "warning" },
-        max: 4,
-      })
-    ),
-    (sql) =>
-      Effect.promise(async () => {
-        await sql.end();
-      })
-  );
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "pg",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-import postgres from "postgres";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-import { rendererOrigin } from "@my-app/electron";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.sync(() =>
-      postgres(Redacted.value(options.databaseUrl), {
-        connection: { client_min_messages: "warning" },
-        max: 4,
-      })
-    ),
-    (sql) =>
-      Effect.promise(async () => {
-        await sql.end();
-      })
-  );
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "pg",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-    trustedOrigins: [rendererOrigin],
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { expo } from "@better-auth/expo";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-import postgres from "postgres";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-import { rendererOrigin } from "@my-app/electron";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.sync(() =>
-      postgres(Redacted.value(options.databaseUrl), {
-        connection: { client_min_messages: "warning" },
-        max: 4,
-      })
-    ),
-    (sql) =>
-      Effect.promise(async () => {
-        await sql.end();
-      })
-  );
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "pg",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
-    plugins: [expo()],
-    trustedOrigins: [rendererOrigin, "my-app://"],
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-expo-docker-e2e
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { expo } from "@better-auth/expo";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-import postgres from "postgres";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// The Drizzle adapter takes a Promise-based database (better-auth#7234), so auth keeps a small pool of its own.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.sync(() =>
-      postgres(Redacted.value(options.databaseUrl), {
-        connection: { client_min_messages: "warning" },
-        max: 4,
-      })
-    ),
-    (sql) =>
-      Effect.promise(async () => {
-        await sql.end();
-      })
-  );
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "pg",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
-    plugins: [expo()],
-    trustedOrigins: ["my-app://"],
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
-import { DatabaseSync } from "node:sqlite";
-
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/node-sqlite";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.try(
-      () =>
-        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
-    ),
-    (database) =>
-      Effect.sync(() => {
-        database.close();
-      })
-  );
-
-  yield* Effect.try(() => {
-    client.exec("pragma journal_mode = wal");
-  });
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "sqlite",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
-import { DatabaseSync } from "node:sqlite";
-
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/node-sqlite";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-import { rendererOrigin } from "@my-app/electron";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.try(
-      () =>
-        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
-    ),
-    (database) =>
-      Effect.sync(() => {
-        database.close();
-      })
-  );
-
-  yield* Effect.try(() => {
-    client.exec("pragma journal_mode = wal");
-  });
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "sqlite",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-    trustedOrigins: [rendererOrigin],
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-electron-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
-import { DatabaseSync } from "node:sqlite";
-
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { expo } from "@better-auth/expo";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/node-sqlite";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-import { rendererOrigin } from "@my-app/electron";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.try(
-      () =>
-        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
-    ),
-    (database) =>
-      Effect.sync(() => {
-        database.close();
-      })
-  );
-
-  yield* Effect.try(() => {
-    client.exec("pragma journal_mode = wal");
-  });
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "sqlite",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
-    plugins: [expo()],
-    trustedOrigins: [rendererOrigin, "my-app://"],
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
-# packages/auth/src/index.ts · 4 stacks
-#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-expo-docker-e2e
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
-#   spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { DatabaseSync } from "node:sqlite";
-
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { expo } from "@better-auth/expo";
-import { betterAuth } from "better-auth";
-import { drizzle } from "drizzle-orm/node-sqlite";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
-
-import { relations } from "@my-app/db/relations";
-import * as schema from "@my-app/db/schema/auth";
-
-interface AuthOptions {
-  readonly baseURL: string;
-  readonly databaseUrl: Redacted.Redacted;
-  readonly secret: Redacted.Redacted;
-}
-
-// Better Auth expects the official synchronous/Promise adapter, not Effect queries.
-const makeAuth = Effect.fn("Auth.make")(function* (options: AuthOptions) {
-  const client = yield* Effect.acquireRelease(
-    Effect.try(
-      () =>
-        new DatabaseSync(Redacted.value(options.databaseUrl), { timeout: 5000 })
-    ),
-    (database) =>
-      Effect.sync(() => {
-        database.close();
-      })
-  );
-
-  yield* Effect.try(() => {
-    client.exec("pragma journal_mode = wal");
-  });
-
-  return betterAuth({
-    baseURL: options.baseURL,
-    database: drizzleAdapter(drizzle({ client, relations }), {
-      provider: "sqlite",
-      schema,
-    }),
-    emailAndPassword: { enabled: true },
-    secret: Redacted.value(options.secret),
-    // The mobile app sends its scheme as the origin; the plugin also trusts exp:// when NODE_ENV is development.
-    plugins: [expo()],
-    trustedOrigins: ["my-app://"],
-  });
-});
-
-export class Auth extends Context.Service<
-  Auth,
-  Effect.Success<ReturnType<typeof makeAuth>>
->()("@my-app/auth/Auth") {
-  static readonly layer = (options: AuthOptions) =>
-    Layer.effect(Auth, makeAuth(options));
-
-  static readonly layerConfig = Layer.unwrap(
-    Effect.map(
-      Config.all({
-        baseURL: Config.String("BETTER_AUTH_URL"),
-        databaseUrl: Config.Redacted("DATABASE_URL"),
-        secret: Config.schema(
-          Schema.Redacted(Schema.String.check(Schema.isMinLength(32))),
-          "BETTER_AUTH_SECRET"
-        ),
-      }),
-      Auth.layer
-    )
-  );
-}
-
 # packages/auth/src/index.ts · 8 stacks
 #   tanstack-start-self-mongodb-better-auth-docker
 #   tanstack-start-self-mongodb-better-auth-docker-e2e
@@ -16803,7 +16899,7 @@ export type Auth = ReturnType<typeof createAuth>;
 
 export type Session = Auth["$Infer"]["Session"];
 
-# packages/auth/tsconfig.json · 1912 stacks
+# packages/auth/tsconfig.json · 1928 stacks
 #   hono-mongodb-better-auth-bun-docker
 #   hono-mongodb-better-auth-docker
 #   hono-mongodb-better-auth-expo-bun-docker
@@ -17260,6 +17356,22 @@ export type Session = Auth["$Infer"]["Session"];
 #   next-self-sqlite-better-auth-ui-sdk-docker-e2e
 #   next-self-sqlite-better-auth-ui-sdk-expo-docker
 #   next-self-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-effect-http-effect-rpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
 #   solid-spa-hono-mongodb-better-auth-ui-sdk-docker

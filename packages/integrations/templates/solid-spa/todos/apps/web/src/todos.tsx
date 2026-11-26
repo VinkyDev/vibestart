@@ -37,6 +37,7 @@ export const Todos = () => {
   return (
     <main class="mx-auto grid max-w-3xl gap-4 px-6 py-12">
       <h1 class="text-3xl font-semibold">Todos</h1>
+      <p>Private to your account.</p>
       <form
         class="flex flex-wrap items-center gap-2"
         onSubmit={(event) => {

@@ -104,7 +104,7 @@ describe("stack modes", () => {
 
   it("offers both test runners with optional persistence, authentication, desktop, and mobile", () => {
     const { stacks } = resolve(registry, { mode: "effect" });
-    expect(stacks).toHaveLength(160);
+    expect(stacks).toHaveLength(240);
 
     for (const database of [undefined, "postgres", "sqlite"]) {
       for (const auth of database === undefined
@@ -188,22 +188,38 @@ describe("stack modes", () => {
     }
   );
 
-  it.each(["postgres", "sqlite"])(
-    "describes unauthenticated %s todos as shared data",
-    async (database) => {
+  it.each([
+    { mode: "effect", frontend: "react", database: "postgres" },
+    { mode: "effect", frontend: "react", database: "sqlite" },
+    { mode: "effect", frontend: "solid", database: "postgres" },
+    { mode: "effect", frontend: "solid", database: "sqlite" },
+    { mode: "standard", frontend: "solid", database: "postgres" },
+  ])(
+    "describes unauthenticated $database todos as shared data on $frontend in $mode mode",
+    async ({ database, frontend, mode }) => {
       const { files } = await generate(
         registry,
         {
-          stack: compose(registry, { mode: "effect", database, auth: null }),
+          stack: compose(registry, {
+            mode,
+            frontend,
+            framework: "spa",
+            api: mode === "effect" ? "effect-rpc" : "orpc",
+            database,
+            auth: null,
+          }),
           addons: [],
           channel: "recommended",
         },
-        { name: "effect-app" }
+        { name: "example-app" }
       );
 
-      const page = files.find(
-        ({ path }) => path === "apps/web/src/routes/todos.tsx"
-      )?.content;
+      const pagePath =
+        frontend === "solid"
+          ? "apps/web/src/todos.tsx"
+          : "apps/web/src/routes/todos.tsx";
+
+      const page = files.find(({ path }) => path === pagePath)?.content;
 
       expect(page).toContain("Shared by everyone who opens the app.");
       expect(page).not.toContain("Private to your account.");

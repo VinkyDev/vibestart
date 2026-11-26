@@ -27,13 +27,21 @@ export const browserJourney = (ctx: Context, set: string) => {
   const path = "apps/web/tests/e2e/app.e2e.ts";
   const content = templateContent(ctx, set, path);
 
-  // SPA controls exist only after React renders them; SSR controls can precede hydration.
+  // SPA controls exist only after the browser renders them; SSR controls can precede hydration.
   return file(
     path,
     isSpa(ctx)
       ? content.replaceAll('"networkidle"', '"domcontentloaded"')
       : content
   );
+};
+
+const healthPath = (ctx: Context) => {
+  if (ctx.has("effect-rpc") && ctx.stack.database === undefined) {
+    return "/rpc/";
+  }
+
+  return ctx.has("orpc") ? `${rpcPath(ctx)}/health` : "/api/health";
 };
 
 const solidJourneys = (ctx: Context, runner: string) => {
@@ -43,7 +51,6 @@ const solidJourneys = (ctx: Context, runner: string) => {
 
   const root = `testing/${runner}`;
   const path = "apps/web/tests/e2e/pending.e2e.ts";
-  const health = ctx.has("orpc") ? `${rpcPath(ctx)}/health` : "/api/health";
 
   return [
     ...templateFiles(ctx, `${root}/solid`),
@@ -54,7 +61,7 @@ const solidJourneys = (ctx: Context, runner: string) => {
             replaceOnce(
               templateContent(ctx, `${root}/solid-server`, path),
               "/api/health",
-              health,
+              healthPath(ctx),
               `${root}/solid-server/${path}`
             )
           ),
