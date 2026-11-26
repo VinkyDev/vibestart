@@ -1,0 +1,76 @@
+# my-app
+
+Solid 2 · Hono · OpenAPI · PostgreSQL · Drizzle · Better Auth · Node · Docker, on [Vite+](https://viteplus.dev).
+
+| Layer     | Choice                                                                                |
+| --------- | ------------------------------------------------------------------------------------- |
+| Frontend  | Solid 2 with the Solid JSX compiler                                                   |
+| Backend   | Hono on Node.js 26                                                                    |
+| API       | REST routes with `@hono/zod-openapi`, a typed `hono/client`, reference docs at `/api` |
+| Database  | PostgreSQL 18, Drizzle ORM v1                                                         |
+| Auth      | Better Auth, email and password, sessions in PostgreSQL                               |
+| UI        | UI SDK in `packages/ui`                                                               |
+| Deploy    | Docker: one self-contained image, no `node_modules` at runtime                        |
+| Toolchain | Vite+ (`vp`): dev, build, test, lint, format, type check                              |
+
+## Getting started
+
+```sh
+vp install
+docker compose up -d db   # or point DATABASE_URL at any Postgres
+vp run db:migrate
+vp run dev
+```
+
+Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api.
+
+The browser always talks to one origin: in development Vite proxies `/api` to the server, in production the server serves the SPA. Session cookies therefore stay first-party and no CORS is configured. `BETTER_AUTH_URL` is that browser-facing origin (`http://localhost:5173` in development), not the server's own port.
+
+## Environment
+
+Each app loads the `.env` in its directory. Project creation wrote them with the values below and generated a unique `BETTER_AUTH_SECRET`. Git ignores these files. For a fresh clone, recreate them from these examples and fill in the empty `BETTER_AUTH_SECRET` with the output of `openssl rand -base64 32`; the server rejects an unset secret.
+
+`apps/server/.env`
+
+```dotenv
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/my_app
+BETTER_AUTH_URL=http://localhost:5173
+BETTER_AUTH_SECRET=
+PORT=3000
+```
+
+## Commands
+
+```sh
+vp check          # format, lint, type check
+vp run knip       # unused files, exports, dependencies, and catalog entries
+vp test           # unit and integration tests (Vitest)
+vp run test:e2e   # end-to-end tests (Playwright) in Chromium, against a real server and database
+vp run ready      # check + knip + test + test:e2e + production build
+```
+
+The first `vp run test:e2e` needs a browser: `cd apps/web && vp exec playwright install chromium`.
+
+## Database
+
+Edit a table in `packages/db/src/schema/`, then:
+
+```sh
+vp run db:generate   # writes a migration to packages/db/src/migrations/
+vp run db:migrate    # applies it
+```
+
+## Production
+
+```sh
+BETTER_AUTH_SECRET=$(openssl rand -base64 32) docker compose up --build
+```
+
+This starts PostgreSQL, runs migrations once, then serves the API and the web app on http://localhost:3000.
+
+The image runs two entry points from the same build:
+
+- `node dist/migrate.mjs` applies pending migrations and exits;
+- `node dist/index.mjs` serves `/api`, `/api/auth`, and the SPA.
+
+Both read `DATABASE_URL`, `BETTER_AUTH_URL` (the public origin), and `BETTER_AUTH_SECRET`; the server also reads `PORT` (default `3000`).

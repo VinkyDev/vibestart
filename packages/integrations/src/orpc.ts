@@ -12,12 +12,13 @@ import {
   databaseCheck,
   importBlock,
   ormDependencies,
+  rpcPath,
   hasWebApp,
   serverApp,
   stackHeadline,
   todosExample,
 } from "#/app.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
   agentsMap,
@@ -49,6 +50,27 @@ const apiStatus = (ctx: Context) =>
     apiStatusPath,
     clientComponent(ctx, templateContent(ctx, "orpc/web", apiStatusPath))
   );
+
+const webClient = (ctx: Context) => {
+  if (!ctx.has("solid")) {
+    return [apiStatus(ctx)];
+  }
+
+  const path = "apps/web/src/lib/api.ts";
+
+  return [
+    ...templateFiles(ctx, "orpc/solid", { except: [path] }),
+    file(
+      path,
+      replaceOnce(
+        templateContent(ctx, "orpc/solid", path),
+        '"/rpc"',
+        JSON.stringify(rpcPath(ctx)),
+        path
+      )
+    ),
+  ];
+};
 
 const renderHealth = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
@@ -85,7 +107,7 @@ export const orpc = defineIntegration({
     router(ctx),
     ...apiTemplates(ctx, "orpc", "packages/api/src/routers/todos.ts"),
     file("packages/api/src/routers/health.ts", renderHealth(ctx)),
-    ...(hasWebApp(ctx) ? [apiStatus(ctx)] : []),
+    ...(hasWebApp(ctx) ? webClient(ctx) : []),
     contribute(packageJson, {
       dependencies: [
         ...(ctx.stack.database === undefined
@@ -110,7 +132,10 @@ export const orpc = defineIntegration({
     ...(hasWebApp(ctx)
       ? [
           contribute(packageJson, {
-            dependencies: ["@orpc/client", "@orpc/tanstack-query"],
+            dependencies: [
+              "@orpc/client",
+              ...(ctx.has("solid") ? [] : ["@orpc/tanstack-query"]),
+            ],
             devDependencies: [`${ctx.scope}/api`],
             path: "apps/web",
           }),

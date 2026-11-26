@@ -19,7 +19,15 @@ description: 选择页面的渲染方式，了解路由、数据请求和共享�
 
 ## Solid 2 [#solid]
 
-在 Studio 选择 **Solid 2**，或在 CLI 中选择 `--frontend solid`。生成项目使用 Solid 2、官方路由和 UI SDK 的 Solid 适配器。可以选择静态托管或 Hono 健康检查 API。开发服务器会将 API 请求代理到 Hono，生成的 Docker 镜像由 Hono 同时提供页面和 API。
+在 Studio 选择 **Solid 2**，或在 CLI 中传入 `--frontend solid`。生成的 Vite 单页应用使用 Solid Router 和 UI SDK 的 Solid 适配器。可以静态托管，也可以接入 Hono，使用与标准 React SPA 相同的数据库和 ORM。
+
+选择数据库并搭配 OpenAPI 或 oRPC，会生成带类型的待办页面 `/todos`。启用 Better Auth 后支持邮箱登录，每个用户只能操作自己的待办。可以用 Electron 封装 Solid 页面，也可以让独立的 Expo 移动应用共用后端。
+
+以下命令会接入 PostgreSQL 并生成可编辑的 Alchemy 入口。
+
+```bash
+npx vibestart-cli my-app --frontend solid --backend hono --api orpc --database postgres --orm drizzle --auth better-auth --addons alchemy,knip,ultracite
+```
 
 ## React [#react]
 
@@ -31,7 +39,7 @@ React 用组件组织界面。生成项目包含页面、表单和共享组件�
 
 <Tech href="https://tanstack.com/router" icon="tanstack" paired="vite" />
 
-Vite 构建单页应用，TanStack Router 根据文件生成路由树。路径、参数和导航具有类型检查。没有后端时可以发布静态资源；搭配 Hono 时，生产环境可由 Hono 提供页面与 API。
+Vite 构建单页应用。React 使用 TanStack Router 的文件路由，Solid 在 `apps/web/src/router.tsx` 注册路由。路径、参数和导航具有类型检查。没有后端时可以发布静态资源；搭配 Hono 时，生产环境可由 Hono 提供页面与 API。
 
 ## TanStack Start [#tanstack-start]
 

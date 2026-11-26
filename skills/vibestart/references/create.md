@@ -74,6 +74,6 @@ Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, and Node
 
 For Effect, discover available choices with `--list --mode effect --json`; older CLI releases may only offer the fixed stack. Use `--auth none` to omit authentication, or `--database none --orm none --auth none` to omit persistence entirely. A database without auth generates public, shared todos. `--testing playwright` and `--testing e2e` select the browser runner.
 
-Select `--frontend solid` for a Solid 2 SPA when listed. It uses the Solid router and UI SDK and can include a Hono health API.
+Select `--frontend solid` for a Solid 2 SPA when listed. It uses Solid Router and UI SDK. Check the running CLI for compatible Hono, API, database, ORM, and auth choices. Combine a database and a typed API for a working todo example.
 
 Discover UI libraries and add-ons with the running CLI's `--list --json`. For React, choose `--ui shadcn` or `--ui ui-sdk` independently of backend, database, and deployment. Solid uses UI SDK. When offered, the optional `alchemy` add-on generates a provider-neutral stack and works alongside Docker. Preserve any other requested add-ons when specifying `--addons`.

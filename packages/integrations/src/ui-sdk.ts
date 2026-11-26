@@ -18,8 +18,15 @@ export const uiSdk = defineIntegration({
     ...(!ctx.has("solid") && (ctx.has("better-auth") || todosExample(ctx))
       ? templateFiles(ctx, "ui-sdk/forms")
       : []),
-    ...(ctx.has("better-auth") ? templateFiles(ctx, "ui-sdk/auth") : []),
-    ...(todosExample(ctx) ? templateFiles(ctx, "ui-sdk/todos") : []),
+    ...(ctx.has("better-auth")
+      ? templateFiles(
+          ctx,
+          ctx.has("solid") ? "ui-sdk/solid-auth" : "ui-sdk/auth"
+        )
+      : []),
+    ...(!ctx.has("solid") && todosExample(ctx)
+      ? templateFiles(ctx, "ui-sdk/todos")
+      : []),
     ...(ctx.has("solid")
       ? [
           contribute(packageJson, {

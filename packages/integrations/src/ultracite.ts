@@ -7,6 +7,7 @@ import {
   packageJson,
 } from "@vibestart/core";
 
+import type { LintPreset } from "#/vite-plus/slots.ts";
 import {
   fmtPresets,
   lintOverrides,
@@ -15,9 +16,7 @@ import {
   toolConventions,
 } from "#/vite-plus/slots.ts";
 
-export const ultracitePresets = defineSlot<{ name: string; module: string }>(
-  "ultracite/presets"
-);
+export const ultracitePresets = defineSlot<LintPreset>("ultracite/presets");
 
 export const ultraciteOverrides = defineSlot<string>("ultracite/overrides");
 

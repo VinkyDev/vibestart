@@ -19,7 +19,15 @@ Choose a browser-rendered React or Solid SPA, or a React framework with server r
 
 ## Solid 2 [#solid]
 
-Use **Solid 2** in the Studio or select `--frontend solid` in the CLI. The generated Solid 2 SPA uses the official router and the Solid UI SDK adapter. Choose static hosting or the Hono health API. The development server proxies API requests to Hono. The generated Docker image serves both the SPA and API from Hono.
+Choose **Solid 2** in the Studio or pass `--frontend solid` to the CLI. The generated Vite SPA uses Solid Router and the Solid UI SDK adapter. It can run as a static site or use Hono with the same database and ORM choices as the standard React SPA.
+
+Choose OpenAPI or oRPC with a database to generate a typed todo list at `/todos`. Better Auth adds email sign-in and keeps each user's todos private. Electron can wrap the Solid web app, and an optional Expo mobile app can share its API.
+
+This command adds PostgreSQL and an editable Alchemy stack.
+
+```bash
+npx vibestart-cli my-app --frontend solid --backend hono --api orpc --database postgres --orm drizzle --auth better-auth --addons alchemy,knip,ultracite
+```
 
 ## React [#react]
 
@@ -31,7 +39,7 @@ React organizes the interface into components. Generated projects include pages,
 
 <Tech href="https://tanstack.com/router" icon="tanstack" paired="vite" />
 
-Vite builds the SPA, and TanStack Router generates a route tree from files. Paths, parameters, and navigation are type checked. Without a backend, deploy static assets. With Hono, the production service can serve both pages and APIs.
+Vite builds the SPA. React uses TanStack Router file routes, and Solid registers routes in `apps/web/src/router.tsx`. Paths, parameters, and navigation are type checked. Without a backend, deploy static assets. With Hono, the production service can serve both pages and APIs.
 
 ## TanStack Start [#tanstack-start]
 

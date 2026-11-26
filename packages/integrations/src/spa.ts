@@ -78,18 +78,20 @@ const open = (ctx: Context) => {
 };
 
 const viteConfig = (ctx: Context) => {
+  const set = ctx.has("solid") ? "solid-spa" : "spa";
+
   if (!hasBackend(ctx)) {
-    return templateFiles(ctx, "spa/static");
+    return templateFiles(ctx, `${set}/static`);
   }
 
-  const config = templateContent(ctx, "spa/proxy", viteConfigPath);
+  const config = templateContent(ctx, `${set}/proxy`, viteConfigPath);
 
   return [
     file(
       viteConfigPath,
       serverPaths(ctx).includes("/rpc")
         ? config
-        : replaceOnce(config, rpcProxy, "", `spa/proxy/${viteConfigPath}`)
+        : replaceOnce(config, rpcProxy, "", `${set}/proxy/${viteConfigPath}`)
     ),
   ];
 };
@@ -107,10 +109,16 @@ const orpcClient = (ctx: Context) =>
     )
   );
 
+const spaSetup = (ctx: Context) => [
+  ...viteConfig(ctx),
+  contribute(agentsNotes, requestFlow(ctx)),
+  ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
+];
+
 export const spa = defineIntegration({
   contribute: (ctx) => {
     if (ctx.has("solid")) {
-      return solidSpa(ctx);
+      return [...solidSpa(ctx), ...spaSetup(ctx)];
     }
 
     if (ctx.has("effect")) {
@@ -120,7 +128,7 @@ export const spa = defineIntegration({
     return [
       ...templateFiles(ctx, "spa/common"),
       ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
-      ...viteConfig(ctx),
+      ...spaSetup(ctx),
       ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
       ...(todosExample(ctx) && !ctx.has("better-auth")
         ? templateFiles(ctx, "spa/todos")
@@ -150,14 +158,12 @@ export const spa = defineIntegration({
         owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
         path: "apps/web",
       }),
-      contribute(agentsNotes, requestFlow(ctx)),
       contribute(readmeTagline, "React"),
       contribute(stackHeadline, { name: "React", role: "Frontend" }),
       contribute(readmeLayers, {
         choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
         layer: "Frontend",
       }),
-      ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
     ];
   },
   id: "spa",

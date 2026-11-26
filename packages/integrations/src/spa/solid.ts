@@ -1,26 +1,69 @@
 import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
-import { hasBackend } from "#/app.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { hasBackend, todosExample } from "#/app.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
-  readmeOpen,
   readmeTagline,
   unitTestSources,
 } from "#/vite-plus/slots.ts";
+
+const entry = (ctx: Context) => {
+  const path = "apps/web/src/main.tsx";
+  let content = templateContent(ctx, "solid-spa/common", path);
+
+  if (todosExample(ctx)) {
+    const about = "<a href={Router.paths.about()}>About</a>";
+    content = replaceOnce(
+      content,
+      about,
+      `${about}\n            <a href={Router.paths.todos()}>Todos</a>`,
+      path
+    );
+  }
+
+  if (ctx.has("better-auth")) {
+    content = replaceOnce(
+      content,
+      "import { Router }",
+      'import { Errored, Loading } from "solid-js";\nimport { Account } from "#src/account.tsx";\nimport { Router }',
+      path
+    );
+    content = replaceOnce(
+      content,
+      "{route.children}",
+      '<Errored fallback={(_error, reset) => <main role="alert">Could not load this page. <button type="button" onClick={reset}>Retry</button></main>}><Loading fallback={<main role="status">Loading…</main>}>{route.children}</Loading></Errored>',
+      path
+    );
+    content = replaceOnce(
+      content,
+      "<ThemeMenu />",
+      '<div class="flex items-center gap-2"><Account /><ThemeMenu /></div>',
+      path
+    );
+  }
+
+  return file(path, content);
+};
 
 export const solidSpa = (ctx: Context) => {
   const backend = hasBackend(ctx);
 
   return [
-    ...templateFiles(ctx, "solid-spa/common"),
+    ...templateFiles(ctx, "solid-spa/common", {
+      except: ["apps/web/src/main.tsx"],
+    }),
+    entry(ctx),
+    ...(todosExample(ctx) ? templateFiles(ctx, "solid-spa/todos") : []),
     ...["index.html", "tsconfig.json", "tsconfig.node.json"].map((name) => {
       const path = `apps/web/${name}`;
 
       return file(path, templateContent(ctx, "spa/common", path));
     }),
-    ...(backend ? templateFiles(ctx, "solid-spa/hono") : []),
+    ...(backend && !ctx.has("orpc")
+      ? templateFiles(ctx, "solid-spa/hono")
+      : []),
     file(
       "apps/web/src/home.tsx",
       [
@@ -45,25 +88,6 @@ export const solidSpa = (ctx: Context) => {
         ");",
       ].join("\n")
     ),
-    file(
-      "apps/web/vite.config.ts",
-      [
-        'import solid from "@solidjs/vite-plugin";',
-        'import tailwindcss from "@tailwindcss/vite";',
-        `import { defineConfig${backend ? ", loadEnv" : ""} } from "vite-plus";`,
-        "",
-        backend
-          ? "export default defineConfig(({ mode }) => ({"
-          : "export default defineConfig({",
-        "  plugins: [solid(), tailwindcss()],",
-        ...(backend
-          ? [
-              '  server: { proxy: { "/api": loadEnv(mode, import.meta.dirname, "").SERVER_URL ?? "http://localhost:3000" } },',
-            ]
-          : []),
-        backend ? "}));" : "});",
-      ].join("\n")
-    ),
     contribute(packageJson, {
       path: "apps/web",
       devDependencies: [
@@ -84,6 +108,5 @@ export const solidSpa = (ctx: Context) => {
     }),
     contribute(unitTestSources, "apps/web/src"),
     contribute(readmeTagline, "Solid 2"),
-    contribute(readmeOpen, "Open http://localhost:5173."),
   ];
 };

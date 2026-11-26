@@ -78,6 +78,24 @@ describe("the registry", () => {
     ).toStrictEqual(new Set(["ui-sdk"]));
   });
 
+  it("offers Solid the same standard Vite stacks as React with UI SDK", () => {
+    const { stacks } = resolve(registry, {
+      framework: "spa",
+      mode: "standard",
+      ui: "ui-sdk",
+    });
+
+    const variants = (frontend: string) =>
+      stacks
+        .filter((stack) => stack.frontend === frontend)
+        .map(({ frontend: _frontend, router: _router, ...choices }) =>
+          JSON.stringify(choices)
+        )
+        .toSorted();
+
+    expect(variants("solid")).toStrictEqual(variants("react"));
+  });
+
   it("signs users in on MongoDB as on a SQL database", () => {
     expect(
       resolve(registry, { auth: "better-auth", database: "mongodb" }).stacks

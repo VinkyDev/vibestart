@@ -1,6 +1,13 @@
-import { contribute, defineIntegration, packageJson } from "@vibestart/core";
+import type { Context } from "@vibestart/core";
+import {
+  contribute,
+  defineIntegration,
+  file,
+  packageJson,
+} from "@vibestart/core";
 
-import { templateFiles } from "#/templates.ts";
+import { todosExample } from "#/app.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { readmeLayers } from "#/vite-plus/slots.ts";
 
 export const solid = defineIntegration({
@@ -11,14 +18,6 @@ export const solid = defineIntegration({
   homepage: "https://www.solidjs.com",
   provides: ["solid"],
   requires: ["frontend-framework", "ui-components"],
-  choices: {
-    mode: ["standard"],
-    backend: ["hono", null],
-    api: [null],
-    database: [null],
-    desktop: [null],
-    mobile: [null],
-  },
   contribute: (ctx) => [
     ...templateFiles(ctx, "solid/common"),
     contribute(packageJson, {
@@ -32,6 +31,57 @@ export const solid = defineIntegration({
   ],
 });
 
+const router = (ctx: Context) => {
+  const path = "apps/web/src/router.tsx";
+  const template = templateContent(ctx, "solid-router/common", path);
+
+  const pages = [
+    ...(ctx.has("better-auth")
+      ? [{ path: "login", component: "Login", module: "login" }]
+      : []),
+    ...(todosExample(ctx)
+      ? [
+          {
+            path: "todos",
+            component: ctx.has("better-auth") ? "ProtectedTodos" : "Todos",
+            module: ctx.has("better-auth") ? "protected-todos" : "todos",
+          },
+        ]
+      : []),
+  ];
+
+  const homeImport = 'import { Home } from "#src/home.tsx";';
+  const homeRoute = '    { path: "/", component: Home },';
+
+  const withImports = replaceOnce(
+    template,
+    homeImport,
+    [
+      homeImport,
+      ...pages.map(
+        (page) => `import { ${page.component} } from "#src/${page.module}.tsx";`
+      ),
+    ].join("\n"),
+    path
+  );
+
+  return file(
+    path,
+    replaceOnce(
+      withImports,
+      homeRoute,
+      [
+        homeRoute,
+        ...pages.map(
+          (page) =>
+            `    { path: "/${page.path}", component: ${page.component} },`
+        ),
+      ].join("\n"),
+      path
+    )
+  );
+};
+
 export const solidRouter = defineIntegration({
   id: "solid-router",
   kind: "router",
@@ -41,7 +91,7 @@ export const solidRouter = defineIntegration({
   provides: ["router"],
   requires: ["solid"],
   contribute: (ctx) => [
-    ...templateFiles(ctx, "solid-router/common"),
+    router(ctx),
     contribute(packageJson, {
       path: "apps/web",
       dependencies: ["@solidjs/router"],
