@@ -206,9 +206,9 @@ test("selects Effect testing and removes persistence through the picker", async 
   });
 
   await page.getByRole("button", { name: /Vitest/u }).click();
-  await expect(page.getByRole("dialog")).toContainText(
-    "HTTP and RPC health checks"
-  );
+  const details = page.getByRole("dialog");
+  await expect(details).toContainText("HTTP and RPC health checks");
+  await expect(details).toContainText("API documentation routes");
 });
 
 test("composes Effect on the home page and opens it in Studio", async ({

@@ -42,7 +42,8 @@ npx skills add VinkyDev/vibestart --skill vibestart
 在生成的项目中，使用统一工具链 [Vite+](https://viteplus.dev)（`vp`）进行日常开发与校验，并通过 CLI 保持模板更新：
 
 ```sh
-vp run dev                     # 启动本地开发环境
+vp run dev                     # 启动 Web 应用或 API
+vp run dev:mobile              # 选用 Expo 时启动移动端
 vp run ready                   # 依次执行类型、lint、死代码、测试与构建检查
 npx vibestart-cli doctor       # 检查项目状态与可用的模板更新
 npx vibestart-cli upgrade      # 三方合并升级底层模板，保留你的业务代码

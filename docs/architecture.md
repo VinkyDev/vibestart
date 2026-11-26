@@ -30,7 +30,7 @@
 | `tanstack-start`, `next` | `self`        | The framework's own server                                                                                                           |
 | `tanstack-start`, `next` | `hono`        | Two processes: route handlers forward `/api` and `/rpc` to Hono, so session cookies stay first-party                                 |
 | `tanstack-start`, `next` | none          | Server-rendered pages only, with no API or database                                                                                  |
-| none                     | `hono`        | A backend alone, tested by integration tests                                                                                         |
+| none                     | `hono`        | A standalone Hono server. Selecting both an API and a database adds integration tests.                                               |
 
 A mobile app (`mobile`: `expo`) joins any of these shapes or stands alone. With a backend, it calls the API on port 3000 of the machine Metro runs on in development, which is Hono or the framework that forwards to it, and the origin in `EXPO_PUBLIC_API_URL` in a release build. Docker requires a web app or an HTTP server, so a mobile app alone has no deployment.
 

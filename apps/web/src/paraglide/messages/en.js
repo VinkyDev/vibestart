@@ -1750,7 +1750,7 @@ export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInpu
 };
 
 export const tests_scope_health = /** @type {(inputs: Tests_Scope_HealthInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest runs unit tests and exercises the HTTP and RPC health checks through the Effect server.`)
+	return /** @type {LocalizedString} */ (`Vitest exercises the HTTP and RPC health checks and the API documentation routes through the Effect server.`)
 };
 
 export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {

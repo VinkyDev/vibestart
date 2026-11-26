@@ -1742,7 +1742,7 @@ export const tests_scope_e2e_none = /** @type {(inputs: Tests_Scope_E2e_NoneInpu
 };
 
 export const tests_scope_health = /** @type {(inputs: Tests_Scope_HealthInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Vitest 运行单元测试，并通过 Effect 服务验证 HTTP 和 RPC 健康检查。`)
+	return /** @type {LocalizedString} */ (`Vitest 通过 Effect 服务验证 HTTP 和 RPC 健康检查以及 API 文档路由。`)
 };
 
 export const tests_scope_integration = /** @type {(inputs: Tests_Scope_IntegrationInputs) => LocalizedString} */ () => {
