@@ -30,6 +30,29 @@ import { roles } from "#/lib/roles.ts";
 import { chosen, optionsOf, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
+const observeSize = (
+  element: HTMLDivElement | null,
+  update: (rect: DOMRectReadOnly) => void
+) => {
+  if (element === null) {
+    return () => {
+      // React already ran the previous element's cleanup.
+    };
+  }
+
+  const observer = new ResizeObserver(([entry]) => {
+    if (entry !== undefined) {
+      update(entry.contentRect);
+    }
+  });
+
+  observer.observe(element);
+
+  return () => {
+    observer.disconnect();
+  };
+};
+
 const useFit = (stageHeight: number) => {
   // `settled` once measured before: the first fit is not an animation.
   const [room, setRoom] = useState<{
@@ -38,30 +61,17 @@ const useFit = (stageHeight: number) => {
     readonly settled: boolean;
   }>();
 
-  const ref = useCallback((element: HTMLDivElement | null) => {
-    if (element === null) {
-      return () => {
-        // React already ran the previous element's cleanup.
-      };
-    }
-
-    const observer = new ResizeObserver(([entry]) => {
-      if (entry !== undefined) {
-        const { height, width } = entry.contentRect;
+  const ref = useCallback(
+    (element: HTMLDivElement | null) =>
+      observeSize(element, ({ height, width }) => {
         setRoom((previous) => ({
           height,
           settled: previous !== undefined,
           width,
         }));
-      }
-    });
-
-    observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+      }),
+    []
+  );
 
   const scale =
     room === undefined
@@ -138,7 +148,7 @@ const Anchored = ({
   </motion.div>
 );
 
-const frameworkChips = ["frontend", "router"] as const;
+const frameworkChips = ["framework", "router"] as const;
 
 export const Topology = ({
   choosing,
@@ -147,7 +157,17 @@ export const Topology = ({
   readonly choosing: Choosing;
   readonly shown: Stack;
 }) => {
-  const layout = layoutOf(shown);
+  const [railHeight, setRailHeight] = useState<number>();
+
+  const measureRail = useCallback(
+    (element: HTMLDivElement | null) =>
+      observeSize(element, ({ height }) => {
+        setRailHeight(height);
+      }),
+    []
+  );
+
+  const layout = layoutOf(shown, railHeight);
   const { ref, scale, settled } = useFit(layout.height);
   const { enter: enterApi, leave: leaveApi } = useFocusTarget({ group: "api" });
   const boxes = processBoxes(shown);
@@ -211,7 +231,7 @@ export const Topology = ({
               delay={0.08 * (index + 1)}
               folded={folded}
               key={kind}
-              kind={kind}
+              kind={kind === "framework" ? "frontend" : kind}
               rect={rect}
               shown={shown}
             />,
@@ -288,7 +308,12 @@ export const Topology = ({
             </Anchored>
           )}
         </AnimatePresence>
-        <Rail choosing={choosing} rect={layout.rail} stack={shown} />
+        <Rail
+          choosing={choosing}
+          rect={layout.rail}
+          ref={measureRail}
+          stack={shown}
+        />
       </motion.div>
     </div>
   );

@@ -17,16 +17,18 @@ import { ToolDetails } from "#/components/topology/tool-details.tsx";
 import { useFocusTarget } from "#/lib/focus.ts";
 import { m } from "#/paraglide/messages.js";
 
+const extensions = registry.addons.filter(({ id }) => id !== "alchemy");
+
 export const Extensions = ({ choosing }: { readonly choosing: Choosing }) => {
   const { addons, baseline, onAddons } = choosing;
   const [open, setOpen] = useState(false);
   const { enter, leave } = useFocusTarget({ group: "foundation" });
 
-  const names = registry.addons
+  const names = extensions
     .filter(({ id }) => addons.includes(id))
     .map(({ name }) => name);
 
-  return registry.addons.length === 0 ? null : (
+  return extensions.length === 0 ? null : (
     <Popover
       open={open}
       onOpenChange={(next) => {
@@ -79,7 +81,7 @@ export const Extensions = ({ choosing }: { readonly choosing: Choosing }) => {
           </div>
           <fieldset className="mt-3 flex flex-col gap-1">
             <legend className="sr-only">{m.addons()}</legend>
-            {registry.addons.map((addon) => {
+            {extensions.map((addon) => {
               const taken = addons.includes(addon.id);
 
               return (

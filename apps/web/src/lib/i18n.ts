@@ -33,7 +33,6 @@ const capabilityPhrases = {
   "http-server": () => m.cap_http_server(),
   "node-runtime": () => m.cap_node_runtime(),
   "workers-runtime": () => m.cap_workers_runtime(),
-  "cloudflare-deployment": () => m.cap_cloudflare_deployment(),
   solid: () => m.cap_solid(),
   react: () => m.cap_react(),
   router: () => m.cap_router(),
@@ -78,9 +77,6 @@ const descriptions = {
   "better-auth": () => m.desc_better_auth(),
   bun: () => m.desc_bun(),
   docker: () => m.desc_docker(),
-  "cloudflare-workers": () => m.desc_alchemy(),
-  "gcp-cloud-run": () => m.desc_gcp_cloud_run(),
-  "fly-machines": () => m.desc_fly_machines(),
   workers: () => m.desc_workers(),
   drizzle: () => m.desc_drizzle(),
   electron: () => m.desc_electron(),
@@ -96,7 +92,6 @@ const descriptions = {
   postgres: () => m.desc_postgres(),
   prisma: () => m.desc_prisma(),
   solid: () => m.desc_solid(),
-  "solid-spa": () => m.desc_solid_spa(),
   "solid-router": () => m.desc_solid_router(),
   react: () => m.desc_react(),
   self: () => m.desc_self(),
@@ -117,6 +112,7 @@ export const integrationDescription = (integration: IntegrationInfo) =>
 export const addonDescription = (addon: AddonInfo) =>
   translate(
     {
+      alchemy: () => m.desc_alchemy(),
       knip: () => m.addon_desc_knip(),
       ultracite: () => m.addon_desc_ultracite(),
     },

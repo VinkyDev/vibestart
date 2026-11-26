@@ -17,6 +17,7 @@ import {
   todosExample,
 } from "#/app.ts";
 import { effectSpa } from "#/spa/effect.ts";
+import { solidSpa } from "#/spa/solid.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsMap,
@@ -107,56 +108,63 @@ const orpcClient = (ctx: Context) =>
   );
 
 export const spa = defineIntegration({
-  contribute: (ctx) =>
-    ctx.has("effect")
-      ? effectSpa(ctx)
-      : [
-          ...templateFiles(ctx, "spa/common"),
-          ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
-          ...viteConfig(ctx),
-          ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
-          ...(todosExample(ctx) && !ctx.has("better-auth")
-            ? templateFiles(ctx, "spa/todos")
-            : []),
-          ...homePage(ctx, "apps/web/src/routes/index.tsx", true),
-          contribute(packageJson, {
-            devDependencies: [
-              `${ctx.scope}/config`,
-              "@tailwindcss/vite",
-              "@tanstack/router-plugin",
-              "@types/node",
-              "@vitejs/plugin-react",
-              "oxc-transform-react",
-              "typescript",
-              "vite",
-              "vite-plus",
-            ],
-            imports: { "#src/*": "./src/*" },
-            path: "apps/web",
-            scripts: {
-              dev: "vp dev",
-              build: "vp build",
-              preview: "vp preview",
-            },
-          }),
-          contribute(agentsMap, {
-            owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
-            path: "apps/web",
-          }),
-          contribute(agentsNotes, requestFlow(ctx)),
-          contribute(readmeTagline, "React"),
-          contribute(stackHeadline, { name: "React", role: "Frontend" }),
-          contribute(readmeLayers, {
-            choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
-            layer: "Frontend",
-          }),
-          ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
+  contribute: (ctx) => {
+    if (ctx.has("solid")) {
+      return solidSpa(ctx);
+    }
+
+    if (ctx.has("effect")) {
+      return effectSpa(ctx);
+    }
+
+    return [
+      ...templateFiles(ctx, "spa/common"),
+      ...templateFiles(ctx, `spa/${authVariant(ctx)}`),
+      ...viteConfig(ctx),
+      ...(ctx.has("orpc") ? [orpcClient(ctx)] : []),
+      ...(todosExample(ctx) && !ctx.has("better-auth")
+        ? templateFiles(ctx, "spa/todos")
+        : []),
+      ...homePage(ctx, "apps/web/src/routes/index.tsx", true),
+      contribute(packageJson, {
+        devDependencies: [
+          `${ctx.scope}/config`,
+          "@tailwindcss/vite",
+          "@tanstack/router-plugin",
+          "@types/node",
+          "@vitejs/plugin-react",
+          "oxc-transform-react",
+          "typescript",
+          "vite",
+          "vite-plus",
         ],
+        imports: { "#src/*": "./src/*" },
+        path: "apps/web",
+        scripts: {
+          dev: "vp dev",
+          build: "vp build",
+          preview: "vp preview",
+        },
+      }),
+      contribute(agentsMap, {
+        owns: `React SPA: TanStack Router file routes, TanStack Query${ctx.has("better-auth") ? ", the Better Auth client" : ""}; e2e tests in \`tests/e2e/\``,
+        path: "apps/web",
+      }),
+      contribute(agentsNotes, requestFlow(ctx)),
+      contribute(readmeTagline, "React"),
+      contribute(stackHeadline, { name: "React", role: "Frontend" }),
+      contribute(readmeLayers, {
+        choice: "React 19, TanStack Router, TanStack Query, Tailwind CSS 4",
+        layer: "Frontend",
+      }),
+      ...open(ctx).map((paragraph) => contribute(readmeOpen, paragraph)),
+    ];
+  },
   id: "spa",
   kind: "framework",
-  name: "TanStack Router (Vite)",
-  description: "Client-rendered React app built with Vite",
+  name: "Vite",
+  description: "Client-rendered web app built with Vite",
   homepage: "https://vite.dev",
   provides: ["frontend-framework", "single-page-app"],
-  requires: ["react", "router"],
+  requires: [["react", "solid"], "router"],
 });

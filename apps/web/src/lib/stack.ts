@@ -28,8 +28,9 @@ import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
 
 const optionalDecisions = [
-  "ui",
+  "frontend",
   "framework",
+  "ui",
   "backend",
   "api",
   "database",
@@ -152,6 +153,7 @@ export const searchSchema = z.object({
   deployment: flag,
   desktop: flag,
   framework: flag,
+  frontend: flag,
   ui: flag,
   mobile: flag,
   orm: flag,
@@ -212,7 +214,10 @@ export const entryFromFlags = (flags: Flags): StackEntry => {
 export const flagsOf = (stack: Stack): Flags => {
   let choices = decisionsOf(stack);
 
-  for (const kind of decisions) {
+  for (const kind of [
+    "ui",
+    ...decisions.filter((id) => id !== "ui"),
+  ] as const) {
     const fewer = omit(choices, [kind]);
     const { stacks: left } = resolve(registry, fewer);
     const [only] = left;
@@ -224,6 +229,15 @@ export const flagsOf = (stack: Stack): Flags => {
     ) {
       choices = fewer;
     }
+  }
+
+  if (
+    choices.ui === "shadcn" &&
+    resolve(registry, omit(choices, ["ui"])).stacks.every(
+      (candidate) => candidate.ui !== undefined
+    )
+  ) {
+    choices = omit(choices, ["ui"]);
   }
 
   if (choices.runtime === "node") {
@@ -338,7 +352,15 @@ export const outcome = (
   );
 
   const { fixes, stacks: legal } = resolve(registry, choices, {
-    keep: keepsMode ? ["mode", kind] : [kind],
+    keep: [
+      ...(keepsMode ? ["mode"] : []),
+      kind,
+      ...(kind === "runtime" ? ["framework", "backend"] : []),
+      ...(stack.frontend !== undefined &&
+      (kind === "framework" || kind === "ui")
+        ? ["frontend"]
+        : []),
+    ],
   });
 
   if (legal.length > 0) {

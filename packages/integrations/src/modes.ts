@@ -36,7 +36,7 @@ export const effect = defineIntegration({
     database: ["postgres", "sqlite", null],
     orm: ["drizzle", null],
     auth: ["better-auth", null],
-    ui: ["shadcn"],
+    ui: ["shadcn", "ui-sdk"],
     desktop: ["electron", null],
     mobile: ["expo", null],
     runtime: ["node"],

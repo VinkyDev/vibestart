@@ -104,7 +104,7 @@ describe("stack modes", () => {
 
   it("offers both test runners with optional persistence, authentication, desktop, and mobile", () => {
     const { stacks } = resolve(registry, { mode: "effect" });
-    expect(stacks).toHaveLength(80);
+    expect(stacks).toHaveLength(160);
 
     for (const database of [undefined, "postgres", "sqlite"]) {
       for (const auth of database === undefined
@@ -368,7 +368,7 @@ describe("stack modes", () => {
     { database: "mysql" },
     { framework: "next" },
     { runtime: "bun" },
-    { deployment: "cloudflare-workers" },
+    { runtime: "workers" },
   ])("rejects unadapted choices in Effect mode: %j", (choice) => {
     const stack = { ...compose(registry, { mode: "effect" }), ...choice };
     expect(check(registry, stack).length).toBeGreaterThan(0);

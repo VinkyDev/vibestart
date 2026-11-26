@@ -40,7 +40,7 @@ const navLink =
   "text-muted-foreground hover:text-foreground hover:bg-foreground/[0.04] data-[status=active]:bg-foreground/[0.06] data-[status=active]:text-foreground focus-visible:ring-foreground/30 rounded-full px-3 py-1.5 text-sm transition-colors outline-none focus-visible:ring-2";
 
 export const Header = () => (
-  <header className="bg-background/80 supports-backdrop-filter:bg-background/65 h-header edge-on-scroll sticky top-0 z-40 flex shrink-0 items-center gap-2 px-4 backdrop-blur-md sm:gap-6 sm:px-6">
+  <header className="bg-background/80 supports-backdrop-filter:bg-background/65 min-h-header edge-on-scroll sticky top-0 z-40 flex shrink-0 flex-wrap items-center gap-2 px-4 backdrop-blur-md sm:gap-6 sm:px-6">
     <Link
       aria-label="vibestart"
       className="group/home focus-visible:ring-foreground/30 -m-1.5 flex shrink-0 items-center gap-2.5 rounded-full p-1.5 outline-none focus-visible:ring-2"

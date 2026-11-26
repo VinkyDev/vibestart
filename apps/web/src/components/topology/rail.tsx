@@ -1,12 +1,13 @@
 import {
   ChevronsUpDown,
+  Cloud,
   FlaskConical,
   MousePointerClick,
   Wrench,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 import { Fragment } from "react";
 
 import type { IntegrationInfo, Stack } from "@vibestart/core";
@@ -19,18 +20,19 @@ import { cn } from "@vibestart/ui/lib/utils";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
+import { DeploymentPicker } from "#/components/topology/deployment-picker.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
 import {
   CardHeading,
   IntegrationCard,
 } from "#/components/topology/integration-card.tsx";
 import type { Rect } from "#/components/topology/layout.ts";
-import { Swatch, Tile } from "#/components/topology/tile.tsx";
+import { Swatch } from "#/components/topology/tile.tsx";
 import { ToolDetails } from "#/components/topology/tool-details.tsx";
 import { focusesGroup, useFocus, useFocusTarget } from "#/lib/focus.ts";
 import { ease, spring } from "#/lib/motion.ts";
-import { addLabel, groupOf, roles } from "#/lib/roles.ts";
-import { chosen, e2eRunner, selected } from "#/lib/stack.ts";
+import { groupOf, roles } from "#/lib/roles.ts";
+import { e2eRunner, selected } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
 const Frame = ({
@@ -71,14 +73,16 @@ const FoundationFace = ({
 }: {
   readonly empty?: boolean;
   readonly icon: LucideIcon;
-  readonly kind: string;
+  readonly kind?: string;
   readonly name: string;
   readonly trailing?: ReactNode;
 }) => (
-  <span className="bg-card shadow-rest transition-surface group-hover/trigger:shadow-lift group-data-popup-open/trigger:shadow-lift group-hover/card:shadow-lift group-data-[focused]/card:shadow-lift group-data-popup-open/card:shadow-lift group-focus-visible/card:focus-ring flex size-full min-w-0 items-center gap-2 rounded-2xl px-2.5">
+  <span className="bg-card shadow-rest transition-surface group-hover/trigger:shadow-lift group-data-popup-open/trigger:shadow-lift group-hover/card:shadow-lift group-data-[focused]/card:shadow-lift group-data-popup-open/card:shadow-lift group-focus-visible/card:focus-ring flex size-full min-w-0 items-center gap-2 rounded-2xl px-2.5 forced-colors:group-focus-visible/card:outline-2 forced-colors:group-focus-visible/card:-outline-offset-2">
     <Swatch icon={icon} />
     <span className="flex min-w-0 flex-1 flex-col">
-      <span className="text-muted-foreground truncate text-xs">{kind}</span>
+      {kind !== undefined && (
+        <span className="text-muted-foreground truncate text-xs">{kind}</span>
+      )}
       <span
         className={cn(
           "truncate text-sm font-medium",
@@ -96,7 +100,7 @@ const chooser = (
   <ChevronsUpDown className="text-muted-foreground size-3.5 shrink-0 opacity-60 transition-opacity group-hover/trigger:opacity-100" />
 );
 
-// Equal shares keep the rail balanced and prevent option changes from moving adjacent cards.
+// Fixed shares keep selection changes from moving adjacent cards.
 const cardClass = "h-full min-w-0 flex-1";
 
 const Toolchain = ({
@@ -182,10 +186,12 @@ const EndToEndTests = ({
 export const Rail = ({
   choosing,
   rect,
+  ref,
   stack,
 }: {
   readonly choosing: Choosing;
   readonly rect: Rect;
+  readonly ref: Ref<HTMLDivElement>;
   readonly stack: Stack;
 }) => {
   const { focus } = useFocus();
@@ -199,22 +205,20 @@ export const Rail = ({
       integration.kind !== "mode" && groupOf(integration.id) === "foundation"
   );
 
-  const deployment = chosen(stack, "deployment");
-
   return (
     <motion.div
       animate={{ opacity: 1, top: rect.y, y: 0 }}
-      className="absolute left-(--x) flex h-(--h) w-(--w) gap-3"
+      className="absolute left-(--x) flex w-(--w) gap-3"
+      ref={ref}
       initial={{ opacity: 0, top: rect.y, y: 10 }}
       style={{
-        "--h": `${rect.height}px`,
         "--w": `${rect.width}px`,
         "--x": `${rect.x}px`,
       }}
       transition={{ default: { delay: 0.5, duration: 0.8, ease }, top: spring }}
     >
       <Frame
-        className="tint-foundation flex-1"
+        className="tint-foundation h-23 flex-1 self-start"
         focused={focusesGroup(focus, "foundation")}
         label={m.engineering_capabilities()}
       >
@@ -236,17 +240,12 @@ export const Rail = ({
             />
           )
         )}
-        <div
-          className={cn(
-            "bg-card shadow-rest transition-surface hover:shadow-lift has-data-popup-open:shadow-lift flex min-w-0 rounded-2xl",
-            cardClass
-          )}
-        >
+        <div className="bg-card shadow-rest transition-surface hover:shadow-lift has-data-popup-open:shadow-lift flex h-full min-w-0 flex-[1.25] rounded-2xl">
           <Extensions choosing={choosing} />
         </div>
       </Frame>
       <Frame
-        className="tint-deployment w-[228px]"
+        className="tint-deployment min-h-23 w-60"
         focused={focusesGroup(focus, "deployment")}
         label={roles.deployment.role}
       >
@@ -255,36 +254,14 @@ export const Rail = ({
           onPointerEnter={enterDeployment}
           onPointerLeave={leaveDeployment}
         >
-          <DecisionTrigger
+          <DeploymentPicker
             choosing={choosing}
-            className="h-full flex-1"
-            kind="deployment"
-            side="top"
+            className="group/card flex w-full min-w-0 text-left"
           >
-            <span
-              className={cn(
-                "transition-surface flex size-full min-w-0 items-center gap-3 rounded-2xl px-3",
-                deployment === undefined
-                  ? "border-foreground/15 group-hover/trigger:border-foreground/25 border border-dashed"
-                  : "bg-card shadow-rest group-hover/trigger:shadow-lift group-data-popup-open/trigger:shadow-lift",
-                stack.deployment !== choosing.baseline.deployment &&
-                  "shadow-preview"
-              )}
-            >
-              <Tile empty={deployment === undefined} kind="deployment" />
-              <span
-                className={cn(
-                  "min-w-0 flex-1 truncate text-sm font-medium transition-colors",
-                  deployment === undefined
-                    ? "text-muted-foreground group-hover/trigger:text-foreground"
-                    : "text-foreground"
-                )}
-              >
-                {deployment?.name ?? addLabel("deployment")}
-              </span>
-              <ChevronsUpDown className="text-muted-foreground size-3.5 shrink-0 opacity-60 transition-opacity group-hover/trigger:opacity-100" />
-            </span>
-          </DecisionTrigger>
+            {(summary) => (
+              <FoundationFace icon={Cloud} name={summary} trailing={chooser} />
+            )}
+          </DeploymentPicker>
         </div>
       </Frame>
     </motion.div>

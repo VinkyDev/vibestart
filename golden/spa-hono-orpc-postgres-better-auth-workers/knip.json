@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}

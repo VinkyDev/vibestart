@@ -3,24 +3,23 @@ title: Frontend
 description: Choose how pages render, and understand routing, data fetching, and shared components.
 ---
 
-The frontend is everything that runs in the browser: pages, routing, data fetching, and components. Start by choosing a framework, which decides where pages are rendered and how the app is deployed; the sections after it describe each framework and the tools they share.
+Choose React or Solid 2 first, then the application framework and UI kit.
 
 ## Rendering options [#choose]
 
 Choose a browser-rendered React or Solid SPA, or a React framework with server rendering:
 
-| Option                 | Rendering and deployment                                | Use cases                              |
-| ---------------------- | ------------------------------------------------------- | -------------------------------------- |
-| TanStack Router (Vite) | Browser rendering; static hosting or Hono               | Dashboards, tools, desktop apps        |
-| Solid Router (Vite)    | Client-rendered Solid 2, static hosting or Hono         | Reactive web apps                      |
-| TanStack Start         | Server rendering; Node.js service                       | Full-stack apps using TanStack routing |
-| Next.js                | App Router and React Server Components; Node.js service | Content sites and full-stack products  |
+| Option         | Rendering and deployment                                | Use cases                              |
+| -------------- | ------------------------------------------------------- | -------------------------------------- |
+| Vite           | Browser rendering; static hosting or Hono               | Dashboards, tools, desktop apps        |
+| TanStack Start | Server rendering; Node.js service                       | Full-stack apps using TanStack routing |
+| Next.js        | App Router and React Server Components; Node.js service | Content sites and full-stack products  |
 
 <RenderRace />
 
 ## Solid 2 [#solid]
 
-Use **Solid Router (Vite)** in the Studio or select `--frontend solid` in the CLI. The generated Solid 2 SPA uses the official router and the Solid UI SDK adapter. Choose static hosting or the Hono health API. The development server proxies API requests to Hono. The generated Docker image serves both the SPA and API from Hono.
+Use **Solid 2** in the Studio or select `--frontend solid` in the CLI. The generated Solid 2 SPA uses the official router and the Solid UI SDK adapter. Choose static hosting or the Hono health API. The development server proxies API requests to Hono. The generated Docker image serves both the SPA and API from Hono.
 
 ## React [#react]
 
@@ -28,7 +27,7 @@ Use **Solid Router (Vite)** in the Studio or select `--frontend solid` in the CL
 
 React organizes the interface into components. Generated projects include pages, forms, shared components, and React Compiler configuration. State and events use standard React APIs.
 
-## TanStack Router (Vite) [#spa]
+## Vite [#spa]
 
 <Tech href="https://tanstack.com/router" icon="tanstack" paired="vite" />
 
@@ -64,4 +63,4 @@ Shared component source lives in `packages/ui` and can be edited directly. Base 
 
 ## UI SDK [#ui-sdk]
 
-Select **UI SDK** to generate a Standard Vite SPA with an accessible theme menu in the shared UI package. It supports a static site or a Hono health API. React defaults to shadcn/ui. Solid uses UI SDK.
+Every React stack can switch between shadcn/ui and UI SDK while keeping its other choices. Solid 2 uses UI SDK.

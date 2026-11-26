@@ -312,7 +312,13 @@ export const next = defineIntegration({
 
     return [
       ...templateFiles(ctx, "next/common", {
-        except: [navLinksPath, nextConfigPath],
+        except: [
+          navLinksPath,
+          nextConfigPath,
+          ...(ctx.has("ui-sdk")
+            ? ["apps/web/src/components/mode-toggle.tsx"]
+            : []),
+        ],
       }),
       ...templateFiles(ctx, `next/${authVariant(ctx)}`),
       ...(ctx.has("orpc") ? templateFiles(ctx, "next/orpc") : []),

@@ -35,10 +35,11 @@ CLI 会依次：
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect 模式提供 80 个合法组合：PostgreSQL 或 SQLite 搭配可选的 Better Auth，或者不使用数据库，再分别组合可选的 Electron 桌面端、Expo 移动端、两种浏览器测试框架和 Docker／不部署。包管理器与扩展独立于这些组合。
+Effect 模式支持 PostgreSQL 或 SQLite，可搭配 Better Auth，也可以创建无数据库应用。两套 React UI 库和两种浏览器测试框架均可选择，按需添加 Electron、Expo 或 Docker。包管理器与扩展独立于这些组合。
 
 | 参数         | Effect 可选值                | 不进行交互时的默认值             |
 | ------------ | ---------------------------- | -------------------------------- |
+| `--ui`       | `shadcn`、`ui-sdk`           | `shadcn`                         |
 | `--database` | `postgres`、`sqlite`、`none` | `sqlite`                         |
 | `--orm`      | `drizzle`、`none`            | 根据数据库推导                   |
 | `--auth`     | `better-auth`、`none`        | 无默认值；使用数据库时需显式选择 |
@@ -132,7 +133,7 @@ Change them to one of:
   --framework spa --backend hono
 ```
 
-## 包管理器与 Hono 运行时 [#runtime]
+## 包管理器与服务端运行时 [#runtime]
 
 这两项选择相互独立。包管理器默认为 `pnpm`，可通过 `--package-manager bun` 选择 Bun；Hono 默认运行在 `node` 上，可通过 `--runtime bun` 改为 Bun。Bun 运行时选择仅作用于 Hono，Next.js、TanStack Start、Electron、Vite+ 和 Vitest 的运行方式不变。
 
@@ -147,7 +148,7 @@ bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth
 bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth none --package-manager bun --runtime bun
 ```
 
-用于启动 CLI 的命令（`pnpm dlx`、`npx` 或 `bunx`）不决定项目的包管理器。`--package-manager` 优先于配方；两者都未指定时，采用交互中的选择或默认的 pnpm。在工作台中，包管理器在创建面板中选择，运行时在 Hono 的进程框中选择。
+用于启动 CLI 的命令（`pnpm dlx`、`npx` 或 `bunx`）不决定项目的包管理器。`--package-manager` 优先于配方；两者都未指定时，采用交互中的选择或默认的 pnpm。在工作台的创建面板中选择包管理器。使用 Vite 搭配 Hono 或使用 TanStack Start 自带的服务端时，可在对应的进程框中选择 Cloudflare Workers，也可以传入 `--runtime workers`。
 
 使用 Bun 时，workspace 与 catalog 位于根目录的 `package.json`，锁文件为 `bun.lock`；使用 pnpm 时则为 `pnpm-workspace.yaml` 和 `pnpm-lock.yaml`。两者都通过 `vp install` 安装依赖。运行在 Bun 上的 Hono 开发时使用 `bun --watch`，生产环境使用 `bun dist/index.mjs`，并自动加载 `.env`。生成的项目要求 Bun 1.4.3 或更高版本。每种包管理器与运行时的组合都单独验证。
 
@@ -157,6 +158,7 @@ bunx vibestart-cli my-api --frontend none --api openapi --database sqlite --auth
 
 | 扩展        | 提供的内容                                                                                                                   | 默认 |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------- | ---- |
+| `alchemy`   | 可编辑的 `alchemy.run.ts`，以及预览、部署和销毁云资源的命令                                                                  | 否   |
 | `knip`      | [Knip](https://knip.dev)：`vp run knip` 报告未使用的文件、导出、依赖和 catalog 条目，`vp run ready` 在 `vp check` 之后运行它 | 是   |
 | `ultracite` | [Ultracite](https://www.ultracite.ai)：为 `vp check` 提供 lint 与格式化预设，包含所用框架的规则，以及针对 AI 生成代码的检查  | 是   |
 
@@ -165,6 +167,7 @@ npx vibestart-cli my-app --addons none             # 不含扩展
 npx vibestart-cli my-app --addons knip             # 仅 Knip
 npx vibestart-cli my-app --addons ultracite        # 仅 Ultracite
 npx vibestart-cli my-app --addons knip,ultracite   # 默认选择
+npx vibestart-cli my-app --addons alchemy,knip,ultracite  # Alchemy 和默认扩展
 ```
 
 未指定 `--addons` 时，CLI 在终端中会询问，否则使用默认项。验证基于默认扩展进行。不选 Knip 会移除它的任务和检查步骤；不选 Ultracite 会移除它的预设及相关依赖。无论如何选择，Vite+ 的基础检查、类型检查、测试和构建都会保留。
@@ -287,8 +290,6 @@ npx vibestart-cli my-app --framework spa --backend hono --json
 | `1`    | 失败   |
 | `130`  | 已取消 |
 
-部署到 Cloudflare 时使用 `--deployment cloudflare-workers --runtime workers`。Alchemy 支持静态 SPA、SPA + Hono 和 TanStack Start；服务端可选外部 Postgres/MySQL + Drizzle。工具和迁移脚本仍运行于 Node.js。详见 [Alchemy 部署](/docs/stack/delivery#alchemy)。
+勾选 **Alchemy** 会生成可编辑的 `alchemy.run.ts`。初始栈使用本地状态，不创建云资源。在项目中安装需要的 provider 包，注册 provider 并声明资源；同一个栈可以组合多个厂商。需要生产镜像时可同时勾选 **Docker**。配置共享状态后再从 CI 部署。使用 `vp run plan --stage dev` 查看变更，使用 `vp run deploy --stage dev` 部署。已有项目可运行 `vibestart add alchemy`。
 
-独立的 Node/Hono API 可选择 `--deployment gcp-cloud-run` 或 `--deployment fly-machines`。Cloud Run 还支持外部 PostgreSQL 和 Drizzle。两个目标均使用固定摘要的镜像。详见[容器部署](/docs/stack/delivery#cloud-containers)。
-
-React 单页应用省略 `--ui` 时默认选择 shadcn。使用 `--ui ui-sdk` 可选择 UI SDK。带筛选条件的 `--list --json` 会返回当前参数对应的 UI 默认值。
+React 应用省略 `--ui` 时默认选择 shadcn。使用 `--ui ui-sdk` 可选择 UI SDK。带筛选条件的 `--list --json` 会返回当前参数对应的 UI 默认值。

@@ -115,13 +115,6 @@ export const api_clients_same: ((inputs?: Api_Clients_SameInputs, options?: { lo
 /**
 * | output |
 * | --- |
-* | "deployment to Cloudflare through Alchemy" |
-*
-*/
-export const cap_cloudflare_deployment: ((inputs?: Cap_Cloudflare_DeploymentInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Cap_Cloudflare_DeploymentInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
 * | "a database server (PostgreSQL or MySQL)" |
 *
 */
@@ -472,24 +465,24 @@ export const current: ((inputs?: CurrentInputs, options?: { locale?: "en" | "zh"
 /**
 * | output |
 * | --- |
-* | "{name} · Cloudflare Worker + static assets" |
+* | "Choose a cloud provider in alchemy.run.ts and define resources in TypeScript." |
 *
 */
-export const deployment_alchemy: ((inputs: Deployment_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_AlchemyInputs, { locale?: "en" | "zh" }, {}>;
+export const deployment_alchemy_purpose: ((inputs?: Deployment_Alchemy_PurposeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Alchemy_PurposeInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
-* | "{name} · Worker + Hyperdrive · external database" |
+* | "Changing Docker requires a different stack. You can still choose Alchemy." |
 *
 */
-export const deployment_alchemy_database: ((inputs: Deployment_Alchemy_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Alchemy_DatabaseInputs, { locale?: "en" | "zh" }, {}>;
+export const deployment_docker_locked: ((inputs?: Deployment_Docker_LockedInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Docker_LockedInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
-* | "{name} · Cloud Run service + migration job · external PostgreSQL" |
+* | "Build an image with the Dockerfile and run it locally or on a server with Compose." |
 *
 */
-export const deployment_cloud_run_database: ((inputs: Deployment_Cloud_Run_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Cloud_Run_DatabaseInputs, { locale?: "en" | "zh" }, {}>;
+export const deployment_docker_purpose: ((inputs?: Deployment_Docker_PurposeInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Docker_PurposeInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -521,7 +514,14 @@ export const deployment_postgres: ((inputs: Deployment_PostgresInputs, options?:
 /**
 * | output |
 * | --- |
-* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
+* | "You can use either tool on its own, or both to run containers in the cloud." |
+*
+*/
+export const deployment_together: ((inputs?: Deployment_TogetherInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_TogetherInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Define cloud infrastructure in TypeScript with your choice of providers" |
 *
 */
 export const desc_alchemy: ((inputs?: Desc_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_AlchemyInputs, { locale?: "en" | "zh" }, {}>;
@@ -595,20 +595,6 @@ export const desc_electron: ((inputs?: Desc_ElectronInputs, options?: { locale?:
 *
 */
 export const desc_expo: ((inputs?: Desc_ExpoInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_ExpoInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Deploy a stateless Node API to Fly Machines (preview)" |
-*
-*/
-export const desc_fly_machines: ((inputs?: Desc_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Deploy a standalone Node API to Google Cloud Run (preview)" |
-*
-*/
-export const desc_gcp_cloud_run: ((inputs?: Desc_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -724,14 +710,7 @@ export const desc_solid_router: ((inputs?: Desc_Solid_RouterInputs, options?: { 
 /**
 * | output |
 * | --- |
-* | "Client-rendered Solid app built with Vite" |
-*
-*/
-export const desc_solid_spa: ((inputs?: Desc_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Client-rendered React app built with Vite" |
+* | "Client-rendered web app built with Vite" |
 *
 */
 export const desc_spa: ((inputs?: Desc_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_SpaInputs, { locale?: "en" | "zh" }, {}>;
@@ -780,7 +759,7 @@ export const desc_vite_plus: ((inputs?: Desc_Vite_PlusInputs, options?: { locale
 /**
 * | output |
 * | --- |
-* | "Cloudflare Workers runtime, deployed with Alchemy" |
+* | "Run the web app on Cloudflare Workers" |
 *
 */
 export const desc_workers: ((inputs?: Desc_WorkersInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_WorkersInputs, { locale?: "en" | "zh" }, {}>;
@@ -935,13 +914,6 @@ export const file_count: ((inputs: File_CountInputs, options?: { locale?: "en" |
 /**
 * | output |
 * | --- |
-* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
-*
-*/
-export const fit_alchemy: ((inputs?: Fit_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_AlchemyInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
 * | "For apps where users have accounts." |
 *
 */
@@ -995,20 +967,6 @@ export const fit_electron: ((inputs?: Fit_ElectronInputs, options?: { locale?: "
 *
 */
 export const fit_expo: ((inputs?: Fit_ExpoInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_ExpoInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Run a stateless API in a Fly.io region from a published image." |
-*
-*/
-export const fit_fly_machines: ((inputs?: Fit_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
-* | "Serve a container over HTTPS on Google Cloud, optionally with an external PostgreSQL database." |
-*
-*/
-export const fit_gcp_cloud_run: ((inputs?: Fit_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -1145,13 +1103,6 @@ export const fit_self: ((inputs?: Fit_SelfInputs, options?: { locale?: "en" | "z
 /**
 * | output |
 * | --- |
-* | "For a Solid 2 SPA with typed routes and UI SDK components." |
-*
-*/
-export const fit_solid_spa: ((inputs?: Fit_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>;
-/**
-* | output |
-* | --- |
 * | "For dashboards and tools behind a sign-in." |
 *
 */
@@ -1173,7 +1124,7 @@ export const fit_tanstack_start: ((inputs?: Fit_Tanstack_StartInputs, options?: 
 /**
 * | output |
 * | --- |
-* | "For a Vite SPA with accessible, unstyled primitives." |
+* | "Accessible, unstyled primitives with React and Solid adapters." |
 *
 */
 export const fit_ui_sdk: ((inputs?: Fit_Ui_SdkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Ui_SdkInputs, { locale?: "en" | "zh" }, {}>;
@@ -1184,6 +1135,20 @@ export const fit_ui_sdk: ((inputs?: Fit_Ui_SdkInputs, options?: { locale?: "en" 
 *
 */
 export const fit_workers: ((inputs?: Fit_WorkersInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_WorkersInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Choose React or Solid. The app framework and component kit follow below." |
+*
+*/
+export const frontend_about: ((inputs?: Frontend_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Frontend_AboutInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Which UI library renders the page?" |
+*
+*/
+export const frontend_question: ((inputs?: Frontend_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Frontend_QuestionInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -2148,7 +2113,7 @@ export const role_desktop_question: ((inputs?: Role_Desktop_QuestionInputs, opti
 /**
 * | output |
 * | --- |
-* | "Frontend" |
+* | "App framework" |
 *
 */
 export const role_framework: ((inputs?: Role_FrameworkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Role_FrameworkInputs, { locale?: "en" | "zh" }, {}>;
@@ -2218,7 +2183,7 @@ export const runs_in_electron: ((inputs?: Runs_In_ElectronInputs, options?: { lo
 /**
 * | output |
 * | --- |
-* | "Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun." |
+* | "Choose the runtime that executes your server." |
 *
 */
 export const runtime_about: ((inputs?: Runtime_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Runtime_AboutInputs, { locale?: "en" | "zh" }, {}>;
@@ -2891,7 +2856,6 @@ export type Api_Client_DesktopInputs = {};
 export type Api_Client_MobileInputs = {};
 export type Api_ClientsInputs = {};
 export type Api_Clients_SameInputs = {};
-export type Cap_Cloudflare_DeploymentInputs = {};
 export type Cap_Database_ServerInputs = {};
 export type Cap_Document_DatabaseInputs = {};
 export type Cap_Document_OrmInputs = {};
@@ -2942,13 +2906,14 @@ export type Create_Agent_TitleInputs = {};
 export type Create_Agent_TriggerInputs = {};
 export type Create_ItInputs = {};
 export type CurrentInputs = {};
-export type Deployment_AlchemyInputs = { name: NonNullable<unknown> };
-export type Deployment_Alchemy_DatabaseInputs = { name: NonNullable<unknown> };
-export type Deployment_Cloud_Run_DatabaseInputs = { name: NonNullable<unknown> };
+export type Deployment_Alchemy_PurposeInputs = {};
+export type Deployment_Docker_LockedInputs = {};
+export type Deployment_Docker_PurposeInputs = {};
 export type Deployment_ImageInputs = { name: NonNullable<unknown> };
 export type Deployment_MongodbInputs = { name: NonNullable<unknown> };
 export type Deployment_MysqlInputs = { name: NonNullable<unknown> };
 export type Deployment_PostgresInputs = { name: NonNullable<unknown> };
+export type Deployment_TogetherInputs = {};
 export type Desc_AlchemyInputs = {};
 export type Desc_Better_AuthInputs = {};
 export type Desc_BunInputs = {};
@@ -2960,8 +2925,6 @@ export type Desc_Effect_HttpInputs = {};
 export type Desc_Effect_RpcInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
-export type Desc_Fly_MachinesInputs = {};
-export type Desc_Gcp_Cloud_RunInputs = {};
 export type Desc_HonoInputs = {};
 export type Desc_MongodbInputs = {};
 export type Desc_MongooseInputs = {};
@@ -2978,7 +2941,6 @@ export type Desc_SelfInputs = {};
 export type Desc_ShadcnInputs = {};
 export type Desc_SolidInputs = {};
 export type Desc_Solid_RouterInputs = {};
-export type Desc_Solid_SpaInputs = {};
 export type Desc_SpaInputs = {};
 export type Desc_SqliteInputs = {};
 export type Desc_StandardInputs = {};
@@ -3008,7 +2970,6 @@ export type Expo_ProcessInputs = {};
 export type Extensions_AboutInputs = {};
 export type Extensions_NoneInputs = {};
 export type File_CountInputs = { count: NonNullable<unknown> };
-export type Fit_AlchemyInputs = {};
 export type Fit_Better_AuthInputs = {};
 export type Fit_BunInputs = {};
 export type Fit_DockerInputs = {};
@@ -3017,8 +2978,6 @@ export type Fit_Effect_HttpInputs = {};
 export type Fit_Effect_RpcInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
-export type Fit_Fly_MachinesInputs = {};
-export type Fit_Gcp_Cloud_RunInputs = {};
 export type Fit_HonoInputs = {};
 export type Fit_MongodbInputs = {};
 export type Fit_MongooseInputs = {};
@@ -3038,12 +2997,13 @@ export type Fit_OrpcInputs = {};
 export type Fit_PostgresInputs = {};
 export type Fit_PrismaInputs = {};
 export type Fit_SelfInputs = {};
-export type Fit_Solid_SpaInputs = {};
 export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
 export type Fit_Tanstack_StartInputs = {};
 export type Fit_Ui_SdkInputs = {};
 export type Fit_WorkersInputs = {};
+export type Frontend_AboutInputs = {};
+export type Frontend_QuestionInputs = {};
 export type Gate_BuildInputs = {};
 export type Gate_Build_WebInputs = {};
 export type Gate_CheckInputs = {};

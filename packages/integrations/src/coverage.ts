@@ -34,7 +34,7 @@ const fileFacets = (file: GeneratedFile) =>
         .map((line) => `line ${file.path} ${line}`)
     : [`file ${file.path} ${digest(file.content)}`];
 
-// Docker has no runtime effect. Alchemy participates only in its own stacks, preserving existing coverage.
+// Docker adds packaging files outside the ready check.
 const choiceKinds = registry.kinds
   .map((kind) => kind.id)
   .filter((kind) => kind !== "deployment");
@@ -42,12 +42,7 @@ const choiceKinds = registry.kinds
 /** Every `size` of the stack's choices made together, an empty kind included as `none`. */
 const choiceFacets = (stack: Stack, size: number) =>
   combinations(
-    [
-      ...choiceKinds.map((kind) => `${kind}=${stack[kind] ?? "none"}`),
-      ...(stack.deployment !== undefined && stack.deployment !== "docker"
-        ? [`deployment=${stack.deployment}`]
-        : []),
-    ],
+    choiceKinds.map((kind) => `${kind}=${stack[kind] ?? "none"}`),
     size
   ).map((choices) => `choices ${choices.join(" ")}`);
 

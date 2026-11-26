@@ -35,7 +35,7 @@ describe(stackPreview, () => {
     );
 
     expect(expanded).toStrictEqual(generated);
-    expect(Object.keys(projects)).toHaveLength(8);
+    expect(Object.keys(projects)).toHaveLength(16);
   });
 
   it("carries the record the fingerprint check compares its default project to", async () => {

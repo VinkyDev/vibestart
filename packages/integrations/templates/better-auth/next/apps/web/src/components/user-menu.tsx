@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback } from "@my-app/ui/components/avatar";
-import { Button } from "@my-app/ui/components/button";
+import { Button, buttonVariants } from "@my-app/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,14 +63,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
   if (!user) {
     return pathname === "/login" ? null : (
-      <Button
-        nativeButton={false}
-        render={<Link href="/login" />}
-        size="sm"
-        variant="outline"
-      >
-        Sign in
-      </Button>
+      <Link href="/login" className={buttonVariants({ size: "sm", variant: "outline" })}>Sign in</Link>
     );
   }
 

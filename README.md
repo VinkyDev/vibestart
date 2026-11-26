@@ -66,22 +66,22 @@ VibeStart does not host your application, does not migrate production data, and 
 
 ## Supported stacks
 
-| Layer                    | Choices                                                                                                                                  |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Mode                     | Standard (default) or [Effect](https://vibestart.net/docs/stack/effect) (`--mode effect`)                                                |
-| App                      | React SPA (TanStack Router), Solid 2 SPA (Solid Router), TanStack Start, Next.js                                                         |
-| Desktop                  | Electron                                                                                                                                 |
-| Mobile                   | Expo (React Native), iOS and Android                                                                                                     |
-| Backend                  | Hono, Effect HTTP, or the framework's own server                                                                                         |
-| API                      | oRPC, Effect RPC, OpenAPI, or none                                                                                                       |
-| Database                 | PostgreSQL, MySQL, SQLite, MongoDB, or none                                                                                              |
-| ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL; Mongoose on MongoDB                                                                          |
-| Auth                     | Better Auth                                                                                                                              |
-| Deployment               | Docker, [Alchemy on Cloudflare Workers, Google Cloud Run, and Fly Machines](https://vibestart.net/docs/stack/delivery#alchemy) (preview) |
-| UI                       | shadcn (Base UI) or UI SDK (Vite SPA), with Tailwind 4                                                                                   |
-| Unit & integration tests | Vitest                                                                                                                                   |
-| End-to-end tests         | Playwright or TesterArmy e2e                                                                                                             |
-| Toolchain                | Vite+, Oxlint, Knip, `AGENTS.md`                                                                                                         |
+| Layer                    | Choices                                                                                                         |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Mode                     | Standard (default) or [Effect](https://vibestart.net/docs/stack/effect) (`--mode effect`)                       |
+| App                      | React SPA (TanStack Router), Solid 2 SPA (Solid Router), TanStack Start, Next.js                                |
+| Desktop                  | Electron                                                                                                        |
+| Mobile                   | Expo (React Native), iOS and Android                                                                            |
+| Backend                  | Hono, Effect HTTP, or the framework's own server                                                                |
+| API                      | oRPC, Effect RPC, OpenAPI, or none                                                                              |
+| Database                 | PostgreSQL, MySQL, SQLite, MongoDB, or none                                                                     |
+| ORM                      | Drizzle, or Prisma on PostgreSQL and MySQL; Mongoose on MongoDB                                                 |
+| Auth                     | Better Auth                                                                                                     |
+| Deployment               | Docker Compose and optional provider-neutral Alchemy infrastructure                                             |
+| UI                       | Every React stack can switch between shadcn/ui and UI SDK while keeping its other choices. Solid 2 uses UI SDK. |
+| Unit & integration tests | Vitest                                                                                                          |
+| End-to-end tests         | Playwright or TesterArmy e2e                                                                                    |
+| Toolchain                | Vite+, Oxlint, Knip, `AGENTS.md`                                                                                |
 
 Standard mode is the default and offers the widest range of stacks. Pass `--mode effect` (or switch in the studio) for an end-to-end [Effect](https://vibestart.net/docs/stack/effect) stack with typed errors and scoped service layers.
 

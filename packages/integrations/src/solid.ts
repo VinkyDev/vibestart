@@ -11,6 +11,14 @@ export const solid = defineIntegration({
   homepage: "https://www.solidjs.com",
   provides: ["solid"],
   requires: ["frontend-framework", "ui-components"],
+  choices: {
+    mode: ["standard"],
+    backend: ["hono", null],
+    api: [null],
+    database: [null],
+    desktop: [null],
+    mobile: [null],
+  },
   contribute: (ctx) => [
     ...templateFiles(ctx, "solid/common"),
     contribute(packageJson, {

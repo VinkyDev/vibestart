@@ -14,7 +14,7 @@
     "addons": {
       "default": ["knip", "ultracite"],
       "type": "array",
-      "items": { "type": "string", "enum": ["knip", "ultracite"] }
+      "items": { "type": "string", "enum": ["alchemy", "knip", "ultracite"] }
     },
     "channel": { "type": "string", "enum": ["recommended"] },
     "packageManager": { "type": "string", "enum": ["pnpm", "bun"] },
@@ -30,7 +30,7 @@
         "frontend": { "type": "string", "enum": ["react", "solid"] },
         "framework": {
           "type": "string",
-          "enum": ["spa", "solid-spa", "tanstack-start", "next"]
+          "enum": ["spa", "tanstack-start", "next"]
         },
         "router": {
           "type": "string",
@@ -51,15 +51,7 @@
         "desktop": { "type": "string", "enum": ["electron"] },
         "mobile": { "type": "string", "enum": ["expo"] },
         "runtime": { "type": "string", "enum": ["node", "bun", "workers"] },
-        "deployment": {
-          "type": "string",
-          "enum": [
-            "docker",
-            "cloudflare-workers",
-            "gcp-cloud-run",
-            "fly-machines"
-          ]
-        },
+        "deployment": { "type": "string", "enum": ["docker"] },
         "testing": {
           "anyOf": [
             { "type": "string", "enum": ["playwright", "e2e"] },

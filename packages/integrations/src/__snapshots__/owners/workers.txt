@@ -1,0 +1,1323 @@
+# apps/server/env.ts · 48 stacks
+#   spa-hono-mysql-better-auth-electron-expo-workers
+#   spa-hono-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-expo-workers
+#   spa-hono-mysql-better-auth-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-workers
+#   spa-hono-openapi-mysql-better-auth-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-workers
+#   spa-hono-openapi-postgres-better-auth-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-workers
+#   spa-hono-orpc-mysql-better-auth-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-workers
+#   spa-hono-orpc-postgres-better-auth-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-workers
+#   spa-hono-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-expo-workers
+#   spa-hono-postgres-better-auth-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+  NODE_ENV: z.enum(["development", "production", "test"]).optional(),
+});
+
+export const readEnv = ({ HYPERDRIVE, ...bindings }: Cloudflare.Env) =>
+  schema.parse({ ...bindings, DATABASE_URL: HYPERDRIVE.connectionString });
+
+# apps/server/env.ts · 48 stacks
+#   spa-hono-mysql-better-auth-electron-workers
+#   spa-hono-mysql-better-auth-electron-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-workers
+#   spa-hono-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-mysql-better-auth-workers
+#   spa-hono-mysql-better-auth-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-workers
+#   spa-hono-openapi-mysql-better-auth-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-workers
+#   spa-hono-openapi-mysql-better-auth-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-workers
+#   spa-hono-openapi-postgres-better-auth-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-workers
+#   spa-hono-openapi-postgres-better-auth-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-workers
+#   spa-hono-orpc-mysql-better-auth-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-workers
+#   spa-hono-orpc-mysql-better-auth-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-workers
+#   spa-hono-orpc-postgres-better-auth-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-workers
+#   spa-hono-orpc-postgres-better-auth-workers-e2e
+#   spa-hono-postgres-better-auth-electron-workers
+#   spa-hono-postgres-better-auth-electron-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-workers
+#   spa-hono-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-postgres-better-auth-workers
+#   spa-hono-postgres-better-auth-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+});
+
+export const readEnv = ({ HYPERDRIVE, ...bindings }: Cloudflare.Env) =>
+  schema.parse({ ...bindings, DATABASE_URL: HYPERDRIVE.connectionString });
+
+# apps/server/env.ts · 96 stacks
+#   spa-hono-mysql-electron-expo-workers
+#   spa-hono-mysql-electron-expo-workers-e2e
+#   spa-hono-mysql-electron-workers
+#   spa-hono-mysql-electron-workers-e2e
+#   spa-hono-mysql-expo-workers
+#   spa-hono-mysql-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-workers
+#   spa-hono-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-ui-sdk-expo-workers
+#   spa-hono-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-workers
+#   spa-hono-mysql-ui-sdk-workers-e2e
+#   spa-hono-mysql-workers
+#   spa-hono-mysql-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-workers
+#   spa-hono-openapi-mysql-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-electron-workers
+#   spa-hono-openapi-mysql-electron-workers-e2e
+#   spa-hono-openapi-mysql-expo-workers
+#   spa-hono-openapi-mysql-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-workers
+#   spa-hono-openapi-mysql-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-workers
+#   spa-hono-openapi-mysql-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-workers
+#   spa-hono-openapi-postgres-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-electron-workers
+#   spa-hono-openapi-postgres-electron-workers-e2e
+#   spa-hono-openapi-postgres-expo-workers
+#   spa-hono-openapi-postgres-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-workers
+#   spa-hono-openapi-postgres-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-workers
+#   spa-hono-openapi-postgres-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-workers
+#   spa-hono-orpc-mysql-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-electron-workers
+#   spa-hono-orpc-mysql-electron-workers-e2e
+#   spa-hono-orpc-mysql-expo-workers
+#   spa-hono-orpc-mysql-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-workers
+#   spa-hono-orpc-mysql-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-workers
+#   spa-hono-orpc-mysql-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-workers
+#   spa-hono-orpc-postgres-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-electron-workers
+#   spa-hono-orpc-postgres-electron-workers-e2e
+#   spa-hono-orpc-postgres-expo-workers
+#   spa-hono-orpc-postgres-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-workers
+#   spa-hono-orpc-postgres-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-workers
+#   spa-hono-orpc-postgres-workers-e2e
+#   spa-hono-postgres-electron-expo-workers
+#   spa-hono-postgres-electron-expo-workers-e2e
+#   spa-hono-postgres-electron-workers
+#   spa-hono-postgres-electron-workers-e2e
+#   spa-hono-postgres-expo-workers
+#   spa-hono-postgres-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-workers
+#   spa-hono-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-ui-sdk-expo-workers
+#   spa-hono-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-workers
+#   spa-hono-postgres-ui-sdk-workers-e2e
+#   spa-hono-postgres-workers
+#   spa-hono-postgres-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url(),
+});
+
+export const readEnv = ({ HYPERDRIVE, ...bindings }: Cloudflare.Env) =>
+  schema.parse({ ...bindings, DATABASE_URL: HYPERDRIVE.connectionString });
+
+# apps/server/src/worker.ts · 50 stacks
+#   solid-spa-hono-ui-sdk-workers
+#   solid-spa-hono-ui-sdk-workers-e2e
+#   spa-hono-electron-expo-workers
+#   spa-hono-electron-expo-workers-e2e
+#   spa-hono-electron-workers
+#   spa-hono-electron-workers-e2e
+#   spa-hono-expo-workers
+#   spa-hono-expo-workers-e2e
+#   spa-hono-openapi-electron-expo-workers
+#   spa-hono-openapi-electron-expo-workers-e2e
+#   spa-hono-openapi-electron-workers
+#   spa-hono-openapi-electron-workers-e2e
+#   spa-hono-openapi-expo-workers
+#   spa-hono-openapi-expo-workers-e2e
+#   spa-hono-openapi-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-ui-sdk-electron-workers
+#   spa-hono-openapi-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-ui-sdk-expo-workers
+#   spa-hono-openapi-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-ui-sdk-workers
+#   spa-hono-openapi-ui-sdk-workers-e2e
+#   spa-hono-openapi-workers
+#   spa-hono-openapi-workers-e2e
+#   spa-hono-orpc-electron-expo-workers
+#   spa-hono-orpc-electron-expo-workers-e2e
+#   spa-hono-orpc-electron-workers
+#   spa-hono-orpc-electron-workers-e2e
+#   spa-hono-orpc-expo-workers
+#   spa-hono-orpc-expo-workers-e2e
+#   spa-hono-orpc-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-ui-sdk-electron-workers
+#   spa-hono-orpc-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-ui-sdk-expo-workers
+#   spa-hono-orpc-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-ui-sdk-workers
+#   spa-hono-orpc-ui-sdk-workers-e2e
+#   spa-hono-orpc-workers
+#   spa-hono-orpc-workers-e2e
+#   spa-hono-ui-sdk-electron-expo-workers
+#   spa-hono-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-ui-sdk-electron-workers
+#   spa-hono-ui-sdk-electron-workers-e2e
+#   spa-hono-ui-sdk-expo-workers
+#   spa-hono-ui-sdk-expo-workers-e2e
+#   spa-hono-ui-sdk-workers
+#   spa-hono-ui-sdk-workers-e2e
+#   spa-hono-workers
+#   spa-hono-workers-e2e
+import { createApp } from "#src/app.ts";
+
+export default {
+  async fetch(request: Request) {
+    return await createApp().fetch(request);
+  },
+} satisfies ExportedHandler;
+
+# apps/server/src/worker.ts · 192 stacks
+#   spa-hono-mysql-better-auth-electron-expo-workers
+#   spa-hono-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-electron-workers
+#   spa-hono-mysql-better-auth-electron-workers-e2e
+#   spa-hono-mysql-better-auth-expo-workers
+#   spa-hono-mysql-better-auth-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-workers
+#   spa-hono-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-mysql-better-auth-workers
+#   spa-hono-mysql-better-auth-workers-e2e
+#   spa-hono-mysql-electron-expo-workers
+#   spa-hono-mysql-electron-expo-workers-e2e
+#   spa-hono-mysql-electron-workers
+#   spa-hono-mysql-electron-workers-e2e
+#   spa-hono-mysql-expo-workers
+#   spa-hono-mysql-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-workers
+#   spa-hono-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-ui-sdk-expo-workers
+#   spa-hono-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-workers
+#   spa-hono-mysql-ui-sdk-workers-e2e
+#   spa-hono-mysql-workers
+#   spa-hono-mysql-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-workers
+#   spa-hono-openapi-mysql-better-auth-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-workers
+#   spa-hono-openapi-mysql-better-auth-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-workers
+#   spa-hono-openapi-mysql-better-auth-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-workers
+#   spa-hono-openapi-mysql-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-electron-workers
+#   spa-hono-openapi-mysql-electron-workers-e2e
+#   spa-hono-openapi-mysql-expo-workers
+#   spa-hono-openapi-mysql-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-workers
+#   spa-hono-openapi-mysql-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-workers
+#   spa-hono-openapi-mysql-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-workers
+#   spa-hono-openapi-postgres-better-auth-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-workers
+#   spa-hono-openapi-postgres-better-auth-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-workers
+#   spa-hono-openapi-postgres-better-auth-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-workers
+#   spa-hono-openapi-postgres-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-electron-workers
+#   spa-hono-openapi-postgres-electron-workers-e2e
+#   spa-hono-openapi-postgres-expo-workers
+#   spa-hono-openapi-postgres-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-workers
+#   spa-hono-openapi-postgres-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-workers
+#   spa-hono-openapi-postgres-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-workers
+#   spa-hono-orpc-mysql-better-auth-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-workers
+#   spa-hono-orpc-mysql-better-auth-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-workers
+#   spa-hono-orpc-mysql-better-auth-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-workers
+#   spa-hono-orpc-mysql-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-electron-workers
+#   spa-hono-orpc-mysql-electron-workers-e2e
+#   spa-hono-orpc-mysql-expo-workers
+#   spa-hono-orpc-mysql-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-workers
+#   spa-hono-orpc-mysql-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-workers
+#   spa-hono-orpc-mysql-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-workers
+#   spa-hono-orpc-postgres-better-auth-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-workers
+#   spa-hono-orpc-postgres-better-auth-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-workers
+#   spa-hono-orpc-postgres-better-auth-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-workers
+#   spa-hono-orpc-postgres-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-electron-workers
+#   spa-hono-orpc-postgres-electron-workers-e2e
+#   spa-hono-orpc-postgres-expo-workers
+#   spa-hono-orpc-postgres-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-workers
+#   spa-hono-orpc-postgres-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-workers
+#   spa-hono-orpc-postgres-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-workers
+#   spa-hono-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-electron-workers
+#   spa-hono-postgres-better-auth-electron-workers-e2e
+#   spa-hono-postgres-better-auth-expo-workers
+#   spa-hono-postgres-better-auth-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-workers
+#   spa-hono-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-postgres-better-auth-workers
+#   spa-hono-postgres-better-auth-workers-e2e
+#   spa-hono-postgres-electron-expo-workers
+#   spa-hono-postgres-electron-expo-workers-e2e
+#   spa-hono-postgres-electron-workers
+#   spa-hono-postgres-electron-workers-e2e
+#   spa-hono-postgres-expo-workers
+#   spa-hono-postgres-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-workers
+#   spa-hono-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-ui-sdk-expo-workers
+#   spa-hono-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-workers
+#   spa-hono-postgres-ui-sdk-workers-e2e
+#   spa-hono-postgres-workers
+#   spa-hono-postgres-workers-e2e
+import { createApp } from "#src/app.ts";
+import { withServices } from "#src/context.ts";
+
+export default {
+  async fetch(request: Request) {
+    return await withServices(
+      async (services) => await createApp(services).fetch(request)
+    );
+  },
+} satisfies ExportedHandler;
+
+# apps/server/worker-env.d.ts · 192 stacks
+#   spa-hono-mysql-better-auth-electron-expo-workers
+#   spa-hono-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-electron-workers
+#   spa-hono-mysql-better-auth-electron-workers-e2e
+#   spa-hono-mysql-better-auth-expo-workers
+#   spa-hono-mysql-better-auth-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-workers
+#   spa-hono-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-mysql-better-auth-workers
+#   spa-hono-mysql-better-auth-workers-e2e
+#   spa-hono-mysql-electron-expo-workers
+#   spa-hono-mysql-electron-expo-workers-e2e
+#   spa-hono-mysql-electron-workers
+#   spa-hono-mysql-electron-workers-e2e
+#   spa-hono-mysql-expo-workers
+#   spa-hono-mysql-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-workers
+#   spa-hono-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-ui-sdk-expo-workers
+#   spa-hono-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-workers
+#   spa-hono-mysql-ui-sdk-workers-e2e
+#   spa-hono-mysql-workers
+#   spa-hono-mysql-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-workers
+#   spa-hono-openapi-mysql-better-auth-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-workers
+#   spa-hono-openapi-mysql-better-auth-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-workers
+#   spa-hono-openapi-mysql-better-auth-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-workers
+#   spa-hono-openapi-mysql-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-electron-workers
+#   spa-hono-openapi-mysql-electron-workers-e2e
+#   spa-hono-openapi-mysql-expo-workers
+#   spa-hono-openapi-mysql-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-workers
+#   spa-hono-openapi-mysql-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-workers
+#   spa-hono-openapi-mysql-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-workers
+#   spa-hono-openapi-postgres-better-auth-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-workers
+#   spa-hono-openapi-postgres-better-auth-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-workers
+#   spa-hono-openapi-postgres-better-auth-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-workers
+#   spa-hono-openapi-postgres-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-electron-workers
+#   spa-hono-openapi-postgres-electron-workers-e2e
+#   spa-hono-openapi-postgres-expo-workers
+#   spa-hono-openapi-postgres-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-workers
+#   spa-hono-openapi-postgres-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-workers
+#   spa-hono-openapi-postgres-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-workers
+#   spa-hono-orpc-mysql-better-auth-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-workers
+#   spa-hono-orpc-mysql-better-auth-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-workers
+#   spa-hono-orpc-mysql-better-auth-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-workers
+#   spa-hono-orpc-mysql-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-electron-workers
+#   spa-hono-orpc-mysql-electron-workers-e2e
+#   spa-hono-orpc-mysql-expo-workers
+#   spa-hono-orpc-mysql-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-workers
+#   spa-hono-orpc-mysql-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-workers
+#   spa-hono-orpc-mysql-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-workers
+#   spa-hono-orpc-postgres-better-auth-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-workers
+#   spa-hono-orpc-postgres-better-auth-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-workers
+#   spa-hono-orpc-postgres-better-auth-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-workers
+#   spa-hono-orpc-postgres-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-electron-workers
+#   spa-hono-orpc-postgres-electron-workers-e2e
+#   spa-hono-orpc-postgres-expo-workers
+#   spa-hono-orpc-postgres-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-workers
+#   spa-hono-orpc-postgres-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-workers
+#   spa-hono-orpc-postgres-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-workers
+#   spa-hono-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-electron-workers
+#   spa-hono-postgres-better-auth-electron-workers-e2e
+#   spa-hono-postgres-better-auth-expo-workers
+#   spa-hono-postgres-better-auth-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-workers
+#   spa-hono-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-postgres-better-auth-workers
+#   spa-hono-postgres-better-auth-workers-e2e
+#   spa-hono-postgres-electron-expo-workers
+#   spa-hono-postgres-electron-expo-workers-e2e
+#   spa-hono-postgres-electron-workers
+#   spa-hono-postgres-electron-workers-e2e
+#   spa-hono-postgres-expo-workers
+#   spa-hono-postgres-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-workers
+#   spa-hono-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-ui-sdk-expo-workers
+#   spa-hono-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-workers
+#   spa-hono-postgres-ui-sdk-workers-e2e
+#   spa-hono-postgres-workers
+#   spa-hono-postgres-workers-e2e
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
+  }
+}
+
+# apps/server/wrangler.jsonc · 50 stacks
+#   solid-spa-hono-ui-sdk-workers
+#   solid-spa-hono-ui-sdk-workers-e2e
+#   spa-hono-electron-expo-workers
+#   spa-hono-electron-expo-workers-e2e
+#   spa-hono-electron-workers
+#   spa-hono-electron-workers-e2e
+#   spa-hono-expo-workers
+#   spa-hono-expo-workers-e2e
+#   spa-hono-openapi-electron-expo-workers
+#   spa-hono-openapi-electron-expo-workers-e2e
+#   spa-hono-openapi-electron-workers
+#   spa-hono-openapi-electron-workers-e2e
+#   spa-hono-openapi-expo-workers
+#   spa-hono-openapi-expo-workers-e2e
+#   spa-hono-openapi-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-ui-sdk-electron-workers
+#   spa-hono-openapi-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-ui-sdk-expo-workers
+#   spa-hono-openapi-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-ui-sdk-workers
+#   spa-hono-openapi-ui-sdk-workers-e2e
+#   spa-hono-openapi-workers
+#   spa-hono-openapi-workers-e2e
+#   spa-hono-orpc-electron-expo-workers
+#   spa-hono-orpc-electron-expo-workers-e2e
+#   spa-hono-orpc-electron-workers
+#   spa-hono-orpc-electron-workers-e2e
+#   spa-hono-orpc-expo-workers
+#   spa-hono-orpc-expo-workers-e2e
+#   spa-hono-orpc-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-ui-sdk-electron-workers
+#   spa-hono-orpc-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-ui-sdk-expo-workers
+#   spa-hono-orpc-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-ui-sdk-workers
+#   spa-hono-orpc-ui-sdk-workers-e2e
+#   spa-hono-orpc-workers
+#   spa-hono-orpc-workers-e2e
+#   spa-hono-ui-sdk-electron-expo-workers
+#   spa-hono-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-ui-sdk-electron-workers
+#   spa-hono-ui-sdk-electron-workers-e2e
+#   spa-hono-ui-sdk-expo-workers
+#   spa-hono-ui-sdk-expo-workers-e2e
+#   spa-hono-ui-sdk-workers
+#   spa-hono-ui-sdk-workers-e2e
+#   spa-hono-workers
+#   spa-hono-workers-e2e
+{
+  "name": "my-app",
+  "main": "./src/worker.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/server/wrangler.jsonc · 96 stacks
+#   spa-hono-mysql-better-auth-electron-expo-workers
+#   spa-hono-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-electron-workers
+#   spa-hono-mysql-better-auth-electron-workers-e2e
+#   spa-hono-mysql-better-auth-expo-workers
+#   spa-hono-mysql-better-auth-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-better-auth-ui-sdk-workers
+#   spa-hono-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-mysql-better-auth-workers
+#   spa-hono-mysql-better-auth-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-workers
+#   spa-hono-openapi-mysql-better-auth-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-workers
+#   spa-hono-openapi-mysql-better-auth-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers
+#   spa-hono-openapi-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-workers
+#   spa-hono-openapi-mysql-better-auth-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-workers
+#   spa-hono-openapi-postgres-better-auth-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-workers
+#   spa-hono-openapi-postgres-better-auth-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers
+#   spa-hono-openapi-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-workers
+#   spa-hono-openapi-postgres-better-auth-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-workers
+#   spa-hono-orpc-mysql-better-auth-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-workers
+#   spa-hono-orpc-mysql-better-auth-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers
+#   spa-hono-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-workers
+#   spa-hono-orpc-mysql-better-auth-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-workers
+#   spa-hono-orpc-postgres-better-auth-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-workers
+#   spa-hono-orpc-postgres-better-auth-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers
+#   spa-hono-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-workers
+#   spa-hono-orpc-postgres-better-auth-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-workers
+#   spa-hono-postgres-better-auth-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-electron-workers
+#   spa-hono-postgres-better-auth-electron-workers-e2e
+#   spa-hono-postgres-better-auth-expo-workers
+#   spa-hono-postgres-better-auth-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers
+#   spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers
+#   spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-better-auth-ui-sdk-workers
+#   spa-hono-postgres-better-auth-ui-sdk-workers-e2e
+#   spa-hono-postgres-better-auth-workers
+#   spa-hono-postgres-better-auth-workers-e2e
+{
+  "name": "my-app",
+  "main": "./src/worker.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "your-hyperdrive-id" }],
+  "secrets": { "required": ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL"] },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/server/wrangler.jsonc · 96 stacks
+#   spa-hono-mysql-electron-expo-workers
+#   spa-hono-mysql-electron-expo-workers-e2e
+#   spa-hono-mysql-electron-workers
+#   spa-hono-mysql-electron-workers-e2e
+#   spa-hono-mysql-expo-workers
+#   spa-hono-mysql-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-electron-workers
+#   spa-hono-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-mysql-ui-sdk-expo-workers
+#   spa-hono-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-mysql-ui-sdk-workers
+#   spa-hono-mysql-ui-sdk-workers-e2e
+#   spa-hono-mysql-workers
+#   spa-hono-mysql-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-workers
+#   spa-hono-openapi-mysql-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-electron-workers
+#   spa-hono-openapi-mysql-electron-workers-e2e
+#   spa-hono-openapi-mysql-expo-workers
+#   spa-hono-openapi-mysql-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers
+#   spa-hono-openapi-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers
+#   spa-hono-openapi-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-mysql-ui-sdk-workers
+#   spa-hono-openapi-mysql-ui-sdk-workers-e2e
+#   spa-hono-openapi-mysql-workers
+#   spa-hono-openapi-mysql-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-workers
+#   spa-hono-openapi-postgres-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-electron-workers
+#   spa-hono-openapi-postgres-electron-workers-e2e
+#   spa-hono-openapi-postgres-expo-workers
+#   spa-hono-openapi-postgres-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers
+#   spa-hono-openapi-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers
+#   spa-hono-openapi-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-openapi-postgres-ui-sdk-workers
+#   spa-hono-openapi-postgres-ui-sdk-workers-e2e
+#   spa-hono-openapi-postgres-workers
+#   spa-hono-openapi-postgres-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-workers
+#   spa-hono-orpc-mysql-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-electron-workers
+#   spa-hono-orpc-mysql-electron-workers-e2e
+#   spa-hono-orpc-mysql-expo-workers
+#   spa-hono-orpc-mysql-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers
+#   spa-hono-orpc-mysql-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers
+#   spa-hono-orpc-mysql-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-mysql-ui-sdk-workers
+#   spa-hono-orpc-mysql-ui-sdk-workers-e2e
+#   spa-hono-orpc-mysql-workers
+#   spa-hono-orpc-mysql-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-workers
+#   spa-hono-orpc-postgres-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-electron-workers
+#   spa-hono-orpc-postgres-electron-workers-e2e
+#   spa-hono-orpc-postgres-expo-workers
+#   spa-hono-orpc-postgres-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers
+#   spa-hono-orpc-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers
+#   spa-hono-orpc-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-orpc-postgres-ui-sdk-workers
+#   spa-hono-orpc-postgres-ui-sdk-workers-e2e
+#   spa-hono-orpc-postgres-workers
+#   spa-hono-orpc-postgres-workers-e2e
+#   spa-hono-postgres-electron-expo-workers
+#   spa-hono-postgres-electron-expo-workers-e2e
+#   spa-hono-postgres-electron-workers
+#   spa-hono-postgres-electron-workers-e2e
+#   spa-hono-postgres-expo-workers
+#   spa-hono-postgres-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-expo-workers
+#   spa-hono-postgres-ui-sdk-electron-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-electron-workers
+#   spa-hono-postgres-ui-sdk-electron-workers-e2e
+#   spa-hono-postgres-ui-sdk-expo-workers
+#   spa-hono-postgres-ui-sdk-expo-workers-e2e
+#   spa-hono-postgres-ui-sdk-workers
+#   spa-hono-postgres-ui-sdk-workers-e2e
+#   spa-hono-postgres-workers
+#   spa-hono-postgres-workers-e2e
+{
+  "name": "my-app",
+  "main": "./src/worker.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*"],
+  },
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "your-hyperdrive-id" }],
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/web/env.ts · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-workers
+#   tanstack-start-self-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-better-auth-workers
+#   tanstack-start-self-mysql-better-auth-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-workers
+#   tanstack-start-self-orpc-mysql-better-auth-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-workers
+#   tanstack-start-self-orpc-postgres-better-auth-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-workers
+#   tanstack-start-self-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-better-auth-workers
+#   tanstack-start-self-postgres-better-auth-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url(),
+  BETTER_AUTH_URL: z.url(),
+  BETTER_AUTH_SECRET: z.string().min(32),
+});
+
+export const readEnv = ({ HYPERDRIVE, ...bindings }: Cloudflare.Env) =>
+  schema.parse({ ...bindings, DATABASE_URL: HYPERDRIVE.connectionString });
+
+# apps/web/env.ts · 32 stacks
+#   tanstack-start-self-mysql-expo-workers
+#   tanstack-start-self-mysql-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-workers
+#   tanstack-start-self-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-workers
+#   tanstack-start-self-mysql-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-workers
+#   tanstack-start-self-orpc-mysql-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-workers
+#   tanstack-start-self-orpc-mysql-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-workers
+#   tanstack-start-self-orpc-postgres-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-workers
+#   tanstack-start-self-orpc-postgres-workers-e2e
+#   tanstack-start-self-postgres-expo-workers
+#   tanstack-start-self-postgres-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-workers
+#   tanstack-start-self-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-workers
+#   tanstack-start-self-postgres-workers-e2e
+import { z } from "zod";
+
+const schema = z.object({
+  DATABASE_URL: z.url(),
+});
+
+export const readEnv = ({ HYPERDRIVE, ...bindings }: Cloudflare.Env) =>
+  schema.parse({ ...bindings, DATABASE_URL: HYPERDRIVE.connectionString });
+
+# apps/web/src/start.ts · 64 stacks
+#   tanstack-start-self-mysql-better-auth-expo-workers
+#   tanstack-start-self-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-better-auth-workers
+#   tanstack-start-self-mysql-better-auth-workers-e2e
+#   tanstack-start-self-mysql-expo-workers
+#   tanstack-start-self-mysql-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-workers
+#   tanstack-start-self-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-workers
+#   tanstack-start-self-mysql-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-workers
+#   tanstack-start-self-orpc-mysql-better-auth-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-workers
+#   tanstack-start-self-orpc-mysql-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-workers
+#   tanstack-start-self-orpc-mysql-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-workers
+#   tanstack-start-self-orpc-postgres-better-auth-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-workers
+#   tanstack-start-self-orpc-postgres-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-workers
+#   tanstack-start-self-orpc-postgres-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-workers
+#   tanstack-start-self-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-better-auth-workers
+#   tanstack-start-self-postgres-better-auth-workers-e2e
+#   tanstack-start-self-postgres-expo-workers
+#   tanstack-start-self-postgres-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-workers
+#   tanstack-start-self-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-workers
+#   tanstack-start-self-postgres-workers-e2e
+import {
+  createCsrfMiddleware,
+  createMiddleware,
+  createStart,
+} from "@tanstack/react-start";
+
+import { withServices } from "#src/server/context.ts";
+
+const services = createMiddleware().server(
+  async ({ next, request }) =>
+    await withServices(request, async () => {
+      const result = await next();
+
+      return result.response;
+    })
+);
+
+const csrf = createCsrfMiddleware({
+  filter: (ctx) => ctx.handlerType === "serverFn",
+});
+
+export const startInstance = createStart(() => ({
+  requestMiddleware: [csrf, services],
+}));
+
+# apps/web/worker-env.d.ts · 64 stacks
+#   tanstack-start-self-mysql-better-auth-expo-workers
+#   tanstack-start-self-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-better-auth-workers
+#   tanstack-start-self-mysql-better-auth-workers-e2e
+#   tanstack-start-self-mysql-expo-workers
+#   tanstack-start-self-mysql-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-workers
+#   tanstack-start-self-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-workers
+#   tanstack-start-self-mysql-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-workers
+#   tanstack-start-self-orpc-mysql-better-auth-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-workers
+#   tanstack-start-self-orpc-mysql-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-workers
+#   tanstack-start-self-orpc-mysql-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-workers
+#   tanstack-start-self-orpc-postgres-better-auth-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-workers
+#   tanstack-start-self-orpc-postgres-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-workers
+#   tanstack-start-self-orpc-postgres-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-workers
+#   tanstack-start-self-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-better-auth-workers
+#   tanstack-start-self-postgres-better-auth-workers-e2e
+#   tanstack-start-self-postgres-expo-workers
+#   tanstack-start-self-postgres-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-workers
+#   tanstack-start-self-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-workers
+#   tanstack-start-self-postgres-workers-e2e
+declare namespace Cloudflare {
+  interface Env {
+    HYPERDRIVE: Hyperdrive;
+  }
+}
+
+# apps/web/wrangler.jsonc · 16 stacks
+#   tanstack-start-expo-workers
+#   tanstack-start-expo-workers-e2e
+#   tanstack-start-self-orpc-expo-workers
+#   tanstack-start-self-orpc-expo-workers-e2e
+#   tanstack-start-self-orpc-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-ui-sdk-workers
+#   tanstack-start-self-orpc-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-workers
+#   tanstack-start-self-orpc-workers-e2e
+#   tanstack-start-ui-sdk-expo-workers
+#   tanstack-start-ui-sdk-expo-workers-e2e
+#   tanstack-start-ui-sdk-workers
+#   tanstack-start-ui-sdk-workers-e2e
+#   tanstack-start-workers
+#   tanstack-start-workers-e2e
+{
+  "name": "my-app",
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/web/wrangler.jsonc · 32 stacks
+#   tanstack-start-self-mysql-better-auth-expo-workers
+#   tanstack-start-self-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-better-auth-workers
+#   tanstack-start-self-mysql-better-auth-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-workers
+#   tanstack-start-self-orpc-mysql-better-auth-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-workers
+#   tanstack-start-self-orpc-postgres-better-auth-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-workers
+#   tanstack-start-self-postgres-better-auth-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers
+#   tanstack-start-self-postgres-better-auth-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-better-auth-workers
+#   tanstack-start-self-postgres-better-auth-workers-e2e
+{
+  "name": "my-app",
+  "main": "@tanstack/react-start/server-entry",
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "your-hyperdrive-id" }],
+  "secrets": { "required": ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL"] },
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}
+
+# apps/web/wrangler.jsonc · 32 stacks
+#   tanstack-start-self-mysql-expo-workers
+#   tanstack-start-self-mysql-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-mysql-ui-sdk-workers
+#   tanstack-start-self-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-mysql-workers
+#   tanstack-start-self-mysql-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-workers
+#   tanstack-start-self-orpc-mysql-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers
+#   tanstack-start-self-orpc-mysql-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-mysql-workers
+#   tanstack-start-self-orpc-mysql-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-workers
+#   tanstack-start-self-orpc-postgres-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers
+#   tanstack-start-self-orpc-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-orpc-postgres-workers
+#   tanstack-start-self-orpc-postgres-workers-e2e
+#   tanstack-start-self-postgres-expo-workers
+#   tanstack-start-self-postgres-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-expo-workers
+#   tanstack-start-self-postgres-ui-sdk-expo-workers-e2e
+#   tanstack-start-self-postgres-ui-sdk-workers
+#   tanstack-start-self-postgres-ui-sdk-workers-e2e
+#   tanstack-start-self-postgres-workers
+#   tanstack-start-self-postgres-workers-e2e
+{
+  "name": "my-app",
+  "main": "@tanstack/react-start/server-entry",
+  "hyperdrive": [{ "binding": "HYPERDRIVE", "id": "your-hyperdrive-id" }],
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
+}

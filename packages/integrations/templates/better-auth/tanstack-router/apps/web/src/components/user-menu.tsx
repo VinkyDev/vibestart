@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback } from "@my-app/ui/components/avatar";
-import { Button } from "@my-app/ui/components/button";
+import { Button, buttonVariants } from "@my-app/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,14 +62,7 @@ export const UserMenu = () => {
 
   if (!session) {
     return pathname === "/login" ? null : (
-      <Button
-        nativeButton={false}
-        render={<Link to="/login" />}
-        size="sm"
-        variant="outline"
-      >
-        Sign in
-      </Button>
+      <Link to="/login" className={buttonVariants({ size: "sm", variant: "outline" })}>Sign in</Link>
     );
   }
 

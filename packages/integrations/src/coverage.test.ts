@@ -78,26 +78,15 @@ describe(pnpmFacets, () => {
     ).toStrictEqual([]);
   });
 
-  // Docker changes only its own files; Alchemy changes the code it deploys, so it is a choice in its own stacks.
-  it.each([
-    { deployment: "docker", choice: false },
-    { deployment: "cloudflare-workers", choice: true },
-    { deployment: "gcp-cloud-run", choice: true },
-    { deployment: "fly-machines", choice: true },
-  ])(
-    "takes every three choices together, $deployment a choice: $choice",
-    async ({ deployment, choice }) => {
-      const stack = compose(registry, { deployment });
+  it("counts every three runtime choices together", async () => {
+    const stack = compose(registry, { deployment: "docker" });
 
-      const choices = [
-        ...pnpmFacets(stack, await verifiedGeneration(stack)),
-      ].filter((facet) => facet.startsWith("choices "));
+    const facets = [
+      ...pnpmFacets(stack, await verifiedGeneration(stack)),
+    ].filter((facet) => facet.startsWith("choices "));
 
-      const kinds = registry.kinds.length - (choice ? 0 : 1);
-      expect(choices).toHaveLength((kinds * (kinds - 1) * (kinds - 2)) / 6);
-      expect(
-        choices.some((facet) => facet.includes(`deployment=${deployment}`))
-      ).toBe(choice);
-    }
-  );
+    const kinds = registry.kinds.length - 1;
+    expect(facets).toHaveLength((kinds * (kinds - 1) * (kinds - 2)) / 6);
+    expect(facets.some((facet) => facet.includes("deployment="))).toBeFalsy();
+  });
 });

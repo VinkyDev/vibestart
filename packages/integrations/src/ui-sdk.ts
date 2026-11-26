@@ -1,5 +1,6 @@
 import { contribute, defineIntegration, packageJson } from "@vibestart/core";
 
+import { todosExample } from "#/app.ts";
 import { templateFiles } from "#/templates.ts";
 import { agentsConventions, readmeLayers } from "#/vite-plus/slots.ts";
 
@@ -10,18 +11,15 @@ export const uiSdk = defineIntegration({
   description: "Accessible UI SDK components in a shared UI package",
   homepage: "https://ui-sdk.dev",
   provides: ["ui-components"],
-  requires: [["react", "solid"], "single-page-app"],
-  choices: {
-    mode: ["standard"],
-    backend: ["hono", null],
-    api: [null],
-    database: [null],
-    desktop: [null],
-    mobile: [null],
-  },
+  requires: [["react", "solid"]],
   contribute: (ctx) => [
     ...templateFiles(ctx, "ui-sdk/common"),
     ...templateFiles(ctx, ctx.has("solid") ? "ui-sdk/solid" : "ui-sdk/react"),
+    ...(!ctx.has("solid") && (ctx.has("better-auth") || todosExample(ctx))
+      ? templateFiles(ctx, "ui-sdk/forms")
+      : []),
+    ...(ctx.has("better-auth") ? templateFiles(ctx, "ui-sdk/auth") : []),
+    ...(todosExample(ctx) ? templateFiles(ctx, "ui-sdk/todos") : []),
     ...(ctx.has("solid")
       ? [
           contribute(packageJson, {
@@ -51,6 +49,7 @@ export const uiSdk = defineIntegration({
             dependencies: [
               "@ui-sdk/core",
               "@ui-sdk/react",
+              "class-variance-authority",
               "cn",
               "lucide-react",
               "sonner",
@@ -77,7 +76,7 @@ export const uiSdk = defineIntegration({
               "lucide-react",
               "motion",
               "next-themes",
-              "sonner",
+              ...(ctx.has("effect") ? [] : ["sonner"]),
             ],
           }),
         ]),

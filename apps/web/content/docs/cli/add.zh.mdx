@@ -9,7 +9,7 @@ npx vibestart-cli add knip ultracite docker --dry-run
 npx vibestart-cli add knip ultracite docker --yes
 ```
 
-未指定能力时，终端中会显示多选列表。代码检查工具包括 Knip 和 Ultracite。部署目标包括 Docker Compose、Cloudflare Workers、Google Cloud Run 和 Fly Machines。添加能力不会改变项目的包管理器和应用运行时。
+未指定能力时，终端中会显示多选列表。代码检查工具包括 Knip 和 Ultracite。Docker 和 Alchemy 可独立添加。添加能力不会改变项目的包管理器和应用运行时。
 
 ## 预览与应用 [#apply]
 
@@ -25,6 +25,4 @@ npx vibestart-cli add knip ultracite docker --yes
 
 接入 Ultracite 后，已有业务代码可能需要按新增规则调整。检查失败时，文件保持已写入的状态：修改代码后重新执行检查，或用 Git 撤销。添加能力不会自动迁移数据库。
 
-`add cloudflare-workers` 可将没有服务端的 SPA 部署到 Cloudflare：这类项目尚无运行时，Alchemy 将其作为静态资源部署到 Workers。已有服务端的项目运行在 Node.js 或 Bun 上，`add` 不会替换其运行时，因为把服务端代码迁到 Workers 属于迁移；请改用 `--deployment cloudflare-workers --runtime workers` 创建新项目。已有部署不会被隐式替换。详见 [Alchemy 部署](/docs/stack/delivery#alchemy)。
-
-独立的 Node/Hono API 可以用 `add gcp-cloud-run` 或 `add fly-machines` 添加兼容的部署目标。用 `--dry-run` 查看改动，再按生成的 `DEPLOYMENT.md` 配置部署。
+勾选 **Alchemy** 会生成可编辑的 `alchemy.run.ts`。初始栈使用本地状态，不创建云资源。在项目中安装需要的 provider 包，注册 provider 并声明资源；同一个栈可以组合多个厂商。需要生产镜像时可同时勾选 **Docker**。配置共享状态后再从 CI 部署。使用 `vp run plan --stage dev` 查看变更，使用 `vp run deploy --stage dev` 部署。已有项目可运行 `vibestart add alchemy`。

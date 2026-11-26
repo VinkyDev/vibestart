@@ -170,6 +170,20 @@ export const roles = {
       return m.role_deployment();
     },
   },
+  frontend: {
+    get role() {
+      return m.kind_frontend();
+    },
+    get question() {
+      return m.frontend_question();
+    },
+    get about() {
+      return m.frontend_about();
+    },
+    get none() {
+      return m.role_framework_none();
+    },
+  },
   framework: {
     get about() {
       return m.role_framework_about();
@@ -198,6 +212,7 @@ const noneNames: Record<OptionalDecision, () => string> = {
   desktop: () => m.none_desktop(),
   mobile: () => m.none_mobile(),
   deployment: () => m.none_deployment(),
+  frontend: () => m.none_framework(),
   framework: () => m.none_framework(),
 };
 
@@ -232,6 +247,7 @@ const addLabels: Record<OptionalDecision, () => string> = {
   desktop: () => m.add_desktop(),
   mobile: () => m.add_mobile(),
   deployment: () => m.add_deployment(),
+  frontend: () => m.add_framework(),
   framework: () => m.add_framework(),
 };
 
@@ -250,9 +266,6 @@ const fits = {
   node: () => m.fit_node(),
   "better-auth": () => m.fit_better_auth(),
   docker: () => m.fit_docker(),
-  "cloudflare-workers": () => m.fit_alchemy(),
-  "gcp-cloud-run": () => m.fit_gcp_cloud_run(),
-  "fly-machines": () => m.fit_fly_machines(),
   workers: () => m.fit_workers(),
   electron: () => m.fit_electron(),
   expo: () => m.fit_expo(),
@@ -264,7 +277,8 @@ const fits = {
   postgres: () => m.fit_postgres(),
   self: () => m.fit_self(),
   spa: () => m.fit_spa(),
-  "solid-spa": () => m.fit_solid_spa(),
+  react: () => m.desc_react(),
+  solid: () => m.desc_solid(),
   sqlite: () => m.fit_sqlite(),
   "tanstack-start": () => m.fit_tanstack_start(),
   e2e: () => m.desc_e2e(),
@@ -282,6 +296,7 @@ const noneFits: Record<OptionalDecision, () => string> = {
   desktop: () => m.fit_none_desktop(),
   mobile: () => m.fit_none_mobile(),
   deployment: () => m.fit_none_deployment(),
+  frontend: () => m.fit_none_framework(),
   framework: () => m.fit_none_framework(),
 };
 
@@ -299,7 +314,7 @@ export const fitOf = (kind: Decision, id: string | null): string => {
   return fits[id]();
 };
 
-const groupOfKind = {
+export const groupOfKind = {
   api: "api",
   auth: "auth",
   backend: "backend",
@@ -321,6 +336,10 @@ const isMappedKind = (kind: string): kind is keyof typeof groupOfKind =>
   Object.hasOwn(groupOfKind, kind);
 
 export const groupOf = (owner: string): Group => {
+  if (owner === "alchemy") {
+    return "deployment";
+  }
+
   if (owner === "core" || addonOf(owner) !== undefined) {
     return "foundation";
   }
@@ -352,6 +371,7 @@ export const tintClass: Record<Group, string> = {
   runtime: "tint-backend",
   orm: "tint-database",
   framework: "tint-framework",
+  frontend: "tint-framework",
   testing: "tint-foundation",
 };
 

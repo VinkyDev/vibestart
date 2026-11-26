@@ -184,7 +184,7 @@ const Studio = () => {
           the rest of the viewport and scrolls within its panes; until then the map takes the full width
           at its own proportions, above the panel. Too narrow to read the map, the stack is a list, which stays
           beside the panel while it scrolls once both fit. */}
-      <main className="grid flex-1 items-start gap-3 px-3 pb-3 md:grid-cols-2 lg:grid-cols-1 lg:items-stretch xl:h-[calc(100svh-var(--spacing-header))] xl:flex-none xl:grid-cols-[minmax(0,1fr)_minmax(380px,440px)] xl:pl-0">
+      <main className="grid flex-1 grid-cols-1 items-start gap-3 px-3 pb-3 md:grid-cols-2 lg:grid-cols-1 lg:items-stretch xl:h-[calc(100svh-var(--spacing-header))] xl:flex-none xl:grid-cols-[minmax(0,1fr)_minmax(380px,440px)] xl:pl-0">
         <section className="md:max-lg:tall:top-header md:max-lg:tall:sticky relative flex min-h-0 flex-col lg:overflow-hidden">
           <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-3 lg:pl-6 xl:pl-10">
             <div className="flex flex-wrap items-center gap-2" ref={modeRef}>

@@ -36,16 +36,15 @@ describe("the registry", () => {
     );
   });
 
-  // Alchemy deploys web apps to Workers, which reach a SQL server only through Hyperdrive and Drizzle.
   it.each([
-    ["framework", ["solid-spa", "spa", "tanstack-start"]],
+    ["framework", ["spa", "tanstack-start"]],
     ["backend", ["hono", "none", "self"]],
     ["database", ["mysql", "none", "postgres"]],
     ["orm", ["drizzle", "none"]],
     ["runtime", ["workers"]],
-  ])("deploys with Alchemy the %s choices %j", (kind, ids) => {
+  ])("runs on Workers with the %s choices %j", (kind, ids) => {
     const offered = new Set(
-      resolve(registry, { deployment: "cloudflare-workers" }).stacks.map(
+      resolve(registry, { runtime: "workers" }).stacks.map(
         (stack) => stack[kind] ?? "none"
       )
     );
@@ -55,36 +54,28 @@ describe("the registry", () => {
     );
   });
 
-  it.each([
-    ["gcp-cloud-run", ["none", "postgres"]],
-    ["fly-machines", ["none"]],
-  ] as const)(
-    "offers %s only for supported single-container services",
-    (deployment, databases) => {
-      const { stacks } = resolve(registry, { deployment });
-      expect(
-        [
-          ...new Set(stacks.map(({ database }) => database ?? "none")),
-        ].toSorted()
-      ).toStrictEqual(databases);
-      expect(
-        stacks.every(
-          (stack) =>
-            stack.backend === "hono" &&
-            stack.runtime === "node" &&
-            stack.framework === undefined &&
-            stack.auth === undefined &&
-            stack.desktop === undefined &&
-            stack.mobile === undefined
-        )
-      ).toBeTruthy();
-    }
-  );
+  it("allows every shadcn stack to change only the UI kit and keeps Solid on UI SDK", () => {
+    const { stacks } = resolve(registry, {});
 
-  it("runs on Workers only what Alchemy deploys", () => {
+    const sdk = new Set(
+      stacks
+        .filter((stack) => stack.ui === "ui-sdk")
+        .map((stack) => JSON.stringify(stack))
+    );
+
+    for (const stack of stacks.filter(
+      (candidate) => candidate.ui === "shadcn"
+    )) {
+      expect(sdk.has(JSON.stringify({ ...stack, ui: "ui-sdk" }))).toBeTruthy();
+    }
+
     expect(
-      resolve(registry, { deployment: null, runtime: "workers" }).stacks
-    ).toHaveLength(0);
+      new Set(
+        stacks
+          .filter((stack) => stack.frontend === "solid")
+          .map((stack) => stack.ui)
+      )
+    ).toStrictEqual(new Set(["ui-sdk"]));
   });
 
   it("signs users in on MongoDB as on a SQL database", () => {
