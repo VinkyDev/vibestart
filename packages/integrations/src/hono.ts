@@ -39,7 +39,12 @@ import {
   readmeTagline,
   unitTestSources,
 } from "#/vite-plus/slots.ts";
-import { workerNodeEnv, workerServices, workerTsconfig } from "#/void.ts";
+import {
+  workerNodeEnv,
+  workerServices,
+  workerTsconfig,
+  workerViteConfig,
+} from "#/workers.ts";
 
 // Beside a full-stack framework, whose dev server takes :3000, the API listens on :3001.
 const port = (ctx: Context) => {
@@ -291,7 +296,7 @@ ${ctx.has("bun") ? '  "compilerOptions": { "types": ["node", "bun"] },\n' : ""} 
 const services = (ctx: Context) => {
   if (ctx.has("workers")) {
     return ctx.stack.database === undefined
-      ? "routes forwarded by Void"
+      ? "the Worker fetch handler and Hono routes"
       : `request-scoped ${ctx.has("better-auth") ? "`db` and `auth`" : "`db`"} passed to \`createApp\``;
   }
 
@@ -373,18 +378,7 @@ const standalone = (ctx: Context) => {
 
 const renderViteConfig = (ctx: Context) => {
   if (ctx.has("workers")) {
-    return `import { defineConfig } from "vite-plus";
-import { voidPlugin } from "void";
-
-// Void merges shell overrides; Wrangler must not overwrite them by reading .env again.
-process.env.CLOUDFLARE_LOAD_DEV_VARS_FROM_DOT_ENV = "false";
-
-export default defineConfig({
-  plugins: [voidPlugin()],
-  publicDir: "../web/dist",
-  server: { port: 3000 },
-});
-`;
+    return workerViteConfig(ctx);
   }
 
   const database = ctx.stack.database !== undefined;

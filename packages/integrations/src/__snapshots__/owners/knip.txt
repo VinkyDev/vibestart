@@ -549,6 +549,129 @@
   }
 }
 
+# knip.json · 1 stack
+#   solid-spa-hono-ui-sdk-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   solid-spa-hono-ui-sdk-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   solid-spa-ui-sdk-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   solid-spa-ui-sdk-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-alchemy
+#   spa-ui-sdk-alchemy
+#   tanstack-start-alchemy
+#   tanstack-start-self-mysql-alchemy
+#   tanstack-start-self-mysql-better-auth-alchemy
+#   tanstack-start-self-orpc-alchemy
+#   tanstack-start-self-orpc-mysql-alchemy
+#   tanstack-start-self-orpc-mysql-better-auth-alchemy
+#   tanstack-start-self-orpc-postgres-alchemy
+#   tanstack-start-self-orpc-postgres-better-auth-alchemy
+#   tanstack-start-self-postgres-alchemy
+#   tanstack-start-self-postgres-better-auth-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    }
+  }
+}
+
+# knip.json · 12 stacks
+#   spa-alchemy-e2e
+#   spa-ui-sdk-alchemy-e2e
+#   tanstack-start-alchemy-e2e
+#   tanstack-start-self-mysql-alchemy-e2e
+#   tanstack-start-self-mysql-better-auth-alchemy-e2e
+#   tanstack-start-self-orpc-alchemy-e2e
+#   tanstack-start-self-orpc-mysql-alchemy-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-alchemy-e2e
+#   tanstack-start-self-orpc-postgres-alchemy-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-alchemy-e2e
+#   tanstack-start-self-postgres-alchemy-e2e
+#   tanstack-start-self-postgres-better-auth-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
 # knip.json · 130 stacks
 #   spa-docker
 #   spa-hono-bun-docker
@@ -1036,6 +1159,53 @@
   }
 }
 
+# knip.json · 1 stack
+#   spa-electron-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   spa-electron-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
 # knip.json · 55 stacks
 #   spa-electron-docker
 #   spa-hono-electron-bun-docker
@@ -1178,6 +1348,59 @@
         "vite.main.config.ts",
         "vite.preload.config.ts"
       ]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   spa-electron-expo-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    }
+  }
+}
+
+# knip.json · 1 stack
+#   spa-electron-expo-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
     },
     "apps/web": {
       "entry": [
@@ -1348,102 +1571,55 @@
   }
 }
 
-# knip.json · 1 stack
-#   spa-electron-expo-void
+# knip.json · 11 stacks
+#   spa-expo-alchemy
+#   tanstack-start-expo-alchemy
+#   tanstack-start-self-mysql-better-auth-expo-alchemy
+#   tanstack-start-self-mysql-expo-alchemy
+#   tanstack-start-self-orpc-expo-alchemy
+#   tanstack-start-self-orpc-mysql-better-auth-expo-alchemy
+#   tanstack-start-self-orpc-mysql-expo-alchemy
+#   tanstack-start-self-orpc-postgres-better-auth-expo-alchemy
+#   tanstack-start-self-orpc-postgres-expo-alchemy
+#   tanstack-start-self-postgres-better-auth-expo-alchemy
+#   tanstack-start-self-postgres-expo-alchemy
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     ".": {
-      "entry": ["scripts/typegen.ts"]
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
     },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    }
+  }
+}
+
+# knip.json · 11 stacks
+#   spa-expo-alchemy-e2e
+#   tanstack-start-expo-alchemy-e2e
+#   tanstack-start-self-mysql-better-auth-expo-alchemy-e2e
+#   tanstack-start-self-mysql-expo-alchemy-e2e
+#   tanstack-start-self-orpc-expo-alchemy-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-alchemy-e2e
+#   tanstack-start-self-orpc-mysql-expo-alchemy-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-alchemy-e2e
+#   tanstack-start-self-orpc-postgres-expo-alchemy-e2e
+#   tanstack-start-self-postgres-better-auth-expo-alchemy-e2e
+#   tanstack-start-self-postgres-expo-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
     },
     "apps/mobile": {
       "ignoreDependencies": ["expo-updates"]
     },
     "apps/web": {
-      "entry": ["void.config.ts"]
-    }
-  }
-}
-
-# knip.json · 1 stack
-#   spa-electron-expo-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
       "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/web": {
-      "entry": [
-        "void.config.ts",
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 1 stack
-#   spa-electron-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/web": {
-      "entry": ["void.config.ts"]
-    }
-  }
-}
-
-# knip.json · 1 stack
-#   spa-electron-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/web": {
-      "entry": [
-        "void.config.ts",
         "e2e.config.ts",
         "tests/e2e/**/*.e2e.ts",
         "tests/support/start.ts"
@@ -1739,341 +1915,308 @@
   }
 }
 
-# knip.json · 2 stacks
-#   spa-expo-void
-#   tanstack-start-expo-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/web": {
-      "entry": ["void.config.ts"]
-    }
-  }
-}
-
-# knip.json · 2 stacks
-#   spa-expo-void-e2e
-#   tanstack-start-expo-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/web": {
-      "entry": [
-        "void.config.ts",
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 15 stacks
-#   spa-hono-electron-expo-void
-#   spa-hono-mysql-better-auth-electron-expo-void
-#   spa-hono-mysql-electron-expo-void
-#   spa-hono-openapi-electron-expo-void
-#   spa-hono-openapi-mysql-better-auth-electron-expo-void
-#   spa-hono-openapi-mysql-electron-expo-void
-#   spa-hono-openapi-postgres-better-auth-electron-expo-void
-#   spa-hono-openapi-postgres-electron-expo-void
-#   spa-hono-orpc-electron-expo-void
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void
-#   spa-hono-orpc-mysql-electron-expo-void
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void
-#   spa-hono-orpc-postgres-electron-expo-void
-#   spa-hono-postgres-better-auth-electron-expo-void
-#   spa-hono-postgres-electron-expo-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
-      "ignoreDependencies": ["@my-app/web"]
-    }
-  }
-}
-
-# knip.json · 15 stacks
-#   spa-hono-electron-expo-void-e2e
-#   spa-hono-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-mysql-electron-expo-void-e2e
-#   spa-hono-openapi-electron-expo-void-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-openapi-mysql-electron-expo-void-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-openapi-postgres-electron-expo-void-e2e
-#   spa-hono-orpc-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-mysql-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-orpc-postgres-electron-expo-void-e2e
-#   spa-hono-postgres-better-auth-electron-expo-void-e2e
-#   spa-hono-postgres-electron-expo-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
-      "ignoreDependencies": ["@my-app/web"]
-    },
-    "apps/web": {
-      "entry": [
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 15 stacks
-#   spa-hono-electron-void
-#   spa-hono-mysql-better-auth-electron-void
-#   spa-hono-mysql-electron-void
-#   spa-hono-openapi-electron-void
-#   spa-hono-openapi-mysql-better-auth-electron-void
-#   spa-hono-openapi-mysql-electron-void
-#   spa-hono-openapi-postgres-better-auth-electron-void
-#   spa-hono-openapi-postgres-electron-void
-#   spa-hono-orpc-electron-void
-#   spa-hono-orpc-mysql-better-auth-electron-void
-#   spa-hono-orpc-mysql-electron-void
-#   spa-hono-orpc-postgres-better-auth-electron-void
-#   spa-hono-orpc-postgres-electron-void
-#   spa-hono-postgres-better-auth-electron-void
-#   spa-hono-postgres-electron-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
-      "ignoreDependencies": ["@my-app/web"]
-    }
-  }
-}
-
-# knip.json · 15 stacks
-#   spa-hono-electron-void-e2e
-#   spa-hono-mysql-better-auth-electron-void-e2e
-#   spa-hono-mysql-electron-void-e2e
-#   spa-hono-openapi-electron-void-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-void-e2e
-#   spa-hono-openapi-mysql-electron-void-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-void-e2e
-#   spa-hono-openapi-postgres-electron-void-e2e
-#   spa-hono-orpc-electron-void-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-void-e2e
-#   spa-hono-orpc-mysql-electron-void-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-void-e2e
-#   spa-hono-orpc-postgres-electron-void-e2e
-#   spa-hono-postgres-better-auth-electron-void-e2e
-#   spa-hono-postgres-electron-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/desktop": {
-      "entry": [
-        "src/main/index.ts",
-        "src/preload/index.ts",
-        "vite.main.config.ts",
-        "vite.preload.config.ts"
-      ]
-    },
-    "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
-      "ignoreDependencies": ["@my-app/web"]
-    },
-    "apps/web": {
-      "entry": [
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 15 stacks
-#   spa-hono-expo-void
-#   spa-hono-mysql-better-auth-expo-void
-#   spa-hono-mysql-expo-void
-#   spa-hono-openapi-expo-void
-#   spa-hono-openapi-mysql-better-auth-expo-void
-#   spa-hono-openapi-mysql-expo-void
-#   spa-hono-openapi-postgres-better-auth-expo-void
-#   spa-hono-openapi-postgres-expo-void
-#   spa-hono-orpc-expo-void
-#   spa-hono-orpc-mysql-better-auth-expo-void
-#   spa-hono-orpc-mysql-expo-void
-#   spa-hono-orpc-postgres-better-auth-expo-void
-#   spa-hono-orpc-postgres-expo-void
-#   spa-hono-postgres-better-auth-expo-void
-#   spa-hono-postgres-expo-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
-      "ignoreDependencies": ["@my-app/web"]
-    }
-  }
-}
-
-# knip.json · 15 stacks
-#   spa-hono-expo-void-e2e
-#   spa-hono-mysql-better-auth-expo-void-e2e
-#   spa-hono-mysql-expo-void-e2e
-#   spa-hono-openapi-expo-void-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-void-e2e
-#   spa-hono-openapi-mysql-expo-void-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-void-e2e
-#   spa-hono-openapi-postgres-expo-void-e2e
-#   spa-hono-orpc-expo-void-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-void-e2e
-#   spa-hono-orpc-mysql-expo-void-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-void-e2e
-#   spa-hono-orpc-postgres-expo-void-e2e
-#   spa-hono-postgres-better-auth-expo-void-e2e
-#   spa-hono-postgres-expo-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
-      "ignoreDependencies": ["@my-app/web"]
-    },
-    "apps/web": {
-      "entry": [
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
 # knip.json · 16 stacks
-#   spa-hono-mysql-better-auth-void
-#   spa-hono-mysql-void
-#   spa-hono-openapi-mysql-better-auth-void
-#   spa-hono-openapi-mysql-void
-#   spa-hono-openapi-postgres-better-auth-void
-#   spa-hono-openapi-postgres-void
-#   spa-hono-openapi-void
-#   spa-hono-orpc-mysql-better-auth-void
-#   spa-hono-orpc-mysql-void
-#   spa-hono-orpc-postgres-better-auth-void
-#   spa-hono-orpc-postgres-void
-#   spa-hono-orpc-void
-#   spa-hono-postgres-better-auth-void
-#   spa-hono-postgres-void
-#   spa-hono-ui-sdk-void
-#   spa-hono-void
+#   spa-hono-alchemy
+#   spa-hono-mysql-alchemy
+#   spa-hono-mysql-better-auth-alchemy
+#   spa-hono-openapi-alchemy
+#   spa-hono-openapi-mysql-alchemy
+#   spa-hono-openapi-mysql-better-auth-alchemy
+#   spa-hono-openapi-postgres-alchemy
+#   spa-hono-openapi-postgres-better-auth-alchemy
+#   spa-hono-orpc-alchemy
+#   spa-hono-orpc-mysql-alchemy
+#   spa-hono-orpc-mysql-better-auth-alchemy
+#   spa-hono-orpc-postgres-alchemy
+#   spa-hono-orpc-postgres-better-auth-alchemy
+#   spa-hono-postgres-alchemy
+#   spa-hono-postgres-better-auth-alchemy
+#   spa-hono-ui-sdk-alchemy
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     ".": {
-      "entry": ["scripts/typegen.ts"]
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
     },
     "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "entry": ["src/worker.ts"],
       "ignoreDependencies": ["@my-app/web"]
     }
   }
 }
 
 # knip.json · 16 stacks
-#   spa-hono-mysql-better-auth-void-e2e
-#   spa-hono-mysql-void-e2e
-#   spa-hono-openapi-mysql-better-auth-void-e2e
-#   spa-hono-openapi-mysql-void-e2e
-#   spa-hono-openapi-postgres-better-auth-void-e2e
-#   spa-hono-openapi-postgres-void-e2e
-#   spa-hono-openapi-void-e2e
-#   spa-hono-orpc-mysql-better-auth-void-e2e
-#   spa-hono-orpc-mysql-void-e2e
-#   spa-hono-orpc-postgres-better-auth-void-e2e
-#   spa-hono-orpc-postgres-void-e2e
-#   spa-hono-orpc-void-e2e
-#   spa-hono-postgres-better-auth-void-e2e
-#   spa-hono-postgres-void-e2e
-#   spa-hono-ui-sdk-void-e2e
-#   spa-hono-void-e2e
+#   spa-hono-alchemy-e2e
+#   spa-hono-mysql-alchemy-e2e
+#   spa-hono-mysql-better-auth-alchemy-e2e
+#   spa-hono-openapi-alchemy-e2e
+#   spa-hono-openapi-mysql-alchemy-e2e
+#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
+#   spa-hono-openapi-postgres-alchemy-e2e
+#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
+#   spa-hono-orpc-alchemy-e2e
+#   spa-hono-orpc-mysql-alchemy-e2e
+#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
+#   spa-hono-orpc-postgres-alchemy-e2e
+#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
+#   spa-hono-postgres-alchemy-e2e
+#   spa-hono-postgres-better-auth-alchemy-e2e
+#   spa-hono-ui-sdk-alchemy-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     ".": {
-      "entry": ["scripts/typegen.ts"]
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
     },
     "apps/server": {
-      "entry": ["void.config.ts", "env.ts", "routes/**/*.ts"],
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 15 stacks
+#   spa-hono-electron-alchemy
+#   spa-hono-mysql-better-auth-electron-alchemy
+#   spa-hono-mysql-electron-alchemy
+#   spa-hono-openapi-electron-alchemy
+#   spa-hono-openapi-mysql-better-auth-electron-alchemy
+#   spa-hono-openapi-mysql-electron-alchemy
+#   spa-hono-openapi-postgres-better-auth-electron-alchemy
+#   spa-hono-openapi-postgres-electron-alchemy
+#   spa-hono-orpc-electron-alchemy
+#   spa-hono-orpc-mysql-better-auth-electron-alchemy
+#   spa-hono-orpc-mysql-electron-alchemy
+#   spa-hono-orpc-postgres-better-auth-electron-alchemy
+#   spa-hono-orpc-postgres-electron-alchemy
+#   spa-hono-postgres-better-auth-electron-alchemy
+#   spa-hono-postgres-electron-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 15 stacks
+#   spa-hono-electron-alchemy-e2e
+#   spa-hono-mysql-better-auth-electron-alchemy-e2e
+#   spa-hono-mysql-electron-alchemy-e2e
+#   spa-hono-openapi-electron-alchemy-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
+#   spa-hono-openapi-mysql-electron-alchemy-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
+#   spa-hono-openapi-postgres-electron-alchemy-e2e
+#   spa-hono-orpc-electron-alchemy-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
+#   spa-hono-orpc-mysql-electron-alchemy-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
+#   spa-hono-orpc-postgres-electron-alchemy-e2e
+#   spa-hono-postgres-better-auth-electron-alchemy-e2e
+#   spa-hono-postgres-electron-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 15 stacks
+#   spa-hono-electron-expo-alchemy
+#   spa-hono-mysql-better-auth-electron-expo-alchemy
+#   spa-hono-mysql-electron-expo-alchemy
+#   spa-hono-openapi-electron-expo-alchemy
+#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
+#   spa-hono-openapi-mysql-electron-expo-alchemy
+#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
+#   spa-hono-openapi-postgres-electron-expo-alchemy
+#   spa-hono-orpc-electron-expo-alchemy
+#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
+#   spa-hono-orpc-mysql-electron-expo-alchemy
+#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
+#   spa-hono-orpc-postgres-electron-expo-alchemy
+#   spa-hono-postgres-better-auth-electron-expo-alchemy
+#   spa-hono-postgres-electron-expo-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 15 stacks
+#   spa-hono-electron-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
+#   spa-hono-mysql-electron-expo-alchemy-e2e
+#   spa-hono-openapi-electron-expo-alchemy-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
+#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
+#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
+#   spa-hono-orpc-electron-expo-alchemy-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
+#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
+#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
+#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
+#   spa-hono-postgres-electron-expo-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/desktop": {
+      "entry": [
+        "src/main/index.ts",
+        "src/preload/index.ts",
+        "vite.main.config.ts",
+        "vite.preload.config.ts"
+      ]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    },
+    "apps/web": {
+      "entry": [
+        "e2e.config.ts",
+        "tests/e2e/**/*.e2e.ts",
+        "tests/support/start.ts"
+      ]
+    }
+  }
+}
+
+# knip.json · 15 stacks
+#   spa-hono-expo-alchemy
+#   spa-hono-mysql-better-auth-expo-alchemy
+#   spa-hono-mysql-expo-alchemy
+#   spa-hono-openapi-expo-alchemy
+#   spa-hono-openapi-mysql-better-auth-expo-alchemy
+#   spa-hono-openapi-mysql-expo-alchemy
+#   spa-hono-openapi-postgres-better-auth-expo-alchemy
+#   spa-hono-openapi-postgres-expo-alchemy
+#   spa-hono-orpc-expo-alchemy
+#   spa-hono-orpc-mysql-better-auth-expo-alchemy
+#   spa-hono-orpc-mysql-expo-alchemy
+#   spa-hono-orpc-postgres-better-auth-expo-alchemy
+#   spa-hono-orpc-postgres-expo-alchemy
+#   spa-hono-postgres-better-auth-expo-alchemy
+#   spa-hono-postgres-expo-alchemy
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
+      "ignoreDependencies": ["@my-app/web"]
+    }
+  }
+}
+
+# knip.json · 15 stacks
+#   spa-hono-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-expo-alchemy-e2e
+#   spa-hono-mysql-expo-alchemy-e2e
+#   spa-hono-openapi-expo-alchemy-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
+#   spa-hono-openapi-mysql-expo-alchemy-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-openapi-postgres-expo-alchemy-e2e
+#   spa-hono-orpc-expo-alchemy-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
+#   spa-hono-orpc-mysql-expo-alchemy-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-orpc-postgres-expo-alchemy-e2e
+#   spa-hono-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-postgres-expo-alchemy-e2e
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/typegen.ts", "alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    },
+    "apps/mobile": {
+      "ignoreDependencies": ["expo-updates"]
+    },
+    "apps/server": {
+      "entry": ["src/worker.ts"],
       "ignoreDependencies": ["@my-app/web"]
     },
     "apps/web": {
@@ -2574,149 +2717,6 @@
     },
     "apps/web": {
       "entry": [
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 3 stacks
-#   spa-ui-sdk-void
-#   spa-void
-#   tanstack-start-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/web": {
-      "entry": ["void.config.ts"]
-    }
-  }
-}
-
-# knip.json · 3 stacks
-#   spa-ui-sdk-void-e2e
-#   spa-void-e2e
-#   tanstack-start-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/web": {
-      "entry": [
-        "void.config.ts",
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 9 stacks
-#   tanstack-start-self-mysql-better-auth-expo-void
-#   tanstack-start-self-mysql-expo-void
-#   tanstack-start-self-orpc-expo-void
-#   tanstack-start-self-orpc-mysql-better-auth-expo-void
-#   tanstack-start-self-orpc-mysql-expo-void
-#   tanstack-start-self-orpc-postgres-better-auth-expo-void
-#   tanstack-start-self-orpc-postgres-expo-void
-#   tanstack-start-self-postgres-better-auth-expo-void
-#   tanstack-start-self-postgres-expo-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/web": {
-      "entry": ["void.config.ts", "env.ts"]
-    }
-  }
-}
-
-# knip.json · 9 stacks
-#   tanstack-start-self-mysql-better-auth-expo-void-e2e
-#   tanstack-start-self-mysql-expo-void-e2e
-#   tanstack-start-self-orpc-expo-void-e2e
-#   tanstack-start-self-orpc-mysql-better-auth-expo-void-e2e
-#   tanstack-start-self-orpc-mysql-expo-void-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-expo-void-e2e
-#   tanstack-start-self-orpc-postgres-expo-void-e2e
-#   tanstack-start-self-postgres-better-auth-expo-void-e2e
-#   tanstack-start-self-postgres-expo-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/mobile": {
-      "ignoreDependencies": ["expo-updates"]
-    },
-    "apps/web": {
-      "entry": [
-        "void.config.ts",
-        "env.ts",
-        "e2e.config.ts",
-        "tests/e2e/**/*.e2e.ts",
-        "tests/support/start.ts"
-      ]
-    }
-  }
-}
-
-# knip.json · 9 stacks
-#   tanstack-start-self-mysql-better-auth-void
-#   tanstack-start-self-mysql-void
-#   tanstack-start-self-orpc-mysql-better-auth-void
-#   tanstack-start-self-orpc-mysql-void
-#   tanstack-start-self-orpc-postgres-better-auth-void
-#   tanstack-start-self-orpc-postgres-void
-#   tanstack-start-self-orpc-void
-#   tanstack-start-self-postgres-better-auth-void
-#   tanstack-start-self-postgres-void
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/web": {
-      "entry": ["void.config.ts", "env.ts"]
-    }
-  }
-}
-
-# knip.json · 9 stacks
-#   tanstack-start-self-mysql-better-auth-void-e2e
-#   tanstack-start-self-mysql-void-e2e
-#   tanstack-start-self-orpc-mysql-better-auth-void-e2e
-#   tanstack-start-self-orpc-mysql-void-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-void-e2e
-#   tanstack-start-self-orpc-postgres-void-e2e
-#   tanstack-start-self-orpc-void-e2e
-#   tanstack-start-self-postgres-better-auth-void-e2e
-#   tanstack-start-self-postgres-void-e2e
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/typegen.ts"]
-    },
-    "apps/web": {
-      "entry": [
-        "void.config.ts",
-        "env.ts",
         "e2e.config.ts",
         "tests/e2e/**/*.e2e.ts",
         "tests/support/start.ts"

@@ -69,12 +69,13 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Create_Agent_TriggerInputs */
 /** @typedef {{}} Create_ItInputs */
 /** @typedef {{}} CurrentInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_PostgresInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_VoidInputs */
-/** @typedef {{ name: NonNullable<unknown> }} Deployment_Void_DatabaseInputs */
+/** @typedef {{}} Desc_AlchemyInputs */
 /** @typedef {{}} Desc_Better_AuthInputs */
 /** @typedef {{}} Desc_BunInputs */
 /** @typedef {{}} Desc_DockerInputs */
@@ -109,7 +110,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Desc_Tanstack_StartInputs */
 /** @typedef {{}} Desc_Ui_SdkInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
-/** @typedef {{}} Desc_VoidInputs */
 /** @typedef {{}} Desc_WorkersInputs */
 /** @typedef {{}} Desktop_DistInputs */
 /** @typedef {{}} Desktop_Dist_PillInputs */
@@ -132,6 +132,7 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Extensions_AboutInputs */
 /** @typedef {{}} Extensions_NoneInputs */
 /** @typedef {{ count: NonNullable<unknown> }} File_CountInputs */
+/** @typedef {{}} Fit_AlchemyInputs */
 /** @typedef {{}} Fit_Better_AuthInputs */
 /** @typedef {{}} Fit_BunInputs */
 /** @typedef {{}} Fit_DockerInputs */
@@ -164,7 +165,6 @@ import { getLocale, experimentalStaticLocale } from "../runtime.js"
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
 /** @typedef {{}} Fit_Ui_SdkInputs */
-/** @typedef {{}} Fit_VoidInputs */
 /** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
 /** @typedef {{}} Gate_Build_WebInputs */
@@ -636,7 +636,7 @@ export const api_clients_same = /** @type {((inputs?: Api_Clients_SameInputs, op
 /**
 * | output |
 * | --- |
-* | "deployment to Cloudflare through Void" |
+* | "deployment to Cloudflare through Alchemy" |
 *
 * @param {Cap_Cloudflare_DeploymentInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -1350,6 +1350,34 @@ export const current = /** @type {((inputs?: CurrentInputs, options?: { locale?:
 /**
 * | output |
 * | --- |
+* | "{name} · Cloudflare Worker + static assets" |
+*
+* @param {Deployment_AlchemyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_alchemy = /** @type {((inputs: Deployment_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_AlchemyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_alchemy(inputs)
+	return __en.deployment_alchemy(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "{name} · Worker + Hyperdrive · external database" |
+*
+* @param {Deployment_Alchemy_DatabaseInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const deployment_alchemy_database = /** @type {((inputs: Deployment_Alchemy_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Alchemy_DatabaseInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.deployment_alchemy_database(inputs)
+	return __en.deployment_alchemy_database(inputs)
+});
+/**
+* | output |
+* | --- |
 * | "{name} image" |
 *
 * @param {Deployment_ImageInputs} inputs
@@ -1406,30 +1434,16 @@ export const deployment_postgres = /** @type {((inputs: Deployment_PostgresInput
 /**
 * | output |
 * | --- |
-* | "{name} · Cloudflare Worker + static assets" |
+* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
 *
-* @param {Deployment_VoidInputs} inputs
+* @param {Desc_AlchemyInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
 * @returns {LocalizedString}
 */
-export const deployment_void = /** @type {((inputs: Deployment_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_VoidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
+export const desc_alchemy = /** @type {((inputs?: Desc_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_AlchemyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.deployment_void(inputs)
-	return __en.deployment_void(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "{name} · Worker + Hyperdrive · external database" |
-*
-* @param {Deployment_Void_DatabaseInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const deployment_void_database = /** @type {((inputs: Deployment_Void_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Deployment_Void_DatabaseInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.deployment_void_database(inputs)
-	return __en.deployment_void_database(inputs)
+	if (locale === "zh") return __zh.desc_alchemy(inputs)
+	return __en.desc_alchemy(inputs)
 });
 /**
 * | output |
@@ -1910,21 +1924,7 @@ export const desc_vite_plus = /** @type {((inputs?: Desc_Vite_PlusInputs, option
 /**
 * | output |
 * | --- |
-* | "Deploy a SPA, SPA + Hono, or TanStack Start to Cloudflare Workers (preview)" |
-*
-* @param {Desc_VoidInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const desc_void = /** @type {((inputs?: Desc_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Desc_VoidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.desc_void(inputs)
-	return __en.desc_void(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Cloudflare Workers runtime, deployed with Void" |
+* | "Cloudflare Workers runtime, deployed with Alchemy" |
 *
 * @param {Desc_WorkersInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options
@@ -2229,6 +2229,20 @@ export const file_count = /** @type {((inputs: File_CountInputs, options?: { loc
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.file_count(inputs)
 	return __en.file_count(inputs)
+});
+/**
+* | output |
+* | --- |
+* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
+*
+* @param {Fit_AlchemyInputs} inputs
+* @param {{ locale?: "en" | "zh" }} options
+* @returns {LocalizedString}
+*/
+export const fit_alchemy = /** @type {((inputs?: Fit_AlchemyInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_AlchemyInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
+	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
+	if (locale === "zh") return __zh.fit_alchemy(inputs)
+	return __en.fit_alchemy(inputs)
 });
 /**
 * | output |
@@ -2677,20 +2691,6 @@ export const fit_ui_sdk = /** @type {((inputs?: Fit_Ui_SdkInputs, options?: { lo
 	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
 	if (locale === "zh") return __zh.fit_ui_sdk(inputs)
 	return __en.fit_ui_sdk(inputs)
-});
-/**
-* | output |
-* | --- |
-* | "Deploys to your Cloudflare account; external Postgres or MySQL uses Hyperdrive with Drizzle." |
-*
-* @param {Fit_VoidInputs} inputs
-* @param {{ locale?: "en" | "zh" }} options
-* @returns {LocalizedString}
-*/
-export const fit_void = /** @type {((inputs?: Fit_VoidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & import('../runtime.js').MessageMetadata<Fit_VoidInputs, { locale?: "en" | "zh" }, {}>} */ ((inputs = {}, options = {}) => {
-	const locale = experimentalStaticLocale ?? options.locale ?? getLocale()
-	if (locale === "zh") return __zh.fit_void(inputs)
-	return __en.fit_void(inputs)
 });
 /**
 * | output |
@@ -4791,7 +4791,7 @@ export const runs_in_electron = /** @type {((inputs?: Runs_In_ElectronInputs, op
 /**
 * | output |
 * | --- |
-* | "Node.js and Bun run server processes. Void uses Cloudflare Workers; build tools still run on Node.js." |
+* | "Node.js and Bun run server processes. Alchemy uses Cloudflare Workers; build tools still run on Node.js." |
 *
 * @param {Runtime_AboutInputs} inputs
 * @param {{ locale?: "en" | "zh" }} options

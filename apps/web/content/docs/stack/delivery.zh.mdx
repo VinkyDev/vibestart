@@ -1,9 +1,9 @@
 ---
 title: 交付
-description: 使用 Docker 或 Void 部署应用，或将 Web 界面打包为 Electron 桌面应用。
+description: 使用 Docker 或 Alchemy 部署应用，或将 Web 界面打包为 Electron 桌面应用。
 ---
 
-交付决定应用如何到达用户：通过 Docker 部署到服务器、通过 Void 部署到 Cloudflare，或作为 Electron 桌面应用安装。各项均为可选项，Docker 和 Void 也可以添加到兼容的已有项目。
+交付决定应用如何到达用户：通过 Docker 部署到服务器、通过 Alchemy 部署到 Cloudflare，或作为 Electron 桌面应用安装。各项均为可选项，Docker 和 Alchemy 也可以添加到兼容的已有项目。
 
 ## Docker [#docker]
 
@@ -24,23 +24,17 @@ description: 使用 Docker 或 Void 部署应用，或将 Web 界面打包为 El
   ]}
 />
 
-## Void（预览） [#void]
+## Alchemy（预览） [#alchemy]
 
-<Tech href="https://void.cloud" icon="void" />
+<Tech href="https://alchemy.run" icon="alchemy" />
 
-Void 1.4.0 负责构建并部署到你自己的 Cloudflare Workers 账号。选择 `--deployment void --runtime workers` 可部署静态 React SPA、由 Hono 托管的 React SPA 或 TanStack Start。不支持 Next.js、独立 Hono 服务、TanStack Start + Hono 双服务组合。静态 SPA 只部署静态资源。使用 Hono 时，Cloudflare 直接提供 SPA 的静态资源，仅 `/api/*` 由 Worker 处理，因此 oRPC 位于 `/api/rpc`。
+选择 `--deployment alchemy --runtime workers` 可将 React 或 Solid SPA、搭配 Hono 的 SPA 或 TanStack Start SSR 部署到自己的 Cloudflare 账号。静态 SPA 支持直接打开前端路由。搭配 Hono 时，Worker 处理 `/api` 和 `/api/*`（含 `/api/rpc`），Cloudflare 提供前端资源。Start 通过 Cloudflare Vite 插件同时构建 SSR Worker 和浏览器资源。
 
-带数据库的服务端使用外部 PostgreSQL 或 MySQL + Drizzle，可选 Better Auth。SPA + Hono 技术栈可以不使用数据库。Hyperdrive 管理生产连接池；每个请求创建客户端，在响应流完成或失败后释放。不使用 Void 自带迁移和登录；不支持 SQLite、Prisma、MongoDB、D1 和 Void Platform。
+在生成的项目根目录执行 `vp exec alchemy profile edit --add Cloudflare` 连接账号。CI 中设置 `CLOUDFLARE_ACCOUNT_ID` 和 `CLOUDFLARE_API_TOKEN`。首次部署会在账号下创建保存状态的 Worker、Durable Object 和 Secrets Store 凭据。权限要求见 [Alchemy 状态存储说明](https://alchemy.run/state-store/)。
 
-首次部署带数据库的项目之前，先在 Cloudflare 控制台为生产数据库创建 Hyperdrive 配置，并**关闭查询缓存**。每次部署时在 shell 中设置其 ID 为 `HYPERDRIVE_ID`；`void.config.ts` 绑定这个已有资源。浏览器登录可以部署已有绑定，无需 Hyperdrive 编辑权限的 API token，但不能创建它。自动创建会启用查询缓存，写入不会使缓存失效，可能返回过期的待办列表或已撤销的会话。关闭缓存仍保留连接池；保持缓存关闭，并确保它与迁移地址指向同一数据库。
+使用 PostgreSQL 或 MySQL 时，为生产数据库创建 Hyperdrive 并**关闭查询缓存**，然后在部署终端设置指向同一个数据库的 `HYPERDRIVE_ID` 和 `DATABASE_URL`。使用 Better Auth 时还需设置 `BETTER_AUTH_SECRET`。首次部署使用 Alchemy 提供的 Worker URL，自定义 HTTPS 域名可通过 `BETTER_AUTH_URL` 设置。部署脚本检查配置并执行 Drizzle 迁移。Worker 通过 Hyperdrive 为每个请求创建客户端，在响应流结束时释放连接。
 
-克隆后按生成的 README 重建本地 `.env`。带服务端的技术栈需在部署应用目录执行 `void prepare` 生成被忽略的 Worker 类型；安装依赖时也会通过 `prepare` 自动运行。Worker 与 Node 工具分别使用独立的 TypeScript 配置。
-
-按 README 使用 `void connect --platform cloudflare` 登录，并用 `void secret put` 设置生产服务端变量。本地 `.env` 不会上传。带数据库的技术栈使用 `HYPERDRIVE_ID='<已关闭缓存的配置ID>' DATABASE_URL='生产地址' vp run deploy`，在执行 Drizzle 迁移之前校验这两个 shell 值，必要时构建 SPA，再执行 `void deploy`。数据库地址必须显式存在于部署命令的 shell，避免本地 `.env` 静默选中了迁移目标。这两个部署值不要写入 Worker secrets。提交记录部署状态的 `void.lock.json`；vibestart 维护命令不会生成或合并它。生成项目不包含 GitHub Actions。
-
-PowerShell 中先设置 `$env:HYPERDRIVE_ID = '<已关闭缓存的配置ID>'` 和 `$env:DATABASE_URL = '生产地址'`，再执行 `vp run deploy`。不带数据库的技术栈只需 `vp run deploy`，无需数据库地址或 Hyperdrive。
-
-`vibestart add void --dry-run` 可预览给没有服务端的 SPA 添加该部署，项目随后运行在 Workers 上。已有服务端的项目保留 Node.js 或 Bun 运行时：`add` 不会替换它，因为把服务端代码迁到 Workers 属于迁移。已有 Docker 同样不会被静默替换。
+执行 `vp run deploy` 发布到 `prod` 环境，再次执行会更新同一个部署。本地开发和检查使用 `vp run dev` 和 `vp run ready`。对没有服务端的已有 SPA，可运行 `vibestart add alchemy --dry-run` 预览配置变更。
 
 ## Electron [#electron]
 

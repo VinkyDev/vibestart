@@ -1,3 +1,4 @@
+import alchemyIcon from "#/assets/tech/alchemy.svg";
 import betterAuth from "#/assets/tech/better-auth.svg";
 import bun from "#/assets/tech/bun.svg";
 import docker from "#/assets/tech/docker.svg";
@@ -30,7 +31,6 @@ import ultracite from "#/assets/tech/ultracite.svg";
 import vitePlus from "#/assets/tech/vite-plus.svg";
 import vite from "#/assets/tech/vite.svg";
 import vitest from "#/assets/tech/vitest.svg";
-import voidIcon from "#/assets/tech/void.svg";
 import workers from "#/assets/tech/workers.svg";
 import zod from "#/assets/tech/zod.svg";
 
@@ -38,7 +38,7 @@ export const techIcons = {
   "better-auth": betterAuth,
   bun,
   docker,
-  void: voidIcon,
+  alchemy: alchemyIcon,
   workers,
   drizzle,
   e2e,

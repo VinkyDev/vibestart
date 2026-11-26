@@ -34,7 +34,7 @@ const fileFacets = (file: GeneratedFile) =>
         .map((line) => `line ${file.path} ${line}`)
     : [`file ${file.path} ${digest(file.content)}`];
 
-// Docker has no runtime effect. Void participates only in its own stacks, preserving existing coverage.
+// Docker has no runtime effect. Alchemy participates only in its own stacks, preserving existing coverage.
 const choiceKinds = registry.kinds
   .map((kind) => kind.id)
   .filter((kind) => kind !== "deployment");
@@ -44,7 +44,7 @@ const choiceFacets = (stack: Stack, size: number) =>
   combinations(
     [
       ...choiceKinds.map((kind) => `${kind}=${stack[kind] ?? "none"}`),
-      ...(stack.deployment === "void" ? ["deployment=void"] : []),
+      ...(stack.deployment === "alchemy" ? ["deployment=alchemy"] : []),
     ],
     size
   ).map((choices) => `choices ${choices.join(" ")}`);

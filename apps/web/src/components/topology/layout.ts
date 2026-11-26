@@ -255,7 +255,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
 
   if (server !== undefined) {
     boxes.push({
-      deployed: stack.deployment !== "void",
+      deployed: stack.deployment !== "alchemy",
       group: "database",
       id: "database",
       label: server(),
