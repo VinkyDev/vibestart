@@ -208,7 +208,10 @@ const renderViteConfig = (ctx: Context, read: ReadSlot) => {
     "    },",
     "  },",
     "  lint: {",
-    `    extends: [${presets.map(({ name }) => name).join(", ")}],`,
+    `    extends: [${presets
+      .filter(({ importOnly }) => importOnly !== true)
+      .map(({ name }) => name)
+      .join(", ")}],`,
     `    ignorePatterns: [${[
       ...(base === undefined ? [] : [`...(${base.name}.ignorePatterns ?? [])`]),
       ...(generated.length > 0 ? ["...generatedFiles"] : []),

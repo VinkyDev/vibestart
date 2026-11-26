@@ -23,7 +23,7 @@ vp run dev
 
 Open http://localhost:5173 and create an account. API docs are at http://localhost:5173/api.
 
-The browser always talks to one origin: in development Vite proxies `/api` to the server, in production the server serves the SPA. Session cookies therefore stay first-party and no CORS is configured. `BETTER_AUTH_URL` is that browser-facing origin (`http://localhost:5173` in development), not the server's own port.
+The browser always talks to one origin: in development Vite proxies `/api` to the server, in production Cloudflare serves the SPA through Workers Static Assets and routes /api requests to Hono. Session cookies therefore stay first-party and no CORS is configured. `BETTER_AUTH_URL` is that browser-facing origin (`http://localhost:5173` in development), not the server's own port.
 
 ## Environment
 

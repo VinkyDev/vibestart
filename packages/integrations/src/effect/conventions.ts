@@ -41,13 +41,15 @@ export const effectConventions = (ctx: Context) => [
         },
         {
           title: "Protected page",
-          text: "Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=\u2026`. The session sits on the route context (`context.session`), loaded once per navigation in `__root.tsx` from `/api/auth/get-session`. This is an SPA: the page hide is UX, and the procedure is the security boundary. Authenticated routes own a `RegistryProvider` keyed by session ID; sign-out or session replacement disposes private state without resetting public queries. The root observes Better Auth session changes and invalidates router context when the session ID changes.",
+          text: ctx.has("solid")
+            ? "Wrap the page in SessionPage and register it in apps/web/src/router.tsx. The guard checks the session before entry and remounts private content when the user changes. Keep private Effect Atom registries inside that guarded content. Enforce authorization again in the RPC handler."
+            : "Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=\u2026`. The session sits on the route context (`context.session`), loaded once per navigation in `__root.tsx` from `/api/auth/get-session`. This is an SPA: the page hide is UX, and the procedure is the security boundary. Authenticated routes own a `RegistryProvider` keyed by session ID; sign-out or session replacement disposes private state without resetting public queries. The root observes Better Auth session changes and invalidates router context when the session ID changes.",
         },
       ]
     : []),
   {
     title: "Data in the UI",
-    text: "Read with `Rpc.query` / `HttpApi.query` atoms and `useAtomSuspense` or `useAtomValue`. Use `Rpc.mutation` for one shared write, such as the create form. Independent row writes use `Atom.family` with `Rpc.runtime.fn`, so one row cannot interrupt another. Refresh queries through `reactivityKeys` or `Reactivity.mutation`, disable repeated writes to the same row while pending, and report failed exits to the user.",
+    text: `Read with \`Rpc.query\` / \`HttpApi.query\` atoms and ${ctx.has("solid") ? "`atomValue` with a page-owned registry" : "`useAtomSuspense` or `useAtomValue`"}. Use \`Rpc.mutation\` for one shared write, such as the create form. Independent row writes use \`Atom.family\` with \`Rpc.runtime.fn\`, so one row cannot interrupt another. Refresh queries through \`reactivityKeys\` or \`Reactivity.mutation\`, disable repeated writes to the same row while pending, and report failed exits to the user.`,
   },
   ...(ctx.has("better-auth")
     ? [

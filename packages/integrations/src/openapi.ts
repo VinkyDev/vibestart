@@ -71,23 +71,26 @@ const renderHealth = (ctx: Context) => {
 const queriesPath = "apps/web/src/lib/api.ts";
 
 // MongoDB names a todo by its ObjectId, a string the path carries as it is.
-const withStringIds = (content: string) => {
+const withStringIds = (content: string, set: string) => {
   const typed = content.replaceAll("id: number", "id: string");
   const passed = typed.replaceAll("{ id: String(id) }", "{ id }");
 
   if (typed === content || passed === typed) {
-    throw new Error(`openapi/web/${queriesPath} has no numeric todo id`);
+    throw new Error(`${set}/${queriesPath} has no numeric todo id`);
   }
 
   return passed;
 };
 
 /** The typed queries over the todo routes, which the web and mobile apps share. */
-export const openapiQueriesContent = (ctx: Context) => {
-  const template = templateContent(ctx, "openapi/web", queriesPath);
+const todoQueries = (ctx: Context, set: string) => {
+  const template = templateContent(ctx, set, queriesPath);
 
-  return ctx.has("mongodb") ? withStringIds(template) : template;
+  return ctx.has("mongodb") ? withStringIds(template, set) : template;
 };
+
+export const openapiQueriesContent = (ctx: Context) =>
+  todoQueries(ctx, "openapi/web");
 
 // Only Next.js builds a second set of queries, for its Server Components.
 const queries = (ctx: Context) => {
@@ -104,7 +107,9 @@ const queries = (ctx: Context) => {
 // Start's client calls the API server directly during SSR; the other web apps only ever run it in the browser.
 // The typed client serves the todo example; the home page's health check is a plain fetch.
 const webFiles = (ctx: Context) => [
-  queries(ctx),
+  ctx.has("solid")
+    ? file(queriesPath, todoQueries(ctx, "openapi/solid"))
+    : queries(ctx),
   ...templateFiles(
     ctx,
     ctx.has("tanstack-start") ? "openapi/tanstack-start" : "openapi/browser"

@@ -70,10 +70,10 @@ Standard is the default and suits most projects with familiar TypeScript and the
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect mode combines React, TanStack Router, Effect HTTP/RPC and atoms, and Node. Choose Playwright (the default) or TesterArmy e2e, PostgreSQL or SQLite through native Effect/Drizzle drivers, or no database. Better Auth is optional and requires a database; no database also removes the ORM. Electron desktop (`--desktop electron`), Expo mobile (`--mobile expo`), and Docker (`--deployment docker`) are optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
+Effect mode pairs a React SPA (TanStack Router) or a Solid 2 SPA (Solid Router and UI SDK) with Effect HTTP/RPC, atoms, and Node. Choose Playwright (the default) or TesterArmy e2e, PostgreSQL or SQLite through native Effect/Drizzle drivers, or no database. Better Auth is optional and requires a database; no database also removes the ORM. Electron desktop (`--desktop electron`), Expo mobile (`--mobile expo`), and Docker (`--deployment docker`) are optional. Do not mix Standard transports, frameworks, or runtimes into this mode. The package manager is independent of the Node runtime. See [Effect mode](https://vibestart.net/docs/stack/effect).
 
 For Effect, discover available choices with `--list --mode effect --json`; older CLI releases may only offer the fixed stack. Use `--auth none` to omit authentication, or `--database none --orm none --auth none` to omit persistence entirely. A database without auth generates public, shared todos. `--testing playwright` and `--testing e2e` select the browser runner.
 
-Select `--frontend solid` for a Solid 2 SPA when listed. It uses the Solid router and UI SDK and can include a Hono health API.
+Select `--frontend solid` for a Solid 2 SPA when listed. It uses Solid Router and UI SDK. Check the running CLI for compatible Hono, API, database, ORM, and auth choices. Combine a database and a typed API for a working todo example.
 
 Discover UI libraries and add-ons with the running CLI's `--list --json`. For React, choose `--ui shadcn` or `--ui ui-sdk` independently of backend, database, and deployment. Solid uses UI SDK. When offered, the optional `alchemy` add-on generates a provider-neutral stack and works alongside Docker. Preserve any other requested add-ons when specifying `--addons`.

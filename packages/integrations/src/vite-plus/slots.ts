@@ -3,9 +3,13 @@ import type { OxfmtConfig } from "oxfmt";
 import type { ReadSlot } from "@vibestart/core";
 import { defineSlot } from "@vibestart/core";
 
-export const lintPresets = defineSlot<{ name: string; module: string }>(
-  "vite-plus/lint-presets"
-);
+export interface LintPreset {
+  name: string;
+  module: string;
+  importOnly?: boolean;
+}
+
+export const lintPresets = defineSlot<LintPreset>("vite-plus/lint-presets");
 
 export const fmtPresets = defineSlot<{
   name: string;

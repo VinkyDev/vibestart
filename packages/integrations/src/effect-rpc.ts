@@ -22,7 +22,10 @@ export const effectRpc = defineIntegration({
   requires: ["effect-http-server"],
   contribute: (ctx) => [
     ...templateFiles(ctx, "effect-rpc/common"),
-    ...templateFiles(ctx, "effect-rpc/web"),
+    ...templateFiles(
+      ctx,
+      ctx.has("solid") ? "effect-rpc/solid" : "effect-rpc/web"
+    ),
     ...(ctx.stack.database === undefined
       ? templateFiles(ctx, "effect-rpc/health")
       : [
@@ -46,7 +49,11 @@ export const effectRpc = defineIntegration({
         ]),
     ...(ctx.stack.database === undefined
       ? []
-      : [...todoFiles(ctx), ...todoWebFiles(ctx)]),
+      : [
+          ...todoFiles(ctx),
+          ...templateFiles(ctx, "effect-rpc/todos-client"),
+          ...todoWebFiles(ctx),
+        ]),
     contractIndex(ctx),
     routes(ctx),
     contribute(packageJson, {
@@ -85,10 +92,12 @@ export const effectRpc = defineIntegration({
     contribute(packageJson, {
       path: "apps/web",
       dependencies: [
-        "@effect/atom-react",
+        ...(ctx.has("react") ? ["@effect/atom-react"] : []),
         "effect",
         `${ctx.scope}/contracts`,
-        ...(ctx.stack.database === undefined ? [] : ["sonner"]),
+        ...(ctx.has("react") && ctx.stack.database !== undefined
+          ? ["sonner"]
+          : []),
       ],
     }),
     contribute(stackHeadline, {

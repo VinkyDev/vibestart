@@ -66,8 +66,7 @@ const authIndex = (ctx: Context) => {
   return file(path, source);
 };
 
-export const effectAuth = (ctx: Context) => [
-  ...templateFiles(ctx, "better-auth/common"),
+export const effectAuthPages = (ctx: Context) => [
   ...templateFiles(ctx, "better-auth/spa"),
   ...templateFiles(ctx, "better-auth/tanstack-router", {
     except: [
@@ -77,6 +76,10 @@ export const effectAuth = (ctx: Context) => [
   }),
   ...templateFiles(ctx, "better-auth/web"),
   ...templateFiles(ctx, "better-auth/effect"),
+];
+
+export const effectAuth = (ctx: Context) => [
+  ...templateFiles(ctx, "better-auth/common"),
   authIndex(ctx),
   contribute(packageJson, {
     dependencies: [
@@ -96,7 +99,9 @@ export const effectAuth = (ctx: Context) => [
   }),
   contribute(packageJson, {
     path: "apps/web",
-    dependencies: ["better-auth", "sonner"],
+    dependencies: ctx.has("solid")
+      ? ["better-auth"]
+      : ["better-auth", "sonner"],
   }),
   contribute(serverEnv, {
     name: "BETTER_AUTH_URL",

@@ -1,6 +1,7 @@
 import type { Context } from "@vibestart/core";
 import { file } from "@vibestart/core";
 
+import { todoPageSource } from "#/spa/todo-page.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 
 import { todoHandlers, todoService } from "./todos.ts";
@@ -121,9 +122,15 @@ export const Routes = Layer.mergeAll(
   );
 
 export const todoWebFiles = (ctx: Context) => {
+  if (ctx.has("solid")) {
+    const path = "apps/web/src/todos.tsx";
+
+    return [file(path, todoPageSource(ctx, "effect-rpc/solid-todos", path))];
+  }
+
   const page = "apps/web/src/routes/_authenticated/todos.tsx";
   const notify = "apps/web/src/lib/notify.ts";
-  let pageSource = templateContent(ctx, "effect-rpc/todos-web", page);
+  let pageSource = todoPageSource(ctx, "effect-rpc/todos-web", page);
   let notifySource = templateContent(ctx, "effect-rpc/todos-web", notify);
 
   if (!ctx.has("better-auth")) {
@@ -131,12 +138,6 @@ export const todoWebFiles = (ctx: Context) => {
       pageSource,
       'createFileRoute("/_authenticated/todos")',
       'createFileRoute("/todos")',
-      page
-    );
-    pageSource = replaceOnce(
-      pageSource,
-      "Private to your account.",
-      "Shared by everyone who opens the app.",
       page
     );
     notifySource = replaceOnce(

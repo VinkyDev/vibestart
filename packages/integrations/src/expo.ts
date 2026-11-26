@@ -402,8 +402,8 @@ const authFiles = (ctx: Context) => [
 // `react/style-prop-object` takes expo-status-bar's `style="auto"`, a theme name, for an inline style.
 // `@shadcn/lint` reads `src/components/ui` as a design system and forbids appearance classes at call sites, which Uniwind components take.
 const lintOverride = (ctx: Context) => `{
-  files: ["apps/mobile/**"],
-  rules: {
+  files: ["apps/mobile/**"],${ctx.has("solid") ? "\n  plugins: [...(core.plugins ?? []), ...(react.plugins ?? [])]," : ""}
+  rules: {${ctx.has("solid") ? "\n    ...react.rules," : ""}
     "react/style-prop-object": ["error", { allow: ["StatusBar"] }],${ctx.has("shadcn") ? '\n    "shadcn/no-restyle": "off",' : ""}
   },
 }`;
@@ -496,6 +496,7 @@ export const expo = defineIntegration({
     contribute(ultracitePresets, {
       module: "ultracite/oxlint/react",
       name: "react",
+      importOnly: ctx.has("solid"),
     }),
     contribute(ultraciteOverrides, lintOverride(ctx)),
     contribute(generatedFiles, {

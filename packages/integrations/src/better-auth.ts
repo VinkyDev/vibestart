@@ -16,10 +16,10 @@ import {
   stackHeadline,
   todosExample,
 } from "#/app.ts";
-import { effectAuth } from "#/better-auth/effect.ts";
+import { effectAuth, effectAuthPages } from "#/better-auth/effect.ts";
 import { composeEnv } from "#/docker.ts";
 import { quote } from "#/format.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
   agentsMap,
@@ -153,6 +153,10 @@ const protectedPage = (ctx: Context) => {
     return `A page that needs a user calls \`getSession()\` and \`redirect("/login?redirect=…")\` when the session is missing. Add the page to \`redirectTargets\` in \`src/app/login/page.tsx\`; any other redirect value falls back to \`${home(ctx)}\`. The page hide is UX, and ${boundary} is the security boundary.`;
   }
 
+  if (ctx.has("solid")) {
+    return "A protected Solid route checks the session before rendering private data. The API enforces authorization on every request.";
+  }
+
   const guard = todosExample(ctx)
     ? "Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=…`."
     : 'The route\'s `beforeLoad` throws `redirect({ to: "/login", search: { redirect: location.href } })` when `context.session` is missing; several such routes share a pathless `_authenticated.tsx` layout that does it once.';
@@ -232,6 +236,30 @@ const webSets = (ctx: Context) => [
 ];
 
 const webFiles = (ctx: Context) => {
+  if (ctx.has("solid")) {
+    const path = "apps/web/src/login.tsx";
+
+    return [
+      ...templateFiles(ctx, "better-auth/solid", { except: [path] }),
+      file(
+        path,
+        replaceOnce(
+          templateContent(ctx, "better-auth/solid", path),
+          'const defaultTarget = "/todos";',
+          `const defaultTarget = "${home(ctx)}";`,
+          path
+        )
+      ),
+      ...(todosExample(ctx)
+        ? templateFiles(ctx, "better-auth/solid-todos")
+        : []),
+    ];
+  }
+
+  if (ctx.has("effect")) {
+    return effectAuthPages(ctx);
+  }
+
   const login = loginTemplate(ctx);
 
   return [
@@ -245,7 +273,7 @@ const webFiles = (ctx: Context) => {
 export const betterAuth = defineIntegration({
   contribute: (ctx) =>
     ctx.has("effect")
-      ? effectAuth(ctx)
+      ? [...effectAuth(ctx), ...webFiles(ctx)]
       : [
           ...templateFiles(ctx, "better-auth/common"),
           ...(hasWebApp(ctx) ? webFiles(ctx) : []),

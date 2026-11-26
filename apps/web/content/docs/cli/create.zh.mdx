@@ -35,17 +35,18 @@ CLI 会依次：
 pnpm dlx vibestart-cli my-app --mode effect
 ```
 
-Effect 模式支持 PostgreSQL 或 SQLite，可搭配 Better Auth，也可以创建无数据库应用。两套 React UI 库和两种浏览器测试框架均可选择，按需添加 Electron、Expo 或 Docker。包管理器与扩展独立于这些组合。
+Effect 模式支持 PostgreSQL 或 SQLite，可搭配 Better Auth，也可以创建无数据库应用。React 可任选一套 UI 库，Solid 2 搭配 UI SDK，两者都可选任一浏览器测试框架，按需添加 Electron、Expo 或 Docker。包管理器与扩展独立于这些组合。
 
-| 参数         | Effect 可选值                | 不进行交互时的默认值             |
-| ------------ | ---------------------------- | -------------------------------- |
-| `--ui`       | `shadcn`、`ui-sdk`           | `shadcn`                         |
-| `--database` | `postgres`、`sqlite`、`none` | `sqlite`                         |
-| `--orm`      | `drizzle`、`none`            | 根据数据库推导                   |
-| `--auth`     | `better-auth`、`none`        | 无默认值；使用数据库时需显式选择 |
-| `--desktop`  | `electron`、`none`           | `none`                           |
-| `--mobile`   | `expo`、`none`               | `none`                           |
-| `--testing`  | `playwright`、`e2e`          | `playwright`                     |
+| 参数         | Effect 可选值                | 不进行交互时的默认值                     |
+| ------------ | ---------------------------- | ---------------------------------------- |
+| `--frontend` | `react`、`solid`             | `react`                                  |
+| `--ui`       | `shadcn`、`ui-sdk`           | React 默认 `shadcn`，Solid 使用 `ui-sdk` |
+| `--database` | `postgres`、`sqlite`、`none` | `sqlite`                                 |
+| `--orm`      | `drizzle`、`none`            | 根据数据库推导                           |
+| `--auth`     | `better-auth`、`none`        | 无默认值；使用数据库时需显式选择         |
+| `--desktop`  | `electron`、`none`           | `none`                                   |
+| `--mobile`   | `expo`、`none`               | `none`                                   |
+| `--testing`  | `playwright`、`e2e`          | `playwright`                             |
 
 Better Auth 需要数据库。不启用认证时，Todo 是所有访问者共享的公开数据。不使用数据库时，不生成 ORM、认证、迁移和 Todo 示例，仅保留类型化的 HTTP/RPC 健康检查。SQLite 使用官方 Effect 驱动，无需独立数据库服务。
 
