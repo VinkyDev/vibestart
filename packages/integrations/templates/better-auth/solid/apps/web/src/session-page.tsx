@@ -6,7 +6,10 @@ import { authClient, useSession } from "#src/lib/auth.ts";
 
 const Redirect = (props: { to: string }) => {
   const navigate = useNavigate();
-  navigate(untrack(() => props.to), { replace: true });
+  navigate(
+    untrack(() => props.to),
+    { replace: true }
+  );
 
   return null;
 };
@@ -24,6 +27,13 @@ export const SessionPage = (props: {
     return true;
   });
 
+  // Once admitted, preserve the form during background refreshes. A changed user still remounts it.
+  const ready = createMemo<boolean>(
+    (admitted) =>
+      admitted === true ||
+      (checked() && !session().isPending && !session().isRefetching)
+  );
+
   const viewer = () => {
     const { data, error } = session();
 
@@ -35,10 +45,7 @@ export const SessionPage = (props: {
   };
 
   return (
-    <Show
-      when={checked() && !session().isPending}
-      fallback={<output>Checking session…</output>}
-    >
+    <Show when={ready()} fallback={<output>Checking session…</output>}>
       <Show keyed when={viewer()} fallback={<Redirect to={props.redirectTo} />}>
         {(_viewer) => props.children}
       </Show>
