@@ -1,7 +1,8 @@
 import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
-import { hasBackend, todosExample } from "#/app.ts";
+import { hasBackend } from "#/app-shape.ts";
+import { todosExample } from "#/example.ts";
 import { todoPageSource } from "#/spa/todo-page.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
@@ -14,7 +15,7 @@ const entry = (ctx: Context) => {
   const path = "apps/web/src/main.tsx";
   let content = templateContent(ctx, "solid-spa/common", path);
 
-  if (todosExample(ctx)) {
+  if (todosExample(ctx.stack)) {
     const about = "<a href={Router.paths.about()}>About</a>";
     content = replaceOnce(
       content,
@@ -49,7 +50,7 @@ const entry = (ctx: Context) => {
 };
 
 export const solidSpa = (ctx: Context) => {
-  const backend = hasBackend(ctx);
+  const backend = hasBackend(ctx.stack);
   const todos = "apps/web/src/todos.tsx";
 
   return [
@@ -57,7 +58,7 @@ export const solidSpa = (ctx: Context) => {
       except: ["apps/web/src/main.tsx"],
     }),
     entry(ctx),
-    ...(todosExample(ctx) && !ctx.has("effect-rpc")
+    ...(todosExample(ctx.stack) && !ctx.has("effect-rpc")
       ? [file(todos, todoPageSource(ctx, "solid-spa/todos", todos))]
       : []),
     ...["index.html", "tsconfig.json", "tsconfig.node.json"].map((name) => {

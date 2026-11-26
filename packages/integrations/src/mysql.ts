@@ -1,17 +1,8 @@
-import {
-  contribute,
-  defineIntegration,
-  gettingStarted,
-  renderFile,
-} from "@vibestart/core";
+import { contribute, defineIntegration, gettingStarted } from "@vibestart/core";
 
-import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
-import {
-  composeEnv,
-  composeServices,
-  composeVolumes,
-  renderDevCompose,
-} from "#/docker.ts";
+import { ormRelease } from "#/database.ts";
+import { databaseService } from "#/docker/database-service.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 
 export const mysql = defineIntegration({
@@ -19,19 +10,10 @@ export const mysql = defineIntegration({
     const database = ctx.name.replaceAll("-", "_");
 
     return [
-      contribute(serverEnv, {
-        example: `mysql://root:mysql@localhost:3306/${database}`,
-        name: "DATABASE_URL",
-        schema: "z.url()",
-      }),
-      contribute(composeEnv, {
-        name: "DATABASE_URL",
-        value: `mysql://root:mysql@db:3306/${database}`,
-      }),
-      contribute(composeServices, {
-        name: "db",
-        readyWhen: "service_healthy",
-        yaml: `  db:
+      ...databaseService(
+        ctx,
+        (host) => `mysql://root:mysql@${host}:3306/${database}`,
+        `  db:
     image: mysql:8.4
     environment:
       MYSQL_DATABASE: ${database}
@@ -44,16 +26,8 @@ export const mysql = defineIntegration({
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
-      - db-data:/var/lib/mysql`,
-      }),
-      contribute(composeVolumes, "db-data"),
-      ...(ctx.has("docker")
-        ? []
-        : [
-            renderFile("docker-compose.yml", (read) =>
-              renderDevCompose(ctx, read)
-            ),
-          ]),
+      - db-data:/var/lib/mysql`
+      ),
       contribute(readmeTagline, "MySQL"),
       contribute(stackHeadline, { name: "MySQL", role: "Database" }),
       contribute(readmeLayers, {

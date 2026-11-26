@@ -13,7 +13,7 @@ import path from "node:path";
 import { escapeRegExp } from "es-toolkit/string";
 
 import type { PackageManager, Stack } from "@vibestart/core";
-import { verificationSchema } from "@vibestart/core";
+import { packageManagers, verificationSchema } from "@vibestart/core";
 
 import type { Candidate } from "#/coverage.ts";
 import { coverPlan, coveredBy } from "#/coverage.ts";
@@ -23,10 +23,9 @@ import type {
   Platform,
   Projection,
   StackVerification,
-} from "#/verification.ts";
+} from "#/verification-projection.ts";
+import { emptyProjection, platforms } from "#/verification-projection.ts";
 import {
-  emptyProjection,
-  platforms,
   verifiedFingerprint,
   verifiedOutput,
   verifiedStacks,
@@ -50,8 +49,7 @@ const linuxTasks = (packageManager: PackageManager) =>
 
 /** Every task whose record counts: each verified stack on Linux under both package managers, each golden on Windows. */
 export const tasks: readonly Task[] = [
-  ...linuxTasks("pnpm"),
-  ...linuxTasks("bun"),
+  ...packageManagers.flatMap(linuxTasks),
   ...Object.values(goldens).map((stack): Task => ({
     label: taskLabel(stack),
     packageManager: "pnpm",
@@ -59,11 +57,6 @@ export const tasks: readonly Task[] = [
     stack,
   })),
 ];
-
-const packageManagers = [
-  "pnpm",
-  "bun",
-] as const satisfies readonly PackageManager[];
 
 /** A lane is the Linux tasks of one package manager, whose passes cover one another's facets. */
 const lane = async (packageManager: PackageManager): Promise<Candidate[]> =>

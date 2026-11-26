@@ -6,7 +6,7 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import { todosExample } from "#/app.ts";
+import { todosExample } from "#/example.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { readmeLayers } from "#/vite-plus/slots.ts";
 
@@ -39,7 +39,7 @@ const router = (ctx: Context) => {
     ...(ctx.has("better-auth")
       ? [{ path: "login", component: "Login", module: "login" }]
       : []),
-    ...(todosExample(ctx)
+    ...(todosExample(ctx.stack)
       ? [
           {
             path: "todos",

@@ -2295,6 +2295,13 @@ export const tests_scope_e2e_none: ((inputs?: Tests_Scope_E2e_NoneInputs, option
 /**
 * | output |
 * | --- |
+* | "Vitest runs unit tests and exercises the HTTP and RPC health checks through the Effect server." |
+*
+*/
+export const tests_scope_health: ((inputs?: Tests_Scope_HealthInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Tests_Scope_HealthInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "Every stack runs its unit tests on Vitest. This one also runs API integration tests against a real database." |
 *
 */
@@ -3167,6 +3174,7 @@ export type Testing_NoneInputs = {};
 export type Testing_QuestionInputs = {};
 export type Tests_Layer_UnitInputs = {};
 export type Tests_Scope_E2e_NoneInputs = {};
+export type Tests_Scope_HealthInputs = {};
 export type Tests_Scope_IntegrationInputs = {};
 export type Tests_Scope_MobileInputs = {};
 export type Tests_Scope_UnitInputs = {};

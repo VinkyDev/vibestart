@@ -2,21 +2,24 @@ import { ParaglideMessage } from "@inlang/paraglide-js-react";
 import { ShieldCheck, ShieldQuestion } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { maxProjectNameLength, projectNameError } from "@vibestart/core";
+import type { PackageManager } from "@vibestart/core";
+import {
+  maxProjectNameLength,
+  packageManagers,
+  projectNameError,
+} from "@vibestart/core";
+import { devCommands } from "@vibestart/integrations/dev-commands";
 
 import { CreateTerminal } from "#/components/create-terminal.tsx";
 import { Segmented } from "#/components/segmented.tsx";
 import { noteText, relativeTime } from "#/lib/i18n.ts";
 import type { Project, StackEntry, StackVerification } from "#/lib/project.ts";
-import type { PackageRunner } from "#/lib/stack.ts";
 import { commandWords, flagsOf, verificationWith } from "#/lib/stack.ts";
 import { m } from "#/paraglide/messages.js";
 
-const runnerOptions = (
-  ["pnpm", "bun"] as const satisfies readonly PackageRunner[]
-).map((runner) => ({
-  label: runner === "bun" ? "Bun" : runner,
-  value: runner,
+const managerOptions = packageManagers.map((manager) => ({
+  label: manager === "bun" ? "Bun" : manager,
+  value: manager,
 }));
 
 const verifiedMarkup = {
@@ -54,8 +57,8 @@ export const Command = ({
   packageManager,
   onPackageManager,
 }: {
-  readonly packageManager: "pnpm" | "bun";
-  readonly onPackageManager: (value: "pnpm" | "bun") => void;
+  readonly packageManager: PackageManager;
+  readonly onPackageManager: (value: PackageManager) => void;
   readonly addons: readonly string[];
   readonly entry: StackEntry;
   readonly name: string;
@@ -75,7 +78,7 @@ export const Command = ({
   const steps = [
     { run: `cd ${name}` },
     ...project.gettingStarted,
-    { run: "vp run dev" },
+    { run: devCommands(entry.stack)[0] },
   ];
 
   return (
@@ -87,7 +90,7 @@ export const Command = ({
           id="package-manager"
           label={m.package_manager()}
           onChange={onPackageManager}
-          options={runnerOptions}
+          options={managerOptions}
           value={packageManager}
         />
       </div>

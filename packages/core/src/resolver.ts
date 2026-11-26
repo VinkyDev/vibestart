@@ -1,40 +1,8 @@
-import type { IntegrationInfo, Requirement, Stack } from "#/integration.ts";
-import { alternatives } from "#/integration.ts";
+import type { Violation } from "#/constraints.ts";
+import { check, unavoidableViolations } from "#/constraints.ts";
+import type { IntegrationInfo, Stack } from "#/integration.ts";
 import type { RegistryInfo } from "#/registry.ts";
-import { getIntegration, integrationsOfKind } from "#/registry.ts";
-
-export type Violation =
-  | {
-      readonly type: "unsupported-choice";
-      readonly integration: string;
-      readonly kind: string;
-      readonly choices: readonly (string | null)[];
-      readonly reason: string;
-    }
-  | {
-      readonly type: "missing-kind";
-      /** One of these kinds must be filled. */
-      readonly kinds: readonly string[];
-      readonly reason: string;
-    }
-  | {
-      readonly type: "unused-integration";
-      readonly integration: string;
-      readonly reason: string;
-    }
-  | {
-      readonly type: "missing-capability";
-      readonly integration: string;
-      /** Any one of these capabilities would satisfy the integration. */
-      readonly capabilities: readonly string[];
-      readonly reason: string;
-    }
-  | {
-      readonly type: "shared-capability";
-      readonly capability: string;
-      readonly integrations: readonly string[];
-      readonly reason: string;
-    };
+import { integrationsOfKind } from "#/registry.ts";
 
 /**
  * Kind id → the chosen integration id, or `null` for an optional kind chosen empty.
@@ -68,202 +36,6 @@ export interface KindOption {
   /** Empty when choosing it leaves a legal stack. */
   readonly violations: readonly Violation[];
 }
-
-/** Integrations of a stack in kind order, which is also the order contributions are collected in. */
-export const selectedIntegrations = <I extends IntegrationInfo>(
-  registry: RegistryInfo & { readonly integrations: readonly I[] },
-  stack: Stack
-): I[] =>
-  registry.kinds.flatMap((kind) => {
-    const id = stack[kind.id];
-
-    return id === undefined ? [] : [getIntegration(registry, id)];
-  });
-
-const joinNames = (names: readonly string[], conjunction = "and") =>
-  names.length <= 2
-    ? names.join(` ${conjunction} `)
-    : `${names.slice(0, -1).join(", ")}, ${conjunction} ${names.at(-1)}`;
-
-/**
- * Whether a requirement needs the integration in a stack: the integration meets it, and no alternative it
- * does not provide is provided by another. A single capability with one provider always needs its provider.
- */
-export const needs = (
-  requirement: Requirement,
-  integration: IntegrationInfo,
-  stack: readonly IntegrationInfo[]
-) => {
-  const accepted = alternatives(requirement);
-  const own = (capability: string) => integration.provides.includes(capability);
-
-  return (
-    accepted.some(own) &&
-    accepted.every(
-      (capability) =>
-        own(capability) || !stack.some((i) => i.provides.includes(capability))
-    )
-  );
-};
-
-export const check = (registry: RegistryInfo, stack: Stack): Violation[] => {
-  const integrations = selectedIntegrations(registry, stack);
-
-  const describe = (capability: string) =>
-    registry.capabilities[capability] ?? capability;
-
-  const kindName = (id: string) =>
-    registry.kinds.find((kind) => kind.id === id)?.name ?? id;
-
-  const missingKinds = [
-    ...registry.kinds.flatMap((kind) => (kind.optional ? [] : [[kind.id]])),
-    ...(registry.kindGroups ?? []),
-  ].flatMap((kinds): Violation[] =>
-    kinds.every((kind) => stack[kind] === undefined)
-      ? [
-          {
-            kinds,
-            reason: `${joinNames(kinds.map(kindName), "or")} is required.`,
-            type: "missing-kind",
-          },
-        ]
-      : []
-  );
-
-  const provided = (capability: string) =>
-    integrations.some((i) => i.provides.includes(capability));
-
-  const missingCapabilities = integrations.flatMap((integration) =>
-    integration.requires
-      .map(alternatives)
-      .filter((accepted) => !accepted.some(provided))
-      .map((accepted): Violation => ({
-        capabilities: accepted,
-        integration: integration.id,
-        reason: `${integration.name} requires ${joinNames(accepted.map(describe), "or")}, but nothing in the stack provides it.`,
-        type: "missing-capability",
-      }))
-  );
-
-  const capabilities = [...new Set(integrations.flatMap((i) => i.provides))];
-
-  const sharedCapabilities = capabilities.flatMap((capability): Violation[] => {
-    const providers = integrations.filter((i) =>
-      i.provides.includes(capability)
-    );
-
-    return providers.length > 1
-      ? [
-          {
-            capability,
-            integrations: providers.map((i) => i.id),
-            reason: `${joinNames(providers.map((i) => i.name))} each provide ${describe(capability)}; a stack can have only one.`,
-            type: "shared-capability",
-          },
-        ]
-      : [];
-  });
-
-  const unusedIntegrations = integrations
-    .filter(
-      (integration) =>
-        integration.auxiliary &&
-        !integrations.some((other) =>
-          other.requires.some((requirement) =>
-            needs(requirement, integration, integrations)
-          )
-        )
-    )
-    .map((integration): Violation => ({
-      integration: integration.id,
-      reason: `${integration.name} provides ${joinNames(integration.provides.map(describe))}, but nothing in the stack requires it.`,
-      type: "unused-integration",
-    }));
-
-  const unsupportedChoices = integrations.flatMap((integration) =>
-    Object.entries(integration.choices ?? {}).flatMap(
-      ([kind, allowed]): Violation[] =>
-        allowed.includes(stack[kind] ?? null)
-          ? []
-          : [
-              {
-                type: "unsupported-choice",
-                integration: integration.id,
-                kind,
-                choices: allowed,
-                reason: `${integration.name} supports ${joinNames(
-                  allowed.map((id) =>
-                    id === null ? "none" : getIntegration(registry, id).name
-                  ),
-                  "or"
-                )} for ${kindName(kind)}.`,
-              },
-            ]
-    )
-  );
-
-  return [
-    ...unsupportedChoices,
-    ...missingKinds,
-    ...missingCapabilities,
-    ...sharedCapabilities,
-    ...unusedIntegrations,
-  ];
-};
-
-/**
- * What a partial stack already gets wrong, counting only violations no later choice removes: an empty kind
- * group, a requirement no remaining kind can provide, and a capability two integrations provide.
- */
-const unavoidableViolations = (
-  chosen: readonly IntegrationInfo[],
-  emptyKinds: ReadonlySet<string>,
-  kindGroups: readonly (readonly string[])[],
-  laterCapabilities: ReadonlySet<string>
-) => {
-  const provided = new Set<string>();
-  const shared = new Set<string>();
-
-  for (const integration of chosen) {
-    for (const capability of new Set(integration.provides)) {
-      if (provided.has(capability)) {
-        shared.add(capability);
-      }
-
-      provided.add(capability);
-    }
-  }
-
-  const emptyGroups = kindGroups.filter((group) =>
-    group.every((kind) => emptyKinds.has(kind))
-  ).length;
-
-  const unmet = chosen.flatMap((integration) =>
-    integration.requires
-      .map(alternatives)
-      .filter(
-        (accepted) =>
-          !accepted.some(
-            (capability) =>
-              provided.has(capability) || laterCapabilities.has(capability)
-          )
-      )
-  ).length;
-
-  const choices = new Map(
-    chosen.map((integration) => [integration.kind, integration.id])
-  );
-
-  const unsupported = chosen.flatMap((integration) =>
-    Object.entries(integration.choices ?? {}).filter(
-      ([kind, allowed]) =>
-        (choices.has(kind) || emptyKinds.has(kind)) &&
-        !allowed.includes(choices.get(kind) ?? null)
-    )
-  ).length;
-
-  return emptyGroups + unmet + shared.size + unsupported;
-};
 
 /**
  * Visits every stack consistent with the choices, in registry order: kinds as they are listed, and within a kind
@@ -326,15 +98,16 @@ const visitConsistentStacks = (
         chosen.push(integration);
       }
 
+      const next =
+        integration === undefined
+          ? stack
+          : { ...stack, [kind.id]: integration.id };
+
       if (
-        unavoidableViolations(chosen, emptyKinds, kindGroups, later) < ceiling()
+        unavoidableViolations(chosen, next, emptyKinds, kindGroups, later) <
+        ceiling()
       ) {
-        extend(
-          index + 1,
-          integration === undefined
-            ? stack
-            : { ...stack, [kind.id]: integration.id }
-        );
+        extend(index + 1, next);
       }
 
       if (integration === undefined) {

@@ -7,26 +7,20 @@ import {
   renderFile,
 } from "@vibestart/core";
 
-import {
-  apiVariant,
-  authVariant,
-  databaseName,
-  environmentConvention,
-  hasBackend,
-  homePage,
-  renderEnvModule,
-  selfHealthRoute,
-  serverEnv,
-  serverUrl,
-  stackHeadline,
-  todosExample,
-  packConfig,
-  webMigrates,
-  databaseCheck,
-} from "#/app.ts";
-import { dockerRuntime } from "#/docker.ts";
+import { backendHost, hasBackend } from "#/app-shape.ts";
+import { databaseName, packConfig, databaseCheck } from "#/database.ts";
+import { dockerRuntime } from "#/docker/slots.ts";
 import { envFiles } from "#/env-files.ts";
+import { apiVariant, authVariant, todosExample } from "#/example.ts";
 import { joinWords, markdownTable } from "#/format.ts";
+import { selfHealthRoute, webMigrates } from "#/framework-server.ts";
+import { devServer, serverUrl } from "#/server-address.ts";
+import {
+  environmentConvention,
+  renderEnvModule,
+  serverEnv,
+} from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import {
@@ -39,12 +33,13 @@ import {
   readmeTagline,
   unitTestSources,
 } from "#/vite-plus/slots.ts";
+import { homePage } from "#/web-pages.ts";
 import {
   workerNodeEnv,
   workerServices,
   workerTsconfig,
-  workerViteConfig,
-} from "#/workers.ts";
+} from "#/workers/app.ts";
+import { workerViteConfig } from "#/workers/vite-config.ts";
 
 const viteConfigPath = "apps/web/vite.config.ts";
 const packBlock = /^ {2}pack: \{\n(?: {4}.*\n)+ {2}\},\n/mu;
@@ -102,7 +97,9 @@ const urlTable = (ctx: Context) =>
 const serverConvention = (ctx: Context) => {
   const modules = [
     ...(ctx.has("orpc") ? ["`src/lib/api.ts`"] : []),
-    ...(ctx.has("openapi") && todosExample(ctx) ? ["`src/lib/client.ts`"] : []),
+    ...(ctx.has("openapi") && todosExample(ctx.stack)
+      ? ["`src/lib/client.ts`"]
+      : []),
     ...(ctx.has("better-auth") ? ["`src/lib/auth.ts`"] : []),
   ];
 
@@ -139,16 +136,20 @@ const selfApi = (ctx: Context) =>
   ctx.has("orpc")
     ? [
         ...templateFiles(ctx, "tanstack-start/self-orpc"),
-        ...templateFiles(ctx, `tanstack-start/self-orpc-${apiVariant(ctx)}`, {
-          except:
-            ctx.has("workers") && ctx.stack.database !== undefined
-              ? ["apps/web/src/server/orpc.ts"]
-              : [],
-        }),
+        ...templateFiles(
+          ctx,
+          `tanstack-start/self-orpc-${apiVariant(ctx.stack)}`,
+          {
+            except:
+              ctx.has("workers") && ctx.stack.database !== undefined
+                ? ["apps/web/src/server/orpc.ts"]
+                : [],
+          }
+        ),
         ...(ctx.has("workers") && ctx.stack.database !== undefined
           ? templateFiles(
               ctx,
-              `tanstack-start/workers-self-orpc-${apiVariant(ctx)}`
+              `tanstack-start/workers-self-orpc-${apiVariant(ctx.stack)}`
             )
           : []),
         contribute(
@@ -172,7 +173,7 @@ const selfEnvironment = (ctx: Context) => [
         renderFile("apps/web/src/server/node-env.ts", workerNodeEnv),
       ]
     : [
-        ...templateFiles(ctx, `tanstack-start/self-${authVariant(ctx)}`),
+        ...templateFiles(ctx, `tanstack-start/self-${authVariant(ctx.stack)}`),
         renderFile("apps/web/src/server/env.ts", (read) =>
           renderEnvModule(read(serverEnv), false)
         ),
@@ -226,13 +227,13 @@ const honoNote = (ctx: Context) => {
   const forward = ctx.has("orpc") ? "forward" : "forwards";
 
   return [
-    `\`vp run dev\` serves the app on :3000 and the API server (\`apps/server\`) on :3001. The browser talks only to the app: its ${routes}${auth ? " (including `/api/auth`)" : ""} ${forward} to the API server at \`SERVER_URL\`, so ${auth ? "session cookies are first-party and " : ""}there is no CORS configuration.`,
+    `\`vp run dev\` serves the app on :3000 and the API server (\`apps/server\`) on :${devServer(ctx.stack).port}. The browser talks only to the app: its ${routes}${auth ? " (including `/api/auth`)" : ""} ${forward} to the API server at \`SERVER_URL\`, so ${auth ? "session cookies are first-party and " : ""}there is no CORS configuration.`,
     ...(ctx.has("orpc")
       ? [
           `During SSR, \`api.*\` from \`src/lib/api.ts\` calls \`SERVER_URL\` directly${auth ? " with the request's cookies" : ""}; in the browser it posts to \`/rpc\`. Loader data is dehydrated into the Query cache, so the browser does not refetch it.`,
         ]
       : []),
-    ...(ctx.has("openapi") && todosExample(ctx)
+    ...(ctx.has("openapi") && todosExample(ctx.stack)
       ? [
           `\`api.*\` from \`src/lib/api.ts\` wraps the typed \`hono/client\` from \`src/lib/client.ts\` in TanStack Query options. During SSR that client calls \`SERVER_URL\` directly${auth ? " with the request's cookies" : ""}; in the browser it calls \`/api\`. Loader data is dehydrated into the Query cache, so the browser does not refetch it.`,
         ]
@@ -243,8 +244,14 @@ const honoNote = (ctx: Context) => {
 const honoContributions = (ctx: Context) => [
   ...templateFiles(ctx, "tanstack-start/hono"),
   ...(ctx.has("orpc") ? templateFiles(ctx, "tanstack-start/hono-orpc") : []),
-  file("apps/web/src/server/env.ts", renderEnvModule([serverUrl], false)),
-  contribute(envFiles, { lines: () => [serverUrl], path: "apps/web/.env" }),
+  file(
+    "apps/web/src/server/env.ts",
+    renderEnvModule([serverUrl(ctx.stack)], false)
+  ),
+  contribute(envFiles, {
+    lines: () => [serverUrl(ctx.stack)],
+    path: "apps/web/.env",
+  }),
   contribute(packageJson, {
     dependencies: ["@t3-oss/env-core", "hono", "zod"],
     path: "apps/web",
@@ -262,11 +269,11 @@ const honoContributions = (ctx: Context) => [
 
 // A Start app without a backend is the server-rendered React routes alone.
 const backendContributions = (ctx: Context) => {
-  if (ctx.has("self")) {
+  if (backendHost(ctx.stack) === "framework") {
     return selfContributions(ctx);
   }
 
-  if (ctx.has("hono")) {
+  if (backendHost(ctx.stack) === "standalone") {
     return honoContributions(ctx);
   }
 
@@ -296,8 +303,8 @@ export const tanstackStart = defineIntegration({
             : []),
         ],
       }),
-      ...templateFiles(ctx, `tanstack-start/${authVariant(ctx)}`),
-      ...(todosExample(ctx) && !auth
+      ...templateFiles(ctx, `tanstack-start/${authVariant(ctx.stack)}`),
+      ...(todosExample(ctx.stack) && !auth
         ? templateFiles(ctx, "tanstack-start/todos")
         : []),
       viteConfig(ctx),
@@ -335,7 +342,10 @@ export const tanstackStart = defineIntegration({
         path: "apps/web",
         scripts: {
           // The Expo app on a phone reaches the API through this server, which Vite binds to localhost alone by default.
-          dev: ctx.has("expo") && hasBackend(ctx) ? "vp dev --host" : "vp dev",
+          dev:
+            ctx.has("expo") && hasBackend(ctx.stack)
+              ? "vp dev --host"
+              : "vp dev",
           build:
             database && !ctx.has("workers")
               ? "vp build && vp pack"
@@ -371,7 +381,7 @@ export const tanstackStart = defineIntegration({
         ? []
         : [".output", ".nitro"].map((glob) => contribute(ignoredFiles, glob))),
       contribute(agentsMap, {
-        owns: `TanStack Start app: SSR file routes${hasBackend(ctx) ? ", server routes, server functions" : ""}; e2e tests in \`tests/e2e/\``,
+        owns: `TanStack Start app: SSR file routes${hasBackend(ctx.stack) ? ", server routes, server functions" : ""}; e2e tests in \`tests/e2e/\``,
         path: "apps/web",
       }),
       ...backendContributions(ctx),

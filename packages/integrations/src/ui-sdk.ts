@@ -1,6 +1,6 @@
 import { contribute, defineIntegration, packageJson } from "@vibestart/core";
 
-import { todosExample } from "#/app.ts";
+import { todosExample } from "#/example.ts";
 import { templateFiles } from "#/templates.ts";
 import { agentsConventions, readmeLayers } from "#/vite-plus/slots.ts";
 
@@ -15,7 +15,7 @@ export const uiSdk = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "ui-sdk/common"),
     ...templateFiles(ctx, ctx.has("solid") ? "ui-sdk/solid" : "ui-sdk/react"),
-    ...(!ctx.has("solid") && (ctx.has("better-auth") || todosExample(ctx))
+    ...(!ctx.has("solid") && (ctx.has("better-auth") || todosExample(ctx.stack))
       ? templateFiles(ctx, "ui-sdk/forms")
       : []),
     ...(ctx.has("better-auth")
@@ -24,7 +24,7 @@ export const uiSdk = defineIntegration({
           ctx.has("solid") ? "ui-sdk/solid-auth" : "ui-sdk/auth"
         )
       : []),
-    ...(!ctx.has("solid") && todosExample(ctx)
+    ...(!ctx.has("solid") && todosExample(ctx.stack)
       ? templateFiles(ctx, "ui-sdk/todos")
       : []),
     ...(ctx.has("solid")

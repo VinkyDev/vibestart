@@ -1,4 +1,9 @@
 import type { Stack } from "@vibestart/core";
+import {
+  backendHost,
+  hasWebApp,
+  pageRendering,
+} from "@vibestart/integrations/app-shape";
 
 import type { Group } from "#/lib/roles.ts";
 import { chosen, optionsOf } from "#/lib/stack.ts";
@@ -63,7 +68,7 @@ export interface Layout {
 // A framework that serves the API itself shares its process box with the server and auth.
 const webBoxBlocks = (stack: Stack): Rect[] => [
   blocks.framework,
-  ...(stack.backend === "self"
+  ...(backendHost(stack) === "framework"
     ? [blocks.backend, ...(stack.auth === undefined ? [] : [blocks.auth])]
     : []),
 ];
@@ -74,7 +79,7 @@ const webBoxBlocks = (stack: Stack): Rect[] => [
  * The desktop shell comes first, right under the web app it loads.
  */
 export const layoutOf = (stack: Stack, railHeight = 92): Layout => {
-  const web = stack.framework !== undefined;
+  const web = hasWebApp(stack);
   const inWebBox = webBoxBlocks(stack);
 
   let floor = web
@@ -222,8 +227,8 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
   const boxes: ProcessBox[] = [];
 
   if (framework !== undefined) {
-    const self = stack.backend === "self";
-    const browser = framework.provides.includes("single-page-app");
+    const self = backendHost(stack) === "framework";
+    const browser = pageRendering(stack) === "client";
     boxes.push({
       deployed: true,
       group: "framework",
@@ -238,7 +243,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
     });
   }
 
-  if (stack.backend === "hono" || stack.backend === "effect-http") {
+  if (backendHost(stack) === "standalone") {
     boxes.push({
       deployed: true,
       group: "backend",

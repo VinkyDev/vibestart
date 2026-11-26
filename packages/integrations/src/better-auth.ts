@@ -6,19 +6,14 @@ import {
   packageJson,
 } from "@vibestart/core";
 
-import {
-  databaseName,
-  devOrigin,
-  hasWebApp,
-  serverApp,
-  serverEnv,
-  sqlDatabase,
-  stackHeadline,
-  todosExample,
-} from "#/app.ts";
+import { backendHost, hasWebApp } from "#/app-shape.ts";
+import { authAdapter } from "#/better-auth/adapter.ts";
 import { effectAuth, effectAuthPages } from "#/better-auth/effect.ts";
-import { composeEnv } from "#/docker.ts";
-import { quote } from "#/format.ts";
+import { authEnvironment, trustedOrigins } from "#/better-auth/settings.ts";
+import { databaseName } from "#/database.ts";
+import { todosExample } from "#/example.ts";
+import { serverApp } from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -43,46 +38,11 @@ const cookiePlugins = [
   },
 ];
 
-// Without a `client`, the MongoDB adapter runs no transactions, which a standalone server does not support.
-const authAdapter = (ctx: Context) => {
-  if (ctx.has("mongoose")) {
-    return {
-      call: "mongodbAdapter(db.connection.getClient().db())",
-      dependency: "@better-auth/mongo-adapter",
-      statement: 'import { mongodbAdapter } from "@better-auth/mongo-adapter";',
-    };
-  }
-
-  const { id } = sqlDatabase(ctx);
-
-  if (ctx.has("prisma")) {
-    const provider = {
-      mysql: "mysql",
-      postgres: "postgresql",
-      sqlite: "sqlite",
-    };
-
-    return {
-      call: `prismaAdapter(db, { provider: "${provider[id]}" })`,
-      dependency: "@better-auth/prisma-adapter",
-      statement: 'import { prismaAdapter } from "@better-auth/prisma-adapter";',
-    };
-  }
-
-  const provider = { mysql: "mysql", postgres: "pg", sqlite: "sqlite" };
-
-  return {
-    call: `drizzleAdapter(db, { provider: "${provider[id]}", schema })`,
-    dependency: "@better-auth/drizzle-adapter",
-    statement:
-      'import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";',
-  };
-};
-
 const renderAuthIndex = (ctx: Context) => {
-  const plugin = ctx.has("self")
-    ? cookiePlugins.find(({ framework }) => ctx.has(framework))
-    : undefined;
+  const plugin =
+    backendHost(ctx.stack) === "framework"
+      ? cookiePlugins.find(({ framework }) => ctx.has(framework))
+      : undefined;
 
   const mobile = ctx.has("expo");
 
@@ -92,10 +52,7 @@ const renderAuthIndex = (ctx: Context) => {
     ...(plugin === undefined ? [] : [plugin.call]),
   ];
 
-  const trustedOrigins = [
-    ...(ctx.has("electron") ? ["rendererOrigin"] : []),
-    ...(mobile ? [quote(`${ctx.name}://`)] : []),
-  ];
+  const origins = trustedOrigins(ctx);
 
   const adapter = authAdapter(ctx);
 
@@ -106,9 +63,7 @@ const renderAuthIndex = (ctx: Context) => {
     ...(plugin === undefined ? [] : [plugin.statement]),
     "",
     `import type { Database } from "${ctx.scope}/db";`,
-    ...(ctx.has("drizzle")
-      ? [`import * as schema from "${ctx.scope}/db/schema/auth";`]
-      : []),
+    ...adapter.imports,
     ...(ctx.has("electron")
       ? [`import { rendererOrigin } from "${ctx.scope}/electron";`, ""]
       : []),
@@ -131,9 +86,9 @@ const renderAuthIndex = (ctx: Context) => {
       : []),
     ...(plugins.length === 0 ? [] : [`    plugins: [${plugins.join(", ")}],`]),
     "    secret,",
-    ...(trustedOrigins.length === 0
+    ...(origins.length === 0
       ? []
-      : [`    trustedOrigins: [${trustedOrigins.join(", ")}],`]),
+      : [`    trustedOrigins: [${origins.join(", ")}],`]),
     "  });",
     "",
     "export type Auth = ReturnType<typeof createAuth>;",
@@ -144,7 +99,7 @@ const renderAuthIndex = (ctx: Context) => {
 };
 
 // Where signing in lands without a `redirect`: the todos when there are any.
-const home = (ctx: Context) => (todosExample(ctx) ? "/todos" : "/");
+const home = (ctx: Context) => (todosExample(ctx.stack) ? "/todos" : "/");
 
 const protectedPage = (ctx: Context) => {
   const boundary = ctx.has("orpc") ? "the procedure" : "the server route";
@@ -157,7 +112,7 @@ const protectedPage = (ctx: Context) => {
     return "A protected Solid route checks the session before rendering private data. The API enforces authorization on every request.";
   }
 
-  const guard = todosExample(ctx)
+  const guard = todosExample(ctx.stack)
     ? "Put the route under `src/routes/_authenticated/`. The layout sends an anonymous visitor to `/login?redirect=…`."
     : 'The route\'s `beforeLoad` throws `redirect({ to: "/login", search: { redirect: location.href } })` when `context.session` is missing; several such routes share a pathless `_authenticated.tsx` layout that does it once.';
 
@@ -196,7 +151,7 @@ const loginPage = (ctx: Context) => {
   const { path, set } = loginTemplate(ctx);
   const content = templateContent(ctx, set, path);
 
-  if (todosExample(ctx)) {
+  if (todosExample(ctx.stack)) {
     return file(path, content);
   }
 
@@ -230,7 +185,7 @@ const webSets = (ctx: Context) => [
   "better-auth/web",
   ...appSets(ctx),
   ...(ctx.has("tanstack-router") ? ["better-auth/tanstack-router"] : []),
-  ...(ctx.has("tanstack-router") && todosExample(ctx)
+  ...(ctx.has("tanstack-router") && todosExample(ctx.stack)
     ? ["better-auth/tanstack-router-todos"]
     : []),
 ];
@@ -250,7 +205,7 @@ const webFiles = (ctx: Context) => {
           path
         )
       ),
-      ...(todosExample(ctx)
+      ...(todosExample(ctx.stack)
         ? templateFiles(ctx, "better-auth/solid-todos")
         : []),
     ];
@@ -276,7 +231,7 @@ export const betterAuth = defineIntegration({
       ? [...effectAuth(ctx), ...webFiles(ctx)]
       : [
           ...templateFiles(ctx, "better-auth/common"),
-          ...(hasWebApp(ctx) ? webFiles(ctx) : []),
+          ...(hasWebApp(ctx.stack) ? webFiles(ctx) : []),
           file("packages/auth/src/index.ts", renderAuthIndex(ctx)),
           contribute(packageJson, {
             dependencies: [
@@ -305,7 +260,7 @@ export const betterAuth = defineIntegration({
                   path: "packages/api",
                 }),
               ]),
-          ...(hasWebApp(ctx)
+          ...(hasWebApp(ctx.stack)
             ? [
                 contribute(packageJson, {
                   dependencies: ["better-auth"],
@@ -313,36 +268,7 @@ export const betterAuth = defineIntegration({
                 }),
               ]
             : []),
-          contribute(serverEnv, {
-            example: devOrigin(ctx),
-            name: "BETTER_AUTH_URL",
-            schema: "z.url()",
-          }),
-          contribute(serverEnv, {
-            example: "",
-            name: "BETTER_AUTH_SECRET",
-            schema: "z.string().min(32)",
-          }),
-          // Expo Go from the app stores may send exp:// as the origin, which the Expo plugin trusts only
-          // in development. A framework's dev server sets that; Hono's `node --watch` does not.
-          ...(ctx.has("expo") && ctx.has("hono")
-            ? [
-                contribute(serverEnv, {
-                  example: "development",
-                  name: "NODE_ENV",
-                  schema:
-                    'z.enum(["development", "production", "test"]).optional()',
-                }),
-              ]
-            : []),
-          contribute(composeEnv, {
-            name: "BETTER_AUTH_URL",
-            value: `\${BETTER_AUTH_URL:-http://localhost:3000}`,
-          }),
-          contribute(composeEnv, {
-            name: "BETTER_AUTH_SECRET",
-            value: `\${BETTER_AUTH_SECRET:?set BETTER_AUTH_SECRET}`,
-          }),
+          ...authEnvironment(ctx),
           contribute(agentsMap, {
             owns: "Better Auth configuration (`createAuth`) and the `Session` type",
             path: "packages/auth",
@@ -351,7 +277,7 @@ export const betterAuth = defineIntegration({
             text: authorization(ctx),
             title: "Authorization",
           }),
-          ...(hasWebApp(ctx)
+          ...(hasWebApp(ctx.stack)
             ? [
                 contribute(agentsConventions, {
                   text: protectedPage(ctx),

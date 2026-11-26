@@ -1,18 +1,9 @@
-import {
-  contribute,
-  defineIntegration,
-  gettingStarted,
-  renderFile,
-} from "@vibestart/core";
+import { contribute, defineIntegration, gettingStarted } from "@vibestart/core";
 
-import { ormRelease, serverEnv, stackHeadline } from "#/app.ts";
-import {
-  composeEnv,
-  composeServices,
-  composeVolumes,
-  renderDevCompose,
-} from "#/docker.ts";
+import { ormRelease } from "#/database.ts";
+import { databaseService } from "#/docker/database-service.ts";
 import { quote } from "#/format.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { readmeLayers, readmeTagline } from "#/vite-plus/slots.ts";
 
 export const postgres = defineIntegration({
@@ -20,19 +11,10 @@ export const postgres = defineIntegration({
     const database = ctx.name.replaceAll("-", "_");
 
     return [
-      contribute(serverEnv, {
-        example: `postgres://postgres:postgres@localhost:5432/${database}`,
-        name: "DATABASE_URL",
-        schema: "z.url()",
-      }),
-      contribute(composeEnv, {
-        name: "DATABASE_URL",
-        value: `postgres://postgres:postgres@db:5432/${database}`,
-      }),
-      contribute(composeServices, {
-        name: "db",
-        readyWhen: "service_healthy",
-        yaml: `  db:
+      ...databaseService(
+        ctx,
+        (host) => `postgres://postgres:postgres@${host}:5432/${database}`,
+        `  db:
     image: postgres:18-alpine
     environment:
       POSTGRES_DB: ${database}
@@ -46,16 +28,8 @@ export const postgres = defineIntegration({
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql`,
-      }),
-      contribute(composeVolumes, "db-data"),
-      ...(ctx.has("docker")
-        ? []
-        : [
-            renderFile("docker-compose.yml", (read) =>
-              renderDevCompose(ctx, read)
-            ),
-          ]),
+      - db-data:/var/lib/postgresql`
+      ),
       contribute(readmeTagline, "PostgreSQL"),
       contribute(stackHeadline, { name: "PostgreSQL", role: "Database" }),
       contribute(readmeLayers, {

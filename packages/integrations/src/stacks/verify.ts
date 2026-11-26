@@ -15,9 +15,9 @@ import type { Stack } from "@vibestart/core";
 import { fingerprint } from "@vibestart/core";
 
 import { e2e, playwright } from "#/testing/runners.ts";
+import type { Platform, StackVerification } from "#/verification-projection.ts";
 import type { Task } from "#/verification-store.ts";
 import { writeRecords } from "#/verification-store.ts";
-import type { Platform, StackVerification } from "#/verification.ts";
 import { verification, verifiedGeneration } from "#/verification.ts";
 
 import { print, projectEnv, writeEnvFiles, writeProject } from "./project.ts";

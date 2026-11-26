@@ -5,7 +5,7 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import { authVariant, navigation } from "#/app.ts";
+import { authVariant } from "#/example.ts";
 import { knipEntries } from "#/knip.ts";
 import { templateFiles } from "#/templates.ts";
 import { ultracitePresets, ultraciteOverrides } from "#/ultracite.ts";
@@ -15,6 +15,7 @@ import {
   readySteps,
   rootTypeScriptFiles,
 } from "#/vite-plus/slots.ts";
+import { navigation } from "#/web-pages.ts";
 
 const routesOverride = `{
   // A loader throws \`notFound()\` and \`beforeLoad\` throws \`redirect()\`. Both are objects rather than an \`Error\`.
@@ -52,7 +53,7 @@ export const tanstackRouter = defineIntegration({
     }),
     navigation(
       ctx,
-      `tanstack-router/${authVariant(ctx)}`,
+      `tanstack-router/${authVariant(ctx.stack)}`,
       "apps/web/src/components/header.tsx"
     ),
     contribute(setupCommand, {

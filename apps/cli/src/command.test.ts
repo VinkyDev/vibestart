@@ -426,6 +426,35 @@ describe("creating a project", async () => {
     );
   });
 
+  const mobileOnly = [
+    "--framework",
+    "none",
+    "--backend",
+    "none",
+    "--mobile",
+    "expo",
+  ];
+
+  it.each([
+    { flags: mobileOnly, startCommand: "vp run dev:mobile" },
+    { flags: [...restApi, "--mobile", "expo"], startCommand: "vp run dev" },
+  ])(
+    "suggests $startCommand to start Expo with $flags",
+    async ({ flags, startCommand }) => {
+      const { output } = await run(
+        path.join(root, "mobile"),
+        ...flags,
+        "--dry-run"
+      );
+
+      const steps = z.object({
+        nextSteps: z.array(z.object({ run: z.string() })),
+      });
+
+      expect(steps.parse(output).nextSteps.at(-1)?.run).toBe(startCommand);
+    }
+  );
+
   it("adds an Expo app only when asked, alone or beside a server", async () => {
     const target = path.join(root, "mobile");
     await expect(dryRunPaths(target)).resolves.not.toContain(
@@ -434,15 +463,6 @@ describe("creating a project", async () => {
     await expect(dryRunPaths(target, "--mobile", "expo")).resolves.toContain(
       "apps/mobile/app.json"
     );
-
-    const mobileOnly = [
-      "--framework",
-      "none",
-      "--backend",
-      "none",
-      "--mobile",
-      "expo",
-    ];
 
     const alone = await run(target, ...mobileOnly, "--dry-run");
     expect(alone.output).toMatchObject({ label: "expo", ok: true });

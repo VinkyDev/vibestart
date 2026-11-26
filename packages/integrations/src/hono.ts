@@ -9,25 +9,25 @@ import {
 } from "@vibestart/core";
 import type { Context } from "@vibestart/core";
 
-import {
-  apiVariant,
-  authVariant,
-  databaseCheck,
-  databaseFlow,
-  databaseName,
-  environmentConvention,
-  hasWebApp,
-  isSpa,
-  proxiesToHono,
-  renderEnvModule,
-  rpcPath,
-  serverEnv,
-  stackHeadline,
-  closeDatabase as closeDatabaseStatement,
-} from "#/app.ts";
+import { hasWebApp, pageRendering } from "#/app-shape.ts";
 import { toolchainVersions } from "#/catalog.ts";
-import { composeServers, dockerRuntime } from "#/docker.ts";
+import { databaseCheck, databaseFlow, databaseName } from "#/database.ts";
 import { envFiles } from "#/env-files.ts";
+import { apiVariant, authVariant } from "#/example.ts";
+import {
+  renderIndex,
+  runtimeDependencies,
+  serverImage,
+  serverScripts,
+} from "#/hono/server.ts";
+import { rpcPath } from "#/request-paths.ts";
+import { serverPort } from "#/server-address.ts";
+import {
+  environmentConvention,
+  renderEnvModule,
+  serverEnv,
+} from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultraciteOverrides } from "#/ultracite.ts";
 import {
@@ -43,19 +43,8 @@ import {
   workerNodeEnv,
   workerServices,
   workerTsconfig,
-  workerViteConfig,
-} from "#/workers.ts";
-
-// Beside a full-stack framework, whose dev server takes :3000, the API listens on :3001.
-const port = (ctx: Context) => {
-  const value = hasWebApp(ctx) && !isSpa(ctx) ? 3001 : 3000;
-
-  return {
-    example: String(value),
-    name: "PORT",
-    schema: `z.coerce.number().int().positive().default(${value})`,
-  };
-};
+} from "#/workers/app.ts";
+import { workerViteConfig } from "#/workers/vite-config.ts";
 
 // Without an API, the server answers `/api/health` itself.
 const healthHandler = (ctx: Context) => {
@@ -101,14 +90,6 @@ const routes = (ctx: Context) => {
   ];
 
   return [...lines.slice(0, -1), `${lines.at(-1)};`];
-};
-
-const closeDatabase = (ctx: Context) => {
-  if (ctx.stack.database === undefined) {
-    return [];
-  }
-
-  return [closeDatabaseStatement(ctx)];
 };
 
 const contextImport = (ctx: Context) => {
@@ -215,74 +196,6 @@ const renderApp = (ctx: Context) => {
   ].join("\n");
 };
 
-// The SPA is the only web app this server ships; the full-stack frameworks serve their own pages.
-const staticImports = (ctx: Context) =>
-  isSpa(ctx)
-    ? [
-        ctx.has("bun")
-          ? 'import { serveStatic } from "@hono/bun";'
-          : 'import { serveStatic } from "@hono/node-server/serve-static";',
-      ]
-    : [];
-
-const serveSpa = (ctx: Context) =>
-  isSpa(ctx)
-    ? [
-        'const publicDir = fileURLToPath(new URL("public", import.meta.url));',
-        "",
-        "if (existsSync(publicDir)) {",
-        "  app",
-        "    .use(serveStatic({ root: publicDir }))",
-        '    .get("*", serveStatic({ root: publicDir, path: "index.html" }));',
-        "}",
-        "",
-      ]
-    : [];
-
-const renderIndex = (ctx: Context) =>
-  [
-    'import { once } from "node:events";',
-    ...(isSpa(ctx)
-      ? [
-          'import { existsSync } from "node:fs";',
-          'import { fileURLToPath } from "node:url";',
-        ]
-      : []),
-    "",
-    ctx.has("bun")
-      ? 'import { serve } from "bun";'
-      : 'import { serve } from "@hono/node-server";',
-    ...staticImports(ctx),
-    "",
-    'import { app } from "#src/app.ts";',
-    ...(ctx.stack.database === undefined
-      ? []
-      : ['import { db } from "#src/context.ts";']),
-    'import { env } from "#src/env.ts";',
-    "",
-    ...serveSpa(ctx),
-    ...(ctx.has("bun")
-      ? [
-          "const server = serve({ fetch: app.fetch, port: env.PORT });",
-          "const { port } = server;",
-          "",
-        ]
-      : [
-          "const server = serve({ fetch: app.fetch, port: env.PORT }, ({ port }) => {",
-        ]),
-    `  console.log(\`Server listening on http://localhost:\${port}\`);`,
-    ...(ctx.has("bun") ? [] : ["});"]),
-    "",
-    'await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);',
-    ...[
-      ...(ctx.has("bun")
-        ? ["await server.stop();"]
-        : ["server.close();", 'await once(server, "close");']),
-      ...closeDatabase(ctx),
-    ].flatMap((statement) => ["", statement]),
-    "",
-  ].join("\n");
-
 const renderTsconfig = (ctx: Context) => {
   const include = ["src", "vite.config.ts"];
 
@@ -323,7 +236,9 @@ const owns = (ctx: Context) => {
   const parts = [
     services(ctx),
     ...apiOwns(ctx),
-    ...(isSpa(ctx) ? ["the built SPA in production"] : []),
+    ...(pageRendering(ctx.stack) === "client"
+      ? ["the built SPA in production"]
+      : []),
   ];
 
   const runtime = ctx.has("bun") ? "Bun" : "Node";
@@ -418,37 +333,6 @@ const middlewareOverride = (ctx: Context) => {
 }`;
 };
 
-const databaseScripts = (ctx: Context) => [
-  contribute(packageJson, {
-    path: "apps/server",
-    scripts: {
-      "db:migrate": ctx.has("bun")
-        ? "bun src/migrate.ts"
-        : "node --env-file-if-exists=.env src/migrate.ts",
-    },
-  }),
-  ...(ctx.stack.api === undefined
-    ? [
-        contribute(packageJson, {
-          dependencies: databaseCheck(ctx, "db").dependencies,
-          path: "apps/server",
-        }),
-      ]
-    : []),
-];
-
-const runtimeDependencies = (ctx: Context): string[] => {
-  if (ctx.has("workers")) {
-    return [];
-  }
-
-  if (!ctx.has("bun")) {
-    return ["@hono/node-server"];
-  }
-
-  return isSpa(ctx) ? ["@hono/bun"] : [];
-};
-
 const contextFiles = (ctx: Context) => {
   if (ctx.stack.database === undefined) {
     return [];
@@ -456,7 +340,7 @@ const contextFiles = (ctx: Context) => {
 
   return ctx.has("workers")
     ? [file("apps/server/src/context.ts", workerServices(ctx))]
-    : templateFiles(ctx, `hono/${authVariant(ctx)}`);
+    : templateFiles(ctx, `hono/${authVariant(ctx.stack)}`);
 };
 
 const environmentFiles = (ctx: Context) => {
@@ -468,7 +352,7 @@ const environmentFiles = (ctx: Context) => {
 
   return [
     renderFile("apps/server/src/env.ts", (read) =>
-      renderEnvModule([...read(serverEnv), port(ctx)], false)
+      renderEnvModule([...read(serverEnv), serverPort(ctx.stack)], false)
     ),
   ];
 };
@@ -505,28 +389,14 @@ const serverPackage = (ctx: Context) =>
     ],
     imports: { "#src/*": "./src/*" },
     path: "apps/server",
-    scripts: ctx.has("workers")
-      ? {
-          dev: ctx.has("expo") ? "vp dev --host" : "vp dev",
-          build: "vp build",
-          preview: "vp preview",
-        }
-      : {
-          dev: ctx.has("bun")
-            ? "bun --watch src/index.ts"
-            : "node --watch --env-file-if-exists=.env src/index.ts",
-          build: "vp pack",
-          start: ctx.has("bun")
-            ? "bun dist/index.mjs"
-            : "node --env-file-if-exists=.env dist/index.mjs",
-        },
+    scripts: serverScripts(ctx),
   });
 
 const orpcPath = "apps/server/src/orpc.ts";
 
 // A Worker builds services per request, so its database-backed oRPC templates receive them; the stateless one only moves its RPC prefix.
 const orpcFiles = (ctx: Context) => {
-  const variant = apiVariant(ctx);
+  const variant = apiVariant(ctx.stack);
 
   if (!ctx.has("workers")) {
     return templateFiles(ctx, `hono/orpc-${variant}`);
@@ -568,45 +438,28 @@ export const hono = defineIntegration({
     contribute(envFiles, {
       lines: (read) => [
         ...read(serverEnv),
-        ...(ctx.has("workers") ? [] : [port(ctx)]),
+        ...(ctx.has("workers") ? [] : [serverPort(ctx.stack)]),
       ],
       path: "apps/server/.env",
     }),
     serverPackage(ctx),
-    ...(ctx.stack.database === undefined ? [] : databaseScripts(ctx)),
-    contribute(unitTestSources, "apps/server/src"),
-    contribute(ultraciteOverrides, middlewareOverride(ctx)),
-    ...(proxiesToHono(ctx)
+    ...(ctx.stack.database !== undefined && ctx.stack.api === undefined
       ? [
-          contribute(composeServers, {
-            appEnv: [["SERVER_URL", "http://server:3000"]],
-            command: [ctx.has("bun") ? "bun" : "node", "dist/index.mjs"],
-            name: "server",
+          contribute(packageJson, {
+            path: "apps/server",
+            dependencies: databaseCheck(ctx, "db").dependencies,
           }),
         ]
       : []),
-    // Beside a full-stack framework the image's command is the web app's.
-    ...(proxiesToHono(ctx)
-      ? []
-      : [
-          contribute(dockerRuntime, {
-            cmd: [ctx.has("bun") ? "bun" : "node", "dist/index.mjs"],
-          }),
-        ]),
-    contribute(dockerRuntime, {
-      copies: [
-        ["/app/apps/server/dist", "./dist"],
-        ...(isSpa(ctx)
-          ? [["/app/apps/web/dist", "./dist/public"] as const]
-          : []),
-      ],
-    }),
+    contribute(unitTestSources, "apps/server/src"),
+    contribute(ultraciteOverrides, middlewareOverride(ctx)),
+    ...serverImage(ctx),
     contribute(agentsMap, { owns: owns(ctx), path: "apps/server" }),
     contribute(
       agentsConventions,
       environmentConvention(
         ctx,
-        hasWebApp(ctx)
+        hasWebApp(ctx.stack)
           ? "The web app is shipped to the browser, so it holds no secret."
           : `${ctx.has("bun") ? "Bun" : "Node"} loads \`.env\` in development; production gets the variables from the platform.`
       )
@@ -617,7 +470,7 @@ export const hono = defineIntegration({
       choice: backendChoice(ctx),
       layer: "Backend",
     }),
-    ...(hasWebApp(ctx) ? [] : standalone(ctx)),
+    ...(hasWebApp(ctx.stack) ? [] : standalone(ctx)),
   ],
   id: "hono",
   kind: "backend",

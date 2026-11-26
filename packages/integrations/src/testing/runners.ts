@@ -1,14 +1,11 @@
 import type { Context, Contribution } from "@vibestart/core";
 import { contribute, file } from "@vibestart/core";
 
-import {
-  chosenDatabase,
-  hasBackend,
-  isSpa,
-  rpcPath,
-  todosExample,
-} from "#/app.ts";
+import { hasBackend, pageRendering } from "#/app-shape.ts";
+import { hasDatabaseServer } from "#/database.ts";
+import { todosExample } from "#/example.ts";
 import { knipEntries } from "#/knip.ts";
+import { rpcPath } from "#/request-paths.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ignoredFiles, readmeCommandNotes } from "#/vite-plus/slots.ts";
 
@@ -30,7 +27,7 @@ export const browserJourney = (ctx: Context, set: string) => {
   // SPA controls exist only after the browser renders them; SSR controls can precede hydration.
   return file(
     path,
-    isSpa(ctx)
+    pageRendering(ctx.stack) === "client"
       ? content.replaceAll('"networkidle"', '"domcontentloaded"')
       : content
   );
@@ -54,7 +51,7 @@ const solidJourneys = (ctx: Context, runner: string) => {
 
   return [
     ...templateFiles(ctx, `${root}/solid`),
-    ...(hasBackend(ctx)
+    ...(hasBackend(ctx.stack)
       ? [
           file(
             path,
@@ -67,7 +64,7 @@ const solidJourneys = (ctx: Context, runner: string) => {
           ),
         ]
       : []),
-    ...(ctx.has("better-auth") && todosExample(ctx)
+    ...(ctx.has("better-auth") && todosExample(ctx.stack)
       ? templateFiles(ctx, `${root}/solid-auth`)
       : []),
   ];
@@ -108,7 +105,7 @@ const e2eConfig = (ctx: Context) => {
 
   return file(
     e2eConfigPath,
-    chosenDatabase(ctx).server
+    hasDatabaseServer(ctx)
       ? config
       : config.replace(forwardedVariables, '["CI"]')
   );

@@ -8,20 +8,18 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import {
-  authVariant,
-  closeDatabase,
-  exampleVariant,
-  migrationEntry,
-  todosExample,
-  hasTables,
-  serverApp,
-  sqlDatabase,
-  stackHeadline,
-} from "#/app.ts";
+import { closeDatabase, migrationEntry, sqlDatabase } from "#/database.ts";
 import { drizzleConfig } from "#/drizzle/config.ts";
 import { effectDatabase } from "#/drizzle/effect.ts";
+import {
+  authVariant,
+  exampleVariant,
+  todosExample,
+  hasTables,
+} from "#/example.ts";
 import { commentedShell } from "#/format.ts";
+import { serverApp } from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import {
   agentsConventions,
@@ -91,119 +89,134 @@ const workerClient = (
   );
 };
 
+const schemaExports = { "./schema/*": "./src/schema/*.ts" };
+
+const drizzleTooling = (ctx: Context, dir: string) => [
+  file("packages/db/drizzle.config.ts", drizzleConfig(ctx)),
+  // drizzle-kit refuses an empty schema folder, and the migrator needs its folder even when empty.
+  hasTables(ctx.stack)
+    ? contribute(setupCommand, {
+        run: "vp run db:generate --name init",
+        writes: ["packages/db/src/migrations/**"],
+      })
+    : file("packages/db/src/migrations/.gitkeep", ""),
+  contribute(packageJson, {
+    dependencies: ["drizzle-orm"],
+    devDependencies: [
+      `${ctx.scope}/config`,
+      "@types/node",
+      "drizzle-kit",
+      "typescript",
+    ],
+    exports: {
+      ".": "./src/index.ts",
+      "./migrate": "./src/migrate.ts",
+      ...(ctx.has("effect")
+        ? {
+            "./relations": "./src/relations.ts",
+            ...schemaExports,
+            "./testing": "./src/testing.ts",
+          }
+        : schemaExports),
+    },
+    imports: { "#src/*": "./src/*" },
+    path: "packages/db",
+    scripts: {
+      "db:generate": "drizzle-kit generate",
+      "db:studio": "drizzle-kit studio",
+    },
+  }),
+  contribute(packageJson, {
+    path: ".",
+    scripts: {
+      "db:generate": `vp run --filter ${ctx.scope}/db db:generate`,
+      "db:migrate": `vp run --filter ${ctx.scope}/${dir.slice("apps/".length)} db:migrate`,
+      "db:studio": `vp run --filter ${ctx.scope}/db db:studio`,
+    },
+  }),
+  contribute(generatedFiles, {
+    glob: "packages/db/src/migrations/**",
+    label: "packages/db/src/migrations/**",
+  }),
+  contribute(stackHeadline, { name: "Drizzle", role: "ORM" }),
+  contribute(gettingStarted, {
+    run: "vp run db:migrate",
+    note: ctx.has("sqlite")
+      ? {
+          id: "sqlite-file",
+          text: `creates ${dir}/local.db`,
+          values: { path: `${dir}/local.db` },
+        }
+      : undefined,
+  }),
+];
+
+const standardDatabase = (ctx: Context, dir: string) => {
+  const database = sqlDatabase(ctx).id;
+
+  return [
+    ...(ctx.has("workers") && database !== "sqlite"
+      ? [
+          ...templateFiles(ctx, `drizzle/${database}/common`, {
+            except: [clientPath],
+          }),
+          workerClient(ctx, database),
+        ]
+      : templateFiles(ctx, `drizzle/${database}/common`)),
+    ...(todosExample(ctx.stack)
+      ? templateFiles(ctx, `drizzle/${database}/${authVariant(ctx.stack)}`)
+      : []),
+    migrationEntry(ctx, [
+      `${database === "sqlite" ? "" : "await "}migrateDatabase(db);`,
+      closeDatabase(ctx.stack),
+    ]),
+    ...(database === "sqlite"
+      ? []
+      : [
+          contribute(packageJson, {
+            dependencies: [database === "mysql" ? "mysql2" : "postgres"],
+            path: "packages/db",
+          }),
+        ]),
+    ...templateFiles(ctx, `drizzle/${exampleVariant(ctx.stack)}`),
+    contribute(packageJson, { dependencies: [`${ctx.scope}/db`], path: dir }),
+    contribute(agentsMap, { owns: packageOwns(ctx), path: "packages/db" }),
+    contribute(agentsConventions, {
+      text: schemaConvention(ctx),
+      title: "Schema",
+    }),
+    contribute(readmeTagline, "Drizzle"),
+    contribute(readmeSections, () =>
+      [
+        "## Database",
+        "Edit a table in `packages/db/src/schema/`, then:",
+        [
+          "```sh",
+          commentedShell([
+            [
+              "vp run db:generate",
+              "writes a migration to packages/db/src/migrations/",
+            ],
+            ["vp run db:migrate", "applies it"],
+          ]),
+          "```",
+        ].join("\n"),
+      ].join("\n\n")
+    ),
+  ];
+};
+
 export const drizzle = defineIntegration({
   contribute: (ctx) => {
-    if (ctx.has("effect")) {
-      return effectDatabase(ctx);
-    }
-
     const { dir } = serverApp(ctx);
-    const database = sqlDatabase(ctx).id;
 
     return [
+      ...drizzleTooling(ctx, dir),
       ...templateFiles(ctx, "drizzle/common"),
-      ...(ctx.has("workers") && database !== "sqlite"
-        ? [
-            ...templateFiles(ctx, `drizzle/${database}/common`, {
-              except: [clientPath],
-            }),
-            workerClient(ctx, database),
-          ]
-        : templateFiles(ctx, `drizzle/${database}/common`)),
-      ...(todosExample(ctx)
-        ? templateFiles(ctx, `drizzle/${database}/${authVariant(ctx)}`)
-        : []),
       ...(ctx.has("better-auth")
-        ? templateFiles(ctx, `drizzle/${database}/auth-tables`)
+        ? templateFiles(ctx, `drizzle/${sqlDatabase(ctx).id}/auth-tables`)
         : []),
-      migrationEntry(ctx, [
-        `${database === "sqlite" ? "" : "await "}migrateDatabase(db);`,
-        closeDatabase(ctx),
-      ]),
-      ...(database === "sqlite"
-        ? []
-        : [
-            contribute(packageJson, {
-              dependencies: [database === "mysql" ? "mysql2" : "postgres"],
-              path: "packages/db",
-            }),
-          ]),
-      ...templateFiles(ctx, `drizzle/${exampleVariant(ctx)}`),
-      file("packages/db/drizzle.config.ts", drizzleConfig(ctx)),
-      // drizzle-kit refuses an empty schema folder, and the migrator needs its folder even when empty.
-      hasTables(ctx)
-        ? contribute(setupCommand, {
-            run: "vp run db:generate --name init",
-            writes: ["packages/db/src/migrations/**"],
-          })
-        : file("packages/db/src/migrations/.gitkeep", ""),
-      contribute(packageJson, {
-        dependencies: ["drizzle-orm"],
-        devDependencies: [
-          `${ctx.scope}/config`,
-          "@types/node",
-          "drizzle-kit",
-          "typescript",
-        ],
-        exports: {
-          ".": "./src/index.ts",
-          "./migrate": "./src/migrate.ts",
-          "./schema/*": "./src/schema/*.ts",
-        },
-        imports: { "#src/*": "./src/*" },
-        path: "packages/db",
-        scripts: {
-          "db:generate": "drizzle-kit generate",
-          "db:studio": "drizzle-kit studio",
-        },
-      }),
-      contribute(packageJson, { dependencies: [`${ctx.scope}/db`], path: dir }),
-      contribute(packageJson, {
-        path: ".",
-        scripts: {
-          "db:generate": `vp run --filter ${ctx.scope}/db db:generate`,
-          "db:migrate": `vp run --filter ${ctx.scope}/${dir.slice("apps/".length)} db:migrate`,
-          "db:studio": `vp run --filter ${ctx.scope}/db db:studio`,
-        },
-      }),
-      contribute(generatedFiles, {
-        glob: "packages/db/src/migrations/**",
-        label: "packages/db/src/migrations/**",
-      }),
-      contribute(agentsMap, { owns: packageOwns(ctx), path: "packages/db" }),
-      contribute(agentsConventions, {
-        text: schemaConvention(ctx),
-        title: "Schema",
-      }),
-      contribute(readmeTagline, "Drizzle"),
-      contribute(stackHeadline, { name: "Drizzle", role: "ORM" }),
-      contribute(gettingStarted, {
-        run: "vp run db:migrate",
-        note: ctx.has("sqlite")
-          ? {
-              id: "sqlite-file",
-              text: `creates ${dir}/local.db`,
-              values: { path: `${dir}/local.db` },
-            }
-          : undefined,
-      }),
-      contribute(readmeSections, () =>
-        [
-          "## Database",
-          "Edit a table in `packages/db/src/schema/`, then:",
-          [
-            "```sh",
-            commentedShell([
-              [
-                "vp run db:generate",
-                "writes a migration to packages/db/src/migrations/",
-              ],
-              ["vp run db:migrate", "applies it"],
-            ]),
-            "```",
-          ].join("\n"),
-        ].join("\n\n")
-      ),
+      ...(ctx.has("effect") ? effectDatabase(ctx) : standardDatabase(ctx, dir)),
     ];
   },
   id: "drizzle",

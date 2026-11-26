@@ -70,22 +70,23 @@ export {
   defineRegistry,
 } from "#/registry.ts";
 
+export type { Violation } from "#/constraints.ts";
+
+export { check, needs } from "#/constraints.ts";
+
 export type {
   Change,
   Choices,
   Fix,
   KindOption,
   Resolution,
-  Violation,
 } from "#/resolver.ts";
 
 export {
-  check,
   choicesOf,
   compose,
   kindOptions,
   legalStacks,
-  needs,
   openChoices,
   resolve,
   startingChoice,

@@ -1,7 +1,8 @@
 import type { Context } from "@vibestart/core";
 import { contribute, file, packageJson } from "@vibestart/core";
 
-import { databaseName } from "#/app.ts";
+import { databaseName } from "#/database.ts";
+import { integrationExample } from "#/example.ts";
 import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
 import {
@@ -49,7 +50,8 @@ const server = (ctx: Context) => {
 };
 
 const integrationTests = (ctx: Context) => {
-  const variant = ctx.stack.database === undefined ? "health" : "public";
+  const variant =
+    integrationExample(ctx.stack) === "health" ? "health" : "public";
 
   const set = ctx.has("better-auth")
     ? "testing/effect-auth"

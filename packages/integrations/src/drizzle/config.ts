@@ -1,6 +1,7 @@
 import type { Context } from "@vibestart/core";
 
-import { serverApp } from "#/app.ts";
+import { sqlDatabase } from "#/database.ts";
+import { serverApp } from "#/server-environment.ts";
 
 // drizzle-kit runs from `packages/db`, so it loads the server's `.env` itself.
 export const drizzleConfig = (ctx: Context) => {
@@ -44,7 +45,7 @@ if (existsSync(serverEnvFile)) {
 
 export default defineConfig({
   dbCredentials: { url: process.env.DATABASE_URL ?? "" },
-  dialect: "${ctx.has("mysql") ? "mysql" : "postgresql"}",
+  dialect: "${sqlDatabase(ctx).dialect}",
   out: "./src/migrations",
   schema: "./src/schema",
 });

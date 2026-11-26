@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import type { GeneratedFile } from "@vibestart/core";
-import { verificationSchema } from "@vibestart/core";
+import type { GeneratedFile, PackageManager } from "@vibestart/core";
+import { packageManagers, verificationSchema } from "@vibestart/core";
 
 import { cached } from "#/lib/cached.ts";
 import type { Project, StackEntry, StackPreview } from "#/lib/project.ts";
@@ -32,7 +32,7 @@ const previewSchema: z.ZodType<StackPreview> = z.object({
           run: z.string(),
         })
       ),
-      packageManager: z.enum(["pnpm", "bun"]),
+      packageManager: z.enum(packageManagers),
       setup: z.array(
         z.object({
           run: z.string(),
@@ -102,7 +102,7 @@ const loaded = new Map<string, Promise<Project>>();
 export const loadProject = (
   entry: StackEntry,
   addons: readonly string[] = verifiedAddons,
-  packageManager: "pnpm" | "bun" = "pnpm"
+  packageManager: PackageManager = "pnpm"
 ) => {
   const key = projectKey(addons, packageManager);
 

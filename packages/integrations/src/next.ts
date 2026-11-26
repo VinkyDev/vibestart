@@ -9,27 +9,20 @@ import {
   setupCommand,
 } from "@vibestart/core";
 
-import {
-  apiVariant,
-  authVariant,
-  databaseName,
-  environmentConvention,
-  hasBackend,
-  homePage,
-  navigation,
-  packConfig,
-  renderEnvModule,
-  selfHealthRoute,
-  serverEnv,
-  serverUrl,
-  stackHeadline,
-  todosExample,
-  webMigrates,
-  databaseCheck,
-} from "#/app.ts";
-import { dockerRuntime } from "#/docker.ts";
+import { backendHost, hasBackend } from "#/app-shape.ts";
+import { databaseName, packConfig, databaseCheck } from "#/database.ts";
+import { dockerRuntime } from "#/docker/slots.ts";
 import { envFiles } from "#/env-files.ts";
+import { apiVariant, authVariant, todosExample } from "#/example.ts";
 import { markdownTable } from "#/format.ts";
+import { selfHealthRoute, webMigrates } from "#/framework-server.ts";
+import { devServer, serverUrl } from "#/server-address.ts";
+import {
+  environmentConvention,
+  renderEnvModule,
+  serverEnv,
+} from "#/server-environment.ts";
+import { stackHeadline } from "#/stack-headline.ts";
 import { templateContent, templateFiles } from "#/templates.ts";
 import { ultracitePresets } from "#/ultracite.ts";
 import {
@@ -44,6 +37,7 @@ import {
   readySteps,
   unitTestSources,
 } from "#/vite-plus/slots.ts";
+import { homePage, navigation } from "#/web-pages.ts";
 
 const navLinksPath = "apps/web/src/components/nav-links.tsx";
 const nextConfigPath = "apps/web/next.config.ts";
@@ -57,7 +51,7 @@ const nextConfig = (ctx: Context) => {
     throw new Error(`next/common/${nextConfigPath} has no transpilePackages`);
   }
 
-  const self = ctx.has("self");
+  const self = backendHost(ctx.stack) === "framework";
 
   const packages = [
     ...(self && ctx.stack.api !== undefined ? ["api"] : []),
@@ -146,21 +140,23 @@ const selfServerOwns = (ctx: Context) =>
   `Server-only code (\`import "server-only"\`): ${[
     ...selfServices(ctx),
     ...(ctx.has("orpc") ? ["oRPC handlers"] : []),
-    ...(ctx.has("orpc") && todosExample(ctx) ? ["server query utilities"] : []),
+    ...(ctx.has("orpc") && todosExample(ctx.stack)
+      ? ["server query utilities"]
+      : []),
     ...(webMigrates(ctx) ? ["the migration entry"] : []),
   ].join(", ")}`;
 
 // The server query utilities prefetch the todo example's pages; nothing else renders API data on the server.
 const selfOrpc = (ctx: Context) =>
-  todosExample(ctx)
+  todosExample(ctx.stack)
     ? [
-        ...templateFiles(ctx, `next/self-orpc-${apiVariant(ctx)}`),
+        ...templateFiles(ctx, `next/self-orpc-${apiVariant(ctx.stack)}`),
         contribute(
           agentsNotes,
           `A Server Component page prefetches with \`serverApi\` and \`getQueryClient()\` from \`src/server/query.ts\`, which call the router in-process${ctx.has("better-auth") ? " with the request's cookies" : ""}, then wraps its client component in \`<HydrationBoundary state={dehydrate(queryClient)}>\`. The client component reads the same query with \`api\` from \`src/lib/api.ts\` (\`useSuspenseQuery\`) and mutates through \`/rpc\`. Both utilities derive identical query keys, so hydrated data is not refetched.`
         ),
       ]
-    : templateFiles(ctx, `next/self-orpc-${apiVariant(ctx)}`);
+    : templateFiles(ctx, `next/self-orpc-${apiVariant(ctx.stack)}`);
 
 const selfApi = (ctx: Context) =>
   ctx.has("orpc")
@@ -175,7 +171,7 @@ const selfApi = (ctx: Context) =>
 
 // The server's variables all belong to the database and the accounts on it.
 const selfEnvironment = (ctx: Context) => [
-  ...templateFiles(ctx, `next/self-${authVariant(ctx)}`),
+  ...templateFiles(ctx, `next/self-${authVariant(ctx.stack)}`),
   renderFile("apps/web/src/server/env.ts", (read) =>
     renderEnvModule(read(serverEnv), true)
   ),
@@ -226,7 +222,7 @@ const honoServerOwns = (ctx: Context) =>
   [
     'Server-only code (`import "server-only"`): `readEnv()` with `SERVER_URL`',
     "the proxy to the API server",
-    ...(todosExample(ctx) ? ["server query utilities"] : []),
+    ...(todosExample(ctx.stack) ? ["server query utilities"] : []),
     ...(ctx.has("better-auth") ? ["`getSession`"] : []),
   ].join(", ");
 
@@ -235,7 +231,7 @@ const prefetchNote = (ctx: Context, mutates: string) =>
 
 // The server query utilities prefetch the todo example's pages; nothing else renders API data on the server.
 const honoApi = (ctx: Context) => {
-  const todos = todosExample(ctx);
+  const todos = todosExample(ctx.stack);
 
   if (ctx.has("orpc")) {
     return [
@@ -262,8 +258,14 @@ const honoContributions = (ctx: Context) => {
 
   return [
     ...templateFiles(ctx, "next/hono"),
-    file("apps/web/src/server/env.ts", renderEnvModule([serverUrl], true)),
-    contribute(envFiles, { lines: () => [serverUrl], path: "apps/web/.env" }),
+    file(
+      "apps/web/src/server/env.ts",
+      renderEnvModule([serverUrl(ctx.stack)], true)
+    ),
+    contribute(envFiles, {
+      lines: () => [serverUrl(ctx.stack)],
+      path: "apps/web/.env",
+    }),
     contribute(packageJson, {
       dependencies: ["@t3-oss/env-core", "hono", "server-only", "zod"],
       path: "apps/web",
@@ -274,7 +276,7 @@ const honoContributions = (ctx: Context) => {
     }),
     contribute(
       agentsNotes,
-      `\`vp run dev\` serves the app on :3000 and the API server (\`apps/server\`) on :3001. The browser talks only to the app: its ${routes}${auth ? " (including `/api/auth`)" : ""} ${forward} to the API server at \`SERVER_URL\`, so ${auth ? "session cookies are first-party and " : ""}there is no CORS configuration.`
+      `\`vp run dev\` serves the app on :3000 and the API server (\`apps/server\`) on :${devServer(ctx.stack).port}. The browser talks only to the app: its ${routes}${auth ? " (including `/api/auth`)" : ""} ${forward} to the API server at \`SERVER_URL\`, so ${auth ? "session cookies are first-party and " : ""}there is no CORS configuration.`
     ),
     ...honoApi(ctx),
     contribute(agentsConventions, {
@@ -286,11 +288,11 @@ const honoContributions = (ctx: Context) => {
 
 // A Next.js app without a backend is the App Router pages alone.
 const backendContributions = (ctx: Context) => {
-  if (ctx.has("self")) {
+  if (backendHost(ctx.stack) === "framework") {
     return selfContributions(ctx);
   }
 
-  if (ctx.has("hono")) {
+  if (backendHost(ctx.stack) === "standalone") {
     return honoContributions(ctx);
   }
 
@@ -320,10 +322,10 @@ export const next = defineIntegration({
             : []),
         ],
       }),
-      ...templateFiles(ctx, `next/${authVariant(ctx)}`),
+      ...templateFiles(ctx, `next/${authVariant(ctx.stack)}`),
       ...(ctx.has("orpc") ? templateFiles(ctx, "next/orpc") : []),
-      ...(todosExample(ctx)
-        ? templateFiles(ctx, `next/todos-${authVariant(ctx)}`)
+      ...(todosExample(ctx.stack)
+        ? templateFiles(ctx, `next/todos-${authVariant(ctx.stack)}`)
         : []),
       ...(database
         ? [
@@ -413,7 +415,7 @@ export const next = defineIntegration({
         env: [["HOSTNAME", "0.0.0.0"]],
       }),
       contribute(agentsMap, {
-        owns: `Next.js App Router app: pages and layouts in \`src/app/\`${hasBackend(ctx) ? ", route handlers" : ""}, client components in \`src/components/\`; e2e tests in \`tests/e2e/\``,
+        owns: `Next.js App Router app: pages and layouts in \`src/app/\`${hasBackend(ctx.stack) ? ", route handlers" : ""}, client components in \`src/components/\`; e2e tests in \`tests/e2e/\``,
         path: "apps/web",
       }),
       ...backendContributions(ctx),

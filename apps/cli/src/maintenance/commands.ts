@@ -3,9 +3,9 @@ import path from "node:path";
 import { isCancel, multiselect } from "@clack/prompts";
 import { z } from "zod";
 
-import { choicesOf, diffText, resolve } from "@vibestart/core";
-import { registry } from "@vibestart/integrations";
+import { diffText } from "@vibestart/core";
 
+import { addCapabilities, capabilities } from "#/maintenance/add.ts";
 import {
   assertCleanWorktree,
   checksOf,
@@ -49,25 +49,6 @@ const names = new Set(["add", "doctor", "upgrade", "snapshot"]);
 export const isMaintenanceCommand = (name: string | undefined) =>
   name !== undefined && names.has(name);
 
-const capabilities = () => [
-  ...registry.addons
-    .filter((addon) => addon.supportsAdd === true)
-    .map(({ id, name, description }) => ({
-      description,
-      id,
-      kind: "extension",
-      name,
-    })),
-  ...registry.integrations
-    .filter((integration) => integration.supportsAdd === true)
-    .map(({ id, name, description, kind }) => ({
-      description,
-      id,
-      kind,
-      name,
-    })),
-];
-
 const readProject = async (cwd: string) => {
   const result = projectSchema.safeParse(await readBlueprint(cwd));
 
@@ -99,7 +80,7 @@ const added = async (
   if (selected.length === 0 && interactive() && !values.json) {
     const answer = await multiselect({
       message: "Add capabilities",
-      options: capabilities().map(({ id, name, description }) => ({
+      options: capabilities.map(({ id, name, description }) => ({
         hint: description,
         label: name,
         value: id,
@@ -114,83 +95,7 @@ const added = async (
     selected = answer;
   }
 
-  if (selected.length === 0) {
-    throw new MaintenanceError(
-      "Choose a capability; see vibestart add --list.",
-      2
-    );
-  }
-
-  const blueprint = {
-    ...project.blueprint,
-    addons: [...project.blueprint.addons],
-    stack: { ...project.blueprint.stack },
-  };
-
-  for (const id of selected) {
-    const capability = capabilities().find((item) => item.id === id);
-
-    if (capability === undefined) {
-      throw new MaintenanceError(
-        `Cannot add ${id}. This release supports: ${capabilities()
-          .map((item) => item.id)
-          .join(", ")}`,
-        2
-      );
-    }
-
-    if (capability.kind === "extension") {
-      blueprint.addons = [...new Set([...blueprint.addons, id])];
-    } else {
-      const previous = blueprint.stack[capability.kind];
-
-      if (previous !== undefined && previous !== id) {
-        throw new MaintenanceError(
-          `Adding ${id} would replace ${previous}; this needs an explicit migration.`
-        );
-      }
-
-      blueprint.stack[capability.kind] = id;
-    }
-  }
-
-  const choices = choicesOf(registry, blueprint.stack);
-
-  if (resolve(registry, choices).stacks.length > 0) {
-    return blueprint;
-  }
-
-  // Auxiliary choices the project leaves open follow the selected product, such as the runtime of a SPA without a server.
-  const required = Object.fromEntries(
-    Object.entries(choices).filter(([kind]) => {
-      const integrations = registry.integrations.filter(
-        (integration) => integration.kind === kind
-      );
-
-      return !integrations.every((integration) => integration.auxiliary);
-    })
-  );
-
-  const resolution = resolve(registry, required);
-  const [stack] = resolution.stacks;
-
-  if (stack === undefined) {
-    throw new MaintenanceError(
-      resolution.violations.map(({ reason }) => reason).join("\n")
-    );
-  }
-
-  const replaced = Object.entries(blueprint.stack).flatMap(([kind, id]) =>
-    stack[kind] === id ? [] : [`${id} with ${stack[kind] ?? "nothing"}`]
-  );
-
-  if (replaced.length > 0) {
-    throw new MaintenanceError(
-      `Adding ${selected.join(", ")} would replace ${replaced.join(", ")}; this needs an explicit migration.`
-    );
-  }
-
-  return { ...blueprint, stack };
+  return addCapabilities(project.blueprint, selected);
 };
 
 const planFor = async (
@@ -277,7 +182,7 @@ interface Outcome {
 }
 
 interface Listing extends Outcome {
-  readonly capabilities: ReturnType<typeof capabilities>;
+  readonly capabilities: typeof capabilities;
 }
 
 type Health = Outcome & Awaited<ReturnType<typeof inspect>>;
@@ -320,7 +225,7 @@ const execute = async (
   const cwd = path.resolve(values.cwd);
 
   if (command === "add" && values.list) {
-    return { capabilities: capabilities(), exitCode: 0, status: "available" };
+    return { capabilities, exitCode: 0, status: "available" };
   }
 
   if (command === "doctor") {
