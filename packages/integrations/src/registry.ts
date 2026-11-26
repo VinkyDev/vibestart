@@ -29,6 +29,7 @@ import { sqlite } from "#/sqlite.ts";
 import { tanstackRouter } from "#/tanstack-router.ts";
 import { tanstackStart } from "#/tanstack-start.ts";
 import { e2eTests, playwrightTests } from "#/testing/index.ts";
+import { uiSdk } from "#/ui-sdk.ts";
 import { ultracite } from "#/ultracite.ts";
 import { vitePlus } from "#/vite-plus/index.ts";
 import { voidDeployment } from "#/void.ts";
@@ -82,6 +83,7 @@ export const registry = defineRegistry({
     mongoose,
     betterAuth,
     shadcn,
+    uiSdk,
     electron,
     node,
     bun,

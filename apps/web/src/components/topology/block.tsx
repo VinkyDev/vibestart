@@ -144,9 +144,22 @@ export const Block = ({
         {chips.length > 0 && (
           <div className="flex flex-wrap gap-1.5 px-4.5 pb-4.5">
             <FocusScope value={{ group: kind }}>
-              {chips.map((chip) => (
-                <Chip integration={chip} key={chip.id} stack={shown} />
-              ))}
+              {chips.map((chip) =>
+                chip.kind === "ui" ? (
+                  <DecisionTrigger
+                    choosing={choosing}
+                    key={chip.kind}
+                    kind="ui"
+                  >
+                    <span className="bg-foreground/5 inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs">
+                      {shown.ui === undefined ? roles.ui.none : chip.name}
+                      <ChevronsUpDown className="size-3" />
+                    </span>
+                  </DecisionTrigger>
+                ) : (
+                  <Chip integration={chip} key={chip.id} stack={shown} />
+                )
+              )}
             </FocusScope>
           </div>
         )}

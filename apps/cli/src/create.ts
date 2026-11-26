@@ -107,7 +107,16 @@ const chooseStack = async (
     return await promptCompose(choices);
   }
 
-  const defaulted = resolve(registry, withDefaults(registry, choices)).stacks;
+  const candidates = resolve(registry, withDefaults(registry, choices)).stacks;
+
+  // Choosing a UI must not decide whether a project has a frontend.
+  const defaulted =
+    choices.ui === undefined &&
+    candidates.every((stack) => stack.ui !== undefined) &&
+    candidates.some((stack) => stack.ui === "shadcn")
+      ? candidates.filter((stack) => stack.ui === "shadcn")
+      : candidates;
+
   const [chosen, ...rest] = defaulted;
 
   if (chosen === undefined || rest.length > 0) {

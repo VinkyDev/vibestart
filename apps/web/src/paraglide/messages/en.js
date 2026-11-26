@@ -101,6 +101,7 @@
 /** @typedef {{}} Desc_StandardInputs */
 /** @typedef {{}} Desc_Tanstack_RouterInputs */
 /** @typedef {{}} Desc_Tanstack_StartInputs */
+/** @typedef {{}} Desc_Ui_SdkInputs */
 /** @typedef {{}} Desc_Vite_PlusInputs */
 /** @typedef {{}} Desc_VoidInputs */
 /** @typedef {{}} Desc_WorkersInputs */
@@ -155,6 +156,7 @@
 /** @typedef {{}} Fit_SpaInputs */
 /** @typedef {{}} Fit_SqliteInputs */
 /** @typedef {{}} Fit_Tanstack_StartInputs */
+/** @typedef {{}} Fit_Ui_SdkInputs */
 /** @typedef {{}} Fit_VoidInputs */
 /** @typedef {{}} Fit_WorkersInputs */
 /** @typedef {{}} Gate_BuildInputs */
@@ -333,6 +335,9 @@
 /** @typedef {{}} Tool_TestInputs */
 /** @typedef {{}} Tool_Test_IntegrationInputs */
 /** @typedef {{}} Toolchain_ScopeInputs */
+/** @typedef {{}} Ui_AboutInputs */
+/** @typedef {{}} Ui_NoneInputs */
+/** @typedef {{}} Ui_QuestionInputs */
 /** @typedef {{}} Ultracite_ScopeInputs */
 /** @typedef {{ when: NonNullable<unknown> }} VerifiedInputs */
 /** @typedef {{}} Verified_PassedInputs */
@@ -807,6 +812,10 @@ export const desc_tanstack_start = /** @type {(inputs: Desc_Tanstack_StartInputs
 	return /** @type {LocalizedString} */ (`Full-stack React with SSR, server routes, and server functions`)
 };
 
+export const desc_ui_sdk = /** @type {(inputs: Desc_Ui_SdkInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Accessible UI SDK components in a shared UI package`)
+};
+
 export const desc_vite_plus = /** @type {(inputs: Desc_Vite_PlusInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Unified toolchain for dev, build, test, lint, and format`)
 };
@@ -1024,6 +1033,10 @@ export const fit_sqlite = /** @type {(inputs: Fit_SqliteInputs) => LocalizedStri
 
 export const fit_tanstack_start = /** @type {(inputs: Fit_Tanstack_StartInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For sites that need SEO or fast first loads.`)
+};
+
+export const fit_ui_sdk = /** @type {(inputs: Fit_Ui_SdkInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`For a Vite SPA with accessible, unstyled primitives.`)
 };
 
 export const fit_void = /** @type {(inputs: Fit_VoidInputs) => LocalizedString} */ () => {
@@ -1760,6 +1773,18 @@ export const tool_test_integration = /** @type {(inputs: Tool_Test_IntegrationIn
 
 export const toolchain_scope = /** @type {(inputs: Toolchain_ScopeInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`Development, production builds, formatting, linting, and type checks share one configuration and command set.`)
+};
+
+export const ui_about = /** @type {(inputs: Ui_AboutInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Controls, keyboard interaction and theme styles for the browser.`)
+};
+
+export const ui_none = /** @type {(inputs: Ui_NoneInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`No web UI`)
+};
+
+export const ui_question = /** @type {(inputs: Ui_QuestionInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Which UI library should the web app use?`)
 };
 
 export const ultracite_scope = /** @type {(inputs: Ultracite_ScopeInputs) => LocalizedString} */ () => {

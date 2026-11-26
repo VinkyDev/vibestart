@@ -43,7 +43,12 @@ const routesOverride = `{
 export const tanstackRouter = defineIntegration({
   contribute: (ctx) => [
     ...templateFiles(ctx, "tanstack-router/common", {
-      except: ctx.has("effect") ? ["apps/web/src/lib/query-client.ts"] : [],
+      except: [
+        ...(ctx.has("effect") ? ["apps/web/src/lib/query-client.ts"] : []),
+        ...(ctx.has("ui-sdk")
+          ? ["apps/web/src/components/mode-toggle.tsx"]
+          : []),
+      ],
     }),
     navigation(
       ctx,

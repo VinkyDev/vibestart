@@ -717,7 +717,7 @@
 **/.env
 **/.env.*
 
-# .dockerignore · 92 stacks
+# .dockerignore · 95 stacks
 #   spa-docker
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-expo-docker
@@ -810,6 +810,9 @@
 #   spa-hono-postgres-docker
 #   spa-hono-postgres-expo-bun-docker
 #   spa-hono-postgres-expo-docker
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-docker
+#   spa-ui-sdk-docker
 .git
 **/node_modules
 **/dist
@@ -824,7 +827,7 @@
 **/.env
 **/.env.*
 
-# .dockerignore · 92 stacks
+# .dockerignore · 95 stacks
 #   spa-docker-e2e
 #   spa-effect-http-effect-rpc-docker-e2e
 #   spa-effect-http-effect-rpc-expo-docker-e2e
@@ -917,6 +920,9 @@
 #   spa-hono-postgres-docker-e2e
 #   spa-hono-postgres-expo-bun-docker-e2e
 #   spa-hono-postgres-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker-e2e
+#   spa-ui-sdk-docker-e2e
 .git
 **/node_modules
 **/dist
@@ -2108,7 +2114,7 @@
 **/.env
 **/.env.*
 
-# docker-compose.yml · 84 stacks
+# docker-compose.yml · 90 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
@@ -2185,6 +2191,12 @@
 #   spa-hono-orpc-expo-bun-docker-e2e
 #   spa-hono-orpc-expo-docker
 #   spa-hono-orpc-expo-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
+#   spa-ui-sdk-docker
+#   spa-ui-sdk-docker-e2e
 #   tanstack-start-docker
 #   tanstack-start-docker-e2e
 #   tanstack-start-expo-docker
@@ -9368,9 +9380,11 @@ HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 CMD ["node", "apps/web/server.js"]
 
-# Dockerfile · 2 stacks
+# Dockerfile · 4 stacks
 #   spa-docker
 #   spa-docker-e2e
+#   spa-ui-sdk-docker
+#   spa-ui-sdk-docker-e2e
 # syntax=docker/dockerfile:1
 
 FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
@@ -10296,9 +10310,11 @@ EXPOSE 3000
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --quiet --spider http://127.0.0.1:3000/ || exit 1
 
-# Dockerfile · 2 stacks
+# Dockerfile · 4 stacks
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
 # syntax=docker/dockerfile:1
 
 FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build
@@ -10330,9 +10346,11 @@ HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 CMD ["bun", "dist/index.mjs"]
 
-# Dockerfile · 2 stacks
+# Dockerfile · 4 stacks
 #   spa-hono-docker
 #   spa-hono-docker-e2e
+#   spa-hono-ui-sdk-docker
+#   spa-hono-ui-sdk-docker-e2e
 # syntax=docker/dockerfile:1
 
 FROM ghcr.io/voidzero-dev/vite-plus:1.8.0 AS build

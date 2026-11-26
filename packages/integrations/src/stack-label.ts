@@ -8,6 +8,7 @@ export const stackLabel = (stack: Stack) =>
     stack.database,
     ...(stack.orm === "prisma" ? ["prisma"] : []),
     stack.auth,
+    ...(stack.ui === "ui-sdk" ? ["ui-sdk"] : []),
     stack.desktop,
     stack.mobile,
     ...(stack.runtime === "bun" ? ["bun"] : []),

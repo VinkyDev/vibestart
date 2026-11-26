@@ -710,6 +710,13 @@ export const desc_tanstack_start: ((inputs?: Desc_Tanstack_StartInputs, options?
 /**
 * | output |
 * | --- |
+* | "Accessible UI SDK components in a shared UI package" |
+*
+*/
+export const desc_ui_sdk: ((inputs?: Desc_Ui_SdkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Ui_SdkInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "Unified toolchain for dev, build, test, lint, and format" |
 *
 */
@@ -1086,6 +1093,13 @@ export const fit_sqlite: ((inputs?: Fit_SqliteInputs, options?: { locale?: "en" 
 *
 */
 export const fit_tanstack_start: ((inputs?: Fit_Tanstack_StartInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Tanstack_StartInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "For a Vite SPA with accessible, unstyled primitives." |
+*
+*/
+export const fit_ui_sdk: ((inputs?: Fit_Ui_SdkInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Ui_SdkInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -2337,6 +2351,27 @@ export const toolchain_scope: ((inputs?: Toolchain_ScopeInputs, options?: { loca
 /**
 * | output |
 * | --- |
+* | "Controls, keyboard interaction and theme styles for the browser." |
+*
+*/
+export const ui_about: ((inputs?: Ui_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Ui_AboutInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "No web UI" |
+*
+*/
+export const ui_none: ((inputs?: Ui_NoneInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Ui_NoneInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Which UI library should the web app use?" |
+*
+*/
+export const ui_question: ((inputs?: Ui_QuestionInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Ui_QuestionInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "Adds Ultracite lint and formatting presets to vp check, with framework rules for the selected stack. Opting out keeps Vite+ baseline checks, type checking, a..." |
 *
 */
@@ -2871,6 +2906,7 @@ export type Desc_SqliteInputs = {};
 export type Desc_StandardInputs = {};
 export type Desc_Tanstack_RouterInputs = {};
 export type Desc_Tanstack_StartInputs = {};
+export type Desc_Ui_SdkInputs = {};
 export type Desc_Vite_PlusInputs = {};
 export type Desc_VoidInputs = {};
 export type Desc_WorkersInputs = {};
@@ -2925,6 +2961,7 @@ export type Fit_SelfInputs = {};
 export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
 export type Fit_Tanstack_StartInputs = {};
+export type Fit_Ui_SdkInputs = {};
 export type Fit_VoidInputs = {};
 export type Fit_WorkersInputs = {};
 export type Gate_BuildInputs = {};
@@ -3103,6 +3140,9 @@ export type Tool_E2eInputs = {};
 export type Tool_TestInputs = {};
 export type Tool_Test_IntegrationInputs = {};
 export type Toolchain_ScopeInputs = {};
+export type Ui_AboutInputs = {};
+export type Ui_NoneInputs = {};
+export type Ui_QuestionInputs = {};
 export type Ultracite_ScopeInputs = {};
 export type VerifiedInputs = { when: NonNullable<unknown> };
 export type Verified_PassedInputs = {};

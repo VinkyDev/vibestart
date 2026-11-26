@@ -1,4 +1,4 @@
-# apps/server/env.ts · 24 stacks
+# apps/server/env.ts · 26 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -21,6 +21,8 @@
 #   spa-hono-orpc-expo-void-e2e
 #   spa-hono-orpc-void
 #   spa-hono-orpc-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { defineEnv } from "void/env";
@@ -152,7 +154,7 @@ export default defineEnv({
   DATABASE_URL: z.url().optional(),
 });
 
-# apps/server/routes/_forward.ts · 24 stacks
+# apps/server/routes/_forward.ts · 26 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -175,6 +177,8 @@ export default defineEnv({
 #   spa-hono-orpc-expo-void-e2e
 #   spa-hono-orpc-void
 #   spa-hono-orpc-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { defineHandler } from "void";
@@ -294,7 +298,7 @@ export const forward = defineHandler(
     )
 );
 
-# apps/server/routes/api/[...path].ts · 120 stacks
+# apps/server/routes/api/[...path].ts · 122 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -413,6 +417,8 @@ export const forward = defineHandler(
 #   spa-hono-postgres-expo-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 export {
@@ -424,7 +430,7 @@ export {
   forward as PUT,
 } from "../_forward.ts";
 
-# apps/server/routes/api/index.ts · 120 stacks
+# apps/server/routes/api/index.ts · 122 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -543,6 +549,8 @@ export {
 #   spa-hono-postgres-expo-void-e2e
 #   spa-hono-postgres-void
 #   spa-hono-postgres-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 export {
@@ -554,7 +562,7 @@ export {
   forward as PUT,
 } from "../_forward.ts";
 
-# apps/server/void.config.ts · 24 stacks
+# apps/server/void.config.ts · 26 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -577,6 +585,8 @@ export {
 #   spa-hono-orpc-expo-void-e2e
 #   spa-hono-orpc-void
 #   spa-hono-orpc-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { defineConfig } from "void/config";
@@ -948,13 +958,15 @@ export const startInstance = createStart(() => ({
   requestMiddleware: [csrf, services],
 }));
 
-# apps/web/void.config.ts · 8 stacks
+# apps/web/void.config.ts · 10 stacks
 #   spa-electron-expo-void
 #   spa-electron-expo-void-e2e
 #   spa-electron-void
 #   spa-electron-void-e2e
 #   spa-expo-void
 #   spa-expo-void-e2e
+#   spa-ui-sdk-void
+#   spa-ui-sdk-void-e2e
 #   spa-void
 #   spa-void-e2e
 import { defineConfig } from "void/config";
@@ -1096,13 +1108,15 @@ declare namespace Cloudflare {
   }
 }
 
-# scripts/deploy.ts · 16 stacks
+# scripts/deploy.ts · 18 stacks
 #   spa-electron-expo-void
 #   spa-electron-expo-void-e2e
 #   spa-electron-void
 #   spa-electron-void-e2e
 #   spa-expo-void
 #   spa-expo-void-e2e
+#   spa-ui-sdk-void
+#   spa-ui-sdk-void-e2e
 #   spa-void
 #   spa-void-e2e
 #   tanstack-start-expo-void
@@ -1140,7 +1154,7 @@ run([
   "cloudflare",
 ]);
 
-# scripts/deploy.ts · 24 stacks
+# scripts/deploy.ts · 26 stacks
 #   spa-hono-electron-expo-void
 #   spa-hono-electron-expo-void-e2e
 #   spa-hono-electron-void
@@ -1163,6 +1177,8 @@ run([
 #   spa-hono-orpc-expo-void-e2e
 #   spa-hono-orpc-void
 #   spa-hono-orpc-void-e2e
+#   spa-hono-ui-sdk-void
+#   spa-hono-ui-sdk-void-e2e
 #   spa-hono-void
 #   spa-hono-void-e2e
 import { spawnSync } from "node:child_process";

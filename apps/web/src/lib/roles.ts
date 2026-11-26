@@ -19,6 +19,20 @@ interface Role {
 }
 
 export const roles = {
+  ui: {
+    get role() {
+      return m.kind_ui();
+    },
+    get question() {
+      return m.ui_question();
+    },
+    get about() {
+      return m.ui_about();
+    },
+    get none() {
+      return m.ui_none();
+    },
+  },
   testing: {
     get role() {
       return m.kind_testing();
@@ -174,6 +188,7 @@ export const roles = {
   Record<OptionalDecision, { readonly none: string }>;
 
 const noneNames: Record<OptionalDecision, () => string> = {
+  ui: () => m.ui_none(),
   runtime: () => m.runtime_none(),
   orm: () => m.orm_none(),
   api: () => m.none_api(),
@@ -207,6 +222,7 @@ export const changeText = ({ kind, to }: Change) => {
 };
 
 const addLabels: Record<OptionalDecision, () => string> = {
+  ui: () => m.ui_none(),
   runtime: () => m.runtime_none(),
   orm: () => m.orm_none(),
   api: () => m.add_api(),
@@ -222,6 +238,8 @@ const addLabels: Record<OptionalDecision, () => string> = {
 export const addLabel = (kind: Decision) => addLabels[optional(kind)]();
 
 const fits = {
+  shadcn: () => m.desc_shadcn(),
+  "ui-sdk": () => m.fit_ui_sdk(),
   "effect-http": () => m.fit_effect_http(),
   "effect-rpc": () => m.fit_effect_rpc(),
   bun: () => m.fit_bun(),
@@ -251,6 +269,7 @@ const fits = {
 } satisfies Record<string, () => string>;
 
 const noneFits: Record<OptionalDecision, () => string> = {
+  ui: () => m.ui_none(),
   runtime: () => m.runtime_none(),
   orm: () => m.orm_none(),
   api: () => m.fit_none_api(),
@@ -318,6 +337,7 @@ export const ownerName = (owner: string) =>
     : (addonOf(owner)?.name ?? integrationOf(owner).name);
 
 export const tintClass: Record<Group, string> = {
+  ui: "tint-framework",
   api: "tint-api",
   auth: "tint-auth",
   backend: "tint-backend",

@@ -28,6 +28,7 @@ import { stacks } from "#/lib/stacks.ts";
 import { m } from "#/paraglide/messages.js";
 
 const optionalDecisions = [
+  "ui",
   "framework",
   "backend",
   "api",
@@ -151,6 +152,7 @@ export const searchSchema = z.object({
   deployment: flag,
   desktop: flag,
   framework: flag,
+  ui: flag,
   mobile: flag,
   orm: flag,
   runtime: flag,

@@ -83,6 +83,31 @@ describe("--list", () => {
 });
 
 describe("choosing a stack", () => {
+  it("defaults the UI only when the caller has chosen a web stack", async () => {
+    const flags = [
+      "app",
+      "--api",
+      "none",
+      "--database",
+      "none",
+      "--auth",
+      "none",
+      "--dry-run",
+    ];
+
+    const undecided = await run(
+      ...flags,
+      "--router",
+      "none",
+      "--backend",
+      "hono"
+    );
+
+    expect(undecided.output).toHaveProperty("error.code", "incomplete-stack");
+    const web = await run(...flags, "--framework", "spa", "--backend", "none");
+    expect(web.output).toHaveProperty("stack.ui", "shadcn");
+  });
+
   it("selects e2e explicitly and keeps Playwright by default", async () => {
     const choices = [
       "app",

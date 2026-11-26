@@ -138,7 +138,7 @@ const Anchored = ({
   </motion.div>
 );
 
-const frameworkChips = ["frontend", "router", "ui"] as const;
+const frameworkChips = ["frontend", "router"] as const;
 
 export const Topology = ({
   choosing,
@@ -160,7 +160,12 @@ export const Topology = ({
 
     const kinds: readonly string[] = frameworkChips;
 
-    return included.filter((integration) => kinds.includes(integration.kind));
+    const ui = chosen(shown, "ui") ?? chosen(choosing.baseline, "ui");
+
+    return [
+      ...included.filter((integration) => kinds.includes(integration.kind)),
+      ...(ui === undefined ? [] : [ui]),
+    ];
   };
 
   const api = chosen(shown, "api");

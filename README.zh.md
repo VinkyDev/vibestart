@@ -78,7 +78,7 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 | ORM            | Drizzle；PostgreSQL 与 MySQL 也可选 Prisma；MongoDB 用 Mongoose                                 |
 | Auth           | Better Auth                                                                                     |
 | 部署           | Docker、[Void on Cloudflare Workers](https://vibestart.net/zh/docs/stack/delivery#void)（预览） |
-| UI             | shadcn（Base UI）与 Tailwind 4                                                                  |
+| UI             | shadcn（Base UI）或 UI SDK（Vite SPA），搭配 Tailwind 4                                         |
 | 单元和集成测试 | Vitest                                                                                          |
 | 端到端测试     | Playwright 或 TesterArmy e2e                                                                    |
 | 工具链         | Vite+、Oxlint、Knip、`AGENTS.md`                                                                |
