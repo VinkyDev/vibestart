@@ -66,22 +66,22 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 
 ## 支持的技术栈
 
-| 层级           | 选择                                                                                                  |
-| -------------- | ----------------------------------------------------------------------------------------------------- |
-| 模式           | Standard（默认）或 [Effect](https://vibestart.net/zh/docs/stack/effect)（`--mode effect`）            |
-| 应用           | React SPA（TanStack Router）、Solid 2 SPA（Solid Router）、TanStack Start、Next.js                    |
-| 桌面端         | Electron                                                                                              |
-| 移动端         | Expo（React Native），iOS 与 Android                                                                  |
-| 后端           | Hono、Effect HTTP，或框架自带服务                                                                     |
-| API            | oRPC、Effect RPC、OpenAPI，或不选                                                                     |
-| 数据库         | PostgreSQL、MySQL、SQLite、MongoDB，或不选                                                            |
-| ORM            | Drizzle；PostgreSQL 与 MySQL 也可选 Prisma；MongoDB 用 Mongoose                                       |
-| Auth           | Better Auth                                                                                           |
-| 部署           | Docker、[Alchemy on Cloudflare Workers](https://vibestart.net/zh/docs/stack/delivery#alchemy)（预览） |
-| UI             | shadcn（Base UI）或 UI SDK（Vite SPA），搭配 Tailwind 4                                               |
-| 单元和集成测试 | Vitest                                                                                                |
-| 端到端测试     | Playwright 或 TesterArmy e2e                                                                          |
-| 工具链         | Vite+、Oxlint、Knip、`AGENTS.md`                                                                      |
+| 层级           | 选择                                                                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 模式           | Standard（默认）或 [Effect](https://vibestart.net/zh/docs/stack/effect)（`--mode effect`）                                                       |
+| 应用           | React SPA（TanStack Router）、Solid 2 SPA（Solid Router）、TanStack Start、Next.js                                                               |
+| 桌面端         | Electron                                                                                                                                         |
+| 移动端         | Expo（React Native），iOS 与 Android                                                                                                             |
+| 后端           | Hono、Effect HTTP，或框架自带服务                                                                                                                |
+| API            | oRPC、Effect RPC、OpenAPI，或不选                                                                                                                |
+| 数据库         | PostgreSQL、MySQL、SQLite、MongoDB，或不选                                                                                                       |
+| ORM            | Drizzle；PostgreSQL 与 MySQL 也可选 Prisma；MongoDB 用 Mongoose                                                                                  |
+| Auth           | Better Auth                                                                                                                                      |
+| 部署           | Docker、[通过 Alchemy 部署至 Cloudflare Workers、Google Cloud Run 或 Fly Machines](https://vibestart.net/zh/docs/stack/delivery#alchemy)（预览） |
+| UI             | shadcn（Base UI）或 UI SDK（Vite SPA），搭配 Tailwind 4                                                                                          |
+| 单元和集成测试 | Vitest                                                                                                                                           |
+| 端到端测试     | Playwright 或 TesterArmy e2e                                                                                                                     |
+| 工具链         | Vite+、Oxlint、Knip、`AGENTS.md`                                                                                                                 |
 
 默认使用 Standard 模式，提供最广泛的技术栈组合；需要更严谨的服务链路约束时，可在工作台或通过 `--mode effect` 切换为独立的 [Effect 技术栈](https://vibestart.net/zh/docs/stack/effect)。
 

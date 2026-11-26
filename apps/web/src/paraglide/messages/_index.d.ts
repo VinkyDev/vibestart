@@ -486,6 +486,13 @@ export const deployment_alchemy_database: ((inputs: Deployment_Alchemy_DatabaseI
 /**
 * | output |
 * | --- |
+* | "{name} · Cloud Run service + migration job · external PostgreSQL" |
+*
+*/
+export const deployment_cloud_run_database: ((inputs: Deployment_Cloud_Run_DatabaseInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Deployment_Cloud_Run_DatabaseInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "{name} image" |
 *
 */
@@ -588,6 +595,20 @@ export const desc_electron: ((inputs?: Desc_ElectronInputs, options?: { locale?:
 *
 */
 export const desc_expo: ((inputs?: Desc_ExpoInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_ExpoInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Deploy a stateless Node API to Fly Machines (preview)" |
+*
+*/
+export const desc_fly_machines: ((inputs?: Desc_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Deploy a standalone Node API to Google Cloud Run (preview)" |
+*
+*/
+export const desc_gcp_cloud_run: ((inputs?: Desc_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -974,6 +995,20 @@ export const fit_electron: ((inputs?: Fit_ElectronInputs, options?: { locale?: "
 *
 */
 export const fit_expo: ((inputs?: Fit_ExpoInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_ExpoInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Run a stateless API in a Fly.io region from a published image." |
+*
+*/
+export const fit_fly_machines: ((inputs?: Fit_Fly_MachinesInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Fly_MachinesInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Serve a container over HTTPS on Google Cloud, optionally with an external PostgreSQL database." |
+*
+*/
+export const fit_gcp_cloud_run: ((inputs?: Fit_Gcp_Cloud_RunInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Gcp_Cloud_RunInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -2183,7 +2218,7 @@ export const runs_in_electron: ((inputs?: Runs_In_ElectronInputs, options?: { lo
 /**
 * | output |
 * | --- |
-* | "Node.js and Bun run server processes. Alchemy uses Cloudflare Workers; build tools still run on Node.js." |
+* | "Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun." |
 *
 */
 export const runtime_about: ((inputs?: Runtime_AboutInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Runtime_AboutInputs, { locale?: "en" | "zh" }, {}>;
@@ -2909,6 +2944,7 @@ export type Create_ItInputs = {};
 export type CurrentInputs = {};
 export type Deployment_AlchemyInputs = { name: NonNullable<unknown> };
 export type Deployment_Alchemy_DatabaseInputs = { name: NonNullable<unknown> };
+export type Deployment_Cloud_Run_DatabaseInputs = { name: NonNullable<unknown> };
 export type Deployment_ImageInputs = { name: NonNullable<unknown> };
 export type Deployment_MongodbInputs = { name: NonNullable<unknown> };
 export type Deployment_MysqlInputs = { name: NonNullable<unknown> };
@@ -2924,6 +2960,8 @@ export type Desc_Effect_HttpInputs = {};
 export type Desc_Effect_RpcInputs = {};
 export type Desc_ElectronInputs = {};
 export type Desc_ExpoInputs = {};
+export type Desc_Fly_MachinesInputs = {};
+export type Desc_Gcp_Cloud_RunInputs = {};
 export type Desc_HonoInputs = {};
 export type Desc_MongodbInputs = {};
 export type Desc_MongooseInputs = {};
@@ -2979,6 +3017,8 @@ export type Fit_Effect_HttpInputs = {};
 export type Fit_Effect_RpcInputs = {};
 export type Fit_ElectronInputs = {};
 export type Fit_ExpoInputs = {};
+export type Fit_Fly_MachinesInputs = {};
+export type Fit_Gcp_Cloud_RunInputs = {};
 export type Fit_HonoInputs = {};
 export type Fit_MongodbInputs = {};
 export type Fit_MongooseInputs = {};

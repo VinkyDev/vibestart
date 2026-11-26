@@ -1,0 +1,37 @@
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp run typegen && vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "typegen": "vpx scripts/typegen.ts",
+    "plan": "node scripts/deploy.ts plan",
+    "deploy": "node scripts/deploy.ts",
+    "destroy": "node scripts/deploy.ts destroy",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@alchemy.run/cloudflare": "catalog:",
+    "@effect/platform-bun": "catalog:",
+    "@effect/platform-node": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@shadcn/lint": "catalog:",
+    "@types/node": "catalog:",
+    "alchemy": "catalog:",
+    "effect": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.1"
+  },
+  "packageManager": "pnpm@12.23.0"
+}

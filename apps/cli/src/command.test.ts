@@ -53,6 +53,17 @@ const run = async (...rawArgs: string[]) => {
   };
 };
 
+const listingSchema = z.object({
+  kinds: z.array(
+    z.object({
+      id: z.string(),
+      default: z.string().nullable().optional(),
+      options: z.array(z.object({ id: z.string() })),
+    })
+  ),
+  stacks: z.array(z.object({ stack: z.object({ mode: z.string() }) })),
+});
+
 const previewSchema = z.object({
   files: z.array(z.object({ path: z.string() })),
 });
@@ -64,6 +75,19 @@ const dryRunPaths = async (directory: string, ...flags: string[]) => {
 };
 
 describe("--list", () => {
+  it.each([
+    { flags: ["--framework", "spa", "--backend", "none"], expected: "shadcn" },
+    { flags: [], expected: undefined },
+  ])(
+    "reports the noninteractive UI default for $flags",
+    async ({ flags, expected }) => {
+      const { output } = await run("--list", ...flags);
+      const { kinds } = listingSchema.parse(output);
+
+      expect(kinds.find(({ id }) => id === "ui")?.default).toBe(expected);
+    }
+  );
+
   it("lists every kind and legal stack with current verification metadata", async () => {
     const { exitCode, output } = await run("--list");
     expect(exitCode).toBe(0);
@@ -508,18 +532,7 @@ describe("Effect mode", () => {
     const result = await run("--list", "--mode", "effect");
     expect(result.exitCode).toBe(0);
 
-    const output = z
-      .object({
-        kinds: z.array(
-          z.object({
-            id: z.string(),
-            default: z.string().nullable().optional(),
-            options: z.array(z.object({ id: z.string() })),
-          })
-        ),
-        stacks: z.array(z.object({ stack: z.object({ mode: z.string() }) })),
-      })
-      .parse(result.output);
+    const output = listingSchema.parse(result.output);
 
     expect(output.stacks).toHaveLength(80);
     expect(

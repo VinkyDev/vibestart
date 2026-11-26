@@ -1,8 +1,10 @@
-# apps/server/src/app.ts · 44 stacks
+# apps/server/src/app.ts · 46 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
 #   hono-expo-docker
+#   hono-fly-machines
+#   hono-gcp-cloud-run
 #   next-hono-bun-docker
 #   next-hono-bun-docker-e2e
 #   next-hono-docker
@@ -263,7 +265,7 @@ export const app = new Hono()
   .on(["GET", "POST"], "/api/auth/*", authHandler)
   .get("/api/health", health);
 
-# apps/server/src/app.ts · 72 stacks
+# apps/server/src/app.ts · 73 stacks
 #   hono-mysql-bun-docker
 #   hono-mysql-docker
 #   hono-mysql-expo-bun-docker
@@ -272,6 +274,7 @@ export const app = new Hono()
 #   hono-postgres-docker
 #   hono-postgres-expo-bun-docker
 #   hono-postgres-expo-docker
+#   hono-postgres-gcp-cloud-run
 #   next-hono-mysql-bun-docker
 #   next-hono-mysql-bun-docker-e2e
 #   next-hono-mysql-docker
@@ -540,11 +543,12 @@ export const app = new Hono()
   .use(secureHeaders())
   .get("/api/health", health);
 
-# apps/server/src/app.ts · 36 stacks
+# apps/server/src/app.ts · 37 stacks
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
 #   hono-openapi-expo-docker
+#   hono-openapi-gcp-cloud-run
 #   next-hono-openapi-bun-docker
 #   next-hono-openapi-bun-docker-e2e
 #   next-hono-openapi-docker
@@ -822,7 +826,7 @@ export const app = new Hono()
   .on(["GET", "POST"], "/api/auth/*", authHandler)
   .route("/api", createApi({ auth, db }));
 
-# apps/server/src/app.ts · 216 stacks
+# apps/server/src/app.ts · 217 stacks
 #   hono-openapi-mongodb-bun-docker
 #   hono-openapi-mongodb-docker
 #   hono-openapi-mongodb-expo-bun-docker
@@ -839,6 +843,7 @@ export const app = new Hono()
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-gcp-cloud-run
 #   hono-openapi-postgres-prisma-bun-docker
 #   hono-openapi-postgres-prisma-docker
 #   hono-openapi-postgres-prisma-expo-bun-docker
@@ -1667,18 +1672,18 @@ export const app = new Hono()
   .get("/api/health", health);
 
 # apps/server/src/app.ts · 12 stacks
-#   solid-spa-hono-ui-sdk-alchemy
-#   solid-spa-hono-ui-sdk-alchemy-e2e
-#   spa-hono-alchemy
-#   spa-hono-alchemy-e2e
-#   spa-hono-electron-alchemy
-#   spa-hono-electron-alchemy-e2e
-#   spa-hono-electron-expo-alchemy
-#   spa-hono-electron-expo-alchemy-e2e
-#   spa-hono-expo-alchemy
-#   spa-hono-expo-alchemy-e2e
-#   spa-hono-ui-sdk-alchemy
-#   spa-hono-ui-sdk-alchemy-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { logger } from "hono/logger";
@@ -1690,60 +1695,22 @@ export const createApp = () =>
   new Hono().use(logger()).use(secureHeaders()).get("/api/health", health);
 
 # apps/server/src/app.ts · 16 stacks
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
-import { sql } from "drizzle-orm";
-import { Hono } from "hono";
-import type { Context } from "hono";
-import { logger } from "hono/logger";
-import { secureHeaders } from "hono/secure-headers";
-
-import type { Services } from "#src/context.ts";
-
-export const createApp = ({ db }: Services) => {
-  const health = async (c: Context) => {
-    await db.execute(sql`select 1`);
-
-    return c.json({ status: "ok" });
-  };
-
-  return new Hono()
-    .use(logger())
-    .use(secureHeaders())
-    .get("/api/health", health);
-};
-
-# apps/server/src/app.ts · 16 stacks
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
 import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 import type { Context } from "hono";
@@ -1768,15 +1735,53 @@ export const createApp = ({ auth, db }: Services) => {
     .get("/api/health", health);
 };
 
+# apps/server/src/app.ts · 16 stacks
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+import { sql } from "drizzle-orm";
+import { Hono } from "hono";
+import type { Context } from "hono";
+import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
+
+import type { Services } from "#src/context.ts";
+
+export const createApp = ({ db }: Services) => {
+  const health = async (c: Context) => {
+    await db.execute(sql`select 1`);
+
+    return c.json({ status: "ok" });
+  };
+
+  return new Hono()
+    .use(logger())
+    .use(secureHeaders())
+    .get("/api/health", health);
+};
+
 # apps/server/src/app.ts · 8 stacks
-#   spa-hono-openapi-alchemy
-#   spa-hono-openapi-alchemy-e2e
-#   spa-hono-openapi-electron-alchemy
-#   spa-hono-openapi-electron-alchemy-e2e
-#   spa-hono-openapi-electron-expo-alchemy
-#   spa-hono-openapi-electron-expo-alchemy-e2e
-#   spa-hono-openapi-expo-alchemy
-#   spa-hono-openapi-expo-alchemy-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
@@ -1787,53 +1792,22 @@ export const createApp = () =>
   new Hono().use(logger()).use(secureHeaders()).route("/api", createApi());
 
 # apps/server/src/app.ts · 16 stacks
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-import { Hono } from "hono";
-import { logger } from "hono/logger";
-import { secureHeaders } from "hono/secure-headers";
-
-import { createApi } from "@my-app/api";
-
-import type { Services } from "#src/context.ts";
-
-export const createApp = ({ db }: Services) =>
-  new Hono()
-    .use(logger())
-    .use(secureHeaders())
-    .route("/api", createApi({ db }));
-
-# apps/server/src/app.ts · 16 stacks
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { logger } from "hono/logger";
@@ -1853,15 +1827,46 @@ export const createApp = ({ auth, db }: Services) => {
     .route("/api", createApi({ auth, db }));
 };
 
+# apps/server/src/app.ts · 16 stacks
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+import { Hono } from "hono";
+import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
+
+import { createApi } from "@my-app/api";
+
+import type { Services } from "#src/context.ts";
+
+export const createApp = ({ db }: Services) =>
+  new Hono()
+    .use(logger())
+    .use(secureHeaders())
+    .route("/api", createApi({ db }));
+
 # apps/server/src/app.ts · 8 stacks
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-expo-alchemy-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
@@ -1876,56 +1881,22 @@ export const createApp = () =>
     .all("/api/*", openApi);
 
 # apps/server/src/app.ts · 16 stacks
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-import { Hono } from "hono";
-import { logger } from "hono/logger";
-import { secureHeaders } from "hono/secure-headers";
-
-import type { Services } from "#src/context.ts";
-import { createRpc } from "#src/orpc.ts";
-
-export const createApp = ({ db }: Services) => {
-  const { rpc, openApi } = createRpc({ db });
-
-  return new Hono()
-    .use(logger())
-    .use(secureHeaders())
-    .all("/api/rpc/*", rpc)
-    .all("/api/*", openApi);
-};
-
-# apps/server/src/app.ts · 16 stacks
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { logger } from "hono/logger";
@@ -1943,6 +1914,40 @@ export const createApp = ({ auth, db }: Services) => {
     .use(logger())
     .use(secureHeaders())
     .on(["GET", "POST"], "/api/auth/*", authHandler)
+    .all("/api/rpc/*", rpc)
+    .all("/api/*", openApi);
+};
+
+# apps/server/src/app.ts · 16 stacks
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+import { Hono } from "hono";
+import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
+
+import type { Services } from "#src/context.ts";
+import { createRpc } from "#src/orpc.ts";
+
+export const createApp = ({ db }: Services) => {
+  const { rpc, openApi } = createRpc({ db });
+
+  return new Hono()
+    .use(logger())
+    .use(secureHeaders())
     .all("/api/rpc/*", rpc)
     .all("/api/*", openApi);
 };
@@ -2609,7 +2614,7 @@ export const auth = createAuth({
   secret: env.BETTER_AUTH_SECRET,
 });
 
-# apps/server/src/context.ts · 648 stacks
+# apps/server/src/context.ts · 650 stacks
 #   hono-mongodb-bun-docker
 #   hono-mongodb-docker
 #   hono-mongodb-expo-bun-docker
@@ -2638,6 +2643,7 @@ export const auth = createAuth({
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-gcp-cloud-run
 #   hono-openapi-postgres-prisma-bun-docker
 #   hono-openapi-postgres-prisma-docker
 #   hono-openapi-postgres-prisma-expo-bun-docker
@@ -2674,6 +2680,7 @@ export const auth = createAuth({
 #   hono-postgres-docker
 #   hono-postgres-expo-bun-docker
 #   hono-postgres-expo-docker
+#   hono-postgres-gcp-cloud-run
 #   hono-postgres-prisma-bun-docker
 #   hono-postgres-prisma-docker
 #   hono-postgres-prisma-expo-bun-docker
@@ -3265,112 +3272,30 @@ import { env } from "#src/env.ts";
 export const db = createDb(env.DATABASE_URL);
 
 # apps/server/src/context.ts · 24 stacks
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-import { env as bindings, waitUntil } from "cloudflare:workers";
-
-import { createDb } from "@my-app/db";
-import type { Database } from "@my-app/db";
-
-import { readEnv } from "../env.ts";
-
-export interface Services {
-  db: Database;
-}
-
-export const withServices = async (
-  handle: (services: Services) => Promise<Response>
-) => {
-  const env = readEnv(bindings);
-  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);
-  let streaming = false;
-
-  const dispose = async () => {
-    await db.$client.promise().end();
-  };
-
-  try {
-    const services = {
-      db,
-    };
-
-    const response = await handle(services);
-
-    const { body } = response;
-
-    if (body === null) {
-      return response;
-    }
-
-    const { readable, writable } = new TransformStream<Uint8Array>();
-    const forwarded = new Response(readable, response);
-
-    const transfer = async () => {
-      try {
-        await body.pipeTo(writable);
-      } finally {
-        await dispose();
-      }
-    };
-
-    streaming = true;
-    waitUntil(transfer());
-
-    return forwarded;
-  } finally {
-    if (!streaming) {
-      await dispose();
-    }
-  }
-};
-
-# apps/server/src/context.ts · 24 stacks
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
 import { env as bindings, waitUntil } from "cloudflare:workers";
 
 import { createAuth } from "@my-app/auth";
@@ -3437,30 +3362,30 @@ export const withServices = async (
 };
 
 # apps/server/src/context.ts · 24 stacks
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
 import { env as bindings, waitUntil } from "cloudflare:workers";
 
 import { createDb } from "@my-app/db";
@@ -3480,7 +3405,7 @@ export const withServices = async (
   let streaming = false;
 
   const dispose = async () => {
-    await db.$client.end();
+    await db.$client.promise().end();
   };
 
   try {
@@ -3519,30 +3444,30 @@ export const withServices = async (
 };
 
 # apps/server/src/context.ts · 24 stacks
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
 import { env as bindings, waitUntil } from "cloudflare:workers";
 
 import { createAuth } from "@my-app/auth";
@@ -3608,15 +3533,100 @@ export const withServices = async (
   }
 };
 
-# apps/server/src/env.ts · 68 stacks
+# apps/server/src/context.ts · 24 stacks
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+import { env as bindings, waitUntil } from "cloudflare:workers";
+
+import { createDb } from "@my-app/db";
+import type { Database } from "@my-app/db";
+
+import { readEnv } from "../env.ts";
+
+export interface Services {
+  db: Database;
+}
+
+export const withServices = async (
+  handle: (services: Services) => Promise<Response>
+) => {
+  const env = readEnv(bindings);
+  const db = createDb(env.DATABASE_URL ?? bindings.HYPERDRIVE.connectionString);
+  let streaming = false;
+
+  const dispose = async () => {
+    await db.$client.end();
+  };
+
+  try {
+    const services = {
+      db,
+    };
+
+    const response = await handle(services);
+
+    const { body } = response;
+
+    if (body === null) {
+      return response;
+    }
+
+    const { readable, writable } = new TransformStream<Uint8Array>();
+    const forwarded = new Response(readable, response);
+
+    const transfer = async () => {
+      try {
+        await body.pipeTo(writable);
+      } finally {
+        await dispose();
+      }
+    };
+
+    streaming = true;
+    waitUntil(transfer());
+
+    return forwarded;
+  } finally {
+    if (!streaming) {
+      await dispose();
+    }
+  }
+};
+
+# apps/server/src/env.ts · 71 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
 #   hono-expo-docker
+#   hono-fly-machines
+#   hono-gcp-cloud-run
 #   hono-openapi-bun-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-bun-docker
 #   hono-openapi-expo-docker
+#   hono-openapi-gcp-cloud-run
 #   hono-orpc-bun-docker
 #   hono-orpc-docker
 #   hono-orpc-expo-bun-docker
@@ -4019,7 +4029,7 @@ export const env = createEnv({
   },
 });
 
-# apps/server/src/env.ts · 300 stacks
+# apps/server/src/env.ts · 302 stacks
 #   hono-mongodb-bun-docker
 #   hono-mongodb-docker
 #   hono-mongodb-expo-bun-docker
@@ -4048,6 +4058,7 @@ export const env = createEnv({
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-bun-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-gcp-cloud-run
 #   hono-openapi-postgres-prisma-bun-docker
 #   hono-openapi-postgres-prisma-docker
 #   hono-openapi-postgres-prisma-expo-bun-docker
@@ -4076,6 +4087,7 @@ export const env = createEnv({
 #   hono-postgres-docker
 #   hono-postgres-expo-bun-docker
 #   hono-postgres-expo-docker
+#   hono-postgres-gcp-cloud-run
 #   hono-postgres-prisma-bun-docker
 #   hono-postgres-prisma-docker
 #   hono-postgres-prisma-expo-bun-docker
@@ -5267,11 +5279,14 @@ await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
 
 await server.stop();
 
-# apps/server/src/index.ts · 30 stacks
+# apps/server/src/index.ts · 33 stacks
 #   hono-docker
 #   hono-expo-docker
+#   hono-fly-machines
+#   hono-gcp-cloud-run
 #   hono-openapi-docker
 #   hono-openapi-expo-docker
+#   hono-openapi-gcp-cloud-run
 #   hono-orpc-docker
 #   hono-orpc-expo-docker
 #   next-hono-docker
@@ -5998,11 +6013,12 @@ await server.stop();
 
 await db.$client.end();
 
-# apps/server/src/index.ts · 60 stacks
+# apps/server/src/index.ts · 62 stacks
 #   hono-openapi-postgres-better-auth-docker
 #   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-gcp-cloud-run
 #   hono-orpc-postgres-better-auth-docker
 #   hono-orpc-postgres-better-auth-expo-docker
 #   hono-orpc-postgres-docker
@@ -6011,6 +6027,7 @@ await db.$client.end();
 #   hono-postgres-better-auth-expo-docker
 #   hono-postgres-docker
 #   hono-postgres-expo-docker
+#   hono-postgres-gcp-cloud-run
 #   next-hono-openapi-postgres-better-auth-docker
 #   next-hono-openapi-postgres-better-auth-docker-e2e
 #   next-hono-openapi-postgres-better-auth-expo-docker
@@ -7245,102 +7262,102 @@ await once(server, "close");
 db.$client.close();
 
 # apps/server/src/node-env.ts · 96 stacks
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
@@ -7995,14 +8012,14 @@ export const openApi = mount(
 );
 
 # apps/server/src/orpc.ts · 8 stacks
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-expo-alchemy-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { ORPCError, onError } from "@orpc/server";
@@ -8059,100 +8076,22 @@ export const openApi = mount(
 );
 
 # apps/server/src/orpc.ts · 16 stacks
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-import { OpenAPIHandler } from "@orpc/openapi/fetch";
-import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
-import { ORPCError, onError } from "@orpc/server";
-import { RPCHandler } from "@orpc/server/fetch";
-import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import type { Context as HonoContext } from "hono";
-
-import { appRouter } from "@my-app/api";
-import type { Context } from "@my-app/api";
-
-import type { Services } from "#src/context.ts";
-
-const logServerError = (cause: unknown) => {
-  if (!(cause instanceof ORPCError) || cause.status >= 500) {
-    console.error(cause);
-  }
-};
-
-const rpcHandler = new RPCHandler(appRouter, {
-  interceptors: [onError(logServerError)],
-});
-
-const openApiHandler = new OpenAPIHandler(appRouter, {
-  interceptors: [onError(logServerError)],
-  plugins: [
-    new OpenAPIReferencePlugin({
-      schemaConverters: [new ZodToJsonSchemaConverter()],
-      specGenerateOptions: {
-        info: {
-          title: "my-app",
-          version: "0.0.0",
-        },
-      },
-    }),
-  ],
-});
-
-// Handlers are shared by the isolate; services belong to the request.
-export const createRpc = ({ db }: Services) => {
-  const mount =
-    (
-      handler: RPCHandler<Context> | OpenAPIHandler<Context>,
-      prefix: `/${string}`
-    ) =>
-    async (c: HonoContext) => {
-      const { matched, response } = await handler.handle(c.req.raw, {
-        context: { db },
-        prefix,
-      });
-
-      return matched
-        ? c.newResponse(response.body, response)
-        : await c.notFound();
-    };
-
-  return {
-    openApi: mount(openApiHandler, "/api"),
-    rpc: mount(rpcHandler, "/api/rpc"),
-  };
-};
-
-# apps/server/src/orpc.ts · 16 stacks
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { ORPCError, onError } from "@orpc/server";
@@ -8204,6 +8143,84 @@ export const createRpc = ({ auth, db }: Services) => {
 
       const { matched, response } = await handler.handle(c.req.raw, {
         context: { db, session },
+        prefix,
+      });
+
+      return matched
+        ? c.newResponse(response.body, response)
+        : await c.notFound();
+    };
+
+  return {
+    openApi: mount(openApiHandler, "/api"),
+    rpc: mount(rpcHandler, "/api/rpc"),
+  };
+};
+
+# apps/server/src/orpc.ts · 16 stacks
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { ORPCError, onError } from "@orpc/server";
+import { RPCHandler } from "@orpc/server/fetch";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
+import type { Context as HonoContext } from "hono";
+
+import { appRouter } from "@my-app/api";
+import type { Context } from "@my-app/api";
+
+import type { Services } from "#src/context.ts";
+
+const logServerError = (cause: unknown) => {
+  if (!(cause instanceof ORPCError) || cause.status >= 500) {
+    console.error(cause);
+  }
+};
+
+const rpcHandler = new RPCHandler(appRouter, {
+  interceptors: [onError(logServerError)],
+});
+
+const openApiHandler = new OpenAPIHandler(appRouter, {
+  interceptors: [onError(logServerError)],
+  plugins: [
+    new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+      specGenerateOptions: {
+        info: {
+          title: "my-app",
+          version: "0.0.0",
+        },
+      },
+    }),
+  ],
+});
+
+// Handlers are shared by the isolate; services belong to the request.
+export const createRpc = ({ db }: Services) => {
+  const mount =
+    (
+      handler: RPCHandler<Context> | OpenAPIHandler<Context>,
+      prefix: `/${string}`
+    ) =>
+    async (c: HonoContext) => {
+      const { matched, response } = await handler.handle(c.req.raw, {
+        context: { db },
         prefix,
       });
 
@@ -8931,9 +8948,11 @@ export const createRpc = ({ auth, db }: Services) => {
   "include": ["src", "vite.config.ts"]
 }
 
-# apps/server/tsconfig.json · 706 stacks
+# apps/server/tsconfig.json · 711 stacks
 #   hono-docker
 #   hono-expo-docker
+#   hono-fly-machines
+#   hono-gcp-cloud-run
 #   hono-mongodb-better-auth-docker
 #   hono-mongodb-better-auth-expo-docker
 #   hono-mongodb-docker
@@ -8948,6 +8967,7 @@ export const createRpc = ({ auth, db }: Services) => {
 #   hono-mysql-prisma-expo-docker
 #   hono-openapi-docker
 #   hono-openapi-expo-docker
+#   hono-openapi-gcp-cloud-run
 #   hono-openapi-mongodb-better-auth-docker
 #   hono-openapi-mongodb-better-auth-expo-docker
 #   hono-openapi-mongodb-docker
@@ -8964,6 +8984,7 @@ export const createRpc = ({ auth, db }: Services) => {
 #   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-gcp-cloud-run
 #   hono-openapi-postgres-prisma-better-auth-docker
 #   hono-openapi-postgres-prisma-better-auth-expo-docker
 #   hono-openapi-postgres-prisma-docker
@@ -9002,6 +9023,7 @@ export const createRpc = ({ auth, db }: Services) => {
 #   hono-postgres-better-auth-expo-docker
 #   hono-postgres-docker
 #   hono-postgres-expo-docker
+#   hono-postgres-gcp-cloud-run
 #   hono-postgres-prisma-better-auth-docker
 #   hono-postgres-prisma-better-auth-expo-docker
 #   hono-postgres-prisma-docker
@@ -9644,130 +9666,130 @@ export const createRpc = ({ auth, db }: Services) => {
 }
 
 # apps/server/tsconfig.json · 124 stacks
-#   solid-spa-hono-ui-sdk-alchemy
-#   solid-spa-hono-ui-sdk-alchemy-e2e
-#   spa-hono-alchemy
-#   spa-hono-alchemy-e2e
-#   spa-hono-electron-alchemy
-#   spa-hono-electron-alchemy-e2e
-#   spa-hono-electron-expo-alchemy
-#   spa-hono-electron-expo-alchemy-e2e
-#   spa-hono-expo-alchemy
-#   spa-hono-expo-alchemy-e2e
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-alchemy
-#   spa-hono-openapi-alchemy-e2e
-#   spa-hono-openapi-electron-alchemy
-#   spa-hono-openapi-electron-alchemy-e2e
-#   spa-hono-openapi-electron-expo-alchemy
-#   spa-hono-openapi-electron-expo-alchemy-e2e
-#   spa-hono-openapi-expo-alchemy
-#   spa-hono-openapi-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
-#   spa-hono-ui-sdk-alchemy
-#   spa-hono-ui-sdk-alchemy-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
 {
   "files": [],
   "references": [
@@ -9777,34 +9799,34 @@ export const createRpc = ({ auth, db }: Services) => {
 }
 
 # apps/server/tsconfig.node.json · 28 stacks
-#   solid-spa-hono-ui-sdk-alchemy
-#   solid-spa-hono-ui-sdk-alchemy-e2e
-#   spa-hono-alchemy
-#   spa-hono-alchemy-e2e
-#   spa-hono-electron-alchemy
-#   spa-hono-electron-alchemy-e2e
-#   spa-hono-electron-expo-alchemy
-#   spa-hono-electron-expo-alchemy-e2e
-#   spa-hono-expo-alchemy
-#   spa-hono-expo-alchemy-e2e
-#   spa-hono-openapi-alchemy
-#   spa-hono-openapi-alchemy-e2e
-#   spa-hono-openapi-electron-alchemy
-#   spa-hono-openapi-electron-alchemy-e2e
-#   spa-hono-openapi-electron-expo-alchemy
-#   spa-hono-openapi-electron-expo-alchemy-e2e
-#   spa-hono-openapi-expo-alchemy
-#   spa-hono-openapi-expo-alchemy-e2e
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-expo-alchemy-e2e
-#   spa-hono-ui-sdk-alchemy
-#   spa-hono-ui-sdk-alchemy-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
 {
   "extends": "@my-app/config/typescript/node.json",
   "compilerOptions": { "types": ["node"] },
@@ -9812,102 +9834,102 @@ export const createRpc = ({ auth, db }: Services) => {
 }
 
 # apps/server/tsconfig.node.json · 96 stacks
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
 {
   "extends": "@my-app/config/typescript/node.json",
   "compilerOptions": { "types": ["node"] },
@@ -9922,130 +9944,130 @@ export const createRpc = ({ auth, db }: Services) => {
 }
 
 # apps/server/tsconfig.worker.json · 124 stacks
-#   solid-spa-hono-ui-sdk-alchemy
-#   solid-spa-hono-ui-sdk-alchemy-e2e
-#   spa-hono-alchemy
-#   spa-hono-alchemy-e2e
-#   spa-hono-electron-alchemy
-#   spa-hono-electron-alchemy-e2e
-#   spa-hono-electron-expo-alchemy
-#   spa-hono-electron-expo-alchemy-e2e
-#   spa-hono-expo-alchemy
-#   spa-hono-expo-alchemy-e2e
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-alchemy
-#   spa-hono-openapi-alchemy-e2e
-#   spa-hono-openapi-electron-alchemy
-#   spa-hono-openapi-electron-alchemy-e2e
-#   spa-hono-openapi-electron-expo-alchemy
-#   spa-hono-openapi-electron-expo-alchemy-e2e
-#   spa-hono-openapi-expo-alchemy
-#   spa-hono-openapi-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
-#   spa-hono-ui-sdk-alchemy
-#   spa-hono-ui-sdk-alchemy-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
 {
   "extends": "@my-app/config/typescript/base.json",
   "compilerOptions": { "types": ["@cloudflare/workers-types"] },
@@ -10121,11 +10143,14 @@ export default defineConfig({
   },
 });
 
-# apps/server/vite.config.ts · 58 stacks
+# apps/server/vite.config.ts · 61 stacks
 #   hono-docker
 #   hono-expo-docker
+#   hono-fly-machines
+#   hono-gcp-cloud-run
 #   hono-openapi-docker
 #   hono-openapi-expo-docker
+#   hono-openapi-gcp-cloud-run
 #   hono-orpc-docker
 #   hono-orpc-expo-docker
 #   next-hono-docker
@@ -10976,7 +11001,7 @@ export default defineConfig({
   },
 });
 
-# apps/server/vite.config.ts · 540 stacks
+# apps/server/vite.config.ts · 542 stacks
 #   hono-mysql-better-auth-docker
 #   hono-mysql-better-auth-expo-docker
 #   hono-mysql-docker
@@ -10997,6 +11022,7 @@ export default defineConfig({
 #   hono-openapi-postgres-better-auth-expo-docker
 #   hono-openapi-postgres-docker
 #   hono-openapi-postgres-expo-docker
+#   hono-openapi-postgres-gcp-cloud-run
 #   hono-openapi-postgres-prisma-better-auth-docker
 #   hono-openapi-postgres-prisma-better-auth-expo-docker
 #   hono-openapi-postgres-prisma-docker
@@ -11029,6 +11055,7 @@ export default defineConfig({
 #   hono-postgres-better-auth-expo-docker
 #   hono-postgres-docker
 #   hono-postgres-expo-docker
+#   hono-postgres-gcp-cloud-run
 #   hono-postgres-prisma-better-auth-docker
 #   hono-postgres-prisma-better-auth-expo-docker
 #   hono-postgres-prisma-docker
@@ -11528,34 +11555,34 @@ export default defineConfig({
 });
 
 # apps/server/vite.config.ts · 28 stacks
-#   solid-spa-hono-ui-sdk-alchemy
-#   solid-spa-hono-ui-sdk-alchemy-e2e
-#   spa-hono-alchemy
-#   spa-hono-alchemy-e2e
-#   spa-hono-electron-alchemy
-#   spa-hono-electron-alchemy-e2e
-#   spa-hono-electron-expo-alchemy
-#   spa-hono-electron-expo-alchemy-e2e
-#   spa-hono-expo-alchemy
-#   spa-hono-expo-alchemy-e2e
-#   spa-hono-openapi-alchemy
-#   spa-hono-openapi-alchemy-e2e
-#   spa-hono-openapi-electron-alchemy
-#   spa-hono-openapi-electron-alchemy-e2e
-#   spa-hono-openapi-electron-expo-alchemy
-#   spa-hono-openapi-electron-expo-alchemy-e2e
-#   spa-hono-openapi-expo-alchemy
-#   spa-hono-openapi-expo-alchemy-e2e
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-expo-alchemy-e2e
-#   spa-hono-ui-sdk-alchemy
-#   spa-hono-ui-sdk-alchemy-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
+#   spa-hono-cloudflare-workers
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { defineConfig } from "vite-plus";
 
@@ -11568,54 +11595,54 @@ export default defineConfig({
 });
 
 # apps/server/vite.config.ts · 48 stacks
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy
-#   spa-hono-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy
-#   spa-hono-postgres-expo-alchemy-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { defineConfig, loadEnv } from "vite-plus";
 
@@ -11628,7 +11655,11 @@ export default defineConfig(({ command, mode, isPreview }) => {
   if (isPreview === true) {
     const local = loadEnv(mode, import.meta.dirname, "");
 
-    for (const name of ["DATABASE_URL"]) {
+    for (const name of [
+      "DATABASE_URL",
+      "BETTER_AUTH_SECRET",
+      "BETTER_AUTH_URL",
+    ]) {
       const value = local[name];
 
       if (value !== undefined) {
@@ -11647,54 +11678,54 @@ export default defineConfig(({ command, mode, isPreview }) => {
 });
 
 # apps/server/vite.config.ts · 48 stacks
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { defineConfig, loadEnv } from "vite-plus";
 
@@ -11707,11 +11738,7 @@ export default defineConfig(({ command, mode, isPreview }) => {
   if (isPreview === true) {
     const local = loadEnv(mode, import.meta.dirname, "");
 
-    for (const name of [
-      "DATABASE_URL",
-      "BETTER_AUTH_SECRET",
-      "BETTER_AUTH_URL",
-    ]) {
+    for (const name of ["DATABASE_URL"]) {
       const value = local[name];
 
       if (value !== undefined) {

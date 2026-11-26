@@ -1,12 +1,12 @@
 # apps/web/src/router.tsx · 10 stacks
-#   solid-spa-hono-ui-sdk-alchemy
-#   solid-spa-hono-ui-sdk-alchemy-e2e
 #   solid-spa-hono-ui-sdk-bun-docker
 #   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
 #   solid-spa-hono-ui-sdk-docker
 #   solid-spa-hono-ui-sdk-docker-e2e
-#   solid-spa-ui-sdk-alchemy
-#   solid-spa-ui-sdk-alchemy-e2e
+#   solid-spa-ui-sdk-cloudflare-workers
+#   solid-spa-ui-sdk-cloudflare-workers-e2e
 #   solid-spa-ui-sdk-docker
 #   solid-spa-ui-sdk-docker-e2e
 import { createRouter } from "@solidjs/router";
@@ -20,9 +20,16 @@ const About = () => (
   </main>
 );
 
+const NotFound = () => (
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="text-4xl font-semibold">Page not found</h1>
+  </main>
+);
+
 export const Router = createRouter({
   routes: [
     { path: "/", component: Home },
     { path: "/about", component: About },
+    { path: "*missing", component: NotFound },
   ],
 });

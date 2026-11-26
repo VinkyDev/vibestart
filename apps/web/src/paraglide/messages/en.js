@@ -69,6 +69,7 @@
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Cloud_Run_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
@@ -84,6 +85,8 @@
 /** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
+/** @typedef {{}} Desc_Fly_MachinesInputs */
+/** @typedef {{}} Desc_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_MongodbInputs */
 /** @typedef {{}} Desc_MongooseInputs */
@@ -139,6 +142,8 @@
 /** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
+/** @typedef {{}} Fit_Fly_MachinesInputs */
+/** @typedef {{}} Fit_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_MongodbInputs */
 /** @typedef {{}} Fit_MongooseInputs */
@@ -689,6 +694,10 @@ export const deployment_alchemy_database = /** @type {(inputs: Deployment_Alchem
 	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · external database`)
 };
 
+export const deployment_cloud_run_database = /** @type {(inputs: Deployment_Cloud_Run_DatabaseInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Cloud Run service + migration job · external PostgreSQL`)
+};
+
 export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} image`)
 };
@@ -747,6 +756,14 @@ export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => Localiz
 
 export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`iOS and Android app on React Native, with Expo Router`)
+};
+
+export const desc_fly_machines = /** @type {(inputs: Desc_Fly_MachinesInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Deploy a stateless Node API to Fly Machines (preview)`)
+};
+
+export const desc_gcp_cloud_run = /** @type {(inputs: Desc_Gcp_Cloud_RunInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Deploy a standalone Node API to Google Cloud Run (preview)`)
 };
 
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
@@ -970,6 +987,14 @@ export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => Localized
 
 export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`For an iOS and Android app, beside the web app or on its own.`)
+};
+
+export const fit_fly_machines = /** @type {(inputs: Fit_Fly_MachinesInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Run a stateless API in a Fly.io region from a published image.`)
+};
+
+export const fit_gcp_cloud_run = /** @type {(inputs: Fit_Gcp_Cloud_RunInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`Serve a container over HTTPS on Google Cloud, optionally with an external PostgreSQL database.`)
 };
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
@@ -1685,7 +1710,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Node.js and Bun run server processes. Alchemy uses Cloudflare Workers; build tools still run on Node.js.`)
+	return /** @type {LocalizedString} */ (`Cloud Run and Fly Machines run Node.js containers. Cloudflare runs Workers. Docker can run Node.js or Bun.`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {

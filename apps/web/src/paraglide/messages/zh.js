@@ -69,6 +69,7 @@
 /** @typedef {{}} CurrentInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_AlchemyInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_Alchemy_DatabaseInputs */
+/** @typedef {{ name: NonNullable<unknown> }} Deployment_Cloud_Run_DatabaseInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_ImageInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MongodbInputs */
 /** @typedef {{ name: NonNullable<unknown> }} Deployment_MysqlInputs */
@@ -84,6 +85,8 @@
 /** @typedef {{}} Desc_Effect_RpcInputs */
 /** @typedef {{}} Desc_ElectronInputs */
 /** @typedef {{}} Desc_ExpoInputs */
+/** @typedef {{}} Desc_Fly_MachinesInputs */
+/** @typedef {{}} Desc_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Desc_HonoInputs */
 /** @typedef {{}} Desc_MongodbInputs */
 /** @typedef {{}} Desc_MongooseInputs */
@@ -139,6 +142,8 @@
 /** @typedef {{}} Fit_Effect_RpcInputs */
 /** @typedef {{}} Fit_ElectronInputs */
 /** @typedef {{}} Fit_ExpoInputs */
+/** @typedef {{}} Fit_Fly_MachinesInputs */
+/** @typedef {{}} Fit_Gcp_Cloud_RunInputs */
 /** @typedef {{}} Fit_HonoInputs */
 /** @typedef {{}} Fit_MongodbInputs */
 /** @typedef {{}} Fit_MongooseInputs */
@@ -688,6 +693,10 @@ export const deployment_alchemy_database = /** @type {(inputs: Deployment_Alchem
 	return /** @type {LocalizedString} */ (`${i?.name} · Worker + Hyperdrive · 外部数据库`)
 };
 
+export const deployment_cloud_run_database = /** @type {(inputs: Deployment_Cloud_Run_DatabaseInputs) => LocalizedString} */ (i) => {
+	return /** @type {LocalizedString} */ (`${i?.name} · Cloud Run 服务和迁移任务 · 外部 PostgreSQL`)
+};
+
 export const deployment_image = /** @type {(inputs: Deployment_ImageInputs) => LocalizedString} */ (i) => {
 	return /** @type {LocalizedString} */ (`${i?.name} 镜像`)
 };
@@ -746,6 +755,14 @@ export const desc_electron = /** @type {(inputs: Desc_ElectronInputs) => Localiz
 
 export const desc_expo = /** @type {(inputs: Desc_ExpoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`基于 React Native 的 iOS 与 Android 应用，使用 Expo Router`)
+};
+
+export const desc_fly_machines = /** @type {(inputs: Desc_Fly_MachinesInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`将无状态 Node API 部署到 Fly Machines（预览）`)
+};
+
+export const desc_gcp_cloud_run = /** @type {(inputs: Desc_Gcp_Cloud_RunInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`将独立 Node API 部署到 Google Cloud Run（预览）`)
 };
 
 export const desc_hono = /** @type {(inputs: Desc_HonoInputs) => LocalizedString} */ () => {
@@ -966,6 +983,14 @@ export const fit_electron = /** @type {(inputs: Fit_ElectronInputs) => Localized
 
 export const fit_expo = /** @type {(inputs: Fit_ExpoInputs) => LocalizedString} */ () => {
 	return /** @type {LocalizedString} */ (`适合 iOS 与 Android 应用，可与网页应用并存，也可单独使用`)
+};
+
+export const fit_fly_machines = /** @type {(inputs: Fit_Fly_MachinesInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`使用已发布的镜像，在指定的 Fly.io 区域运行无状态 API。`)
+};
+
+export const fit_gcp_cloud_run = /** @type {(inputs: Fit_Gcp_Cloud_RunInputs) => LocalizedString} */ () => {
+	return /** @type {LocalizedString} */ (`在 Google Cloud 上通过 HTTPS 提供容器服务，可连接外部 PostgreSQL。`)
 };
 
 export const fit_hono = /** @type {(inputs: Fit_HonoInputs) => LocalizedString} */ () => {
@@ -1677,7 +1702,7 @@ export const runs_in_electron = /** @type {(inputs: Runs_In_ElectronInputs) => L
 };
 
 export const runtime_about = /** @type {(inputs: Runtime_AboutInputs) => LocalizedString} */ () => {
-	return /** @type {LocalizedString} */ (`Node.js 和 Bun 运行服务进程；Alchemy 使用 Cloudflare Workers，构建工具仍运行于 Node.js。`)
+	return /** @type {LocalizedString} */ (`Cloud Run 和 Fly Machines 运行 Node.js 容器。Cloudflare 使用 Workers 运行时。Docker 可运行 Node.js 或 Bun。`)
 };
 
 export const runtime_none = /** @type {(inputs: Runtime_NoneInputs) => LocalizedString} */ () => {

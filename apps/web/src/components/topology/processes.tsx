@@ -18,10 +18,14 @@ import { m } from "#/paraglide/messages.js";
 const deploymentLabel = (stack: Stack, name: string) => {
   const { database } = stack;
 
-  if (stack.deployment === "alchemy") {
+  if (stack.deployment === "cloudflare-workers") {
     return database === undefined
       ? m.deployment_alchemy({ name })
       : m.deployment_alchemy_database({ name });
+  }
+
+  if (stack.deployment === "gcp-cloud-run" && database === "postgres") {
+    return m.deployment_cloud_run_database({ name });
   }
 
   if (database === "postgres") {

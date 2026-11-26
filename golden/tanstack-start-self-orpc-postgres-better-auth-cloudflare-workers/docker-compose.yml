@@ -1,0 +1,21 @@
+name: my-app
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: my_app
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d my_app"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+
+volumes:
+  db-data:

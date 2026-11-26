@@ -24,7 +24,7 @@ A **facet** is one thing `ready` exercises in an output (`coverage.ts`). A pass 
 Two classes stand outside the facets:
 
 - **Add-ons.** Each stack is verified with the default add-ons. Dropping an add-on removes only its own files, dependencies, presets, and checks (`addons.test.ts`), so the record stands for any subset of the defaults. An add-on that edits business files or the runtime must bring its own coverage.
-- **Docker.** A stack without a deployment differs from its Docker sibling by Docker's files alone (`deployment.test.ts`), so it reuses that sibling's snapshot and coverage. `ready` reads no Docker file, so Docker files and its deployment choice are no facets either. Alchemy changes runtime files, so only Alchemy stacks add `deployment=alchemy` choice facets; existing Docker and undeployed facets stay identical.
+- **Docker.** A stack without a deployment differs from its Docker sibling by Docker's files alone (`deployment.test.ts`), so it reuses that sibling's snapshot and coverage. `ready` reads no Docker file, so Docker files and its deployment choice are no facets either. Each cloud target adds its own deployment choice facet so a pass on one target cannot stand in for another.
 
 ## Running at scale
 

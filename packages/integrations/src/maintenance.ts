@@ -8,7 +8,14 @@ export const maintenanceFiles = (files: readonly GeneratedFile[]) =>
   files.filter(
     ({ path, owner }) =>
       owner === "docker" ||
-      (owner === "alchemy" &&
+      path === "DEPLOYMENT.md" ||
+      ((owner === "gcp-cloud-run" || owner === "fly-machines") &&
+        (path === "Dockerfile" ||
+          path === ".dockerignore" ||
+          path === "alchemy.run.ts" ||
+          path === "scripts/deploy.ts" ||
+          path.startsWith("infra/"))) ||
+      (owner === "cloudflare-workers" &&
         (path === "alchemy.run.ts" ||
           path.endsWith("/wrangler.jsonc") ||
           path.endsWith("/env.ts") ||

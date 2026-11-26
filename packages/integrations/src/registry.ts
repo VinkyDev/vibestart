@@ -1,9 +1,10 @@
 import { defineRegistry } from "@vibestart/core";
 
-import { alchemyDeployment } from "#/alchemy.ts";
 import { betterAuth } from "#/better-auth.ts";
 import { bun } from "#/bun.ts";
 import { catalog } from "#/catalog.ts";
+import { cloudRun, flyMachines } from "#/cloud-containers.ts";
+import { cloudflareWorkers } from "#/cloudflare-workers.ts";
 import { docker } from "#/docker.ts";
 import { drizzle } from "#/drizzle.ts";
 import { effectHttp } from "#/effect-http.ts";
@@ -95,7 +96,9 @@ export const registry = defineRegistry({
     bun,
     workers,
     docker,
-    alchemyDeployment,
+    cloudflareWorkers,
+    cloudRun,
+    flyMachines,
     playwrightTests,
     e2eTests,
   ],

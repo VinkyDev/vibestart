@@ -309,12 +309,47 @@ describe("project maintenance CLI", () => {
     }
   );
 
+  it.each(["gcp-cloud-run", "fly-machines"])(
+    "adds %s and its deployment guide to an existing API",
+    async (deployment) => {
+      const { cwd } = await fixture("pnpm", {
+        framework: null,
+        backend: "hono",
+        runtime: "node",
+        database: deployment === "gcp-cloud-run" ? "postgres" : null,
+        api: null,
+        auth: null,
+      });
+
+      const result = await run(
+        "add",
+        deployment,
+        "--cwd",
+        cwd,
+        "--yes",
+        "--no-install"
+      );
+
+      expect(result.output).toMatchObject({
+        ok: true,
+        status: "needs-install",
+      });
+      expect(readText(cwd, "Dockerfile")).toContain("dist/index.mjs");
+      expect(readText(cwd, "DEPLOYMENT.md")).toContain("DEPLOY_IMAGE");
+      expect(readText(cwd, "infra/image.ts")).toContain("DEPLOY_IMAGE");
+
+      expect(
+        readText(cwd, "infra/migration.ts")?.includes("--wait") ?? false
+      ).toBe(deployment === "gcp-cloud-run");
+    }
+  );
+
   it("adds Alchemy to a SPA without a server, whose runtime Alchemy then chooses", async () => {
     const { cwd } = await fixture("pnpm", { framework: "spa", backend: null });
 
     const result = await run(
       "add",
-      "alchemy",
+      "cloudflare-workers",
       "--cwd",
       cwd,
       "--yes",
@@ -325,7 +360,7 @@ describe("project maintenance CLI", () => {
     expect(
       projectSchema.parse(await loadRecipe(cwd)).blueprint.stack
     ).toMatchObject({
-      deployment: "alchemy",
+      deployment: "cloudflare-workers",
       runtime: "workers",
     });
     expect(readText(cwd, "alchemy.run.ts")).toContain(
@@ -344,7 +379,7 @@ describe("project maintenance CLI", () => {
 
     const result = await run(
       "add",
-      "alchemy",
+      "cloudflare-workers",
       "--cwd",
       cwd,
       "--yes",
@@ -353,7 +388,7 @@ describe("project maintenance CLI", () => {
 
     expect(result).toMatchObject({ exitCode: 1, output: { ok: false } });
     expect(result.output.error).toBe(
-      "Adding alchemy would replace node with workers; this needs an explicit migration."
+      "Adding cloudflare-workers would replace node with workers; this needs an explicit migration."
     );
     expect(readText(cwd, "vibestart.jsonc")).toBe(before);
   });

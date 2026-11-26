@@ -3,7 +3,7 @@ import { compose, defaultAddons, resolve } from "@vibestart/core";
 import { registry, stackLabel, verificationOf } from "@vibestart/integrations";
 
 import { addonsValue, kindFlag, none, noneLabel } from "#/options.ts";
-import { illegalStack } from "#/stack.ts";
+import { illegalStack, noninteractiveDefaults } from "#/stack.ts";
 
 export const listing = async (choices: Choices = {}) => {
   const resolution = resolve(registry, choices, { keep: ["mode"] });
@@ -13,6 +13,7 @@ export const listing = async (choices: Choices = {}) => {
   }
 
   const { stacks } = resolution;
+  const automatic = noninteractiveDefaults(choices);
   const defaults = compose(registry, choices);
 
   return {
@@ -26,22 +27,27 @@ export const listing = async (choices: Choices = {}) => {
         name,
       })
     ),
-    kinds: registry.kinds.map((kind) => ({
-      /** The option a stack gets when its kind is left open without prompts; `null` is none. */
-      default:
-        kind.default === undefined ? undefined : (defaults[kind.id] ?? null),
-      id: kind.id,
-      name: kind.name,
-      optional:
-        kind.optional && stacks.some((stack) => stack[kind.id] === undefined),
-      options: registry.integrations
-        .filter(
-          (integration) =>
-            integration.kind === kind.id &&
-            stacks.some((stack) => stack[kind.id] === integration.id)
-        )
-        .map(({ description, id, name }) => ({ description, id, name })),
-    })),
+    kinds: registry.kinds.map((kind) => {
+      const inferred =
+        choices[kind.id] === undefined ? automatic[kind.id] : undefined;
+
+      return {
+        /** The option a stack gets when its kind is left open without prompts; `null` is none. */
+        default:
+          kind.default === undefined ? inferred : (defaults[kind.id] ?? null),
+        id: kind.id,
+        name: kind.name,
+        optional:
+          kind.optional && stacks.some((stack) => stack[kind.id] === undefined),
+        options: registry.integrations
+          .filter(
+            (integration) =>
+              integration.kind === kind.id &&
+              stacks.some((stack) => stack[kind.id] === integration.id)
+          )
+          .map(({ description, id, name }) => ({ description, id, name })),
+      };
+    }),
     stacks: await Promise.all(
       stacks.map(async (stack) => {
         const verification = await verificationOf(

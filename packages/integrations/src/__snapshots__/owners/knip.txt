@@ -135,6 +135,23 @@
   }
 }
 
+# knip.json · 6 stacks
+#   hono-fly-machines
+#   hono-gcp-cloud-run
+#   hono-openapi-gcp-cloud-run
+#   hono-openapi-postgres-gcp-cloud-run
+#   hono-postgres-gcp-cloud-run
+#   solid-spa-ui-sdk-cloudflare-workers
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["alchemy.run.ts"],
+      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
+    }
+  }
+}
+
 # knip.json · 56 stacks
 #   hono-mysql-prisma-better-auth-bun-docker
 #   hono-mysql-prisma-better-auth-docker
@@ -550,7 +567,7 @@
 }
 
 # knip.json · 1 stack
-#   solid-spa-hono-ui-sdk-alchemy
+#   solid-spa-hono-ui-sdk-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -566,7 +583,7 @@
 }
 
 # knip.json · 1 stack
-#   solid-spa-hono-ui-sdk-alchemy-e2e
+#   solid-spa-hono-ui-sdk-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -589,19 +606,7 @@
 }
 
 # knip.json · 1 stack
-#   solid-spa-ui-sdk-alchemy
-{
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "workspaces": {
-    ".": {
-      "entry": ["alchemy.run.ts"],
-      "ignoreDependencies": ["@effect/platform-node", "@effect/platform-bun"]
-    }
-  }
-}
-
-# knip.json · 1 stack
-#   solid-spa-ui-sdk-alchemy-e2e
+#   solid-spa-ui-sdk-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -620,18 +625,18 @@
 }
 
 # knip.json · 12 stacks
-#   spa-alchemy
-#   spa-ui-sdk-alchemy
-#   tanstack-start-alchemy
-#   tanstack-start-self-mysql-alchemy
-#   tanstack-start-self-mysql-better-auth-alchemy
-#   tanstack-start-self-orpc-alchemy
-#   tanstack-start-self-orpc-mysql-alchemy
-#   tanstack-start-self-orpc-mysql-better-auth-alchemy
-#   tanstack-start-self-orpc-postgres-alchemy
-#   tanstack-start-self-orpc-postgres-better-auth-alchemy
-#   tanstack-start-self-postgres-alchemy
-#   tanstack-start-self-postgres-better-auth-alchemy
+#   spa-cloudflare-workers
+#   spa-ui-sdk-cloudflare-workers
+#   tanstack-start-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers
+#   tanstack-start-self-postgres-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -643,18 +648,18 @@
 }
 
 # knip.json · 12 stacks
-#   spa-alchemy-e2e
-#   spa-ui-sdk-alchemy-e2e
-#   tanstack-start-alchemy-e2e
-#   tanstack-start-self-mysql-alchemy-e2e
-#   tanstack-start-self-mysql-better-auth-alchemy-e2e
-#   tanstack-start-self-orpc-alchemy-e2e
-#   tanstack-start-self-orpc-mysql-alchemy-e2e
-#   tanstack-start-self-orpc-mysql-better-auth-alchemy-e2e
-#   tanstack-start-self-orpc-postgres-alchemy-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-alchemy-e2e
-#   tanstack-start-self-postgres-alchemy-e2e
-#   tanstack-start-self-postgres-better-auth-alchemy-e2e
+#   spa-cloudflare-workers-e2e
+#   spa-ui-sdk-cloudflare-workers-e2e
+#   tanstack-start-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1160,7 +1165,7 @@
 }
 
 # knip.json · 1 stack
-#   spa-electron-alchemy
+#   spa-electron-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1180,7 +1185,7 @@
 }
 
 # knip.json · 1 stack
-#   spa-electron-alchemy-e2e
+#   spa-electron-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1360,7 +1365,7 @@
 }
 
 # knip.json · 1 stack
-#   spa-electron-expo-alchemy
+#   spa-electron-expo-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1383,7 +1388,7 @@
 }
 
 # knip.json · 1 stack
-#   spa-electron-expo-alchemy-e2e
+#   spa-electron-expo-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1572,17 +1577,17 @@
 }
 
 # knip.json · 11 stacks
-#   spa-expo-alchemy
-#   tanstack-start-expo-alchemy
-#   tanstack-start-self-mysql-better-auth-expo-alchemy
-#   tanstack-start-self-mysql-expo-alchemy
-#   tanstack-start-self-orpc-expo-alchemy
-#   tanstack-start-self-orpc-mysql-better-auth-expo-alchemy
-#   tanstack-start-self-orpc-mysql-expo-alchemy
-#   tanstack-start-self-orpc-postgres-better-auth-expo-alchemy
-#   tanstack-start-self-orpc-postgres-expo-alchemy
-#   tanstack-start-self-postgres-better-auth-expo-alchemy
-#   tanstack-start-self-postgres-expo-alchemy
+#   spa-expo-cloudflare-workers
+#   tanstack-start-expo-cloudflare-workers
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers
+#   tanstack-start-self-postgres-expo-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1597,17 +1602,17 @@
 }
 
 # knip.json · 11 stacks
-#   spa-expo-alchemy-e2e
-#   tanstack-start-expo-alchemy-e2e
-#   tanstack-start-self-mysql-better-auth-expo-alchemy-e2e
-#   tanstack-start-self-mysql-expo-alchemy-e2e
-#   tanstack-start-self-orpc-expo-alchemy-e2e
-#   tanstack-start-self-orpc-mysql-better-auth-expo-alchemy-e2e
-#   tanstack-start-self-orpc-mysql-expo-alchemy-e2e
-#   tanstack-start-self-orpc-postgres-better-auth-expo-alchemy-e2e
-#   tanstack-start-self-orpc-postgres-expo-alchemy-e2e
-#   tanstack-start-self-postgres-better-auth-expo-alchemy-e2e
-#   tanstack-start-self-postgres-expo-alchemy-e2e
+#   spa-expo-cloudflare-workers-e2e
+#   tanstack-start-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-mysql-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-orpc-postgres-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-better-auth-expo-cloudflare-workers-e2e
+#   tanstack-start-self-postgres-expo-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1916,22 +1921,22 @@
 }
 
 # knip.json · 16 stacks
-#   spa-hono-alchemy
-#   spa-hono-mysql-alchemy
-#   spa-hono-mysql-better-auth-alchemy
-#   spa-hono-openapi-alchemy
-#   spa-hono-openapi-mysql-alchemy
-#   spa-hono-openapi-mysql-better-auth-alchemy
-#   spa-hono-openapi-postgres-alchemy
-#   spa-hono-openapi-postgres-better-auth-alchemy
-#   spa-hono-orpc-alchemy
-#   spa-hono-orpc-mysql-alchemy
-#   spa-hono-orpc-mysql-better-auth-alchemy
-#   spa-hono-orpc-postgres-alchemy
-#   spa-hono-orpc-postgres-better-auth-alchemy
-#   spa-hono-postgres-alchemy
-#   spa-hono-postgres-better-auth-alchemy
-#   spa-hono-ui-sdk-alchemy
+#   spa-hono-cloudflare-workers
+#   spa-hono-mysql-better-auth-cloudflare-workers
+#   spa-hono-mysql-cloudflare-workers
+#   spa-hono-openapi-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers
+#   spa-hono-openapi-mysql-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers
+#   spa-hono-openapi-postgres-cloudflare-workers
+#   spa-hono-orpc-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers
+#   spa-hono-orpc-mysql-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers
+#   spa-hono-orpc-postgres-cloudflare-workers
+#   spa-hono-postgres-better-auth-cloudflare-workers
+#   spa-hono-postgres-cloudflare-workers
+#   spa-hono-ui-sdk-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1947,22 +1952,22 @@
 }
 
 # knip.json · 16 stacks
-#   spa-hono-alchemy-e2e
-#   spa-hono-mysql-alchemy-e2e
-#   spa-hono-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-alchemy-e2e
-#   spa-hono-openapi-mysql-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-alchemy-e2e
-#   spa-hono-openapi-postgres-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-alchemy-e2e
-#   spa-hono-orpc-alchemy-e2e
-#   spa-hono-orpc-mysql-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-alchemy-e2e
-#   spa-hono-orpc-postgres-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-alchemy-e2e
-#   spa-hono-postgres-alchemy-e2e
-#   spa-hono-postgres-better-auth-alchemy-e2e
-#   spa-hono-ui-sdk-alchemy-e2e
+#   spa-hono-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-cloudflare-workers-e2e
+#   spa-hono-orpc-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-cloudflare-workers-e2e
+#   spa-hono-postgres-cloudflare-workers-e2e
+#   spa-hono-ui-sdk-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -1985,21 +1990,21 @@
 }
 
 # knip.json · 15 stacks
-#   spa-hono-electron-alchemy
-#   spa-hono-mysql-better-auth-electron-alchemy
-#   spa-hono-mysql-electron-alchemy
-#   spa-hono-openapi-electron-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy
-#   spa-hono-openapi-mysql-electron-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy
-#   spa-hono-openapi-postgres-electron-alchemy
-#   spa-hono-orpc-electron-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy
-#   spa-hono-orpc-mysql-electron-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy
-#   spa-hono-orpc-postgres-electron-alchemy
-#   spa-hono-postgres-better-auth-electron-alchemy
-#   spa-hono-postgres-electron-alchemy
+#   spa-hono-electron-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-cloudflare-workers
+#   spa-hono-orpc-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers
+#   spa-hono-postgres-electron-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -2023,21 +2028,21 @@
 }
 
 # knip.json · 15 stacks
-#   spa-hono-electron-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-alchemy-e2e
-#   spa-hono-orpc-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-alchemy-e2e
-#   spa-hono-postgres-electron-alchemy-e2e
+#   spa-hono-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -2068,21 +2073,21 @@
 }
 
 # knip.json · 15 stacks
-#   spa-hono-electron-expo-alchemy
-#   spa-hono-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-mysql-electron-expo-alchemy
-#   spa-hono-openapi-electron-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-mysql-electron-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-openapi-postgres-electron-expo-alchemy
-#   spa-hono-orpc-electron-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-mysql-electron-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-orpc-postgres-electron-expo-alchemy
-#   spa-hono-postgres-better-auth-electron-expo-alchemy
-#   spa-hono-postgres-electron-expo-alchemy
+#   spa-hono-electron-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers
+#   spa-hono-orpc-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers
+#   spa-hono-postgres-electron-expo-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -2109,21 +2114,21 @@
 }
 
 # knip.json · 15 stacks
-#   spa-hono-electron-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-electron-expo-alchemy-e2e
-#   spa-hono-orpc-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-electron-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-electron-expo-alchemy-e2e
-#   spa-hono-postgres-electron-expo-alchemy-e2e
+#   spa-hono-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-electron-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-electron-expo-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -2157,21 +2162,21 @@
 }
 
 # knip.json · 15 stacks
-#   spa-hono-expo-alchemy
-#   spa-hono-mysql-better-auth-expo-alchemy
-#   spa-hono-mysql-expo-alchemy
-#   spa-hono-openapi-expo-alchemy
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy
-#   spa-hono-openapi-mysql-expo-alchemy
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy
-#   spa-hono-openapi-postgres-expo-alchemy
-#   spa-hono-orpc-expo-alchemy
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy
-#   spa-hono-orpc-mysql-expo-alchemy
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy
-#   spa-hono-orpc-postgres-expo-alchemy
-#   spa-hono-postgres-better-auth-expo-alchemy
-#   spa-hono-postgres-expo-alchemy
+#   spa-hono-expo-cloudflare-workers
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-mysql-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-openapi-postgres-expo-cloudflare-workers
+#   spa-hono-orpc-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-mysql-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-orpc-postgres-expo-cloudflare-workers
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers
+#   spa-hono-postgres-expo-cloudflare-workers
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
@@ -2190,21 +2195,21 @@
 }
 
 # knip.json · 15 stacks
-#   spa-hono-expo-alchemy-e2e
-#   spa-hono-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-mysql-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-openapi-postgres-expo-alchemy-e2e
-#   spa-hono-orpc-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-mysql-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-orpc-postgres-expo-alchemy-e2e
-#   spa-hono-postgres-better-auth-expo-alchemy-e2e
-#   spa-hono-postgres-expo-alchemy-e2e
+#   spa-hono-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-openapi-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-mysql-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-orpc-postgres-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-better-auth-expo-cloudflare-workers-e2e
+#   spa-hono-postgres-expo-cloudflare-workers-e2e
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {

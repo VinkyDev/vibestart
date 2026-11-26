@@ -456,12 +456,16 @@ const renderProduction = (ctx: Context, read: ReadSlot) => {
   ].join("\n\n");
 };
 
+export const containerImageFiles = (ctx: Context) => [
+  renderFile("Dockerfile", (read) => renderDockerfile(ctx, read)),
+  renderFile(".dockerignore", renderDockerignore),
+];
+
 export const docker = defineIntegration({
   supportsAdd: true,
   contribute: (ctx) => [
-    renderFile("Dockerfile", (read) => renderDockerfile(ctx, read)),
+    ...containerImageFiles(ctx),
     renderFile("docker-compose.yml", (read) => renderCompose(ctx, read)),
-    renderFile(".dockerignore", renderDockerignore),
     contribute(readmeTagline, "Docker"),
     contribute(readmeLayers, { choice: deployChoice(ctx), layer: "Deploy" }),
     contribute(readmeSections, (read) => renderProduction(ctx, read)),
