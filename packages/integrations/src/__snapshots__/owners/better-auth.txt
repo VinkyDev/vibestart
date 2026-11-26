@@ -335,11 +335,11 @@
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { createMemo, createSignal, Errored, Loading, Show } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
 import { AccountMenu } from "@my-app/ui/components/account-menu";
 
-import { authClient, getSession } from "#src/lib/auth.ts";
+import { authClient, useSession } from "#src/lib/auth.ts";
 
 const signOut = async () => {
   const result = await authClient.signOut();
@@ -352,19 +352,35 @@ const signOut = async () => {
 };
 
 export const Account = () => {
-  const session = createMemo(async () => await getSession());
+  const session = useSession();
   const [error, setError] = createSignal("");
 
   return (
-    <Errored
-      fallback={(_error, reset) => (
-        <button type="button" onClick={reset}>
-          Retry session
-        </button>
-      )}
+    <Show
+      when={!session().isPending}
+      fallback={<output>Loading account…</output>}
     >
-      <Loading fallback={<span role="status">Loading account…</span>}>
-        <Show when={session()?.user} fallback={<a href="/login">Sign in</a>}>
+      <Show
+        when={!session().error}
+        fallback={
+          <button
+            type="button"
+            onClick={() => {
+              session()
+                .refetch()
+                .catch(() => {
+                  setError("Could not reach the server.");
+                });
+            }}
+          >
+            Retry session
+          </button>
+        }
+      >
+        <Show
+          when={session().data?.user}
+          fallback={<a href="/login">Sign in</a>}
+        >
           {(user) => (
             <AccountMenu
               name={user().name}
@@ -379,8 +395,8 @@ export const Account = () => {
         <Show when={error()}>
           <span role="alert">{error()}</span>
         </Show>
-      </Loading>
-    </Errored>
+      </Show>
+    </Show>
   );
 };
 
@@ -7100,20 +7116,17 @@ export const authClient = createAuthClient();
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { query } from "@solidjs/router";
 import { createAuthClient } from "better-auth/client";
+import { createMemo, from } from "solid-js";
 
 export const authClient = createAuthClient();
 
-export const getSession = query(async () => {
-  const { data, error } = await authClient.getSession();
+type SessionState = ReturnType<typeof authClient.useSession.get>;
 
-  if (error) {
-    throw new Error(error.message ?? error.statusText);
-  }
-
-  return data;
-}, "session");
+export const useSession = () =>
+  createMemo(() =>
+    from<SessionState>((next) => authClient.useSession.subscribe(next))
+  );
 
 # apps/web/src/lib/auth.ts · 704 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
@@ -8420,21 +8433,13 @@ export const getSession = createServerFn({ method: "GET" }).handler(
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker
 #   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { query, useLocation } from "@solidjs/router";
-import { redirect } from "@solidjs/web";
-import { createMemo, createSignal, Show } from "solid-js";
+import { useLocation } from "@solidjs/router";
+import { createSignal, Show } from "solid-js";
 
-import { authClient, getSession } from "#src/lib/auth.ts";
+import { authClient } from "#src/lib/auth.ts";
+import { SessionPage } from "#src/session-page.tsx";
 
 const defaultTarget = "/";
-
-const guest = query(async (target: string): Promise<boolean> => {
-  if (await getSession()) {
-    return redirect<boolean>(target);
-  }
-
-  return true;
-}, "login-guest");
 
 export const Login = () => {
   const location = useLocation();
@@ -8444,7 +8449,6 @@ export const Login = () => {
       ? "/"
       : defaultTarget;
 
-  const allowed = createMemo(async () => await guest(target()));
   const [name, setName] = createSignal("");
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
@@ -8484,7 +8488,7 @@ export const Login = () => {
   };
 
   return (
-    <Show when={allowed()}>
+    <SessionPage signedIn={false} redirectTo={target()}>
       <main class="mx-auto grid max-w-sm gap-4 px-6 py-12">
         <h1 class="text-3xl font-semibold">
           {register() ? "Create an account" : "Sign in"}
@@ -8561,7 +8565,7 @@ export const Login = () => {
           </button>
         </form>
       </main>
-    </Show>
+    </SessionPage>
   );
 };
 
@@ -8790,21 +8794,13 @@ export const Login = () => {
 #   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
 #   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-docker
 #   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { query, useLocation } from "@solidjs/router";
-import { redirect } from "@solidjs/web";
-import { createMemo, createSignal, Show } from "solid-js";
+import { useLocation } from "@solidjs/router";
+import { createSignal, Show } from "solid-js";
 
-import { authClient, getSession } from "#src/lib/auth.ts";
+import { authClient } from "#src/lib/auth.ts";
+import { SessionPage } from "#src/session-page.tsx";
 
 const defaultTarget = "/todos";
-
-const guest = query(async (target: string): Promise<boolean> => {
-  if (await getSession()) {
-    return redirect<boolean>(target);
-  }
-
-  return true;
-}, "login-guest");
 
 export const Login = () => {
   const location = useLocation();
@@ -8814,7 +8810,6 @@ export const Login = () => {
       ? "/"
       : defaultTarget;
 
-  const allowed = createMemo(async () => await guest(target()));
   const [name, setName] = createSignal("");
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
@@ -8854,7 +8849,7 @@ export const Login = () => {
   };
 
   return (
-    <Show when={allowed()}>
+    <SessionPage signedIn={false} redirectTo={target()}>
       <main class="mx-auto grid max-w-sm gap-4 px-6 py-12">
         <h1 class="text-3xl font-semibold">
           {register() ? "Create an account" : "Sign in"}
@@ -8931,7 +8926,7 @@ export const Login = () => {
           </button>
         </form>
       </main>
-    </Show>
+    </SessionPage>
   );
 };
 
@@ -9160,30 +9155,14 @@ export const Login = () => {
 #   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
 #   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-docker
 #   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
-import { query } from "@solidjs/router";
-import { redirect } from "@solidjs/web";
-import { createMemo, Show } from "solid-js";
-
-import { getSession } from "#src/lib/auth.ts";
+import { SessionPage } from "#src/session-page.tsx";
 import { Todos } from "#src/todos.tsx";
 
-const requireSession = query(async (): Promise<boolean> => {
-  if (!(await getSession())) {
-    return redirect<boolean>("/login?redirect=%2Ftodos");
-  }
-
-  return true;
-}, "todos-session");
-
-export const ProtectedTodos = () => {
-  const allowed = createMemo(async () => await requireSession());
-
-  return (
-    <Show when={allowed()}>
-      <Todos />
-    </Show>
-  );
-};
+export const ProtectedTodos = () => (
+  <SessionPage signedIn redirectTo="/login?redirect=%2Ftodos">
+    <Todos />
+  </SessionPage>
+);
 
 # apps/web/src/routes/_authenticated.tsx · 32 stacks
 #   spa-effect-http-effect-rpc-postgres-better-auth-docker
@@ -12647,6 +12626,394 @@ export const getSession = cache(async () => {
 
   return await getServices().auth.api.getSession({ headers: requestHeaders });
 });
+
+# apps/web/src/session-page.tsx · 336 stacks
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-mongodb-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-mysql-better-auth-ui-sdk-workers
+#   solid-spa-hono-mysql-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-mysql-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-openapi-mongodb-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-workers
+#   solid-spa-hono-openapi-mysql-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-openapi-mysql-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-workers
+#   solid-spa-hono-openapi-postgres-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-openapi-postgres-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-openapi-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-orpc-mongodb-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-workers
+#   solid-spa-hono-orpc-mysql-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-orpc-mysql-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-workers
+#   solid-spa-hono-orpc-postgres-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-orpc-postgres-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-orpc-sqlite-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-expo-workers-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-electron-workers-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-expo-workers-e2e
+#   solid-spa-hono-postgres-better-auth-ui-sdk-workers
+#   solid-spa-hono-postgres-better-auth-ui-sdk-workers-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-postgres-prisma-better-auth-ui-sdk-expo-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-electron-expo-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-bun-docker-e2e
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker
+#   solid-spa-hono-sqlite-better-auth-ui-sdk-expo-docker-e2e
+import { useNavigate } from "@solidjs/router";
+import type { JSX } from "@solidjs/web";
+import { createMemo, Show, untrack } from "solid-js";
+
+import { authClient, useSession } from "#src/lib/auth.ts";
+
+const Redirect = (props: { to: string }) => {
+  const navigate = useNavigate();
+  navigate(
+    untrack(() => props.to),
+    { replace: true }
+  );
+
+  return null;
+};
+
+export const SessionPage = (props: {
+  signedIn: boolean;
+  redirectTo: string;
+  children: JSX.Element;
+}) => {
+  const session = useSession();
+
+  const checked = createMemo(async () => {
+    await authClient.useSession.get().refetch();
+
+    return true;
+  });
+
+  const viewer = () => {
+    const { data, error } = session();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return props.signedIn ? data?.user.id : !data;
+  };
+
+  return (
+    <Show
+      when={checked() && !session().isPending}
+      fallback={<output>Checking session…</output>}
+    >
+      <Show keyed when={viewer()} fallback={<Redirect to={props.redirectTo} />}>
+        {(_viewer) => props.children}
+      </Show>
+    </Show>
+  );
+};
 
 # packages/auth/src/index.ts · 90 stacks
 #   hono-mongodb-better-auth-bun-docker

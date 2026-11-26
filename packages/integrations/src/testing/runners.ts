@@ -1,9 +1,15 @@
 import type { Context, Contribution } from "@vibestart/core";
 import { contribute, file } from "@vibestart/core";
 
-import { chosenDatabase, isSpa } from "#/app.ts";
+import {
+  chosenDatabase,
+  hasBackend,
+  isSpa,
+  rpcPath,
+  todosExample,
+} from "#/app.ts";
 import { knipEntries } from "#/knip.ts";
-import { templateContent, templateFiles } from "#/templates.ts";
+import { replaceOnce, templateContent, templateFiles } from "#/templates.ts";
 import { ignoredFiles, readmeCommandNotes } from "#/vite-plus/slots.ts";
 
 export interface BrowserRunner {
@@ -30,10 +36,40 @@ export const browserJourney = (ctx: Context, set: string) => {
   );
 };
 
+const solidJourneys = (ctx: Context, runner: string) => {
+  if (!ctx.has("solid")) {
+    return [];
+  }
+
+  const root = `testing/${runner}`;
+  const path = "apps/web/tests/e2e/pending.e2e.ts";
+  const health = ctx.has("orpc") ? `${rpcPath(ctx)}/health` : "/api/health";
+
+  return [
+    ...templateFiles(ctx, `${root}/solid`),
+    ...(hasBackend(ctx)
+      ? [
+          file(
+            path,
+            replaceOnce(
+              templateContent(ctx, `${root}/solid-server`, path),
+              "/api/health",
+              health,
+              `${root}/solid-server/${path}`
+            )
+          ),
+        ]
+      : []),
+    ...(ctx.has("better-auth") && todosExample(ctx)
+      ? templateFiles(ctx, `${root}/solid-auth`)
+      : []),
+  ];
+};
+
 export const playwright: BrowserRunner = {
   command: "playwright test",
   contribute: (ctx) => [
-    ...(ctx.has("solid") ? templateFiles(ctx, "testing/playwright/solid") : []),
+    ...solidJourneys(ctx, "playwright"),
     ...templateFiles(ctx, "testing/playwright/runner", {
       except: ctx.has("effect") ? ["apps/web/tests/e2e/global-setup.ts"] : [],
     }),
@@ -74,7 +110,7 @@ const e2eConfig = (ctx: Context) => {
 export const e2e: BrowserRunner = {
   command: "e2e run",
   contribute: (ctx) => [
-    ...(ctx.has("solid") ? templateFiles(ctx, "testing/e2e/solid") : []),
+    ...solidJourneys(ctx, "e2e"),
     e2eConfig(ctx),
     ...templateFiles(ctx, "testing/e2e/runner", {
       except: [

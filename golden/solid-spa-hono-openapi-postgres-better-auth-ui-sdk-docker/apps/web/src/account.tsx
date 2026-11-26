@@ -1,8 +1,8 @@
-import { createMemo, createSignal, Errored, Loading, Show } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
 import { AccountMenu } from "@my-app/ui/components/account-menu";
 
-import { authClient, getSession } from "#src/lib/auth.ts";
+import { authClient, useSession } from "#src/lib/auth.ts";
 
 const signOut = async () => {
   const result = await authClient.signOut();
@@ -15,19 +15,35 @@ const signOut = async () => {
 };
 
 export const Account = () => {
-  const session = createMemo(async () => await getSession());
+  const session = useSession();
   const [error, setError] = createSignal("");
 
   return (
-    <Errored
-      fallback={(_error, reset) => (
-        <button type="button" onClick={reset}>
-          Retry session
-        </button>
-      )}
+    <Show
+      when={!session().isPending}
+      fallback={<output>Loading account…</output>}
     >
-      <Loading fallback={<span role="status">Loading account…</span>}>
-        <Show when={session()?.user} fallback={<a href="/login">Sign in</a>}>
+      <Show
+        when={!session().error}
+        fallback={
+          <button
+            type="button"
+            onClick={() => {
+              session()
+                .refetch()
+                .catch(() => {
+                  setError("Could not reach the server.");
+                });
+            }}
+          >
+            Retry session
+          </button>
+        }
+      >
+        <Show
+          when={session().data?.user}
+          fallback={<a href="/login">Sign in</a>}
+        >
           {(user) => (
             <AccountMenu
               name={user().name}
@@ -42,7 +58,7 @@ export const Account = () => {
         <Show when={error()}>
           <span role="alert">{error()}</span>
         </Show>
-      </Loading>
-    </Errored>
+      </Show>
+    </Show>
   );
 };

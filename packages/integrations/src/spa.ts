@@ -49,14 +49,21 @@ const flow = (ctx: Context) => {
   return `\`vp run dev\` serves the web app on :5173 and the API on :3000. Request flow: \`apps/web\`${client} → \`/api/*\` → \`packages/api\` route${databaseFlow(ctx)}.`;
 };
 
+const workersHosting =
+  "Cloudflare serves the SPA through Workers Static Assets and routes /api requests to Hono";
+
 const requestFlow = (ctx: Context) => {
   if (!hasBackend(ctx)) {
     return "`vp run dev` serves the app on :5173. `vp run build` writes static files to `apps/web/dist`; there is no server.";
   }
 
+  const host = ctx.has("workers")
+    ? workersHosting
+    : "the server serves the SPA itself";
+
   return ctx.has("better-auth")
-    ? `${flow(ctx)} In development Vite proxies ${proxied(ctx)} (including \`/api/auth\`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: \`BETTER_AUTH_URL\` is the browser-facing origin (\`http://localhost:5173\` in development), and Better Auth rejects auth requests whose \`Origin\` differs from it.`
-    : `${flow(ctx)} In development Vite proxies ${proxied(ctx)} to the server; in production the server serves the SPA itself, so everything is same-origin.`;
+    ? `${flow(ctx)} In development Vite proxies ${proxied(ctx)} (including \`/api/auth\`) to the server; in production ${host}. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: \`BETTER_AUTH_URL\` is the browser-facing origin (\`http://localhost:5173\` in development), and Better Auth rejects auth requests whose \`Origin\` differs from it.`
+    : `${flow(ctx)} In development Vite proxies ${proxied(ctx)} to the server; in production ${host}, so everything is same-origin.`;
 };
 
 const open = (ctx: Context) => {
@@ -72,7 +79,7 @@ const open = (ctx: Context) => {
   return ctx.has("better-auth")
     ? [
         `Open http://localhost:5173 and create an account.${docs}`,
-        `The browser always talks to one origin: in development Vite proxies ${proxied(ctx)} to the server, in production the server serves the SPA. Session cookies therefore stay first-party and no CORS is configured. \`BETTER_AUTH_URL\` is that browser-facing origin (\`http://localhost:5173\` in development), not the server's own port.`,
+        `The browser always talks to one origin: in development Vite proxies ${proxied(ctx)} to the server, in production ${ctx.has("workers") ? workersHosting : "the server serves the SPA"}. Session cookies therefore stay first-party and no CORS is configured. \`BETTER_AUTH_URL\` is that browser-facing origin (\`http://localhost:5173\` in development), not the server's own port.`,
       ]
     : [`Open http://localhost:5173.${docs}`];
 };

@@ -1,18 +1,10 @@
-import { query, useLocation } from "@solidjs/router";
-import { redirect } from "@solidjs/web";
-import { createMemo, createSignal, Show } from "solid-js";
+import { useLocation } from "@solidjs/router";
+import { createSignal, Show } from "solid-js";
 
-import { authClient, getSession } from "#src/lib/auth.ts";
+import { authClient } from "#src/lib/auth.ts";
+import { SessionPage } from "#src/session-page.tsx";
 
 const defaultTarget = "/todos";
-
-const guest = query(async (target: string): Promise<boolean> => {
-  if (await getSession()) {
-    return redirect<boolean>(target);
-  }
-
-  return true;
-}, "login-guest");
 
 export const Login = () => {
   const location = useLocation();
@@ -22,7 +14,6 @@ export const Login = () => {
       ? "/"
       : defaultTarget;
 
-  const allowed = createMemo(async () => await guest(target()));
   const [name, setName] = createSignal("");
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
@@ -62,7 +53,7 @@ export const Login = () => {
   };
 
   return (
-    <Show when={allowed()}>
+    <SessionPage signedIn={false} redirectTo={target()}>
       <main class="mx-auto grid max-w-sm gap-4 px-6 py-12">
         <h1 class="text-3xl font-semibold">
           {register() ? "Create an account" : "Sign in"}
@@ -139,6 +130,6 @@ export const Login = () => {
           </button>
         </form>
       </main>
-    </Show>
+    </SessionPage>
   );
 };

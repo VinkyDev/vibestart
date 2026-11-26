@@ -75,7 +75,7 @@ release. Add a tool name to select part of the graph. For example, run
 | `packages/ui`     | shadcn/ui components (Base UI), Tailwind theme in `src/styles/globals.css`                                                          |
 | `packages/config` | Shared TypeScript presets                                                                                                           |
 
-`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` → `api.*` (`src/lib/api.ts`) → `/api/*` → `packages/api` route → Drizzle → MySQL. In development Vite proxies `/api` (including `/api/auth`) to the server; in production the server serves the SPA itself. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
+`vp run dev` serves the web app on :5173 and the API on :3000. Request flow: `apps/web` → `api.*` (`src/lib/api.ts`) → `/api/*` → `packages/api` route → Drizzle → MySQL. In development Vite proxies `/api` (including `/api/auth`) to the server; in production Cloudflare serves the SPA through Workers Static Assets and routes /api requests to Hono. The browser only ever sees one origin, so session cookies are first-party and there is no CORS configuration. Keep it that way: `BETTER_AUTH_URL` is the browser-facing origin (`http://localhost:5173` in development), and Better Auth rejects auth requests whose `Origin` differs from it.
 
 ## Conventions
 

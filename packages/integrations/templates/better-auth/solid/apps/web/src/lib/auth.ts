@@ -1,14 +1,11 @@
-import { query } from "@solidjs/router";
 import { createAuthClient } from "better-auth/client";
+import { createMemo, from } from "solid-js";
 
 export const authClient = createAuthClient();
 
-export const getSession = query(async () => {
-  const { data, error } = await authClient.getSession();
+type SessionState = ReturnType<typeof authClient.useSession.get>;
 
-  if (error) {
-    throw new Error(error.message ?? error.statusText);
-  }
-
-  return data;
-}, "session");
+export const useSession = () =>
+  createMemo(() =>
+    from<SessionState>((next) => authClient.useSession.subscribe(next))
+  );
