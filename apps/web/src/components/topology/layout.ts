@@ -224,7 +224,7 @@ export const processBoxes = (stack: Stack): ProcessBox[] => {
 
   if (framework !== undefined) {
     const self = stack.backend === "self";
-    const browser = framework.id === "spa";
+    const browser = framework.provides.includes("single-page-app");
     boxes.push({
       deployed: true,
       group: "framework",

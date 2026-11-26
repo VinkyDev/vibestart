@@ -1,0 +1,183 @@
+# apps/web/index.html · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my-app</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+# apps/web/src/api-status.tsx · 4 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+import { createMemo } from "solid-js";
+
+const checkHealth = async () => {
+  try {
+    const response = await fetch("/api/health");
+
+    return response.ok ? "API connected" : "API unreachable";
+  } catch {
+    return "API unreachable";
+  }
+};
+
+export const ApiStatus = () => {
+  const status = createMemo(checkHealth);
+
+  return <output>{status()}</output>;
+};
+
+# apps/web/src/home.tsx · 4 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+import { ApiStatus } from "#src/api-status.tsx";
+
+export const Home = () => (
+  <main class="mx-auto grid max-w-3xl gap-4 px-6 py-16">
+    <h1 class="text-4xl font-semibold">my-app</h1>
+    <p>Solid 2 and UI SDK on Vite+.</p>
+    <ApiStatus />
+  </main>
+);
+
+# apps/web/src/home.tsx · 2 stacks
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+export const Home = () => (
+  <main class="mx-auto grid max-w-3xl gap-4 px-6 py-16">
+    <h1 class="text-4xl font-semibold">my-app</h1>
+    <p>Solid 2 and UI SDK on Vite+.</p>
+  </main>
+);
+
+# apps/web/src/main.tsx · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+import { render } from "@solidjs/web";
+import { Loading } from "solid-js";
+
+import { ThemeMenu } from "@my-app/ui/components/theme-menu";
+import "@my-app/ui/globals.css";
+
+import { Router } from "#src/router.tsx";
+
+const App = () => (
+  <Router>
+    {(route) => (
+      <>
+        <header class="flex justify-between border-b p-4">
+          <nav class="flex gap-4">
+            <a href={Router.paths()}>Home</a>
+            <a href={Router.paths.about()}>About</a>
+          </nav>
+          <ThemeMenu />
+        </header>
+        <Loading fallback={<output>Loading…</output>}>{route.children}</Loading>
+      </>
+    )}
+  </Router>
+);
+
+const root = document.querySelector("#root");
+
+if (!root) {
+  throw new Error("Missing #root element");
+}
+
+render(App, root);
+
+# apps/web/tsconfig.app.json · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "extends": "@my-app/config/typescript/solid.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
+  },
+  "include": ["src"]
+}
+
+# apps/web/tsconfig.json · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+
+# apps/web/tsconfig.node.json · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "extends": "@my-app/config/typescript/node.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
+  },
+  "include": ["*.config.ts", "tests"]
+}
+
+# apps/web/vite.config.ts · 4 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+import solid from "@solidjs/vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig, loadEnv } from "vite-plus";
+
+export default defineConfig(({ mode }) => ({
+  plugins: [solid(), tailwindcss()],
+  server: {
+    proxy: {
+      "/api":
+        loadEnv(mode, import.meta.dirname, "").SERVER_URL ??
+        "http://localhost:3000",
+    },
+  },
+}));
+
+# apps/web/vite.config.ts · 2 stacks
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+import solid from "@solidjs/vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite-plus";
+
+export default defineConfig({
+  plugins: [solid(), tailwindcss()],
+});

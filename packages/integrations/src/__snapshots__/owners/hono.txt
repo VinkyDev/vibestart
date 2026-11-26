@@ -1,4 +1,4 @@
-# apps/server/src/app.ts · 40 stacks
+# apps/server/src/app.ts · 44 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
@@ -11,6 +11,10 @@
 #   next-hono-expo-bun-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-docker
@@ -3594,7 +3598,7 @@ export const withServices = async (
   }
 };
 
-# apps/server/src/env.ts · 64 stacks
+# apps/server/src/env.ts · 68 stacks
 #   hono-bun-docker
 #   hono-docker
 #   hono-expo-bun-docker
@@ -3607,6 +3611,10 @@ export const withServices = async (
 #   hono-orpc-docker
 #   hono-orpc-expo-bun-docker
 #   hono-orpc-expo-docker
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-docker
@@ -6222,7 +6230,9 @@ await once(server, "close");
 
 db.$client.close();
 
-# apps/server/src/index.ts · 26 stacks
+# apps/server/src/index.ts · 28 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-electron-bun-docker
@@ -6276,7 +6286,9 @@ await Promise.race([once(process, "SIGINT"), once(process, "SIGTERM")]);
 
 await server.stop();
 
-# apps/server/src/index.ts · 26 stacks
+# apps/server/src/index.ts · 28 stacks
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
 #   spa-hono-docker
 #   spa-hono-docker-e2e
 #   spa-hono-electron-docker
@@ -8196,7 +8208,7 @@ export const createRpc = ({ db }: Services) => {
   };
 };
 
-# apps/server/tsconfig.json · 704 stacks
+# apps/server/tsconfig.json · 706 stacks
 #   hono-bun-docker
 #   hono-expo-bun-docker
 #   hono-mongodb-better-auth-bun-docker
@@ -8431,6 +8443,8 @@ export const createRpc = ({ db }: Services) => {
 #   next-hono-sqlite-bun-docker-e2e
 #   next-hono-sqlite-expo-bun-docker
 #   next-hono-sqlite-expo-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-electron-bun-docker
@@ -8907,7 +8921,7 @@ export const createRpc = ({ db }: Services) => {
   "include": ["src", "vite.config.ts"]
 }
 
-# apps/server/tsconfig.json · 704 stacks
+# apps/server/tsconfig.json · 706 stacks
 #   hono-docker
 #   hono-expo-docker
 #   hono-mongodb-better-auth-docker
@@ -9142,6 +9156,8 @@ export const createRpc = ({ db }: Services) => {
 #   next-hono-sqlite-docker-e2e
 #   next-hono-sqlite-expo-docker
 #   next-hono-sqlite-expo-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
 #   spa-hono-docker
 #   spa-hono-docker-e2e
 #   spa-hono-electron-docker
@@ -10021,7 +10037,7 @@ export const createRpc = ({ db }: Services) => {
   "exclude": ["src/migrate.ts", "src/node-env.ts", "src/**/*.test.ts"]
 }
 
-# apps/server/vite.config.ts · 56 stacks
+# apps/server/vite.config.ts · 58 stacks
 #   hono-bun-docker
 #   hono-expo-bun-docker
 #   hono-openapi-bun-docker
@@ -10040,6 +10056,8 @@ export const createRpc = ({ db }: Services) => {
 #   next-hono-orpc-bun-docker-e2e
 #   next-hono-orpc-expo-bun-docker
 #   next-hono-orpc-expo-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
 #   spa-hono-bun-docker
 #   spa-hono-bun-docker-e2e
 #   spa-hono-electron-bun-docker
@@ -10087,7 +10105,7 @@ export default defineConfig({
   },
 });
 
-# apps/server/vite.config.ts · 56 stacks
+# apps/server/vite.config.ts · 58 stacks
 #   hono-docker
 #   hono-expo-docker
 #   hono-openapi-docker
@@ -10106,6 +10124,8 @@ export default defineConfig({
 #   next-hono-orpc-docker-e2e
 #   next-hono-orpc-expo-docker
 #   next-hono-orpc-expo-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
 #   spa-hono-docker
 #   spa-hono-docker-e2e
 #   spa-hono-electron-docker

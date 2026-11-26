@@ -12,6 +12,7 @@ import {
   exampleVariant,
   hasBackend,
   hasWebApp,
+  isSpa,
   rpcPath,
   serverApp,
   chosenDatabase,
@@ -123,7 +124,7 @@ const frontServer = (ctx: Context) => {
     return "`next dev` in its own `.next-test-<port>`, beside any running dev server";
   }
 
-  return ctx.has("spa") && ctx.has("hono") ? "Vite" : "`vp dev`";
+  return isSpa(ctx) && ctx.has("hono") ? "Vite" : "`vp dev`";
 };
 
 const e2eStack = (ctx: Context) => {

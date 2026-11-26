@@ -213,6 +213,13 @@ export const cap_single_page_app: ((inputs?: Cap_Single_Page_AppInputs, options?
 /**
 * | output |
 * | --- |
+* | "Solid 2" |
+*
+*/
+export const cap_solid: ((inputs?: Cap_SolidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Cap_SolidInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "a SQL database" |
 *
 */
@@ -675,6 +682,27 @@ export const desc_shadcn: ((inputs?: Desc_ShadcnInputs, options?: { locale?: "en
 /**
 * | output |
 * | --- |
+* | "Fine-grained reactive components with Solid 2" |
+*
+*/
+export const desc_solid: ((inputs?: Desc_SolidInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_SolidInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Typed client-side routing for Solid 2" |
+*
+*/
+export const desc_solid_router: ((inputs?: Desc_Solid_RouterInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Solid_RouterInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "Client-rendered Solid app built with Vite" |
+*
+*/
+export const desc_solid_spa: ((inputs?: Desc_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Desc_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
 * | "Client-rendered React app built with Vite" |
 *
 */
@@ -1072,6 +1100,13 @@ export const fit_prisma: ((inputs?: Fit_PrismaInputs, options?: { locale?: "en" 
 *
 */
 export const fit_self: ((inputs?: Fit_SelfInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_SelfInputs, { locale?: "en" | "zh" }, {}>;
+/**
+* | output |
+* | --- |
+* | "For a Solid 2 SPA with typed routes and UI SDK components." |
+*
+*/
+export const fit_solid_spa: ((inputs?: Fit_Solid_SpaInputs, options?: { locale?: "en" | "zh" }) => LocalizedString) & __ParaglideMessageMetadata<Fit_Solid_SpaInputs, { locale?: "en" | "zh" }, {}>;
 /**
 * | output |
 * | --- |
@@ -2835,6 +2870,7 @@ export type Cap_ReactInputs = {};
 export type Cap_RouterInputs = {};
 export type Cap_RpcInputs = {};
 export type Cap_Single_Page_AppInputs = {};
+export type Cap_SolidInputs = {};
 export type Cap_Sql_DatabaseInputs = {};
 export type Cap_Sql_OrmInputs = {};
 export type Cap_Ui_ComponentsInputs = {};
@@ -2901,6 +2937,9 @@ export type Desc_PrismaInputs = {};
 export type Desc_ReactInputs = {};
 export type Desc_SelfInputs = {};
 export type Desc_ShadcnInputs = {};
+export type Desc_SolidInputs = {};
+export type Desc_Solid_RouterInputs = {};
+export type Desc_Solid_SpaInputs = {};
 export type Desc_SpaInputs = {};
 export type Desc_SqliteInputs = {};
 export type Desc_StandardInputs = {};
@@ -2958,6 +2997,7 @@ export type Fit_OrpcInputs = {};
 export type Fit_PostgresInputs = {};
 export type Fit_PrismaInputs = {};
 export type Fit_SelfInputs = {};
+export type Fit_Solid_SpaInputs = {};
 export type Fit_SpaInputs = {};
 export type Fit_SqliteInputs = {};
 export type Fit_Tanstack_StartInputs = {};

@@ -11,6 +11,7 @@ import {
   databaseName,
   hasBackend,
   hasWebApp,
+  isSpa,
   proxiesToHono,
   chosenDatabase,
   serverApp,
@@ -319,7 +320,7 @@ const deployChoice = (ctx: Context) => {
 };
 
 const serverServes = (ctx: Context, routes: readonly string[]) => {
-  if (ctx.has("spa")) {
+  if (isSpa(ctx)) {
     return [...routes, "the SPA"];
   }
 
@@ -327,7 +328,7 @@ const serverServes = (ctx: Context, routes: readonly string[]) => {
 };
 
 const appServed = (ctx: Context) => {
-  if (ctx.has("spa")) {
+  if (isSpa(ctx)) {
     return "the API and the web app";
   }
 

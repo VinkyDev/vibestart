@@ -33,6 +33,10 @@ export const catalog = {
     vitest: "5.1.1",
   },
   web: {
+    "solid-js": "2.0.4",
+    "@solidjs/web": "2.0.4",
+    "@solidjs/router": "2.0.1",
+    "@solidjs/vite-plugin": "3.0.1",
     "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/vite": "^4.3.5",
     "@tanstack/react-query": "^5.108.4",
@@ -57,6 +61,7 @@ export const catalog = {
     tailwindcss: "^4.3.5",
   },
   ui: {
+    "@ui-sdk/solid": "0.1.0-beta.17",
     "@ui-sdk/core": "0.1.0-beta.17",
     "@ui-sdk/react": "0.1.0-beta.17",
     "@base-ui/react": "^1.9.0",

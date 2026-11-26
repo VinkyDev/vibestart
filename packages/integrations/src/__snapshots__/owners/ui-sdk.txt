@@ -56,6 +56,57 @@ export const Spinner = () => (
   </output>
 );
 
+# packages/ui/src/components/theme-menu.tsx · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+import { createLocalStorage } from "@ui-sdk/core";
+import {
+  Menu,
+  MenuContent,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+} from "@ui-sdk/solid/menu";
+import { createSignal } from "solid-js";
+
+const applyTheme = (value: string) => {
+  document.documentElement.classList.toggle("dark", value === "dark");
+};
+
+export const ThemeMenu = () => {
+  const storage = createLocalStorage("theme");
+  const initial = storage.get() ?? "light";
+  const [theme, setTheme] = createSignal(initial);
+
+  applyTheme(initial);
+
+  return (
+    <Menu>
+      <MenuTrigger class="rounded-md border px-3 py-1">
+        Toggle theme
+      </MenuTrigger>
+      <MenuContent class="bg-background text-foreground z-50 rounded-lg border p-1 shadow-lg">
+        <MenuRadioGroup
+          name="Theme"
+          value={theme()}
+          onValueChange={(value) => {
+            setTheme(value);
+            storage.set(value);
+            applyTheme(value);
+          }}
+        >
+          <MenuRadioItem value="light">Light</MenuRadioItem>
+          <MenuRadioItem value="dark">Dark</MenuRadioItem>
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  );
+};
+
 # packages/ui/src/components/theme-menu.tsx · 10 stacks
 #   spa-hono-ui-sdk-bun-docker
 #   spa-hono-ui-sdk-bun-docker-e2e
@@ -117,7 +168,13 @@ export const ThemeMenu = ({
 #   spa-ui-sdk-void-e2e
 export { cn } from "cn";
 
-# packages/ui/src/styles/globals.css · 10 stacks
+# packages/ui/src/styles/globals.css · 16 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
 #   spa-hono-ui-sdk-bun-docker
 #   spa-hono-ui-sdk-bun-docker-e2e
 #   spa-hono-ui-sdk-docker
@@ -168,6 +225,18 @@ export { cn } from "cn";
   body {
     @apply bg-background text-foreground;
   }
+}
+
+# packages/ui/tsconfig.json · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "extends": "@my-app/config/typescript/solid.json",
+  "include": ["src"]
 }
 
 # packages/ui/tsconfig.json · 10 stacks

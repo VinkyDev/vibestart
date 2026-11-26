@@ -69,7 +69,7 @@ VibeStart 不托管你的应用，不迁移生产数据，也不隐藏代码。�
 | 层级           | 选择                                                                                            |
 | -------------- | ----------------------------------------------------------------------------------------------- |
 | 模式           | Standard（默认）或 [Effect](https://vibestart.net/zh/docs/stack/effect)（`--mode effect`）      |
-| 应用           | React SPA（TanStack Router）、TanStack Start、Next.js                                           |
+| 应用           | React SPA（TanStack Router）、Solid 2 SPA（Solid Router）、TanStack Start、Next.js              |
 | 桌面端         | Electron                                                                                        |
 | 移动端         | Expo（React Native），iOS 与 Android                                                            |
 | 后端           | Hono、Effect HTTP，或框架自带服务                                                               |

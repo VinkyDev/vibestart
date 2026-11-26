@@ -27,6 +27,8 @@ export const chosenDatabase = (ctx: Context) =>
 
 export const databaseName = (ctx: Context) => chosenDatabase(ctx).name;
 
+export const isSpa = (ctx: Context) => ctx.has("spa") || ctx.has("solid-spa");
+
 export const hasWebApp = (ctx: Context) => ctx.stack.framework !== undefined;
 
 /** `lazy`: Next.js imports every route during `next build` without runtime variables, so `env.ts` exports `readEnv()`. */
@@ -61,7 +63,7 @@ export const serverApp = (ctx: Context) => {
 };
 
 export const devOrigin = (ctx: Context) =>
-  ctx.has("spa") ? "http://localhost:5173" : "http://localhost:3000";
+  isSpa(ctx) ? "http://localhost:5173" : "http://localhost:3000";
 
 export interface EnvVariable {
   name: string;
@@ -188,7 +190,7 @@ export const serverPaths = (ctx: Context) =>
     : ["/api"];
 
 export const proxiesToHono = (ctx: Context) =>
-  ctx.has("hono") && hasWebApp(ctx) && !ctx.has("spa");
+  ctx.has("hono") && hasWebApp(ctx) && !isSpa(ctx);
 
 export const serverUrl: EnvVariable = {
   example: "http://localhost:3001",

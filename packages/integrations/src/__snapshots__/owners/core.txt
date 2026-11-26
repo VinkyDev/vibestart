@@ -1934,13 +1934,15 @@
   }
 }
 
-# apps/server/package.json · 20 stacks
+# apps/server/package.json · 22 stacks
 #   hono-docker
 #   hono-expo-docker
 #   next-hono-docker
 #   next-hono-docker-e2e
 #   next-hono-expo-docker
 #   next-hono-expo-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
 #   spa-hono-docker
 #   spa-hono-docker-e2e
 #   spa-hono-electron-docker
@@ -3680,6 +3682,47 @@
   }
 }
 
+# apps/server/package.json · 12 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   spa-hono-bun-docker
+#   spa-hono-bun-docker-e2e
+#   spa-hono-electron-bun-docker
+#   spa-hono-electron-bun-docker-e2e
+#   spa-hono-electron-expo-bun-docker
+#   spa-hono-electron-expo-bun-docker-e2e
+#   spa-hono-expo-bun-docker
+#   spa-hono-expo-bun-docker-e2e
+#   spa-hono-ui-sdk-bun-docker
+#   spa-hono-ui-sdk-bun-docker-e2e
+{
+  "name": "@my-app/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "vp pack",
+    "start": "bun dist/index.mjs"
+  },
+  "dependencies": {
+    "@hono/bun": "catalog:",
+    "@t3-oss/env-core": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
 # apps/server/package.json · 8 stacks
 #   spa-effect-http-effect-rpc-docker
 #   spa-effect-http-effect-rpc-docker-e2e
@@ -3791,45 +3834,6 @@
   },
   "devDependencies": {
     "@my-app/config": "workspace:*",
-    "@types/node": "catalog:",
-    "typescript": "catalog:",
-    "vite-plus": "catalog:"
-  }
-}
-
-# apps/server/package.json · 10 stacks
-#   spa-hono-bun-docker
-#   spa-hono-bun-docker-e2e
-#   spa-hono-electron-bun-docker
-#   spa-hono-electron-bun-docker-e2e
-#   spa-hono-electron-expo-bun-docker
-#   spa-hono-electron-expo-bun-docker-e2e
-#   spa-hono-expo-bun-docker
-#   spa-hono-expo-bun-docker-e2e
-#   spa-hono-ui-sdk-bun-docker
-#   spa-hono-ui-sdk-bun-docker-e2e
-{
-  "name": "@my-app/server",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "imports": {
-    "#src/*": "./src/*"
-  },
-  "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "build": "vp pack",
-    "start": "bun dist/index.mjs"
-  },
-  "dependencies": {
-    "@hono/bun": "catalog:",
-    "@t3-oss/env-core": "catalog:",
-    "hono": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@my-app/config": "workspace:*",
-    "@types/bun": "catalog:",
     "@types/node": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
@@ -7181,6 +7185,152 @@
     "es-toolkit": "catalog:",
     "typescript": "catalog:",
     "undici": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@solidjs/router": "catalog:",
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@solidjs/vite-plugin": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "es-toolkit": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 2 stacks
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@solidjs/router": "catalog:",
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@solidjs/vite-plugin": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "typescript": "catalog:",
+    "undici": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 1 stack
+#   solid-spa-ui-sdk-docker
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@solidjs/router": "catalog:",
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@playwright/test": "catalog:",
+    "@solidjs/vite-plugin": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "es-toolkit": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
+
+# apps/web/package.json · 1 stack
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "name": "@my-app/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test:e2e": "e2e run"
+  },
+  "dependencies": {
+    "@my-app/ui": "workspace:*",
+    "@solidjs/router": "catalog:",
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "catalog:",
+    "@my-app/config": "workspace:*",
+    "@solidjs/vite-plugin": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "e2e": "catalog:",
+    "es-toolkit": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   }
 }
@@ -16163,6 +16313,71 @@
   "packageManager": "pnpm@12.23.0"
 }
 
+# package.json · 2 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "bun": ">=1.4.5",
+    "node": "26.13.1"
+  },
+  "packageManager": "pnpm@12.23.0"
+}
+
+# package.json · 4 stacks
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r --parallel dev",
+    "build": "vp run -r build",
+    "ready": "vp check && vp run knip && vp test && vp run test:e2e && vp run -r build",
+    "prepare": "vp config",
+    "test:e2e": "vp run --filter @my-app/web test:e2e",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@types/node": "catalog:",
+    "knip": "catalog:",
+    "typescript": "catalog:",
+    "ultracite": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": "26.13.1"
+  },
+  "packageManager": "pnpm@12.23.0"
+}
+
 # package.json · 18 stacks
 #   spa-docker
 #   spa-docker-e2e
@@ -22335,7 +22550,7 @@
   }
 }
 
-# packages/config/package.json · 1839 stacks
+# packages/config/package.json · 1845 stacks
 #   expo
 #   hono-bun-docker
 #   hono-docker
@@ -22909,6 +23124,12 @@
 #   next-self-sqlite-docker-e2e
 #   next-self-sqlite-expo-docker
 #   next-self-sqlite-expo-docker-e2e
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
 #   spa-docker
 #   spa-docker-e2e
 #   spa-effect-http-effect-rpc-docker
@@ -28463,6 +28684,39 @@
   "peerDependencies": {
     "react": "catalog:",
     "react-dom": "catalog:"
+  }
+}
+
+# packages/ui/package.json · 6 stacks
+#   solid-spa-hono-ui-sdk-bun-docker
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+#   solid-spa-hono-ui-sdk-docker
+#   solid-spa-hono-ui-sdk-docker-e2e
+#   solid-spa-ui-sdk-docker
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "name": "@my-app/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./globals.css": "./src/styles/globals.css",
+    "./components/*": "./src/components/*.tsx"
+  },
+  "dependencies": {
+    "@ui-sdk/core": "catalog:",
+    "@ui-sdk/solid": "catalog:"
+  },
+  "devDependencies": {
+    "@my-app/config": "workspace:*",
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@solidjs/web": "catalog:",
+    "solid-js": "catalog:"
   }
 }
 
@@ -72257,6 +72511,305 @@ peerDependencyRules:
     vite: "*"
 
 # pnpm-workspace.yaml · 1 stack
+#   solid-spa-hono-ui-sdk-bun-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.65.1
+  "@types/bun": ^1.4.5
+  "@types/node": ^26.6.6
+  knip: ^6.48.0
+  typescript: ^7.0.2
+  ultracite: ^8.3.1
+  undici: ^8.13.1
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+
+  # web
+  "@solidjs/router": 2.0.1
+  "@solidjs/vite-plugin": 3.0.1
+  "@solidjs/web": 2.0.4
+  "@tailwindcss/vite": ^4.3.5
+  es-toolkit: ^1.53.2
+  solid-js: 2.0.4
+  tailwindcss: ^4.3.5
+
+  # ui
+  "@ui-sdk/core": 0.1.0-beta.17
+  "@ui-sdk/solid": 0.1.0-beta.17
+
+  # api
+  zod: ^4.6.7
+
+  # server
+  "@hono/bun": ^1.0.1
+  "@t3-oss/env-core": ^0.13.11
+  hono: ^4.13.21
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.16.1
+  "@types/bun": ^1.4.5
+  "@types/node": ^26.6.6
+  e2e: ^0.24.0
+  knip: ^6.48.0
+  typescript: ^7.0.2
+  ultracite: ^8.3.1
+  undici: ^8.13.1
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+
+  # web
+  "@solidjs/router": 2.0.1
+  "@solidjs/vite-plugin": 3.0.1
+  "@solidjs/web": 2.0.4
+  "@tailwindcss/vite": ^4.3.5
+  es-toolkit: ^1.53.2
+  solid-js: 2.0.4
+  tailwindcss: ^4.3.5
+
+  # ui
+  "@ui-sdk/core": 0.1.0-beta.17
+  "@ui-sdk/solid": 0.1.0-beta.17
+
+  # api
+  zod: ^4.6.7
+
+  # server
+  "@hono/bun": ^1.0.1
+  "@t3-oss/env-core": ^0.13.11
+  hono: ^4.13.21
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   solid-spa-hono-ui-sdk-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.65.1
+  "@types/node": ^26.6.6
+  knip: ^6.48.0
+  typescript: ^7.0.2
+  ultracite: ^8.3.1
+  undici: ^8.13.1
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+
+  # web
+  "@solidjs/router": 2.0.1
+  "@solidjs/vite-plugin": 3.0.1
+  "@solidjs/web": 2.0.4
+  "@tailwindcss/vite": ^4.3.5
+  es-toolkit: ^1.53.2
+  solid-js: 2.0.4
+  tailwindcss: ^4.3.5
+
+  # ui
+  "@ui-sdk/core": 0.1.0-beta.17
+  "@ui-sdk/solid": 0.1.0-beta.17
+
+  # api
+  zod: ^4.6.7
+
+  # server
+  "@hono/node-server": ^2.1.11
+  "@t3-oss/env-core": ^0.13.11
+  hono: ^4.13.21
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   solid-spa-hono-ui-sdk-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.16.1
+  "@types/node": ^26.6.6
+  e2e: ^0.24.0
+  knip: ^6.48.0
+  typescript: ^7.0.2
+  ultracite: ^8.3.1
+  undici: ^8.13.1
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+
+  # web
+  "@solidjs/router": 2.0.1
+  "@solidjs/vite-plugin": 3.0.1
+  "@solidjs/web": 2.0.4
+  "@tailwindcss/vite": ^4.3.5
+  es-toolkit: ^1.53.2
+  solid-js: 2.0.4
+  tailwindcss: ^4.3.5
+
+  # ui
+  "@ui-sdk/core": 0.1.0-beta.17
+  "@ui-sdk/solid": 0.1.0-beta.17
+
+  # api
+  zod: ^4.6.7
+
+  # server
+  "@hono/node-server": ^2.1.11
+  "@t3-oss/env-core": ^0.13.11
+  hono: ^4.13.21
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   solid-spa-ui-sdk-docker
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@playwright/test": ^1.65.1
+  "@types/node": ^26.6.6
+  knip: ^6.48.0
+  typescript: ^7.0.2
+  ultracite: ^8.3.1
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+
+  # web
+  "@solidjs/router": 2.0.1
+  "@solidjs/vite-plugin": 3.0.1
+  "@solidjs/web": 2.0.4
+  "@tailwindcss/vite": ^4.3.5
+  es-toolkit: ^1.53.2
+  solid-js: 2.0.4
+  tailwindcss: ^4.3.5
+
+  # ui
+  "@ui-sdk/core": 0.1.0-beta.17
+  "@ui-sdk/solid": 0.1.0-beta.17
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
+#   solid-spa-ui-sdk-docker-e2e
+packages:
+  - apps/*
+  - packages/*
+
+catalogMode: prefer
+
+catalog:
+  # toolchain
+  "@e2e-dev/web": ^0.16.1
+  "@types/node": ^26.6.6
+  e2e: ^0.24.0
+  knip: ^6.48.0
+  typescript: ^7.0.2
+  ultracite: ^8.3.1
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+
+  # web
+  "@solidjs/router": 2.0.1
+  "@solidjs/vite-plugin": 3.0.1
+  "@solidjs/web": 2.0.4
+  "@tailwindcss/vite": ^4.3.5
+  es-toolkit: ^1.53.2
+  solid-js: 2.0.4
+  tailwindcss: ^4.3.5
+
+  # ui
+  "@ui-sdk/core": 0.1.0-beta.17
+  "@ui-sdk/solid": 0.1.0-beta.17
+
+overrides:
+  vite@*: "catalog:"
+
+allowBuilds:
+  esbuild: false
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+# pnpm-workspace.yaml · 1 stack
 #   spa-docker
 packages:
   - apps/*
@@ -198615,6 +199168,140 @@ peerDependencyRules:
     "ui": "shadcn",
     "mobile": "expo",
     "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   solid-spa-hono-ui-sdk-bun-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "standard",
+    "toolchain": "vite-plus",
+    "frontend": "solid",
+    "framework": "solid-spa",
+    "router": "solid-router",
+    "backend": "hono",
+    "ui": "ui-sdk",
+    "runtime": "bun",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   solid-spa-hono-ui-sdk-bun-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "standard",
+    "toolchain": "vite-plus",
+    "frontend": "solid",
+    "framework": "solid-spa",
+    "router": "solid-router",
+    "backend": "hono",
+    "ui": "ui-sdk",
+    "runtime": "bun",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   solid-spa-hono-ui-sdk-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "standard",
+    "toolchain": "vite-plus",
+    "frontend": "solid",
+    "framework": "solid-spa",
+    "router": "solid-router",
+    "backend": "hono",
+    "ui": "ui-sdk",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   solid-spa-hono-ui-sdk-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "standard",
+    "toolchain": "vite-plus",
+    "frontend": "solid",
+    "framework": "solid-spa",
+    "router": "solid-router",
+    "backend": "hono",
+    "ui": "ui-sdk",
+    "runtime": "node",
+    "deployment": "docker",
+    "testing": "e2e",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   solid-spa-ui-sdk-docker
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "standard",
+    "toolchain": "vite-plus",
+    "frontend": "solid",
+    "framework": "solid-spa",
+    "router": "solid-router",
+    "ui": "ui-sdk",
+    "deployment": "docker",
+    "testing": "playwright",
+  },
+
+  "addons": ["knip", "ultracite"],
+
+  "channel": "recommended",
+}
+
+# vibestart.jsonc · 1 stack
+#   solid-spa-ui-sdk-docker-e2e
+{
+  "$schema": "https://vibestart.net/schema.json",
+
+  "stack": {
+    "mode": "standard",
+    "toolchain": "vite-plus",
+    "frontend": "solid",
+    "framework": "solid-spa",
+    "router": "solid-router",
+    "ui": "ui-sdk",
     "deployment": "docker",
     "testing": "e2e",
   },
