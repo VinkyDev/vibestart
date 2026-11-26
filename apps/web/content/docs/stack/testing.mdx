@@ -60,7 +60,7 @@ vp run ready
 
 ## Isolated environments [#infrastructure]
 
-For stacks with persistence, each integration test file gets its own migrated database from the `db` package. Files can run in parallel, and their databases are removed afterward. Authentication tests sign up a new user for each case. Integration tests run handlers in process.
+For stacks with persistence, each integration test file gets its own migrated database from the `db` package. Files can run in parallel, and their databases are removed afterward. The end-to-end suite shares a separate database for the duration of each browser test run and removes it when the server stops. Authentication tests sign up a new user for each case. Integration tests run handlers in process.
 
 End-to-end support in `apps/web/tests/support` starts the real servers once per run on port 3200, which `E2E_TEST_PORT` changes. PostgreSQL combinations require an accessible database instance: test databases are created beside the server’s `DATABASE_URL`. Playwright starts them from its global setup; TesterArmy e2e starts them as the app command in `e2e.config.ts`, which inherits only the variables the config forwards.
 
