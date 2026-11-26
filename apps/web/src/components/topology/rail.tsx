@@ -11,24 +11,17 @@ import type { ReactNode, Ref } from "react";
 import { Fragment } from "react";
 
 import type { IntegrationInfo, Stack } from "@vibestart/core";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@vibestart/ui/components/popover";
 import { cn } from "@vibestart/ui/lib/utils";
 
 import type { Choosing } from "#/components/topology/decision.tsx";
 import { DecisionTrigger } from "#/components/topology/decision.tsx";
 import { DeploymentPicker } from "#/components/topology/deployment-picker.tsx";
 import { Extensions } from "#/components/topology/extensions.tsx";
-import {
-  CardHeading,
-  IntegrationCard,
-} from "#/components/topology/integration-card.tsx";
+import { IntegrationCard } from "#/components/topology/integration-card.tsx";
 import type { Rect } from "#/components/topology/layout.ts";
 import { Swatch } from "#/components/topology/tile.tsx";
 import { ToolDetails } from "#/components/topology/tool-details.tsx";
+import { VitestCard } from "#/components/topology/vitest-card.tsx";
 import { focusesGroup, useFocus, useFocusTarget } from "#/lib/focus.ts";
 import { ease, spring } from "#/lib/motion.ts";
 import { groupOf, roles } from "#/lib/roles.ts";
@@ -125,34 +118,6 @@ const Toolchain = ({
   </IntegrationCard>
 );
 
-const UnitTests = ({ stack }: { readonly stack: Stack }) => (
-  <Popover>
-    <PopoverTrigger
-      className={cn("group/card flex text-left", cardClass)}
-      closeDelay={120}
-      delay={180}
-      openOnHover
-    >
-      <FoundationFace
-        icon={FlaskConical}
-        kind={m.tests_layer_unit()}
-        name="Vitest"
-      />
-    </PopoverTrigger>
-    <PopoverContent
-      className="w-72"
-      initialFocus={(openType) => openType === "keyboard"}
-      side="top"
-      sideOffset={8}
-    >
-      <div className="tint-foundation flex flex-col gap-2 p-2.5 text-xs leading-relaxed">
-        <CardHeading homepage="https://vitest.dev" name="Vitest" />
-        <ToolDetails id="vitest" stack={stack} />
-      </div>
-    </PopoverContent>
-  </Popover>
-);
-
 const EndToEndTests = ({
   choosing,
   integration,
@@ -225,7 +190,16 @@ export const Rail = ({
         {foundation.map((integration) =>
           integration.kind === "testing" ? (
             <Fragment key={integration.kind}>
-              <UnitTests stack={stack} />
+              <VitestCard
+                className={cn("group/card flex text-left", cardClass)}
+                stack={stack}
+              >
+                <FoundationFace
+                  icon={FlaskConical}
+                  kind={m.tests_layer_unit()}
+                  name="Vitest"
+                />
+              </VitestCard>
               <EndToEndTests
                 choosing={choosing}
                 integration={integration}

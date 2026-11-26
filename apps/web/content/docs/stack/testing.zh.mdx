@@ -9,7 +9,7 @@ description: 运行测试，了解隔离的测试环境，并排查失败。
 
 <Tech href="https://vitest.dev" icon="vitest" />
 
-所有技术栈的单元测试和集成测试都固定使用 Vitest，通过 `vp test` 运行，使用项目的工具配置，无需选择。单元测试位于代码旁；集成测试位于 `packages/api/tests/integration`，在测试进程内通过类型化的客户端调用 API，并连接真实数据库。
+运行 `vp test` 即可执行所选技术栈的 Vitest 测试。单元测试位于代码旁。API 集成测试位于 `packages/api/tests/integration`，在测试进程内调用 API。启用持久化时，测试连接真实数据库。无数据库的 Effect 技术栈会验证 HTTP 和 RPC 健康检查以及 API 文档路由。
 
 ## 端到端测试 [#e2e-tests]
 
@@ -60,7 +60,7 @@ vp run ready
 
 ## 隔离环境 [#infrastructure]
 
-每次测试运行都使用独立的数据库，按项目迁移创建，结束后删除。每个集成测试文件通过 `db` 包中的 `createTestDatabase()` 获得一个单独的数据库，因此文件可以并行运行；认证测试为每个用例注册新用户。集成测试不启动服务，也不占用端口。
+启用持久化时，每个集成测试文件通过 `db` 包获得独立且已执行迁移的数据库。各文件可以并行运行，结束后清理数据库。认证测试为每个用例注册新用户。集成测试在进程内调用请求处理函数。
 
 端到端测试的支持代码位于 `apps/web/tests/support`，每次运行在 3200 端口启动一次真实服务，可通过 `E2E_TEST_PORT` 修改端口。PostgreSQL 组合需要可连接的数据库实例：测试数据库创建在服务端 `DATABASE_URL` 所指向的实例中。Playwright 在 global setup 中启动这些服务；TesterArmy e2e 由 `e2e.config.ts` 将其作为应用命令启动，该命令只继承配置中转发的环境变量。
 

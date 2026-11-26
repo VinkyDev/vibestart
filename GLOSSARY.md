@@ -28,7 +28,7 @@ _Avoid_: feature, trait
 An integration that exists only to satisfy another's requirement, such as `node`. It is illegal in a stack that does not need it.
 
 **Self**:
-The `backend` value meaning "the framework's own server". It contributes nothing, so frameworks branch on `ctx.has("self")`.
+The `backend` choice that hosts the API in the web framework’s own server.
 
 **Violation**:
 A resolver refusal with a `reason`. A **fix** is the legal stack that differs from the current one in the fewest kinds.

@@ -172,7 +172,6 @@ for (const locale of ["en", "zh"] as const) {
 }
 
 test("selects Effect testing and removes persistence through the picker", async ({
-  isMobile,
   page,
 }) => {
   await page.goto(
@@ -206,16 +205,10 @@ test("selects Effect testing and removes persistence through the picker", async 
     animations: "disabled",
   });
 
-  if (isMobile) {
-    await expect(
-      page.getByRole("listitem").filter({ hasText: /^Vitest$/u })
-    ).toBeVisible();
-  } else {
-    await page.getByRole("button", { name: /Vitest/u }).click();
-    await expect(page.getByRole("dialog")).toContainText(
-      "HTTP and RPC health checks"
-    );
-  }
+  await page.getByRole("button", { name: /Vitest/u }).click();
+  await expect(page.getByRole("dialog")).toContainText(
+    "HTTP and RPC health checks"
+  );
 });
 
 test("composes Effect on the home page and opens it in Studio", async ({

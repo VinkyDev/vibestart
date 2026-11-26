@@ -13,7 +13,7 @@ Each layer drives a different amount of the running application. Select a layer 
   text={{
     e2e: "End-to-end tests drive a real browser through complete workflows, across pages, the API, and the database.",
     integration:
-      "Integration tests call the API inside the test process, through its real validation and authorization, against a real database.",
+      "Integration tests call the API in process. They exercise the selected stack’s routes and use a real database for operations that access stored data.",
     unit: "Unit tests check logic with branches of its own, with no network or database involved.",
   }}
 />
@@ -24,7 +24,7 @@ Each layer drives a different amount of the running application. Select a layer 
 | Integration | API input, output, authorization, and errors | Reject anonymous requests and keep each user's data private |
 | Unit        | Self-contained branching logic               | Pricing, permission rules, parsers, and state transitions   |
 
-Which layers a project includes depends on its stack. A static site has browser tests; an API with a database adds integration tests for every operation; authentication adds tests for sessions and isolation between users. Vitest runs the unit and integration tests in every project, and a web app runs its end-to-end tests with Playwright or TesterArmy e2e; [Testing tools](/docs/stack/testing#e2e-tests) compares the two. A mobile app has no end-to-end tests: its unit tests run in Node, and the production build bundles it for iOS and Android, so check its screens on a phone or simulator.
+Which layers a project includes depends on its stack. A static site has browser tests. A stateless Effect API has HTTP and RPC health checks. An API with a database adds integration tests for its operations, and authentication adds tests for sessions and isolation between users. Vitest runs the unit and integration tests in every project, and a web app runs its end-to-end tests with Playwright or TesterArmy e2e; [Testing tools](/docs/stack/testing#e2e-tests) compares the two. A mobile app has no end-to-end tests: its unit tests run in Node, and the production build bundles it for iOS and Android, so check its screens on a phone or simulator.
 
 ## Why not more unit tests [#tradeoffs]
 
@@ -34,7 +34,7 @@ The number of tests is not the goal. A test is worth keeping if it fails when th
 
 ## Principles [#principles]
 
-- **Use the real thing.** Integration tests call the API through its real validation and authorization, against a real database, and end-to-end tests drive a real browser against the running server. A stand-in is acceptable only for an external service the project does not run, and a test then pins the requests and responses it imitates.
+- **Use the real thing.** Integration tests call real API handlers and use a real database when the operation requires one. End-to-end tests drive a real browser against the running server. A stand-in is acceptable only for an external service the project does not run, and a test then pins the requests and responses it imitates.
 - **Test access from both sides.** Every protected operation is tested with an anonymous caller and with a different signed-in user.
 - **Reproduce a bug before fixing it.** Start a fix with a test that fails because of the bug, then change the code until it passes.
 - **Test behavior, not implementation.** A test should fail when the behavior it names breaks, and survive refactoring that preserves that behavior.

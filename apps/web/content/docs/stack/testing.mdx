@@ -9,7 +9,7 @@ Test scope follows the selected stack. Static sites cover browser interaction; a
 
 <Tech href="https://vitest.dev" icon="vitest" />
 
-Every stack runs its unit and integration tests on Vitest, through `vp test` and the project's tool configuration; there is nothing to choose. Unit tests live beside the code. Integration tests live in `packages/api/tests/integration` and call the API inside the test process through a typed client, against a real database.
+Run `vp test` to execute the stack's Vitest suites. Unit tests live beside the code. API integration tests live in `packages/api/tests/integration` and call the API in process. With persistence, they exercise operations against a real database. A stateless Effect stack exercises the HTTP and RPC health checks and the API documentation routes.
 
 ## End-to-end tests [#e2e-tests]
 
@@ -60,7 +60,7 @@ vp run ready
 
 ## Isolated environments [#infrastructure]
 
-Every test run uses databases of its own, created with the project’s migrations and removed afterward. Each integration test file gets a separate database from `createTestDatabase()` in the `db` package, so files run in parallel; authentication tests sign up a new user for each case. Integration tests start no server and open no port.
+For stacks with persistence, each integration test file gets its own migrated database from the `db` package. Files can run in parallel, and their databases are removed afterward. Authentication tests sign up a new user for each case. Integration tests run handlers in process.
 
 End-to-end support in `apps/web/tests/support` starts the real servers once per run on port 3200, which `E2E_TEST_PORT` changes. PostgreSQL combinations require an accessible database instance: test databases are created beside the server’s `DATABASE_URL`. Playwright starts them from its global setup; TesterArmy e2e starts them as the app command in `e2e.config.ts`, which inherits only the variables the config forwards.
 
