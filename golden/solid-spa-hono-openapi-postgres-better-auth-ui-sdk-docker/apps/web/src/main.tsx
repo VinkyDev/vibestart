@@ -26,7 +26,12 @@ const App = () => (
           fallback={() => (
             <main role="alert">
               Could not load this page.{" "}
-              <button type="button" onClick={() => window.location.reload()}>
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
                 Reload page
               </button>
             </main>

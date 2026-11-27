@@ -41,7 +41,7 @@ const entry = (ctx: Context) => {
     content = replaceOnce(
       content,
       "{route.children}",
-      '<Errored fallback={() => <main role="alert">Could not load this page. <button type="button" onClick={() => window.location.reload()}>Reload page</button></main>}><Loading fallback={<main role="status">Loading…</main>}>{route.children}</Loading></Errored>',
+      '<Errored fallback={() => <main role="alert">Could not load this page. <button type="button" onClick={() => { window.location.reload(); }}>Reload page</button></main>}><Loading fallback={<main role="status">Loading…</main>}>{route.children}</Loading></Errored>',
       path
     );
   }
