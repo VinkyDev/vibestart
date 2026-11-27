@@ -1,8 +1,7 @@
 import { createRouter } from "@solidjs/router";
+import { lazy } from "solid-js";
 
 import { Home } from "#src/home.tsx";
-import { Login } from "#src/login.tsx";
-import { ProtectedTodos } from "#src/protected-todos.tsx";
 
 const About = () => (
   <main class="mx-auto grid max-w-3xl gap-4 px-6 py-16">
@@ -20,8 +19,18 @@ const NotFound = () => (
 export const Router = createRouter({
   routes: [
     { path: "/", component: Home },
-    { path: "/login", component: Login },
-    { path: "/todos", component: ProtectedTodos },
+    {
+      path: "/login",
+      component: lazy(async () => await import("#src/login.tsx"), {
+        export: "Login",
+      }),
+    },
+    {
+      path: "/todos",
+      component: lazy(async () => await import("#src/protected-todos.tsx"), {
+        export: "ProtectedTodos",
+      }),
+    },
     { path: "/about", component: About },
     { path: "*missing", component: NotFound },
   ],

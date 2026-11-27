@@ -342,6 +342,30 @@ export interface Outcome {
   readonly changes: readonly Change[];
 }
 
+const preservedKinds = (stack: Stack, kind: Decision, id: string | null) => {
+  const keepsMode = optionsOf(kind, stack.mode).some(
+    (option) => (option?.id ?? null) === id
+  );
+
+  return [
+    ...(keepsMode ? ["mode"] : []),
+    ...(kind === "runtime" ? ["framework", "backend"] : []),
+    ...(stack.frontend !== undefined && (kind === "framework" || kind === "ui")
+      ? ["frontend"]
+      : []),
+  ];
+};
+
+export const canChoose = (stack: Stack, kind: Decision, id: string | null) => {
+  const keep = preservedKinds(stack, kind, id);
+
+  return stacks.some(
+    ({ stack: candidate }) =>
+      (candidate[kind] ?? null) === id &&
+      keep.every((other) => candidate[other] === stack[other])
+  );
+};
+
 export const outcome = (
   stack: Stack,
   kind: Decision,
@@ -349,20 +373,8 @@ export const outcome = (
 ): Outcome | undefined => {
   const choices = { ...decisionsOf(stack), [kind]: id };
 
-  const keepsMode = optionsOf(kind, stack.mode).some(
-    (option) => (option?.id ?? null) === id
-  );
-
   const { fixes, stacks: legal } = resolve(registry, choices, {
-    keep: [
-      ...(keepsMode ? ["mode"] : []),
-      kind,
-      ...(kind === "runtime" ? ["framework", "backend"] : []),
-      ...(stack.frontend !== undefined &&
-      (kind === "framework" || kind === "ui")
-        ? ["frontend"]
-        : []),
-    ],
+    keep: [kind, ...preservedKinds(stack, kind, id)],
   });
 
   if (legal.length > 0) {

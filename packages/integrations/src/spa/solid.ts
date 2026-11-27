@@ -25,19 +25,28 @@ const entry = (ctx: Context) => {
     );
   }
 
-  if (ctx.has("better-auth")) {
+  if (todosExample(ctx.stack) || ctx.has("better-auth")) {
     content = replaceOnce(
       content,
       "import { Router }",
-      'import { Errored, Loading } from "solid-js";\nimport { Account } from "#src/account.tsx";\nimport { Router }',
+      [
+        'import { Errored, Loading } from "solid-js";',
+        ...(ctx.has("better-auth")
+          ? ['import { Account } from "#src/account.tsx";']
+          : []),
+        "import { Router }",
+      ].join("\n"),
       path
     );
     content = replaceOnce(
       content,
       "{route.children}",
-      '<Errored fallback={(_error, reset) => <main role="alert">Could not load this page. <button type="button" onClick={reset}>Retry</button></main>}><Loading fallback={<main role="status">Loading…</main>}>{route.children}</Loading></Errored>',
+      '<Errored fallback={() => <main role="alert">Could not load this page. <button type="button" onClick={() => window.location.reload()}>Reload page</button></main>}><Loading fallback={<main role="status">Loading…</main>}>{route.children}</Loading></Errored>',
       path
     );
+  }
+
+  if (ctx.has("better-auth")) {
     content = replaceOnce(
       content,
       "<ThemeMenu />",

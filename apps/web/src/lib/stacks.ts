@@ -1,8 +1,11 @@
-import { stackEntries } from "virtual:vibestart";
+import { registry, verificationIndex } from "virtual:vibestart";
+
+import { legalStacks } from "@vibestart/core";
+import { stackLabel } from "@vibestart/integrations/stack-label";
 
 import type { StackEntry } from "#/lib/project.ts";
 
-const { stacks: interned, summaries } = stackEntries;
+const { stacks: indexes, summaries } = verificationIndex;
 
 const summary = (index: number | null) => {
   if (index === null) {
@@ -19,10 +22,21 @@ const summary = (index: number | null) => {
 };
 
 /** Every legal stack, with the verification summary each names. */
-export const stacks: readonly StackEntry[] = interned.map(
-  ({ bunVerification, verification, ...entry }) => ({
-    ...entry,
-    bunVerification: summary(bunVerification),
-    verification: summary(verification),
-  })
+export const stacks: readonly StackEntry[] = legalStacks(registry).map(
+  (stack, index) => {
+    const pair = indexes[index];
+
+    if (pair === undefined) {
+      throw new Error(`Missing verification indexes for ${stackLabel(stack)}`);
+    }
+
+    const [pnpm, bun] = pair;
+
+    return {
+      bunVerification: summary(bun),
+      label: stackLabel(stack),
+      stack,
+      verification: summary(pnpm),
+    };
+  }
 );

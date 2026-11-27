@@ -5,6 +5,7 @@ import { fingerprint } from "@vibestart/core";
 import { noteText } from "../src/lib/i18n.ts";
 import { projectKey } from "../src/lib/project.ts";
 import { verifiedAddons } from "../src/lib/stack.ts";
+import { stacks } from "../src/lib/stacks.ts";
 import { overwriteGetLocale } from "../src/paraglide/runtime.js";
 import { importStacks } from "./index.ts";
 
@@ -12,6 +13,10 @@ const { project, stackLabels, stackPreview } = await importStacks();
 const defaultKey = projectKey(verifiedAddons);
 
 describe(stackPreview, () => {
+  it("resolves preview labels in the same order in the browser and at build time", () => {
+    expect(stacks.map(({ label }) => label)).toStrictEqual(stackLabels);
+  });
+
   it("holds every project of the stack, each content once", async () => {
     const label = "spa-hono-orpc-postgres-better-auth-docker-e2e";
     const { contents, projects } = await stackPreview(label);

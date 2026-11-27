@@ -21,6 +21,7 @@ import { changeText, flagTintClass, roles, tintClass } from "#/lib/roles.ts";
 import type { Decision } from "#/lib/stack.ts";
 import {
   addonsFlag,
+  canChoose,
   commandWords,
   decisions,
   flagsOf,
@@ -127,7 +128,7 @@ const Layer = ({
         {optionsOf(kind).map((option) => {
           const id = option?.id ?? null;
           const checked = id === current;
-          const reachable = checked || outcome(stack, kind, id) !== undefined;
+          const reachable = checked || canChoose(stack, kind, id);
 
           if (
             (kind === "framework" || kind === "ui") &&
