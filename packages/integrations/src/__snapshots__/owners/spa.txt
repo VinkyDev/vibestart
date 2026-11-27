@@ -9436,11 +9436,16 @@ const App = () => (
           </div>
         </header>
         <Errored
-          fallback={(_error, reset) => (
+          fallback={() => (
             <main role="alert">
               Could not load this page.{" "}
-              <button type="button" onClick={reset}>
-                Retry
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Reload page
               </button>
             </main>
           )}
@@ -9704,9 +9709,10 @@ render(App, root);
 #   solid-spa-hono-orpc-sqlite-ui-sdk-expo-docker
 #   solid-spa-hono-orpc-sqlite-ui-sdk-expo-docker-e2e
 import { render } from "@solidjs/web";
+import { Errored, Loading } from "solid-js";
 
-import { ThemeMenu } from "@my-app/ui/components/theme-menu";
 import "@my-app/ui/globals.css";
+import { ThemeMenu } from "@my-app/ui/components/theme-menu";
 
 import { Router } from "#src/router.tsx";
 
@@ -9722,7 +9728,25 @@ const App = () => (
           </nav>
           <ThemeMenu />
         </header>
-        {route.children}
+        <Errored
+          fallback={() => (
+            <main role="alert">
+              Could not load this page.{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Reload page
+              </button>
+            </main>
+          )}
+        >
+          <Loading fallback={<main role="status">Loading…</main>}>
+            {route.children}
+          </Loading>
+        </Errored>
       </>
     )}
   </Router>
@@ -10106,11 +10130,16 @@ const App = () => (
           </div>
         </header>
         <Errored
-          fallback={(_error, reset) => (
+          fallback={() => (
             <main role="alert">
               Could not load this page.{" "}
-              <button type="button" onClick={reset}>
-                Retry
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Reload page
               </button>
             </main>
           )}

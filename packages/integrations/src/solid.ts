@@ -50,18 +50,17 @@ const router = (ctx: Context) => {
       : []),
   ];
 
+  if (pages.length === 0) {
+    return file(path, template);
+  }
+
   const homeImport = 'import { Home } from "#src/home.tsx";';
   const homeRoute = '    { path: "/", component: Home },';
 
   const withImports = replaceOnce(
     template,
     homeImport,
-    [
-      homeImport,
-      ...pages.map(
-        (page) => `import { ${page.component} } from "#src/${page.module}.tsx";`
-      ),
-    ].join("\n"),
+    `import { lazy } from "solid-js";\n${homeImport}`,
     path
   );
 
@@ -74,7 +73,7 @@ const router = (ctx: Context) => {
         homeRoute,
         ...pages.map(
           (page) =>
-            `    { path: "/${page.path}", component: ${page.component} },`
+            `    { path: "/${page.path}", component: lazy(async () => await import("#src/${page.module}.tsx"), { export: "${page.component}" }) },`
         ),
       ].join("\n"),
       path

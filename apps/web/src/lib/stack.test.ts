@@ -2,8 +2,10 @@ import { describe, expect, it } from "vite-plus/test";
 
 import {
   addonsFlag,
+  canChoose,
   commandLine,
   commandWords,
+  decisions,
   e2eRunner,
   entryFromFlags,
   flagsOf,
@@ -163,6 +165,21 @@ describe("add-ons", () => {
 
 describe("choosing an option", () => {
   const start = entry("next-self-orpc-sqlite-better-auth").stack;
+
+  it.each([
+    recommended,
+    entryFromFlags({ mode: "effect" }).stack,
+    entryFromFlags({ frontend: "solid" }).stack,
+  ])("offers exactly the choices the Studio can apply", (stack) => {
+    for (const kind of decisions) {
+      for (const option of optionsOf(kind)) {
+        const id = option?.id ?? null;
+        expect(canChoose(stack, kind, id)).toBe(
+          outcome(stack, kind, id) !== undefined
+        );
+      }
+    }
+  });
 
   it("offers one outcome per option, even when several fixes would do", () => {
     const hono = entry("spa-hono-openapi-sqlite").stack;

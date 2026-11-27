@@ -23,11 +23,16 @@ const App = () => (
           </div>
         </header>
         <Errored
-          fallback={(_error, reset) => (
+          fallback={() => (
             <main role="alert">
               Could not load this page.{" "}
-              <button type="button" onClick={reset}>
-                Retry
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Reload page
               </button>
             </main>
           )}

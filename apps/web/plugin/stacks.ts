@@ -14,7 +14,7 @@ import type { VerificationMatch } from "@vibestart/integrations";
 
 import type {
   Project,
-  StackEntries,
+  VerificationIndex,
   StackPreview,
   StackVerification,
 } from "../src/lib/project.ts";
@@ -54,11 +54,8 @@ const defaultVerification = async (stack: Stack) => {
   ]);
 };
 
-/**
- * Every legal stack with what its first render shows of each record. Thousands of stacks share a few hundred
- * records, so each summary is held once in `summaries` and a stack names it by index.
- */
-export const stackEntries = async (): Promise<StackEntries> => {
+/** Each pair indexes the summaries for a stack, in the resolver's registry order. */
+export const verificationIndex = async (): Promise<VerificationIndex> => {
   const summaries: StackVerification[] = [];
   const indexes = new Map<string, number>();
 
@@ -81,19 +78,11 @@ export const stackEntries = async (): Promise<StackEntries> => {
   };
 
   const matches = await Promise.all(
-    [...legal].map(
-      async ([label, stack]) =>
-        [label, stack, await defaultVerification(stack)] as const
-    )
+    [...legal.values()].map(defaultVerification)
   );
 
   return {
-    stacks: matches.map(([label, stack, [verification, bunVerification]]) => ({
-      bunVerification: intern(bunVerification),
-      label,
-      stack,
-      verification: intern(verification),
-    })),
+    stacks: matches.map(([pnpm, bun]) => [intern(pnpm), intern(bun)]),
     summaries,
   };
 };

@@ -27,15 +27,12 @@ export interface StackEntry {
   readonly verification: StackVerification | null;
 }
 
-/** Every legal stack; `verification` and `bunVerification` index `summaries`, which holds each summary once. */
-export interface StackEntries {
-  readonly stacks: readonly (Omit<
-    StackEntry,
-    "bunVerification" | "verification"
-  > & {
-    readonly bunVerification: number | null;
-    readonly verification: number | null;
-  })[];
+/** Summary indexes in legalStacks order. Each pair corresponds to pnpm and Bun respectively. */
+export interface VerificationIndex {
+  readonly stacks: readonly (readonly [
+    pnpm: number | null,
+    bun: number | null,
+  ])[];
   readonly summaries: readonly StackVerification[];
 }
 
