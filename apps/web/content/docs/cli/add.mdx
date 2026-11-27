@@ -13,7 +13,7 @@ Without explicit capabilities, the terminal offers a multi-select prompt. Knip a
 
 ## Preview and apply [#apply]
 
-`--dry-run` displays file and configuration changes without writing. Apply with `--yes`, or confirm the plan in a terminal. Like an upgrade, a write needs a clean Git worktree and writes conflicts into the files; see [review and undo with Git](/docs/cli/upgrade#git).
+`--dry-run` displays file and configuration changes without writing. Apply with `--yes`, or confirm the plan in a terminal. To apply the plan, the project must be in a Git repository. Commit or stash all changes in the project directory, including untracked files. Conflicts are written into the affected files. See [review and undo with Git](/docs/cli/upgrade#git).
 
 If `vibestart.jsonc` records a release other than the running CLI, [upgrade](/docs/cli/upgrade) first. Existing capabilities are not added twice.
 

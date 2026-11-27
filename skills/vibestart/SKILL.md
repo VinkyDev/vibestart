@@ -36,7 +36,7 @@ Run maintenance from the generated project root, or pass `--cwd /actual/project/
 
 - Preview changes before writing. When the user has requested the operation and the plan meets that scope, proceed without an extra permission loop. Ask only about missing product choices or material changes outside the request. A request to inspect or preview does not authorize applying the plan.
 - Creation uses `--json` to disable prompts. Maintenance writes additionally require `--yes`. Do not pass `--yes` to creation.
-- A maintenance write needs a clean Git worktree. When the worktree holds the user's uncommitted work, ask whether to commit or stash it before writing.
+- A maintenance write requires a Git repository. If the project contains uncommitted changes or untracked files, ask the user whether to commit or stash them before writing.
 - The package manager and Hono runtime are separate choices: `--package-manager bun` selects dependency installation; `--runtime bun` selects Hono execution. Neither changes the other or moves the Vite+ test toolchain to Bun. Do not replace `vp test` with `bun test` or force the CLI to run under Bun.
 - Existing projects use `add` and `upgrade`. Change choices only through those commands; keep `vibestart.jsonc`'s `name` and `version` as the CLI wrote them, since upgrades regenerate the original templates from them.
 - Respect the environment's installation and service restrictions. Normal creation and maintenance writes run setup/checks. If these are unavailable, use a read-only preview, or explicitly defer installation when file writes are in scope. `--full-check` can start services and browsers.

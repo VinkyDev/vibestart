@@ -33,7 +33,7 @@ Maintenance does not initialize, migrate, or reset databases. Review and execute
 
 ## Review and undo with Git [#git]
 
-Writes require a clean project worktree, including untracked files. Review changes with `git status --short --untracked-files=all` and `git diff`. To undo a write, use `git restore -- <path>` for each affected tracked file and remove only files created by the operation. You can preview an upgrade with local changes.
+Applying an upgrade requires a Git repository. From the project directory, commit all changes or stash them, including untracked files, with `git stash push -u -- .`. Review changes with `git status --short --untracked-files=all` and `git diff`. To undo a write, use `git restore -- <path>` for each affected tracked file and remove only files created by the operation. You can preview an upgrade with local changes.
 
 ## Conflicts [#conflicts]
 
