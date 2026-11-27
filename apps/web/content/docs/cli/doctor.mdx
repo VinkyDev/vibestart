@@ -18,6 +18,7 @@ By default, it queries npm’s `latest` channel. `--offline` disables that query
 ## Act on findings [#results]
 
 - Missing `name` or `version` in `vibestart.jsonc`: maintenance cannot regenerate the original templates without them. Restore them from Git history.
+- Unresolved maintenance conflicts: resolve the markers in the listed files and rerun `doctor`. If your package runner cannot start inside a project with a conflicted root `package.json`, run `npx vibestart-cli@X.Y.Z doctor --cwd ./my-app --offline` from its parent directory, replacing `X.Y.Z` with the CLI version used for the write.
 - Template update needed: inspect an [`upgrade --dry-run`](/docs/cli/upgrade) plan.
 
 `doctor` inspects maintenance state. Project tests verify application behavior.

@@ -18,6 +18,7 @@ npx vibestart-cli doctor --cwd my-app --json
 ## 处理检查结果 [#results]
 
 - `vibestart.jsonc` 缺少 `name` 或 `version`：没有它们，CLI 无法重新生成原始模板。请从 Git 历史中恢复。
+- 上次维护留下了冲突：解决所列文件中的冲突标记，再运行 `doctor`。如果根目录的 `package.json` 存在冲突，导致包运行器无法启动，请在项目的上一级目录执行 `npx vibestart-cli@X.Y.Z doctor --cwd ./my-app --offline`，将 `X.Y.Z` 换成写入时使用的 CLI 版本。
 - 需要更新模板：使用 [`upgrade --dry-run`](/docs/cli/upgrade) 查看计划。
 
 `doctor` 检查维护状态，业务行为仍由项目自身的测试验证。

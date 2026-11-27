@@ -10,7 +10,7 @@ Run commands from the project root or append `--cwd /actual/project/path`. Resol
 npx --yes vibestart-cli doctor --offline --json
 ```
 
-`doctor` is read-only. Inspect `issues`, `conflicts`, `updates`, `manual`, `release`, and `status`. With `--offline`, a project recorded by another release returns `updates: null` and `manual: null`: not compared, not up to date. Without `--offline`, it also looks up npm’s `latest` channel; `latest: null` is not proof that no release exists. A healthy result checks configuration and maintenance state, not application behavior.
+`doctor` is read-only. Inspect `issues`, `conflicts`, `updates`, `manual`, `release`, and `status`. If the package runner cannot read a conflicted root `package.json`, invoke the same CLI version from the parent directory with `doctor --cwd ./my-app --offline --json`. When `conflicts` lists files and `updates` is null, resolve their existing maintenance markers and rerun `doctor`. When `updates` is a number, inspect the predicted conflicts with `upgrade --dry-run`. With `--offline`, a project recorded by another release returns `updates: null` and `manual: null`: not compared, not up to date. Without `--offline`, it also looks up npm’s `latest` channel; `latest: null` is not proof that no release exists. A healthy result checks configuration and maintenance state, not application behavior.
 
 ## Add capabilities
 
@@ -44,13 +44,13 @@ Review the returned changes, conflicts, and manual entries before applying. The 
 
 ## Finish a write
 
-A write starts from a clean Git worktree, so `git diff` is exactly the change. The write is finished when no conflict markers remain, every `manual` entry is ported or deliberately declined with the user, and the installation and checks in `next` pass.
+Review the write with `git status --short --untracked-files=all` and `git diff`. The write is finished when no conflict markers remain, every `manual` entry is ported or deliberately declined with the user, and the installation and checks in `next` pass.
 
 - **`conflicts`**: the files hold both sides between `<<<<<<< project`, `||||||| previous template`, `=======`, and `>>>>>>> target template`; installation was skipped. Resolve each using the user's code and the intended template change, rather than choosing every incoming side. A maintained file the user had deleted is restored; ask whether to keep it.
 - **`manual`**: port each template change into the user's code. Diff `before` against `after` to see the intent, then apply it where the user's version of the file differs.
 - **A failed installation or check** leaves the files written. Fix the cause and rerun the failed step.
 
-To abandon the write, `git restore . && git clean -fd` returns the project to the commit it started from. It does not restore `node_modules` or database data.
+To abandon the write, use `git restore -- <path>` for each affected tracked file and remove only files created by the operation.
 
 ## Automation contract
 

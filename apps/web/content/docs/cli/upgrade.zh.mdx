@@ -33,7 +33,7 @@ npx vibestart-cli upgrade --yes
 
 ## 用 Git 审查与撤销 [#git]
 
-写入要求项目位于 Git 仓库中，且没有未提交的修改，这样 `git diff` 显示的正好是本次升级的全部改动。提交前请先审查。如需全部撤销，执行 `git restore . && git clean -fd`。预览没有这项要求。
+写入前，项目的 Git 工作区必须干净，包括未跟踪的文件。使用 `git status --short --untracked-files=all` 和 `git diff` 审查改动。如需撤销，对本次修改的已跟踪文件逐个执行 `git restore -- <path>`，并仅删除本次操作创建的文件。有本地改动时也可以预览升级。
 
 ## 冲突 [#conflicts]
 
