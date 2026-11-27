@@ -1,11 +1,11 @@
+import { mkdir, writeFile } from "node:fs/promises";
 import type { ServerResponse } from "node:http";
 import path from "node:path";
 
-import { limitAsync } from "es-toolkit/promise";
 import type { Connect, Plugin } from "vite-plus";
 import { runnerImport } from "vite-plus";
 
-import { previewPath } from "../src/lib/project.ts";
+import { previewDirectory, previewPath } from "../src/lib/project.ts";
 import type * as Stacks from "./stacks.ts";
 
 const moduleId = "virtual:vibestart";
@@ -107,17 +107,35 @@ export const vibestart = (): Plugin => {
         source: loaded.blueprintSchema.source,
         type: "asset",
       });
+    },
+    async writeBundle({ dir }) {
+      if (dir === undefined) {
+        this.error("Stack previews require a build output directory.");
+      }
 
-      // A few stacks at a time: each generates every project it previews at once.
-      const emit = limitAsync(async (label: string) => {
-        this.emitFile({
-          fileName: previewPath(label),
-          source: JSON.stringify(await loaded.stackPreview(label)),
-          type: "asset",
-        });
-      }, 2);
+      const started = performance.now();
+      const loaded = await loadStacks();
+      await mkdir(path.join(dir, previewDirectory), { recursive: true });
 
-      await Promise.all(loaded.stackLabels.map(emit));
+      let bytes = 0;
+
+      for (const label of loaded.stackLabels) {
+        try {
+          // Write each preview before generating the next to keep peak memory bounded.
+          const preview = JSON.stringify(await loaded.stackPreview(label));
+          await writeFile(path.join(dir, previewPath(label)), preview);
+          bytes += Buffer.byteLength(preview);
+        } catch (error) {
+          throw new Error(`Could not write the preview for ${label}`, {
+            cause: error,
+          });
+        }
+      }
+
+      const seconds = ((performance.now() - started) / 1000).toFixed(1);
+      this.info(
+        `Wrote ${loaded.stackLabels.length} stack previews (${bytes} bytes) in ${seconds}s.`
+      );
     },
     load: async (id) => {
       if (id !== resolved) {
