@@ -60,7 +60,7 @@ export interface StackPreview {
   readonly verification: Verification[string] | null;
 }
 
-const previewDirectory = "previews/";
+export const previewDirectory = "previews/";
 
 export const previewPath = (label: string) =>
   `${previewDirectory}${label}.json`;

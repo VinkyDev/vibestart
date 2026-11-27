@@ -115,11 +115,12 @@ export default defineConfig({
         },
       },
       {
-        // clack prompts are asked one after another, and each project command needs the one before it.
+        // Prompts and project commands run in order. Studio writes one stack preview at a time to bound memory.
         files: [
           "apps/cli/src/create.ts",
           "apps/cli/src/prompts.ts",
           "apps/cli/src/maintenance/apply.ts",
+          "apps/web/plugin/index.ts",
         ],
         rules: { "eslint/no-await-in-loop": "off" },
       },
