@@ -4,6 +4,7 @@ import { isCancel, multiselect } from "@clack/prompts";
 import { z } from "zod";
 
 import { diffText } from "@vibestart/core";
+import { maintenanceFiles } from "@vibestart/integrations";
 
 import { addCapabilities, capabilities } from "#/maintenance/add.ts";
 import {
@@ -123,10 +124,7 @@ const planFor = async (
   );
 };
 
-const inspect = async (cwd: string, offline: boolean) => {
-  const project = await readProject(cwd);
-  const issues: string[] = [];
-
+const packageManagerOf = (cwd: string) => {
   const manifest = z
     .object({
       devEngines: z
@@ -136,11 +134,40 @@ const inspect = async (cwd: string, offline: boolean) => {
     })
     .parse(JSON.parse(readText(cwd, "package.json") ?? "{}"));
 
-  const manager =
+  return (
     manifest.packageManager?.split("@")[0] ??
-    manifest.devEngines?.packageManager.name;
+    manifest.devEngines?.packageManager.name
+  );
+};
 
-  if (manager !== project.blueprint.packageManager) {
+const hasConflictMarker = (text: string) =>
+  /^(?:<<<<<<< project|\|{7} previous template|>>>>>>> target template)$/mu.test(
+    text
+  );
+
+const inspect = async (cwd: string, offline: boolean) => {
+  const project = await readProject(cwd);
+  const issues: string[] = [];
+
+  // Another release's templates come from npm, which --offline rules out.
+  const base =
+    offline && project.version !== runningVersion
+      ? null
+      : await snapshotAt(project.version, project);
+
+  const paths =
+    base === null
+      ? ["package.json"]
+      : maintenanceFiles(base.files).map((file) => file.path);
+
+  const unresolved = paths.filter((file) =>
+    hasConflictMarker(readText(cwd, file) ?? "")
+  );
+
+  if (
+    !unresolved.includes("package.json") &&
+    packageManagerOf(cwd) !== project.blueprint.packageManager
+  ) {
     issues.push(`package.json disagrees with ${recordFile}'s package manager.`);
   }
 
@@ -153,17 +180,18 @@ const inspect = async (cwd: string, offline: boolean) => {
     );
   }
 
-  // Another release's templates come from npm, which --offline rules out.
-  const plan =
-    offline && project.version !== runningVersion
-      ? null
-      : planUpdate(
-          cwd,
-          await snapshotAt(project.version, project),
-          await currentSnapshot(project.name, project.blueprint)
-        );
+  let plan: Plan | undefined;
 
-  const conflicts = plan?.conflicts.map(({ path: file }) => file) ?? [];
+  if (base !== null && unresolved.length === 0) {
+    const target =
+      project.version === runningVersion
+        ? base
+        : await currentSnapshot(project.name, project.blueprint);
+
+    plan = planUpdate(cwd, base, target);
+  }
+
+  const conflicts = plan?.conflicts.map(({ path: file }) => file) ?? unresolved;
 
   return {
     conflicts,

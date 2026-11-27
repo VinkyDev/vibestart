@@ -33,7 +33,7 @@ Maintenance does not initialize, migrate, or reset databases. Review and execute
 
 ## Review and undo with Git [#git]
 
-A write needs the project in a Git repository with no uncommitted changes, so `git diff` shows exactly what the upgrade changed. Review it before you commit. To undo everything, run `git restore . && git clean -fd`. Previews have no such requirement.
+Applying an upgrade requires a Git repository. From the project directory, commit all changes or stash them, including untracked files, with `git stash push -u -- .`. Review changes with `git status --short --untracked-files=all` and `git diff`. To undo a write, use `git restore -- <path>` for each affected tracked file and remove only files created by the operation. You can preview an upgrade with local changes.
 
 ## Conflicts [#conflicts]
 

@@ -15,7 +15,7 @@ npx vibestart-cli upgrade --cwd my-app --yes --json
 
 A successful preview means a plan was prepared. `needs-install` means files were written but installation and validation are unfinished; `next` names the commands to run. Neither indicates that application tests passed.
 
-A plan lists `changes` the CLI writes, `conflicts` among them, and `manual`: template changes to files the project owns, with the previous and target template content, which the CLI never writes. Writes need a clean Git worktree.
+A plan lists `changes` the CLI writes, `conflicts` among them, and `manual`: template changes to files the project owns, with the previous and target template content, which the CLI never writes. Writes require a Git worktree with no pending changes or untracked files in the project.
 
 ## Maintenance flags [#options]
 

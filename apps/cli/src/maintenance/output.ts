@@ -1,4 +1,5 @@
 import type { MaintenanceResult } from "#/maintenance/commands.ts";
+import { runningVersion } from "#/maintenance/release.ts";
 
 const summaries = new Map([
   ["planned", "Preview complete. No files were written."],
@@ -44,9 +45,17 @@ export const maintenanceText = (
     );
 
     if (result.updates === null || result.manual === null) {
-      lines.push(
-        `Template changes with this CLI: not compared (--offline; release ${result.release} comes from npm)`
-      );
+      if (result.conflicts.length > 0) {
+        lines.push(
+          "Resolve the maintenance conflict markers and rerun doctor."
+        );
+      }
+
+      if (offline && result.release !== runningVersion) {
+        lines.push(
+          `Template changes with this CLI: not compared (--offline; release ${result.release} comes from npm)`
+        );
+      }
 
       return `${lines.join("\n")}\n`;
     }
