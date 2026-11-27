@@ -9,14 +9,17 @@ import type { Plan } from "#/maintenance/plan.ts";
 import { hasCommand } from "#/project.ts";
 
 export const undoHint =
-  "git diff shows every change; git restore . && git clean -fd undoes them.";
+  "Review git status --short --untracked-files=all and git diff. To undo, use git restore -- <path> for each affected tracked file and remove only files created by this operation.";
 
-/** Git is the record of a write: starting clean lets `git diff` show exactly what it changed, and undo it. */
 export const assertCleanWorktree = async (cwd: string) => {
-  const status = await execa("git", ["status", "--porcelain", "--", "."], {
-    cwd,
-    reject: false,
-  });
+  const status = await execa(
+    "git",
+    ["status", "--porcelain", "--untracked-files=all", "--", "."],
+    {
+      cwd,
+      reject: false,
+    }
+  );
 
   if (status.failed) {
     throw new MaintenanceError(
@@ -26,7 +29,7 @@ export const assertCleanWorktree = async (cwd: string) => {
 
   if (status.stdout.trim() !== "") {
     throw new MaintenanceError(
-      "Commit or stash your changes first. A write starts from a clean Git worktree, so git diff shows exactly what it changed."
+      "Commit or stash your changes, including untracked files, before applying the plan."
     );
   }
 };

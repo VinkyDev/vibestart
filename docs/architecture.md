@@ -119,7 +119,7 @@ Commands: `create`, `add`, `upgrade`, `doctor`, and the `snapshot` protocol. `ad
 
 Only infrastructure is merged: manifests, catalog, toolchain and config files, Git ignores, agent conventions, Docker files. The CLI writes `vibestart.jsonc` itself, only when its recorded data changes, and refuses a target release whose record omits its version. Starter business source belongs to the user: a template change to it is reported in the plan's `manual` list with the previous and target template, and never written. Replacing a stack choice is not an automatic migration. Docker supplies the container files. Adding Alchemy installs a provider-neutral infrastructure entry point and preserves the application stack. Its state starts locally and the project configures a shared backend for CI.
 
-Git is the record of a write. A write requires a clean worktree, so `git diff` shows exactly what it changed and `git restore . && git clean -fd` undoes it. Conflicts are written into the files with Git's markers, and the write stops before installation. Otherwise the CLI installs once and runs the selected checks; a failing check leaves the files written for the user to fix or undo.
+Git is the record of a write. A write requires a clean project worktree, including untracked files. To undo it, restore affected tracked paths and remove files created by the operation. Conflicts are written into the files with Git's markers, and the write stops before installation. Otherwise the CLI installs once and runs the selected checks; a failing check leaves the files written for the user to fix or undo.
 
 ## Decisions
 

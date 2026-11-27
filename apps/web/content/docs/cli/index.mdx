@@ -65,7 +65,7 @@ npx vibestart-cli upgrade --dry-run
 </Step>
 <Step title="Apply">
 
-Commit your work first: a write starts from a clean Git worktree. Confirm the plan in the terminal, or pass `--yes` where there is no terminal. Dependencies are installed and the project is checked afterwards.
+To write changes, the project must be in a Git repository. Commit or stash all changes in the project directory, including untracked files. Confirm the plan in the terminal, or pass `--yes` where there is no terminal. Dependencies are installed and the project is checked afterwards.
 
 ```sh
 npx vibestart-cli upgrade --yes
@@ -74,7 +74,7 @@ npx vibestart-cli upgrade --yes
 </Step>
 <Step title="Review">
 
-`git diff` shows every change. After a conflict, resolve the markers written into the files, then run the installation and checks the result names. `git restore . && git clean -fd` undoes the write.
+After a conflict, resolve the markers in the listed files, then run the installation and checks in the result. See [Review and undo with Git](/docs/cli/upgrade#git) to undo a write.
 
 </Step>
 </Steps>

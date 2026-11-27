@@ -79,6 +79,7 @@ const fixture = async (
 };
 
 const outputSchema = z.object({
+  conflicts: z.array(z.string()).optional(),
   error: z.string().optional(),
   exitCode: z.number(),
   ok: z.boolean(),
@@ -255,12 +256,48 @@ describe("project maintenance CLI", () => {
     const applied = await capture("add", "docker", "--cwd", cwd, "--yes");
     expect(applied.exitCode).toBe(1);
     expect(applied.output).toContain("Conflict: Dockerfile");
-    expect(applied.output).toContain("git restore .");
+    expect(applied.output).toContain("git restore -- <path>");
     const dockerfile = readText(cwd, "Dockerfile") ?? "";
     expect(dockerfile).toContain(
       "<<<<<<< project\nFROM custom-business-image\n======="
     );
     expect(dockerfile).toContain(">>>>>>> target template");
+  });
+
+  it("reports maintenance conflicts until the project resolves them", async () => {
+    const { cwd } = await fixture("pnpm", business("node"));
+    const manifest = readText(cwd, "package.json") ?? "";
+    writeText(
+      cwd,
+      "package.json",
+      manifest.replace('"scripts": {', '"scripts": { "knip": "knip --debug",')
+    );
+    writeText(cwd, "Dockerfile", "FROM custom-business-image\n");
+    writeText(cwd, "pnpm-lock.yaml", "lockfileVersion: '9.0'\n");
+    await commit(cwd);
+
+    const applied = await run("add", "knip", "docker", "--cwd", cwd, "--yes");
+    expect(applied.output.status).toBe("conflicts");
+
+    const inspect = async () => await run("doctor", "--cwd", cwd, "--offline");
+    const unresolved = await inspect();
+    expect(unresolved).toMatchObject({
+      exitCode: 1,
+      output: { status: "attention" },
+    });
+    expect(unresolved.output.conflicts?.toSorted()).toStrictEqual([
+      "Dockerfile",
+      "package.json",
+    ]);
+
+    writeText(cwd, "package.json", manifest);
+    const remaining = await inspect();
+    expect(remaining.output.conflicts).toStrictEqual(["Dockerfile"]);
+    writeText(cwd, "Dockerfile", "FROM custom-business-image\n");
+    await expect(inspect()).resolves.toMatchObject({
+      exitCode: 0,
+      output: { status: "healthy", conflicts: [] },
+    });
   });
 
   it.each([
@@ -342,22 +379,28 @@ describe("project maintenance CLI", () => {
     });
   });
 
-  it("writes only from a clean Git worktree", async () => {
-    const dirty = await fixture("pnpm", business("node"));
-    writeText(dirty.cwd, "apps/server/src/app.ts", "uncommitted");
+  it.each(["apps/server/src/app.ts", "notes.md"])(
+    "refuses to write with pending changes to %s",
+    async (file) => {
+      const { cwd } = await fixture("pnpm", business("node"));
+      await git(cwd, "config", "status.showUntrackedFiles", "no");
+      writeText(cwd, file, "uncommitted");
 
-    const refused = await run(
-      "add",
-      "knip",
-      "--cwd",
-      dirty.cwd,
-      "--yes",
-      "--no-install"
-    );
+      const refused = await run(
+        "add",
+        "knip",
+        "--cwd",
+        cwd,
+        "--yes",
+        "--no-install"
+      );
 
-    expect(refused.exitCode).toBe(1);
-    expect(refused.output.error).toContain("Commit or stash");
+      expect(refused.exitCode).toBe(1);
+      expect(refused.output.error).toContain("Commit or stash");
+    }
+  );
 
+  it("requires a Git repository for writes", async () => {
     const untracked = await fixture("pnpm", business("node"), {
       repository: false,
     });

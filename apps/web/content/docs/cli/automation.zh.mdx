@@ -15,7 +15,7 @@ npx vibestart-cli upgrade --cwd my-app --yes --json
 
 预览成功表示变更计划已生成；`needs-install` 表示文件已写入、安装与检查尚未完成，`next` 给出需要执行的命令。两者都不代表业务测试通过。
 
-计划包含 CLI 会写入的 `changes`、其中的冲突 `conflicts`，以及 `manual`：模板对项目所有文件的修改，附带原始模板和目标模板的内容，CLI 不会写入这些文件。写入要求 Git 工作区干净。
+计划包含 CLI 会写入的 `changes`、其中的冲突 `conflicts`，以及 `manual`：模板对项目所有文件的修改，附带原始模板和目标模板的内容，CLI 不会写入这些文件。写入要求项目位于 Git 仓库中，且项目内没有未提交的改动或未跟踪的文件。
 
 ## 维护参数 [#options]
 
